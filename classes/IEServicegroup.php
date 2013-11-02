@@ -1,0 +1,77 @@
+<?php
+
+/**
+ * Konfigurace Skupin služeb
+ * 
+ * @package    IcingaEditor
+ * @subpackage WebUI
+ * @author     Vitex <vitex@hippy.cz>
+ * @copyright  2012 Vitex@hippy.cz (G)
+ */
+require_once 'IEcfg.php';
+
+class IEServicegroup extends IECfg
+{
+
+    public $MyTable = 'servicegroup';
+    public $MyKeyColumn = 'servicegroup_id';
+    public $NameColumn = 'servicegroup_name';
+    public $Keyword = 'servicegroup';
+
+    /**
+     * Dát tyto položky k dispozici i ostatním ?
+     * @var boolean 
+     */
+    public $PublicRecords = false;
+    public $UseKeywords = array(
+        'servicegroup_name' => 'VARCHAR(64)',
+        'alias' => 'VARCHAR(64)',
+        'members' => 'TEXT',
+        'servicegroup_members' => 'IDLIST',
+        'notes' => 'TEXT',
+        'notes_url' => 'VARCHAR(128)',
+        'action_url' => 'VARCHAR(128)'
+    );
+    public $KeywordsInfo = array(
+        'servicegroup_name' => array(
+            'title' => 'název skupiny služeb',
+            'required' => true
+        ),
+        'alias' => array(
+            'title' => 'alias skupiny služeb',
+            'required' => true
+        ),
+        'members' => array(
+            'title' => 'členské kontakty (zatím nutno definovat ručně)',
+            'refdata' => array(
+                'table' => 'services',
+                'captioncolumn' => 'service_description',
+                'idcolumn' => 'service_id',
+                'condition' => array('register' => 1))
+        ),
+        'servicegroup_members' => array(
+            'title' => 'členské skupiny',
+            'refdata' => array(
+                'table' => 'servicegroup',
+                'captioncolumn' => 'servicegroup_name',
+                'idcolumn' => 'servicegroup_id',
+                'condition' => array('register' => 1))
+        ),
+        'notes' => array(
+            'title' => 'poznámky'),
+        'notes_url' => array(
+            'title' => 'externí poznámky'),
+        'action_url' => array(
+            'title' => 'externí akce'
+        )
+    );
+    /**
+     * URL dokumentace objektu
+     * @var string 
+     */
+    public $DocumentationLink = 'http://docs.icinga.org/latest/en/objectdefinitions.html#objectdefinitions-servicegroup';
+
+
+}
+
+?>

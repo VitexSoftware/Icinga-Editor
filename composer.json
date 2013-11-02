@@ -1,0 +1,13 @@
+{
+    "name": "vitexsoftware/icinga-editor",
+    "description": "Description of project IcingaEditor.",
+    "authors": [
+        {
+            "name": "vitex",
+            "email": "info@vitexsoftware.cz"
+        }
+    ],
+    "require": {
+
+    }
+}

@@ -1,0 +1,99 @@
+<?php
+
+/**
+ * Konfigurátor členů skupiny
+ * 
+ * @package    IcingaEditor
+ * @subpackage WebUI
+ * @author     Vitex <vitex@hippy.cz>
+ * @copyright  2012 Vitex@hippy.cz (G)
+ */
+class IEGroupMembersEditor extends EaseContainer
+{
+
+    /**
+     * Editor k přidávání členů skupiny
+     * 
+     * @param string $FieldName název políčka formuláře
+     * @param string $FieldCaption popisek políčka
+     * @param array $DataSource pole(tabulka=>sloupec)
+     */
+    function __construct($FieldName, $FieldCaption, $DataSource, $Members)
+    {
+        $IDColumn = $DataSource->KeywordsInfo[$FieldName]['refdata']['idcolumn'];
+        $NameColumn = $DataSource->KeywordsInfo[$FieldName]['refdata']['captioncolumn'];
+        $STable = $DataSource->KeywordsInfo[$FieldName]['refdata']['table'];
+
+        if (isset($DataSource->KeywordsInfo[$FieldName]['refdata']['condition'])) {
+            $Conditions = $DataSource->KeywordsInfo[$FieldName]['refdata']['condition'];
+        } else {
+            $Conditions = array();
+        }
+
+        if (isset($DataSource->KeywordsInfo[$FieldName]['refdata']['public']) && intval($DataSource->KeywordsInfo[$FieldName]['refdata']['public'])) {
+            $SqlConds = " ( " . $DataSource->MyDbLink->prepSelect(array_merge($Conditions, array($DataSource->UserColumn => EaseShared::user()->getUserID()))) . " ) OR ( " . $DataSource->MyDbLink->prepSelect(array_merge($Conditions, array('public' => 1))) . ")  ";
+        } else {
+            $SqlConds = $DataSource->MyDbLink->prepSelect(array_merge($Conditions, array($DataSource->UserColumn => EaseShared::user()->getUserID())));
+        }
+
+        $InitialContent = new EaseHtmlFieldSet($FieldCaption);
+        $InitialContent->setTagCss(array('width' => '100%'));
+
+//        $AddNewItem = new EaseHtmlInputSearchTag($FieldName, '', array('class' => 'search-input', 'title' => _('přidání člena')));
+//        $AddNewItem->setDataSource('jsondata.php?source[' . key($DataSource) . ']=' . current($DataSource));
+
+
+        if (is_null($DataSource->getMyKey())) {
+            $InitialContent->addItem(_('Nejprve je potřeba uložit záznam'));
+        } else {
+
+            if (DB_PREFIX . $STable == $DataSource->MyTable) {
+                $TmpKey = $DataSource->getMyKey();
+                if ($TmpKey) {
+                    $Members[$TmpKey] = true;
+                }
+            }
+
+            if ($Members && count($Members)) {
+                $AviavbleCond = 'AND ' . $IDColumn . ' NOT IN (' . join(',', array_keys($Members)) . ') ';
+            } else {
+                $AviavbleCond = '';
+            }
+
+            $MembersAviableArray = EaseShared::myDbLink()->queryToArray(
+                    'SELECT ' . $NameColumn . ', ' . $IDColumn . ' ' .
+                    'FROM `' . DB_PREFIX . $STable . '` ' .
+                    'WHERE (' . $SqlConds . ') ' .
+                    $AviavbleCond .
+                    'ORDER BY ' . $NameColumn, $IDColumn);
+
+            if (DB_PREFIX . $STable == $DataSource->MyTable) {
+                unset($Members[$DataSource->getMyKey()]);
+            }
+
+
+            if (count($MembersAviableArray)) {
+                foreach ($MembersAviableArray as $MemberID => $MemberName) {
+                    $Jellybean = new EaseHtmlSpanTag($MemberName[$NameColumn], null, array('class' => 'jellybean gray'));
+                    $Jellybean->addItem(new EaseHtmlATag('?add=' . $FieldName . '&amp;member=' . $MemberID . '&amp;name=' . $MemberName[$NameColumn] . '&amp;' . $DataSource->getMyKeyColumn() . '=' . $DataSource->getMyKey() . '#' . $FieldName, '<i class="icon-plus-sign"></i>'. $MemberName[$NameColumn]));
+                    $InitialContent->addItem($Jellybean);
+                }
+            }
+
+
+            if ($Members && count($Members)) {
+                $InitialContent->addItem('</br>');
+                foreach ($Members as $MemberID => $MemberName) {
+                    $Jellybean = new EaseHtmlSpanTag($MemberName, null, array('class' => 'jellybean'));
+                    $Jellybean->addItem($MemberName);
+                    $Jellybean->addItem(new EaseHtmlATag('?del=' . $FieldName . '&amp;member=' . $MemberID . '&amp;name=' . $MemberName . '&amp;' . $DataSource->getMyKeyColumn() . '=' . $DataSource->getMyKey() . '#' . $FieldName, '<i class="icon-remove"></i>'));
+                    $InitialContent->addItem($Jellybean);
+                }
+            }
+        }
+        parent::__construct($InitialContent);
+    }
+
+}
+
+?>
