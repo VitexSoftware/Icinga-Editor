@@ -149,21 +149,20 @@ class IEBootstrapMenu extends EaseTWBNavbar
     /**
      * Hlavní menu aplikace
      * 
-     * @param string $Name
-     * @param mixed $Content
-     * @param array $Properties 
+     * @param string $name
+     * @param mixed $content
+     * @param array $properties 
      */
-    function __construct($Name = null, $Content = null, $Properties = null)
+    function __construct($name = null, $content = null, $properties = null)
     {
         parent::__construct("Menu", 'VSMonitoring', array('class' => 'navbar-fixed-top'));
 
-        $User = EaseShared::user();
+        $user = EaseShared::user();
         EaseTWBPart::twBootstrapize();
-        if (!$User->getUserID()) {
+        if (!$user->getUserID()) {
+            $this->addMenuItem('<a href="createaccount.php"><i class="icon-leaf"></i> ' . _('Registrace') . '</a>','right');
             $this->addMenuItem(
-                    '<div class="collapse navbar-collapse navbar-right">' .
-                    '<ul class="nav navbar-nav">
-<li><a href="createaccount.php"><i class="icon-leaf"></i> ' . _('Registrace') . '</a></li>
+'
 <li class="divider-vertical"></li>
 <li class="dropdown">
 <a class="dropdown-toggle" href="login.php" data-toggle="dropdown"><i class="icon-circle-arrow-left"></i> ' . _('Přihlášení') . '<strong class="caret"></strong></a>
@@ -178,16 +177,11 @@ class IEBootstrapMenu extends EaseTWBNavbar
 <!-- input class="btn btn-primary btn-block" type="button" id="sign-in-google" value="Sign In with Google" -->
 <a href="twauth.php?authenticate=1" class="btn btn-primary btn-block" type="button" id="sign-in-twitter">' . _('Autentifikace přez Twitter') . '</a>
 </form>
-</div>
-</li>
-</ul>' .
-                    '</div>'
+</div>', 'left'
             );
         } else {
             $this->addMenuItem('
-<div class="pull-right">
-<ul class="nav pull-right">
-<li class="dropdown" style="width: 120px; text-align: right; background-image: url( ' . $User->getIcon() . ' ) ;  background-repeat: no-repeat; background-position: left center; background-size: 40px 40px;"><a href="#" class="dropdown-toggle" data-toggle="dropdown">' . $User->getUserLogin() . ' <b class="caret"></b></a>
+<li class="dropdown" style="width: 120px; text-align: right; background-image: url( ' . $user->getIcon() . ' ) ;  background-repeat: no-repeat; background-position: left center; background-size: 40px 40px;"><a href="#" class="dropdown-toggle" data-toggle="dropdown">' . $user->getUserLogin() . ' <b class="caret"></b></a>
 <ul class="dropdown-menu" style="text-align: left;">
 <li><a href="settings.php"><i class="icon-cog"></i> ' . _('Nastavení') . '</a></li>
 <li><a href="overview.php"><i class="icon-list"></i> ' . _('Přehled konfigurací') . '</a></li>
@@ -196,9 +190,7 @@ class IEBootstrapMenu extends EaseTWBNavbar
 <li><a href="logout.php"><i class="icon-off"></i> ' . _('Odhlášení') . '</a></li>
 </ul>
 </li>
-</ul>
-</div>
-');
+','left');
         }
     }
 
