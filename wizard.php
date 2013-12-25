@@ -19,14 +19,14 @@ require_once 'classes/IEServicegroup.php';
 require_once 'classes/IEPortScanner.php';
 
 
-$OPage->onlyForLogged();
+$oPage->onlyForLogged();
 
 
-$OPage->addItem(new IEPageTop(_('Icinga Editor')));
+$oPage->addItem(new IEPageTop(_('Icinga Editor')));
 
-$HostName = $OPage->getRequestValue('host_name');
-$Address = $OPage->getRequestValue('address');
-$Address6 = $OPage->getRequestValue('address6');
+$HostName = $oPage->getRequestValue('host_name');
+$Address = $oPage->getRequestValue('address');
+$Address6 = $oPage->getRequestValue('address6');
 
 function gethostbyname6($host, $try_a = false)
 {
@@ -115,12 +115,12 @@ if ($HostName || $Address || $Address6) {
         $Address6 = gethostbyname6($HostName);
     }
 
-    $OUser->addStatusMessage('HostName: ' . $HostName);
-    $OUser->addStatusMessage('Address: ' . $Address);
-    $OUser->addStatusMessage('Address6: ' . $Address6);
+    $oUser->addStatusMessage('HostName: ' . $HostName);
+    $oUser->addStatusMessage('Address: ' . $Address);
+    $oUser->addStatusMessage('Address6: ' . $Address6);
 
     $Host->setData(array(
-        $Host->UserColumn => $OUser->getUserID(),
+        $Host->UserColumn => $oUser->getUserID(),
 //        'check_command'=>'check-host-alive',
         'host_name' => $HostName,
         'address' => $Address,
@@ -129,14 +129,14 @@ if ($HostName || $Address || $Address6) {
         'register' => true,
         'generate' => TRUE,
         'alias' => $HostName,
-        'contacts' => array($OUser->getFirstContactName()))
+        'contacts' => array($oUser->getFirstContactName()))
     );
 
     if ($Host->saveToMysql()) {
         
-        $Service = new IEService('PING');
-        $Service->addMember('host_name', $Host->getId(), $Host->getName());
-        $Service->saveToMySQL();
+        $service = new IEService('PING');
+        $service->addMember('host_name', $Host->getId(), $Host->getName());
+        $service->saveToMySQL();
         
         $Host->autoPopulateServices();
         
@@ -147,7 +147,7 @@ if ($HostName || $Address || $Address6) {
         $HostGroup->addMember('members', $Host->getId(), $Host->getName());
         $HostGroup->saveToMySQL();
         
-        $OPage->redirect('apply.php');
+        $oPage->redirect('apply.php');
         exit();
     }
 }
@@ -155,18 +155,18 @@ if ($HostName || $Address || $Address6) {
 $Contact = new IEContact();
 $PocContact = $Contact->getMyRecordsCount();
 if (!$PocContact) {
-    $Warning = $OPage->column3->addItem(new EaseHtmlDivTag('Contact', _('Nemáte definovaný kontakt'), array('class' => 'alert alert-info')));
+    $Warning = $oPage->column3->addItem(new EaseHtmlDivTag('Contact', _('Nemáte definovaný kontakt'), array('class' => 'alert alert-info')));
     $Warning->addItem(new EaseTWBLinkButton('contact.php?autocreate=default', _('Založit výchozí kontakt <i class="icon-edit"></i>')));
 }
 
 
 $PocHostu = $Host->getMyRecordsCount();
 if ($PocHostu) {
-    $Success = $OPage->column3->addItem(new EaseHtmlDivTag('Host', new EaseTWBLinkButton('hosts.php', _('<i class="icon-list"></i>') . ' ' . sprintf(_('Definováno %s hostů'), $PocHostu)), array('class' => 'alert alert-success')));
+    $Success = $oPage->column3->addItem(new EaseHtmlDivTag('Host', new EaseTWBLinkButton('hosts.php', _('<i class="icon-list"></i>') . ' ' . sprintf(_('Definováno %s hostů'), $PocHostu)), array('class' => 'alert alert-success')));
 }
 
 
-$Warning = $OPage->column2->addItem(new EaseHtmlDivTag('Host', _('Vyplńte prosím alespoň jednu položku:'), array('class' => 'alert')));
+$Warning = $oPage->column2->addItem(new EaseHtmlDivTag('Host', _('Vyplńte prosím alespoň jednu položku:'), array('class' => 'alert')));
 
 $FirstHost = $Warning->addItem(new EaseHtmlForm('firsthost'));
 $FirstHost->addItem(new EaseLabeledTextInput('host_name', $HostName, _('Hostname serveru')));
@@ -177,12 +177,12 @@ $Submit->setTagClass('btn');
 
 
 
-if ($OUser->getSettingValue('admin')) {
-    $OPage->column3->addItem(new EaseJQConfirmedLinkButton('install.php', _('Reinicializace z konfiguračních souborů') . ' <i class="icon-refresh"></i>'));
+if ($oUser->getSettingValue('admin')) {
+    $oPage->column3->addItem(new EaseJQConfirmedLinkButton('install.php', _('Reinicializace z konfiguračních souborů') . ' <i class="icon-refresh"></i>'));
 }
 
-$OPage->addItem(new IEPageBottom());
+$oPage->addItem(new IEPageBottom());
 
 
-$OPage->draw();
+$oPage->draw();
 ?>

@@ -12,15 +12,15 @@ require_once 'Ease/EaseMail.php';
 require_once 'Ease/EaseHtmlForm.php';
 require_once 'Ease/EaseJQueryWidgets.php';
 
-$OPage->onlyForLogged(); //Pouze pro přihlášené
+$oPage->onlyForLogged(); //Pouze pro přihlášené
 $FormOK = true;
 
 if (!isset($_POST['password']) || !strlen($_POST['password'])) {
-    $OUser->addStatusMessage('Prosím zadejte nové heslo');
+    $oUser->addStatusMessage('Prosím zadejte nové heslo');
     $FormOK = false;
 } else {
-    if ($_POST['password'] == $OUser->GetUserLogin()) {
-        $OUser->addStatusMessage('Heslo se nesmí shodovat s přihlašovacím jménem', 'waring');
+    if ($_POST['password'] == $oUser->GetUserLogin()) {
+        $oUser->addStatusMessage('Heslo se nesmí shodovat s přihlašovacím jménem', 'waring');
         $FormOK = false;
     }
     /* TODO:
@@ -31,36 +31,36 @@ if (!isset($_POST['password']) || !strlen($_POST['password'])) {
      */
 }
 if (!isset($_POST['passwordConfirm']) || !strlen($_POST['passwordConfirm'])) {
-    $OUser->addStatusMessage('Prosím zadejte potvrzení hesla');
+    $oUser->addStatusMessage('Prosím zadejte potvrzení hesla');
     $FormOK = false;
 }
 if ((isset($_POST['passwordConfirm']) && isset($_POST['password'])) && ($_POST['passwordConfirm'] != $_POST['password'])) {
-    $OUser->addStatusMessage('Zadaná hesla se neshodují', 'waring');
+    $oUser->addStatusMessage('Zadaná hesla se neshodují', 'waring');
     $FormOK = false;
 }
 
 if (!isset($_POST['CurrentPassword'])) {
-    $OUser->addStatusMessage('Prosím zadejte stávající heslo');
+    $oUser->addStatusMessage('Prosím zadejte stávající heslo');
     $FormOK = false;
 } else {
-    if (!$OUser->PasswordValidation($_POST['CurrentPassword'], $OUser->GetDataValue($OUser->PasswordColumn))) {
-        $OUser->AddStatusMessage('Stávající heslo je neplatné', 'warning');
+    if (!$oUser->PasswordValidation($_POST['CurrentPassword'], $oUser->GetDataValue($oUser->PasswordColumn))) {
+        $oUser->AddStatusMessage('Stávající heslo je neplatné', 'warning');
         $FormOK = false;
     }
 }
 
 
-$OPage->addItem(new IEPageTop(_('Změna hesla uživatele')));
+$oPage->addItem(new IEPageTop(_('Změna hesla uživatele')));
 
 if ($FormOK && isset($_POST)) {
-    $OUser->setDataValue($OUser->PasswordColumn, $OUser->encryptPassword($_POST['password']));
-    if ($OUser->saveToMySQL()) {
-        $OUser->addStatusMessage('Heslo bylo změněno', 'success');
+    $oUser->setDataValue($oUser->PasswordColumn, $oUser->encryptPassword($_POST['password']));
+    if ($oUser->saveToMySQL()) {
+        $oUser->addStatusMessage('Heslo bylo změněno', 'success');
 
-        $Email = $OPage->addItem(new EaseMail($OUser->getDataValue($OUser->MailColumn), 'Změněné heslo pro FragCC'));
+        $Email = $oPage->addItem(new EaseMail($oUser->getDataValue($oUser->MailColumn), 'Změněné heslo pro FragCC'));
         $Email->addItem("Vážený zákazníku vaše přihlašovací údaje byly změněny:\n");
 
-        $Email->addItem(' Login: ' . $OUser->getUserLogin() . "\n");
+        $Email->addItem(' Login: ' . $oUser->getUserLogin() . "\n");
         $Email->addItem(' Heslo: ' . $_POST['password'] . "\n");
 
         $Email->send();
@@ -77,10 +77,10 @@ if ($FormOK && isset($_POST)) {
 
     $LoginForm->fillUp($_POST);
 
-    $OPage->column2->addItem( new EaseHtmlFieldSet(_('změna hesla'), $LoginForm));
+    $oPage->column2->addItem( new EaseHtmlFieldSet(_('změna hesla'), $LoginForm));
 }
 
-$OPage->AddItem(new IEPageBottom());
+$oPage->AddItem(new IEPageBottom());
 
-$OPage->Draw();
+$oPage->Draw();
 ?>

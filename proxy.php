@@ -14,7 +14,7 @@ require_once 'includes/IEInit.php';
 if (isset($_GET['t'])) {
     $target = $_GET['t'];
 
-    $page = file_get_contents('http://' . $OUser->getUserLogin() . ':'.$OUser->getSettingValue('plaintext').'@' . $_SERVER['HTTP_HOST'] . '' . $target);
+    $page = file_get_contents('http://' . $oUser->getUserLogin() . ':'.$oUser->getSettingValue('plaintext').'@' . $_SERVER['HTTP_HOST'] . '' . $target);
 
     //$page = preg_replace('@(https?://([-\w\.]+)+(:\d+)?(/([\w/_\.%]*(\?\S+)?)?)?)@', '/cgi-bin/icinga/$1', $page);
     

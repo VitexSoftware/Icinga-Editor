@@ -12,58 +12,58 @@ require_once 'includes/IEInit.php';
 require_once 'classes/IEContact.php';
 require_once 'classes/IECfgEditor.php';
 
-$OPage->onlyForLogged();
+$oPage->onlyForLogged();
 
-$Contact = new IEContact($OPage->getRequestValue('contact_id', 'int'));
+$Contact = new IEContact($oPage->getRequestValue('contact_id', 'int'));
 
-$autoCreate = $OPage->getRequestValue('autocreate');
+$autoCreate = $oPage->getRequestValue('autocreate');
 if($autoCreate == 'default'){
     $Contact->setData(IEContact::ownContactData() );
     $ContactID = $Contact->saveToMySQL();
 }
 
-if ($OPage->isPosted()) {
+if ($oPage->isPosted()) {
     $Contact->takeData($_POST);
     $ContactID = $Contact->saveToMySQL();
     if (is_null($ContactID)) {
-        $OUser->addStatusMessage(_('Kontakt nebyl uložen'), 'warning');
+        $oUser->addStatusMessage(_('Kontakt nebyl uložen'), 'warning');
     } else {
-        $OUser->addStatusMessage(_('Kontakt byl uložen'), 'success');
+        $oUser->addStatusMessage(_('Kontakt byl uložen'), 'success');
     }
 }
 
     $Contact->saveMembers();
 
-$Delete = $OPage->getGetValue('delete', 'bool');
-if ($Delete == 'true') {
+$delete = $oPage->getGetValue('delete', 'bool');
+if ($delete == 'true') {
     $Contact->delete();
 }
 
 
-$OPage->addItem(new IEPageTop(_('Editace kontaktu') . ' ' . $Contact->getName()));
+$oPage->addItem(new IEPageTop(_('Editace kontaktu') . ' ' . $Contact->getName()));
 
 
 
 $ContactEdit = new IECfgEditor($Contact);
 
-$Form = $OPage->column2->addItem(new EaseHtmlForm('Contact', 'contact.php', 'POST', $ContactEdit, array('class' => 'form-horizontal')));
-$Form->setTagID($Form->getTagName());
+$form = $oPage->column2->addItem(new EaseHtmlForm('Contact', 'contact.php', 'POST', $ContactEdit, array('class' => 'form-horizontal')));
+$form->setTagID($form->getTagName());
 if (!is_null($Contact->getMyKey())) {
-    $Form->addItem(new EaseHtmlInputHiddenTag($Contact->getMyKeyColumn(), $Contact->getMyKey()));
+    $form->addItem(new EaseHtmlInputHiddenTag($Contact->getMyKeyColumn(), $Contact->getMyKey()));
 }
-$Form->addItem('<br>');
-$Form->addItem(new EaseTWSubmitButton(_('Uložit'),'success'));
+$form->addItem('<br>');
+$form->addItem(new EaseTWSubmitButton(_('Uložit'),'success'));
 
-$OPage->column3->addItem($Contact->deleteButton());
-$OPage->AddCss('
+$oPage->column3->addItem($Contact->deleteButton());
+$oPage->AddCss('
 input.ui-button { width: 100%; }
 ');
 if ($Contact->getId()) {
-    $OPage->column1->addItem($Contact->ownerLinkButton());
+    $oPage->column1->addItem($Contact->ownerLinkButton());
 }
 
-$OPage->addItem(new IEPageBottom());
+$oPage->addItem(new IEPageBottom());
 
 
-$OPage->draw();
+$oPage->draw();
 ?>

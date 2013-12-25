@@ -11,9 +11,9 @@
 require_once 'includes/IEInit.php';
 require_once 'classes/IECommand.php';
 
-$OPage->onlyForLogged();
+$oPage->onlyForLogged();
 
-$OPage->addItem(new IEPageTop(_('Přehled příkazů')));
+$oPage->addItem(new IEPageTop(_('Přehled příkazů')));
 
 
 
@@ -34,7 +34,7 @@ if ($Commands) {
                 $LastRow->setTagCss(array('border-right' => '1px solid red'));
             }
             if ($CInfo['public'] == 1) {
-                if ($CInfo[$Command->UserColumn] == $OUser->getUserID()) {
+                if ($CInfo[$Command->UserColumn] == $oUser->getUserID()) {
                     $LastRow->setTagCss(array('border-left' => '1px solid green'));
                 } else {
                     $LastRow->setTagCss(array('border-left' => '1px solid blue'));
@@ -43,8 +43,8 @@ if ($Commands) {
             unset($Commands[$CID]);
         }
     }
-    $OPage->column1->addItem(new EaseHtmlH4Tag(_('Místní příkazy')));
-    $OPage->column1->addItem($CntList);
+    $oPage->column1->addItem(new EaseHtmlH4Tag(_('Místní příkazy')));
+    $oPage->column1->addItem($CntList);
 
     $CntList = new EaseHtmlTableTag(null, array('class' => 'table'));
     $Cid = 1;
@@ -55,7 +55,7 @@ if ($Commands) {
                 $LastRow->setTagCss(array('border-right' => '1px solid red'));
             }
             if ($CInfo['public'] == 1) {
-                if ($CInfo[$Command->UserColumn] == $OUser->getUserID()) {
+                if ($CInfo[$Command->UserColumn] == $oUser->getUserID()) {
                     $LastRow->setTagCss(array('border-left' => '1px solid green'));
                 } else {
                     $LastRow->setTagCss(array('border-left' => '1px solid blue'));
@@ -65,8 +65,8 @@ if ($Commands) {
         }
         
     }
-    $OPage->column2->addItem(new EaseHtmlH4Tag(_('vzdálené příkazy')));
-    $OPage->column2->addItem($CntList);
+    $oPage->column2->addItem(new EaseHtmlH4Tag(_('vzdálené příkazy')));
+    $oPage->column2->addItem($CntList);
 
     $CntList = new EaseHtmlTableTag(null, array('class' => 'table'));
     foreach ($Commands as $CID => $CInfo) {
@@ -75,7 +75,7 @@ if ($Commands) {
                 $LastRow->setTagCss(array('border-right' => '1px solid red'));
             }
             if ($CInfo['public'] == 1) {
-                if ($CInfo[$Command->UserColumn] == $OUser->getUserID()) {
+                if ($CInfo[$Command->UserColumn] == $oUser->getUserID()) {
                     $LastRow->setTagCss(array('border-left' => '1px solid green'));
                 } else {
                     $LastRow->setTagCss(array('border-left' => '1px solid blue'));
@@ -83,21 +83,21 @@ if ($Commands) {
             }
             unset($Commands[$CID]);
     }
-    $OPage->column3->addItem(new EaseHtmlH4Tag(_('neurčené příkazy')));
-    $OPage->column3->addItem($CntList);
+    $oPage->column3->addItem(new EaseHtmlH4Tag(_('neurčené příkazy')));
+    $oPage->column3->addItem($CntList);
     
     
     
 } else {
-    $OUser->addStatusMessage(_('Nemáte definovaný příkaz'), 'warning');
+    $oUser->addStatusMessage(_('Nemáte definovaný příkaz'), 'warning');
 }
 
-$OPage->column3->addItem(new EaseTWBLinkButton('command.php', _('Založit příkaz') . ' <i class="icon-edit"></i>'));
-$OPage->column3->addItem(new EaseTWBLinkButton('importcommand.php', _('Importovat příkazy') . ' <i class="icon-download"></i>'));
+$oPage->column3->addItem(new EaseTWBLinkButton('command.php', _('Založit příkaz') . ' <i class="icon-edit"></i>'));
+$oPage->column3->addItem(new EaseTWBLinkButton('importcommand.php', _('Importovat příkazy') . ' <i class="icon-download"></i>'));
 
 
-$OPage->addItem(new IEPageBottom());
+$oPage->addItem(new IEPageBottom());
 
 
-$OPage->draw();
+$oPage->draw();
 ?>

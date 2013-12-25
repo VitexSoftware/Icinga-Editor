@@ -12,53 +12,53 @@ require_once 'includes/IEInit.php';
 require_once 'classes/IEHostgroup.php';
 require_once 'classes/IECfgEditor.php';
 
-$OPage->onlyForLogged();
+$oPage->onlyForLogged();
 
-$Hostgroup = new IEHostgroup($OPage->getRequestValue('hostgroup_id', 'int'));
+$Hostgroup = new IEHostgroup($oPage->getRequestValue('hostgroup_id', 'int'));
 
-if ($OPage->isPosted()) {
+if ($oPage->isPosted()) {
     $Hostgroup->takeData($_POST);
     $HostgroupID = $Hostgroup->saveToMySQL();
     if (is_null($HostgroupID)) {
-        $OUser->addStatusMessage(_('Skupina hostů nebyla uložena'), 'warning');
+        $oUser->addStatusMessage(_('Skupina hostů nebyla uložena'), 'warning');
     } else {
-        $OUser->addStatusMessage(_('Skupina hostů byla uložena'), 'success');
+        $oUser->addStatusMessage(_('Skupina hostů byla uložena'), 'success');
     }
 }
 
 $Hostgroup->saveMembers();
 
-$Delete = $OPage->getGetValue('delete', 'bool');
-if ($Delete == 'true') {
+$delete = $oPage->getGetValue('delete', 'bool');
+if ($delete == 'true') {
     $Hostgroup->delete();
 }
 
 
-$OPage->addItem(new IEPageTop(_('Editace skupiny hostů') . ' ' . $Hostgroup->getName()));
+$oPage->addItem(new IEPageTop(_('Editace skupiny hostů') . ' ' . $Hostgroup->getName()));
 
 $HostgroupEdit = new IECfgEditor($Hostgroup);
 
-$Form = $OPage->column2->addItem(new EaseHtmlForm('Hostgroup', 'hostgroup.php', 'POST', $HostgroupEdit, array('class' => 'form-horizontal')));
-$Form->setTagID($Form->getTagName());
+$form = $oPage->column2->addItem(new EaseHtmlForm('Hostgroup', 'hostgroup.php', 'POST', $HostgroupEdit, array('class' => 'form-horizontal')));
+$form->setTagID($form->getTagName());
 if (!is_null($Hostgroup->getMyKey())) {
-    $Form->addItem(new EaseHtmlInputHiddenTag($Hostgroup->getMyKeyColumn(), $Hostgroup->getMyKey()));
+    $form->addItem(new EaseHtmlInputHiddenTag($Hostgroup->getMyKeyColumn(), $Hostgroup->getMyKey()));
 }
-$Form->addItem('<br>');
-$Form->addItem(new EaseTWSubmitButton(_('Uložit'), 'success'));
+$form->addItem('<br>');
+$form->addItem(new EaseTWSubmitButton(_('Uložit'), 'success'));
 
-$OPage->AddCss('
+$oPage->AddCss('
 input.ui-button { width: 100%; }
 ');
 
-$OPage->column3->addItem($Hostgroup->deleteButton());
+$oPage->column3->addItem($Hostgroup->deleteButton());
 
 if ($Hostgroup->getId()) {
-    $OPage->column1->addItem($Hostgroup->ownerLinkButton());
+    $oPage->column1->addItem($Hostgroup->ownerLinkButton());
 }
 
 
-$OPage->addItem(new IEPageBottom());
+$oPage->addItem(new IEPageBottom());
 
 
-$OPage->draw();
+$oPage->draw();
 ?>

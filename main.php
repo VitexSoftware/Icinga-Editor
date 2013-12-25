@@ -18,14 +18,14 @@ require_once 'classes/IECommand.php';
 require_once 'classes/IEServicegroup.php';
 
 
-$OPage->onlyForLogged();
+$oPage->onlyForLogged();
 
 
-$OPage->addItem(new IEPageTop(_('Monitoring')));
+$oPage->addItem(new IEPageTop(_('Monitoring')));
 
 
-$OPage->addItem(new IEPageBottom());
+$oPage->addItem(new IEPageBottom());
 
 
-$OPage->draw();
+$oPage->draw();
 ?>

@@ -6,13 +6,13 @@
  */
 require_once 'includes/IEInit.php';
 
-$OPage->onlyForLogged();
+$oPage->onlyForLogged();
 
-if (!$OUser->GetUserID()) {
+if (!$oUser->GetUserID()) {
     die(_('nejprve se prosím přihlaš'));
 }
 
-$SaverClass = $OPage->GetRequestValue('SaverClass');
+$SaverClass = $oPage->GetRequestValue('SaverClass');
 if(!$SaverClass){
     $SaverClass = 'LBSaver';
 }
@@ -21,23 +21,23 @@ if(!$SaverClass){
 if(file_exists('classes/'.$SaverClass.'.php')){
     require_once 'classes/'.$SaverClass.'.php';
 } else {
-    $OUser->addStatusMessage(_('Načítání souboru: classes/'.$SaverClass.'.php'),'warning');
+    $oUser->addStatusMessage(_('Načítání souboru: classes/'.$SaverClass.'.php'),'warning');
 }
 
-$Field = $OPage->getRequestValue('Field');
-$Value = $OPage->getRequestValue('Value');
+$Field = $oPage->getRequestValue('Field');
+$Value = $oPage->getRequestValue('Value');
 
 if (is_null($SaverClass) || is_null($Field) || is_null($Value)) {
     die(_('Chybné volání'));
 }
 
 $Saver = new $SaverClass($Field);
-$Saver->setUpUser($OUser);
+$Saver->setUpUser($oUser);
 $Saver->setDataValue($Field, $Value);
 
 if(is_null($Saver->SaveToMySql())){
     header('HTTP/1.0 501 Not Implemented',501);
-    $OUser->addStatusMessage(_('Chyba ukládání do databáze: '). ' ' . $Saver->MyDbLink->ErrorText . ': ' . 
+    $oUser->addStatusMessage(_('Chyba ukládání do databáze: '). ' ' . $Saver->MyDbLink->ErrorText . ': ' . 
             _('Třída').': <strong>'.$SaverClass.'</strong> '. 
             _('Tabulka').': <strong>'.$Saver->MyTable.'</strong> '. 
             _('Pole').': <strong>'.$Field.'</strong> '.

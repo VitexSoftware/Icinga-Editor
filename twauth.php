@@ -32,7 +32,7 @@ function outputError($tmhOAuth)
 // reset request?
 if (isset($_REQUEST['wipe'])) {
     unset($_SESSION['access_token']);
-    $OPage->redirect('logout.php');
+    $oPage->redirect('logout.php');
 
 // already got some credentials stored?
 } elseif (isset($_SESSION['access_token'])) {
@@ -101,13 +101,13 @@ if (isset($_REQUEST['wipe'])) {
         $method = isset($_REQUEST['authenticate']) ? 'authenticate' : 'authorize';
         $force = isset($_REQUEST['force']) ? '&force_login=1' : '';
         $authurl = $tmhOAuth->url("oauth/{$method}", '') . "?oauth_token={$_SESSION['oauth']['oauth_token']}{$force}";
-        $OPage->redirect($authurl);
+        $oPage->redirect($authurl);
         exit;
     } else {
         outputError($tmhOAuth);
     }
 }
-$OPage->Redirect('index.php');
+$oPage->Redirect('index.php');
 
 
 /*

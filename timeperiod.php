@@ -12,49 +12,49 @@ require_once 'includes/IEInit.php';
 require_once 'classes/IETimeperiod.php';
 require_once 'classes/IECfgEditor.php';
 
-$OPage->onlyForLogged();
+$oPage->onlyForLogged();
 
-$Timeperiod = new IETimeperiod($OPage->getRequestValue('timeperiod_id', 'int'));
+$Timeperiod = new IETimeperiod($oPage->getRequestValue('timeperiod_id', 'int'));
 
-if ($OPage->isPosted()) {
+if ($oPage->isPosted()) {
     unset($_POST['Save']);
     $Timeperiod->takeData($_POST);
     $TimepriodID = $Timeperiod->saveToMySQL();
     if (is_null($TimepriodID)) {
-        $OUser->addStatusMessage(_('časová perioda nebyl uložena'), 'warning');
+        $oUser->addStatusMessage(_('časová perioda nebyl uložena'), 'warning');
     } else {
-        $OUser->addStatusMessage(_('časová byla uložena'), 'success');
+        $oUser->addStatusMessage(_('časová byla uložena'), 'success');
     }
 }
 
 
-$DelColumn = $OPage->getGetValue('del');
+$DelColumn = $oPage->getGetValue('del');
 if (!is_null($DelColumn)) {
     $Del = $Timeperiod->delTime($DelColumn);
     $TimepriodID = $Timeperiod->saveToMySQL();
     if (is_null($TimepriodID) && !$Del) {
-        $OUser->addStatusMessage(_('položka nebyla odebrána'), 'warning');
+        $oUser->addStatusMessage(_('položka nebyla odebrána'), 'warning');
     } else {
-        $OUser->addStatusMessage(_('položka byla odebrána'), 'success');
+        $oUser->addStatusMessage(_('položka byla odebrána'), 'success');
     }
 }
 
-$Delete = $OPage->getGetValue('delete', 'bool');
-if ($Delete == 'true') {
+$delete = $oPage->getGetValue('delete', 'bool');
+if ($delete == 'true') {
     $Timeperiod->delete();
 }
 
 
 
-$OPage->addItem(new IEPageTop(_('Editace časové periody') . ' ' . $Timeperiod->getName()));
+$oPage->addItem(new IEPageTop(_('Editace časové periody') . ' ' . $Timeperiod->getName()));
 
 $TimepriodEdit = new IECfgEditor($Timeperiod);
 
 
-$Form = $OPage->column2->addItem(new EaseHtmlForm('Perioda', 'timeperiod.php', 'POST', $TimepriodEdit, array('class' => 'form-horizontal')));
-$Form->setTagID($Form->getTagName());
+$form = $oPage->column2->addItem(new EaseHtmlForm('Perioda', 'timeperiod.php', 'POST', $TimepriodEdit, array('class' => 'form-horizontal')));
+$form->setTagID($form->getTagName());
 if (!is_null($Timeperiod->getMyKey())) {
-    $Form->addItem(new EaseHtmlInputHiddenTag($Timeperiod->getMyKeyColumn(), $Timeperiod->getMyKey()));
+    $form->addItem(new EaseHtmlInputHiddenTag($Timeperiod->getMyKeyColumn(), $Timeperiod->getMyKey()));
 }
 $TimesTable = new EaseHtmlTableTag();
 
@@ -65,23 +65,23 @@ foreach ($Timeperiod->Timeperiods as $TimeName => $TimeIntervals) {
     $TimesTable->addRowColumns(array($TimeName, $TimeIntervals, new EaseHtmlATag('?del=' . $TimeName . '&amp;' . $Timeperiod->getMyKeyColumn() . '=' . $Timeperiod->getMyKey(), '<i class="icon-remove"></i>')));
 }
 
-$Form->addItem($TimesTable);
+$form->addItem($TimesTable);
 
-$Form->addItem(new EaseTWSubmitButton(_('Uložit'),'success'));
-$OPage->AddCss('
+$form->addItem(new EaseTWSubmitButton(_('Uložit'),'success'));
+$oPage->AddCss('
 input.ui-button { width: 100%; }
 ');
 
 
-$OPage->column3->addItem($Timeperiod->deleteButton());
+$oPage->column3->addItem($Timeperiod->deleteButton());
 
 if ($Timeperiod->getId()) {
-    $OPage->column1->addItem($Timeperiod->ownerLinkButton());
+    $oPage->column1->addItem($Timeperiod->ownerLinkButton());
 }
 
 
-$OPage->addItem(new IEPageBottom());
+$oPage->addItem(new IEPageBottom());
 
 
-$OPage->draw();
+$oPage->draw();
 ?>

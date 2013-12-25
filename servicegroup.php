@@ -12,42 +12,42 @@ require_once 'includes/IEInit.php';
 require_once 'classes/IEServicegroup.php';
 require_once 'classes/IECfgEditor.php';
 
-$OPage->onlyForLogged();
+$oPage->onlyForLogged();
 
-$Servicegroup = new IEServicegroup($OPage->getRequestValue('servicegroup_id', 'int'));
+$Servicegroup = new IEServicegroup($oPage->getRequestValue('servicegroup_id', 'int'));
 
-if ($OPage->isPosted()) {
+if ($oPage->isPosted()) {
     $Servicegroup->takeData($_POST);
     $ServicegroupID = $Servicegroup->saveToMySQL();
     if (is_null($ServicegroupID)) {
-        $OUser->addStatusMessage(_('Skupina služeb nebyla uložena'), 'warning');
+        $oUser->addStatusMessage(_('Skupina služeb nebyla uložena'), 'warning');
     } else {
-        $OUser->addStatusMessage(_('Skupina služeb byla uložena'), 'success');
+        $oUser->addStatusMessage(_('Skupina služeb byla uložena'), 'success');
     }
 }
 
 
 $Servicegroup->saveMembers();
 
-$Delete = $OPage->getGetValue('delete', 'bool');
-if ($Delete == 'true') {
+$delete = $oPage->getGetValue('delete', 'bool');
+if ($delete == 'true') {
     $Servicegroup->delete();
 }
 
-$OPage->addItem(new IEPageTop(_('Editace skupiny služeb') . ' ' . $Servicegroup->getName()));
+$oPage->addItem(new IEPageTop(_('Editace skupiny služeb') . ' ' . $Servicegroup->getName()));
 
 $ServicegroupEdit = new IECfgEditor($Servicegroup);
 
-$Form = $OPage->column2->addItem(new EaseHtmlForm('Servicegroup', 'servicegroup.php', 'POST', $ServicegroupEdit, array('class' => 'form-horizontal')));
-$Form->setTagID($Form->getTagName());
+$form = $oPage->column2->addItem(new EaseHtmlForm('Servicegroup', 'servicegroup.php', 'POST', $ServicegroupEdit, array('class' => 'form-horizontal')));
+$form->setTagID($form->getTagName());
 if (!is_null($Servicegroup->getMyKey())) {
-    $Form->addItem(new EaseHtmlInputHiddenTag($Servicegroup->getMyKeyColumn(), $Servicegroup->getMyKey()));
+    $form->addItem(new EaseHtmlInputHiddenTag($Servicegroup->getMyKeyColumn(), $Servicegroup->getMyKey()));
 }
-$Form->addItem('<br>');
-$Form->addItem(new EaseTWSubmitButton(_('Uložit'),'success'));
+$form->addItem('<br>');
+$form->addItem(new EaseTWSubmitButton(_('Uložit'),'success'));
 
-$OPage->addItem(new IEPageBottom());
+$oPage->addItem(new IEPageBottom());
 
 
-$OPage->draw();
+$oPage->draw();
 ?>

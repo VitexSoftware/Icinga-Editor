@@ -11,16 +11,16 @@
 require_once 'includes/IEInit.php';
 require_once 'classes/IEHost.php';
 
-$OPage->onlyForLogged();
+$oPage->onlyForLogged();
 
-$OPage->addItem(new IEPageTop(_('Přehled uživatelů')));
+$oPage->addItem(new IEPageTop(_('Přehled uživatelů')));
 
 $User = new EaseUser;
 
-$Users = $User->getColumnsFromMySQL(array('id', 'login'), null, 'login', $OUser->getMyKeyColumn());
+$Users = $User->getColumnsFromMySQL(array('id', 'login'), null, 'login', $oUser->getMyKeyColumn());
 
 if ($Users) {
-    $OPage->column2->addItem(new EaseHtmlH4Tag(_('Uživatelé')));
+    $oPage->column2->addItem(new EaseHtmlH4Tag(_('Uživatelé')));
     $CntList = new EaseHtmlTableTag(null, array('class' => 'table'));
     $Cid = 1;
     foreach ($Users as $CID => $CInfo) {
@@ -30,13 +30,13 @@ if ($Users) {
                 )
         );
     }
-    $OPage->column2->addItem($CntList);
+    $oPage->column2->addItem($CntList);
 }
 
-$OPage->column3->addItem(new EaseTWBLinkButton('createaccount.php', _('Založit uživatele <i class="icon-edit"></i>')));
+$oPage->column3->addItem(new EaseTWBLinkButton('createaccount.php', _('Založit uživatele <i class="icon-edit"></i>')));
 
-$OPage->addItem(new IEPageBottom());
+$oPage->addItem(new IEPageBottom());
 
 
-$OPage->draw();
+$oPage->draw();
 ?>

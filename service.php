@@ -2,7 +2,7 @@
 
 /**
  * Icinga Editor služby
- * 
+ *
  * @package    IcingaEditor
  * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
@@ -12,56 +12,67 @@ require_once 'includes/IEInit.php';
 require_once 'classes/IEService.php';
 require_once 'classes/IECfgEditor.php';
 
-$OPage->onlyForLogged();
+$oPage->onlyForLogged();
 
-$Service = new IEService($OPage->getRequestValue('service_id', 'int'));
+$service = new IEService($oPage->getRequestValue('service_id', 'int'));
 
-if ($OPage->isPosted()) {
-    $Service->takeData($_POST);
-    $ServiceID = $Service->saveToMySQL();
-    if (is_null($ServiceID)) {
-        $OUser->addStatusMessage(_('Služba nebyla uložena'), 'warning');
+if ($oPage->getRequestValue('action') == 'clone') {
+    $service->unsetDataValue($service->getMyKeyColumn());
+    $service->setDataValue($service->NameColumn, $service->getName() . ' ' . _('Cloned'));
+    if ($service->saveToMySQL()) {
+        $oUser->addStatusMessage(_('Služba byla zklonovana'), 'success');
     } else {
-        $OUser->addStatusMessage(_('Služba byla uložena'), 'success');
+        $oUser->addStatusMessage(_('Služba nebyla zklonovana'), 'error');
+    }
+}
+
+if ($oPage->isPosted()) {
+    if ($oPage->getRequestValue('action') == 'clone') {
+        $oUser->addStatusMessage(_('Služba byla zklonovana'), 'info');
+        $service->unsetDataValue($service->getMyKey());
+    } else {
+        $service->takeData($_POST);
+    }
+    $serviceID = $service->saveToMySQL();
+    if (is_null($serviceID)) {
+        $oUser->addStatusMessage(_('Služba nebyla uložena'), 'warning');
+    } else {
+        $oUser->addStatusMessage(_('Služba byla uložena'), 'success');
     }
 } else {
-    $Use = $OPage->getGetValue('use');
-    if ($Use) {
-        $Service->setDataValue('use', $Use);
+    $use = $oPage->getGetValue('use');
+    if ($use) {
+        $service->setDataValue('use', $use);
     }
 }
 
-$Service->saveMembers();
+$service->saveMembers();
 
-$Delete = $OPage->getGetValue('delete', 'bool');
-if ($Delete == 'true') {
-    $Service->delete();
+$delete = $oPage->getGetValue('delete', 'bool');
+if ($delete == 'true') {
+    $service->delete();
 }
 
+$oPage->addItem(new IEPageTop(_('Editace služby') . ' ' . $service->getName()));
 
+$serviceEdit = new IECfgEditor($service);
 
-$OPage->addItem(new IEPageTop(_('Editace služby') . ' ' . $Service->getName()));
-
-
-$ServiceEdit = new IECfgEditor($Service);
-
-$Form = $OPage->column2->addItem(new EaseHtmlForm('Service', 'service.php', 'POST', $ServiceEdit, array('class' => 'form-horizontal')));
-$Form->setTagID($Form->getTagName());
-if (!is_null($Service->getMyKey())) {
-    $Form->addItem(new EaseHtmlInputHiddenTag($Service->getMyKeyColumn(), $Service->getMyKey()));
+$form = $oPage->column2->addItem(new EaseHtmlForm('Service', 'service.php', 'POST', $serviceEdit, array('class' => 'form-horizontal')));
+$form->setTagID($form->getTagName());
+if (!is_null($service->getMyKey())) {
+    $form->addItem(new EaseHtmlInputHiddenTag($service->getMyKeyColumn(), $service->getMyKey()));
 }
-$Form->addItem('<br>');
-$Form->addItem(new EaseTWSubmitButton(_('Uložit'),'success'));
-$OPage->AddCss('
+$form->addItem('<br>');
+$form->addItem(new EaseTWSubmitButton(_('Uložit'), 'success'));
+$oPage->AddCss('
 input.ui-button { width: 100%; }
 ');
 
-$OPage->column3->addItem($Service->deleteButton());
-if ($Service->getId()) {
-    $OPage->column1->addItem($Service->ownerLinkButton());
+$oPage->column3->addItem($service->deleteButton());
+$oPage->column3->addItem($service->cloneButton());
+if ($service->getId()) {
+    $oPage->column1->addItem($service->ownerLinkButton());
 }
-$OPage->addItem(new IEPageBottom());
+$oPage->addItem(new IEPageBottom());
 
-
-$OPage->draw();
-?>
+$oPage->draw();

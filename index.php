@@ -10,18 +10,18 @@
  */
 require_once 'includes/IEInit.php';
 
-$OPage->addItem(new IEPageTop(_('Icinga Editor')));
+$oPage->addItem(new IEPageTop(_('Icinga Editor')));
 
-$OPage->heroUnit->addItem( new EaseHtmlImgTag('img/vsmonitoring.png') );
-$OPage->heroUnit->setTagCss(array('text-align'=>'center'));
+$oPage->heroUnit->addItem( new EaseHtmlImgTag('img/vsmonitoring.png') );
+$oPage->heroUnit->setTagCss(array('text-align'=>'center'));
         
-$OPage->column1->addItem(_('Sledování hostů'));
-$OPage->column2->addItem(_('Sledování služeb'));
-$OPage->column3->addItem(_('Notifikace mail/jabber/sms/twitter'));
+$oPage->column1->addItem(_('Sledování hostů'));
+$oPage->column2->addItem(_('Sledování služeb'));
+$oPage->column3->addItem(_('Notifikace mail/jabber/sms/twitter'));
 
 
-$OPage->addItem(new IEPageBottom());
+$oPage->addItem(new IEPageBottom());
 
 
-$OPage->draw();
+$oPage->draw();
 ?>

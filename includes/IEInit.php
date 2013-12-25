@@ -32,12 +32,12 @@ if (!isset($_SESSION['User']) || !is_object($_SESSION['User'])) {
  * Objekt uživatele VSUser nebo VSAnonym
  * @global EaseUser
  */
-$OUser = & EaseShared::user();
-$OUser->SettingsColumn = 'settings';
+$oUser = & EaseShared::user();
+$oUser->SettingsColumn = 'settings';
 
 require_once 'IEWebPage.php';
 
-/* @var $OPage IEWebPage */
-$OPage = new IEWebPage();
+/* @var $oPage IEWebPage */
+$oPage = new IEWebPage();
 
 ?>

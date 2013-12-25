@@ -11,9 +11,9 @@
 require_once 'includes/IEInit.php';
 require_once 'classes/IEContactgroup.php';
 
-$OPage->onlyForLogged();
+$oPage->onlyForLogged();
 
-$OPage->addItem(new IEPageTop(_('Přehled kontaktů')));
+$oPage->addItem(new IEPageTop(_('Přehled kontaktů')));
 
 
 
@@ -22,24 +22,24 @@ $Contactgroup = new IEContactgroup();
 $PocContactgroup = $Contactgroup->getMyRecordsCount();
 
 if ($PocContactgroup) {
-    $Contactgroups = $Contactgroup->MyDbLink->queryToArray('SELECT ' . $Contactgroup->getMyKeyColumn() . ', contactgroup_name, DatSave FROM ' . $Contactgroup->MyTable . ' WHERE user_id=' . $OUser->getUserID(), 'contactgroup_id');
+    $Contactgroups = $Contactgroup->MyDbLink->queryToArray('SELECT ' . $Contactgroup->getMyKeyColumn() . ', contactgroup_name, DatSave FROM ' . $Contactgroup->MyTable . ' WHERE user_id=' . $oUser->getUserID(), 'contactgroup_id');
     $CntList = new EaseHtmlTableTag(null,array('class'=>'table'));
 
     $Cid = 1;
     foreach ($Contactgroups as $CID => $CInfo) {
         $CntList->addRowColumns(array($Cid++, new EaseHtmlATag('contactgroup.php?contactgroup_id=' . $CInfo['contactgroup_id'], $CInfo['contactgroup_name'].' <i class="icon-edit"></i>')));
     }
-    $OPage->column2->addItem($CntList);
+    $oPage->column2->addItem($CntList);
 } else {
-    $OUser->addStatusMessage(_('Nemáte definovou skupinu kontaktů'), 'warning');
+    $oUser->addStatusMessage(_('Nemáte definovou skupinu kontaktů'), 'warning');
 }
 
-$OPage->column3->addItem(new EaseTWBLinkButton('contactgroup.php', _('Založit skupinu kontaktů <i class="icon-edit"></i>')));
+$oPage->column3->addItem(new EaseTWBLinkButton('contactgroup.php', _('Založit skupinu kontaktů <i class="icon-edit"></i>')));
 
 
 
-$OPage->addItem(new IEPageBottom());
+$oPage->addItem(new IEPageBottom());
 
 
-$OPage->draw();
+$oPage->draw();
 ?>

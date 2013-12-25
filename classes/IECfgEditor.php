@@ -24,19 +24,19 @@ class IECfgEditor extends EaseContainer
 
     /**
      * Vyžadované položky formuláře
-     * @var array 
+     * @var array
      */
     public $ReqFields = array();
 
     /**
      * Vytvoří editační formulář podle CFG objektu
-     * 
-     * @param IECfg $this->ObjectEdited 
+     *
+     * @param IECfg $this->ObjectEdited
      */
-    function __construct($CFGObject)
+    public function __construct($cfgObject)
     {
         parent::__construct();
-        $this->ObjectEdited = &$CFGObject;
+        $this->ObjectEdited = &$cfgObject;
         if (EaseShared::user()->getSettingValue('admin')) {
             $this->fullEditor();
         } else {
@@ -46,93 +46,93 @@ class IECfgEditor extends EaseContainer
 
     /**
      * Vloží do stránky widget pro editaci hodnoty
-     * 
-     * @param EaseHtmlDivTag $FieldBlock
-     * @param string $FieldName
-     * @param mixed $Value
+     *
+     * @param EaseHtmlDivTag $fieldBlock
+     * @param string         $fieldName
+     * @param mixed          $value
      */
-    function insertWidget($FieldBlock, $FieldName, $Value)
+    public function insertWidget($fieldBlock, $fieldName, $value)
     {
-        $KeywordInfo = $this->ObjectEdited->KeywordsInfo[$FieldName];
-        $FieldType = $this->ObjectEdited->UseKeywords[$FieldName];
-        $Required = (isset($KeywordInfo['requeired']) && ($KeywordInfo['requeired'] === true));
-        $FType = preg_replace('/\(.*\)/', '', $FieldType);
+        $keywordInfo = $this->ObjectEdited->KeywordsInfo[$fieldName];
+        $fieldType = $this->ObjectEdited->UseKeywords[$fieldName];
+        $Required = (isset($keywordInfo['requeired']) && ($keywordInfo['requeired'] === true));
+        $fType = preg_replace('/\(.*\)/', '', $fieldType);
 
-        switch ($FType) {
+        switch ($fType) {
             case 'INT':
             case 'STRING':
             case 'VARCHAR':
                 if ($Required) {
-                    $FieldBlock->addItem(new EaseHtmlDivTag(null, new EaseLabeledTextInput($FieldName, $Value, $KeywordInfo['title'], array('class' => 'required', 'title' => $FieldName))));
+                    $fieldBlock->addItem(new EaseHtmlDivTag(null, new EaseLabeledTextInput($fieldName, $value, $keywordInfo['title'], array('class' => 'required', 'title' => $fieldName))));
                 } else {
-                    $FieldBlock->addItem(new EaseLabeledTextInput($FieldName, $Value, $KeywordInfo['title'], array('title' => $FieldName)));
+                    $fieldBlock->addItem(new EaseLabeledTextInput($fieldName, $value, $keywordInfo['title'], array('title' => $fieldName)));
                 }
                 break;
             case 'TINYINT':
             case 'BOOL':
-                $FieldBlock->addItem(new EaseLabeledCheckbox($FieldName, $Value, $KeywordInfo['title'], array('title' => $FieldName)));
+                $fieldBlock->addItem(new EaseLabeledCheckbox($fieldName, $value, $keywordInfo['title'], array('title' => $fieldName)));
                 break;
             case 'FLAGS':
-                $Values = array();
-                $Checkboxes = array();
-                $Flags = explode(',', str_replace(array($FType, "'", '(', ')'), '', $FieldType));
+                $values = array();
+                $checkboxes = array();
+                $flags = explode(',', str_replace(array($fType, "'", '(', ')'), '', $fieldType));
 
-                foreach ($Flags as $Flag) {
-                    if (isset($KeywordInfo[$Flag])) {
-                        $Checkboxes[$Flag] = $KeywordInfo[$Flag];
+                foreach ($flags as $flag) {
+                    if (isset($keywordInfo[$flag])) {
+                        $checkboxes[$flag] = $keywordInfo[$flag];
                     } else {
-                        $this->addStatusMessage(_('Chybi definice') . ' ' . $FieldName . ' ' . $Flag, 'error');
+                        $this->addStatusMessage(_('Chybi definice') . ' ' . $fieldName . ' ' . $flag, 'error');
                     }
                 }
-                foreach ($Checkboxes as $ChKey => $ChTopic) {
-                    $Checkboxes[$ChKey] = '&nbsp;' . $ChTopic . '</br>';
-                    if (strchr($Value, $ChKey)) {
-                        $Values[$ChKey] = true;
+                foreach ($checkboxes as $chKey => $chTopic) {
+                    $checkboxes[$chKey] = '&nbsp;' . $chTopic . '</br>';
+                    if (strchr($value, $chKey)) {
+                        $values[$chKey] = true;
                     } else {
-                        $Values[$ChKey] = false;
+                        $values[$chKey] = false;
                     }
                 }
-                $SliderField = $FieldBlock->addItem(new EaseHtmlFieldSet($KeywordInfo['title'], new EaseHtmlCheckboxGroup($FieldName, $Checkboxes, $Values)));
+                $SliderField = $fieldBlock->addItem(new EaseHtmlFieldSet($keywordInfo['title'], new EaseHtmlCheckboxGroup($fieldName, $checkboxes, $values)));
                 $SliderField->setTagCss(array('width' => '100%'));
                 break;
             case 'IDLIST':
-                if (!is_array($Value)) {
-                    $Values = array();
+                if (!is_array($value)) {
+                    $values = array();
                 }
-                $FieldBlock->addItem(new IEGroupMembersEditor($FieldName, $KeywordInfo['title'], $this->ObjectEdited, $Value));
+                $fieldBlock->addItem(new IEGroupMembersEditor($fieldName, $keywordInfo['title'], $this->ObjectEdited, $value));
                 break;
             case 'SLIDER':
-                $SliderField = $FieldBlock->addItem(new EaseHtmlFieldSet($KeywordInfo['title'], new EaseJQuerySlider($FieldName, (int) $Value)));
+                $SliderField = $fieldBlock->addItem(new EaseHtmlFieldSet($keywordInfo['title'], new EaseJQuerySlider($fieldName, (int) $value)));
                 $SliderField->setTagCss(array('width' => '100%'));
                 break;
             case 'TEXT':
-                $FB = $FieldBlock->addItem(new EaseLabeledTextarea($FieldName, $Value, $KeywordInfo['title']));
+                $FB = $fieldBlock->addItem(new EaseLabeledTextarea($fieldName, $value, $keywordInfo['title']));
                 $FB->EnclosedElement->setTagCss(array('width' => '100%'));
                 break;
             case 'ENUM':
-                $Flags = explode(',', str_replace(array($FType, "'", '(', ')'), '', $FieldType));
-                $Selector = $FieldBlock->addItem(new EaseLabeledSelect($FieldName, $Value, $KeywordInfo['title']));
-                $Selector->addItems(array_combine($Flags, $Flags));
+                $flags = explode(',', str_replace(array($fType, "'", '(', ')'), '', $fieldType));
+                $Selector = $fieldBlock->addItem(new EaseLabeledSelect($fieldName, $value, $keywordInfo['title']));
+                $Selector->addItems(array_combine($flags, $flags));
                 $Selector->EnclosedElement->setTagCss(array('width' => '100%'));
                 break;
             case 'RADIO':
-                $Flags = explode(',', str_replace(array($FType, "'", '(', ')'), '', $FieldType));
-                if (is_array($Flags)) {
-                    foreach (array_values($Flags) as $Flag) {
-                        $InfoFlags[$Flag] = '&nbsp;' . $KeywordInfo[$Flag] . '<br>';
+                $flags = explode(',', str_replace(array($fType, "'", '(', ')'), '', $fieldType));
+                if (is_array($flags)) {
+                    foreach (array_values($flags) as $flag) {
+                        $InfoFlags[$flag] = '&nbsp;' . $keywordInfo[$flag] . '<br>';
                     }
-                    $Buttons = new EaseHtmlRadiobuttonGroup($FieldName, $InfoFlags);
-                    $Buttons->setValue($Value);
-                    $FB = $FieldBlock->addItem(new EaseHtmlFieldSet($KeywordInfo['title'], $Buttons));
+                    $Buttons = new EaseHtmlRadiobuttonGroup($fieldName, $InfoFlags);
+                    $Buttons->setValue($value);
+                    $FB = $fieldBlock->addItem(new EaseHtmlFieldSet($keywordInfo['title'], $Buttons));
                     $FB->setTagCss(array('width' => '100%'));
                 }
                 break;
             case 'SELECT':
-                $IDColumn = $KeywordInfo['refdata']['idcolumn'];
-                $NameColumn = $KeywordInfo['refdata']['captioncolumn'];
-                $STable = $KeywordInfo['refdata']['table'];
-                if (isset($KeywordInfo['refdata']['condition'])) {
-                    $Conditions = $KeywordInfo['refdata']['condition'];
+                $IDColumn = $keywordInfo['refdata']['idcolumn'];
+                $NameColumn = $keywordInfo['refdata']['captioncolumn'];
+                $STable = $keywordInfo['refdata']['table'];
+                if (isset($keywordInfo['refdata']['condition'])) {
+                    $Conditions = $keywordInfo['refdata']['condition'];
                 } else {
                     $Conditions = array();
                 }
@@ -145,7 +145,7 @@ class IECfgEditor extends EaseContainer
                         'WHERE ' . $SqlConds . ' ' .
                         'ORDER BY ' . $NameColumn, $IDColumn);
 
-                $Selector = $FieldBlock->addItem(new EaseLabeledSelect($FieldName, $Value, $KeywordInfo['title']));
+                $Selector = $fieldBlock->addItem(new EaseLabeledSelect($fieldName, $value, $keywordInfo['title']));
                 if (!$Required) {
                     $Selector->addItems(array('' => ''));
                 }
@@ -155,11 +155,11 @@ class IECfgEditor extends EaseContainer
                 break;
 
             case 'SELECT+PARAMS':
-                $IDColumn = $KeywordInfo['refdata']['idcolumn'];
-                $NameColumn = $KeywordInfo['refdata']['captioncolumn'];
-                $STable = $KeywordInfo['refdata']['table'];
-                if (isset($KeywordInfo['refdata']['condition'])) {
-                    $Conditions = $KeywordInfo['refdata']['condition'];
+                $IDColumn = $keywordInfo['refdata']['idcolumn'];
+                $NameColumn = $keywordInfo['refdata']['captioncolumn'];
+                $STable = $keywordInfo['refdata']['table'];
+                if (isset($keywordInfo['refdata']['condition'])) {
+                    $Conditions = $keywordInfo['refdata']['condition'];
                 } else {
                     $Conditions = array();
                 }
@@ -175,7 +175,7 @@ class IECfgEditor extends EaseContainer
                         'WHERE ' . $SqlConds . ' ' .
                         'ORDER BY ' . $NameColumn, $IDColumn);
 
-                $Selector = $FieldBlock->addItem(new EaseLabeledSelect($FieldName, $Value, $KeywordInfo['title']));
+                $Selector = $fieldBlock->addItem(new EaseLabeledSelect($fieldName, $value, $keywordInfo['title']));
                 if (!$Required) {
                     $Selector->addItems(array('' => ''));
                 }
@@ -192,34 +192,28 @@ class IECfgEditor extends EaseContainer
                         'WHERE ' . $SqlConds . ' ' .
                         'ORDER BY ' . $NameColumn, $IDColumn);
 
-
-                $AddNewItem = $FieldBlock->addItem(new EaseHtmlInputSearchTag($FieldName . '-remote', $this->ObjectEdited->getDataValue($FieldName . '-remote'), array('class' => 'search-input', 'title' => _('vzdálený test'))));
+                $AddNewItem = $fieldBlock->addItem(new EaseHtmlInputSearchTag($fieldName . '-remote', $this->ObjectEdited->getDataValue($fieldName . '-remote'), array('class' => 'search-input', 'title' => _('vzdálený test'))));
                 $AddNewItem->setDataSource('jsoncommand.php?maxRows=10');
 
-
-
-                $FieldBlock->addItem(new EaseLabeledTextInput($FieldName . '-params', $this->ObjectEdited->getDataValue($FieldName . '-params'), _('Parametry'), array('style' => 'width: 100%')));
-
-
+                $fieldBlock->addItem(new EaseLabeledTextInput($fieldName . '-params', $this->ObjectEdited->getDataValue($fieldName . '-params'), _('Parametry'), array('style' => 'width: 100%')));
 
                 break;
             case 'USER':
-                $FieldBlock->addItem(new IEUserSelect($FieldName, null, $this->ObjectEdited->getDataValue($FieldName), null, array('style' => 'width: 100%')));
+                $fieldBlock->addItem(new IEUserSelect($fieldName, null, $this->ObjectEdited->getDataValue($fieldName), null, array('style' => 'width: 100%')));
                 break;
             default:
-                $FieldBlock->addItem(new EaseLabeledTextInput($FieldName, $Value, $KeywordInfo['title'], array('title' => $FieldName)));
-                $this->addStatusMessage(sprintf(_('Neznámý typ %s pro sloupec %s'), $FType, $FieldName), 'warning');
+                $fieldBlock->addItem(new EaseLabeledTextInput($fieldName, $value, $keywordInfo['title'], array('title' => $fieldName)));
+                $this->addStatusMessage(sprintf(_('Neznámý typ %s pro sloupec %s'), $fType, $fieldName), 'warning');
                 break;
         }
     }
 
-    function fullEditor()
+    public function fullEditor()
     {
         if (EaseShared::user()->getSettingValue('admin')) {
             $this->ObjectEdited->KeywordsInfo[$this->ObjectEdited->UserColumn] = array('title' => 'vlastník');
             $this->ObjectEdited->UseKeywords[$this->ObjectEdited->UserColumn] = 'USER';
         }
-
 
         if ($this->ObjectEdited->AllowTemplating) {
             if (!(int) $this->ObjectEdited->getDataValue('register')) {
@@ -246,13 +240,13 @@ class IECfgEditor extends EaseContainer
 
         $Use = $this->ObjectEdited->getDataValue('use');
         if (!is_null($Use)) {
-            $Template = clone $this->ObjectEdited;
-            $Template->loadFromMySQL((int) $Use);
+            $template = clone $this->ObjectEdited;
+            $template->loadFromMySQL((int) $Use);
         }
 
-        foreach ($this->ObjectEdited->UseKeywords as $FieldName => $FieldType) {
+        foreach ($this->ObjectEdited->UseKeywords as $fieldName => $FieldType) {
 
-            $KeywordInfo = $this->ObjectEdited->KeywordsInfo[$FieldName];
+            $KeywordInfo = $this->ObjectEdited->KeywordsInfo[$fieldName];
 
             if (!count($KeywordInfo)) {
                 continue;
@@ -263,12 +257,12 @@ class IECfgEditor extends EaseContainer
             }
 
             if (!isset($KeywordInfo)) {
-                $this->addStatusMessage(_('Info Chybí') . '   ' . $FieldType . ' ' . $FieldName, 'warning');
+                $this->addStatusMessage(_('Info Chybí') . '   ' . $FieldType . ' ' . $fieldName, 'warning');
                 continue;
             }
 
             if (!isset($KeywordInfo['title'])) {
-                $this->addStatusMessage(_('sloupec bez popisku') . ' ' . $FieldName, 'warning');
+                $this->addStatusMessage(_('sloupec bez popisku') . ' ' . $fieldName, 'warning');
             }
 
             if (!strlen($KeywordInfo['title'])) {
@@ -276,89 +270,87 @@ class IECfgEditor extends EaseContainer
             }
 
             if (isset($KeywordInfo['required']) && $KeywordInfo['required']) {
-                $this->ReqFields[$FieldName] = $FieldType;
-                $Required = true;
+                $this->ReqFields[$fieldName] = $FieldType;
+                $required = true;
             } else {
-                $Required = false;
+                $required = false;
             }
 
-            $Value = $this->ObjectEdited->getDataValue($FieldName);
-            if ($Value == 'NULL') {
-                $Value = null;
+            $value = $this->ObjectEdited->getDataValue($fieldName);
+            if ($value == 'NULL') {
+                $value = null;
             }
 
             if ($this->ObjectEdited->AllowTemplating) {
                 if ($this->ObjectEdited->isTemplate()) {
-                    if (EaseShared::webPage()->isPosted() && is_null($Value) && $Required) {
+                    if (EaseShared::webPage()->isPosted() && is_null($value) && $required) {
                         $this->addStatusMessage(_('Není vyplněna povinná položka') . ' ' . $KeywordInfo['title'], 'warning');
                     }
                 }
             } else {
-                if (EaseShared::webPage()->isPosted() && is_null($Value) && $Required) {
+                if (EaseShared::webPage()->isPosted() && is_null($value) && $required) {
                     $this->addStatusMessage(_('Není vyplněna povinná položka') . ' ' . $KeywordInfo['title'], 'warning');
                 }
             }
 
+            $mainFieldBlock = $this->addItem(new EaseHtmlDivTag($fieldName . '-block', null, array('class' => 'fieldblock')));
 
-            $MainFieldBlock = $this->addItem(new EaseHtmlDivTag($FieldName . '-block', null, array('class' => 'fieldblock')));
+            $fieldLabel = $mainFieldBlock->addItem(new EaseHtmlDivTag(null, '<a name="' . $fieldName . '">' . $fieldName . '</a>&nbsp;', array('class' => 'FieldLabel mandatory', 'onClick' => "$('#" . $fieldName . "-controls').toggle('slow');")));
 
-            $FieldLabel = $MainFieldBlock->addItem(new EaseHtmlDivTag(null, '<a name="' . $FieldName . '">' . $FieldName . '</a>&nbsp;', array('class' => 'FieldLabel mandatory', 'onClick' => "$('#" . $FieldName . "-controls').toggle('slow');")));
-
-            if (!$Required || !(int) $this->ObjectEdited->getDataValue('register')) {
-                $FieldLabel->addItem(new EaseHtmlATag('#', '<i title="' . _('Ignorovat') . '" class="icon-remove"></i>', array('onClick' => '$(\'#' . $FieldName . '-block\').empty().html(\'<input type=hidden name=' . $FieldName . ' value=NULL><div class=FieldLabel>' . $FieldName . '</div>\'); return false;')));
-                $FieldLabel->setTagClass('FieldLabel');
+            if (!$required || !(int) $this->ObjectEdited->getDataValue('register')) {
+                $fieldLabel->addItem(new EaseHtmlATag('#', '<i title="' . _('Ignorovat') . '" class="icon-remove"></i>', array('onClick' => '$(\'#' . $fieldName . '-block\').empty().html(\'<input type=hidden name=' . $fieldName . ' value=NULL><div class=FieldLabel>' . $fieldName . '</div>\'); return false;')));
+                $fieldLabel->setTagClass('FieldLabel');
             } else {
-                $MainFieldBlock->setTagClass('fieldblock req');
+                $mainFieldBlock->setTagClass('fieldblock req');
             }
 
-            $FieldBlock = $MainFieldBlock->addItem(new EaseHtmlDivTag($FieldName . '-controls'));
+            $fieldBlock = $mainFieldBlock->addItem(new EaseHtmlDivTag($fieldName . '-controls'));
 
             if (!$this->ObjectEdited->isOwnedBy() && !EaseShared::user()->getSettingValue('admin')) { //Editovat může pouze vlastník
                 if ($this->ObjectEdited->getId()) {
-                    if (substr($Value, 0, 2) == 'a:') {
-                        $Value = unserialize($Value);
-                        if (is_array($Value)) {
-                            $Value = implode(',', $Value);
+                    if (substr($value, 0, 2) == 'a:') {
+                        $value = unserialize($value);
+                        if (is_array($value)) {
+                            $value = implode(',', $value);
                         }
                     }
-                    $FieldBlock->addItem($Value);
+                    $fieldBlock->addItem($value);
                     continue;
                 }
             }
 
-            if (isset($Template)) {
-                $TempValue = $Template->getDataValue($FieldName);
-                if (!is_null($TempValue) && ($FieldName != $this->ObjectEdited->NameColumn) && !$Required) { //Skrýt nedůležité položky
-                    EaseShared::webPage()->addJavaScript("$('#" . $FieldName . "-controls').hide();", null, true);
+            if (isset($template)) {
+                $TempValue = $template->getDataValue($fieldName);
+                if (!is_null($TempValue) && ($fieldName != $this->ObjectEdited->NameColumn) && !$required) { //Skrýt nedůležité položky
+                    EaseShared::webPage()->addJavaScript("$('#" . $fieldName . "-controls').hide();", null, true);
                 }
             }
 
-
-            $this->insertWidget($FieldBlock, $FieldName, $Value);
+            $this->insertWidget($fieldBlock, $fieldName, $value);
         }
     }
 
     /**
-     * jQuery pro vyžadované políčka 
+     * jQuery pro vyžadované políčka
      */
-    function finalize()
+    public function finalize()
     {
         EaseShared::webPage()->includeJavaScript('js/jquery.validate.js');
         if (isset($this->ReqFields) && count($this->ReqFields)) {
 
             $Rules = ' $("#' . $this->ParentObject->getTagProperty('name') . '").validate({
-		invalidHandler: function(e, validator) {
-			var errors = validator.numberOfInvalids();
-			if (errors) {
-				var message = errors == 1
-					? \'' . _('Jedno povinné políčko zůstalo nevyplněné') . '\'
-					: \'' . _('Není vyplněno \' + errors + \' políček. Tyto byly označeny') . '\';
-				$("div.error span").html(message);
-				$("div.error").show();
-			} else {
-				$("div.error").hide();
-			}
-		},                
+        invalidHandler: function (e, validator) {
+            var errors = validator.numberOfInvalids();
+            if (errors) {
+                var message = errors == 1
+                    ? \'' . _('Jedno povinné políčko zůstalo nevyplněné') . '\'
+                    : \'' . _('Není vyplněno \' + errors + \' políček. Tyto byly označeny') . '\';
+                $("div.error span").html(message);
+                $("div.error").show();
+            } else {
+                $("div.error").hide();
+            }
+        },
   rules: {';
             foreach ($this->ReqFields as $FieldName => $FieldType) {
                 $FRules[] = "\n\"$FieldName\": \"required\"";
@@ -371,7 +363,7 @@ class IECfgEditor extends EaseContainer
         }
     }
 
-    function lightEditor()
+    public function lightEditor()
     {
 
         if (!(int) $this->ObjectEdited->getDataValue('generate')) {
@@ -384,89 +376,86 @@ class IECfgEditor extends EaseContainer
         }
         $this->addItem('<div class="error" style=""><span></span><br clear="all"></div>');
 
-        $Use = $this->ObjectEdited->getDataValue('use');
-        if (!is_null($Use)) {
-            $Template = clone $this->ObjectEdited;
-            $Template->loadFromMySQL((int) $Use);
+        $use = $this->ObjectEdited->getDataValue('use');
+        if (!is_null($use)) {
+            $template = clone $this->ObjectEdited;
+            $template->loadFromMySQL((int) $use);
         }
 
-        foreach ($this->ObjectEdited->UseKeywords as $FieldName => $FieldType) {
+        foreach ($this->ObjectEdited->UseKeywords as $fieldName => $FieldType) {
 
-            $KeywordInfo = $this->ObjectEdited->KeywordsInfo[$FieldName];
+            $keywordInfo = $this->ObjectEdited->KeywordsInfo[$fieldName];
 
-            if (!count($KeywordInfo)) {
+            if (!count($keywordInfo)) {
                 continue;
             }
 
-            if (isset($KeywordInfo['hidden'])) {
+            if (isset($keywordInfo['hidden'])) {
                 continue;
             }
 
-            if (!strlen($KeywordInfo['title'])) {
+            if (!strlen($keywordInfo['title'])) {
                 continue;
             }
 
-            if (isset($KeywordInfo['required']) && $KeywordInfo['required']) {
-                $this->ReqFields[$FieldName] = $FieldType;
+            if (isset($keywordInfo['required']) && $keywordInfo['required']) {
+                $this->ReqFields[$fieldName] = $FieldType;
                 $Required = true;
             } else {
-                if (!isset($KeywordInfo['mandatory']) || !$KeywordInfo['mandatory']) {
+                if (!isset($keywordInfo['mandatory']) || !$keywordInfo['mandatory']) {
                     $Required = false;
                     continue;
                 }
             }
 
-            $Value = $this->ObjectEdited->getDataValue($FieldName);
-            if ($Value == 'NULL') {
-                $Value = null;
+            $value = $this->ObjectEdited->getDataValue($fieldName);
+            if ($value == 'NULL') {
+                $value = null;
             }
 
             if ($this->ObjectEdited->AllowTemplating) {
                 if ($this->ObjectEdited->isTemplate()) {
-                    if (EaseShared::webPage()->isPosted() && is_null($Value) && $Required) {
-                        $this->addStatusMessage(_('Není vyplněna povinná položka') . ' ' . $KeywordInfo['title'], 'warning');
+                    if (EaseShared::webPage()->isPosted() && is_null($value) && $Required) {
+                        $this->addStatusMessage(_('Není vyplněna povinná položka') . ' ' . $keywordInfo['title'], 'warning');
                     }
                 }
             } else {
-                if (EaseShared::webPage()->isPosted() && is_null($Value) && $Required) {
-                    $this->addStatusMessage(_('Není vyplněna povinná položka') . ' ' . $KeywordInfo['title'], 'warning');
+                if (EaseShared::webPage()->isPosted() && is_null($value) && $Required) {
+                    $this->addStatusMessage(_('Není vyplněna povinná položka') . ' ' . $keywordInfo['title'], 'warning');
                 }
             }
 
+            $mainFieldBlock = $this->addItem(new EaseHtmlDivTag($fieldName . '-block', null, array('class' => 'fieldblock')));
 
-            $MainFieldBlock = $this->addItem(new EaseHtmlDivTag($FieldName . '-block', null, array('class' => 'fieldblock')));
-
-            $FieldLabel = $MainFieldBlock->addItem(new EaseHtmlDivTag(null, '<a name="' . $FieldName . '">' . $FieldName . '</a>&nbsp;', array('class' => 'FieldLabel mandatory', 'onClick' => "$('#" . $FieldName . "-controls').toggle('slow');")));
+            $fieldLabel = $mainFieldBlock->addItem(new EaseHtmlDivTag(null, '<a name="' . $fieldName . '">' . $fieldName . '</a>&nbsp;', array('class' => 'FieldLabel mandatory', 'onClick' => "$('#" . $fieldName . "-controls').toggle('slow');")));
 
             if (!$Required || !(int) $this->ObjectEdited->getDataValue('register')) {
-                $FieldLabel->addItem(new EaseHtmlATag('#', '<i title="' . _('Ignorovat') . '" class="icon-remove"></i>', array('onClick' => '$(\'#' . $FieldName . '-block\').empty().html(\'<input type=hidden name=' . $FieldName . ' value=NULL><div class=FieldLabel>' . $FieldName . '</div>\'); return false;')));
-                $FieldLabel->setTagClass('FieldLabel');
+                $fieldLabel->addItem(new EaseHtmlATag('#', '<i title="' . _('Ignorovat') . '" class="icon-remove"></i>', array('onClick' => '$(\'#' . $fieldName . '-block\').empty().html(\'<input type=hidden name=' . $fieldName . ' value=NULL><div class=FieldLabel>' . $fieldName . '</div>\'); return false;')));
+                $fieldLabel->setTagClass('FieldLabel');
             } else {
-                $MainFieldBlock->setTagClass('fieldblock req');
+                $mainFieldBlock->setTagClass('fieldblock req');
             }
 
-            $FieldBlock = $MainFieldBlock->addItem(new EaseHtmlDivTag($FieldName . '-controls'));
+            $fieldBlock = $mainFieldBlock->addItem(new EaseHtmlDivTag($fieldName . '-controls'));
 
             if (!$this->ObjectEdited->isOwnedBy() && !EaseShared::user()->getSettingValue('admin')) { //Editovat může pouze vlastník
                 if ($this->ObjectEdited->getId()) {
-                    if (is_array($Value)) {
-                        $Value = implode(',', $Value);
+                    if (is_array($value)) {
+                        $value = implode(',', $value);
                     }
-                    $FieldBlock->addItem($Value);
+                    $fieldBlock->addItem($value);
                     continue;
                 }
             }
 
-            if (isset($Template)) {
-                $TempValue = $Template->getDataValue($FieldName);
-                if (!is_null($TempValue) && ($FieldName != $this->ObjectEdited->NameColumn) && !$Required) { //Skrýt nedůležité položky
-                    EaseShared::webPage()->addJavaScript("$('#" . $FieldName . "-controls').hide();", null, true);
+            if (isset($template)) {
+                $tempValue = $template->getDataValue($fiedlName);
+                if (!is_null($tempValue) && ($fieldName != $this->ObjectEdited->NameColumn) && !$Required) { //Skrýt nedůležité položky
+                    EaseShared::webPage()->addJavaScript("$('#" . $fieldName . "-controls').hide();", null, true);
                 }
             }
-            $this->insertWidget($FieldBlock, $FieldName, $Value);
+            $this->insertWidget($fieldBlock, $fieldName, $value);
         }
     }
 
 }
-
-?>

@@ -18,22 +18,22 @@ require_once 'classes/IECommand.php';
 require_once 'classes/IEServicegroup.php';
 
 
-$OPage->onlyForLogged();
+$oPage->onlyForLogged();
 
-$File = $OPage->getRequestValue('file');
-$Line = $OPage->getRequestValue('line');
+$File = $oPage->getRequestValue('file');
+$Line = $oPage->getRequestValue('line');
 
 
-$OPage->addItem(new IEPageTop(_('Icinga Editor')));
+$oPage->addItem(new IEPageTop(_('Icinga Editor')));
 
 $Lines = file($File);
 foreach ($Lines as $Line){
-    $OPage->addItem($Line.'<br>');
+    $oPage->addItem($Line.'<br>');
 }
 
 
-$OPage->addItem(new IEPageBottom());
+$oPage->addItem(new IEPageBottom());
 
 
-$OPage->draw();
+$oPage->draw();
 ?>

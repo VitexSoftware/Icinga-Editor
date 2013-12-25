@@ -11,9 +11,9 @@
 require_once 'includes/IEInit.php';
 require_once 'classes/IEHost.php';
 
-$OPage->onlyForLogged();
+$oPage->onlyForLogged();
 
-$OPage->addItem(new IEPageTop(_('Přehled hostů')));
+$oPage->addItem(new IEPageTop(_('Přehled hostů')));
 
 
 
@@ -22,7 +22,7 @@ $Host = new IEHost();
 $Hosts = $Host->getListing();
 
 if ($Hosts) {
-    $OPage->column2->addItem(new EaseHtmlH4Tag(_('Hosty')));
+    $oPage->column2->addItem(new EaseHtmlH4Tag(_('Hosty')));
     $CntList = new EaseHtmlTableTag(null,array('class'=>'table'));
     $Cid = 1;
     foreach ($Hosts as $CID => $CInfo) {
@@ -34,16 +34,16 @@ if ($Hosts) {
             $LastRow->setTagCss(array('border-right' => '1px solid red'));
         }
         if($CInfo['public'] == 1){
-            if($CInfo[$Host->UserColumn] == $OUser->getUserID()){
+            if($CInfo[$Host->UserColumn] == $oUser->getUserID()){
                 $LastRow->setTagCss(array('border-left'=>'1px solid green'));
             } else {
                 $LastRow->setTagCss(array('border-left'=>'1px solid blue'));
             }
         }
     }
-    $OPage->column2->addItem($CntList);
+    $oPage->column2->addItem($CntList);
 
-    $OPage->column1->addItem(new EaseHtmlH4Tag(_('Předlohy')));
+    $oPage->column1->addItem(new EaseHtmlH4Tag(_('Předlohy')));
     $Cnt2List = new EaseHtmlTableTag(null,array('class'=>'table'));
     $Cid = 1;
     foreach ($Hosts as $CID => $CInfo) {
@@ -55,25 +55,25 @@ if ($Hosts) {
             $LastRow->setTagCss(array('border-right' => '1px solid red'));
         }
        if($CInfo['public'] == 1){
-            if($CInfo[$Host->UserColumn] == $OUser->getUserID()){
+            if($CInfo[$Host->UserColumn] == $oUser->getUserID()){
                 $LastRow->setTagCss(array('border-left'=>'1px solid green'));
             } else {
                 $LastRow->setTagCss(array('border-left'=>'1px solid blue'));
             }
         }
     }
-    $OPage->column1->addItem($Cnt2List);
+    $oPage->column1->addItem($Cnt2List);
     
 } else {
-    $OUser->addStatusMessage(_('Nemáte definovaný žádný host'), 'warning');
+    $oUser->addStatusMessage(_('Nemáte definovaný žádný host'), 'warning');
 }
 
-$OPage->column3->addItem(new EaseTWBLinkButton('host.php', _('Založit host <i class="icon-edit"></i>')));
+$oPage->column3->addItem(new EaseTWBLinkButton('host.php', _('Založit host <i class="icon-edit"></i>')));
 
 
 
-$OPage->addItem(new IEPageBottom());
+$oPage->addItem(new IEPageBottom());
 
 
-$OPage->draw();
+$oPage->draw();
 ?>

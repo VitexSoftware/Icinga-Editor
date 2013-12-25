@@ -11,18 +11,18 @@ require_once 'includes/IEInit.php';
 
 unset($_SESSION['access_token']); //Twitter OAuth 
 
-if ($OUser->getUserID()) {
-    $OUser->logout();
-    $MessagesBackup = $OUser->getStatusMessages(TRUE);
+if ($oUser->getUserID()) {
+    $oUser->logout();
+    $MessagesBackup = $oUser->getStatusMessages(TRUE);
     EaseShared::user(new EaseAnonym());
-    $OUser->addStatusMessages($MessagesBackup);
+    $oUser->addStatusMessages($MessagesBackup);
 }
 
-$OPage->addItem(new IEPageTop(_('Odhlášení')));
+$oPage->addItem(new IEPageTop(_('Odhlášení')));
 
-$OPage->column2->addItem(new EaseHtmlDivTag(NULL, _('Děkujeme za vaši přízeň a těšíme se na další návštěvu')));
+$oPage->column2->addItem(new EaseHtmlDivTag(NULL, _('Děkujeme za vaši přízeň a těšíme se na další návštěvu')));
 
-$OPage->addItem(new IEPageBottom());
+$oPage->addItem(new IEPageBottom());
 
-$OPage->draw();
+$oPage->draw();
 ?>

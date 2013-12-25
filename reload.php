@@ -11,14 +11,14 @@
 require_once 'includes/IEInit.php';
 require_once 'IEcfg.php';
 
-$OPage->onlyForLogged();
+$oPage->onlyForLogged();
 
-$OPage->addItem(new IEPageTop(_('Icinga Editor')));
+$oPage->addItem(new IEPageTop(_('Icinga Editor')));
 
 IECfg::reloadIcinga();
 
-$OPage->addItem(new IEPageBottom());
+$oPage->addItem(new IEPageBottom());
 
 
-$OPage->draw();
+$oPage->draw();
 ?>

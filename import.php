@@ -12,23 +12,23 @@ require_once 'includes/IEInit.php';
 require_once 'IEImporter.php';
 
 
-$OPage->onlyForLogged();
+$oPage->onlyForLogged();
 
-if ($OPage->isPosted()) {
+if ($oPage->isPosted()) {
 
     $Params = array();
-    $Public = $OPage->getRequestValue('public');
+    $Public = $oPage->getRequestValue('public');
     if ($Public) {
         $Params['public'] = true;
     }
-    $Generate = $OPage->getRequestValue('generate');
+    $Generate = $oPage->getRequestValue('generate');
     if ($Public) {
         $Params['generate'] = true;
     }
     $Importer = new IEImporter($Params);
 
 
-    $CfgText = $OPage->getRequestValue('cfgtext');
+    $CfgText = $oPage->getRequestValue('cfgtext');
     if ($CfgText) {
         $Importer->importCfgText($CfgText);
     }
@@ -37,11 +37,11 @@ if ($OPage->isPosted()) {
         $Importer->importCfgFile($_FILES['cfgfile']['tmp_name']);
     }
 } else {
-    $OPage->addStatusMessage(_('Zadejte konfigurační fragment příkazu, nebo zvolte soubor k importu'));
+    $oPage->addStatusMessage(_('Zadejte konfigurační fragment příkazu, nebo zvolte soubor k importu'));
 }
 
 
-$OPage->addItem(new IEPageTop(_('Import konfigurace')));
+$oPage->addItem(new IEPageTop(_('Import konfigurace')));
 
 $ImportForm = new EaseHtmlForm('CfgFileUp', null, 'POST', null, array('class' => 'form-horizontal', 'enctype' => 'multipart/form-data'));
 $ImportForm->addItem(new EaseLabeledTextarea('cfgtext', '', _('konfigurační fragment')));
@@ -53,14 +53,14 @@ $ImportForm->addItem(new EaseLabeledCheckbox('generate', null, _('Generovat do k
 $ImportForm->addItem('<br clear="all">');
 $ImportForm->addItem(new EaseJQuerySubmitButton('Submit', _('importovat'), _('zahájí import konfigurace')));
 
-$OPage->AddCss('
+$oPage->AddCss('
 input.ui-button { width: 100%; }
 ');
 
-$OPage->column2->addItem(new EaseHtmlFieldSet(_('Import konfigurace'), $ImportForm));
+$oPage->column2->addItem(new EaseHtmlFieldSet(_('Import konfigurace'), $ImportForm));
 
-$OPage->addItem(new IEPageBottom());
+$oPage->addItem(new IEPageBottom());
 
 
-$OPage->draw();
+$oPage->draw();
 ?>

@@ -2,7 +2,7 @@
 
 /**
  * Správce konfigurace
- * 
+ *
  * @package    IcingaEditor
  * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
@@ -15,30 +15,30 @@ require_once 'Ease/EaseBase.php';
  *
  * @author vitex
  */
-class IECfg extends EaseBrick
+class IEcfg extends EaseBrick
 {
 
     /**
      * Tabulka do níž objekt ukládá svá data
-     * @var string 
+     * @var string
      */
     public $MyTable = NULL;
 
     /**
      * Klíčové slovo objektu
-     * @var String 
+     * @var String
      */
     public $Keyword = NULL;
 
     /**
      * Objektem používané položky
-     * @var array 
+     * @var array
      */
     public $UseKeywords = array();
 
     /**
      * Rozšířené informace o položkách záznamu
-     * @var array 
+     * @var array
      */
     public $KeywordsInfo = array();
 
@@ -56,56 +56,55 @@ class IECfg extends EaseBrick
 
     /**
      * Sloupeček obsahující datum modifikace záznamu
-     * @var string 
+     * @var string
      */
     public $MyLastModifiedColumn = 'DatSave';
 
     /**
      * Sloupeček se jménem objektu
-     * @var string 
+     * @var string
      */
     public $NameColumn = null;
 
     /**
      * Přidat položky register a use ?
-     * @var boolean 
+     * @var boolean
      */
     public $AllowTemplating = false;
 
     /**
      * Dát tyto položky k dispozici i ostatním ?
-     * @var boolean 
+     * @var boolean
      */
     public $PublicRecords = true;
 
     /**
      * Sloupeček s linkem na editor
-     * @var string 
+     * @var string
      */
     public $WebLinkColumn = null;
 
     /**
      * URL dokumentace objektu
-     * @var string 
+     * @var string
      */
     public $DocumentationLink = '';
 
     /**
      * Základní nezbytně nutné položky pro běžného uživatele
-     * @var array 
+     * @var array
      */
     public $BasicControls = array();
 
     /**
-     * Objekt konfigurace 
-     * 
-     * @param int|null $itemID 
+     * Objekt konfigurace
+     *
+     * @param int|null $itemID
      */
-    function __construct($itemID = null)
+    public function __construct($itemID = null)
     {
         $this->setMyTable(constant('DB_PREFIX') . $this->MyTable);
         parent::__construct();
-
 
 //       foreach ($this->UseKeywords as $KeyWord => $ColumnType) {
 //            switch ($ColumnType) {
@@ -166,10 +165,10 @@ class IECfg extends EaseBrick
 
     /**
      * Načte data z předlohy
-     * 
+     *
      * @param int|string $template identifikátor záznamu k načtení
      */
-    function loadTemplate($template)
+    public function loadTemplate($template)
     {
         if (is_numeric($template)) {
             $TemplateData = $this->getDataFromMySQL((int) $template);
@@ -180,6 +179,7 @@ class IECfg extends EaseBrick
                 $TemplateData = $TemplateData[0];
             } else {
                 $this->addStatusMessage(sprintf(_('předloha %s nebyla načtena'), $TemplateData[$this->NameColumn]), 'error');
+
                 return false;
             }
             $this->restoreObjectIdentity();
@@ -188,14 +188,15 @@ class IECfg extends EaseBrick
         unset($TemplateData[$this->MyKeyColumn]);
         unset($TemplateData[$this->NameColumn]);
         $this->setData($TemplateData);
+
         return true;
     }
 
     /**
      * Zapíše konfigurační soubor nagiosu
-     * 
+     *
      * @param string $filename
-     * @param array $columns 
+     * @param array  $columns
      */
     public function writeConf($filename, $columns)
     {
@@ -242,10 +243,10 @@ class IECfg extends EaseBrick
 
     /**
      * Vytvoří SQL tabulku pro ukládání dat objektu
-     * 
-     * @return type 
+     *
+     * @return type
      */
-    function createSqlStructure()
+    public function createSqlStructure()
     {
         if ($this->getMyKeyColumn()) {
             $myStruct = array_merge(array($this->getMyKeyColumn() => 'INT'), $this->UseKeywords);
@@ -308,7 +309,6 @@ class IECfg extends EaseBrick
                 $columnType = 'VARCHAR(64)';
             }
 
-
             $sqlStruct[$columnName]['type'] = $columnType;
             if ($columnName == $this->getMyKeyColumn()) {
                 $sqlStruct[$columnName]['key'] = 'primary';
@@ -322,29 +322,30 @@ class IECfg extends EaseBrick
         }
 
         $this->mySqlUp();
+
         return $this->MyDbLink->createTable($sqlStruct);
     }
 
     /**
      * Vrací počet položek v db daného uživatele
-     * 
-     * @param int $thisID
-     * @return int  
+     *
+     * @param  int $thisID
+     * @return int
      */
-    function getMyRecordsCount($thisID = null, $withShared = false)
+    public function getMyRecordsCount($thisID = null, $withShared = false)
     {
         return count($this->getListing($thisID, $withShared));
     }
 
     /**
      * Převezme data do aktuálního pole dat a zpracuje checkboxgrupy
-     * 
+     *
      * @param array  $data       asociativní pole dat
      * @param string $dataPrefix prefix datové skupiny
-     * 
+     *
      * @return int
      */
-    function takeData($data, $dataPrefix = null)
+    public function takeData($data, $dataPrefix = null)
     {
         unset($data['add']);
         unset($data['del']);
@@ -393,13 +394,14 @@ class IECfg extends EaseBrick
         if (isset($this->UserColumn) && !isset($data[$this->UserColumn]) || !strlen($data[$this->UserColumn])) {
             $data[$this->UserColumn] = EaseShared::user()->getUserID();
         }
+
         return parent::takeData($data, $dataPrefix);
     }
 
     /**
      * Smaže a znovu vytvoří SQL tabulku objektu
      */
-    function dbInit()
+    public function dbInit()
     {
         if ($this->MyDbLink->tableExist($this->MyTable)) {
             $this->MyDbLink->exeQuery('DROP TABLE ' . $this->MyTable);
@@ -414,10 +416,10 @@ class IECfg extends EaseBrick
 
     /**
      * Načte všechny záznamy uživatele a vygeneruje z nich konfigurační soubory
-     * @param string $FileName Soubor do kterého se bude generovat konfigirace
-     * @return boolean 
+     * @param  string  $FileName Soubor do kterého se bude generovat konfigirace
+     * @return boolean
      */
-    function writeConfig($FileName)
+    public function writeConfig($FileName)
     {
         $AllData = $this->getAllData();
         foreach ($AllData as $CfgID => $Columns) {
@@ -429,15 +431,16 @@ class IECfg extends EaseBrick
                 $this->writeConf($FileName, $Columns);
             }
         }
+
         return true;
     }
 
     /**
      * Zkontroluje zdali záznam obsahuje všechna vyžadovaná data
-     * 
+     *
      * @param array $data
      */
-    function controlRequied($data)
+    public function controlRequied($data)
     {
         $errors = 0;
         foreach ($this->KeywordsInfo as $keyword => $kwInfo) {
@@ -457,16 +460,17 @@ class IECfg extends EaseBrick
                 }
             }
         }
+
         return $errors;
     }
 
     /**
      * Zkontroluje všechny záznamy a přeskočí cizí záznamy
-     * 
-     * @param array $allData všechna vstupní data
+     *
+     * @param  array $allData všechna vstupní data
      * @return array
      */
-    function controlAllData($allData)
+    public function controlAllData($allData)
     {
         $allDataOK = array();
         $userID = EaseShared::user()->getUserID();
@@ -475,38 +479,39 @@ class IECfg extends EaseBrick
                 $allDataOK[$AdKey] = $Data;
             }
         }
+
         return $allDataOK;
     }
 
     /**
      * Vrací všechna data uživatele
-     * 
-     * @return array 
+     *
+     * @return array
      */
-    function getAllUserData()
+    public function getAllUserData()
     {
         return $this->controlAllData(self::unserializeArrays($this->getColumnsFromMySQL('*', array($this->UserColumn => EaseShared::user()->getUserID()))));
     }
 
     /**
      * Vrací všechna data
-     * 
-     * @return array 
+     *
+     * @return array
      */
-    function getAllData()
+    public function getAllData()
     {
         return $this->controlAllData(self::unserializeArrays($this->getColumnsFromMySQL('*')));
     }
 
     /**
      * Uloží pole dat do MySQL. Pokud je $SearchForID 0 updatuje pokud ze nastaven  MyKeyColumn
-     * 
+     *
      * @param array $data        asociativní pole dat
      * @param bool  $searchForID Zjistit zdali updatovat nebo insertovat
-     * 
+     *
      * @return int ID záznamu nebo null v případě neůspěchu
      */
-    function saveToMySQL($data = null, $searchForID = false)
+    public function saveToMySQL($data = null, $searchForID = false)
     {
         if (is_null($data)) {
             $data = $this->getData();
@@ -545,22 +550,24 @@ class IECfg extends EaseBrick
             } else {
                 $this->addStatusMessage(sprintf(_('%s %s je již definováno. Zvolte prosím jiné.'), $this->NameColumn, $data[$this->NameColumn]), 'warning');
             }
+
             return null;
         } else {
-            $Result = parent::saveToMySQL($data, $searchForID);
+            $result = parent::saveToMySQL($data, $searchForID);
         }
-        $this->setMyKey($Result);
-        return $Result;
+        $this->setMyKey($result);
+
+        return $result;
     }
 
     /**
      * Načte z MySQL data k aktuálnímu $ItemID
-     * 
+     *
      * @param int $itemID klíč záznamu
-     * 
+     *
      * @return array Results
      */
-    function getDataFromMySQL($itemID = null)
+    public function getDataFromMySQL($itemID = null)
     {
         $data = parent::getDataFromMySQL($itemID);
         foreach ($data as $recordID => $record) {
@@ -578,19 +585,20 @@ class IECfg extends EaseBrick
                 }
             }
         }
+
         return $data;
     }
 
     /**
      * Vrací seznam dostupných položek
-     * 
-     * @param int $thisID id jiného než přihlášeného uživatele
-     * @param boolean $withShared Vracet i nasdílené položky
-     * @param array $extraColumns další vracené položky
-     * 
-     * @return array 
+     *
+     * @param int     $thisID       id jiného než přihlášeného uživatele
+     * @param boolean $withShared   Vracet i nasdílené položky
+     * @param array   $extraColumns další vracené položky
+     *
+     * @return array
      */
-    function getListing($thisID = null, $withShared = true, $extraColumns = null)
+    public function getListing($thisID = null, $withShared = true, $extraColumns = null)
     {
         if (is_null($thisID)) {
             $thisID = EaseShared::user()->getUserID();
@@ -607,6 +615,7 @@ class IECfg extends EaseBrick
 
         if ($this->PublicRecords && $withShared) {
             $columnsToGet[] = 'public';
+
             return $this->getColumnsFromMySQL($columnsToGet, $this->UserColumn . '=' . $thisID . ' OR ' . $this->UserColumn . ' IS NULL OR public=1 ', $this->NameColumn, $this->getMyKeyColumn());
         } else {
             return $this->getColumnsFromMySQL($columnsToGet, $this->UserColumn . '=' . $thisID . ' OR ' . $this->UserColumn . ' IS NULL ', $this->NameColumn, $this->getMyKeyColumn());
@@ -615,10 +624,10 @@ class IECfg extends EaseBrick
 
     /**
      * Vrací jméno aktuální položky
-     * 
-     * @return string 
+     *
+     * @return string
      */
-    function getName($data = null)
+    public function getName($data = null)
     {
         if (is_null($data)) {
             if ($this->AllowTemplating) {
@@ -626,6 +635,7 @@ class IECfg extends EaseBrick
                     return $this->getDataValue('name');
                 }
             }
+
             return $this->getDataValue($this->NameColumn);
         } else {
             if ($this->AllowTemplating) {
@@ -633,35 +643,36 @@ class IECfg extends EaseBrick
                     return $data['name'];
                 }
             }
+
             return $data[$this->NameColumn];
         }
     }
 
     /**
-     * Vrací ID aktuálního záznamu 
+     * Vrací ID aktuálního záznamu
      * @return int
      */
-    function getId()
+    public function getId()
     {
         return (int) $this->getMyKey();
     }
 
     /**
-     * Vrací ID vlastníka 
+     * Vrací ID vlastníka
      * @return type
      */
-    function getOwnerID()
+    public function getOwnerID()
     {
         return (int) $this->getDataValue($this->UserColumn);
     }
 
     /**
      * Vrací mazací tlačítko
-     * 
-     * @param tring $Name jméno objektu
+     *
+     * @param  tring                      $Name jméno objektu
      * @return \EaseJQConfirmedLinkButton
      */
-    function deleteButton($Name = null)
+    public function deleteButton($Name = null)
     {
         if ($this->getOwnerID() == EaseShared::user()->getUserID()) {
 
@@ -680,16 +691,18 @@ class IECfg extends EaseBrick
                             $usedFrame->addItem(new EaseHtmlSpanTag(null, new EaseHtmlATag('?' . $this->getMyKeyColumn() . '=' . $UsId, $UsInfo[$this->NameColumn]), array('class' => 'jellybean')));
                         }
                     }
+
                     return $usedFrame;
                 }
             }
+
             return new EaseJQConfirmedLinkButton('?' . $this->getMyKeyColumn() . '=' . $this->getID() . '&delete=true', _('Smazat ') . $Name . ' <i class="icon-remove-sign"></i>');
         } else {
             return '';
         }
     }
 
-    function isTemplate($data = null)
+    public function isTemplate($data = null)
     {
         if (is_null($data)) {
             return (!(int) $this->getDataValue('register') && strlen($this->getDataValue('name')));
@@ -702,17 +715,18 @@ class IECfg extends EaseBrick
      * Zobrazí tlačítko s ikonou a odkazem na stránku s informacemi o vlastníku
      * @return \EaseTWBLinkButton
      */
-    function ownerLinkButton()
+    public function ownerLinkButton()
     {
         $ownerID = $this->getOwnerID();
         $owner = new EaseUser($ownerID);
+
         return new EaseTWBLinkButton('userinfo.php?user_id=' . $ownerID, array($owner, '&nbsp;' . $owner->getUserLogin()));
     }
 
     /**
      * Smaže záznam
      */
-    function delete()
+    public function delete()
     {
         foreach ($this->Data as $columnName => $value) {
             if (is_array($value)) {
@@ -722,55 +736,58 @@ class IECfg extends EaseBrick
         if ($this->deleteFromMySQL()) {
             $this->addStatusMessage(sprintf(_(' %s %s byl smazán '), $this->Keyword, $this->getName()), 'success');
             $this->dataReset();
+
             return true;
         } else {
             $this->addStatusMessage(sprintf(_(' %s %s nebyl smazán '), $this->Keyword, $this->getName()), 'warning');
+
             return false;
         }
     }
 
     /**
      * Je záznam vlastněn uživatelem ?
-     * @param type $thisID
+     * @param  type $thisID
      * @return type
      */
-    function isOwnedBy($thisID = null)
+    public function isOwnedBy($thisID = null)
     {
         if (is_null($thisID)) {
             $thisID = EaseShared::user()->getUserID();
         }
+
         return ($this->getOwnerID() == $thisID);
     }
 
     /**
-     * 
-     * @param type $fileName
-     * @param type $commonValues
+     *
+     * @param  type $fileName
+     * @param  type $commonValues
      * @return type
      */
-    function importFile($fileName, $commonValues)
+    public function importFile($fileName, $commonValues)
     {
         return $this->importArray($this->readRawConfigFile($fileName), $commonValues);
     }
 
     /**
-     * 
-     * @param text $cfgText
-     * @param array $commonValues
+     *
+     * @param  text  $cfgText
+     * @param  array $commonValues
      * @return type
      */
-    function importText($cfgText, $commonValues)
+    public function importText($cfgText, $commonValues)
     {
         return $this->importArray(array_map('trim', preg_split('/\r\n|\n|\r/', $cfgText)), $commonValues);
     }
 
     /**
      * Načte konfiguraci ze souboru
-     * 
+     *
      * @param array $cfg
      * @param array $commonValues Hodnoty vkládané ke každému záznamu
      */
-    function importArray($cfg, $commonValues = null)
+    public function importArray($cfg, $commonValues = null)
     {
         $success = 0;
         $buffer = null;
@@ -805,7 +822,6 @@ class IECfg extends EaseBrick
                 $this->takeData($buffer);
                 if ($this->saveToMySQL()) {
 
-
                     if ($this->isTemplate()) {
                         $this->addStatusMessage(_('předloha') . ' ' . $this->Keyword . ' <strong>' . $buffer['name'] . '</strong>' . _(' byl naimportován'), 'success');
                     } else {
@@ -838,14 +854,15 @@ class IECfg extends EaseBrick
 
     /**
      * Načte konfigurační soubor do pole
-     * 
-     * @param type $cfgFile
+     *
+     * @param  type $cfgFile
      * @return type
      */
-    static function readRawConfigFile($cfgFile)
+    public static function readRawConfigFile($cfgFile)
     {
         if (!is_file($cfgFile)) {
             EaseShared::user()->addStatusMessage(_('Očekávám název souboru'), 'warning');
+
             return null;
         }
         $rawCfg = file($cfgFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
@@ -872,16 +889,17 @@ class IECfg extends EaseBrick
                 }
             }
         }
+
         return $cfg;
     }
 
     /**
      * Načte všechny konfiguráky v adresáři
-     *  
-     * @param string $dirName
-     * @return array pole řádků načtené konfigurace
+     *
+     * @param  string $dirName
+     * @return array  pole řádků načtené konfigurace
      */
-    static function readRawConfigDir($dirName)
+    public static function readRawConfigDir($dirName)
     {
         $cfg = array();
         if (is_dir($dirName)) {
@@ -895,98 +913,102 @@ class IECfg extends EaseBrick
             }
             $d->close();
         }
+
         return $cfg;
     }
 
     /**
-     * Upraví 
-     * @param type $rawData
+     * Upraví
+     * @param  type $rawData
      * @return type
      */
-    function rawToData($rawData)
+    public function rawToData($rawData)
     {
         $data = $rawData;
+
         return $data;
     }
 
     /**
      * Přidá hosta služby
-     * 
-     * @param string $column název sloupce 
+     *
+     * @param string $column     název sloupce
      * @param int    $memberID
-     * @param string $memberName 
+     * @param string $memberName
      */
-    function addMember($column, $memberID, $memberName)
+    public function addMember($column, $memberID, $memberName)
     {
         $this->Data[$column][$memberID] = $memberName;
     }
 
     /**
      * Odebere notifikační příkaz skupiny
-     * 
-     * @param string $column název sloupečku
-     * @param int    $memberID
-     * @param string $memberName
-     * @return boolean 
+     *
+     * @param  string  $column     název sloupečku
+     * @param  int     $memberID
+     * @param  string  $memberName
+     * @return boolean
      */
-    function delMember($column, $memberID, $memberName)
+    public function delMember($column, $memberID, $memberName)
     {
         if ($this->Data[$column][$memberID] == $memberName) {
             unset($this->Data[$column][$memberID]);
+
             return true;
         }
     }
 
     /**
      * Odebere notifikační příkaz skupiny
-     * 
-     * @param string $column název sloupečku
-     * @param int    $memberID
-     * @param string $memberNewName
-     * @return boolean 
+     *
+     * @param  string  $column        název sloupečku
+     * @param  int     $memberID
+     * @param  string  $memberNewName
+     * @return boolean
      */
-    function renameMember($column, $memberID, $memberNewName)
+    public function renameMember($column, $memberID, $memberNewName)
     {
         $this->Data[$column][$memberID] = $memberNewName;
+
         return true;
     }
 
     /**
-     * 
+     *
      */
-    function saveMembers()
+    public function saveMembers()
     {
         $webPage = EaseShared::webPage();
         $addColumn = $webPage->getGetValue('add');
         if ($addColumn) {
-            $Name = $webPage->getGetValue('name');
-            $this->addMember($addColumn, $webPage->getRequestValue('member', 'int'), $Name);
+            $name = $webPage->getGetValue('name');
+            $this->addMember($addColumn, $webPage->getRequestValue('member', 'int'), $name);
             $thisID = $this->saveToMySQL();
             if (is_null($thisID)) {
-                $this->addStatusMessage(sprintf(_('položka %s nebyla přidána do %s.%s.%s'), $Name, $this->Keyword, $this->getName(), $addColumn), 'warning');
+                $this->addStatusMessage(sprintf(_('položka %s nebyla přidána do %s.%s.%s'), $name, $this->Keyword, $this->getName(), $addColumn), 'warning');
             } else {
-                $this->addStatusMessage(sprintf(_('položka %s byla přidána do %s.%s.%s'), $Name, $this->Keyword, $this->getName(), $addColumn), 'success');
+                $this->addStatusMessage(sprintf(_('položka %s byla přidána do %s.%s.%s'), $name, $this->Keyword, $this->getName(), $addColumn), 'success');
             }
         }
-        $DelColumn = $webPage->getGetValue('del');
-        if (!is_null($DelColumn)) {
-            $Del = $this->delMember($DelColumn, $webPage->getRequestValue('member', 'int'), $webPage->getGetValue('name'));
+        $delColumn = $webPage->getGetValue('del');
+        if (!is_null($delColumn)) {
+            $del = $this->delMember($delColumn, $webPage->getRequestValue('member', 'int'), $webPage->getGetValue('name'));
             $thisID = $this->saveToMySQL();
-            if (is_null($thisID) && !$Del) {
-                $this->addStatusMessage(sprintf(_('položka %s nebyla odebrána z %s.%s.%s'), $Name, $this->Keyword, $this->getName(), $addColumn), 'warning');
+            if (is_null($thisID) && !$del) {
+                $this->addStatusMessage(sprintf(_('položka %s nebyla odebrána z %s.%s.%s'), $name, $this->Keyword, $this->getName(), $addColumn), 'warning');
             } else {
-                $this->addStatusMessage(sprintf(_('položka %s byla odebrána z %s.%s.%s'), $Name, $this->Keyword, $this->getName(), $addColumn), 'success');
+                $this->addStatusMessage(sprintf(_('položka %s byla odebrána z %s.%s.%s'), $name, $this->Keyword, $this->getName(), $addColumn), 'success');
             }
         }
     }
 
     /**
      * Rekurzivně deserializuje pole z řetězců v datech
-     *  
-     * @param array $allData
+     *
+     * @param  array $allData
      * @return array
      */
-    static function unserializeArrays($allData)
+    public static function unserializeArrays($allData)
     {
         foreach ($allData as $keyWord => $keyData) {
             if (is_array($keyData)) {
@@ -997,13 +1019,14 @@ class IECfg extends EaseBrick
                 }
             }
         }
+
         return $allData;
     }
 
     /**
      * Reloadne icingu
      */
-    static public function reloadIcinga()
+    public static function reloadIcinga()
     {
         $testing = popen("sudo /etc/init.d/icinga reload", 'r');
         if ($testing) {
@@ -1013,9 +1036,13 @@ class IECfg extends EaseBrick
             }
             fclose($testing);
         }
+
         return TRUE;
     }
 
+    public function cloneButton()
+    {
+        return new \EaseTWBLinkButton('?action=clone&' . $this->getMyKeyColumn() . '=' . $this->getId(), _('Klonovat'));
+    }
+
 }
-
-

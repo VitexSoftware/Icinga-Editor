@@ -13,46 +13,46 @@ require_once 'classes/IEHost.php';
 require_once 'classes/IECfgEditor.php';
 require_once 'classes/IEServiceSelector.php';
 
-$OPage->onlyForLogged();
+$oPage->onlyForLogged();
 
-$Host = new IEHost($OPage->getRequestValue('host_id', 'int'));
+$Host = new IEHost($oPage->getRequestValue('host_id', 'int'));
 
 
-switch ($OPage->getRequestValue('action')) {
+switch ($oPage->getRequestValue('action')) {
     case 'populate':
         $Host->autoPopulateServices();
         break;
 
     case 'rename':
-        $newname = $OPage->getRequestValue('newname');
+        $newname = $oPage->getRequestValue('newname');
         if(strlen($newname)){
             if($Host->rename($newname)){
-                $OUser->addStatusMessage(_('Host byl přejmenován'), 'warning');
+                $oUser->addStatusMessage(_('Host byl přejmenován'), 'warning');
             } else {
-                $OUser->addStatusMessage(_('Host nebyl přejmenován'), 'success');
+                $oUser->addStatusMessage(_('Host nebyl přejmenován'), 'success');
             }
         }
         break;
     default:
-        if ($OPage->isPosted()) {
+        if ($oPage->isPosted()) {
             $Host->takeData($_POST);
             $HostID = $Host->saveToMySQL();
             if (is_null($HostID)) {
-                $OUser->addStatusMessage(_('Host nebyl uložen'), 'warning');
+                $oUser->addStatusMessage(_('Host nebyl uložen'), 'warning');
             } else {
-                $OUser->addStatusMessage(_('Host byl uložen'), 'success');
+                $oUser->addStatusMessage(_('Host byl uložen'), 'success');
             }
         } else {
-            $Use = $OPage->getGetValue('use');
-            if ($Use) {
-                if ($Host->loadTemplate($Use)) {
-                    $Host->setDataValue('use', $Use);
+            $use = $oPage->getGetValue('use');
+            if ($use) {
+                if ($Host->loadTemplate($use)) {
+                    $Host->setDataValue('use', $use);
                     $Host->setDataValue('register', 1);
                 }
             }
 
-            $Delete = $OPage->getGetValue('delete', 'bool');
-            if ($Delete == 'true') {
+            $delete = $oPage->getGetValue('delete', 'bool');
+            if ($delete == 'true') {
                 $Host->delete();
             }
 
@@ -62,41 +62,41 @@ switch ($OPage->getRequestValue('action')) {
         break;
 }
 
-$OPage->addItem(new IEPageTop(_('Editace hosta') . ' ' . $Host->getName()));
+$oPage->addItem(new IEPageTop(_('Editace hosta') . ' ' . $Host->getName()));
 
 
 $HostEdit = new IECfgEditor($Host);
 
-$Form = $OPage->column2->addItem(new EaseHtmlForm('Host', 'host.php', 'POST', $HostEdit, array('class' => 'form-horizontal')));
-$Form->setTagID($Form->getTagName());
-$Form->addItem(new EaseHtmlInputHiddenTag($Host->getMyKeyColumn(), $Host->getMyKey()));
-$Form->addItem('<br>');
-$Form->addItem(new EaseTWSubmitButton(_('Uložit'),'success'));
-$OPage->AddCss('
+$form = $oPage->column2->addItem(new EaseHtmlForm('Host', 'host.php', 'POST', $HostEdit, array('class' => 'form-horizontal')));
+$form->setTagID($form->getTagName());
+$form->addItem(new EaseHtmlInputHiddenTag($Host->getMyKeyColumn(), $Host->getMyKey()));
+$form->addItem('<br>');
+$form->addItem(new EaseTWSubmitButton(_('Uložit'),'success'));
+$oPage->AddCss('
 input.ui-button { width: 100%; }
 ');
 
-$OPage->column3->addItem(new IEServiceSelector($Host));
+$oPage->column3->addItem(new IEServiceSelector($Host));
 
-$OPage->column3->addItem($Host->deleteButton());
+$oPage->column3->addItem($Host->deleteButton());
 
-$OPage->column3->addItem(new EaseTWBLinkButton('?action=populate&host_id=' . $Host->getID(), _('Oskenovat a sledovat služby')));
+$oPage->column3->addItem(new EaseTWBLinkButton('?action=populate&host_id=' . $Host->getID(), _('Oskenovat a sledovat služby')));
 
 $RenameForm = new EaseTWBForm('Rename','?action=rename&host_id=' . $Host->getID());
 $RenameForm->addItem( new EaseHtmlInputTextTag('newname'), $Host->getName(), array('class'=>'form-control') );
 $RenameForm->addItem( new EaseTWSubmitButton(_('Přejmenovat'), 'success') );
 
-$OPage->column1->addItem( new EaseHtmlFieldSet(_('Přejmenování'), $RenameForm ));
+$oPage->column1->addItem( new EaseHtmlFieldSet(_('Přejmenování'), $RenameForm ));
 
 
 if ($Host->getId()) {
-    $OPage->column1->addItem($Host->ownerLinkButton());
+    $oPage->column1->addItem($Host->ownerLinkButton());
 }
 
 //$OPage->column3->addItem(new EaseHtmlH4Tag('Rozšířené info'));
 
-$OPage->addItem(new IEPageBottom());
+$oPage->addItem(new IEPageBottom());
 
 
-$OPage->draw();
+$oPage->draw();
 ?>

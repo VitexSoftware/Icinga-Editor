@@ -11,28 +11,28 @@
 require_once 'includes/IEInit.php';
 require_once 'classes/IETextInputSaver.php';
 
-$OPage->onlyForLogged();
+$oPage->onlyForLogged();
 
-if ($OPage->getRequestValue('user') == 'normal') {
-    $OUser->setSettingValue('admin', FALSE);
-    $OUser->addStatusMessage(_('Adminská oprávnění byla potlačena'));
+if ($oPage->getRequestValue('user') == 'normal') {
+    $oUser->setSettingValue('admin', FALSE);
+    $oUser->addStatusMessage(_('Adminská oprávnění byla potlačena'));
 }
 
-switch ($OPage->getRequestValue('action')) {
+switch ($oPage->getRequestValue('action')) {
     case 'untwittering':
-        $OUser->setDataValue('twitter_id', null);
-        $OUser->saveToMySql();
+        $oUser->setDataValue('twitter_id', null);
+        $oUser->saveToMySql();
         unset($_SESSION['access_token']); //Twitter OAuth 
-        $OUser->addStatusMessage(_('Twitter byl odvázán od aktuálního účtu'));
+        $oUser->addStatusMessage(_('Twitter byl odvázán od aktuálního účtu'));
         break;
 
     default:
         break;
 }
 
-$OPage->addItem(new IEPageTop(_('Profil uživatele') . ' ' . $OUser->GetUserLogin()));
+$oPage->addItem(new IEPageTop(_('Profil uživatele') . ' ' . $oUser->GetUserLogin()));
 
-$OPage->AddJavaScript('
+$oPage->AddJavaScript('
 function get_gravatar(email, size) {
     // MD5 (Message-Digest Algorithm) by WebToolkit
     // http://www.webtoolkit.info/javascript-md5.html
@@ -47,29 +47,29 @@ $(\'#UserMail\').change( function(){
 ', NULL, TRUE);
 
 $SettingsFrame = new EaseHtmlFieldSet(_('nastavení'));
-$SettingsFrame->AddItem(new EaseHtmlATag('https://secure.gravatar.com/', $OUser, array('title' => 'klikni pro změnu ikony')));
+$SettingsFrame->AddItem(new EaseHtmlATag('https://secure.gravatar.com/', $oUser, array('title' => 'klikni pro změnu ikony')));
 
-$SettingsFrame->AddItem(new IETextInputSaver('login', $OUser->getUserLogin(), _('přihlašovací jméno')));
+$SettingsFrame->AddItem(new IETextInputSaver('login', $oUser->getUserLogin(), _('přihlašovací jméno')));
 $SettingsFrame->AddItem(new EaseTWBLinkButton('changepassword.php', _('změna hesla')));
 
-$SettingsFrame->AddItem(new IETextInputSaver('email', $OUser->getUserEmail(), _('emailová adresa'), array('id' => 'UserMail')));
+$SettingsFrame->AddItem(new IETextInputSaver('email', $oUser->getUserEmail(), _('emailová adresa'), array('id' => 'UserMail')));
 
 $SettingsFrame->addItem('<br>');
 
-$OPage->column2->addItem($SettingsFrame);
+$oPage->column2->addItem($SettingsFrame);
 
-if ((bool) $OUser->getSettingValue('admin')) {
-    $OPage->column3->addItem(new EaseTWBLinkButton('?user=normal', _('Zahodit adminská oprávnění')));
+if ((bool) $oUser->getSettingValue('admin')) {
+    $oPage->column3->addItem(new EaseTWBLinkButton('?user=normal', _('Zahodit adminská oprávnění')));
 }
 
-if (!intval($OUser->getDataValue('twitter_id'))) {
-    $OPage->column3->addItem(new EaseTWBLinkButton('twauth.php?authenticate=1', _('Propojit s twitterem')));
+if (!intval($oUser->getDataValue('twitter_id'))) {
+    $oPage->column3->addItem(new EaseTWBLinkButton('twauth.php?authenticate=1', _('Propojit s twitterem')));
 } else {
-    $OPage->column3->addItem(new EaseTWBLinkButton('?action=untwittering', _('Odpojit od twiteru')));
+    $oPage->column3->addItem(new EaseTWBLinkButton('?action=untwittering', _('Odpojit od twiteru')));
 }
 
-$OPage->AddItem(new IEPageBottom());
+$oPage->AddItem(new IEPageBottom());
 
 
-$OPage->Draw();
+$oPage->Draw();
 ?>

@@ -12,27 +12,27 @@ require_once 'includes/IEInit.php';
 
 require_once 'classes/IEImporter.php';
 
-$OPage->onlyForLogged();
+$oPage->onlyForLogged();
 
-$OPage->addItem(new IEPageTop(_('Generování konfigurace')));
+$oPage->addItem(new IEPageTop(_('Generování konfigurace')));
 
-if ($OUser->getSettingValue('admin')) {
-    $ForceUserID = $OPage->getRequestValue('force_user_id', 'int');
+if ($oUser->getSettingValue('admin')) {
+    $ForceUserID = $oPage->getRequestValue('force_user_id', 'int');
     if (!is_null($ForceUserID)) {
-        $OriginalUserID = $OUser->getUserID();
+        $OriginalUserID = $oUser->getUserID();
         EaseShared::user(new EaseUser($ForceUserID));
     }
 }
 
 
-$FileName = $OUser->getUserLogin() . '.cfg';
+$FileName = $oUser->getUserLogin() . '.cfg';
 
 $Cfg = fopen(constant('CFG_GENERATED') . '/' . $FileName, 'w');
 if ($Cfg) {
     fclose($Cfg);
-    $OUser->addStatusMessage(sprintf(_('konfigurační soubor %s byl znovu vytvořen'), $FileName), 'success');
+    $oUser->addStatusMessage(sprintf(_('konfigurační soubor %s byl znovu vytvořen'), $FileName), 'success');
 } else {
-    $OUser->addStatusMessage(sprintf(_('konfigurační soubor  %s nebyl znovu vytvořen'), $FileName), 'warning');
+    $oUser->addStatusMessage(sprintf(_('konfigurační soubor  %s nebyl znovu vytvořen'), $FileName), 'warning');
 }
 
 $Generator = new IEImporter();
@@ -48,8 +48,8 @@ if ($Testing) {
         $LineNo++;
 
         if (($Line === false) && ($LineNo == 1)) {
-            $ErrorLine = $OPage->addItem(new EaseHtmlDivTag(null, '<span class="label label-important">' . _('Chyba:') . '</span>', array('class' => 'alert alert-error')));
-            $OUser->addStatusMessage(_('Kontrola konfigurace nevrátila výsledek.'), 'error');
+            $ErrorLine = $oPage->addItem(new EaseHtmlDivTag(null, '<span class="label label-important">' . _('Chyba:') . '</span>', array('class' => 'alert alert-error')));
+            $oUser->addStatusMessage(_('Kontrola konfigurace nevrátila výsledek.'), 'error');
             $ErrorLine->addItem(_('Zkontroluj prosím zdlali nechybí potřebný fragment v /etc/sudoers:'));
             $ErrorLine->addItem(new EaseHtmlDivTag(null, 'User_Alias APACHE = www-data'));
             $ErrorLine->addItem(new EaseHtmlDivTag(null, 'Cmnd_Alias ICINGA = /usr/sbin/icinga, /etc/init.d/icinga'));
@@ -59,7 +59,7 @@ if ($Testing) {
 
         if (strstr($Line, 'Error:')) {
             $Line = str_replace('Error:', '', $Line);
-            $ErrorLine = $OPage->addItem(new EaseHtmlDivTag(null, '<span class="label label-important">' . _('Chyba:') . '</span>', array('class' => 'alert alert-error')));
+            $ErrorLine = $oPage->addItem(new EaseHtmlDivTag(null, '<span class="label label-important">' . _('Chyba:') . '</span>', array('class' => 'alert alert-error')));
 
             $keywords = preg_split("/['(.*)']+/", $Line);
             switch (trim($keywords[0])) {
@@ -101,7 +101,7 @@ if ($Testing) {
 
         if (strstr($Line, 'Error in configuration file')) {
             $keywords = preg_split("/'|\(|\)| - Line /", $Line);
-            $ErrorLine = $OPage->addItem(new EaseHtmlDivTag(null, '<span class="label label-error">' . _('Chyba v konfiguračním souboru'), array('class' => 'alert alert-error')));
+            $ErrorLine = $oPage->addItem(new EaseHtmlDivTag(null, '<span class="label label-error">' . _('Chyba v konfiguračním souboru'), array('class' => 'alert alert-error')));
             $ErrorLine->addItem(new EaseHtmlATag('cfgfile.php?file=' . $keywords[1] . '&line=' . $keywords[3], $keywords[1]));
             $ErrorLine->addItem($keywords[4]);
             $ErrorCount++;
@@ -122,23 +122,23 @@ if ($Testing) {
             }
 
             //Duplicate definition found for command 'check_ping' (config file '/etc/icinga/generated/command_check_ping_vitex.cfg', starting on line 1) 
-            $OPage->addItem(new EaseHtmlDivTag(null, $Line, array('class' => 'alert alert-warning')));
+            $oPage->addItem(new EaseHtmlDivTag(null, $Line, array('class' => 'alert alert-warning')));
         }
 
         if (strstr($Line, 'Total Warnings')) {
             list($Msg, $WarningCount) = explode(':', $Line);
             if (intval(trim($WarningCount))) {
-                $OUser->addStatusMessage(sprintf(_('celkem %s varování'), $WarningCount), 'warning');
+                $oUser->addStatusMessage(sprintf(_('celkem %s varování'), $WarningCount), 'warning');
             } else {
-                $OUser->addStatusMessage(_('test proběhl bez varování'), 'success');
+                $oUser->addStatusMessage(_('test proběhl bez varování'), 'success');
             }
         }
         if (strstr($Line, 'Total Errors')) {
             list($Msg, $ErrorCount) = explode(':', $Line);
             if (intval(trim($ErrorCount))) {
-                $OUser->addStatusMessage(sprintf(_('celkem %s chyb'), $ErrorCount), 'warning');
+                $oUser->addStatusMessage(sprintf(_('celkem %s chyb'), $ErrorCount), 'warning');
             } else {
-                $OUser->addStatusMessage(_('test proběhl bez chyb'), 'success');
+                $oUser->addStatusMessage(_('test proběhl bez chyb'), 'success');
             }
         }
     }
@@ -146,18 +146,18 @@ if ($Testing) {
 
     if (!intval($ErrorCount) && !is_null($WarningCount)) {
         if(IECfg::reloadIcinga()){
-            $OPage->column2->addItem(new EaseTWBLinkButton('main.php', _('Hotovo') . ' <i class="icon-ok-sign"></i>', 'success'));
+            $oPage->column2->addItem(new EaseTWBLinkButton('main.php', _('Hotovo') . ' <i class="icon-ok-sign"></i>', 'success'));
         }
     }
 }
 
-if ($OUser->getSettingValue('admin') && isset($OriginalUserID)) {
+if ($oUser->getSettingValue('admin') && isset($OriginalUserID)) {
     EaseShared::user(new EaseUser($OriginalUserID));
     EaseShared::user()->loginSuccess();
 }
 
 
-$OPage->addItem(new IEPageBottom());
+$oPage->addItem(new IEPageBottom());
 
-$OPage->draw();
+$oPage->draw();
 ?>

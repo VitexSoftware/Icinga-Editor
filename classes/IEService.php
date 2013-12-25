@@ -282,27 +282,27 @@ class IEService extends IECfg
      */
     function getAllData()
     {
-        $AllData = parent::getAllData();
-        foreach ($AllData as $ADkey => $AD) {
-            $Params = $AllData[$ADkey]['check_command-params'];
+        $allData = parent::getAllData();
+        foreach ($allData as $ADkey => $AD) {
+            $Params = $allData[$ADkey]['check_command-params'];
 
 
-            if (strlen($AllData[$ADkey]['check_command-remote'])) {
+            if (strlen($allData[$ADkey]['check_command-remote'])) {
                 if (strlen($Params)) {
-                    $AllData[$ADkey]['check_command'].= '!'.$AllData[$ADkey]['check_command-remote'] . '!' . $Params;
+                    $allData[$ADkey]['check_command'].= '!'.$allData[$ADkey]['check_command-remote'] . '!' . $Params;
                 } else {
-                    $AllData[$ADkey]['check_command'].= '!'.$AllData[$ADkey]['check_command-remote'];
+                    $allData[$ADkey]['check_command'].= '!'.$allData[$ADkey]['check_command-remote'];
                 }
             } else {
                 if (strlen($Params)) {
-                    $AllData[$ADkey]['check_command'].= '!' . $Params;
+                    $allData[$ADkey]['check_command'].= '!' . $Params;
                 }
             }
-            unset($AllData[$ADkey]['check_command-remote']);
-            unset($AllData[$ADkey]['check_command-params']);
-            unset($AllData[$ADkey]['tcp_port']);
+            unset($allData[$ADkey]['check_command-remote']);
+            unset($allData[$ADkey]['check_command-params']);
+            unset($allData[$ADkey]['tcp_port']);
         }
-        return $AllData;
+        return $allData;
     }
 
     /**
@@ -394,6 +394,8 @@ class IEService extends IECfg
     {
         return $this->renameMember('host_name', $hostid, $newname);
     }
+
+   
 
 }
 
