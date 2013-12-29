@@ -21,7 +21,7 @@ class IEGroupMembersEditor extends EaseContainer
     function __construct($FieldName, $FieldCaption, $DataSource, $Members)
     {
         $IDColumn = $DataSource->KeywordsInfo[$FieldName]['refdata']['idcolumn'];
-        $NameColumn = $DataSource->KeywordsInfo[$FieldName]['refdata']['captioncolumn'];
+        $nameColumn = $DataSource->KeywordsInfo[$FieldName]['refdata']['captioncolumn'];
         $STable = $DataSource->KeywordsInfo[$FieldName]['refdata']['table'];
 
         if (isset($DataSource->KeywordsInfo[$FieldName]['refdata']['condition'])) {
@@ -31,9 +31,9 @@ class IEGroupMembersEditor extends EaseContainer
         }
 
         if (isset($DataSource->KeywordsInfo[$FieldName]['refdata']['public']) && intval($DataSource->KeywordsInfo[$FieldName]['refdata']['public'])) {
-            $SqlConds = " ( " . $DataSource->myDbLink->prepSelect(array_merge($Conditions, array($DataSource->UserColumn => EaseShared::user()->getUserID()))) . " ) OR ( " . $DataSource->myDbLink->prepSelect(array_merge($Conditions, array('public' => 1))) . ")  ";
+            $SqlConds = " ( " . $DataSource->myDbLink->prepSelect(array_merge($Conditions, array($DataSource->userColumn => EaseShared::user()->getUserID()))) . " ) OR ( " . $DataSource->myDbLink->prepSelect(array_merge($Conditions, array('public' => 1))) . ")  ";
         } else {
-            $SqlConds = $DataSource->myDbLink->prepSelect(array_merge($Conditions, array($DataSource->UserColumn => EaseShared::user()->getUserID())));
+            $SqlConds = $DataSource->myDbLink->prepSelect(array_merge($Conditions, array($DataSource->userColumn => EaseShared::user()->getUserID())));
         }
 
         $InitialContent = new EaseHtmlFieldSet($FieldCaption);
@@ -61,11 +61,11 @@ class IEGroupMembersEditor extends EaseContainer
             }
 
             $MembersAviableArray = EaseShared::myDbLink()->queryToArray(
-                    'SELECT ' . $NameColumn . ', ' . $IDColumn . ' ' .
+                    'SELECT ' . $nameColumn . ', ' . $IDColumn . ' ' .
                     'FROM `' . DB_PREFIX . $STable . '` ' .
                     'WHERE (' . $SqlConds . ') ' .
                     $AviavbleCond .
-                    'ORDER BY ' . $NameColumn, $IDColumn);
+                    'ORDER BY ' . $nameColumn, $IDColumn);
 
             if (DB_PREFIX . $STable == $DataSource->myTable) {
                 unset($Members[$DataSource->getMyKey()]);
@@ -74,8 +74,8 @@ class IEGroupMembersEditor extends EaseContainer
 
             if (count($MembersAviableArray)) {
                 foreach ($MembersAviableArray as $MemberID => $MemberName) {
-                    $Jellybean = new EaseHtmlSpanTag($MemberName[$NameColumn], null, array('class' => 'jellybean gray'));
-                    $Jellybean->addItem(new EaseHtmlATag('?add=' . $FieldName . '&amp;member=' . $MemberID . '&amp;name=' . $MemberName[$NameColumn] . '&amp;' . $DataSource->getMyKeyColumn() . '=' . $DataSource->getMyKey() . '#' . $FieldName, EaseTWBPart::GlyphIcon('plus-sign').' '. $MemberName[$NameColumn]));
+                    $Jellybean = new EaseHtmlSpanTag($MemberName[$nameColumn], null, array('class' => 'jellybean gray'));
+                    $Jellybean->addItem(new EaseHtmlATag('?add=' . $FieldName . '&amp;member=' . $MemberID . '&amp;name=' . $MemberName[$nameColumn] . '&amp;' . $DataSource->getmyKeyColumn() . '=' . $DataSource->getMyKey() . '#' . $FieldName, EaseTWBPart::GlyphIcon('plus-sign').' '. $MemberName[$nameColumn]));
                     $InitialContent->addItem($Jellybean);
                 }
             }
@@ -86,7 +86,7 @@ class IEGroupMembersEditor extends EaseContainer
                 foreach ($Members as $MemberID => $MemberName) {
                     $Jellybean = new EaseHtmlSpanTag($MemberName, null, array('class' => 'jellybean'));
                     $Jellybean->addItem($MemberName);
-                    $Jellybean->addItem(new EaseHtmlATag('?del=' . $FieldName . '&amp;member=' . $MemberID . '&amp;name=' . $MemberName . '&amp;' . $DataSource->getMyKeyColumn() . '=' . $DataSource->getMyKey() . '#' . $FieldName, EaseTWBPart::GlyphIcon('remove')));
+                    $Jellybean->addItem(new EaseHtmlATag('?del=' . $FieldName . '&amp;member=' . $MemberID . '&amp;name=' . $MemberName . '&amp;' . $DataSource->getmyKeyColumn() . '=' . $DataSource->getMyKey() . '#' . $FieldName, EaseTWBPart::GlyphIcon('remove')));
                     $InitialContent->addItem($Jellybean);
                 }
             }

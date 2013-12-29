@@ -17,8 +17,8 @@ $oPage->onlyForLogged();
 $service = new IEService($oPage->getRequestValue('service_id', 'int'));
 
 if ($oPage->getRequestValue('action') == 'clone') {
-    $service->unsetDataValue($service->getMyKeyColumn());
-    $service->setDataValue($service->NameColumn, $service->getName() . ' ' . _('Cloned'));
+    $service->unsetDataValue($service->getmyKeyColumn());
+    $service->setDataValue($service->nameColumn, $service->getName() . ' ' . _('Cloned'));
     if ($service->saveToMySQL()) {
         $oUser->addStatusMessage(_('Služba byla zklonovana'), 'success');
     } else {

@@ -46,7 +46,7 @@ class IEPortScanner extends EaseSand
     {
         parent::__construct();
         $this->Service = new IEService();
-        $this->Service->setMyKeyColumn('tcp_port');
+        $this->Service->setmyKeyColumn('tcp_port');
         if (is_object($HostToScan)) {
             $this->Host = &$HostToScan;
             $this->performScan();

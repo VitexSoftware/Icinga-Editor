@@ -21,8 +21,8 @@ class IEContact extends IECfg
      * Klíčový sloupeček
      * @var string 
      */
-    public $MyKeyColumn = 'contact_id';
-    public $NameColumn = 'contact_name';
+    public $myKeyColumn = 'contact_id';
+    public $nameColumn = 'contact_name';
     public $Keyword = 'contact';
 
     /**

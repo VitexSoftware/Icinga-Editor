@@ -41,7 +41,7 @@ $ServicegroupEdit = new IECfgEditor($Servicegroup);
 $form = $oPage->columnII->addItem(new EaseHtmlForm('Servicegroup', 'servicegroup.php', 'POST', $ServicegroupEdit, array('class' => 'form-horizontal')));
 $form->setTagID($form->getTagName());
 if (!is_null($Servicegroup->getMyKey())) {
-    $form->addItem(new EaseHtmlInputHiddenTag($Servicegroup->getMyKeyColumn(), $Servicegroup->getMyKey()));
+    $form->addItem(new EaseHtmlInputHiddenTag($Servicegroup->getmyKeyColumn(), $Servicegroup->getMyKey()));
 }
 $form->addItem('<br>');
 $form->addItem(new EaseTWSubmitButton(_('Uložit'),'success'));

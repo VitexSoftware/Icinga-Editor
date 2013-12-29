@@ -118,7 +118,7 @@ $oUser->setSettingValue('admin',TRUE);
                 if (strstr($Line, 'has no services associated with it!')) {
                     preg_match("/\'(.*)\'/", $Line, $keywords);
                     $host = & $Generator->IEClasses['host'];
-                    $host->setMyKeyColumn($host->NameColumn);
+                    $host->setmyKeyColumn($host->nameColumn);
                     $host->loadFromMySql($keywords[1]);
                     $host->resetObjectIdentity();
                     $Line = '<span class="label label-warning">' . _('Varování:') . '</span> Host ' . '<a href="host.php?host_id=' . $host->getMyKey() . '">' . $host->getName() . '</a> ' . _('nemá přiřazené žádné služby');

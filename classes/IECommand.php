@@ -17,8 +17,8 @@ class IECommand extends IECfg
 {
 
     public $myTable = 'command';
-    public $MyKeyColumn = 'command_id';
-    public $NameColumn = 'command_name';
+    public $myKeyColumn = 'command_id';
+    public $nameColumn = 'command_name';
     public $Keyword = 'command';
 
     /**
@@ -109,7 +109,7 @@ class IECommand extends IECfg
     function takeData($Data, $DataPrefix = null)
     {
         if(!isset($Data['command_type'])){
-            if(strstr($Data[$this->NameColumn], 'notify')){
+            if(strstr($Data[$this->nameColumn], 'notify')){
                 $Data['command_type'] = 'notify';
             } else {
                 $Data['command_type'] = 'check';

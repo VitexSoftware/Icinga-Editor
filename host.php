@@ -35,8 +35,9 @@ switch ($oPage->getRequestValue('action')) {
     case 'parent':
         $np = $oPage->getRequestValue('newparent');
         if ($np) {
-            $newParent = EaseShared::myDbLink()->queryToValue('SELECT `alias` FROM ' . $host->myTable . ' '
-                    . 'WHERE `' . $host->NameColumn . '` = \'' . addSlashes($np) . '\' '
+            $newParent = EaseShared::myDbLink()->queryToValue('SELECT `'.$host->nameColumn.'` FROM ' . $host->myTable . ' '
+                    . 'WHERE `' . $host->nameColumn . '` = \'' . addSlashes($np) . '\' '
+                    . 'OR `alias` = \'' . addSlashes($np) . '\' '
                     . 'OR `address` = \'' . addSlashes($np) . '\' '
                     . 'OR `address6` = \'' . addSlashes($np) . '\' ');
             if (!$newParent) {
@@ -96,7 +97,7 @@ $hostEdit = new IECfgEditor($host);
 
 $form = $oPage->columnII->addItem(new EaseHtmlForm('Host', 'host.php', 'POST', $hostEdit, array('class' => 'form-horizontal')));
 $form->setTagID($form->getTagName());
-$form->addItem(new EaseHtmlInputHiddenTag($host->getMyKeyColumn(), $host->getMyKey()));
+$form->addItem(new EaseHtmlInputHiddenTag($host->getmyKeyColumn(), $host->getMyKey()));
 $form->addItem('<br>');
 $form->addItem(new EaseTWSubmitButton(_('Uložit'), 'success'));
 $oPage->AddCss('

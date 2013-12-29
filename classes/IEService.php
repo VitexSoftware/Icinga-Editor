@@ -17,9 +17,9 @@ class IEService extends IECfg
 {
 
     public $myTable = 'services';
-    public $MyKeyColumn = 'service_id';
+    public $myKeyColumn = 'service_id';
     public $Keyword = 'service';
-    public $NameColumn = 'service_description';
+    public $nameColumn = 'service_description';
 
     /**
      * Weblink
@@ -263,7 +263,7 @@ class IEService extends IECfg
 
 
             if (!$this->isTemplate($AllData[$ADkey])) {
-                $AllData[$ADkey][$this->NameColumn] = $AllData[$ADkey][$this->NameColumn] . '-' . EaseShared::user()->getUserLogin(); //Přejmenovat službu podle uživatele
+                $AllData[$ADkey][$this->nameColumn] = $AllData[$ADkey][$this->nameColumn] . '-' . EaseShared::user()->getUserLogin(); //Přejmenovat službu podle uživatele
                 if (!count($AllData[$ADkey]['host_name'])) { //Negenerovat nepoužité služby
                     unset($AllData[$ADkey]);
                 }
@@ -317,12 +317,12 @@ class IEService extends IECfg
         $UserID = $User->getUserID();
         foreach ($AllData as $ADkey => $AD) {
 
-            if ($AD[$this->NameColumn] == 'FTP') {
+            if ($AD[$this->nameColumn] == 'FTP') {
                 echo '';
             }
 
             if ($this->isTemplate($AD)) { //Předloha
-                if ($UserID != (int) $AD[$this->UserColumn]) {
+                if ($UserID != (int) $AD[$this->userColumn]) {
                     unset($AllData[$ADkey]);
                     continue;
                 }
@@ -332,7 +332,7 @@ class IEService extends IECfg
                     continue;
                 }
             } else { //záznam
-                $AllData[$ADkey][$this->NameColumn] = $AllData[$ADkey][$this->NameColumn] . '-' . $User->getUserLogin();
+                $AllData[$ADkey][$this->nameColumn] = $AllData[$ADkey][$this->nameColumn] . '-' . $User->getUserLogin();
 
                 if (is_array($AD['contacts']) && count($AD['contacts'])) { //Projít kontakty, vyhodit nevlastněné uživatelem
                     foreach ($AD['contacts'] as $ContactID => $ContactName) {
@@ -353,8 +353,8 @@ class IEService extends IECfg
                 }
 
                 if (is_null($AllData[$ADkey]['host_name']) || !count($AllData[$ADkey]['host_name'])) {
-                    if ($AD[$this->UserColumn] == $UserID) {
-                        $this->addStatusMessage(sprintf(_('Služba %s není použita. Negeneruji do konfigurace'), $AD[$this->NameColumn]), 'info');
+                    if ($AD[$this->userColumn] == $UserID) {
+                        $this->addStatusMessage(sprintf(_('Služba %s není použita. Negeneruji do konfigurace'), $AD[$this->nameColumn]), 'info');
                     }
                     unset($AllData[$ADkey]);
                     continue;

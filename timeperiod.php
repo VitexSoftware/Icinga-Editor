@@ -54,7 +54,7 @@ $TimepriodEdit = new IECfgEditor($Timeperiod);
 $form = $oPage->columnII->addItem(new EaseHtmlForm('Perioda', 'timeperiod.php', 'POST', $TimepriodEdit, array('class' => 'form-horizontal')));
 $form->setTagID($form->getTagName());
 if (!is_null($Timeperiod->getMyKey())) {
-    $form->addItem(new EaseHtmlInputHiddenTag($Timeperiod->getMyKeyColumn(), $Timeperiod->getMyKey()));
+    $form->addItem(new EaseHtmlInputHiddenTag($Timeperiod->getmyKeyColumn(), $Timeperiod->getMyKey()));
 }
 $TimesTable = new EaseHtmlTableTag();
 
@@ -62,7 +62,7 @@ $TimesTable->addRowHeaderColumns(array(new EaseLabeledTextInput('NewKey', null, 
     new EaseLabeledTextInput('NewTimes', null, _('Interval(y)')), ''));
 
 foreach ($Timeperiod->Timeperiods as $TimeName => $TimeIntervals) {
-    $TimesTable->addRowColumns(array($TimeName, $TimeIntervals, new EaseHtmlATag('?del=' . $TimeName . '&amp;' . $Timeperiod->getMyKeyColumn() . '=' . $Timeperiod->getMyKey(), '<i class="icon-remove"></i>')));
+    $TimesTable->addRowColumns(array($TimeName, $TimeIntervals, new EaseHtmlATag('?del=' . $TimeName . '&amp;' . $Timeperiod->getmyKeyColumn() . '=' . $Timeperiod->getMyKey(), '<i class="icon-remove"></i>')));
 }
 
 $form->addItem($TimesTable);

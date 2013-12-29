@@ -30,7 +30,7 @@ if ($Periods) {
             $LastRow->setTagCss(array('border-right'=>'1px solid red'));
         }
         if($CInfo['public'] == 1){
-            if($CInfo[$Timeperiod->UserColumn] == $oUser->getUserID()){
+            if($CInfo[$Timeperiod->userColumn] == $oUser->getUserID()){
                 $LastRow->setTagCss(array('border-left'=>'1px solid green'));
             } else {
                 $LastRow->setTagCss(array('border-left'=>'1px solid blue'));

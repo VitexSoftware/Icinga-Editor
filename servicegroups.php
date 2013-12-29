@@ -22,7 +22,7 @@ $Servicegroup = new IEServicegroup();
 $PocServicegroup = $Servicegroup->getMyRecordsCount();
 
 if ($PocServicegroup) {
-    $Servicegroups = $Servicegroup->myDbLink->queryToArray('SELECT ' . $Servicegroup->getMyKeyColumn() . ', servicegroup_name, DatSave FROM ' . $Servicegroup->myTable . ' WHERE user_id=' . $oUser->getUserID(), 'servicegroup_id');
+    $Servicegroups = $Servicegroup->myDbLink->queryToArray('SELECT ' . $Servicegroup->getmyKeyColumn() . ', servicegroup_name, DatSave FROM ' . $Servicegroup->myTable . ' WHERE user_id=' . $oUser->getUserID(), 'servicegroup_id');
     $CntList = new EaseHtmlTableTag(null,array('class'=>'table'));
 
     $Cid = 1;

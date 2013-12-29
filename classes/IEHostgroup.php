@@ -14,9 +14,9 @@ class IEHostgroup extends IECfg
 {
 
     public $myTable = 'hostgroup';
-    public $MyKeyColumn = 'hostgroup_id';
+    public $myKeyColumn = 'hostgroup_id';
     public $Keyword = 'hostgroup';
-    public $NameColumn = 'hostgroup_name';
+    public $nameColumn = 'hostgroup_name';
 
     /**
      * Dát tyto položky k dispozici i ostatním ?
@@ -67,7 +67,7 @@ class IEHostgroup extends IECfg
      */
     function deleteHost($hostname)
     {
-        $MemberOf = EaseShared::myDbLink()->queryToArray('SELECT '.$this->getMyKeyColumn().','.$this->NameColumn.' FROM '. $this->myTable.' WHERE members LIKE \'%"'.$hostname.'"%\' ',$this->getMyKeyColumn() );
+        $MemberOf = EaseShared::myDbLink()->queryToArray('SELECT '.$this->getmyKeyColumn().','.$this->nameColumn.' FROM '. $this->myTable.' WHERE members LIKE \'%"'.$hostname.'"%\' ',$this->getmyKeyColumn() );
         foreach ($MemberOf as $GroupID => $Group){
             $Found = false;
             $this->loadFromMySQL($GroupID);
@@ -75,7 +75,7 @@ class IEHostgroup extends IECfg
                 if($Member == $hostname){
                     $Found = true;
                     unset($this->Data['members'][$ID]);
-                    $this->addStatusMessage(sprintf(_(' %s byl odstraněn ze skupiny %s '),$hostname,$Group[$this->NameColumn]));
+                    $this->addStatusMessage(sprintf(_(' %s byl odstraněn ze skupiny %s '),$hostname,$Group[$this->nameColumn]));
                 }
             }
             if($Found){
@@ -96,7 +96,7 @@ class IEHostgroup extends IECfg
     }
 
     function loadDefault(){
-        $GroupID = EaseShared::myDbLink()->queryToValue('SELECT '.$this->getMyKeyColumn().' FROM '. $this->myTable.' WHERE '.$this->UserColumn.'= ' . EaseShared::user()->getUserID().' ORDER BY '.$this->getMyKeyColumn().' DESC LIMIT 1');
+        $GroupID = EaseShared::myDbLink()->queryToValue('SELECT '.$this->getmyKeyColumn().' FROM '. $this->myTable.' WHERE '.$this->userColumn.'= ' . EaseShared::user()->getUserID().' ORDER BY '.$this->getmyKeyColumn().' DESC LIMIT 1');
         if($GroupID){
             $this->loadFromMySQL((int)$GroupID);
             return true;
@@ -106,7 +106,7 @@ class IEHostgroup extends IECfg
 
     public function renameHost($oldname, $newname)
     {
-        $memberOf = EaseShared::myDbLink()->queryToArray('SELECT '.$this->getMyKeyColumn().','.$this->NameColumn.' FROM '. $this->myTable.' WHERE members LIKE \'%"'.$oldname.'"%\' ',$this->getMyKeyColumn() );
+        $memberOf = EaseShared::myDbLink()->queryToArray('SELECT '.$this->getmyKeyColumn().','.$this->nameColumn.' FROM '. $this->myTable.' WHERE members LIKE \'%"'.$oldname.'"%\' ',$this->getmyKeyColumn() );
         foreach ($memberOf as $groupID => $group){
             $found = false;
             $this->loadFromMySQL($groupID);
@@ -114,7 +114,7 @@ class IEHostgroup extends IECfg
                 if($Member == $hostname){
                     $found = true;
                     $this->Data['members'][$ID]= $newname;
-                    $this->addStatusMessage(sprintf(_(' %s byl odstraněn ze skupiny %s '),$hostname,$group[$this->NameColumn]));
+                    $this->addStatusMessage(sprintf(_(' %s byl odstraněn ze skupiny %s '),$hostname,$group[$this->nameColumn]));
                 }
             }
             if($found){

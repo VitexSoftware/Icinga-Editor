@@ -39,7 +39,7 @@ $CommandEdit = new IECfgEditor($Command);
 $form = $oPage->columnII->addItem(new EaseHtmlForm('Command', 'command.php', 'POST', $CommandEdit, array('class' => 'form-horizontal')));
 $form->setTagID($form->getTagName());
 if (!is_null($Command->getMyKey())) {
-    $form->addItem(new EaseHtmlInputHiddenTag($Command->getMyKeyColumn(), $Command->getMyKey()));
+    $form->addItem(new EaseHtmlInputHiddenTag($Command->getmyKeyColumn(), $Command->getMyKey()));
 }
 $form->addItem('<br>');
 $form->addItem(new EaseTWSubmitButton(_('Uložit'),'success'));

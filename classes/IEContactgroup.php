@@ -14,8 +14,8 @@ class IEContactgroup extends IECfg
 {
 
     public $myTable = 'contactgroup';
-    public $MyKeyColumn = 'contactgroup_id';
-    public $NameColumn = 'contactgroup_name';
+    public $myKeyColumn = 'contactgroup_id';
+    public $nameColumn = 'contactgroup_name';
     public $Keyword = 'contactgroup';
 
     /**

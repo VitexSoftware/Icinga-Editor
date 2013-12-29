@@ -17,7 +17,7 @@ $oPage->addItem(new IEPageTop(_('Přehled uživatelů')));
 
 $user = new EaseUser;
 
-$users = $user->getColumnsFromMySQL(array('id', 'login'), null, 'login', $oUser->getMyKeyColumn());
+$users = $user->getColumnsFromMySQL(array('id', 'login'), null, 'login', $oUser->getmyKeyColumn());
 
 if ($users) {
     $oPage->columnII->addItem(new EaseHtmlH4Tag(_('Uživatelé')));

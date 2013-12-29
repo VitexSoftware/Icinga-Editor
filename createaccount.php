@@ -102,7 +102,7 @@ if ($oPage->isPosted()) {
             EaseShared::user($NewOUser)->loginSuccess();
 
             $Contact = new IEContact();
-            $Contact->setData(array('contact_name' => $login, 'email' => $email_address, 'alias' => $firstname . ' ' . $lastname, 'use' => 'generic-contact', $Contact->UserColumn => $UserID, 'generate' => true, 'register' => 1));
+            $Contact->setData(array('contact_name' => $login, 'email' => $email_address, 'alias' => $firstname . ' ' . $lastname, 'use' => 'generic-contact', $Contact->userColumn => $UserID, 'generate' => true, 'register' => 1));
             $ContactID = $Contact->insertToMySQL();
             if ($ContactID) {
                 $oUser->addStatusMessage(_('Prvotní kontakt byl založen'), 'success');
@@ -111,7 +111,7 @@ if ($oPage->isPosted()) {
             }
 
             $CG = new IEContactgroup();
-            $CG->setData(array('contactgroup_name' => $login, 'alias' => _('Skupina') . '_' . $login, 'use' => 'generic-contact', 'generate' => true, 'register' => 1,$Contactgroup->UserColumn => $UserID));
+            $CG->setData(array('contactgroup_name' => $login, 'alias' => _('Skupina') . '_' . $login, 'use' => 'generic-contact', 'generate' => true, 'register' => 1,$Contactgroup->userColumn => $UserID));
             $CG->addMember('members', $ContactID, $login);
             $CGID = $CG->insertToMySQL();
 

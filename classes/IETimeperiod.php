@@ -14,9 +14,9 @@ class IETimeperiod extends IECfg
 {
 
     public $myTable = 'timeperiods';
-    public $MyKeyColumn = 'timeperiod_id';
+    public $myKeyColumn = 'timeperiod_id';
     public $Keyword = 'timeperiod';
-    public $NameColumn = 'timeperiod_name';
+    public $nameColumn = 'timeperiod_name';
     public $UseKeywords = array(
         'timeperiod_name' => 'VARCHAR(64)',
         'alias' => 'VARCHAR(64)',
@@ -63,7 +63,7 @@ class IETimeperiod extends IECfg
         unset($Data['NewTimes']);
         unset($Data['del']);
         foreach ($Data as $Key => $Value) {
-            if (($Key == $this->MyKeyColumn) || array_key_exists($Key, $this->UseKeywords) || $Key == $this->UserColumn) {
+            if (($Key == $this->myKeyColumn) || array_key_exists($Key, $this->UseKeywords) || $Key == $this->userColumn) {
                 $this->setDataValue($Key, $Value);
             } else {
                 $this->addTime($Key, $Value);

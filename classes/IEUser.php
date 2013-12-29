@@ -34,7 +34,7 @@ class IEUser extends EaseUser
      */
     function getFirstContactName(){
         $Contact = new IEContact();
-        $Cn = $Contact->getColumnsFromMySQL($Contact->NameColumn, array($Contact->UserColumn => $this->getUserID()), $Contact->MyKeyColumn, $Contact->NameColumn, 1);
+        $Cn = $Contact->getColumnsFromMySQL($Contact->nameColumn, array($Contact->userColumn => $this->getUserID()), $Contact->myKeyColumn, $Contact->nameColumn, 1);
         if(count($Cn)){
             return current(current($Cn));
         }
@@ -62,7 +62,7 @@ class IETwitterUser extends IEUser
         parent::__construct();
         if (!is_null($Twitter)) {
             $this->Twitter = $Twitter;
-            $this->setMyKeyColumn('twitter_id');
+            $this->setmyKeyColumn('twitter_id');
             $this->setMyKey($Twitter->id);
             if (!$this->loadFromMySQL()) {
                 $this->restoreObjectIdentity();

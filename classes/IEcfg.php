@@ -46,7 +46,7 @@ class IEcfg extends EaseBrick
      * Sloupeček s ID vlastníka/autora
      * @var string
      */
-    public $UserColumn = 'user_id';
+    public $userColumn = 'user_id';
 
     /**
      * Sloupeček obsahující datum vložení záznamu
@@ -64,7 +64,7 @@ class IEcfg extends EaseBrick
      * Sloupeček se jménem objektu
      * @var string
      */
-    public $NameColumn = null;
+    public $nameColumn = null;
 
     /**
      * Přidat položky register a use ?
@@ -117,8 +117,8 @@ class IEcfg extends EaseBrick
 //        }
 
         if (!is_null($itemID)) {
-            if (is_string($itemID) && $this->NameColumn) {
-                $this->setMyKeyColumn($this->NameColumn);
+            if (is_string($itemID) && $this->nameColumn) {
+                $this->setmyKeyColumn($this->nameColumn);
                 $this->loadFromMySQL($itemID);
                 $this->resetObjectIdentity();
             } else {
@@ -142,7 +142,7 @@ class IEcfg extends EaseBrick
                 'refdata' => array(
                     'table' => str_replace(DB_PREFIX, '', $this->myTable),
                     'captioncolumn' => 'name',
-                    'idcolumn' => $this->MyKeyColumn,
+                    'idcolumn' => $this->myKeyColumn,
                     'condition' => array('register' => 0)
                 )
             );
@@ -173,20 +173,20 @@ class IEcfg extends EaseBrick
         if (is_numeric($template)) {
             $TemplateData = $this->getDataFromMySQL((int) $template);
         } else {
-            $this->setMyKeyColumn('name');
+            $this->setmyKeyColumn('name');
             $TemplateData = $this->getDataFromMySQL($template);
             if (count($TemplateData)) {
                 $TemplateData = $TemplateData[0];
             } else {
-                $this->addStatusMessage(sprintf(_('předloha %s nebyla načtena'), $TemplateData[$this->NameColumn]), 'error');
+                $this->addStatusMessage(sprintf(_('předloha %s nebyla načtena'), $TemplateData[$this->nameColumn]), 'error');
 
                 return false;
             }
             $this->restoreObjectIdentity();
         }
-        $this->addStatusMessage(sprintf(_('předloha %s byla načtena'), $TemplateData[$this->NameColumn]));
-        unset($TemplateData[$this->MyKeyColumn]);
-        unset($TemplateData[$this->NameColumn]);
+        $this->addStatusMessage(sprintf(_('předloha %s byla načtena'), $TemplateData[$this->nameColumn]));
+        unset($TemplateData[$this->myKeyColumn]);
+        unset($TemplateData[$this->nameColumn]);
         $this->setData($TemplateData);
 
         return true;
@@ -248,14 +248,14 @@ class IEcfg extends EaseBrick
      */
     public function createSqlStructure()
     {
-        if ($this->getMyKeyColumn()) {
-            $myStruct = array_merge(array($this->getMyKeyColumn() => 'INT'), $this->UseKeywords);
+        if ($this->getmyKeyColumn()) {
+            $myStruct = array_merge(array($this->getmyKeyColumn() => 'INT'), $this->UseKeywords);
         } else {
             $myStruct = $this->UseKeywords;
         }
 
-        if (!is_null($this->UserColumn)) {
-            $myStruct = array_merge($myStruct, array($this->UserColumn => 'INT'));
+        if (!is_null($this->userColumn)) {
+            $myStruct = array_merge($myStruct, array($this->userColumn => 'INT'));
         }
 
         if (!is_null($this->MyCreateColumn)) {
@@ -310,12 +310,12 @@ class IEcfg extends EaseBrick
             }
 
             $sqlStruct[$columnName]['type'] = $columnType;
-            if ($columnName == $this->getMyKeyColumn()) {
+            if ($columnName == $this->getmyKeyColumn()) {
                 $sqlStruct[$columnName]['key'] = 'primary';
                 $sqlStruct[$columnName]['ai'] = true;
                 $sqlStruct[$columnName]['unsigned'] = true;
             }
-            if ($columnName == $this->UserColumn) {
+            if ($columnName == $this->userColumn) {
                 $sqlStruct[$columnName]['key'] = true;
                 $sqlStruct[$columnName]['unsigned'] = true;
             }
@@ -391,8 +391,8 @@ class IEcfg extends EaseBrick
             }
         }
 
-        if (isset($this->UserColumn) && !isset($data[$this->UserColumn]) || !strlen($data[$this->UserColumn])) {
-            $data[$this->UserColumn] = EaseShared::user()->getUserID();
+        if (isset($this->userColumn) && !isset($data[$this->userColumn]) || !strlen($data[$this->userColumn])) {
+            $data[$this->userColumn] = EaseShared::user()->getUserID();
         }
 
         return parent::takeData($data, $dataPrefix);
@@ -449,7 +449,7 @@ class IEcfg extends EaseBrick
                 if ($this->AllowTemplating) {
                     if ($this->isTemplate($data)) {
                         if (!strlen($data['name'])) {
-                            $this->addStatusMessage($this->Keyword . ': ' . sprintf(_('Předloha %s není pojmenována'), $data[$this->NameColumn]), 'error');
+                            $this->addStatusMessage($this->Keyword . ': ' . sprintf(_('Předloha %s není pojmenována'), $data[$this->nameColumn]), 'error');
                             $errors++;
                         }
                     }
@@ -475,7 +475,7 @@ class IEcfg extends EaseBrick
         $allDataOK = array();
         $userID = EaseShared::user()->getUserID();
         foreach ($allData as $AdKey => $Data) {
-            if ($Data[$this->UserColumn] == $userID) {
+            if ($Data[$this->userColumn] == $userID) {
                 $allDataOK[$AdKey] = $Data;
             }
         }
@@ -490,7 +490,7 @@ class IEcfg extends EaseBrick
      */
     public function getAllUserData()
     {
-        return $this->controlAllData(self::unserializeArrays($this->getColumnsFromMySQL('*', array($this->UserColumn => EaseShared::user()->getUserID()))));
+        return $this->controlAllData(self::unserializeArrays($this->getColumnsFromMySQL('*', array($this->userColumn => EaseShared::user()->getUserID()))));
     }
 
     /**
@@ -504,7 +504,7 @@ class IEcfg extends EaseBrick
     }
 
     /**
-     * Uloží pole dat do MySQL. Pokud je $SearchForID 0 updatuje pokud ze nastaven  MyKeyColumn
+     * Uloží pole dat do MySQL. Pokud je $SearchForID 0 updatuje pokud ze nastaven  myKeyColumn
      *
      * @param array $data        asociativní pole dat
      * @param bool  $searchForID Zjistit zdali updatovat nebo insertovat
@@ -532,23 +532,23 @@ class IEcfg extends EaseBrick
         }
 
         if ($this->AllowTemplating && $this->isTemplate()) {
-            if (isset($data[$this->getMyKeyColumn()]) && (int) $data[$this->getMyKeyColumn()]) {
-                $Keycont = $this->myDbLink->queryToValue('SELECT COUNT(*) FROM ' . $this->myTable . ' WHERE `name`' . " = '" . $data['name'] . "' AND " . $this->MyKeyColumn . ' != ' . $data[$this->getMyKeyColumn()]);
+            if (isset($data[$this->getmyKeyColumn()]) && (int) $data[$this->getmyKeyColumn()]) {
+                $Keycont = $this->myDbLink->queryToValue('SELECT COUNT(*) FROM ' . $this->myTable . ' WHERE `name`' . " = '" . $data['name'] . "' AND " . $this->myKeyColumn . ' != ' . $data[$this->getmyKeyColumn()]);
             } else {
                 $Keycont = $this->myDbLink->queryToValue('SELECT COUNT(*) FROM ' . $this->myTable . ' WHERE `name`' . " = '" . $data['name'] . "'");
             }
         } else {
-            if (isset($data[$this->getMyKeyColumn()]) && (int) $data[$this->getMyKeyColumn()]) {
-                $Keycont = $this->myDbLink->queryToValue('SELECT COUNT(*) FROM ' . $this->myTable . ' WHERE ' . $this->NameColumn . " = '" . $data[$this->NameColumn] . "' AND " . $this->MyKeyColumn . ' != ' . $data[$this->getMyKeyColumn()]);
+            if (isset($data[$this->getmyKeyColumn()]) && (int) $data[$this->getmyKeyColumn()]) {
+                $Keycont = $this->myDbLink->queryToValue('SELECT COUNT(*) FROM ' . $this->myTable . ' WHERE ' . $this->nameColumn . " = '" . $data[$this->nameColumn] . "' AND " . $this->myKeyColumn . ' != ' . $data[$this->getmyKeyColumn()]);
             } else {
-                $Keycont = $this->myDbLink->queryToValue('SELECT COUNT(*) FROM ' . $this->myTable . ' WHERE ' . $this->NameColumn . " = '" . $data[$this->NameColumn] . "'");
+                $Keycont = $this->myDbLink->queryToValue('SELECT COUNT(*) FROM ' . $this->myTable . ' WHERE ' . $this->nameColumn . " = '" . $data[$this->nameColumn] . "'");
             }
         }
         if ($Keycont) {
             if ($this->AllowTemplating && $this->isTemplate()) {
                 $this->addStatusMessage(sprintf(_('Předloha %s je již definována. Zvolte prosím jiný název.'), $data['name']), 'warning');
             } else {
-                $this->addStatusMessage(sprintf(_('%s %s je již definováno. Zvolte prosím jiné.'), $this->NameColumn, $data[$this->NameColumn]), 'warning');
+                $this->addStatusMessage(sprintf(_('%s %s je již definováno. Zvolte prosím jiné.'), $this->nameColumn, $data[$this->nameColumn]), 'warning');
             }
 
             return null;
@@ -603,7 +603,7 @@ class IEcfg extends EaseBrick
         if (is_null($thisID)) {
             $thisID = EaseShared::user()->getUserID();
         }
-        $columnsToGet = array($this->getMyKeyColumn(), $this->NameColumn, 'generate', $this->MyLastModifiedColumn, $this->UserColumn);
+        $columnsToGet = array($this->getmyKeyColumn(), $this->nameColumn, 'generate', $this->MyLastModifiedColumn, $this->userColumn);
         if ($this->AllowTemplating) {
             $columnsToGet[] = 'register';
             $columnsToGet[] = 'name';
@@ -616,9 +616,9 @@ class IEcfg extends EaseBrick
         if ($this->PublicRecords && $withShared) {
             $columnsToGet[] = 'public';
 
-            return $this->getColumnsFromMySQL($columnsToGet, $this->UserColumn . '=' . $thisID . ' OR ' . $this->UserColumn . ' IS NULL OR public=1 ', $this->NameColumn, $this->getMyKeyColumn());
+            return $this->getColumnsFromMySQL($columnsToGet, $this->userColumn . '=' . $thisID . ' OR ' . $this->userColumn . ' IS NULL OR public=1 ', $this->nameColumn, $this->getmyKeyColumn());
         } else {
-            return $this->getColumnsFromMySQL($columnsToGet, $this->UserColumn . '=' . $thisID . ' OR ' . $this->UserColumn . ' IS NULL ', $this->NameColumn, $this->getMyKeyColumn());
+            return $this->getColumnsFromMySQL($columnsToGet, $this->userColumn . '=' . $thisID . ' OR ' . $this->userColumn . ' IS NULL ', $this->nameColumn, $this->getmyKeyColumn());
         }
     }
 
@@ -636,7 +636,7 @@ class IEcfg extends EaseBrick
                 }
             }
 
-            return $this->getDataValue($this->NameColumn);
+            return $this->getDataValue($this->nameColumn);
         } else {
             if ($this->AllowTemplating) {
                 if ($this->isTemplate($data)) {
@@ -644,7 +644,7 @@ class IEcfg extends EaseBrick
                 }
             }
 
-            return $data[$this->NameColumn];
+            return $data[$this->nameColumn];
         }
     }
 
@@ -663,7 +663,7 @@ class IEcfg extends EaseBrick
      */
     public function getOwnerID()
     {
-        return (int) $this->getDataValue($this->UserColumn);
+        return (int) $this->getDataValue($this->userColumn);
     }
 
     /**
@@ -677,18 +677,18 @@ class IEcfg extends EaseBrick
         if ($this->getOwnerID() == EaseShared::user()->getUserID()) {
 
             if ($this->AllowTemplating && $this->isTemplate()) {
-                $columnsList = array($this->getMyKeyColumn(), $this->NameColumn, $this->UserColumn);
+                $columnsList = array($this->getmyKeyColumn(), $this->nameColumn, $this->userColumn);
                 if ($this->PublicRecords) {
                     $columnsList[] = 'public';
                 }
-                $used = $this->getColumnsFromMySQL($columnsList, array('use' => $this->getDataValue('name')), $this->NameColumn, $this->getMyKeyColumn());
+                $used = $this->getColumnsFromMySQL($columnsList, array('use' => $this->getDataValue('name')), $this->nameColumn, $this->getmyKeyColumn());
                 if (count($used)) {
                     $usedFrame = new EaseHtmlFieldSet(_('je předlohou pro'));
                     foreach ($used as $UsId => $UsInfo) {
-                        if ($this->PublicRecords && ($UsInfo['public'] != true) && ($UsInfo[$this->UserColumn] != EaseShared::user()->getUserID() )) {
-                            $usedFrame->addItem(new EaseHtmlSpanTag(null, $UsInfo[$this->NameColumn], array('class' => 'jellybean gray')));
+                        if ($this->PublicRecords && ($UsInfo['public'] != true) && ($UsInfo[$this->userColumn] != EaseShared::user()->getUserID() )) {
+                            $usedFrame->addItem(new EaseHtmlSpanTag(null, $UsInfo[$this->nameColumn], array('class' => 'jellybean gray')));
                         } else {
-                            $usedFrame->addItem(new EaseHtmlSpanTag(null, new EaseHtmlATag('?' . $this->getMyKeyColumn() . '=' . $UsId, $UsInfo[$this->NameColumn]), array('class' => 'jellybean')));
+                            $usedFrame->addItem(new EaseHtmlSpanTag(null, new EaseHtmlATag('?' . $this->getmyKeyColumn() . '=' . $UsId, $UsInfo[$this->nameColumn]), array('class' => 'jellybean')));
                         }
                     }
 
@@ -696,7 +696,7 @@ class IEcfg extends EaseBrick
                 }
             }
 
-            return new EaseJQConfirmedLinkButton('?' . $this->getMyKeyColumn() . '=' . $this->getID() . '&delete=true', _('Smazat ') . $Name . ' <i class="icon-remove-sign"></i>');
+            return new EaseJQConfirmedLinkButton('?' . $this->getmyKeyColumn() . '=' . $this->getID() . '&delete=true', _('Smazat ') . $Name . ' <i class="icon-remove-sign"></i>');
         } else {
             return '';
         }
@@ -827,21 +827,21 @@ class IEcfg extends EaseBrick
                     } else {
                         if (!is_null($this->WebLinkColumn) && !isset($buffer[$this->WebLinkColumn])) {
                             $this->updateToMySQL(
-                                    array($this->getMyKeyColumn() => $this->getMyKey(),
+                                    array($this->getmyKeyColumn() => $this->getMyKey(),
                                         $this->WebLinkColumn =>
                                         (str_replace(basename(EaseWebPage::getUri()), '', EaseWebPage::phpSelf(true))) .
                                         $this->Keyword . '.php?' .
-                                        $this->getMyKeyColumn() . '=' .
+                                        $this->getmyKeyColumn() . '=' .
                                         $this->getMyKey()));
                         }
-                        $this->addStatusMessage($this->Keyword . ' <strong>' . $buffer[$this->NameColumn] . '</strong>' . _(' byl naimportován'), 'success');
+                        $this->addStatusMessage($this->Keyword . ' <strong>' . $buffer[$this->nameColumn] . '</strong>' . _(' byl naimportován'), 'success');
                     }
                     $success++;
                 } else {
                     if ($this->isTemplate()) {
                         $this->addStatusMessage($this->Keyword . ' <strong>' . $buffer['name'] . '</strong>' . _(' nebyl naimportován'), 'error');
                     } else {
-                        $this->addStatusMessage($this->Keyword . ' <strong>' . $buffer[$this->NameColumn] . '</strong>' . _(' nebyl naimportován'), 'error');
+                        $this->addStatusMessage($this->Keyword . ' <strong>' . $buffer[$this->nameColumn] . '</strong>' . _(' nebyl naimportován'), 'error');
                     }
                 }
                 $buffer = null;
@@ -1042,7 +1042,7 @@ class IEcfg extends EaseBrick
 
     public function cloneButton()
     {
-        return new \EaseTWBLinkButton('?action=clone&' . $this->getMyKeyColumn() . '=' . $this->getId(), _('Klonovat'));
+        return new \EaseTWBLinkButton('?action=clone&' . $this->getmyKeyColumn() . '=' . $this->getId(), _('Klonovat'));
     }
 
 }

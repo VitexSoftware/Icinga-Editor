@@ -101,8 +101,8 @@ class IEImporter extends IECfg
             $this->addStatusMessage(sprintf(_('konfigurace nebyla načtena'), count($Cfg)), 'warning');
         }
 
-        if ($this->UserColumn) {
-            $this->setDataValue($this->UserColumn, EaseShared::user()->getUserID());
+        if ($this->userColumn) {
+            $this->setDataValue($this->userColumn, EaseShared::user()->getUserID());
         }
 
         if(is_null($this->getDataValue('register'))){

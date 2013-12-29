@@ -22,7 +22,7 @@ $Contactgroup = new IEContactgroup();
 $PocContactgroup = $Contactgroup->getMyRecordsCount();
 
 if ($PocContactgroup) {
-    $Contactgroups = $Contactgroup->myDbLink->queryToArray('SELECT ' . $Contactgroup->getMyKeyColumn() . ', contactgroup_name, DatSave FROM ' . $Contactgroup->myTable . ' WHERE user_id=' . $oUser->getUserID(), 'contactgroup_id');
+    $Contactgroups = $Contactgroup->myDbLink->queryToArray('SELECT ' . $Contactgroup->getmyKeyColumn() . ', contactgroup_name, DatSave FROM ' . $Contactgroup->myTable . ' WHERE user_id=' . $oUser->getUserID(), 'contactgroup_id');
     $CntList = new EaseHtmlTableTag(null,array('class'=>'table'));
 
     $Cid = 1;

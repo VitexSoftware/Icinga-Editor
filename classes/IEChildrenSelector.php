@@ -30,7 +30,7 @@ class IEChildrenSelector extends EaseContainer
 
             $Service = new IEService();
 
-            $ServicesAssigned = $Service->myDbLink->queryToArray('SELECT ' . $Service->MyKeyColumn . ',' . $Service->NameColumn . ' FROM ' . $Service->myTable . ' WHERE ' . $FieldName . ' LIKE \'%"' . $Host->getName() . '"%\'', $Service->MyKeyColumn);
+            $ServicesAssigned = $Service->myDbLink->queryToArray('SELECT ' . $Service->myKeyColumn . ',' . $Service->nameColumn . ' FROM ' . $Service->myTable . ' WHERE ' . $FieldName . ' LIKE \'%"' . $Host->getName() . '"%\'', $Service->myKeyColumn);
 
             $AllServices = $Service->getListing();
             foreach ($AllServices as $ServiceID => $ServiceInfo) {
@@ -46,8 +46,8 @@ class IEChildrenSelector extends EaseContainer
             if (count($AllServices)) {
 
                 foreach ($AllServices as $ServiceID => $ServiceInfo) {
-                    $Jellybean = new EaseHtmlSpanTag($ServiceInfo[$Service->NameColumn], null, array('class' => 'jellybean gray'));
-                    $Jellybean->addItem(new EaseHtmlATag('?addservice=' . $ServiceInfo[$Service->NameColumn] . '&amp;service_id=' . $ServiceID . '&amp;' . $Host->getMyKeyColumn() . '=' . $Host->getMyKey() . '&amp;' . $Host->NameColumn . '=' . $Host->getName(), $ServiceInfo[$Service->NameColumn]));
+                    $Jellybean = new EaseHtmlSpanTag($ServiceInfo[$Service->nameColumn], null, array('class' => 'jellybean gray'));
+                    $Jellybean->addItem(new EaseHtmlATag('?addservice=' . $ServiceInfo[$Service->nameColumn] . '&amp;service_id=' . $ServiceID . '&amp;' . $Host->getmyKeyColumn() . '=' . $Host->getMyKey() . '&amp;' . $Host->nameColumn . '=' . $Host->getName(), $ServiceInfo[$Service->nameColumn]));
                     $InitialContent->addItem($Jellybean);
                 }
             }
@@ -56,9 +56,9 @@ class IEChildrenSelector extends EaseContainer
             if (count($ServicesAssigned)) {
                 $InitialContent->addItem('</br>');
                 foreach ($ServicesAssigned as $ServiceID => $ServiceInfo) {
-                    $Jellybean = new EaseHtmlSpanTag($ServiceInfo[$Service->NameColumn], null, array('class' => 'jellybean'));
-                    $Jellybean->addItem($ServiceInfo[$Service->NameColumn]);
-                    $Jellybean->addItem(new EaseHtmlATag('?delservice=' . $ServiceInfo[$Service->NameColumn] . '&amp;service_id=' . $ServiceID . '&amp;' . $Host->getMyKeyColumn() . '=' . $Host->getMyKey() . '&amp;' . $Host->NameColumn . '=' . $Host->getName(), EaseTWBPart::GlyphIcon('remove')));
+                    $Jellybean = new EaseHtmlSpanTag($ServiceInfo[$Service->nameColumn], null, array('class' => 'jellybean'));
+                    $Jellybean->addItem($ServiceInfo[$Service->nameColumn]);
+                    $Jellybean->addItem(new EaseHtmlATag('?delservice=' . $ServiceInfo[$Service->nameColumn] . '&amp;service_id=' . $ServiceID . '&amp;' . $Host->getmyKeyColumn() . '=' . $Host->getMyKey() . '&amp;' . $Host->nameColumn . '=' . $Host->getName(), EaseTWBPart::GlyphIcon('remove')));
                     $InitialContent->addItem($Jellybean);
                 }
             }
@@ -74,8 +74,8 @@ class IEChildrenSelector extends EaseContainer
     static function saveMembers($Request)
     {
         $Service = new IEService();
-        if (isset($Request[$Service->MyKeyColumn])) {
-            if ($Service->loadFromMySQL($Request[$Service->MyKeyColumn])) {
+        if (isset($Request[$Service->myKeyColumn])) {
+            if ($Service->loadFromMySQL($Request[$Service->myKeyColumn])) {
                 if (isset($Request['addservice']) || isset($Request['delservice'])) {
                     if (isset($Request['addservice'])) {
                         $Service->addHostName($Request['host_id'], $Request['host_name']);

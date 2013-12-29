@@ -120,7 +120,7 @@ if ($HostName || $Address || $Address6) {
     $oUser->addStatusMessage('Address6: ' . $Address6);
 
     $host->setData(array(
-        $host->UserColumn => $oUser->getUserID(),
+        $host->userColumn => $oUser->getUserID(),
 //        'check_command'=>'check-host-alive',
         'host_name' => $HostName,
         'address' => $Address,
@@ -142,7 +142,7 @@ if ($HostName || $Address || $Address6) {
         
         $HostGroup = new IEHostgroup;
         if($HostGroup->loadDefault()){
-            $HostGroup->setDataValue($HostGroup->NameColumn, EaseShared::user()->getUserLogin());
+            $HostGroup->setDataValue($HostGroup->nameColumn, EaseShared::user()->getUserLogin());
         }
         $HostGroup->addMember('members', $host->getId(), $host->getName());
         $HostGroup->saveToMySQL();

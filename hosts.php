@@ -19,13 +19,13 @@ $oPage->addItem(new IEPageTop(_('Přehled hostů')));
 
 
 $host = new IEHost();
-$Hosts = $host->getListing();
+$hosts = $host->getListing();
 
-if ($Hosts) {
+if ($hosts) {
     $oPage->columnII->addItem(new EaseHtmlH4Tag(_('Hosty')));
     $CntList = new EaseHtmlTableTag(null,array('class'=>'table'));
     $Cid = 1;
-    foreach ($Hosts as $CID => $CInfo) {
+    foreach ($hosts as $CID => $CInfo) {
         if($CInfo['register'] != 1){
             continue;
         }
@@ -34,7 +34,7 @@ if ($Hosts) {
             $LastRow->setTagCss(array('border-right' => '1px solid red'));
         }
         if($CInfo['public'] == 1){
-            if($CInfo[$host->UserColumn] == $oUser->getUserID()){
+            if($CInfo[$host->userColumn] == $oUser->getUserID()){
                 $LastRow->setTagCss(array('border-left'=>'1px solid green'));
             } else {
                 $LastRow->setTagCss(array('border-left'=>'1px solid blue'));
@@ -46,7 +46,7 @@ if ($Hosts) {
     $oPage->columnI->addItem(new EaseHtmlH4Tag(_('Předlohy')));
     $Cnt2List = new EaseHtmlTableTag(null,array('class'=>'table'));
     $Cid = 1;
-    foreach ($Hosts as $CID => $CInfo) {
+    foreach ($hosts as $CID => $CInfo) {
         if(intval($CInfo['register'])){
             continue;
         }
@@ -55,7 +55,7 @@ if ($Hosts) {
             $LastRow->setTagCss(array('border-right' => '1px solid red'));
         }
        if($CInfo['public'] == 1){
-            if($CInfo[$host->UserColumn] == $oUser->getUserID()){
+            if($CInfo[$host->userColumn] == $oUser->getUserID()){
                 $LastRow->setTagCss(array('border-left'=>'1px solid green'));
             } else {
                 $LastRow->setTagCss(array('border-left'=>'1px solid blue'));

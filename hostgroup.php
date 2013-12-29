@@ -41,7 +41,7 @@ $HostgroupEdit = new IECfgEditor($Hostgroup);
 $form = $oPage->columnII->addItem(new EaseHtmlForm('Hostgroup', 'hostgroup.php', 'POST', $HostgroupEdit, array('class' => 'form-horizontal')));
 $form->setTagID($form->getTagName());
 if (!is_null($Hostgroup->getMyKey())) {
-    $form->addItem(new EaseHtmlInputHiddenTag($Hostgroup->getMyKeyColumn(), $Hostgroup->getMyKey()));
+    $form->addItem(new EaseHtmlInputHiddenTag($Hostgroup->getmyKeyColumn(), $Hostgroup->getMyKey()));
 }
 $form->addItem('<br>');
 $form->addItem(new EaseTWSubmitButton(_('Uložit'), 'success'));

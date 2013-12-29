@@ -49,7 +49,7 @@ $ContactEdit = new IECfgEditor($Contact);
 $form = $oPage->columnII->addItem(new EaseHtmlForm('Contact', 'contact.php', 'POST', $ContactEdit, array('class' => 'form-horizontal')));
 $form->setTagID($form->getTagName());
 if (!is_null($Contact->getMyKey())) {
-    $form->addItem(new EaseHtmlInputHiddenTag($Contact->getMyKeyColumn(), $Contact->getMyKey()));
+    $form->addItem(new EaseHtmlInputHiddenTag($Contact->getmyKeyColumn(), $Contact->getMyKey()));
 }
 $form->addItem('<br>');
 $form->addItem(new EaseTWSubmitButton(_('Uložit'),'success'));

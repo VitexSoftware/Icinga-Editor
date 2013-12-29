@@ -129,7 +129,7 @@ class IECfgEditor extends EaseContainer
                 break;
             case 'SELECT':
                 $IDColumn = $keywordInfo['refdata']['idcolumn'];
-                $NameColumn = $keywordInfo['refdata']['captioncolumn'];
+                $nameColumn = $keywordInfo['refdata']['captioncolumn'];
                 $STable = $keywordInfo['refdata']['table'];
                 if (isset($keywordInfo['refdata']['condition'])) {
                     $Conditions = $keywordInfo['refdata']['condition'];
@@ -137,13 +137,13 @@ class IECfgEditor extends EaseContainer
                     $Conditions = array();
                 }
 
-                $SqlConds = " ( " . $this->ObjectEdited->myDbLink->prepSelect(array_merge($Conditions, array($this->ObjectEdited->UserColumn => EaseShared::user()->getUserID()))) . " ) OR ( " . $this->ObjectEdited->myDbLink->prepSelect(array_merge($Conditions, array('public' => 1))) . ")  ";
+                $SqlConds = " ( " . $this->ObjectEdited->myDbLink->prepSelect(array_merge($Conditions, array($this->ObjectEdited->userColumn => EaseShared::user()->getUserID()))) . " ) OR ( " . $this->ObjectEdited->myDbLink->prepSelect(array_merge($Conditions, array('public' => 1))) . ")  ";
 
                 $MembersAviableArray = EaseShared::myDbLink()->queryTo2DArray(
-                        'SELECT ' . $NameColumn . ' ' .
+                        'SELECT ' . $nameColumn . ' ' .
                         'FROM `' . DB_PREFIX . $STable . '` ' .
                         'WHERE ' . $SqlConds . ' ' .
-                        'ORDER BY ' . $NameColumn, $IDColumn);
+                        'ORDER BY ' . $nameColumn, $IDColumn);
 
                 $Selector = $fieldBlock->addItem(new EaseLabeledSelect($fieldName, $value, $keywordInfo['title']));
                 if (!$Required) {
@@ -156,7 +156,7 @@ class IECfgEditor extends EaseContainer
 
             case 'SELECT+PARAMS':
                 $IDColumn = $keywordInfo['refdata']['idcolumn'];
-                $NameColumn = $keywordInfo['refdata']['captioncolumn'];
+                $nameColumn = $keywordInfo['refdata']['captioncolumn'];
                 $STable = $keywordInfo['refdata']['table'];
                 if (isset($keywordInfo['refdata']['condition'])) {
                     $Conditions = $keywordInfo['refdata']['condition'];
@@ -166,14 +166,14 @@ class IECfgEditor extends EaseContainer
 
                 $Conditions['command_type'] = 'check';
 
-                $SqlConds = " ( " . $this->ObjectEdited->myDbLink->prepSelect(array_merge($Conditions, array('command_local' => true, $this->ObjectEdited->UserColumn => EaseShared::user()->getUserID()))) . " ) OR ( " . $this->ObjectEdited->myDbLink->prepSelect($Conditions) . " AND public=1 )  ";
-//                    $SqlConds = $this->ObjectEdited->myDbLink->prepSelect(array_merge($Conditions, array($this->ObjectEdited->UserColumn => EaseShared::user()->getUserID())));
+                $SqlConds = " ( " . $this->ObjectEdited->myDbLink->prepSelect(array_merge($Conditions, array('command_local' => true, $this->ObjectEdited->userColumn => EaseShared::user()->getUserID()))) . " ) OR ( " . $this->ObjectEdited->myDbLink->prepSelect($Conditions) . " AND public=1 )  ";
+//                    $SqlConds = $this->ObjectEdited->myDbLink->prepSelect(array_merge($Conditions, array($this->ObjectEdited->userColumn => EaseShared::user()->getUserID())));
 
                 $MembersAviableArray = EaseShared::myDbLink()->queryTo2DArray(
-                        'SELECT ' . $NameColumn . ' ' .
+                        'SELECT ' . $nameColumn . ' ' .
                         'FROM `' . DB_PREFIX . $STable . '` ' .
                         'WHERE ' . $SqlConds . ' ' .
-                        'ORDER BY ' . $NameColumn, $IDColumn);
+                        'ORDER BY ' . $nameColumn, $IDColumn);
 
                 $Selector = $fieldBlock->addItem(new EaseLabeledSelect($fieldName, $value, $keywordInfo['title']));
                 if (!$Required) {
@@ -183,14 +183,14 @@ class IECfgEditor extends EaseContainer
                     $Selector->addItems(array_combine($MembersAviableArray, $MembersAviableArray));
                 }
 
-                $SqlConds = " ( " . $this->ObjectEdited->myDbLink->prepSelect(array_merge($Conditions, array('command_remote' => true, $this->ObjectEdited->UserColumn => EaseShared::user()->getUserID()))) . " ) OR ( " . $this->ObjectEdited->myDbLink->prepSelect($Conditions) . " AND public=1 )  ";
-//                    $SqlConds = $this->ObjectEdited->myDbLink->prepSelect(array_merge($Conditions, array($this->ObjectEdited->UserColumn => EaseShared::user()->getUserID())));
+                $SqlConds = " ( " . $this->ObjectEdited->myDbLink->prepSelect(array_merge($Conditions, array('command_remote' => true, $this->ObjectEdited->userColumn => EaseShared::user()->getUserID()))) . " ) OR ( " . $this->ObjectEdited->myDbLink->prepSelect($Conditions) . " AND public=1 )  ";
+//                    $SqlConds = $this->ObjectEdited->myDbLink->prepSelect(array_merge($Conditions, array($this->ObjectEdited->userColumn => EaseShared::user()->getUserID())));
 
                 $MembersAviableArray = EaseShared::myDbLink()->queryTo2DArray(
-                        'SELECT ' . $NameColumn . ' ' .
+                        'SELECT ' . $nameColumn . ' ' .
                         'FROM `' . DB_PREFIX . $STable . '` ' .
                         'WHERE ' . $SqlConds . ' ' .
-                        'ORDER BY ' . $NameColumn, $IDColumn);
+                        'ORDER BY ' . $nameColumn, $IDColumn);
 
                 $AddNewItem = $fieldBlock->addItem(new EaseHtmlInputSearchTag($fieldName . '-remote', $this->ObjectEdited->getDataValue($fieldName . '-remote'), array('class' => 'search-input', 'title' => _('vzdálený test'))));
                 $AddNewItem->setDataSource('jsoncommand.php?maxRows=10');
@@ -211,8 +211,8 @@ class IECfgEditor extends EaseContainer
     public function fullEditor()
     {
         if (EaseShared::user()->getSettingValue('admin')) {
-            $this->ObjectEdited->KeywordsInfo[$this->ObjectEdited->UserColumn] = array('title' => 'vlastník');
-            $this->ObjectEdited->UseKeywords[$this->ObjectEdited->UserColumn] = 'USER';
+            $this->ObjectEdited->KeywordsInfo[$this->ObjectEdited->userColumn] = array('title' => 'vlastník');
+            $this->ObjectEdited->UseKeywords[$this->ObjectEdited->userColumn] = 'USER';
         }
 
         if ($this->ObjectEdited->AllowTemplating) {
@@ -321,7 +321,7 @@ class IECfgEditor extends EaseContainer
 
             if (isset($template)) {
                 $TempValue = $template->getDataValue($fieldName);
-                if (!is_null($TempValue) && ($fieldName != $this->ObjectEdited->NameColumn) && !$required) { //Skrýt nedůležité položky
+                if (!is_null($TempValue) && ($fieldName != $this->ObjectEdited->nameColumn) && !$required) { //Skrýt nedůležité položky
                     EaseShared::webPage()->addJavaScript("$('#" . $fieldName . "-controls').hide();", null, true);
                 }
             }
@@ -450,7 +450,7 @@ class IECfgEditor extends EaseContainer
 
             if (isset($template)) {
                 $tempValue = $template->getDataValue($fiedlName);
-                if (!is_null($tempValue) && ($fieldName != $this->ObjectEdited->NameColumn) && !$Required) { //Skrýt nedůležité položky
+                if (!is_null($tempValue) && ($fieldName != $this->ObjectEdited->nameColumn) && !$Required) { //Skrýt nedůležité položky
                     EaseShared::webPage()->addJavaScript("$('#" . $fieldName . "-controls').hide();", null, true);
                 }
             }

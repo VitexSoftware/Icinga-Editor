@@ -77,7 +77,7 @@ class IETextInputSaver extends EaseLabeledTextInput {
         if (is_null($Data)) {
             $this->GetData();
         }
-        unset($Data[$this->GetMyKeyColumn()]);
+        unset($Data[$this->GetmyKeyColumn()]);
         $KeyName = current(array_keys($Data));
         return EaseDbMySqli::CreateMissingColumns($this, array($KeyName => str_repeat(' ', 1000)));
     }

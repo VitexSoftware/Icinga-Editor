@@ -35,7 +35,7 @@ if ($Contacts) {
             $LastRow->setTagCss(array('border-right' => '1px solid red'));
         }
         if($CInfo['public'] == 1){
-            if($CInfo[$Contact->UserColumn] == $oUser->getUserID()){
+            if($CInfo[$Contact->userColumn] == $oUser->getUserID()){
                 $LastRow->setTagCss(array('border-left'=>'1px solid green'));
             } else {
                 $LastRow->setTagCss(array('border-left'=>'1px solid blue'));
@@ -57,7 +57,7 @@ if ($Contacts) {
             $LastRow->setTagCss(array('border-right' => '1px solid red'));
         }
        if($CInfo['public'] == 1){
-            if($CInfo[$Contact->UserColumn] == $oUser->getUserID()){
+            if($CInfo[$Contact->userColumn] == $oUser->getUserID()){
                 $LastRow->setTagCss(array('border-left'=>'1px solid green'));
             } else {
                 $LastRow->setTagCss(array('border-left'=>'1px solid blue'));

@@ -11,7 +11,7 @@ require_once 'IEHost.php';
 class IEParentSelector extends EaseContainer
 {
 
-    public $MyKeyColumn = 'host_name';
+    public $myKeyColumn = 'host_name';
 
     /**
      * Editor k přidávání členů skupiny
@@ -21,7 +21,7 @@ class IEParentSelector extends EaseContainer
     public function __construct($host)
     {
         parent::__construct();
-        $fieldName = $host->getMyKeyColumn();
+        $fieldName = $host->getmyKeyColumn();
         $initialContent = new EaseHtmlFieldSet(_('rodiče hostu'));
         
         $addparentForm = $initialContent->addItem( new EaseTWBForm('addparent') );
@@ -42,8 +42,9 @@ class IEParentSelector extends EaseContainer
                 }
             }
 
+            $parentsAssigned = array();
             foreach ($host->getDataValue('parents') as $parentAssigned) {
-                $parentID = EaseShared::myDbLink()->queryToValue('SELECT `'.$host->MyKeyColumn.'` FROM '. $host->myTable .' WHERE `'. $host->NameColumn .'` = \''. addSlashes($parentAssigned) .'\'' );
+                $parentID = EaseShared::myDbLink()->queryToValue('SELECT `'.$host->myKeyColumn.'` FROM '. $host->myTable .' WHERE `'. $host->nameColumn .'` = \''. addSlashes($parentAssigned) .'\'' );
                 $parentsAssigned[$parentID] = $parentAssigned;
                 unset($allParents[$parentID]);
             }
@@ -52,8 +53,8 @@ class IEParentSelector extends EaseContainer
 
                 foreach ($allParents as $parentID => $parentInfo) {
                     //localhost/IcingaEditor/host.php?add=parents&member=60&name=192.168.222.42&host_id=9#parents
-                    $jellybean = new EaseHtmlSpanTag($parentInfo[$host->NameColumn], null, array('class' => 'jellybean gray'));
-                    $jellybean->addItem(new EaseHtmlATag('?add=parents&amp;name=' . $parentInfo[$host->NameColumn] . '&amp;member=' . $parentID .  '&amp;' . $host->MyKeyColumn . '=' . $host->getId(), $parentInfo[$host->NameColumn]));
+                    $jellybean = new EaseHtmlSpanTag($parentInfo[$host->nameColumn], null, array('class' => 'jellybean gray'));
+                    $jellybean->addItem(new EaseHtmlATag('?add=parents&amp;name=' . $parentInfo[$host->nameColumn] . '&amp;member=' . $parentID .  '&amp;' . $host->myKeyColumn . '=' . $host->getId(), $parentInfo[$host->nameColumn]));
                     $initialContent->addItem($jellybean);
                 }
             }
@@ -64,7 +65,7 @@ class IEParentSelector extends EaseContainer
                     $jellybean = new EaseHtmlSpanTag($parentInfo, null, array('class' => 'jellybean'));
                     $jellybean->addItem($parentInfo);
                     //localhost/IcingaEditor/host.php?del=parents&member=0&name=natwor&host_id=9#parents                    
-                    $jellybean->addItem(new EaseHtmlATag('?del=parents&amp;name=' . $parentInfo . '&amp;member=' . $parentID . '&amp;' . $host->getMyKeyColumn() . '=' . $host->getMyKey() . '&amp;' . $host->MyKeyColumn . '=' . $host->getId(), EaseTWBPart::GlyphIcon('remove')));
+                    $jellybean->addItem(new EaseHtmlATag('?del=parents&amp;name=' . $parentInfo . '&amp;member=' . $parentID . '&amp;' . $host->getmyKeyColumn() . '=' . $host->getMyKey() . '&amp;' . $host->myKeyColumn . '=' . $host->getId(), EaseTWBPart::GlyphIcon('remove')));
                     $initialContent->addItem($jellybean);
                 }
             }

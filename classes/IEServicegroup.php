@@ -14,8 +14,8 @@ class IEServicegroup extends IECfg
 {
 
     public $myTable = 'servicegroup';
-    public $MyKeyColumn = 'servicegroup_id';
-    public $NameColumn = 'servicegroup_name';
+    public $myKeyColumn = 'servicegroup_id';
+    public $nameColumn = 'servicegroup_name';
     public $Keyword = 'servicegroup';
 
     /**

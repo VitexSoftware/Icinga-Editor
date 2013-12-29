@@ -31,7 +31,7 @@ if ($Services) {
             $LastRow->setTagCss(array('border-right' => '1px solid red'));
         }
         if ($CInfo['public'] == 1) {
-            if ($CInfo[$service->UserColumn] == $oUser->getUserID()) {
+            if ($CInfo[$service->userColumn] == $oUser->getUserID()) {
                 $LastRow->setTagCss(array('border-left' => '1px solid green'));
             } else {
                 $LastRow->setTagCss(array('border-left' => '1px solid blue'));
@@ -48,12 +48,12 @@ if ($Services) {
         if($CInfo['register'] != 1){
             continue;
         }
-        $LastRow = $CntList->addRowColumns(array($Cid++, new EaseHtmlATag('service.php?service_id=' . $CInfo['service_id'], $CInfo[$service->NameColumn] . ' <i class="icon-edit"></i>')));
+        $LastRow = $CntList->addRowColumns(array($Cid++, new EaseHtmlATag('service.php?service_id=' . $CInfo['service_id'], $CInfo[$service->nameColumn] . ' <i class="icon-edit"></i>')));
         if ($CInfo['generate'] == 0) {
             $LastRow->setTagCss(array('border-right' => '1px solid red'));
         }
         if ($CInfo['public'] == 1) {
-            if ($CInfo[$service->UserColumn] == $oUser->getUserID()) {
+            if ($CInfo[$service->userColumn] == $oUser->getUserID()) {
                 $LastRow->setTagCss(array('border-left' => '1px solid green'));
             } else {
                 $LastRow->setTagCss(array('border-left' => '1px solid blue'));

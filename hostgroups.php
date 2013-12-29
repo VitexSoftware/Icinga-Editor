@@ -22,7 +22,7 @@ $Hostgroup = new IEHostgroup();
 $PocContactgroup = $Hostgroup->getMyRecordsCount();
 
 if ($PocContactgroup) {
-    $Hostgroups = $Hostgroup->myDbLink->queryToArray('SELECT ' . $Hostgroup->getMyKeyColumn() . ', hostgroup_name, DatSave FROM ' . $Hostgroup->myTable . ' WHERE user_id=' . $oUser->getUserID(), 'hostgroup_id');
+    $Hostgroups = $Hostgroup->myDbLink->queryToArray('SELECT ' . $Hostgroup->getmyKeyColumn() . ', hostgroup_name, DatSave FROM ' . $Hostgroup->myTable . ' WHERE user_id=' . $oUser->getUserID(), 'hostgroup_id');
     $CntList = new EaseHtmlTableTag(null,array('class'=>'table'));
 
     $Cid = 1;
