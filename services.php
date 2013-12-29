@@ -19,7 +19,7 @@ $service = new IEService();
 $Services = $service->getListing();
 
 if ($Services) {
-    $oPage->column1->addItem(new EaseHtmlH4Tag(_('Předlohy služeb')));
+    $oPage->columnI->addItem(new EaseHtmlH4Tag(_('Předlohy služeb')));
     $CntList = new EaseHtmlTableTag(null, array('class' => 'table'));
     $Cid = 1;
     foreach ($Services as $CID => $CInfo) {
@@ -38,10 +38,10 @@ if ($Services) {
             }
         }
     }
-    $oPage->column1->addItem($CntList);
+    $oPage->columnI->addItem($CntList);
 
 
-    $oPage->column2->addItem(new EaseHtmlH4Tag(_('Služby')));
+    $oPage->columnII->addItem(new EaseHtmlH4Tag(_('Služby')));
     $CntList = new EaseHtmlTableTag(null, array('class' => 'table'));
     $Cid = 1;
     foreach ($Services as $CID => $CInfo) {
@@ -60,12 +60,12 @@ if ($Services) {
             }
         }
     }
-    $oPage->column2->addItem($CntList);
+    $oPage->columnII->addItem($CntList);
 } else {
     $oUser->addStatusMessage(_('Nemáte definovanou žádnou službu'), 'warning');
 }
 
-$oPage->column3->addItem(new EaseTWBLinkButton('service.php', _('Založit službu <i class="icon-edit"></i>')));
+$oPage->columnIII->addItem(new EaseTWBLinkButton('service.php', _('Založit službu <i class="icon-edit"></i>')));
 
 
 

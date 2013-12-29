@@ -19,8 +19,8 @@ $oPage->addItem(new IEPageTop(_('Přegenerování veškeré konfigurace')));
 system('rm '.constant('CFG_GENERATED').'/*');
 
 $OriginalUserID = $oUser->getUserID();
-$Users = EaseShared::user()->getAllFromMySQL();
-foreach ($Users as $UserData) {
+$users = EaseShared::user()->getAllFromMySQL();
+foreach ($users as $UserData) {
     EaseShared::user(new EaseUser(intval($UserData['id'])));
     EaseShared::user()->loginSuccess();
 
@@ -117,11 +117,11 @@ $oUser->setSettingValue('admin',TRUE);
 
                 if (strstr($Line, 'has no services associated with it!')) {
                     preg_match("/\'(.*)\'/", $Line, $keywords);
-                    $Host = & $Generator->IEClasses['host'];
-                    $Host->setMyKeyColumn($Host->NameColumn);
-                    $Host->loadFromMySql($keywords[1]);
-                    $Host->resetObjectIdentity();
-                    $Line = '<span class="label label-warning">' . _('Varování:') . '</span> Host ' . '<a href="host.php?host_id=' . $Host->getMyKey() . '">' . $Host->getName() . '</a> ' . _('nemá přiřazené žádné služby');
+                    $host = & $Generator->IEClasses['host'];
+                    $host->setMyKeyColumn($host->NameColumn);
+                    $host->loadFromMySql($keywords[1]);
+                    $host->resetObjectIdentity();
+                    $Line = '<span class="label label-warning">' . _('Varování:') . '</span> Host ' . '<a href="host.php?host_id=' . $host->getMyKey() . '">' . $host->getName() . '</a> ' . _('nemá přiřazené žádné služby');
                 } else {
                     $Line = str_replace('Warning:', '<span class="label label-warning">' . _('Varování:') . '</span>', $Line);
                 }
@@ -150,7 +150,7 @@ $oUser->setSettingValue('admin',TRUE);
         fclose($Testing);
 
         if (!intval($ErrorCount) && !is_null($WarningCount)) {
-            $oPage->column3->addItem(new EaseTWBLinkButton('reload.php', _('Reload icingy') . ' <i class="icon-refresh"></i>'));
+            $oPage->columnIII->addItem(new EaseTWBLinkButton('reload.php', _('Reload icingy') . ' <i class="icon-refresh"></i>'));
         }
     }
 

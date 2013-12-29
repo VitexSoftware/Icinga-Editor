@@ -16,7 +16,7 @@ require_once 'IEcfg.php';
 class IECommand extends IECfg
 {
 
-    public $MyTable = 'command';
+    public $myTable = 'command';
     public $MyKeyColumn = 'command_id';
     public $NameColumn = 'command_name';
     public $Keyword = 'command';

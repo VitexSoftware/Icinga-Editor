@@ -77,7 +77,7 @@ if ($FormOK && isset($_POST)) {
 
     $LoginForm->fillUp($_POST);
 
-    $oPage->column2->addItem( new EaseHtmlFieldSet(_('změna hesla'), $LoginForm));
+    $oPage->columnII->addItem( new EaseHtmlFieldSet(_('změna hesla'), $LoginForm));
 }
 
 $oPage->AddItem(new IEPageBottom());

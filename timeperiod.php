@@ -51,7 +51,7 @@ $oPage->addItem(new IEPageTop(_('Editace časové periody') . ' ' . $Timeperiod-
 $TimepriodEdit = new IECfgEditor($Timeperiod);
 
 
-$form = $oPage->column2->addItem(new EaseHtmlForm('Perioda', 'timeperiod.php', 'POST', $TimepriodEdit, array('class' => 'form-horizontal')));
+$form = $oPage->columnII->addItem(new EaseHtmlForm('Perioda', 'timeperiod.php', 'POST', $TimepriodEdit, array('class' => 'form-horizontal')));
 $form->setTagID($form->getTagName());
 if (!is_null($Timeperiod->getMyKey())) {
     $form->addItem(new EaseHtmlInputHiddenTag($Timeperiod->getMyKeyColumn(), $Timeperiod->getMyKey()));
@@ -73,10 +73,10 @@ input.ui-button { width: 100%; }
 ');
 
 
-$oPage->column3->addItem($Timeperiod->deleteButton());
+$oPage->columnIII->addItem($Timeperiod->deleteButton());
 
 if ($Timeperiod->getId()) {
-    $oPage->column1->addItem($Timeperiod->ownerLinkButton());
+    $oPage->columnI->addItem($Timeperiod->ownerLinkButton());
 }
 
 

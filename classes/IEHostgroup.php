@@ -13,7 +13,7 @@ require_once 'IEcfg.php';
 class IEHostgroup extends IECfg
 {
 
-    public $MyTable = 'hostgroup';
+    public $myTable = 'hostgroup';
     public $MyKeyColumn = 'hostgroup_id';
     public $Keyword = 'hostgroup';
     public $NameColumn = 'hostgroup_name';
@@ -67,7 +67,7 @@ class IEHostgroup extends IECfg
      */
     function deleteHost($hostname)
     {
-        $MemberOf = EaseShared::myDbLink()->queryToArray('SELECT '.$this->getMyKeyColumn().','.$this->NameColumn.' FROM '. $this->MyTable.' WHERE members LIKE \'%"'.$hostname.'"%\' ',$this->getMyKeyColumn() );
+        $MemberOf = EaseShared::myDbLink()->queryToArray('SELECT '.$this->getMyKeyColumn().','.$this->NameColumn.' FROM '. $this->myTable.' WHERE members LIKE \'%"'.$hostname.'"%\' ',$this->getMyKeyColumn() );
         foreach ($MemberOf as $GroupID => $Group){
             $Found = false;
             $this->loadFromMySQL($GroupID);
@@ -96,7 +96,7 @@ class IEHostgroup extends IECfg
     }
 
     function loadDefault(){
-        $GroupID = EaseShared::myDbLink()->queryToValue('SELECT '.$this->getMyKeyColumn().' FROM '. $this->MyTable.' WHERE '.$this->UserColumn.'= ' . EaseShared::user()->getUserID().' ORDER BY '.$this->getMyKeyColumn().' DESC LIMIT 1');
+        $GroupID = EaseShared::myDbLink()->queryToValue('SELECT '.$this->getMyKeyColumn().' FROM '. $this->myTable.' WHERE '.$this->UserColumn.'= ' . EaseShared::user()->getUserID().' ORDER BY '.$this->getMyKeyColumn().' DESC LIMIT 1');
         if($GroupID){
             $this->loadFromMySQL((int)$GroupID);
             return true;
@@ -106,7 +106,7 @@ class IEHostgroup extends IECfg
 
     public function renameHost($oldname, $newname)
     {
-        $memberOf = EaseShared::myDbLink()->queryToArray('SELECT '.$this->getMyKeyColumn().','.$this->NameColumn.' FROM '. $this->MyTable.' WHERE members LIKE \'%"'.$oldname.'"%\' ',$this->getMyKeyColumn() );
+        $memberOf = EaseShared::myDbLink()->queryToArray('SELECT '.$this->getMyKeyColumn().','.$this->NameColumn.' FROM '. $this->myTable.' WHERE members LIKE \'%"'.$oldname.'"%\' ',$this->getMyKeyColumn() );
         foreach ($memberOf as $groupID => $group){
             $found = false;
             $this->loadFromMySQL($groupID);

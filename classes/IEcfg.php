@@ -22,7 +22,7 @@ class IEcfg extends EaseBrick
      * Tabulka do níž objekt ukládá svá data
      * @var string
      */
-    public $MyTable = NULL;
+    public $myTable = NULL;
 
     /**
      * Klíčové slovo objektu
@@ -103,7 +103,7 @@ class IEcfg extends EaseBrick
      */
     public function __construct($itemID = null)
     {
-        $this->setMyTable(constant('DB_PREFIX') . $this->MyTable);
+        $this->setmyTable(constant('DB_PREFIX') . $this->myTable);
         parent::__construct();
 
 //       foreach ($this->UseKeywords as $KeyWord => $ColumnType) {
@@ -140,7 +140,7 @@ class IEcfg extends EaseBrick
                 'title' => 'použít předlohu - template',
                 'mandatory' => true,
                 'refdata' => array(
-                    'table' => str_replace(DB_PREFIX, '', $this->MyTable),
+                    'table' => str_replace(DB_PREFIX, '', $this->myTable),
                     'captioncolumn' => 'name',
                     'idcolumn' => $this->MyKeyColumn,
                     'condition' => array('register' => 0)
@@ -323,7 +323,7 @@ class IEcfg extends EaseBrick
 
         $this->mySqlUp();
 
-        return $this->MyDbLink->createTable($sqlStruct);
+        return $this->myDbLink->createTable($sqlStruct);
     }
 
     /**
@@ -403,14 +403,14 @@ class IEcfg extends EaseBrick
      */
     public function dbInit()
     {
-        if ($this->MyDbLink->tableExist($this->MyTable)) {
-            $this->MyDbLink->exeQuery('DROP TABLE ' . $this->MyTable);
-            $this->addStatusMessage(sprintf(_('Tabulka %s byla smazána'), $this->MyTable), 'info');
+        if ($this->myDbLink->tableExist($this->myTable)) {
+            $this->myDbLink->exeQuery('DROP TABLE ' . $this->myTable);
+            $this->addStatusMessage(sprintf(_('Tabulka %s byla smazána'), $this->myTable), 'info');
         }
         if ($this->createSqlStructure()) {
-            $this->addStatusMessage(sprintf(_('Tabulka %s byla vytvořena'), $this->MyTable), 'success');
+            $this->addStatusMessage(sprintf(_('Tabulka %s byla vytvořena'), $this->myTable), 'success');
         } else {
-            $this->addStatusMessage(sprintf(_('Tabulka %s nebyla vytvořena'), $this->MyTable), 'error');
+            $this->addStatusMessage(sprintf(_('Tabulka %s nebyla vytvořena'), $this->myTable), 'error');
         }
     }
 
@@ -533,15 +533,15 @@ class IEcfg extends EaseBrick
 
         if ($this->AllowTemplating && $this->isTemplate()) {
             if (isset($data[$this->getMyKeyColumn()]) && (int) $data[$this->getMyKeyColumn()]) {
-                $Keycont = $this->MyDbLink->queryToValue('SELECT COUNT(*) FROM ' . $this->MyTable . ' WHERE `name`' . " = '" . $data['name'] . "' AND " . $this->MyKeyColumn . ' != ' . $data[$this->getMyKeyColumn()]);
+                $Keycont = $this->myDbLink->queryToValue('SELECT COUNT(*) FROM ' . $this->myTable . ' WHERE `name`' . " = '" . $data['name'] . "' AND " . $this->MyKeyColumn . ' != ' . $data[$this->getMyKeyColumn()]);
             } else {
-                $Keycont = $this->MyDbLink->queryToValue('SELECT COUNT(*) FROM ' . $this->MyTable . ' WHERE `name`' . " = '" . $data['name'] . "'");
+                $Keycont = $this->myDbLink->queryToValue('SELECT COUNT(*) FROM ' . $this->myTable . ' WHERE `name`' . " = '" . $data['name'] . "'");
             }
         } else {
             if (isset($data[$this->getMyKeyColumn()]) && (int) $data[$this->getMyKeyColumn()]) {
-                $Keycont = $this->MyDbLink->queryToValue('SELECT COUNT(*) FROM ' . $this->MyTable . ' WHERE ' . $this->NameColumn . " = '" . $data[$this->NameColumn] . "' AND " . $this->MyKeyColumn . ' != ' . $data[$this->getMyKeyColumn()]);
+                $Keycont = $this->myDbLink->queryToValue('SELECT COUNT(*) FROM ' . $this->myTable . ' WHERE ' . $this->NameColumn . " = '" . $data[$this->NameColumn] . "' AND " . $this->MyKeyColumn . ' != ' . $data[$this->getMyKeyColumn()]);
             } else {
-                $Keycont = $this->MyDbLink->queryToValue('SELECT COUNT(*) FROM ' . $this->MyTable . ' WHERE ' . $this->NameColumn . " = '" . $data[$this->NameColumn] . "'");
+                $Keycont = $this->myDbLink->queryToValue('SELECT COUNT(*) FROM ' . $this->myTable . ' WHERE ' . $this->NameColumn . " = '" . $data[$this->NameColumn] . "'");
             }
         }
         if ($Keycont) {
@@ -974,20 +974,20 @@ class IEcfg extends EaseBrick
     }
 
     /**
-     *
+     * Uloží položky sloupečku ?name=
      */
     public function saveMembers()
     {
         $webPage = EaseShared::webPage();
         $addColumn = $webPage->getGetValue('add');
+        $name = $webPage->getGetValue('name');
         if ($addColumn) {
-            $name = $webPage->getGetValue('name');
             $this->addMember($addColumn, $webPage->getRequestValue('member', 'int'), $name);
             $thisID = $this->saveToMySQL();
             if (is_null($thisID)) {
-                $this->addStatusMessage(sprintf(_('položka %s nebyla přidána do %s.%s.%s'), $name, $this->Keyword, $this->getName(), $addColumn), 'warning');
+                $this->addStatusMessage(sprintf(_('položka %s nebyla přidána do %s/%s/%s'), $name, $this->Keyword, $this->getName(), $addColumn), 'warning');
             } else {
-                $this->addStatusMessage(sprintf(_('položka %s byla přidána do %s.%s.%s'), $name, $this->Keyword, $this->getName(), $addColumn), 'success');
+                $this->addStatusMessage(sprintf(_('položka %s byla přidána do %s/%s/%s'), $name, $this->Keyword, $this->getName(), $addColumn), 'success');
             }
         }
         $delColumn = $webPage->getGetValue('del');
@@ -995,9 +995,9 @@ class IEcfg extends EaseBrick
             $del = $this->delMember($delColumn, $webPage->getRequestValue('member', 'int'), $webPage->getGetValue('name'));
             $thisID = $this->saveToMySQL();
             if (is_null($thisID) && !$del) {
-                $this->addStatusMessage(sprintf(_('položka %s nebyla odebrána z %s.%s.%s'), $name, $this->Keyword, $this->getName(), $addColumn), 'warning');
+                $this->addStatusMessage(sprintf(_('položka %s nebyla odebrána z %s/%s/%s'), $name, $this->Keyword, $this->getName(), $addColumn), 'warning');
             } else {
-                $this->addStatusMessage(sprintf(_('položka %s byla odebrána z %s.%s.%s'), $name, $this->Keyword, $this->getName(), $addColumn), 'success');
+                $this->addStatusMessage(sprintf(_('položka %s byla odebrána z %s/%s/%s'), $name, $this->Keyword, $this->getName(), $addColumn), 'success');
             }
         }
     }

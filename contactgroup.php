@@ -40,7 +40,7 @@ if ($delete == 'true') {
 
 $ContactgroupEdit = new IECfgEditor($Contactgroup);
 
-$form = $oPage->column2->addItem(new EaseHtmlForm('Contactgroup', 'contactgroup.php', 'POST', $ContactgroupEdit, array('class' => 'form-horizontal')));
+$form = $oPage->columnII->addItem(new EaseHtmlForm('Contactgroup', 'contactgroup.php', 'POST', $ContactgroupEdit, array('class' => 'form-horizontal')));
 $form->setTagID($form->getTagName());
 if (!is_null($Contactgroup->getMyKey())) {
     $form->addItem(new EaseHtmlInputHiddenTag($Contactgroup->getMyKeyColumn(), $Contactgroup->getMyKey()));

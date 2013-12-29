@@ -20,7 +20,7 @@ require_once 'IEHostgroup.php';
 class IEHost extends IECfg
 {
 
-    public $MyTable = 'hosts';
+    public $myTable = 'hosts';
     public $Keyword = 'host';
     public $NameColumn = 'host_name';
     public $MyKeyColumn = 'host_id';
@@ -235,7 +235,7 @@ class IEHost extends IECfg
         
         $DelAll = true;
         $Service = new IEService();
-        $ServicesAssigned = $Service->MyDbLink->queryToArray('SELECT ' . $Service->MyKeyColumn . ',' . $Service->NameColumn . ' FROM ' . $Service->MyTable . ' WHERE ' . 'host_name' . ' LIKE \'%"' . $this->getName() . '"%\'', $Service->MyKeyColumn);
+        $ServicesAssigned = $Service->myDbLink->queryToArray('SELECT ' . $Service->MyKeyColumn . ',' . $Service->NameColumn . ' FROM ' . $Service->myTable . ' WHERE ' . 'host_name' . ' LIKE \'%"' . $this->getName() . '"%\'', $Service->MyKeyColumn);
         foreach ($ServicesAssigned as $ServiceID => $ServiceInfo) {
             $Service->loadFromMySQL($ServiceID);
             $Service->delHostName($this->getId(), $this->getName());
@@ -289,7 +289,7 @@ class IEHost extends IECfg
         
         $renameAll = true;
         $service = new IEService();
-        $ServicesAssigned = $service->MyDbLink->queryToArray('SELECT ' . $service->MyKeyColumn . ',' . $service->NameColumn . ' FROM ' . $service->MyTable . ' WHERE ' . 'host_name' . ' LIKE \'%"' . $oldname . '"%\'', $service->MyKeyColumn);
+        $ServicesAssigned = $service->myDbLink->queryToArray('SELECT ' . $service->MyKeyColumn . ',' . $service->NameColumn . ' FROM ' . $service->myTable . ' WHERE ' . 'host_name' . ' LIKE \'%"' . $oldname . '"%\'', $service->MyKeyColumn);
         foreach ($ServicesAssigned as $ServiceID => $ServiceInfo) {
             $service->loadFromMySQL($ServiceID);
             $service->renameHostName($this->getId(), $newname);

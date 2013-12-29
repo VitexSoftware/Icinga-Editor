@@ -39,7 +39,7 @@ $FileForm->addItem( $TypeSelector );
 
 $FileForm->addItem(new EaseJQuerySubmitButton('Submit', _('importovat'), _('zahájí import příkazů')));
 
-$oPage->column2->addItem( new EaseHtmlFieldSet(_('Import konfigurace'), $FileForm) );
+$oPage->columnII->addItem( new EaseHtmlFieldSet(_('Import konfigurace'), $FileForm) );
 
 $oPage->addItem(new IEPageBottom());
 

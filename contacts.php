@@ -22,7 +22,7 @@ $Contact = new IEContact();
 $Contacts = $Contact->getListing();
 
 if ($Contacts) {
-    $oPage->column2->addItem(new EaseHtmlH4Tag(_('Kontakty')));
+    $oPage->columnII->addItem(new EaseHtmlH4Tag(_('Kontakty')));
     $CntList = new EaseHtmlTableTag(null,array('class'=>'table'));
     $Cid = 1;
     foreach ($Contacts as $CID => $CInfo) {
@@ -42,9 +42,9 @@ if ($Contacts) {
             }
         }
     }
-    $oPage->column2->addItem($CntList);
+    $oPage->columnII->addItem($CntList);
 
-    $oPage->column1->addItem(new EaseHtmlH4Tag(_('Předlohy')));
+    $oPage->columnI->addItem(new EaseHtmlH4Tag(_('Předlohy')));
     $Cnt2List = new EaseHtmlTableTag(null,array('class'=>'table'));
     $Cid = 1;
     foreach ($Contacts as $CID => $CInfo) {
@@ -64,14 +64,14 @@ if ($Contacts) {
             }
         }
     }
-    $oPage->column1->addItem($Cnt2List);
+    $oPage->columnI->addItem($Cnt2List);
     
 } else {
     $oUser->addStatusMessage(_('Nemáte definovaný žádný contact'), 'warning');
-    $oPage->column3->addItem(new EaseTWBLinkButton('contact.php?autocreate=default', _('Založit výchozí kontakt <i class="icon-edit"></i>')));
+    $oPage->columnIII->addItem(new EaseTWBLinkButton('contact.php?autocreate=default', _('Založit výchozí kontakt <i class="icon-edit"></i>')));
 }
 
-$oPage->column3->addItem(new EaseTWBLinkButton('contact.php', _('Založit kontakt <i class="icon-edit"></i>')));
+$oPage->columnIII->addItem(new EaseTWBLinkButton('contact.php', _('Založit kontakt <i class="icon-edit"></i>')));
 
 
 

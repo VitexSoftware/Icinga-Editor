@@ -41,7 +41,7 @@ $ImportForm->addItem(new EaseLabeledCheckbox('dbinit', null, _('Znovu vytvořit 
 $ImportForm->addItem('<br clear="all">');
 $ImportForm->addItem(new EaseJQuerySubmitButton('submit', _('importovat'), _('Spustí proces importu')));
 
-$oPage->column2->addItem(new EaseHtmlFieldSet(_('parametry inicializace'), $ImportForm));
+$oPage->columnII->addItem(new EaseHtmlFieldSet(_('parametry inicializace'), $ImportForm));
 
 $oPage->draw();
 ?>

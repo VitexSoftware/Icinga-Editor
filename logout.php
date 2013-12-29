@@ -20,7 +20,7 @@ if ($oUser->getUserID()) {
 
 $oPage->addItem(new IEPageTop(_('Odhlášení')));
 
-$oPage->column2->addItem(new EaseHtmlDivTag(NULL, _('Děkujeme za vaši přízeň a těšíme se na další návštěvu')));
+$oPage->columnII->addItem(new EaseHtmlDivTag(NULL, _('Děkujeme za vaši přízeň a těšíme se na další návštěvu')));
 
 $oPage->addItem(new IEPageBottom());
 

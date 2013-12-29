@@ -37,10 +37,10 @@ $Saver->setDataValue($Field, $Value);
 
 if(is_null($Saver->SaveToMySql())){
     header('HTTP/1.0 501 Not Implemented',501);
-    $oUser->addStatusMessage(_('Chyba ukládání do databáze: '). ' ' . $Saver->MyDbLink->ErrorText . ': ' . 
+    $oUser->addStatusMessage(_('Chyba ukládání do databáze: '). ' ' . $Saver->myDbLink->ErrorText . ': ' . 
             _('Třída').': <strong>'.$SaverClass.'</strong> '. 
-            _('Tabulka').': <strong>'.$Saver->MyTable.'</strong> '. 
+            _('Tabulka').': <strong>'.$Saver->myTable.'</strong> '. 
             _('Pole').': <strong>'.$Field.'</strong> '.
-            _('Hodnota').': <strong>'.$Value.'</strong> <tt>'.$Saver->MyDbLink->LastQuery.'</tt>','error');
+            _('Hodnota').': <strong>'.$Value.'</strong> <tt>'.$Saver->myDbLink->LastQuery.'</tt>','error');
 }
 ?>

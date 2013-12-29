@@ -31,19 +31,19 @@ class IEWebPage extends EaseTWBWebPage
      * První sloupec
      * @var EaseHtmlDivTag 
      */
-    public $column1 = NULL;
+    public $columnI = NULL;
 
     /**
      * Druhý sloupec
      * @var EaseHtmlDivTag 
      */
-    public $column2 = NULL;
+    public $columnII = NULL;
 
     /**
      * Třetí sloupec
      * @var EaseHtmlDivTag 
      */
-    public $column3 = NULL;
+    public $columnIII = NULL;
 
     /**
      * Základní objekt stránky 
@@ -76,9 +76,9 @@ class IEWebPage extends EaseTWBWebPage
 
         $row = $this->container->addItem(new EaseHtmlDivTag(null, null, array('class' => 'row')));
 
-        $this->column1 = $row->addItem(new EaseHtmlDivTag(null, null, array('class' => 'col-md-4')));
-        $this->column2 = $row->addItem(new EaseHtmlDivTag(null, null, array('class' => 'col-md-4')));
-        $this->column3 = $row->addItem(new EaseHtmlDivTag(null, null, array('class' => 'col-md-4')));
+        $this->columnI = $row->addItem(new EaseHtmlDivTag(null, null, array('class' => 'col-md-4')));
+        $this->columnII = $row->addItem(new EaseHtmlDivTag(null, null, array('class' => 'col-md-4')));
+        $this->columnIII = $row->addItem(new EaseHtmlDivTag(null, null, array('class' => 'col-md-4')));
     }
 
     /**
@@ -160,7 +160,7 @@ class IEBootstrapMenu extends EaseTWBNavbar
         $user = EaseShared::user();
         EaseTWBPart::twBootstrapize();
         if (!$user->getUserID()) {
-            $this->addMenuItem('<a href="createaccount.php"><i class="icon-leaf"></i> ' . _('Registrace') . '</a>','right');
+            $this->addMenuItem('<a href="createaccount.php">'. EaseTWBPart::GlyphIcon('leaf').' ' . _('Registrace') . '</a>','right');
             $this->addMenuItem(
 '
 <li class="divider-vertical"></li>
@@ -239,7 +239,7 @@ class IEMainMenu extends EaseHtmlDivTag
             if ($User->getSettingValue('admin')) {
                 $nav->addDropDownMenu(_('Uživatelé'), array(
                     'users.php' => '<i class="icon-list"></i>&nbsp;' . _('Přehled uživatelů'),
-                    'createaccount.php' => '<i class="icon-edit"></i> ' . _('Nový uživatel'),
+                    'createaccount.php' => EaseTWBPart::GlyphIcon('edit').' ' . _('Nový uživatel'),
                         )
                 );
             }
@@ -247,9 +247,9 @@ class IEMainMenu extends EaseHtmlDivTag
             $nav->addDropDownMenu(_('Hosti'), array(
                 'wizard.php' => '<i class="icon-cog"></i>&nbsp;' . _('Průvodce rychlým založením'),
                 'hosts.php' => '<i class="icon-list"></i>&nbsp;' . _('Přehled hostů'),
-                'host.php' => '<i class="icon-edit"></i> ' . _('Nový Host'),
+                'host.php' => EaseTWBPart::GlyphIcon('edit').' ' . _('Nový Host'),
                 'hostgroups.php' => '<i class="icon-list"></i>&nbsp;' . _('Přehled skupin hostů'),
-                'hostgroup.php' => '<i class="icon-edit"></i> ' . _('Nová skupina hostů')/* , 
+                'hostgroup.php' => EaseTWBPart::GlyphIcon('edit').' ' . _('Nová skupina hostů')/* , 
                       'exthostinfo.php' => _('Rozšířené informace hostů'),
                       'hostdependency.php' => _('Závislosti hostů'),
                       'hostescalation.php' => _('Eskalace hostů') */)
@@ -257,7 +257,7 @@ class IEMainMenu extends EaseHtmlDivTag
             $nav->addDropDownMenu(_('Služby'), array(
                 'service.php' => '<i class="icon-edit"></i> ' . _('Nová služba'),
                 'services.php' => '<i class="icon-list"></i>&nbsp;' . _('Přehled služeb'),
-                'servicegroup.php' => '<i class="icon-edit"></i> ' . _('Nová skupina služeb'),
+                'servicegroup.php' => EaseTWBPart::GlyphIcon('edit').' ' . _('Nová skupina služeb'),
                 'servicegroups.php' => '<i class="icon-list"></i>&nbsp;' . _('Přehled skupin služeb'), /*
                       'servicedependency.php' => _('Závislosti služeb'),
                       'extserviceinfo.php' => _('Rozšířené informace služeb'),
@@ -265,21 +265,21 @@ class IEMainMenu extends EaseHtmlDivTag
             );
             $nav->addDropDownMenu(_('Kontakty'), array(
                 'contacts.php' => '<i class="icon-list"></i>&nbsp;' . _('Přehled kontaktů'),
-                'contact.php' => '<i class="icon-edit"></i> ' . _('Nový kontakt'),
+                'contact.php' => EaseTWBPart::GlyphIcon('edit').' ' . _('Nový kontakt'),
                 'contactgroups.php' => '<i class="icon-list"></i>&nbsp;' . _('Přehled skupin kontaktů'),
-                'contactgroup.php' => '<i class="icon-edit"></i> ' . _('Nová skupina kontaktů'))
+                'contactgroup.php' => EaseTWBPart::GlyphIcon('edit').' ' . _('Nová skupina kontaktů'))
             );
 
 
             if ($User->getSettingValue('admin')) {
                 $nav->addDropDownMenu(_('Příkaz'), array(
                     'commands.php' => '<i class="icon-list"></i>&nbsp;' . _('Přehled příkazů'),
-                    'command.php' => '<i class="icon-edit"></i> ' . _('Nový příkaz'),
+                    'command.php' => EaseTWBPart::GlyphIcon('edit').' ' . _('Nový příkaz'),
                     'importcommand.php' => '<i class="icon-download"></i> ' . _('Importovat'))
                 );
                 $nav->addDropDownMenu(_('Rozšířené'), array(
                     'timeperiods.php' => '<i class="icon-list"></i>&nbsp;' . _('Přehled časových period'),
-                    'timeperiod.php' => '<i class="icon-edit"></i> ' . _('Nová časová perioda'),
+                    'timeperiod.php' => EaseTWBPart::GlyphIcon('edit').' ' . _('Nová časová perioda'),
                     'regenall.php' => '<i class="icon-ok"></i> ' . _('Přegenerovat všechny konfiguráky'),
                     'dbrecreate.php' => '<i class="icon-wrench"></i> ' . _('Reinicializovat databázi'),
                     'import.php' => '<i class="icon-download"></i> ' . _('Importovat')

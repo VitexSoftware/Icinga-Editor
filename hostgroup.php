@@ -38,7 +38,7 @@ $oPage->addItem(new IEPageTop(_('Editace skupiny hostů') . ' ' . $Hostgroup->ge
 
 $HostgroupEdit = new IECfgEditor($Hostgroup);
 
-$form = $oPage->column2->addItem(new EaseHtmlForm('Hostgroup', 'hostgroup.php', 'POST', $HostgroupEdit, array('class' => 'form-horizontal')));
+$form = $oPage->columnII->addItem(new EaseHtmlForm('Hostgroup', 'hostgroup.php', 'POST', $HostgroupEdit, array('class' => 'form-horizontal')));
 $form->setTagID($form->getTagName());
 if (!is_null($Hostgroup->getMyKey())) {
     $form->addItem(new EaseHtmlInputHiddenTag($Hostgroup->getMyKeyColumn(), $Hostgroup->getMyKey()));
@@ -50,10 +50,10 @@ $oPage->AddCss('
 input.ui-button { width: 100%; }
 ');
 
-$oPage->column3->addItem($Hostgroup->deleteButton());
+$oPage->columnIII->addItem($Hostgroup->deleteButton());
 
 if ($Hostgroup->getId()) {
-    $oPage->column1->addItem($Hostgroup->ownerLinkButton());
+    $oPage->columnI->addItem($Hostgroup->ownerLinkButton());
 }
 
 

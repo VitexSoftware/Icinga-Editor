@@ -36,7 +36,7 @@ $oPage->addItem(new IEPageTop(_('Editace příkazu') . ' ' . $Command->getName()
 
 $CommandEdit = new IECfgEditor($Command);
 
-$form = $oPage->column2->addItem(new EaseHtmlForm('Command', 'command.php', 'POST', $CommandEdit, array('class' => 'form-horizontal')));
+$form = $oPage->columnII->addItem(new EaseHtmlForm('Command', 'command.php', 'POST', $CommandEdit, array('class' => 'form-horizontal')));
 $form->setTagID($form->getTagName());
 if (!is_null($Command->getMyKey())) {
     $form->addItem(new EaseHtmlInputHiddenTag($Command->getMyKeyColumn(), $Command->getMyKey()));
@@ -48,10 +48,10 @@ input.ui-button { width: 100%; }
 ');
 
 
-$oPage->column3->addItem($Command->deleteButton());
+$oPage->columnIII->addItem($Command->deleteButton());
 
 if ($Command->getId()) {
-    $oPage->column1->addItem($Command->ownerLinkButton());
+    $oPage->columnI->addItem($Command->ownerLinkButton());
 }
 
 $oPage->addItem(new IEPageBottom());

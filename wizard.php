@@ -82,7 +82,7 @@ function gethostbynamel6($host, $try_a = false)
     }
 }
 
-$Host = new IEHost();
+$host = new IEHost();
 
 
 if ($HostName || $Address || $Address6) {
@@ -119,8 +119,8 @@ if ($HostName || $Address || $Address6) {
     $oUser->addStatusMessage('Address: ' . $Address);
     $oUser->addStatusMessage('Address6: ' . $Address6);
 
-    $Host->setData(array(
-        $Host->UserColumn => $oUser->getUserID(),
+    $host->setData(array(
+        $host->UserColumn => $oUser->getUserID(),
 //        'check_command'=>'check-host-alive',
         'host_name' => $HostName,
         'address' => $Address,
@@ -132,19 +132,19 @@ if ($HostName || $Address || $Address6) {
         'contacts' => array($oUser->getFirstContactName()))
     );
 
-    if ($Host->saveToMysql()) {
+    if ($host->saveToMysql()) {
         
         $service = new IEService('PING');
-        $service->addMember('host_name', $Host->getId(), $Host->getName());
+        $service->addMember('host_name', $host->getId(), $host->getName());
         $service->saveToMySQL();
         
-        $Host->autoPopulateServices();
+        $host->autoPopulateServices();
         
         $HostGroup = new IEHostgroup;
         if($HostGroup->loadDefault()){
             $HostGroup->setDataValue($HostGroup->NameColumn, EaseShared::user()->getUserLogin());
         }
-        $HostGroup->addMember('members', $Host->getId(), $Host->getName());
+        $HostGroup->addMember('members', $host->getId(), $host->getName());
         $HostGroup->saveToMySQL();
         
         $oPage->redirect('apply.php');
@@ -155,18 +155,18 @@ if ($HostName || $Address || $Address6) {
 $Contact = new IEContact();
 $PocContact = $Contact->getMyRecordsCount();
 if (!$PocContact) {
-    $Warning = $oPage->column3->addItem(new EaseHtmlDivTag('Contact', _('Nemáte definovaný kontakt'), array('class' => 'alert alert-info')));
-    $Warning->addItem(new EaseTWBLinkButton('contact.php?autocreate=default', _('Založit výchozí kontakt <i class="icon-edit"></i>')));
+    $Warning = $oPage->columnIII->addItem(new EaseHtmlDivTag('Contact', _('Nemáte definovaný kontakt'), array('class' => 'alert alert-info')));
+    $Warning->addItem(new EaseTWBLinkButton('contact.php?autocreate=default', _('Založit výchozí kontakt').' '.EaseTWBPart::GlyphIcon('edit')));
 }
 
 
-$PocHostu = $Host->getMyRecordsCount();
+$PocHostu = $host->getMyRecordsCount();
 if ($PocHostu) {
-    $Success = $oPage->column3->addItem(new EaseHtmlDivTag('Host', new EaseTWBLinkButton('hosts.php', _('<i class="icon-list"></i>') . ' ' . sprintf(_('Definováno %s hostů'), $PocHostu)), array('class' => 'alert alert-success')));
+    $Success = $oPage->columnIII->addItem(new EaseHtmlDivTag('Host', new EaseTWBLinkButton('hosts.php', _('<i class="icon-list"></i>') . ' ' . sprintf(_('Definováno %s hostů'), $PocHostu)), array('class' => 'alert alert-success')));
 }
 
 
-$Warning = $oPage->column2->addItem(new EaseHtmlDivTag('Host', _('Vyplńte prosím alespoň jednu položku:'), array('class' => 'alert')));
+$Warning = $oPage->columnII->addItem(new EaseHtmlDivTag('Host', _('Vyplńte prosím alespoň jednu položku:'), array('class' => 'alert')));
 
 $FirstHost = $Warning->addItem(new EaseHtmlForm('firsthost'));
 $FirstHost->addItem(new EaseLabeledTextInput('host_name', $HostName, _('Hostname serveru')));
@@ -178,7 +178,7 @@ $Submit->setTagClass('btn');
 
 
 if ($oUser->getSettingValue('admin')) {
-    $oPage->column3->addItem(new EaseJQConfirmedLinkButton('install.php', _('Reinicializace z konfiguračních souborů') . ' <i class="icon-refresh"></i>'));
+    $oPage->columnIII->addItem(new EaseJQConfirmedLinkButton('install.php', _('Reinicializace z konfiguračních souborů') . ' <i class="icon-refresh"></i>'));
 }
 
 $oPage->addItem(new IEPageBottom());

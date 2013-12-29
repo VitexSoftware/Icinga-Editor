@@ -18,7 +18,7 @@ class IETextInputSaver extends EaseLabeledTextInput {
      * Pracujeme s tabulkou mains
      * @var string 
      */
-    public $MyTable = 'user';
+    public $myTable = 'user';
     
     /**
      * Sloupeček pro poslední modifikaci

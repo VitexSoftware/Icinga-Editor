@@ -16,7 +16,7 @@ require_once 'IEcfg.php';
 class IEService extends IECfg
 {
 
-    public $MyTable = 'services';
+    public $myTable = 'services';
     public $MyKeyColumn = 'service_id';
     public $Keyword = 'service';
     public $NameColumn = 'service_description';
@@ -245,7 +245,7 @@ class IEService extends IECfg
             
             if (is_array($AD['contacts']) && count($AD['contacts'])) { //Projít kontakty, vyhodit nevlastněné uživatelem
                 foreach ($AD['contacts'] as $ContactID => $ContactName) {
-                    $ContactUserID = $this->MyDbLink->QueryToValue('SELECT user_id FROM ' . DB_PREFIX . 'contact WHERE contact_id=' . $ContactID);
+                    $ContactUserID = $this->myDbLink->QueryToValue('SELECT user_id FROM ' . DB_PREFIX . 'contact WHERE contact_id=' . $ContactID);
                     if ($UserID != $ContactUserID) {
                         unset($AllData[$ADkey]['contacts'][$ContactID]);
                     }
@@ -254,7 +254,7 @@ class IEService extends IECfg
 
             if (is_array($AD['host_name']) && count($AD['host_name'])) { //Projít kontakty, vyhodit nevlastněné uživatelem
                 foreach ($AD['host_name'] as $HostID => $HostName) {
-                    $HostUserID = $this->MyDbLink->QueryToValue('SELECT user_id FROM ' . DB_PREFIX . 'hosts WHERE host_id=' . $HostID);
+                    $HostUserID = $this->myDbLink->QueryToValue('SELECT user_id FROM ' . DB_PREFIX . 'hosts WHERE host_id=' . $HostID);
                     if ($UserID != $HostUserID) {
                         unset($AllData[$ADkey]['host_name'][$HostID]);
                     }
@@ -326,7 +326,7 @@ class IEService extends IECfg
                     unset($AllData[$ADkey]);
                     continue;
                 }
-                if (!(int) $this->MyDbLink->QueryToValue('SELECT COUNT(*) FROM ' . $this->MyTable . ' WHERE `use`=\'' . $AD['name'] . '\'')) {
+                if (!(int) $this->myDbLink->QueryToValue('SELECT COUNT(*) FROM ' . $this->myTable . ' WHERE `use`=\'' . $AD['name'] . '\'')) {
                     $this->addStatusMessage(sprintf(_('Předloha služby %s není použita. Negeneruji do konfigurace'), $AD['name']), 'info');
                     unset($AllData[$ADkey]);
                     continue;
@@ -336,7 +336,7 @@ class IEService extends IECfg
 
                 if (is_array($AD['contacts']) && count($AD['contacts'])) { //Projít kontakty, vyhodit nevlastněné uživatelem
                     foreach ($AD['contacts'] as $ContactID => $ContactName) {
-                        $ContactUserID = $this->MyDbLink->QueryToValue('SELECT user_id FROM ' . DB_PREFIX . 'contact WHERE contact_id=' . $ContactID);
+                        $ContactUserID = $this->myDbLink->QueryToValue('SELECT user_id FROM ' . DB_PREFIX . 'contact WHERE contact_id=' . $ContactID);
                         if ($UserID != $ContactUserID) {
                             unset($AllData[$ADkey]['contacts'][$ContactID]);
                         }
@@ -345,7 +345,7 @@ class IEService extends IECfg
 
                 if (is_array($AD['host_name']) && count($AD['host_name'])) { //Projít kontakty, vyhodit nevlastněné uživatelem
                     foreach ($AD['host_name'] as $HostID => $HostName) {
-                        $HostUserID = (int) $this->MyDbLink->QueryToValue('SELECT user_id FROM ' . DB_PREFIX . 'hosts WHERE host_id=' . $HostID);
+                        $HostUserID = (int) $this->myDbLink->QueryToValue('SELECT user_id FROM ' . DB_PREFIX . 'hosts WHERE host_id=' . $HostID);
                         if ($UserID != $HostUserID) {
                             unset($AllData[$ADkey]['host_name'][$HostID]);
                         };

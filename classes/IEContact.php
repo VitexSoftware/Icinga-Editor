@@ -16,7 +16,7 @@ require_once 'IEcfg.php';
 class IEContact extends IECfg
 {
 
-    public $MyTable = 'contact';
+    public $myTable = 'contact';
     /**
      * Klíčový sloupeček
      * @var string 

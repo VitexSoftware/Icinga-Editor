@@ -31,9 +31,9 @@ class IEGroupMembersEditor extends EaseContainer
         }
 
         if (isset($DataSource->KeywordsInfo[$FieldName]['refdata']['public']) && intval($DataSource->KeywordsInfo[$FieldName]['refdata']['public'])) {
-            $SqlConds = " ( " . $DataSource->MyDbLink->prepSelect(array_merge($Conditions, array($DataSource->UserColumn => EaseShared::user()->getUserID()))) . " ) OR ( " . $DataSource->MyDbLink->prepSelect(array_merge($Conditions, array('public' => 1))) . ")  ";
+            $SqlConds = " ( " . $DataSource->myDbLink->prepSelect(array_merge($Conditions, array($DataSource->UserColumn => EaseShared::user()->getUserID()))) . " ) OR ( " . $DataSource->myDbLink->prepSelect(array_merge($Conditions, array('public' => 1))) . ")  ";
         } else {
-            $SqlConds = $DataSource->MyDbLink->prepSelect(array_merge($Conditions, array($DataSource->UserColumn => EaseShared::user()->getUserID())));
+            $SqlConds = $DataSource->myDbLink->prepSelect(array_merge($Conditions, array($DataSource->UserColumn => EaseShared::user()->getUserID())));
         }
 
         $InitialContent = new EaseHtmlFieldSet($FieldCaption);
@@ -47,7 +47,7 @@ class IEGroupMembersEditor extends EaseContainer
             $InitialContent->addItem(_('Nejprve je potřeba uložit záznam'));
         } else {
 
-            if (DB_PREFIX . $STable == $DataSource->MyTable) {
+            if (DB_PREFIX . $STable == $DataSource->myTable) {
                 $TmpKey = $DataSource->getMyKey();
                 if ($TmpKey) {
                     $Members[$TmpKey] = true;
@@ -67,7 +67,7 @@ class IEGroupMembersEditor extends EaseContainer
                     $AviavbleCond .
                     'ORDER BY ' . $NameColumn, $IDColumn);
 
-            if (DB_PREFIX . $STable == $DataSource->MyTable) {
+            if (DB_PREFIX . $STable == $DataSource->myTable) {
                 unset($Members[$DataSource->getMyKey()]);
             }
 
@@ -75,7 +75,7 @@ class IEGroupMembersEditor extends EaseContainer
             if (count($MembersAviableArray)) {
                 foreach ($MembersAviableArray as $MemberID => $MemberName) {
                     $Jellybean = new EaseHtmlSpanTag($MemberName[$NameColumn], null, array('class' => 'jellybean gray'));
-                    $Jellybean->addItem(new EaseHtmlATag('?add=' . $FieldName . '&amp;member=' . $MemberID . '&amp;name=' . $MemberName[$NameColumn] . '&amp;' . $DataSource->getMyKeyColumn() . '=' . $DataSource->getMyKey() . '#' . $FieldName, '<i class="icon-plus-sign"></i>'. $MemberName[$NameColumn]));
+                    $Jellybean->addItem(new EaseHtmlATag('?add=' . $FieldName . '&amp;member=' . $MemberID . '&amp;name=' . $MemberName[$NameColumn] . '&amp;' . $DataSource->getMyKeyColumn() . '=' . $DataSource->getMyKey() . '#' . $FieldName, EaseTWBPart::GlyphIcon('plus-sign').' '. $MemberName[$NameColumn]));
                     $InitialContent->addItem($Jellybean);
                 }
             }
@@ -86,7 +86,7 @@ class IEGroupMembersEditor extends EaseContainer
                 foreach ($Members as $MemberID => $MemberName) {
                     $Jellybean = new EaseHtmlSpanTag($MemberName, null, array('class' => 'jellybean'));
                     $Jellybean->addItem($MemberName);
-                    $Jellybean->addItem(new EaseHtmlATag('?del=' . $FieldName . '&amp;member=' . $MemberID . '&amp;name=' . $MemberName . '&amp;' . $DataSource->getMyKeyColumn() . '=' . $DataSource->getMyKey() . '#' . $FieldName, '<i class="icon-remove"></i>'));
+                    $Jellybean->addItem(new EaseHtmlATag('?del=' . $FieldName . '&amp;member=' . $MemberID . '&amp;name=' . $MemberName . '&amp;' . $DataSource->getMyKeyColumn() . '=' . $DataSource->getMyKey() . '#' . $FieldName, EaseTWBPart::GlyphIcon('remove')));
                     $InitialContent->addItem($Jellybean);
                 }
             }

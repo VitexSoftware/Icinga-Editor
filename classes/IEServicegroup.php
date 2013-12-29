@@ -13,7 +13,7 @@ require_once 'IEcfg.php';
 class IEServicegroup extends IECfg
 {
 
-    public $MyTable = 'servicegroup';
+    public $myTable = 'servicegroup';
     public $MyKeyColumn = 'servicegroup_id';
     public $NameColumn = 'servicegroup_name';
     public $Keyword = 'servicegroup';

@@ -18,15 +18,15 @@ $oPage->addItem(new IEPageTop(_('Icinga Editor - znovuvytvoření struktury data
 if ($oPage->getRequestValue('dbinit') ) {
     $Importer = new IEImporter;
     $Importer->dbInit();
-    $oPage->column2->addItem(new EaseTWBLinkButton('wizard.php', _('vytvořit konfiguraci')));
-    $oPage->column3->addItem(new EaseTWBLinkButton('import.php', _('importovat konfiguraci')));
+    $oPage->columnII->addItem(new EaseTWBLinkButton('wizard.php', _('vytvořit konfiguraci')));
+    $oPage->columnIII->addItem(new EaseTWBLinkButton('import.php', _('importovat konfiguraci')));
 } else {
     $ImportForm = new EaseHtmlForm('ImportForm');
     $oUser->addStatusMessage(_('Tato akce nevratně smaže veškerou konfiguraci. Opravdu to chcete udělat ?'));
     $ImportForm->addItem(new EaseLabeledCheckbox('dbinit', null, _('Vím co dělám')));
     $ImportForm->addItem(new EaseJQuerySubmitButton('submit', _('Budiž!')));
 
-    $oPage->column2->addItem(new EaseHtmlFieldSet(_('Znovu vytvořit strukturu databáze'), $ImportForm));
+    $oPage->columnII->addItem(new EaseHtmlFieldSet(_('Znovu vytvořit strukturu databáze'), $ImportForm));
 }
 
 

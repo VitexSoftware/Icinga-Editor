@@ -112,11 +112,11 @@ if ($Testing) {
 
             if (strstr($Line, 'has no services associated with it!')) {
                 preg_match("/\'(.*)\'/", $Line, $keywords);
-                $Host = & $Generator->IEClasses['host'];
-                $Host->setMyKeyColumn($Host->NameColumn);
-                $Host->loadFromMySql($keywords[1]);
-                $Host->resetObjectIdentity();
-                $Line = '<span class="label label-warning">' . _('Varování:') . '</span> Host ' . '<a href="host.php?host_id=' . $Host->getMyKey() . '">' . $Host->getName() . '</a> ' . _('nemá přiřazené žádné služby');
+                $host = & $Generator->IEClasses['host'];
+                $host->setMyKeyColumn($host->NameColumn);
+                $host->loadFromMySql($keywords[1]);
+                $host->resetObjectIdentity();
+                $Line = '<span class="label label-warning">' . _('Varování:') . '</span> Host ' . '<a href="host.php?host_id=' . $host->getMyKey() . '">' . $host->getName() . '</a> ' . _('nemá přiřazené žádné služby');
             } else {
                 $Line = str_replace('Warning:', '<span class="label label-warning">' . _('Varování:') . '</span>', $Line);
             }
@@ -146,7 +146,7 @@ if ($Testing) {
 
     if (!intval($ErrorCount) && !is_null($WarningCount)) {
         if(IECfg::reloadIcinga()){
-            $oPage->column2->addItem(new EaseTWBLinkButton('main.php', _('Hotovo') . ' <i class="icon-ok-sign"></i>', 'success'));
+            $oPage->columnII->addItem(new EaseTWBLinkButton('main.php', _('Hotovo') . EaseTWBPart::GlyphIcon('ok-sign'), 'success'));
         }
     }
 }

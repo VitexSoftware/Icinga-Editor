@@ -46,7 +46,7 @@ $oPage->addItem(new IEPageTop(_('Editace kontaktu') . ' ' . $Contact->getName())
 
 $ContactEdit = new IECfgEditor($Contact);
 
-$form = $oPage->column2->addItem(new EaseHtmlForm('Contact', 'contact.php', 'POST', $ContactEdit, array('class' => 'form-horizontal')));
+$form = $oPage->columnII->addItem(new EaseHtmlForm('Contact', 'contact.php', 'POST', $ContactEdit, array('class' => 'form-horizontal')));
 $form->setTagID($form->getTagName());
 if (!is_null($Contact->getMyKey())) {
     $form->addItem(new EaseHtmlInputHiddenTag($Contact->getMyKeyColumn(), $Contact->getMyKey()));
@@ -54,12 +54,12 @@ if (!is_null($Contact->getMyKey())) {
 $form->addItem('<br>');
 $form->addItem(new EaseTWSubmitButton(_('Uložit'),'success'));
 
-$oPage->column3->addItem($Contact->deleteButton());
+$oPage->columnIII->addItem($Contact->deleteButton());
 $oPage->AddCss('
 input.ui-button { width: 100%; }
 ');
 if ($Contact->getId()) {
-    $oPage->column1->addItem($Contact->ownerLinkButton());
+    $oPage->columnI->addItem($Contact->ownerLinkButton());
 }
 
 $oPage->addItem(new IEPageBottom());

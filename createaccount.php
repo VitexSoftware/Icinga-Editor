@@ -140,9 +140,9 @@ input.ui-button { width: 220px; }
 
 $oPage->addItem(new IEPageTop(_('Registrace')));
 
-$oPage->column1->addItem(new EaseHtmlDivTag('WelcomeHint', _('Vítejte v registraci')));
+$oPage->columnI->addItem(new EaseHtmlDivTag('WelcomeHint', _('Vítejte v registraci')));
 
-$RegFace = $oPage->column2->addItem(new EaseHtmlDivTag('RegFace'));
+$RegFace = $oPage->columnII->addItem(new EaseHtmlDivTag('RegFace'));
 
 
 $RegForm = $RegFace->addItem(new EaseHtmlForm('create_account', 'createaccount.php', 'POST', null, array('class' => 'form-horizontal')));

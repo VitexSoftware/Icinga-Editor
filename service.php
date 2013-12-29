@@ -57,21 +57,13 @@ $oPage->addItem(new IEPageTop(_('Editace služby') . ' ' . $service->getName()))
 
 $serviceEdit = new IECfgEditor($service);
 
-$form = $oPage->column2->addItem(new EaseHtmlForm('Service', 'service.php', 'POST', $serviceEdit, array('class' => 'form-horizontal')));
-$form->setTagID($form->getTagName());
-if (!is_null($service->getMyKey())) {
-    $form->addItem(new EaseHtmlInputHiddenTag($service->getMyKeyColumn(), $service->getMyKey()));
-}
-$form->addItem('<br>');
-$form->addItem(new EaseTWSubmitButton(_('Uložit'), 'success'));
-$oPage->AddCss('
-input.ui-button { width: 100%; }
-');
+$oPage->columnII->addItem($serviceEdit);
 
-$oPage->column3->addItem($service->deleteButton());
-$oPage->column3->addItem($service->cloneButton());
+$oPage->columnIII->addItem($service->deleteButton());
+$oPage->columnIII->addItem($service->cloneButton());
+
 if ($service->getId()) {
-    $oPage->column1->addItem($service->ownerLinkButton());
+    $oPage->columnI->addItem($service->ownerLinkButton());
 }
 $oPage->addItem(new IEPageBottom());
 

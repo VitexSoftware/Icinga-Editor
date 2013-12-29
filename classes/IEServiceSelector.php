@@ -31,7 +31,7 @@ class IEServiceSelector extends EaseContainer
 
             $Service = new IEService();
 
-            $ServicesAssigned = $Service->MyDbLink->queryToArray('SELECT ' . $Service->MyKeyColumn . ',' . $Service->NameColumn . ' FROM ' . $Service->MyTable . ' WHERE ' . $FieldName . ' LIKE \'%"' . $Host->getName() . '"%\'', $Service->MyKeyColumn);
+            $ServicesAssigned = $Service->myDbLink->queryToArray('SELECT ' . $Service->MyKeyColumn . ',' . $Service->NameColumn . ' FROM ' . $Service->myTable . ' WHERE ' . $FieldName . ' LIKE \'%"' . $Host->getName() . '"%\'', $Service->MyKeyColumn);
 
             $AllServices = $Service->getListing();
             foreach ($AllServices as $ServiceID => $ServiceInfo) {
@@ -59,7 +59,7 @@ class IEServiceSelector extends EaseContainer
                 foreach ($ServicesAssigned as $ServiceID => $ServiceInfo) {
                     $Jellybean = new EaseHtmlSpanTag($ServiceInfo[$Service->NameColumn], null, array('class' => 'jellybean'));
                     $Jellybean->addItem($ServiceInfo[$Service->NameColumn]);
-                    $Jellybean->addItem(new EaseHtmlATag('?delservice=' . $ServiceInfo[$Service->NameColumn] . '&amp;service_id=' . $ServiceID . '&amp;' . $Host->getMyKeyColumn() . '=' . $Host->getMyKey() . '&amp;' . $Host->NameColumn . '=' . $Host->getName(), '<i class="icon-remove"></i>'));
+                    $Jellybean->addItem(new EaseHtmlATag('?delservice=' . $ServiceInfo[$Service->NameColumn] . '&amp;service_id=' . $ServiceID . '&amp;' . $Host->getMyKeyColumn() . '=' . $Host->getMyKey() . '&amp;' . $Host->NameColumn . '=' . $Host->getName(), EaseTWBPart::GlyphIcon('remove')));
                     $InitialContent->addItem($Jellybean);
                 }
             }

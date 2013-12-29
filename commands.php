@@ -43,8 +43,8 @@ if ($Commands) {
             unset($Commands[$CID]);
         }
     }
-    $oPage->column1->addItem(new EaseHtmlH4Tag(_('Místní příkazy')));
-    $oPage->column1->addItem($CntList);
+    $oPage->columnI->addItem(new EaseHtmlH4Tag(_('Místní příkazy')));
+    $oPage->columnI->addItem($CntList);
 
     $CntList = new EaseHtmlTableTag(null, array('class' => 'table'));
     $Cid = 1;
@@ -65,8 +65,8 @@ if ($Commands) {
         }
         
     }
-    $oPage->column2->addItem(new EaseHtmlH4Tag(_('vzdálené příkazy')));
-    $oPage->column2->addItem($CntList);
+    $oPage->columnII->addItem(new EaseHtmlH4Tag(_('vzdálené příkazy')));
+    $oPage->columnII->addItem($CntList);
 
     $CntList = new EaseHtmlTableTag(null, array('class' => 'table'));
     foreach ($Commands as $CID => $CInfo) {
@@ -83,8 +83,8 @@ if ($Commands) {
             }
             unset($Commands[$CID]);
     }
-    $oPage->column3->addItem(new EaseHtmlH4Tag(_('neurčené příkazy')));
-    $oPage->column3->addItem($CntList);
+    $oPage->columnIII->addItem(new EaseHtmlH4Tag(_('neurčené příkazy')));
+    $oPage->columnIII->addItem($CntList);
     
     
     
@@ -92,8 +92,8 @@ if ($Commands) {
     $oUser->addStatusMessage(_('Nemáte definovaný příkaz'), 'warning');
 }
 
-$oPage->column3->addItem(new EaseTWBLinkButton('command.php', _('Založit příkaz') . ' <i class="icon-edit"></i>'));
-$oPage->column3->addItem(new EaseTWBLinkButton('importcommand.php', _('Importovat příkazy') . ' <i class="icon-download"></i>'));
+$oPage->columnIII->addItem(new EaseTWBLinkButton('command.php', _('Založit příkaz') . ' '.EaseTWBPart::GlyphIcon('edit')));
+$oPage->columnIII->addItem(new EaseTWBLinkButton('importcommand.php', _('Importovat příkazy') . ' <i class="icon-download"></i>'));
 
 
 $oPage->addItem(new IEPageBottom());

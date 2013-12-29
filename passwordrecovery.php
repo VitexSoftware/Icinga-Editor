@@ -27,9 +27,9 @@ $oPage->addJavascript('$("#PassworRecovery").validate({
 
 
 if ($EmailTo) {
-    $oPage->takeMyTable();
+    $oPage->takemyTable();
     $UserEmail = $oPage->easeAddSlashes($EmailTo);
-    $UserFound = $oPage->MyDbLink->queryToArray('SELECT id,login FROM user WHERE email=\'' . $UserEmail . '\'');
+    $UserFound = $oPage->myDbLink->queryToArray('SELECT id,login FROM user WHERE email=\'' . $UserEmail . '\'');
     if (count($UserFound)) {
         $UserID = intval($UserFound[0]['id']);
         $UserLogin = $UserFound[0]['login'];
@@ -61,11 +61,11 @@ $oPage->addItem(new IEPageTop(_('Obnova zapomenutého hesla')));
 
 
 if (!$Success) {
-    $oPage->column1->addItem('<h1>Zapoměl jsem své heslo!</h1>');
+    $oPage->columnI->addItem('<h1>Zapoměl jsem své heslo!</h1>');
 
-    $oPage->column3->addItem(_('Zapoměl jste heslo? Vložte svou e-mailovou adresu, kterou jste zadal při registraci a my Vám pošleme nové.'));
+    $oPage->columnIII->addItem(_('Zapoměl jste heslo? Vložte svou e-mailovou adresu, kterou jste zadal při registraci a my Vám pošleme nové.'));
 
-    $EmailForm = $oPage->column2->addItem(new EaseHtmlForm('PassworRecovery'));
+    $EmailForm = $oPage->columnII->addItem(new EaseHtmlForm('PassworRecovery'));
     $EmailForm->addItem(new EaseLabeledTextInput('Email', null,_('Email'), array('size' => '40')));
     $EmailForm->addItem(new EaseJQuerySubmitButton('ok', _('Zaslat nové heslo')));
 
@@ -73,7 +73,7 @@ if (!$Success) {
         $EmailForm->fillUp($_POST);
     }
 } else {
-    $oPage->column2->addItem(new EaseTWBLinkButton('login.php', _('Pokračovat')));
+    $oPage->columnII->addItem(new EaseTWBLinkButton('login.php', _('Pokračovat')));
 }
 
 $oPage->addItem(new IEPageBottom());

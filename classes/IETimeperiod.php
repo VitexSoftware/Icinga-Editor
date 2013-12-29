@@ -13,7 +13,7 @@ require_once 'IEcfg.php';
 class IETimeperiod extends IECfg
 {
 
-    public $MyTable = 'timeperiods';
+    public $myTable = 'timeperiods';
     public $MyKeyColumn = 'timeperiod_id';
     public $Keyword = 'timeperiod';
     public $NameColumn = 'timeperiod_name';

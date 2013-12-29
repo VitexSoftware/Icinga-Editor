@@ -37,12 +37,12 @@ if ($Periods) {
             }
         }
     }
-    $oPage->column2->addItem($CntList);
+    $oPage->columnII->addItem($CntList);
 } else {
     $oUser->addStatusMessage(_('Nemáte definované časové periody'), 'warning');
 }
 
-$oPage->column3->addItem(new EaseTWBLinkButton('timeperiod.php', _('Založit časovou periodu <i class="icon-edit"></i>')));
+$oPage->columnIII->addItem(new EaseTWBLinkButton('timeperiod.php', _('Založit časovou periodu '.EaseTWBPart::GlyphIcon('edit'))));
 
 
 

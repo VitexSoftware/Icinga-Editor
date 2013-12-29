@@ -22,19 +22,19 @@ $Servicegroup = new IEServicegroup();
 $PocServicegroup = $Servicegroup->getMyRecordsCount();
 
 if ($PocServicegroup) {
-    $Servicegroups = $Servicegroup->MyDbLink->queryToArray('SELECT ' . $Servicegroup->getMyKeyColumn() . ', servicegroup_name, DatSave FROM ' . $Servicegroup->MyTable . ' WHERE user_id=' . $oUser->getUserID(), 'servicegroup_id');
+    $Servicegroups = $Servicegroup->myDbLink->queryToArray('SELECT ' . $Servicegroup->getMyKeyColumn() . ', servicegroup_name, DatSave FROM ' . $Servicegroup->myTable . ' WHERE user_id=' . $oUser->getUserID(), 'servicegroup_id');
     $CntList = new EaseHtmlTableTag(null,array('class'=>'table'));
 
     $Cid = 1;
     foreach ($Servicegroups as $CID => $CInfo) {
         $CntList->addRowColumns(array($Cid++, new EaseHtmlATag('servicegroup.php?servicegroup_id=' . $CInfo['servicegroup_id'], $CInfo['servicegroup_name'].' <i class="icon-edit"></i>')));
     }
-    $oPage->column2->addItem($CntList);
+    $oPage->columnII->addItem($CntList);
 } else {
     $oUser->addStatusMessage(_('Nemáte definovou skupinu služeb'), 'warning');
 }
 
-$oPage->column3->addItem(new EaseTWBLinkButton('servicegroup.php', _('Založit skupinu služeb <i class="icon-edit"></i>')));
+$oPage->columnIII->addItem(new EaseTWBLinkButton('servicegroup.php', _('Založit skupinu služeb').' '.EaseTWBPart::GlyphIcon('edit')));
 
 
 

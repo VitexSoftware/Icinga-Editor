@@ -38,7 +38,7 @@ $oPage->addItem(new IEPageTop(_('Editace skupiny služeb') . ' ' . $Servicegroup
 
 $ServicegroupEdit = new IECfgEditor($Servicegroup);
 
-$form = $oPage->column2->addItem(new EaseHtmlForm('Servicegroup', 'servicegroup.php', 'POST', $ServicegroupEdit, array('class' => 'form-horizontal')));
+$form = $oPage->columnII->addItem(new EaseHtmlForm('Servicegroup', 'servicegroup.php', 'POST', $ServicegroupEdit, array('class' => 'form-horizontal')));
 $form->setTagID($form->getTagName());
 if (!is_null($Servicegroup->getMyKey())) {
     $form->addItem(new EaseHtmlInputHiddenTag($Servicegroup->getMyKeyColumn(), $Servicegroup->getMyKey()));

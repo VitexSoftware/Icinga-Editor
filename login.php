@@ -49,21 +49,21 @@ $oPage->addItem(new IEPageTop(_('Přihlaš se')));
 $LoginFace = new EaseHtmlDivTag('LoginFace');
 
 
-$oPage->column1->addItem(new EaseHtmlDivTag('WelcomeHint', _('Zadejte, prosím, Vaše přihlašovací údaje:')));
+$oPage->columnI->addItem(new EaseHtmlDivTag('WelcomeHint', _('Zadejte, prosím, Vaše přihlašovací údaje:')));
 
 $LoginForm = $LoginFace->addItem(new EaseHtmlForm('Login'));
 $LoginForm->addItem(new EaseLabeledTextInput('login', NULL, _('Login')));
 $LoginForm->addItem(new EaseLabeledPasswordInput('password', NULL, _('Heslo')));
 $LoginForm->addItem(new EaseJQuerySubmitButton('LogIn', _('Přihlášení')));
 
-$oPage->column2->addItem($LoginFace);
+$oPage->columnII->addItem($LoginFace);
 
-$oPage->column1->addItem(new EaseTWBLinkButton('passwordrecovery.php', _('Obnova hesla')));
+$oPage->columnI->addItem(new EaseTWBLinkButton('passwordrecovery.php', _('Obnova hesla')));
 
-$oPage->column2->addItem(new EaseHtmlDivTag('TwitterAuth', IETwitter::AuthButton('twauth.php')));
+$oPage->columnII->addItem(new EaseHtmlDivTag('TwitterAuth', IETwitter::AuthButton('twauth.php')));
 
 
-$oPage->column3->addItem( '
+$oPage->columnIII->addItem( '
 <a class="twitter-timeline"  href="https://twitter.com/VSMonitoring" data-widget-id="255378607919210497">Tweets by @VSMonitoring</a>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 ' );

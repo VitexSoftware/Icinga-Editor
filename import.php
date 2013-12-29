@@ -57,7 +57,7 @@ $oPage->AddCss('
 input.ui-button { width: 100%; }
 ');
 
-$oPage->column2->addItem(new EaseHtmlFieldSet(_('Import konfigurace'), $ImportForm));
+$oPage->columnII->addItem(new EaseHtmlFieldSet(_('Import konfigurace'), $ImportForm));
 
 $oPage->addItem(new IEPageBottom());
 

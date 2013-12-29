@@ -56,16 +56,16 @@ $SettingsFrame->AddItem(new IETextInputSaver('email', $oUser->getUserEmail(), _(
 
 $SettingsFrame->addItem('<br>');
 
-$oPage->column2->addItem($SettingsFrame);
+$oPage->columnII->addItem($SettingsFrame);
 
 if ((bool) $oUser->getSettingValue('admin')) {
-    $oPage->column3->addItem(new EaseTWBLinkButton('?user=normal', _('Zahodit adminská oprávnění')));
+    $oPage->columnIII->addItem(new EaseTWBLinkButton('?user=normal', _('Zahodit adminská oprávnění')));
 }
 
 if (!intval($oUser->getDataValue('twitter_id'))) {
-    $oPage->column3->addItem(new EaseTWBLinkButton('twauth.php?authenticate=1', _('Propojit s twitterem')));
+    $oPage->columnIII->addItem(new EaseTWBLinkButton('twauth.php?authenticate=1', _('Propojit s twitterem')));
 } else {
-    $oPage->column3->addItem(new EaseTWBLinkButton('?action=untwittering', _('Odpojit od twiteru')));
+    $oPage->columnIII->addItem(new EaseTWBLinkButton('?action=untwittering', _('Odpojit od twiteru')));
 }
 
 $oPage->AddItem(new IEPageBottom());

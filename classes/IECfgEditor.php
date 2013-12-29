@@ -137,7 +137,7 @@ class IECfgEditor extends EaseContainer
                     $Conditions = array();
                 }
 
-                $SqlConds = " ( " . $this->ObjectEdited->MyDbLink->prepSelect(array_merge($Conditions, array($this->ObjectEdited->UserColumn => EaseShared::user()->getUserID()))) . " ) OR ( " . $this->ObjectEdited->MyDbLink->prepSelect(array_merge($Conditions, array('public' => 1))) . ")  ";
+                $SqlConds = " ( " . $this->ObjectEdited->myDbLink->prepSelect(array_merge($Conditions, array($this->ObjectEdited->UserColumn => EaseShared::user()->getUserID()))) . " ) OR ( " . $this->ObjectEdited->myDbLink->prepSelect(array_merge($Conditions, array('public' => 1))) . ")  ";
 
                 $MembersAviableArray = EaseShared::myDbLink()->queryTo2DArray(
                         'SELECT ' . $NameColumn . ' ' .
@@ -166,8 +166,8 @@ class IECfgEditor extends EaseContainer
 
                 $Conditions['command_type'] = 'check';
 
-                $SqlConds = " ( " . $this->ObjectEdited->MyDbLink->prepSelect(array_merge($Conditions, array('command_local' => true, $this->ObjectEdited->UserColumn => EaseShared::user()->getUserID()))) . " ) OR ( " . $this->ObjectEdited->MyDbLink->prepSelect($Conditions) . " AND public=1 )  ";
-//                    $SqlConds = $this->ObjectEdited->MyDbLink->prepSelect(array_merge($Conditions, array($this->ObjectEdited->UserColumn => EaseShared::user()->getUserID())));
+                $SqlConds = " ( " . $this->ObjectEdited->myDbLink->prepSelect(array_merge($Conditions, array('command_local' => true, $this->ObjectEdited->UserColumn => EaseShared::user()->getUserID()))) . " ) OR ( " . $this->ObjectEdited->myDbLink->prepSelect($Conditions) . " AND public=1 )  ";
+//                    $SqlConds = $this->ObjectEdited->myDbLink->prepSelect(array_merge($Conditions, array($this->ObjectEdited->UserColumn => EaseShared::user()->getUserID())));
 
                 $MembersAviableArray = EaseShared::myDbLink()->queryTo2DArray(
                         'SELECT ' . $NameColumn . ' ' .
@@ -183,8 +183,8 @@ class IECfgEditor extends EaseContainer
                     $Selector->addItems(array_combine($MembersAviableArray, $MembersAviableArray));
                 }
 
-                $SqlConds = " ( " . $this->ObjectEdited->MyDbLink->prepSelect(array_merge($Conditions, array('command_remote' => true, $this->ObjectEdited->UserColumn => EaseShared::user()->getUserID()))) . " ) OR ( " . $this->ObjectEdited->MyDbLink->prepSelect($Conditions) . " AND public=1 )  ";
-//                    $SqlConds = $this->ObjectEdited->MyDbLink->prepSelect(array_merge($Conditions, array($this->ObjectEdited->UserColumn => EaseShared::user()->getUserID())));
+                $SqlConds = " ( " . $this->ObjectEdited->myDbLink->prepSelect(array_merge($Conditions, array('command_remote' => true, $this->ObjectEdited->UserColumn => EaseShared::user()->getUserID()))) . " ) OR ( " . $this->ObjectEdited->myDbLink->prepSelect($Conditions) . " AND public=1 )  ";
+//                    $SqlConds = $this->ObjectEdited->myDbLink->prepSelect(array_merge($Conditions, array($this->ObjectEdited->UserColumn => EaseShared::user()->getUserID())));
 
                 $MembersAviableArray = EaseShared::myDbLink()->queryTo2DArray(
                         'SELECT ' . $NameColumn . ' ' .
@@ -298,7 +298,7 @@ class IECfgEditor extends EaseContainer
             $fieldLabel = $mainFieldBlock->addItem(new EaseHtmlDivTag(null, '<a name="' . $fieldName . '">' . $fieldName . '</a>&nbsp;', array('class' => 'FieldLabel mandatory', 'onClick' => "$('#" . $fieldName . "-controls').toggle('slow');")));
 
             if (!$required || !(int) $this->ObjectEdited->getDataValue('register')) {
-                $fieldLabel->addItem(new EaseHtmlATag('#', '<i title="' . _('Ignorovat') . '" class="icon-remove"></i>', array('onClick' => '$(\'#' . $fieldName . '-block\').empty().html(\'<input type=hidden name=' . $fieldName . ' value=NULL><div class=FieldLabel>' . $fieldName . '</div>\'); return false;')));
+                $fieldLabel->addItem(new EaseHtmlATag('#', EaseTWBPart::GlyphIcon('remove'), array('onClick' => '$(\'#' . $fieldName . '-block\').empty().html(\'<input type=hidden name=' . $fieldName . ' value=NULL><div class=FieldLabel>' . $fieldName . '</div>\'); return false;')));
                 $fieldLabel->setTagClass('FieldLabel');
             } else {
                 $mainFieldBlock->setTagClass('fieldblock req');
@@ -430,7 +430,7 @@ class IECfgEditor extends EaseContainer
             $fieldLabel = $mainFieldBlock->addItem(new EaseHtmlDivTag(null, '<a name="' . $fieldName . '">' . $fieldName . '</a>&nbsp;', array('class' => 'FieldLabel mandatory', 'onClick' => "$('#" . $fieldName . "-controls').toggle('slow');")));
 
             if (!$Required || !(int) $this->ObjectEdited->getDataValue('register')) {
-                $fieldLabel->addItem(new EaseHtmlATag('#', '<i title="' . _('Ignorovat') . '" class="icon-remove"></i>', array('onClick' => '$(\'#' . $fieldName . '-block\').empty().html(\'<input type=hidden name=' . $fieldName . ' value=NULL><div class=FieldLabel>' . $fieldName . '</div>\'); return false;')));
+                $fieldLabel->addItem(new EaseHtmlATag('#', EaseTWBPart::GlyphIcon('icon-remove">'), array('onClick' => '$(\'#' . $fieldName . '-block\').empty().html(\'<input type=hidden name=' . $fieldName . ' value=NULL><div class=FieldLabel>' . $fieldName . '</div>\'); return false;')));
                 $fieldLabel->setTagClass('FieldLabel');
             } else {
                 $mainFieldBlock->setTagClass('fieldblock req');

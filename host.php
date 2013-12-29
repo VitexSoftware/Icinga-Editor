@@ -2,7 +2,7 @@
 
 /**
  * Icinga Editor hosta
- * 
+ *
  * @package    IcingaEditor
  * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
@@ -15,29 +15,50 @@ require_once 'classes/IEServiceSelector.php';
 
 $oPage->onlyForLogged();
 
-$Host = new IEHost($oPage->getRequestValue('host_id', 'int'));
-
+$host = new IEHost($oPage->getRequestValue('host_id', 'int'));
 
 switch ($oPage->getRequestValue('action')) {
     case 'populate':
-        $Host->autoPopulateServices();
+        $host->autoPopulateServices();
         break;
 
     case 'rename':
         $newname = $oPage->getRequestValue('newname');
-        if(strlen($newname)){
-            if($Host->rename($newname)){
+        if (strlen($newname)) {
+            if ($host->rename($newname)) {
                 $oUser->addStatusMessage(_('Host byl přejmenován'), 'warning');
             } else {
                 $oUser->addStatusMessage(_('Host nebyl přejmenován'), 'success');
             }
         }
         break;
+    case 'parent':
+        $np = $oPage->getRequestValue('newparent');
+        if ($np) {
+            $newParent = EaseShared::myDbLink()->queryToValue('SELECT `alias` FROM ' . $host->myTable . ' '
+                    . 'WHERE `' . $host->NameColumn . '` = \'' . addSlashes($np) . '\' '
+                    . 'OR `address` = \'' . addSlashes($np) . '\' '
+                    . 'OR `address6` = \'' . addSlashes($np) . '\' ');
+            if (!$newParent) {
+                $oUser->addStatusMessage(_('Rodič nebyl nalezen'), 'warning');
+            } else {
+                $currentParents = $host->getDataValue('parents');
+                $currentParents[] = $newParent;
+                $host->setDataValue('parents', $currentParents);
+                $hostID = $host->saveToMySQL();
+                if (is_null($hostID)) {
+                    $oUser->addStatusMessage(_('Rodič nebyl přidán'), 'warning');
+                } else {
+                    $oUser->addStatusMessage(_('Rodič byl přidán'), 'success');
+                }
+            }
+        }
+        break;
     default:
         if ($oPage->isPosted()) {
-            $Host->takeData($_POST);
-            $HostID = $Host->saveToMySQL();
-            if (is_null($HostID)) {
+            $host->takeData($_POST);
+            $hostID = $host->saveToMySQL();
+            if (is_null($hostID)) {
                 $oUser->addStatusMessage(_('Host nebyl uložen'), 'warning');
             } else {
                 $oUser->addStatusMessage(_('Host byl uložen'), 'success');
@@ -45,58 +66,62 @@ switch ($oPage->getRequestValue('action')) {
         } else {
             $use = $oPage->getGetValue('use');
             if ($use) {
-                if ($Host->loadTemplate($use)) {
-                    $Host->setDataValue('use', $use);
-                    $Host->setDataValue('register', 1);
+                if ($host->loadTemplate($use)) {
+                    $host->setDataValue('use', $use);
+                    $host->setDataValue('register', 1);
                 }
             }
 
             $delete = $oPage->getGetValue('delete', 'bool');
             if ($delete == 'true') {
-                $Host->delete();
+                $host->delete();
             }
 
             IEServiceSelector::saveMembers($_REQUEST);
-            $Host->saveMembers();
+            $host->saveMembers();
         }
         break;
 }
 
-$oPage->addItem(new IEPageTop(_('Editace hosta') . ' ' . $Host->getName()));
+$oPage->addItem(new IEPageTop(_('Editace hosta') . ' ' . $host->getName()));
 
+switch ($oPage->getRequestValue('action')) {
+    case 'parent':
+        require_once 'classes/IEParentSelector.php';
+        $oPage->columnII->addItem(new IEParentSelector($host));
+        break;
+}
 
-$HostEdit = new IECfgEditor($Host);
+$hostEdit = new IECfgEditor($host);
 
-$form = $oPage->column2->addItem(new EaseHtmlForm('Host', 'host.php', 'POST', $HostEdit, array('class' => 'form-horizontal')));
+$form = $oPage->columnII->addItem(new EaseHtmlForm('Host', 'host.php', 'POST', $hostEdit, array('class' => 'form-horizontal')));
 $form->setTagID($form->getTagName());
-$form->addItem(new EaseHtmlInputHiddenTag($Host->getMyKeyColumn(), $Host->getMyKey()));
+$form->addItem(new EaseHtmlInputHiddenTag($host->getMyKeyColumn(), $host->getMyKey()));
 $form->addItem('<br>');
-$form->addItem(new EaseTWSubmitButton(_('Uložit'),'success'));
+$form->addItem(new EaseTWSubmitButton(_('Uložit'), 'success'));
 $oPage->AddCss('
 input.ui-button { width: 100%; }
 ');
 
-$oPage->column3->addItem(new IEServiceSelector($Host));
+$oPage->columnIII->addItem(new IEServiceSelector($host));
 
-$oPage->column3->addItem($Host->deleteButton());
+$oPage->columnIII->addItem($host->deleteButton());
 
-$oPage->column3->addItem(new EaseTWBLinkButton('?action=populate&host_id=' . $Host->getID(), _('Oskenovat a sledovat služby')));
+$oPage->columnIII->addItem(new EaseTWBLinkButton('?action=populate&host_id=' . $host->getID(), _('Oskenovat a sledovat služby')));
 
-$RenameForm = new EaseTWBForm('Rename','?action=rename&host_id=' . $Host->getID());
-$RenameForm->addItem( new EaseHtmlInputTextTag('newname'), $Host->getName(), array('class'=>'form-control') );
-$RenameForm->addItem( new EaseTWSubmitButton(_('Přejmenovat'), 'success') );
+$renameForm = new EaseTWBForm('Rename', '?action=rename&host_id=' . $host->getID());
+$renameForm->addItem(new EaseHtmlInputTextTag('newname'), $host->getName(), array('class' => 'form-control'));
+$renameForm->addItem(new EaseTWSubmitButton(_('Přejmenovat'), 'success'));
 
-$oPage->column1->addItem( new EaseHtmlFieldSet(_('Přejmenování'), $RenameForm ));
+$oPage->columnI->addItem(new EaseHtmlFieldSet(_('Přejmenování'), $renameForm));
+$oPage->columnIII->addItem(new EaseTWBLinkButton('?action=parent&host_id=' . $host->getId(), _('Přiřadit rodiče'), 'success'));
 
-
-if ($Host->getId()) {
-    $oPage->column1->addItem($Host->ownerLinkButton());
+if ($host->getId()) {
+    $oPage->columnI->addItem($host->ownerLinkButton());
 }
 
 //$OPage->column3->addItem(new EaseHtmlH4Tag('Rozšířené info'));
 
 $oPage->addItem(new IEPageBottom());
 
-
 $oPage->draw();
-?>
