@@ -11,6 +11,7 @@ require_once 'Ease/EaseWebPage.php';
 require_once 'Ease/EaseHtmlForm.php';
 require_once 'Ease/EaseJQueryWidgets.php';
 require_once 'Ease/EaseTWBootstrap.php';
+require_once 'IEHost.php';
 
 class IEWebPage extends EaseTWBWebPage
 {
@@ -160,9 +161,9 @@ class IEBootstrapMenu extends EaseTWBNavbar
         $user = EaseShared::user();
         EaseTWBPart::twBootstrapize();
         if (!$user->getUserID()) {
-            $this->addMenuItem('<a href="createaccount.php">'. EaseTWBPart::GlyphIcon('leaf').' ' . _('Registrace') . '</a>','right');
+            $this->addMenuItem('<a href="createaccount.php">' . EaseTWBPart::GlyphIcon('leaf') . ' ' . _('Registrace') . '</a>', 'right');
             $this->addMenuItem(
-'
+                    '
 <li class="divider-vertical"></li>
 <li class="dropdown">
 <a class="dropdown-toggle" href="login.php" data-toggle="dropdown"><i class="icon-circle-arrow-left"></i> ' . _('Přihlášení') . '<strong class="caret"></strong></a>
@@ -190,7 +191,7 @@ class IEBootstrapMenu extends EaseTWBNavbar
 <li><a href="logout.php"><i class="icon-off"></i> ' . _('Odhlášení') . '</a></li>
 </ul>
 </li>
-','left');
+', 'left');
         }
     }
 
@@ -239,25 +240,39 @@ class IEMainMenu extends EaseHtmlDivTag
             if ($User->getSettingValue('admin')) {
                 $nav->addDropDownMenu(_('Uživatelé'), array(
                     'users.php' => '<i class="icon-list"></i>&nbsp;' . _('Přehled uživatelů'),
-                    'createaccount.php' => EaseTWBPart::GlyphIcon('edit').' ' . _('Nový uživatel'),
+                    'createaccount.php' => EaseTWBPart::GlyphIcon('edit') . ' ' . _('Nový uživatel'),
                         )
                 );
             }
 
-            $nav->addDropDownMenu(_('Hosti'), array(
+
+            $host = new IEHost();
+            $hosts = $host->getListing();
+            $hostMenuItem = array();
+            if ($hosts) {
+                foreach ($hosts as $CID => $CInfo) {
+                    if ($CInfo['register'] != 1) {
+                        continue;
+                    }
+                    $hostMenuItem['host.php?host_id=' . $CInfo['host_id']] = $CInfo['host_name'] . ' ' . EaseTWBPart::GlyphIcon('edit');
+                }
+                $hostMenuItem[]='';
+            }
+
+            $nav->addDropDownMenu(_('Hosti'), array_merge($hostMenuItem, array(
                 'wizard.php' => '<i class="icon-cog"></i>&nbsp;' . _('Průvodce rychlým založením'),
                 'hosts.php' => '<i class="icon-list"></i>&nbsp;' . _('Přehled hostů'),
-                'host.php' => EaseTWBPart::GlyphIcon('edit').' ' . _('Nový Host'),
+                'host.php' => EaseTWBPart::GlyphIcon('edit') . ' ' . _('Nový Host'),
                 'hostgroups.php' => '<i class="icon-list"></i>&nbsp;' . _('Přehled skupin hostů'),
-                'hostgroup.php' => EaseTWBPart::GlyphIcon('edit').' ' . _('Nová skupina hostů')/* , 
-                      'exthostinfo.php' => _('Rozšířené informace hostů'),
-                      'hostdependency.php' => _('Závislosti hostů'),
-                      'hostescalation.php' => _('Eskalace hostů') */)
-            );
+                'hostgroup.php' => EaseTWBPart::GlyphIcon('edit') . ' ' . _('Nová skupina hostů')/* , 
+                              'exthostinfo.php' => _('Rozšířené informace hostů'),
+                              'hostdependency.php' => _('Závislosti hostů'),
+                              'hostescalation.php' => _('Eskalace hostů') */)
+            ));
             $nav->addDropDownMenu(_('Služby'), array(
                 'service.php' => '<i class="icon-edit"></i> ' . _('Nová služba'),
                 'services.php' => '<i class="icon-list"></i>&nbsp;' . _('Přehled služeb'),
-                'servicegroup.php' => EaseTWBPart::GlyphIcon('edit').' ' . _('Nová skupina služeb'),
+                'servicegroup.php' => EaseTWBPart::GlyphIcon('edit') . ' ' . _('Nová skupina služeb'),
                 'servicegroups.php' => '<i class="icon-list"></i>&nbsp;' . _('Přehled skupin služeb'), /*
                       'servicedependency.php' => _('Závislosti služeb'),
                       'extserviceinfo.php' => _('Rozšířené informace služeb'),
@@ -265,28 +280,28 @@ class IEMainMenu extends EaseHtmlDivTag
             );
             $nav->addDropDownMenu(_('Kontakty'), array(
                 'contacts.php' => '<i class="icon-list"></i>&nbsp;' . _('Přehled kontaktů'),
-                'contact.php' => EaseTWBPart::GlyphIcon('edit').' ' . _('Nový kontakt'),
+                'contact.php' => EaseTWBPart::GlyphIcon('edit') . ' ' . _('Nový kontakt'),
                 'contactgroups.php' => '<i class="icon-list"></i>&nbsp;' . _('Přehled skupin kontaktů'),
-                'contactgroup.php' => EaseTWBPart::GlyphIcon('edit').' ' . _('Nová skupina kontaktů'))
+                'contactgroup.php' => EaseTWBPart::GlyphIcon('edit') . ' ' . _('Nová skupina kontaktů'))
             );
 
 
             if ($User->getSettingValue('admin')) {
                 $nav->addDropDownMenu(_('Příkaz'), array(
                     'commands.php' => '<i class="icon-list"></i>&nbsp;' . _('Přehled příkazů'),
-                    'command.php' => EaseTWBPart::GlyphIcon('edit').' ' . _('Nový příkaz'),
+                    'command.php' => EaseTWBPart::GlyphIcon('edit') . ' ' . _('Nový příkaz'),
                     'importcommand.php' => '<i class="icon-download"></i> ' . _('Importovat'))
                 );
                 $nav->addDropDownMenu(_('Rozšířené'), array(
                     'timeperiods.php' => '<i class="icon-list"></i>&nbsp;' . _('Přehled časových period'),
-                    'timeperiod.php' => EaseTWBPart::GlyphIcon('edit').' ' . _('Nová časová perioda'),
+                    'timeperiod.php' => EaseTWBPart::GlyphIcon('edit') . ' ' . _('Nová časová perioda'),
                     'regenall.php' => '<i class="icon-ok"></i> ' . _('Přegenerovat všechny konfiguráky'),
                     'dbrecreate.php' => '<i class="icon-wrench"></i> ' . _('Reinicializovat databázi'),
                     'import.php' => '<i class="icon-download"></i> ' . _('Importovat')
                         /* 'module.php' => _('definice modulů') */                        )
                 );
             }
-            $nav->addMenuItem(new EaseHtmlATag('apply.php', _('Uplatnit změny <i class="icon-ok"></i>'),array('class'=>'btn btn-warning')));
+            $nav->addMenuItem(new EaseHtmlATag('apply.php', _('Uplatnit změny <i class="icon-ok"></i>'), array('class' => 'btn btn-warning')));
         }
     }
 
