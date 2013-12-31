@@ -247,17 +247,22 @@ class IEMainMenu extends EaseHtmlDivTag
 
 
             $host = new IEHost();
-            $hosts = $host->getListing();
+            $hosts = $host->getListing(null,null,array('icon_image'));
             $hostMenuItem = array();
             if ($hosts) {
                 foreach ($hosts as $cID => $cInfo) {
                     if ($cInfo['register'] != 1) {
                         continue;
                     }
-                    $hostMenuItem['host.php?host_id=' . $cInfo['host_id']] = $cInfo['host_name'] . ' ' . EaseTWBPart::GlyphIcon('edit');
+                    $image = $cInfo['icon_image'];
+                    if (!$image) {
+                        $image = 'unknown.gif';
+                    }
+
+                    $hostMenuItem['host.php?host_id=' . $cInfo['host_id']] = '<img class="menuico" src="/icinga/images/logos/'.$image.'"> '.$cInfo['host_name'] . ' ' . EaseTWBPart::GlyphIcon('edit');
                 }
-                if(count($hostMenuItem)){
-                    $hostMenuItem[]='';
+                if (count($hostMenuItem)) {
+                    $hostMenuItem[] = '';
                 }
             }
 
