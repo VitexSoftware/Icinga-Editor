@@ -27,6 +27,7 @@ switch ($oPage->getRequestValue('action')) {
         $newicon = $oPage->getRequestValue('newicon');
         if (strlen($newicon)) {
             $host->setDataValue('icon_image', $newicon);
+            $host->setDataValue('statusmap_image', $newicon);
             if ($host->saveToMySQL()) {
                 $oUser->addStatusMessage(_('Ikona byla přiřazena'), 'success');
             } else {
