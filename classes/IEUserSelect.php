@@ -11,7 +11,7 @@
  */
 class IEUserSelect extends EaseHtmlSelect
 {
-    function __construct($Name, $Items = null, $DefaultValue = null, $ItemsIDs = false, $Properties = null)
+    function __construct($name, $Items = null, $DefaultValue = null, $ItemsIDs = false, $Properties = null)
     {
         if(is_null($Items)){
             $Items = $this->loadItems();
@@ -22,7 +22,7 @@ class IEUserSelect extends EaseHtmlSelect
             }
             $this->addItems($Items);
         }
-        parent::__construct($Name, $Items, $DefaultValue, $ItemsIDs, $Properties);
+        parent::__construct($name, $Items, $DefaultValue, $ItemsIDs, $Properties);
     }
     function loadItems()
     {   

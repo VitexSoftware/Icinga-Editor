@@ -29,14 +29,14 @@ class IETextInputSaver extends EaseLabeledTextInput {
 
     /**
      * Input pro editaci položek uživatele
-     * @param string $Name
-     * @param mixed $Value
+     * @param string $name
+     * @param mixed $value
      * @param string $Label
      * @param int $UserID
      * @param array $Properties 
      */
-    function __construct($Name, $Value = NULL, $Label = NULL, $Properties = NULL) {
-        parent::__construct($Name, $Value, $Label, $Properties);
+    function __construct($name, $value = NULL, $Label = NULL, $Properties = NULL) {
+        parent::__construct($name, $value, $Label, $Properties);
     }
 
     /**

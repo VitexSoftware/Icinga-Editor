@@ -200,7 +200,7 @@ class IEBootstrapMenu extends EaseTWBNavbar
      */
     function draw()
     {
-        $StatusMessages = $this->WebPage->getStatusMessagesAsHtml();
+        $StatusMessages = $this->webPage->getStatusMessagesAsHtml();
         if ($StatusMessages) {
             $this->addItem(new EaseHtmlDivTag('StatusMessages', $StatusMessages, array('class' => 'well', 'title' => _('kliknutím skryjete zprávy'))));
         }
@@ -250,13 +250,15 @@ class IEMainMenu extends EaseHtmlDivTag
             $hosts = $host->getListing();
             $hostMenuItem = array();
             if ($hosts) {
-                foreach ($hosts as $CID => $CInfo) {
-                    if ($CInfo['register'] != 1) {
+                foreach ($hosts as $cID => $cInfo) {
+                    if ($cInfo['register'] != 1) {
                         continue;
                     }
-                    $hostMenuItem['host.php?host_id=' . $CInfo['host_id']] = $CInfo['host_name'] . ' ' . EaseTWBPart::GlyphIcon('edit');
+                    $hostMenuItem['host.php?host_id=' . $cInfo['host_id']] = $cInfo['host_name'] . ' ' . EaseTWBPart::GlyphIcon('edit');
                 }
-                $hostMenuItem[]='';
+                if(count($hostMenuItem)){
+                    $hostMenuItem[]='';
+                }
             }
 
             $nav->addDropDownMenu(_('Hosti'), array_merge($hostMenuItem, array(
@@ -331,8 +333,8 @@ class IEPageBottom extends EaseHtmlDivTag
      */
     function finalize()
     {
-        if (!count($this->WebPage->heroUnit->PageParts)) {
-            unset($this->WebPage->container->PageParts['EaseHtmlDivTag@heroUnit']);
+        if (!count($this->webPage->heroUnit->PageParts)) {
+            unset($this->webPage->container->PageParts['EaseHtmlDivTag@heroUnit']);
         };
         $this->SetTagID('footer');
         $this->addItem('<hr>');

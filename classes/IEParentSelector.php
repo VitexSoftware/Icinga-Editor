@@ -1,7 +1,7 @@
 <?php
 require_once 'IEHost.php';
 /**
- * Volba služeb patřičných k hostu
+ * Volba rodičů patřičných k hostu
  *
  * @package    IcingaEditor
  * @subpackage WebUI

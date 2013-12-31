@@ -25,15 +25,15 @@ if(file_exists('classes/'.$SaverClass.'.php')){
 }
 
 $Field = $oPage->getRequestValue('Field');
-$Value = $oPage->getRequestValue('Value');
+$value = $oPage->getRequestValue('Value');
 
-if (is_null($SaverClass) || is_null($Field) || is_null($Value)) {
+if (is_null($SaverClass) || is_null($Field) || is_null($value)) {
     die(_('Chybné volání'));
 }
 
 $Saver = new $SaverClass($Field);
 $Saver->setUpUser($oUser);
-$Saver->setDataValue($Field, $Value);
+$Saver->setDataValue($Field, $value);
 
 if(is_null($Saver->SaveToMySql())){
     header('HTTP/1.0 501 Not Implemented',501);
@@ -41,6 +41,6 @@ if(is_null($Saver->SaveToMySql())){
             _('Třída').': <strong>'.$SaverClass.'</strong> '. 
             _('Tabulka').': <strong>'.$Saver->myTable.'</strong> '. 
             _('Pole').': <strong>'.$Field.'</strong> '.
-            _('Hodnota').': <strong>'.$Value.'</strong> <tt>'.$Saver->myDbLink->LastQuery.'</tt>','error');
+            _('Hodnota').': <strong>'.$value.'</strong> <tt>'.$Saver->myDbLink->LastQuery.'</tt>','error');
 }
 ?>

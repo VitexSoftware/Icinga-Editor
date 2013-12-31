@@ -87,10 +87,10 @@ class IEHostgroup extends IECfg
     /**
      * Vrací mazací tlačítko
      * 
-     * @param string $Name
+     * @param string $name
      * @return \EaseJQConfirmedLinkButton 
      */
-    function deleteButton($Name = null)
+    function deleteButton($name = null)
     {
         return parent::deleteButton(_('Skupinu hostů'));
     }

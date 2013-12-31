@@ -62,11 +62,11 @@ class IETimeperiod extends IECfg
         unset($Data['NewKey']);
         unset($Data['NewTimes']);
         unset($Data['del']);
-        foreach ($Data as $Key => $Value) {
+        foreach ($Data as $Key => $value) {
             if (($Key == $this->myKeyColumn) || array_key_exists($Key, $this->UseKeywords) || $Key == $this->userColumn) {
-                $this->setDataValue($Key, $Value);
+                $this->setDataValue($Key, $value);
             } else {
-                $this->addTime($Key, $Value);
+                $this->addTime($Key, $value);
             }
         }
         return parent::takeData($this->getData(), $DataPrefix);
@@ -176,10 +176,10 @@ class IETimeperiod extends IECfg
     /**
      * Vrací mazací tlačítko
      * 
-     * @param string $Name
+     * @param string $name
      * @return \EaseJQConfirmedLinkButton 
      */
-    function deleteButton($Name = null)
+    function deleteButton($name = null)
     {
         return parent::deleteButton(_('Časovou periodu'));
     }

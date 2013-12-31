@@ -669,10 +669,10 @@ class IEcfg extends EaseBrick
     /**
      * Vrací mazací tlačítko
      *
-     * @param  tring                      $Name jméno objektu
+     * @param  tring                      $name jméno objektu
      * @return \EaseJQConfirmedLinkButton
      */
-    public function deleteButton($Name = null)
+    public function deleteButton($name = null)
     {
         if ($this->getOwnerID() == EaseShared::user()->getUserID()) {
 
@@ -696,7 +696,7 @@ class IEcfg extends EaseBrick
                 }
             }
 
-            return new EaseJQConfirmedLinkButton('?' . $this->getmyKeyColumn() . '=' . $this->getID() . '&delete=true', _('Smazat ') . $Name . ' <i class="icon-remove-sign"></i>');
+            return new EaseJQConfirmedLinkButton('?' . $this->getmyKeyColumn() . '=' . $this->getID() . '&delete=true', _('Smazat ') . $name . ' <i class="icon-remove-sign"></i>');
         } else {
             return '';
         }

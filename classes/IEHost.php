@@ -2,7 +2,7 @@
 
 /**
  * Správce hostů
- * 
+ *
  * @package    IcingaEditor
  * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
@@ -27,19 +27,19 @@ class IEHost extends IECfg
 
     /**
      * Weblink
-     * @var string 
+     * @var string
      */
     public $WebLinkColumn = 'action_url';
 
     /**
      * Přidat položky register a use ?
-     * @var boolean 
+     * @var boolean
      */
     public $AllowTemplating = true;
 
     /**
      * Dát tyto položky k dispozici i ostatním ?
-     * @var boolean 
+     * @var boolean
      */
     public $PublicRecords = true;
     public $UseKeywords = array(
@@ -210,17 +210,17 @@ class IEHost extends IECfg
 
     /**
      * URL dokumentace objektu
-     * @var string 
+     * @var string
      */
     public $DocumentationLink = 'http://docs.icinga.org/latest/en/objectdefinitions.html#objectdefinitions-host';
 
     /**
      * Vrací mazací tlačítko
-     * 
-     * @param string $Name
-     * @return \EaseJQConfirmedLinkButton 
+     *
+     * @param  string                     $name
+     * @return \EaseJQConfirmedLinkButton
      */
-    function deleteButton($Name = null)
+    public function deleteButton($name = null)
     {
         return parent::deleteButton(_('Hosta'));
     }
@@ -228,11 +228,11 @@ class IEHost extends IECfg
     /**
      * Smaže záznam
      */
-    function delete()
+    public function delete()
     {
         $HostGroup = new IEHostgroup();
         $HostGroup->deleteHost($this->getName());
-        
+
         $DelAll = true;
         $Service = new IEService();
         $ServicesAssigned = $Service->myDbLink->queryToArray('SELECT ' . $Service->myKeyColumn . ',' . $Service->nameColumn . ' FROM ' . $Service->myTable . ' WHERE ' . 'host_name' . ' LIKE \'%"' . $this->getName() . '"%\'', $Service->myKeyColumn);
@@ -247,22 +247,24 @@ class IEHost extends IECfg
         if ($DelAll) {
             return parent::delete();
         }
+
         return false;
     }
 
     /**
      * Zkontroluje všechny položky
-     * 
-     * @param array $AllData
+     *
+     * @param  array $AllData
      * @return array
      */
-    function controlAllData($AllData)
+    public function controlAllData($AllData)
     {
         foreach ($AllData as $ADkey => $AD) {
             if ($AllData[$ADkey]['max_check_attempts'] == 0) {
                 unset($AllData[$ADkey]['max_check_attempts']);
             }
         }
+
         return parent::controlAllData($AllData);
     }
 
@@ -273,20 +275,22 @@ class IEHost extends IECfg
     public function autoPopulateServices()
     {
         $Scanner = new IEPortScanner($this);
-        return $Scanner->assignServices(); 
+
+        return $Scanner->assignServices();
     }
 
     /**
      * Přejmenuje hosta a závistlosti
      * @param type $newname
      */
-    public function rename($newname){
+    public function rename($newname)
+    {
         $oldname = $this->getName();
         $this->setDataValue($this->nameColumn, $newname);
-    
+
         $hostGroup = new IEHostgroup();
         $hostGroup->renameHost($oldname,$newname);
-        
+
         $renameAll = true;
         $service = new IEService();
         $ServicesAssigned = $service->myDbLink->queryToArray('SELECT ' . $service->myKeyColumn . ',' . $service->nameColumn . ' FROM ' . $service->myTable . ' WHERE ' . 'host_name' . ' LIKE \'%"' . $oldname . '"%\'', $service->myKeyColumn);
@@ -301,9 +305,8 @@ class IEHost extends IECfg
         if ($this->save() && $renameAll) {
             return true;
         }
+
         return false;
     }
-    
-}
 
-?>
+}
