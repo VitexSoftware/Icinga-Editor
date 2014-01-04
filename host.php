@@ -27,8 +27,8 @@ switch ($oPage->getRequestValue('action')) {
 
         $icourl = $oPage->getRequestValue('icourl');
         if ($icourl) {
-            $tmpfilename = EaseSand::randomString();
-            file_put_contents($filename, file_get_contents($icourl));
+            $tmpfilename = sys_get_temp_dir().'/'.EaseSand::randomString();
+            file_put_contents($tmpfilename, file_get_contents($icourl));
         }
         if (isset($_FILES) && count($_FILES)) {
             $tmpfilename = $_FILES['icofile']['tmp_name'];

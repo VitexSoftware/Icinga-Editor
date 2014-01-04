@@ -13,16 +13,22 @@ require_once 'IEHost.php';
 class IEIconSelector extends EaseContainer
 {
 
-    static public $webprefix = '/icinga/';
-    static public $webdir = '/usr/share/icinga/htdocs/';
-    static public $icodir = '/images/logos/';
+    public static $webprefix = '/icinga/';
+    public static $webdir = '/usr/share/icinga/htdocs/';
+    public static $icodir = '/images/logos/';
+
+    /**
+     * Výchozí velikost ikony hosta
+     * @var int
+     */
+    public static $imageSize = 40;
 
     /**
      * Volba ikony pro host
-     * 
+     *
      * @param IEHost $host
      */
-    function __construct($host)
+    public function __construct($host)
     {
         parent::__construct();
         EaseJQueryPart::jQueryze($this);
@@ -30,16 +36,17 @@ class IEIconSelector extends EaseContainer
         $icoBox = $this->addItem(new EaseHtmlFieldSet(_('Vyber Ikonu')));
         $icoBox->setTagCss('width: 100%;');
 
-        $d = dir(self::$webdir . self::$icodir.'custom/');
+        $d = dir(self::$webdir . self::$icodir . 'custom/');
         while (false !== ($entry = $d->read())) {
-            if (is_dir(self::$webdir . self::$icodir . 'custom/'.$entry)) {
+            if (is_dir(self::$webdir . self::$icodir . 'custom/' . $entry)) {
+
             } else {
-                list($userid,$imgname) = explode('-', $entry);
-                if($userid != $host->owner->getId()){
+                list($userid, $imgname) = explode('-', $entry);
+                if ($userid != $host->owner->getId()) {
                     continue;
                 }
-                
-                $hostIcon = new EaseHtmlImgTag(self::$webprefix . self::$icodir . 'custom/'.$entry);
+
+                $hostIcon = new EaseHtmlImgTag(self::$webprefix . self::$icodir . 'custom/' . $entry);
                 $hostIcon->setTagClass('host_icon');
                 if ($host->getDataValue('icon_image') == 'custom/' . $entry) {
                     $hostIcon->setTagCss('border: 3px red solid;');
@@ -48,15 +55,16 @@ class IEIconSelector extends EaseContainer
             }
         }
         $d->close();
-        
-        $d = dir(self::$webdir . self::$icodir.'base/');
+
+        $d = dir(self::$webdir . self::$icodir . 'base/');
         while (false !== ($entry = $d->read())) {
             if (strstr($entry, 'gd2')) {
                 continue;
             }
-            if (is_dir(self::$webdir . self::$icodir . 'base/'.$entry)) {
+            if (is_dir(self::$webdir . self::$icodir . 'base/' . $entry)) {
+
             } else {
-                $hostIcon = new EaseHtmlImgTag(self::$webprefix . self::$icodir . 'base/'.$entry);
+                $hostIcon = new EaseHtmlImgTag(self::$webprefix . self::$icodir . 'base/' . $entry);
                 $hostIcon->setTagClass('host_icon');
                 if ($host->getDataValue('icon_image') == 'base/' . $entry) {
                     $hostIcon->setTagCss('border: 3px red solid;');
@@ -79,7 +87,7 @@ class IEIconSelector extends EaseContainer
 
     /**
      * Otestuje zdali je soubor PNG/GIF/JPF
-     * 
+     *
      * @param type $tmpfilename
      */
     public static function imageTypeOK($tmpfilename)
@@ -98,37 +106,102 @@ class IEIconSelector extends EaseContainer
         if (strstr($info, 'jpeg')) {
             return true;
         }
+
         return false;
     }
 
     /**
      * Uloží ikonu do správné složky
-     * 
-     * @param string $tmpfilename
-     * @param IEHost $host
+     *
+     * @param  string  $tmpfilename
+     * @param  IEHost  $host
      * @return boolean
      */
     public static function saveIcon($tmpfilename, $host)
     {
         $id = $host->owner->getUserID();
-        $size = getimagesize($tmpfilename);
+        $thumbnail_image_path = $tmpfilename . '40';
 
-        switch ($size['mime']) {
-            case "image/gif":
+        list($source_image_width, $source_image_height, $source_image_type) = getimagesize($tmpfilename);
+        switch ($source_image_type) {
+            case IMAGETYPE_GIF:
+                $source_gd_image = imagecreatefromgif($tmpfilename);
                 $suffix = 'gif';
                 break;
-            case 'image/jpeg':
+            case IMAGETYPE_JPEG:
+                $source_gd_image = imagecreatefromjpeg($tmpfilename);
                 $suffix = 'jpg';
                 break;
-            case 'image/png':
+            case IMAGETYPE_PNG:
+                $source_gd_image = imagecreatefrompng($tmpfilename);
                 $suffix = 'png';
                 break;
         }
 
-        $newname =  'custom/' . $id . '-' . $host->getName().'.'.$suffix;
-        if (rename($tmpfilename, self::$webdir . self::$icodir.'/' .$newname)) {
+        if (!$source_image_height || !$source_image_width) {
+            return NULL;
+        }
+
+        if ($source_image_width > $source_image_height) {
+            $thumbnail_image_width = self::$imageSize;
+        } else {
+            $thumbnail_image_height = self::$imageSize;
+        }
+
+        if (isset($thumbnail_image_width) AND !isset($thumbnail_image_height)) {
+            // autocompute height if only width is set
+            if ($thumbnail_image_width) {
+                $thumbnail_image_height = (100 / ($source_image_width / $thumbnail_image_width)) * .01;
+            }
+            $thumbnail_image_height = @round($source_image_height * $thumbnail_image_height);
+        } elseif (isset($thumbnail_image_height) AND !isset($thumbnail_image_width)) {
+            // autocompute width if only height is set
+            if ($thumbnail_image_height) {
+                $thumbnail_image_width = (100 / ($source_image_height / $thumbnail_image_height)) * .01;
+            }
+            $thumbnail_image_width = @round($source_image_width * $thumbnail_image_width);
+        } elseif (isset($thumbnail_image_height) AND isset($thumbnail_image_width) AND isset($constrain)) {
+            // get the smaller resulting image dimension if both height
+            // and width are set and $constrain is also set
+            $hx = (100 / ($source_image_width / $thumbnail_image_width)) * .01;
+            $hx = @round($source_image_height * $hx);
+
+            $wx = (100 / ($source_image_height / $thumbnail_image_height)) * .01;
+            $wx = @round($source_image_width * $wx);
+
+            if ($hx < $thumbnail_image_height) {
+                $thumbnail_image_height = (100 / ($source_image_width / $thumbnail_image_width)) * .01;
+                $thumbnail_image_height = @round($source_image_height * $thumbnail_image_height);
+            } else {
+                $thumbnail_image_width = (100 / ($source_image_height / $thumbnail_image_height)) * .01;
+                $thumbnail_image_width = @round($source_image_width * $thumbnail_image_width);
+            }
+        }
+
+        $thumbnail_gd_image = imagecreatetruecolor($thumbnail_image_width, $thumbnail_image_height);
+        imagecopyresampled($thumbnail_gd_image, $source_gd_image, 0, 0, 0, 0, $thumbnail_image_width, $thumbnail_image_height, $source_image_width, $source_image_height);
+
+        switch ($source_image_type) {
+            case IMAGETYPE_GIF:
+                break;
+                imagegif($thumbnail_gd_image, $thumbnail_image_path);
+            case IMAGETYPE_JPEG:
+                imagejpeg($thumbnail_gd_image, $thumbnail_image_path, 90);
+                break;
+            case IMAGETYPE_PNG:
+                imagepng($thumbnail_gd_image, $thumbnail_image_path, 9);
+                break;
+        }
+
+        imagedestroy($source_gd_image);
+        imagedestroy($thumbnail_gd_image);
+
+        $newname = 'custom/' . $id . '-' . $host->getName() . '.' . $suffix;
+        if (rename($thumbnail_image_path, self::$webdir . self::$icodir . '/' . $newname)) {
+            unlink($tmpfilename);
             return $newname;
         }
+
         return false;
     }
 
