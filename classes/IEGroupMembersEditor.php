@@ -20,17 +20,17 @@ class IEGroupMembersEditor extends EaseContainer
      */
     function __construct($FieldName, $FieldCaption, $DataSource, $Members)
     {
-        $IDColumn = $DataSource->KeywordsInfo[$FieldName]['refdata']['idcolumn'];
-        $nameColumn = $DataSource->KeywordsInfo[$FieldName]['refdata']['captioncolumn'];
-        $STable = $DataSource->KeywordsInfo[$FieldName]['refdata']['table'];
+        $IDColumn = $DataSource->keywordsInfo[$FieldName]['refdata']['idcolumn'];
+        $nameColumn = $DataSource->keywordsInfo[$FieldName]['refdata']['captioncolumn'];
+        $STable = $DataSource->keywordsInfo[$FieldName]['refdata']['table'];
 
-        if (isset($DataSource->KeywordsInfo[$FieldName]['refdata']['condition'])) {
-            $Conditions = $DataSource->KeywordsInfo[$FieldName]['refdata']['condition'];
+        if (isset($DataSource->keywordsInfo[$FieldName]['refdata']['condition'])) {
+            $Conditions = $DataSource->keywordsInfo[$FieldName]['refdata']['condition'];
         } else {
             $Conditions = array();
         }
 
-        if (isset($DataSource->KeywordsInfo[$FieldName]['refdata']['public']) && intval($DataSource->KeywordsInfo[$FieldName]['refdata']['public'])) {
+        if (isset($DataSource->keywordsInfo[$FieldName]['refdata']['public']) && intval($DataSource->keywordsInfo[$FieldName]['refdata']['public'])) {
             $SqlConds = " ( " . $DataSource->myDbLink->prepSelect(array_merge($Conditions, array($DataSource->userColumn => EaseShared::user()->getUserID()))) . " ) OR ( " . $DataSource->myDbLink->prepSelect(array_merge($Conditions, array('public' => 1))) . ")  ";
         } else {
             $SqlConds = $DataSource->myDbLink->prepSelect(array_merge($Conditions, array($DataSource->userColumn => EaseShared::user()->getUserID())));

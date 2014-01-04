@@ -12,6 +12,7 @@ require_once 'includes/IEInit.php';
 require_once 'classes/IEHost.php';
 require_once 'classes/IECfgEditor.php';
 require_once 'classes/IEServiceSelector.php';
+require_once 'classes/IEIconSelector.php';
 require_once 'classes/IEHostOverview.php';
 
 $oPage->onlyForLogged();
@@ -22,12 +23,33 @@ switch ($oPage->getRequestValue('action')) {
     case 'populate':
         $host->autoPopulateServices();
         break;
+    case 'icon':
 
+        $icourl = $oPage->getRequestValue('icourl');
+        if ($icourl) {
+            $tmpfilename = EaseSand::randomString();
+            file_put_contents($filename, file_get_contents($icourl));
+        }
+        if (isset($_FILES) && count($_FILES)) {
+            $tmpfilename = $_FILES['icofile']['tmp_name'];
+        }
+
+        if (isset($tmpfilename)) {
+            if (IEIconSelector::imageTypeOK($tmpfilename)) {
+                $newicon = IEIconSelector::saveIcon($tmpfilename, $host);
+            } else {
+                unlink($tmpfilename);
+                $oPage->addStatusMessage(_('toto není obrázek požadovaného typu'),'warning');
+            }
+        }
     case 'newicon':
-        $newicon = $oPage->getRequestValue('newicon');
+        if (!isset($newicon)) {
+            $newicon = $oPage->getRequestValue('newicon');
+        }
         if (strlen($newicon)) {
             $host->setDataValue('icon_image', $newicon);
             $host->setDataValue('statusmap_image', $newicon);
+            $host->setDataValue('icon_image_alt', $oPage->getRequestValue('icon_image_alt'));
             if ($host->saveToMySQL()) {
                 $oUser->addStatusMessage(_('Ikona byla přiřazena'), 'success');
             } else {
@@ -48,7 +70,7 @@ switch ($oPage->getRequestValue('action')) {
     case 'parent':
         $np = $oPage->getRequestValue('newparent');
         if ($np) {
-            $newParent = EaseShared::myDbLink()->queryToValue('SELECT `'.$host->nameColumn.'` FROM ' . $host->myTable . ' '
+            $newParent = EaseShared::myDbLink()->queryToValue('SELECT `' . $host->nameColumn . '` FROM ' . $host->myTable . ' '
                     . 'WHERE `' . $host->nameColumn . '` = \'' . addSlashes($np) . '\' '
                     . 'OR `alias` = \'' . addSlashes($np) . '\' '
                     . 'OR `address` = \'' . addSlashes($np) . '\' '
@@ -105,12 +127,11 @@ switch ($oPage->getRequestValue('action')) {
         $oPage->columnII->addItem(new IEParentSelector($host));
         break;
     case 'icon':
-        require_once 'classes/IEIconSelector.php';
         $oPage->columnII->addItem(new IEIconSelector($host));
         break;
 }
 
-$oPage->columnII->addItem( new IEHostOverview($host));
+$oPage->columnII->addItem(new IEHostOverview($host));
 
 $oPage->columnIII->addItem($host->deleteButton());
 
@@ -125,7 +146,6 @@ $oPage->columnI->addItem(new EaseTWBLinkButton('?action=parent&host_id=' . $host
 $oPage->columnI->addItem(new EaseTWBLinkButton('?action=icon&host_id=' . $host->getId(), _('Změnit ikonu'), 'success'));
 
 $oPage->columnI->addItem(new IEServiceSelector($host));
-
 
 if ($host->getId()) {
     $oPage->columnI->addItem($host->ownerLinkButton());

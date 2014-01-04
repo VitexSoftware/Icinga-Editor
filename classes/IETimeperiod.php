@@ -17,12 +17,12 @@ class IETimeperiod extends IECfg
     public $myKeyColumn = 'timeperiod_id';
     public $Keyword = 'timeperiod';
     public $nameColumn = 'timeperiod_name';
-    public $UseKeywords = array(
+    public $useKeywords = array(
         'timeperiod_name' => 'VARCHAR(64)',
         'alias' => 'VARCHAR(64)',
         'periods' => 'SERIAL'
     );
-    public $KeywordsInfo = array(
+    public $keywordsInfo = array(
         'timeperiod_name' => array('title' => 'název periody', 'required' => true),
         'alias' => array('title' => 'alias periody', 'required' => true),
         'periods' => array('hidden' => true)
@@ -38,7 +38,7 @@ class IETimeperiod extends IECfg
      * Dát tyto položky k dispozici i ostatním ?
      * @var boolean 
      */
-    public $PublicRecords = true;
+    public $publicRecords = true;
 
     /**
      * URL dokumentace objektu
@@ -49,21 +49,21 @@ class IETimeperiod extends IECfg
     /**
      * Převezme data
      * 
-     * @param type $Data
+     * @param type $data
      * @param type $DataPrefix
      * @return type 
      */
-    function takeData($Data, $DataPrefix = null)
+    function takeData($data, $DataPrefix = null)
     {
         $this->Timeperiods = array();
-        if (isset($Data['NewKey']) && strlen(trim($Data['NewKey'])) && isset($Data['NewTimes']) && strlen(trim($Data['NewTimes']))) {
-            $this->addTime($Data['NewKey'], $Data['NewTimes']);
+        if (isset($data['NewKey']) && strlen(trim($data['NewKey'])) && isset($data['NewTimes']) && strlen(trim($data['NewTimes']))) {
+            $this->addTime($data['NewKey'], $data['NewTimes']);
         }
-        unset($Data['NewKey']);
-        unset($Data['NewTimes']);
-        unset($Data['del']);
-        foreach ($Data as $Key => $value) {
-            if (($Key == $this->myKeyColumn) || array_key_exists($Key, $this->UseKeywords) || $Key == $this->userColumn) {
+        unset($data['NewKey']);
+        unset($data['NewTimes']);
+        unset($data['del']);
+        foreach ($data as $Key => $value) {
+            if (($Key == $this->myKeyColumn) || array_key_exists($Key, $this->useKeywords) || $Key == $this->userColumn) {
                 $this->setDataValue($Key, $value);
             } else {
                 $this->addTime($Key, $value);
@@ -93,20 +93,20 @@ class IETimeperiod extends IECfg
     /**
      * Uloží časovou periodu do databáze
      * 
-     * @param array $Data
+     * @param array $data
      * @param bool $SearchForID
      * @return int 
      */
-    function saveToMySQL($Data = null, $SearchForID = false)
+    function saveToMySQL($data = null, $SearchForID = false)
     {
-        if (is_null($Data)) {
-            $Data = $this->getData();
+        if (is_null($data)) {
+            $data = $this->getData();
         }
         if (count($this->Timeperiods)) {
-            $Data['periods'] = serialize($this->Timeperiods);
+            $data['periods'] = serialize($this->Timeperiods);
         }
-        $this->setData($Data);
-        return parent::saveToMySQL($Data, $SearchForID);
+        $this->setData($data);
+        return parent::saveToMySQL($data, $SearchForID);
     }
 
     /**
@@ -146,7 +146,7 @@ class IETimeperiod extends IECfg
             $Periods = $DataRow['periods'];
             if (is_array($Periods) && count($Periods)) {
                 foreach ($Periods as $TimeName => $TimeInterval) {
-                    $this->UseKeywords[$TimeName] = true;
+                    $this->useKeywords[$TimeName] = true;
                 }
                 unset($AllData[$Key]['periods']);
                 if (count($Periods)) {
@@ -164,7 +164,7 @@ class IETimeperiod extends IECfg
             $Periods = $DataRow['periods'];
             if (count($Periods)) {
                 foreach ($Periods as $TimeName => $TimeInterval) {
-                    $this->UseKeywords[$TimeName] = true;
+                    $this->useKeywords[$TimeName] = true;
                 }
                 $AllData[$Key] = array_merge($AllData[$Key], $Periods);
             }

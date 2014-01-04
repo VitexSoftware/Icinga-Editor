@@ -53,8 +53,8 @@ class IECfgEditor extends EaseContainer
      */
     public function insertWidget($fieldBlock, $fieldName, $value)
     {
-        $keywordInfo = $this->ObjectEdited->KeywordsInfo[$fieldName];
-        $fieldType = $this->ObjectEdited->UseKeywords[$fieldName];
+        $keywordInfo = $this->ObjectEdited->keywordsInfo[$fieldName];
+        $fieldType = $this->ObjectEdited->useKeywords[$fieldName];
         $Required = (isset($keywordInfo['requeired']) && ($keywordInfo['requeired'] === true));
         $fType = preg_replace('/\(.*\)/', '', $fieldType);
 
@@ -211,27 +211,27 @@ class IECfgEditor extends EaseContainer
     public function fullEditor()
     {
         if (EaseShared::user()->getSettingValue('admin')) {
-            $this->ObjectEdited->KeywordsInfo[$this->ObjectEdited->userColumn] = array('title' => 'vlastník');
-            $this->ObjectEdited->UseKeywords[$this->ObjectEdited->userColumn] = 'USER';
+            $this->ObjectEdited->keywordsInfo[$this->ObjectEdited->userColumn] = array('title' => 'vlastník');
+            $this->ObjectEdited->useKeywords[$this->ObjectEdited->userColumn] = 'USER';
         }
 
         if ($this->ObjectEdited->AllowTemplating) {
             if (!(int) $this->ObjectEdited->getDataValue('register')) {
                 $this->addStatusMessage('toto je pouze předloha');
-                foreach ($this->ObjectEdited->KeywordsInfo as $Kw => $Props) {
-                    unset($this->ObjectEdited->KeywordsInfo[$Kw]['required']);
+                foreach ($this->ObjectEdited->keywordsInfo as $Kw => $Props) {
+                    unset($this->ObjectEdited->keywordsInfo[$Kw]['required']);
                 }
-                $this->ObjectEdited->KeywordsInfo['name']['required'] = true;
-                $this->ObjectEdited->KeywordsInfo['register']['required'] = true;
+                $this->ObjectEdited->keywordsInfo['name']['required'] = true;
+                $this->ObjectEdited->keywordsInfo['register']['required'] = true;
             } else {
-                $this->ObjectEdited->KeywordsInfo['name']['required'] = false;
-                $this->ObjectEdited->KeywordsInfo['register']['required'] = false;
+                $this->ObjectEdited->keywordsInfo['name']['required'] = false;
+                $this->ObjectEdited->keywordsInfo['register']['required'] = false;
             }
         }
         if (!(int) $this->ObjectEdited->getDataValue('generate')) {
             $this->addStatusMessage(_('tento záznam se nebude generovat do konfigurace'));
         }
-        if ($this->ObjectEdited->PublicRecords) {
+        if ($this->ObjectEdited->publicRecords) {
             if ((int) $this->ObjectEdited->getDataValue('public')) {
                 $this->addStatusMessage(_('tento záznam je veřejný'));
             }
@@ -244,9 +244,9 @@ class IECfgEditor extends EaseContainer
             $template->loadFromMySQL((int) $Use);
         }
 
-        foreach ($this->ObjectEdited->UseKeywords as $fieldName => $FieldType) {
+        foreach ($this->ObjectEdited->useKeywords as $fieldName => $FieldType) {
 
-            $KeywordInfo = $this->ObjectEdited->KeywordsInfo[$fieldName];
+            $KeywordInfo = $this->ObjectEdited->keywordsInfo[$fieldName];
 
             if (!count($KeywordInfo)) {
                 continue;
@@ -338,7 +338,7 @@ class IECfgEditor extends EaseContainer
         EaseShared::webPage()->includeJavaScript('js/jquery.validate.js');
         if (isset($this->ReqFields) && count($this->ReqFields)) {
 
-            $Rules = ' $("#' . $this->ParentObject->getTagProperty('name') . '").validate({
+            $Rules = ' $("#' . $this->parentObject->getTagProperty('name') . '").validate({
         invalidHandler: function (e, validator) {
             var errors = validator.numberOfInvalids();
             if (errors) {
@@ -357,7 +357,7 @@ class IECfgEditor extends EaseContainer
             }
             $Rules.= implode(',', $FRules) . "\n}});\n";
 
-            //$Rules = ' $("#' . $this->ParentObject->getTagProperty('name') . '").validate();';
+            //$Rules = ' $("#' . $this->parentObject->getTagProperty('name') . '").validate();';
 
             EaseShared::webPage()->addJavaScript($Rules, NULL, true);
         }
@@ -369,7 +369,7 @@ class IECfgEditor extends EaseContainer
         if (!(int) $this->ObjectEdited->getDataValue('generate')) {
             $this->addStatusMessage('tento záznam se nebude generovat do konfigurace');
         }
-        if ($this->ObjectEdited->PublicRecords) {
+        if ($this->ObjectEdited->publicRecords) {
             if ((int) $this->ObjectEdited->getDataValue('public')) {
                 $this->addStatusMessage('tento záznam je veřejný');
             }
@@ -382,9 +382,9 @@ class IECfgEditor extends EaseContainer
             $template->loadFromMySQL((int) $use);
         }
 
-        foreach ($this->ObjectEdited->UseKeywords as $fieldName => $FieldType) {
+        foreach ($this->ObjectEdited->useKeywords as $fieldName => $FieldType) {
 
-            $keywordInfo = $this->ObjectEdited->KeywordsInfo[$fieldName];
+            $keywordInfo = $this->ObjectEdited->keywordsInfo[$fieldName];
 
             if (!count($keywordInfo)) {
                 continue;

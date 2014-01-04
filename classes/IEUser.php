@@ -10,16 +10,16 @@ class IEUser extends EaseUser
 
     /**
      * Budeme používat serializovaná nastavení uložená ve sloupečku
-     * @var string 
+     * @var string
      */
     public $SettingsColumn = 'settings';
 
     /**
      * Vrací odkaz na ikonu
-     * 
-     * @return string 
+     *
+     * @return string
      */
-    function getIcon()
+    public function getIcon()
     {
         $Icon = $this->GetSettingValue('icon');
         if (is_null($Icon)) {
@@ -32,32 +32,43 @@ class IEUser extends EaseUser
     /**
      * Vrací jméno prvního kontaktu uživatele
      */
-    function getFirstContactName(){
+    public function getFirstContactName()
+    {
         $Contact = new IEContact();
         $Cn = $Contact->getColumnsFromMySQL($Contact->nameColumn, array($Contact->userColumn => $this->getUserID()), $Contact->myKeyColumn, $Contact->nameColumn, 1);
-        if(count($Cn)){
+        if (count($Cn)) {
             return current(current($Cn));
         }
+
         return null;
     }
-    
-}
+    /**
+     * Vrací ID aktuálního záznamu
+     * @return int
+     */
+    public function getId()
+    {
+        return (int) $this->getMyKey();
+    }
 
+}
 
 class IETwitterUser extends IEUser
 {
+
     /**
-     * Data z Twitteru
-     * @var stdClass 
+     * data z Twitteru
+     * @var stdClass
      */
     public $Twitter = null;
+
     /**
      * Uživatel autentifikující se vůči twitteru
-     * 
-     * @param arrat    $Twitter   id uživatele
+     *
+     * @param arrat  $Twitter     id uživatele
      * @param string $TwitterName jméno uživatele
      */
-    function __construct($Twitter = null)
+    public function __construct($Twitter = null)
     {
         parent::__construct();
         if (!is_null($Twitter)) {
@@ -78,6 +89,4 @@ class IETwitterUser extends IEUser
             $this->setObjectName();
         }
     }
-
 }
-?>

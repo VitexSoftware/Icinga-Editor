@@ -14,7 +14,10 @@ class IEHostOverview extends EaseHtmlDivTag
         $this->addItem(new EaseHtmlH1Tag( array(self::icon($host), $host->getDataValue('alias') )));
         $this->addItem(new EaseHtmlH2Tag( $host->getDataValue('host_name') ));
         $this->addItem(new EaseHtmlH3Tag( $host->getDataValue('display_name') ));
-        $this->addItem(_('Rodiče').': '. implode(',', $host->getDataValue('parents')));
+        $parents = $host->getDataValue('parents');
+        if($parents){
+            $this->addItem(_('Rodiče').': '. implode(',', $parents ));
+        }
         $this->addItem( new EaseHtmlDivTag(null, _('Uloženo').': '. $host->getDataValue('DatSave')));
         $this->addItem( new EaseHtmlDivTag(null, _('Založeno').': '. $host->getDataValue('DatCreate')));
     }

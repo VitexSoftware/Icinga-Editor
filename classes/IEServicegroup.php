@@ -22,8 +22,8 @@ class IEServicegroup extends IECfg
      * Dát tyto položky k dispozici i ostatním ?
      * @var boolean 
      */
-    public $PublicRecords = false;
-    public $UseKeywords = array(
+    public $publicRecords = false;
+    public $useKeywords = array(
         'servicegroup_name' => 'VARCHAR(64)',
         'alias' => 'VARCHAR(64)',
         'members' => 'TEXT',
@@ -32,7 +32,7 @@ class IEServicegroup extends IECfg
         'notes_url' => 'VARCHAR(128)',
         'action_url' => 'VARCHAR(128)'
     );
-    public $KeywordsInfo = array(
+    public $keywordsInfo = array(
         'servicegroup_name' => array(
             'title' => 'název skupiny služeb',
             'required' => true

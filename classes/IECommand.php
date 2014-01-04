@@ -31,14 +31,14 @@ class IECommand extends IECfg
      * Položky
      * @var array
      */
-    public $UseKeywords = array(
+    public $useKeywords = array(
         'command_name' => 'VARCHAR(128)',
         'command_line' => 'TEXT',
         'command_type' => "ENUM('check','notify','handler')",
         'command_local' => 'BOOL',
         'command_remote' => 'BOOL'
     );
-    public $KeywordsInfo = array(
+    public $keywordsInfo = array(
         'command_name' => array('title' => 'název příkazu', 'required' => true),
         'command_line' => array('title' => 'příkaz', 'required' => true),
         'command_type' => array('title' => 'druh příkazu', 'required' => true),
@@ -55,7 +55,7 @@ class IECommand extends IECfg
      * Dát tyto položky k dispozici i ostatním ?
      * @var boolean 
      */
-    public $PublicRecords = true;
+    public $publicRecords = true;
 
     /**
      * Vrací všechna data uživatele
@@ -102,20 +102,20 @@ class IECommand extends IECfg
     /**
      * Načte data do objektu
      * 
-     * @param array  $Data
+     * @param array  $data
      * @param string $DataPrefix
      * @return int počet převzatých řádek
      */
-    function takeData($Data, $DataPrefix = null)
+    function takeData($data, $DataPrefix = null)
     {
-        if(!isset($Data['command_type'])){
-            if(strstr($Data[$this->nameColumn], 'notify')){
-                $Data['command_type'] = 'notify';
+        if(!isset($data['command_type'])){
+            if(strstr($data[$this->nameColumn], 'notify')){
+                $data['command_type'] = 'notify';
             } else {
-                $Data['command_type'] = 'check';
+                $data['command_type'] = 'check';
             }
         }
-        return parent::takeData($Data, $DataPrefix);
+        return parent::takeData($data, $DataPrefix);
     }
     
 }

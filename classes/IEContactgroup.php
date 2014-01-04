@@ -22,14 +22,14 @@ class IEContactgroup extends IECfg
      * Dát tyto položky k dispozici i ostatním ?
      * @var boolean 
      */
-    public $PublicRecords = false;
-    public $UseKeywords = array(
+    public $publicRecords = false;
+    public $useKeywords = array(
         'contactgroup_name' => 'VARCHAR(64)',
         'alias' => 'VARCHAR(64)',
         'members' => 'IDLIST',
         'contactgroup_members' => 'IDLIST'
     );
-    public $KeywordsInfo = array(
+    public $keywordsInfo = array(
         'contactgroup_name' => array(
             'title' => 'název skupiny kontaktů',
             'required' => true

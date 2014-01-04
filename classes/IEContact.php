@@ -35,8 +35,8 @@ class IEContact extends IECfg
      * Dát tyto položky k dispozici i ostatním ?
      * @var boolean 
      */
-    public $PublicRecords = false;
-    public $UseKeywords = array(
+    public $publicRecords = false;
+    public $useKeywords = array(
         'contact_name' => 'VARCHAR(128)',
         'alias' => 'VARCHAR()',
         'contactgroups' => 'VARCHAR(255)',
@@ -56,7 +56,7 @@ class IEContact extends IECfg
         'retain_status_information' => 'BOOL',
         'retain_nonstatus_information' => 'BOOL'
     );
-    public $KeywordsInfo = array(
+    public $keywordsInfo = array(
         'contact_name' => array('title' => 'název kontaktu', 'required' => true),
         'alias' => array(
             'title' => 'alias'

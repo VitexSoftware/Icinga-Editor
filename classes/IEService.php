@@ -37,8 +37,8 @@ class IEService extends IECfg
      * Dát tyto položky k dispozici i ostatním ?
      * @var boolean 
      */
-    public $PublicRecords = true;
-    public $UseKeywords = array(
+    public $publicRecords = true;
+    public $useKeywords = array(
         'display_name' => 'VARCHAR(64)',
         'service_description' => 'VARCHAR(255)',
         'host_name' => 'IDLIST',
@@ -86,7 +86,7 @@ class IEService extends IECfg
         'icon_image' => 'VARCHAR(64)',
         'icon_image_alt' => 'VARCHAR(64)'
     );
-    public $KeywordsInfo = array(
+    public $keywordsInfo = array(
         'host_name' => array(
             'title' => 'hosty služby',
             'required' => true,

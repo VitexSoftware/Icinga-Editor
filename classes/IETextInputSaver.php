@@ -51,18 +51,18 @@ class IETextInputSaver extends EaseLabeledTextInput {
     /**
      * Uloží data, pokud se to nepovede, pokusí se vytvořit chybějící sloupečky 
      * a vrátí vysledek dalšího uložení
-     * @param array $Data
+     * @param array $data
      * @param boolean $SearchForID
      * @return int 
      */
-    function saveToMySQL($Data = NULL, $SearchForID = false) {
-        if (is_null($Data)) {
-            $Data = $this->GetData();
+    function saveToMySQL($data = NULL, $SearchForID = false) {
+        if (is_null($data)) {
+            $data = $this->GetData();
         }
-        $SaveResult = parent::SaveToMySQL($Data, $SearchForID);
+        $SaveResult = parent::SaveToMySQL($data, $SearchForID);
         if (is_null($SaveResult)) {
-            if ($this->CreateMissingColumns($Data) > 0) {
-                $SaveResult = parent::SaveToMySQL($Data, $SearchForID);
+            if ($this->CreateMissingColumns($data) > 0) {
+                $SaveResult = parent::SaveToMySQL($data, $SearchForID);
             }
         }
         return $SaveResult;
@@ -70,15 +70,15 @@ class IETextInputSaver extends EaseLabeledTextInput {
 
     /**
      * Vytvoří v databázi sloupeček pro uložení hodnoty widgetu
-     * @param array $Data
+     * @param array $data
      * @return int 
      */
-    function createMissingColumns($Data = NULL) {
-        if (is_null($Data)) {
+    function createMissingColumns($data = NULL) {
+        if (is_null($data)) {
             $this->GetData();
         }
-        unset($Data[$this->GetmyKeyColumn()]);
-        $KeyName = current(array_keys($Data));
+        unset($data[$this->GetmyKeyColumn()]);
+        $KeyName = current(array_keys($data));
         return EaseDbMySqli::CreateMissingColumns($this, array($KeyName => str_repeat(' ', 1000)));
     }
 

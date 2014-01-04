@@ -41,8 +41,12 @@ class IEHost extends IECfg
      * Dát tyto položky k dispozici i ostatním ?
      * @var boolean
      */
-    public $PublicRecords = true;
-    public $UseKeywords = array(
+    public $publicRecords = true;
+    /**
+     * Sloupce záznamu
+     * @var array
+     */
+    public $useKeywords = array(
         'host_name' => 'VARCHAR(255)',
         'alias' => 'VARCHAR(64)',
         'display_name' => 'VARCHAR(64)',
@@ -88,7 +92,7 @@ class IEHost extends IECfg
         'statusmap_image' => 'VARCHAR(64)',
         '2d_coords' => 'VARCHAR(32)',
         '3d_coords' => 'VARCHAR(64)');
-    public $KeywordsInfo = array(
+    public $keywordsInfo = array(
         'host_name' => array('title' => 'Jméno hosta', 'required' => true),
         'alias' => array('title' => 'alias hosta', 'required' => true),
         'display_name' => array('title' => 'zobrazované jméno'),
@@ -230,21 +234,21 @@ class IEHost extends IECfg
      */
     public function delete()
     {
-        $HostGroup = new IEHostgroup();
-        $HostGroup->deleteHost($this->getName());
+        $hostGroup = new IEHostgroup();
+        $hostGroup->deleteHost($this->getName());
 
-        $DelAll = true;
-        $Service = new IEService();
-        $ServicesAssigned = $Service->myDbLink->queryToArray('SELECT ' . $Service->myKeyColumn . ',' . $Service->nameColumn . ' FROM ' . $Service->myTable . ' WHERE ' . 'host_name' . ' LIKE \'%"' . $this->getName() . '"%\'', $Service->myKeyColumn);
-        foreach ($ServicesAssigned as $ServiceID => $ServiceInfo) {
-            $Service->loadFromMySQL($ServiceID);
-            $Service->delHostName($this->getId(), $this->getName());
-            if (!$Service->saveToMySQL()) {
-                $this->addStatusMessage(sprintf(_('Nepodařilo se odregistrovat %s ze služby %s'), $this->getName(), $Service->getName()), $Type);
-                $DelAll = false;
+        $delAll = true;
+        $service = new IEService();
+        $servicesAssigned = $service->myDbLink->queryToArray('SELECT ' . $service->myKeyColumn . ',' . $service->nameColumn . ' FROM ' . $service->myTable . ' WHERE ' . 'host_name' . ' LIKE \'%"' . $this->getName() . '"%\'', $service->myKeyColumn);
+        foreach ($servicesAssigned as $ServiceID => $ServiceInfo) {
+            $service->loadFromMySQL($ServiceID);
+            $service->delHostName($this->getId(), $this->getName());
+            if (!$service->saveToMySQL()) {
+                $this->addStatusMessage(sprintf(_('Nepodařilo se odregistrovat %s ze služby %s'), $this->getName(), $service->getName()), $Type);
+                $delAll = false;
             }
         }
-        if ($DelAll) {
+        if ($delAll) {
             return parent::delete();
         }
 
@@ -254,18 +258,18 @@ class IEHost extends IECfg
     /**
      * Zkontroluje všechny položky
      *
-     * @param  array $AllData
+     * @param  array $allData
      * @return array
      */
-    public function controlAllData($AllData)
+    public function controlAllData($allData)
     {
-        foreach ($AllData as $ADkey => $AD) {
-            if ($AllData[$ADkey]['max_check_attempts'] == 0) {
-                unset($AllData[$ADkey]['max_check_attempts']);
+        foreach ($allData as $aDkey => $aD) {
+            if ($allData[$aDkey]['max_check_attempts'] == 0) {
+                unset($allData[$aDkey]['max_check_attempts']);
             }
         }
 
-        return parent::controlAllData($AllData);
+        return parent::controlAllData($allData);
     }
 
     /**

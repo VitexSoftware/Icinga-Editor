@@ -2,10 +2,10 @@
 
 /**
  * Třídy pro vykreslení stránky
- * 
+ *
  * @package   VitexSoftware
  * @author    Vitex <vitex@hippy.cz>
- * @copyright 2009-2011 Vitex@hippy.cz (G) 
+ * @copyright 2009-2011 Vitex@hippy.cz (G)
  */
 require_once 'Ease/EaseWebPage.php';
 require_once 'Ease/EaseHtmlForm.php';
@@ -24,34 +24,34 @@ class IEWebPage extends EaseTWBWebPage
 
     /**
      * Hlavní blok stránky
-     * @var EaseHtmlDivTag 
+     * @var EaseHtmlDivTag
      */
     public $container = NULL;
 
     /**
      * První sloupec
-     * @var EaseHtmlDivTag 
+     * @var EaseHtmlDivTag
      */
     public $columnI = NULL;
 
     /**
      * Druhý sloupec
-     * @var EaseHtmlDivTag 
+     * @var EaseHtmlDivTag
      */
     public $columnII = NULL;
 
     /**
      * Třetí sloupec
-     * @var EaseHtmlDivTag 
+     * @var EaseHtmlDivTag
      */
     public $columnIII = NULL;
 
     /**
-     * Základní objekt stránky 
-     * 
-     * @param VSUser $UserObject 
+     * Základní objekt stránky
+     *
+     * @param VSUser $UserObject
      */
-    function __construct($PageTitle = null, &$UserObject = null)
+    public function __construct($PageTitle = null, &$UserObject = null)
     {
         if (is_null($UserObject)) {
             $UserObject = EaseShared::user();
@@ -60,16 +60,15 @@ class IEWebPage extends EaseTWBWebPage
         parent::__construct($PageTitle, $UserObject);
         $this->IncludeCss('css/bootstrap.css');
         $this->IncludeCss('css/default.css');
-        $this->Head->addItem('<meta name="viewport" content="width=device-width, initial-scale=1.0">');
+        $this->head->addItem('<meta name="viewport" content="width=device-width, initial-scale=1.0">');
         $this->addCss('body {
                 padding-top: 60px;
                 padding-bottom: 40px;
             }');
-        $this->Head->addItem('<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://twitter.github.com/bootstrap/assets/ico/apple-touch-icon-144-precomposed.png">');
-        $this->Head->addItem('<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://twitter.github.com/bootstrap/assets/ico/apple-touch-icon-114-precomposed.png">');
-        $this->Head->addItem('<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://twitter.github.com/bootstrap/assets/ico/apple-touch-icon-72-precomposed.png">');
-        $this->Head->addItem('<link rel="apple-touch-icon-precomposed" href="http://twitter.github.com/bootstrap/assets/ico/apple-touch-icon-57-precomposed.png">');
-
+        $this->head->addItem('<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://twitter.github.com/bootstrap/assets/ico/apple-touch-icon-144-precomposed.png">');
+        $this->head->addItem('<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://twitter.github.com/bootstrap/assets/ico/apple-touch-icon-114-precomposed.png">');
+        $this->head->addItem('<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://twitter.github.com/bootstrap/assets/ico/apple-touch-icon-72-precomposed.png">');
+        $this->head->addItem('<link rel="apple-touch-icon-precomposed" href="http://twitter.github.com/bootstrap/assets/ico/apple-touch-icon-57-precomposed.png">');
 
         $this->container = $this->addItem(new EaseHtmlDivTag(null, null, array('class' => 'container')));
 
@@ -84,10 +83,10 @@ class IEWebPage extends EaseTWBWebPage
 
     /**
      * Pouze pro admina
-     * 
+     *
      * @param string $LoginPage
      */
-    function onlyForAdmin($LoginPage = 'login.php')
+    public function onlyForAdmin($LoginPage = 'login.php')
     {
         if (!$this->User->getSettingValue('admin')) {
             EaseShared::user()->addStatusMessage(_('Nejprve se prosím přihlašte jako admin'), 'warning');
@@ -100,7 +99,7 @@ class IEWebPage extends EaseTWBWebPage
 
 /**
  * Vršek stránky
- * 
+ *
  * @package    VitexSoftware
  * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
@@ -110,16 +109,16 @@ class IEPageTop extends EaseHtmlDivTag
 
     /**
      * Titulek stránky
-     * @var type 
+     * @var type
      */
     public $PageTitle = 'Page Heading';
 
     /**
      * Nastavuje titulek
-     * 
+     *
      * @param string $PageTitle
      */
-    function __construct($PageTitle = null)
+    public function __construct($PageTitle = null)
     {
         parent::__construct('header');
         if (!is_null($PageTitle)) {
@@ -130,7 +129,7 @@ class IEPageTop extends EaseHtmlDivTag
     /**
      * Vloží vršek stránky a hlavní menu
      */
-    function finalize()
+    public function finalize()
     {
         $this->SetupWebPage();
         $this->addItem(new IEMainMenu());
@@ -142,19 +141,19 @@ class IEBootstrapMenu extends EaseTWBNavbar
 {
 
     /**
-     * Navigace 
+     * Navigace
      * @var EaseHtmlUlTag
      */
     public $nav = NULL;
 
     /**
      * Hlavní menu aplikace
-     * 
+     *
      * @param string $name
-     * @param mixed $content
-     * @param array $properties 
+     * @param mixed  $content
+     * @param array  $properties
      */
-    function __construct($name = null, $content = null, $properties = null)
+    public function __construct($name = null, $content = null, $properties = null)
     {
         parent::__construct("Menu", 'VSMonitoring', array('class' => 'navbar-fixed-top'));
 
@@ -196,9 +195,9 @@ class IEBootstrapMenu extends EaseTWBNavbar
     }
 
     /**
-     * Vypíše stavové zprávy 
+     * Vypíše stavové zprávy
      */
-    function draw()
+    public function draw()
     {
         $StatusMessages = $this->webPage->getStatusMessagesAsHtml();
         if ($StatusMessages) {
@@ -211,7 +210,7 @@ class IEBootstrapMenu extends EaseTWBNavbar
 
 /**
  * Hlavní menu
- * 
+ *
  * @package    VitexSoftware
  * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
@@ -222,7 +221,7 @@ class IEMainMenu extends EaseHtmlDivTag
     /**
      * Vytvoří hlavní menu
      */
-    function __construct()
+    public function __construct()
     {
         parent::__construct('MainMenu');
     }
@@ -230,24 +229,36 @@ class IEMainMenu extends EaseHtmlDivTag
     /**
      * Vložení menu
      */
-    function afterAdd()
+    public function afterAdd()
     {
         $nav = $this->addItem(new IEBootstrapMenu());
-        $User = EaseShared::user();
-        $UserID = $User->getUserID();
-        if ($UserID) {
+        $user = EaseShared::user();
+        $userID = $user->getUserID();
+        if ($userID) {
 
-            if ($User->getSettingValue('admin')) {
-                $nav->addDropDownMenu(_('Uživatelé'), array(
+            if ($user->getSettingValue('admin')) {
+
+                $users = $user->getColumnsFromMySQL(array('id', 'login'), null, 'login', $user->getmyKeyColumn());
+
+                $userList = array();
+                if ($users) {
+                    foreach ($users as $uID => $uInfo) {
+                        $userList['userinfo.php?user_id=' . $uInfo['id']] = EaseTWBPart::GlyphIcon('user') . ' ' . $uInfo['login'];
+                    }
+                    if (count($userList)) {
+                        $userList[] = '';
+                    }
+                }
+
+                $nav->addDropDownMenu(_('Uživatelé'), array_merge($userList, array(
                     'users.php' => '<i class="icon-list"></i>&nbsp;' . _('Přehled uživatelů'),
                     'createaccount.php' => EaseTWBPart::GlyphIcon('edit') . ' ' . _('Nový uživatel'),
-                        )
+                        ))
                 );
             }
 
-
             $host = new IEHost();
-            $hosts = $host->getListing(null,null,array('icon_image'));
+            $hosts = $host->getListing(null, null, array('icon_image'));
             $hostMenuItem = array();
             if ($hosts) {
                 foreach ($hosts as $cID => $cInfo) {
@@ -259,7 +270,7 @@ class IEMainMenu extends EaseHtmlDivTag
                         $image = 'unknown.gif';
                     }
 
-                    $hostMenuItem['host.php?host_id=' . $cInfo['host_id']] = '<img class="menuico" src="/icinga/images/logos/'.$image.'"> '.$cInfo['host_name'] . ' ' . EaseTWBPart::GlyphIcon('edit');
+                    $hostMenuItem['host.php?host_id=' . $cInfo['host_id']] = '<img class="menuico" src="/icinga/images/logos/' . $image . '"> ' . $cInfo['host_name'] . ' ' . EaseTWBPart::GlyphIcon('edit');
                 }
                 if (count($hostMenuItem)) {
                     $hostMenuItem[] = '';
@@ -271,7 +282,7 @@ class IEMainMenu extends EaseHtmlDivTag
                 'hosts.php' => '<i class="icon-list"></i>&nbsp;' . _('Přehled hostů'),
                 'host.php' => EaseTWBPart::GlyphIcon('edit') . ' ' . _('Nový Host'),
                 'hostgroups.php' => '<i class="icon-list"></i>&nbsp;' . _('Přehled skupin hostů'),
-                'hostgroup.php' => EaseTWBPart::GlyphIcon('edit') . ' ' . _('Nová skupina hostů')/* , 
+                'hostgroup.php' => EaseTWBPart::GlyphIcon('edit') . ' ' . _('Nová skupina hostů')/* ,
                               'exthostinfo.php' => _('Rozšířené informace hostů'),
                               'hostdependency.php' => _('Závislosti hostů'),
                               'hostescalation.php' => _('Eskalace hostů') */)
@@ -292,8 +303,7 @@ class IEMainMenu extends EaseHtmlDivTag
                 'contactgroup.php' => EaseTWBPart::GlyphIcon('edit') . ' ' . _('Nová skupina kontaktů'))
             );
 
-
-            if ($User->getSettingValue('admin')) {
+            if ($user->getSettingValue('admin')) {
                 $nav->addDropDownMenu(_('Příkaz'), array(
                     'commands.php' => '<i class="icon-list"></i>&nbsp;' . _('Přehled příkazů'),
                     'command.php' => EaseTWBPart::GlyphIcon('edit') . ' ' . _('Nový příkaz'),
@@ -315,17 +325,17 @@ class IEMainMenu extends EaseHtmlDivTag
     /**
      * Přidá do stránky javascript pro skrývání oblasti stavových zpráv
      */
-    function finalize()
+    public function finalize()
     {
         EaseJQueryPart::jQueryze($this);
-        $this->addJavaScript('$("#StatusMessages").click(function() { $("#StatusMessages").fadeTo("slow",0.25).slideUp("slow"); });', 3, true);
+        $this->addJavaScript('$("#StatusMessages").click(function () { $("#StatusMessages").fadeTo("slow",0.25).slideUp("slow"); });', 3, true);
     }
 
 }
 
 /**
  * Spodek stránky
- * 
+ *
  * @package    VitexSoftware
  * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
@@ -336,14 +346,14 @@ class IEPageBottom extends EaseHtmlDivTag
     /**
      * Zobrazí přehled právě přihlášených a spodek stránky
      */
-    function finalize()
+    public function finalize()
     {
-        if (!count($this->webPage->heroUnit->PageParts)) {
-            unset($this->webPage->container->PageParts['EaseHtmlDivTag@heroUnit']);
+        if (!count($this->webPage->heroUnit->pageParts)) {
+            unset($this->webPage->container->pageParts['EaseHtmlDivTag@heroUnit']);
         };
         $this->SetTagID('footer');
         $this->addItem('<hr>');
-        $this->addJavaScript('!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");');
+        $this->addJavaScript('!function (d,s,id) {var js,fjs=d.getElementsByTagName(s)[0];if (!d.getElementById(id)) {js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");');
         $Foot = $this->addItem(new EaseHtmlDivTag('FootAbout'));
         $Foot->addItem('<a href="http://www.spoje.net"><img style="position: relative; top: -7px; left: -10px;" align="right" style="border:0" src="img/spojenet_small_white.gif" alt="SPOJE.NET" title="Housing zajišťují SPOJE.NET s.r.o." /></a>');
         $Foot->addItem('<span style="position: relative; top: -4px; left: -10px;">&nbsp;&nbsp; &copy; 2012 <a href="http://vitexsoftware.cz/">Vitex Software</a></span>');
@@ -352,5 +362,3 @@ class IEPageBottom extends EaseHtmlDivTag
     }
 
 }
-
-?>

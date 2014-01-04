@@ -22,8 +22,8 @@ class IEHostgroup extends IECfg
      * Dát tyto položky k dispozici i ostatním ?
      * @var boolean 
      */
-    public $PublicRecords = false;
-    public $UseKeywords = array(
+    public $publicRecords = false;
+    public $useKeywords = array(
         'hostgroup_name' => 'VARCHAR(64)',
         'alias' => 'VARCHAR(64)',
         'members' => 'IDLIST',
@@ -32,7 +32,7 @@ class IEHostgroup extends IECfg
         'notes_url' => 'VARCHAR(255)',
         'action_url' => 'VARCHAR(255)'
     );
-    public $KeywordsInfo = array(
+    public $keywordsInfo = array(
         'hostgroup_name' => array('title' => 'název skupiny', 'required' => true),
         'alias' => array('title' => 'alias skupiny', 'required' => true),
         'members' => array(
@@ -71,10 +71,10 @@ class IEHostgroup extends IECfg
         foreach ($MemberOf as $GroupID => $Group){
             $Found = false;
             $this->loadFromMySQL($GroupID);
-            foreach ($this->Data['members'] as $ID=>$Member){
+            foreach ($this->data['members'] as $ID=>$Member){
                 if($Member == $hostname){
                     $Found = true;
-                    unset($this->Data['members'][$ID]);
+                    unset($this->data['members'][$ID]);
                     $this->addStatusMessage(sprintf(_(' %s byl odstraněn ze skupiny %s '),$hostname,$Group[$this->nameColumn]));
                 }
             }
@@ -110,10 +110,10 @@ class IEHostgroup extends IECfg
         foreach ($memberOf as $groupID => $group){
             $found = false;
             $this->loadFromMySQL($groupID);
-            foreach ($this->Data['members'] as $ID=>$Member){
+            foreach ($this->data['members'] as $ID=>$Member){
                 if($Member == $hostname){
                     $found = true;
-                    $this->Data['members'][$ID]= $newname;
+                    $this->data['members'][$ID]= $newname;
                     $this->addStatusMessage(sprintf(_(' %s byl odstraněn ze skupiny %s '),$hostname,$group[$this->nameColumn]));
                 }
             }

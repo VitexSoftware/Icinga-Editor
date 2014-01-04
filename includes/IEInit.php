@@ -2,7 +2,7 @@
 
 /**
  * Init aplikace
- * 
+ *
  * @author    Vitex <vitex@hippy.cz>
  * @copyright Vitex@hippy.cz (G) 2010
  */
@@ -27,7 +27,6 @@ if (!isset($_SESSION['User']) || !is_object($_SESSION['User'])) {
     EaseShared::user( new EaseAnonym() );
 }
 
-
 /**
  * Objekt uživatele VSUser nebo VSAnonym
  * @global EaseUser
@@ -39,5 +38,3 @@ require_once 'IEWebPage.php';
 
 /* @var $oPage IEWebPage */
 $oPage = new IEWebPage();
-
-?>
