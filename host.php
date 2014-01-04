@@ -27,8 +27,23 @@ switch ($oPage->getRequestValue('action')) {
 
         $icourl = $oPage->getRequestValue('icourl');
         if ($icourl) {
-            $tmpfilename = sys_get_temp_dir().'/'.EaseSand::randomString();
-            file_put_contents($tmpfilename, file_get_contents($icourl));
+            $tmpfilename = sys_get_temp_dir() . '/' . EaseSand::randomString();
+            $fp = fopen($tmpfilename, 'w');
+            $ch = curl_init($icourl);
+            curl_setopt($ch, CURLOPT_FILE, $fp);
+            $data = curl_exec($ch);
+            
+            $download_err = curl_error($ch);
+            if($download_err){
+                $oPage->addStatusMessage($download_err,'warning');
+            }
+            curl_close($ch);
+            fclose($fp);
+            
+            if(!file_exists($tmpfilename)){
+                $oPage->addStatusMessage(sprintf( _('Soubor %s se nepodařilo stahnout'),$icourlurl));
+            }
+
         }
         if (isset($_FILES) && count($_FILES)) {
             $tmpfilename = $_FILES['icofile']['tmp_name'];
@@ -39,7 +54,7 @@ switch ($oPage->getRequestValue('action')) {
                 $newicon = IEIconSelector::saveIcon($tmpfilename, $host);
             } else {
                 unlink($tmpfilename);
-                $oPage->addStatusMessage(_('toto není obrázek požadovaného typu'),'warning');
+                $oPage->addStatusMessage(_('toto není obrázek požadovaného typu'), 'warning');
             }
         }
     case 'newicon':
