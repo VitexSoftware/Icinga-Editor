@@ -26,29 +26,30 @@ switch ($oPage->getRequestValue('action')) {
     case 'icon':
 
         $icourl = $oPage->getRequestValue('icourl');
-        if ($icourl) {
+        if (strlen($icourl)) {
             $tmpfilename = sys_get_temp_dir() . '/' . EaseSand::randomString();
             $fp = fopen($tmpfilename, 'w');
             $ch = curl_init($icourl);
             curl_setopt($ch, CURLOPT_FILE, $fp);
             $data = curl_exec($ch);
-            
-            $download_err = curl_error($ch);
-            if($download_err){
-                $oPage->addStatusMessage($download_err,'warning');
+
+            $downloadErr = curl_error($ch);
+            if ($downloadErr) {
+                $oPage->addStatusMessage($downloadErr, 'warning');
             }
             curl_close($ch);
             fclose($fp);
-            
-            if(!file_exists($tmpfilename)){
-                $oPage->addStatusMessage(sprintf( _('Soubor %s se nepodařilo stahnout'),$icourlurl));
+
+            if (!file_exists($tmpfilename)) {
+                $oPage->addStatusMessage(sprintf(_('Soubor %s se nepodařilo stahnout'), $icourlurl));
             }
-
+        } else {
+            if (isset($_FILES) && count($_FILES)) {
+                $tmpfilename = $_FILES['icofile']['tmp_name'];
+            } else {
+                $oPage->addStatusMessage(_('Nebyl vybrán soubor s ikonou hosta'), 'warning');
+            }
         }
-        if (isset($_FILES) && count($_FILES)) {
-            $tmpfilename = $_FILES['icofile']['tmp_name'];
-        }
-
         if (isset($tmpfilename)) {
             if (IEIconSelector::imageTypeOK($tmpfilename)) {
                 $newicon = IEIconSelector::saveIcon($tmpfilename, $host);
