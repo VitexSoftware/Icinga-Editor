@@ -47,7 +47,9 @@ switch ($oPage->getRequestValue('action')) {
             if (isset($_FILES) && count($_FILES)) {
                 $tmpfilename = $_FILES['icofile']['tmp_name'];
             } else {
-                $oPage->addStatusMessage(_('Nebyl vybrán soubor s ikonou hosta'), 'warning');
+                if($oPage->isPosted()){
+                    $oPage->addStatusMessage(_('Nebyl vybrán soubor s ikonou hosta'), 'warning');
+                }
             }
         }
         if (isset($tmpfilename)) {

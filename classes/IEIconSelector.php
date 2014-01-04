@@ -183,8 +183,8 @@ class IEIconSelector extends EaseContainer
 
         switch ($source_image_type) {
             case IMAGETYPE_GIF:
-                break;
                 imagegif($thumbnail_gd_image, $thumbnail_image_path);
+                break;
             case IMAGETYPE_JPEG:
                 imagejpeg($thumbnail_gd_image, $thumbnail_image_path, 90);
                 break;
