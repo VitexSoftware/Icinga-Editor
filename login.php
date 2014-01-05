@@ -15,8 +15,8 @@ if (!is_object($oUser)) {
     die(_('Cookies jsou vyžadovány'));
 }
 
-$Login = $oPage->getRequestValue('login');
-if ($Login) {
+$login = $oPage->getRequestValue('login');
+if ($login) {
     EaseShared::user(new IEUser());
     EaseShared::user()->SettingsColumn = 'settings';
     if ($oUser->tryToLogin($_POST)) {
@@ -49,10 +49,10 @@ $LoginFace = new EaseHtmlDivTag('LoginFace');
 
 $oPage->columnI->addItem(new EaseHtmlDivTag('WelcomeHint', _('Zadejte, prosím, Vaše přihlašovací údaje:')));
 
-$LoginForm = $LoginFace->addItem(new EaseHtmlForm('Login'));
+$LoginForm = $LoginFace->addItem(new EaseTWBForm('Login'));
 $LoginForm->addItem(new EaseLabeledTextInput('login', NULL, _('Login')));
 $LoginForm->addItem(new EaseLabeledPasswordInput('password', NULL, _('Heslo')));
-$LoginForm->addItem(new EaseJQuerySubmitButton('LogIn', _('Přihlášení')));
+$LoginForm->addItem(new EaseTWSubmitButton('LogIn', _('Přihlášení')));
 
 $oPage->columnII->addItem($LoginFace);
 

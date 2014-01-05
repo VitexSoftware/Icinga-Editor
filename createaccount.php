@@ -2,14 +2,13 @@
 
 /**
  * Založení nového accoutu
- * 
+ *
  * @package IcingaEditor
  */
 require_once 'includes/IEInit.php';
 require_once 'Ease/EaseMail.php';
 require_once 'classes/IEContact.php';
 require_once 'classes/IEContactgroup.php';
-
 
 $process = false;
 if ($oPage->isPosted()) {
@@ -46,8 +45,6 @@ if ($oPage->isPosted()) {
         }
     }
 
-
-
     if (strlen($password) < 5) {
         $error = true;
         $oUser->addStatusMessage(_('heslo je příliš krátké'), 'warning');
@@ -64,10 +61,8 @@ if ($oPage->isPosted()) {
 
     if ($error == false) {
 
-
-
         $NewOUser = new IEUser();
-        //TODO zde by se měly doplnit defaultní hodnoty z konfiguráku Registry.php
+        //TODO zde by se měly doplnit defaultní hodnoty z konfiguráku registry.php
         $NewOUser->setData(
                 array(
                     'email' => $email_address,
@@ -118,7 +113,7 @@ if ($oPage->isPosted()) {
             if ($CGID) {
                 $oUser->addStatusMessage(_('Prvotní kontaktní skupina byla založena'), 'success');
             } else {
-                $oUser->addStatusMessage(_('Prvotní kontaktní skukpina nebyla založena'), 'warning');
+                $oUser->addStatusMessage(_('Prvotní kontaktní skupina nebyla založena'), 'warning');
             }
 
             $oPage->redirect('wizard.php');
@@ -132,18 +127,15 @@ if ($oPage->isPosted()) {
     }
 }
 
-
 $oPage->AddCss('
 input.ui-button { width: 220px; }
 ');
-
 
 $oPage->addItem(new IEPageTop(_('Registrace')));
 
 $oPage->columnI->addItem(new EaseHtmlDivTag('WelcomeHint', _('Vítejte v registraci')));
 
 $RegFace = $oPage->columnII->addItem(new EaseHtmlDivTag('RegFace'));
-
 
 $RegForm = $RegFace->addItem(new EaseHtmlForm('create_account', 'createaccount.php', 'POST', null, array('class' => 'form-horizontal')));
 if ($oUser->getUserID()) {
@@ -165,5 +157,3 @@ if (isset($_POST)) {
 
 $oPage->addItem(new IEPageBottom());
 $oPage->draw();
-?>
-

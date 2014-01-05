@@ -51,13 +51,13 @@ class IEWebPage extends EaseTWBWebPage
      *
      * @param VSUser $UserObject
      */
-    public function __construct($PageTitle = null, &$UserObject = null)
+    public function __construct($pageTitle = null, &$UserObject = null)
     {
         if (is_null($UserObject)) {
             $UserObject = EaseShared::user();
         }
         $this->jQueryUISkin = $UserObject->getSettingValue('Skin');
-        parent::__construct($PageTitle, $UserObject);
+        parent::__construct($pageTitle, $UserObject);
         $this->IncludeCss('css/bootstrap.css');
         $this->IncludeCss('css/default.css');
         $this->head->addItem('<meta name="viewport" content="width=device-width, initial-scale=1.0">');
@@ -111,18 +111,18 @@ class IEPageTop extends EaseHtmlDivTag
      * Titulek stránky
      * @var type
      */
-    public $PageTitle = 'Page Heading';
+    public $pageTitle = 'Page Heading';
 
     /**
      * Nastavuje titulek
      *
-     * @param string $PageTitle
+     * @param string $pageTitle
      */
-    public function __construct($PageTitle = null)
+    public function __construct($pageTitle = null)
     {
         parent::__construct('header');
-        if (!is_null($PageTitle)) {
-            EaseShared::webPage()->setPageTitle($PageTitle);
+        if (!is_null($pageTitle)) {
+            EaseShared::webPage()->setPageTitle($pageTitle);
         }
     }
 
