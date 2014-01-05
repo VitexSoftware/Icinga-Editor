@@ -1,6 +1,6 @@
 {
     "name": "vitexsoftware/icinga-editor",
-    "description": "Description of project IcingaEditor.",
+    "description": "Editor of Icinga Configuration files",
     "authors": [
         {
             "name": "vitex",

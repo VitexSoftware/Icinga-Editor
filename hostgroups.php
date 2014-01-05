@@ -2,7 +2,7 @@
 
 /**
  * Icinga Editor - přehled skupin hostů
- * 
+ *
  * @package    IcingaEditor
  * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
@@ -14,9 +14,6 @@ require_once 'classes/IEHostgroup.php';
 $oPage->onlyForLogged();
 
 $oPage->addItem(new IEPageTop(_('Přehled skupin hostů')));
-
-
-
 
 $Hostgroup = new IEHostgroup();
 $PocContactgroup = $Hostgroup->getMyRecordsCount();
@@ -36,10 +33,6 @@ if ($PocContactgroup) {
 
 $oPage->columnIII->addItem(new EaseTWBLinkButton('hostgroup.php', _('Založit skupinu hostů <i class="icon-edit"></i>')));
 
-
-
 $oPage->addItem(new IEPageBottom());
 
-
 $oPage->draw();
-?>

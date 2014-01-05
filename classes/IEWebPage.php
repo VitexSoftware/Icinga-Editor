@@ -166,23 +166,20 @@ class IEBootstrapMenu extends EaseTWBNavbar
 <li class="divider-vertical"></li>
 <li class="dropdown">
 <a class="dropdown-toggle" href="login.php" data-toggle="dropdown"><i class="icon-circle-arrow-left"></i> ' . _('Přihlášení') . '<strong class="caret"></strong></a>
-<div class="dropdown-menu" style="padding: 15px; padding-bottom: 0px;">
+<div class="dropdown-menu" style="padding: 15px; padding-bottom: 0px; left: -120px;">
 <form method="post" class="navbar-form navbar-left" action="login.php" accept-charset="UTF-8">
 <input style="margin-bottom: 15px;" type="text" placeholder="' . _('login') . '" id="username" name="login">
 <input style="margin-bottom: 15px;" type="password" placeholder="' . _('Heslo') . '" id="password" name="password">
 <!-- input style="float: left; margin-right: 10px;" type="checkbox" name="remember-me" id="remember-me" value="1">
 <label class="string optional" for="remember-me"> ' . _('zapamatuj si mne') . '</label -->
 <input class="btn btn-primary btn-block" type="submit" id="sign-in" value="' . _('přihlásit') . '">
-<label style="text-align:center;margin-top:5px">' . _('nebo') . '</label>
-<!-- input class="btn btn-primary btn-block" type="button" id="sign-in-google" value="Sign In with Google" -->
-<a href="twauth.php?authenticate=1" class="btn btn-primary btn-block" type="button" id="sign-in-twitter">' . _('Autentifikace přez Twitter') . '</a>
 </form>
-</div>', 'left'
+</div>', 'right'
             );
         } else {
             $this->addMenuItem('
 <li class="dropdown" style="width: 120px; text-align: right; background-image: url( ' . $user->getIcon() . ' ) ;  background-repeat: no-repeat; background-position: left center; background-size: 40px 40px;"><a href="#" class="dropdown-toggle" data-toggle="dropdown">' . $user->getUserLogin() . ' <b class="caret"></b></a>
-<ul class="dropdown-menu" style="text-align: left;">
+<ul class="dropdown-menu" style="text-align: left; left: -60px;">
 <li><a href="settings.php"><i class="icon-cog"></i> ' . _('Nastavení') . '</a></li>
 <li><a href="overview.php"><i class="icon-list"></i> ' . _('Přehled konfigurací') . '</a></li>
 <li><a href="http://v.s.cz/kontakt.php"><i class="icon-envelope"></i> ' . _('Uživatelská podpora') . '</a></li>
@@ -190,7 +187,7 @@ class IEBootstrapMenu extends EaseTWBNavbar
 <li><a href="logout.php"><i class="icon-off"></i> ' . _('Odhlášení') . '</a></li>
 </ul>
 </li>
-', 'left');
+', 'right');
         }
     }
 
@@ -257,6 +254,21 @@ class IEMainMenu extends EaseHtmlDivTag
                 );
             }
 
+            $hostgroup = new IEHostgroup();
+            $hostGroupMenuItem = array();
+            $pocHostgroup = $hostgroup->getMyRecordsCount();
+
+            if ($pocHostgroup) {
+                $hostgroups = $hostgroup->myDbLink->queryToArray('SELECT ' . $hostgroup->getmyKeyColumn() . ', hostgroup_name, DatSave FROM ' . $hostgroup->myTable . ' WHERE user_id=' . $user->getUserID(), 'hostgroup_id');
+
+                foreach ($hostgroups as $cID => $cInfo) {
+                   $hostGroupMenuItem['hostgroup.php?hostgroup_id=' . $cInfo['hostgroup_id']] = $cInfo['hostgroup_name'] . ' ' . EaseTWBPart::GlyphIcon('edit');
+                }
+                if (count($hostGroupMenuItem)) {
+                    $hostGroupMenuItem[''] = '';
+                }
+            }
+
             $host = new IEHost();
             $hosts = $host->getListing(null, null, array('icon_image'));
             $hostMenuItem = array();
@@ -277,7 +289,7 @@ class IEMainMenu extends EaseHtmlDivTag
                 }
             }
 
-            $nav->addDropDownMenu(_('Hosti'), array_merge($hostMenuItem, array(
+            $nav->addDropDownMenu(_('Hosti'), array_merge($hostGroupMenuItem,$hostMenuItem, array(
                 'wizard.php' => '<i class="icon-cog"></i>&nbsp;' . _('Průvodce rychlým založením'),
                 'hosts.php' => '<i class="icon-list"></i>&nbsp;' . _('Přehled hostů'),
                 'host.php' => EaseTWBPart::GlyphIcon('edit') . ' ' . _('Nový Host'),
