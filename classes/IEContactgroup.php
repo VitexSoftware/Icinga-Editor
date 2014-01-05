@@ -16,7 +16,7 @@ class IEContactgroup extends IECfg
     public $myTable = 'contactgroup';
     public $myKeyColumn = 'contactgroup_id';
     public $nameColumn = 'contactgroup_name';
-    public $Keyword = 'contactgroup';
+    public $keyword = 'contactgroup';
 
     /**
      * Dát tyto položky k dispozici i ostatním ?
@@ -40,6 +40,7 @@ class IEContactgroup extends IECfg
         ),
         'members' => array(
             'title' => 'členské kontakty',
+            'required' => true,
             'refdata' => array(
                 'table' => 'contact',
                 'captioncolumn' => 'contact_name',
@@ -57,6 +58,6 @@ class IEContactgroup extends IECfg
      * URL dokumentace objektu
      * @var string
      */
-    public $DocumentationLink = 'http://docs.icinga.org/latest/en/objectdefinitions.html#objectdefinitions-contactgroup';
+    public $documentationLink = 'http://docs.icinga.org/latest/en/objectdefinitions.html#objectdefinitions-contactgroup';
 
 }

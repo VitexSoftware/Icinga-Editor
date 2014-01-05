@@ -106,7 +106,7 @@ if ($oPage->isPosted()) {
             }
 
             $contactGroup = new IEContactgroup();
-            $contactGroup->setData(array('contactgroup_name' => $login, 'alias' => _('Skupina') . '_' . $login, 'generate' => true, $contactGroup->userColumn => $UserID));
+            $contactGroup->setData(array('contactgroup_name' =>  _('Skupina') . '_' . $login, 'alias' => _('Skupina') . '_' . $login, 'generate' => true, $contactGroup->userColumn => $UserID));
             $contactGroup->addMember('members', $contactID, $login);
             $cgID = $contactGroup->saveToMySQL();
 

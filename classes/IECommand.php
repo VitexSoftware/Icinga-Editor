@@ -19,7 +19,7 @@ class IECommand extends IECfg
     public $myTable = 'command';
     public $myKeyColumn = 'command_id';
     public $nameColumn = 'command_name';
-    public $Keyword = 'command';
+    public $keyword = 'command';
 
     /**
      * Přidat položky register a use ?
@@ -49,7 +49,7 @@ class IECommand extends IECfg
      * URL dokumentace objektu
      * @var string 
      */
-    public $DocumentationLink = 'http://docs.icinga.org/latest/en/objectdefinitions.html#objectdefinitions-command';
+    public $documentationLink = 'http://docs.icinga.org/latest/en/objectdefinitions.html#objectdefinitions-command';
 
     /**
      * Dát tyto položky k dispozici i ostatním ?

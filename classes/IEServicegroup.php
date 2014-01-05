@@ -16,7 +16,7 @@ class IEServicegroup extends IECfg
     public $myTable = 'servicegroup';
     public $myKeyColumn = 'servicegroup_id';
     public $nameColumn = 'servicegroup_name';
-    public $Keyword = 'servicegroup';
+    public $keyword = 'servicegroup';
 
     /**
      * Dát tyto položky k dispozici i ostatním ?
@@ -69,7 +69,7 @@ class IEServicegroup extends IECfg
      * URL dokumentace objektu
      * @var string 
      */
-    public $DocumentationLink = 'http://docs.icinga.org/latest/en/objectdefinitions.html#objectdefinitions-servicegroup';
+    public $documentationLink = 'http://docs.icinga.org/latest/en/objectdefinitions.html#objectdefinitions-servicegroup';
 
 
 }

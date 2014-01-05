@@ -18,14 +18,14 @@ class IEService extends IECfg
 
     public $myTable = 'services';
     public $myKeyColumn = 'service_id';
-    public $Keyword = 'service';
+    public $keyword = 'service';
     public $nameColumn = 'service_description';
 
     /**
      * Weblink
      * @var string 
      */
-    public $WebLinkColumn = 'action_url';
+    public $webLinkColumn = 'action_url';
 
     /**
      * Přidat položky register a use ?
@@ -220,7 +220,7 @@ class IEService extends IECfg
      * URL dokumentace objektu
      * @var string 
      */
-    public $DocumentationLink = 'http://docs.icinga.org/latest/en/objectdefinitions.html#objectdefinitions-service';
+    public $documentationLink = 'http://docs.icinga.org/latest/en/objectdefinitions.html#objectdefinitions-service';
 
     /**
      * Vrací všechna data uživatele

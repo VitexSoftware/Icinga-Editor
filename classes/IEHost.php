@@ -21,7 +21,7 @@ class IEHost extends IECfg
 {
 
     public $myTable = 'hosts';
-    public $Keyword = 'host';
+    public $keyword = 'host';
     public $nameColumn = 'host_name';
     public $myKeyColumn = 'host_id';
 
@@ -29,7 +29,7 @@ class IEHost extends IECfg
      * Weblink
      * @var string
      */
-    public $WebLinkColumn = 'action_url';
+    public $webLinkColumn = 'action_url';
 
     /**
      * Přidat položky register a use ?
@@ -216,7 +216,7 @@ class IEHost extends IECfg
      * URL dokumentace objektu
      * @var string
      */
-    public $DocumentationLink = 'http://docs.icinga.org/latest/en/objectdefinitions.html#objectdefinitions-host';
+    public $documentationLink = 'http://docs.icinga.org/latest/en/objectdefinitions.html#objectdefinitions-host';
 
     /**
      * Vrací mazací tlačítko

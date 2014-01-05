@@ -47,7 +47,7 @@ class IEImporter extends IECfg
             include_once $ClassName . '.php';
         }
         $NewClass = new $ClassName;
-        $this->IEClasses[$NewClass->Keyword] = new $ClassName;
+        $this->IEClasses[$NewClass->keyword] = new $ClassName;
     }
 
     /**
@@ -123,9 +123,9 @@ class IEImporter extends IECfg
     {
         foreach ($this->IEClasses as $IEClass) {
             if ($IEClass->writeConfig($FileName)) {
-                $this->addStatusMessage( $IEClass->Keyword.': '._('konfigurace byla vygenerována'), 'success');
+                $this->addStatusMessage( $IEClass->keyword.': '._('konfigurace byla vygenerována'), 'success');
             } else {
-                $this->addStatusMessage($IEClass->Keyword.': '._('konfigurace nebyla vygenerována'), 'warning');
+                $this->addStatusMessage($IEClass->keyword.': '._('konfigurace nebyla vygenerována'), 'warning');
             }
         }
     }

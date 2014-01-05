@@ -24,7 +24,7 @@ class IETextInputSaver extends EaseLabeledTextInput {
      * Sloupeček pro poslední modifikaci
      * @var type 
      */
-    public $MyLastModifiedColumn = 'DatSave';
+    public $myLastModifiedColumn = 'DatSave';
 
 
     /**
@@ -44,8 +44,8 @@ class IETextInputSaver extends EaseLabeledTextInput {
      */
     function finalize() {
         parent::Finalize();
-        $this->EnclosedElement->SetTagProperties(array('OnChange' => '$.post(\'DataSaver.php\', { SaverClass: \'' . get_class($this) . '\', Field: \'' . $this->EnclosedElement->GetTagProperty('name') . '\', Value: this.value } )'));
-//        $this->EnclosedElement->SetTagProperties(array('OnChange' => '$.ajax( { type: \"POST\", url: \"DataSaver.php\", data: \"SaverClass=' . get_class($this) . '&amp;Field=' . $this->EnclosedElement->GetTagProperty('name') . '&amp;Value=\" + this.value , async: false, success : function() { alert (this); }, statusCode: { 404: function() { alert(\'page not found\');} } }); '));
+        $this->enclosedElement->SetTagProperties(array('OnChange' => '$.post(\'DataSaver.php\', { SaverClass: \'' . get_class($this) . '\', Field: \'' . $this->enclosedElement->GetTagProperty('name') . '\', Value: this.value } )'));
+//        $this->enclosedElement->SetTagProperties(array('OnChange' => '$.ajax( { type: \"POST\", url: \"DataSaver.php\", data: \"SaverClass=' . get_class($this) . '&amp;Field=' . $this->enclosedElement->GetTagProperty('name') . '&amp;Value=\" + this.value , async: false, success : function() { alert (this); }, statusCode: { 404: function() { alert(\'page not found\');} } }); '));
     }
 
     /**

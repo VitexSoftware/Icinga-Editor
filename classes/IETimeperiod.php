@@ -15,7 +15,7 @@ class IETimeperiod extends IECfg
 
     public $myTable = 'timeperiods';
     public $myKeyColumn = 'timeperiod_id';
-    public $Keyword = 'timeperiod';
+    public $keyword = 'timeperiod';
     public $nameColumn = 'timeperiod_name';
     public $useKeywords = array(
         'timeperiod_name' => 'VARCHAR(64)',
@@ -44,7 +44,7 @@ class IETimeperiod extends IECfg
      * URL dokumentace objektu
      * @var string 
      */
-    public $DocumentationLink = 'http://docs.icinga.org/latest/en/objectdefinitions.html#objectdefinitions-timeperiod';
+    public $documentationLink = 'http://docs.icinga.org/latest/en/objectdefinitions.html#objectdefinitions-timeperiod';
 
     /**
      * Převezme data

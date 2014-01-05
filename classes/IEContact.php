@@ -23,7 +23,7 @@ class IEContact extends IECfg
      */
     public $myKeyColumn = 'contact_id';
     public $nameColumn = 'contact_name';
-    public $Keyword = 'contact';
+    public $keyword = 'contact';
 
     /**
      * Přidat položky register a use ?
@@ -163,7 +163,7 @@ class IEContact extends IECfg
      * URL dokumentace objektu
      * @var string 
      */
-    public $DocumentationLink = 'http://docs.icinga.org/latest/en/objectdefinitions.html#objectdefinitions-contact';
+    public $documentationLink = 'http://docs.icinga.org/latest/en/objectdefinitions.html#objectdefinitions-contact';
 
     /**
      * Vrací mazací tlačítko

@@ -15,7 +15,7 @@ class IEHostgroup extends IECfg
 
     public $myTable = 'hostgroup';
     public $myKeyColumn = 'hostgroup_id';
-    public $Keyword = 'hostgroup';
+    public $keyword = 'hostgroup';
     public $nameColumn = 'hostgroup_name';
 
     /**
@@ -59,7 +59,7 @@ class IEHostgroup extends IECfg
      * URL dokumentace objektu
      * @var string 
      */
-    public $DocumentationLink = 'http://docs.icinga.org/latest/en/objectdefinitions.html#objectdefinitions-hostgroup';
+    public $documentationLink = 'http://docs.icinga.org/latest/en/objectdefinitions.html#objectdefinitions-hostgroup';
 
     /**
      * Smaže hosta ze všech skupin, již je členem.

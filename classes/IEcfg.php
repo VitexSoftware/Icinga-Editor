@@ -28,7 +28,7 @@ class IEcfg extends EaseBrick
      * Klíčové slovo objektu
      * @var String
      */
-    public $Keyword = NULL;
+    public $keyword = NULL;
 
     /**
      * Objektem používané položky
@@ -58,7 +58,7 @@ class IEcfg extends EaseBrick
      * Sloupeček obsahující datum modifikace záznamu
      * @var string
      */
-    public $MyLastModifiedColumn = 'DatSave';
+    public $myLastModifiedColumn = 'DatSave';
 
     /**
      * Sloupeček se jménem objektu
@@ -82,19 +82,19 @@ class IEcfg extends EaseBrick
      * Sloupeček s linkem na editor
      * @var string
      */
-    public $WebLinkColumn = null;
+    public $webLinkColumn = null;
 
     /**
      * URL dokumentace objektu
      * @var string
      */
-    public $DocumentationLink = '';
+    public $documentationLink = '';
 
     /**
      * Základní nezbytně nutné položky pro běžného uživatele
      * @var array
      */
-    public $BasicControls = array();
+    public $basicControls = array();
 
     /**
      * Objekt vlastníka objektu
@@ -240,7 +240,7 @@ class IEcfg extends EaseBrick
                 }
             }
             ksort($columns);
-            fputs($cfg, "define " . $this->Keyword . " {\n");
+            fputs($cfg, "define " . $this->keyword . " {\n");
             foreach ($columns as $columnName => $columnValue) {
 
                 if (array_key_exists($columnName, $this->useKeywords)) {
@@ -287,8 +287,8 @@ class IEcfg extends EaseBrick
             $myStruct = array_merge($myStruct, array($this->myCreateColumn => 'DATETIME'));
         }
 
-        if (!is_null($this->MyLastModifiedColumn)) {
-            $myStruct = array_merge($myStruct, array($this->MyLastModifiedColumn => 'DATETIME'));
+        if (!is_null($this->myLastModifiedColumn)) {
+            $myStruct = array_merge($myStruct, array($this->myLastModifiedColumn => 'DATETIME'));
         }
 
         $sqlStruct = array();
@@ -474,13 +474,13 @@ class IEcfg extends EaseBrick
                 if ($this->allowTemplating) {
                     if ($this->isTemplate($data)) {
                         if (!strlen($data['name'])) {
-                            $this->addStatusMessage($this->Keyword . ': ' . sprintf(_('Předloha %s není pojmenována'), $data[$this->nameColumn]), 'error');
+                            $this->addStatusMessage($this->keyword . ': ' . sprintf(_('Předloha %s není pojmenována'), $data[$this->nameColumn]), 'error');
                             $errors++;
                         }
                     }
                 }
                 if (!isset($data[$keyword]) || !$data[$keyword] || ($data[$keyword] == 'a:0:{}')) {
-                    $this->addStatusMessage($this->Keyword . ': ' . sprintf(_('Chybí hodnota pro požadovanou položku %s pro %s'), $keyword, $this->getName($data)), 'warning');
+                    $this->addStatusMessage($this->keyword . ': ' . sprintf(_('Chybí hodnota pro požadovanou položku %s pro %s'), $keyword, $this->getName($data)), 'warning');
                     $errors++;
                 }
             }
@@ -628,7 +628,7 @@ class IEcfg extends EaseBrick
         if (is_null($thisID)) {
             $thisID = EaseShared::user()->getUserID();
         }
-        $columnsToGet = array($this->getmyKeyColumn(), $this->nameColumn, 'generate', $this->MyLastModifiedColumn, $this->userColumn);
+        $columnsToGet = array($this->getmyKeyColumn(), $this->nameColumn, 'generate', $this->myLastModifiedColumn, $this->userColumn);
         if ($this->allowTemplating) {
             $columnsToGet[] = 'register';
             $columnsToGet[] = 'name';
@@ -759,12 +759,12 @@ class IEcfg extends EaseBrick
             }
         }
         if ($this->deleteFromMySQL()) {
-            $this->addStatusMessage(sprintf(_(' %s %s byl smazán '), $this->Keyword, $this->getName()), 'success');
+            $this->addStatusMessage(sprintf(_(' %s %s byl smazán '), $this->keyword, $this->getName()), 'success');
             $this->dataReset();
 
             return true;
         } else {
-            $this->addStatusMessage(sprintf(_(' %s %s nebyl smazán '), $this->Keyword, $this->getName()), 'warning');
+            $this->addStatusMessage(sprintf(_(' %s %s nebyl smazán '), $this->keyword, $this->getName()), 'warning');
 
             return false;
         }
@@ -820,7 +820,7 @@ class IEcfg extends EaseBrick
             return null;
         }
         foreach ($cfg as $cfgLine) {
-            if (str_replace(' ', '', $cfgLine) == 'define' . $this->Keyword . '{') {
+            if (str_replace(' ', '', $cfgLine) == 'define' . $this->keyword . '{') {
                 $buffer = array();
                 continue;
             }
@@ -848,32 +848,32 @@ class IEcfg extends EaseBrick
                 if ($this->saveToMySQL()) {
 
                     if ($this->isTemplate()) {
-                        $this->addStatusMessage(_('předloha') . ' ' . $this->Keyword . ' <strong>' . $buffer['name'] . '</strong>' . _(' byl naimportován'), 'success');
+                        $this->addStatusMessage(_('předloha') . ' ' . $this->keyword . ' <strong>' . $buffer['name'] . '</strong>' . _(' byl naimportován'), 'success');
                     } else {
-                        if (!is_null($this->WebLinkColumn) && !isset($buffer[$this->WebLinkColumn])) {
+                        if (!is_null($this->webLinkColumn) && !isset($buffer[$this->webLinkColumn])) {
                             $this->updateToMySQL(
                                     array($this->getmyKeyColumn() => $this->getMyKey(),
-                                        $this->WebLinkColumn =>
+                                        $this->webLinkColumn =>
                                         (str_replace(basename(EaseWebPage::getUri()), '', EaseWebPage::phpSelf(true))) .
-                                        $this->Keyword . '.php?' .
+                                        $this->keyword . '.php?' .
                                         $this->getmyKeyColumn() . '=' .
                                         $this->getMyKey()));
                         }
-                        $this->addStatusMessage($this->Keyword . ' <strong>' . $buffer[$this->nameColumn] . '</strong>' . _(' byl naimportován'), 'success');
+                        $this->addStatusMessage($this->keyword . ' <strong>' . $buffer[$this->nameColumn] . '</strong>' . _(' byl naimportován'), 'success');
                     }
                     $success++;
                 } else {
                     if ($this->isTemplate()) {
-                        $this->addStatusMessage($this->Keyword . ' <strong>' . $buffer['name'] . '</strong>' . _(' nebyl naimportován'), 'error');
+                        $this->addStatusMessage($this->keyword . ' <strong>' . $buffer['name'] . '</strong>' . _(' nebyl naimportován'), 'error');
                     } else {
-                        $this->addStatusMessage($this->Keyword . ' <strong>' . $buffer[$this->nameColumn] . '</strong>' . _(' nebyl naimportován'), 'error');
+                        $this->addStatusMessage($this->keyword . ' <strong>' . $buffer[$this->nameColumn] . '</strong>' . _(' nebyl naimportován'), 'error');
                     }
                 }
                 $buffer = null;
             }
         }
 
-//            $this->addStatusMessage(_('nebyl rozpoznán konfigurační soubor nagiosu pro').' '.$this->Keyword);
+//            $this->addStatusMessage(_('nebyl rozpoznán konfigurační soubor nagiosu pro').' '.$this->keyword);
         return $success;
     }
 
@@ -1010,9 +1010,9 @@ class IEcfg extends EaseBrick
             $this->addMember($addColumn, $webPage->getRequestValue('member', 'int'), $name);
             $thisID = $this->saveToMySQL();
             if (is_null($thisID)) {
-                $this->addStatusMessage(sprintf(_('položka %s nebyla přidána do %s/%s/%s'), $name, $this->Keyword, $this->getName(), $addColumn), 'warning');
+                $this->addStatusMessage(sprintf(_('položka %s nebyla přidána do %s/%s/%s'), $name, $this->keyword, $this->getName(), $addColumn), 'warning');
             } else {
-                $this->addStatusMessage(sprintf(_('položka %s byla přidána do %s/%s/%s'), $name, $this->Keyword, $this->getName(), $addColumn), 'success');
+                $this->addStatusMessage(sprintf(_('položka %s byla přidána do %s/%s/%s'), $name, $this->keyword, $this->getName(), $addColumn), 'success');
             }
         }
         $delColumn = $webPage->getGetValue('del');
@@ -1020,9 +1020,9 @@ class IEcfg extends EaseBrick
             $del = $this->delMember($delColumn, $webPage->getRequestValue('member', 'int'), $webPage->getGetValue('name'));
             $thisID = $this->saveToMySQL();
             if (is_null($thisID) && !$del) {
-                $this->addStatusMessage(sprintf(_('položka %s nebyla odebrána z %s/%s/%s'), $name, $this->Keyword, $this->getName(), $addColumn), 'warning');
+                $this->addStatusMessage(sprintf(_('položka %s nebyla odebrána z %s/%s/%s'), $name, $this->keyword, $this->getName(), $delColumn), 'warning');
             } else {
-                $this->addStatusMessage(sprintf(_('položka %s byla odebrána z %s/%s/%s'), $name, $this->Keyword, $this->getName(), $addColumn), 'success');
+                $this->addStatusMessage(sprintf(_('položka %s byla odebrána z %s/%s/%s'), $name, $this->keyword, $this->getName(), $delColumn), 'success');
             }
         }
     }
