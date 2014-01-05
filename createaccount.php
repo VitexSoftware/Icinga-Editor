@@ -61,56 +61,56 @@ if ($oPage->isPosted()) {
 
     if ($error == false) {
 
-        $NewOUser = new IEUser();
+        $newOUser = new IEUser();
         //TODO zde by se měly doplnit defaultní hodnoty z konfiguráku registry.php
-        $NewOUser->setData(
+        $newOUser->setData(
                 array(
                     'email' => $email_address,
-                    'password' => $NewOUser->encryptPassword($password),
+                    'password' => $newOUser->encryptPassword($password),
                     'parent' => (int) $CustomerParent,
                     'login' => $login
                 )
         );
 
-        $UserID = $NewOUser->insertToMySQL();
+        $UserID = $newOUser->insertToMySQL();
 
         if ($UserID) {
-            $NewOUser->setMyKey($UserID);
+            $newOUser->setMyKey($UserID);
 
             $oUser->addStatusMessage(_('Uživatelský účet byl vytvořen'), 'success');
-            $NewOUser->loginSuccess();
+            $newOUser->loginSuccess();
 
-            $Email = $oPage->addItem(new EaseMail($NewOUser->getDataValue('email'), _('Potvrzení registrace')));
-            $Email->setMailHeaders(array('From' => EMAIL_FROM));
-            $Email->addItem(new EaseHtmlDivTag(null, "Právě jste byl/a zaregistrován/a do Aplikace VSMonitoring s těmito přihlašovacími údaji:\n"));
-            $Email->addItem(new EaseHtmlDivTag(null, ' Login: ' . $NewOUser->GetUserLogin() . "\n"));
-            $Email->addItem(new EaseHtmlDivTag(null, ' Heslo: ' . $_POST['password'] . "\n"));
-            $Email->send();
+            $email = $oPage->addItem(new EaseMail($newOUser->getDataValue('email'), _('Potvrzení registrace')));
+            $email->setMailHeaders(array('From' => EMAIL_FROM));
+            $email->addItem(new EaseHtmlDivTag(null, "Právě jste byl/a zaregistrován/a do Aplikace VSMonitoring s těmito přihlašovacími údaji:\n"));
+            $email->addItem(new EaseHtmlDivTag(null, ' Login: ' . $newOUser->GetUserLogin() . "\n"));
+            $email->addItem(new EaseHtmlDivTag(null, ' Heslo: ' . $_POST['password'] . "\n"));
+            $email->send();
 
-            $Email = $oPage->addItem(new EaseMail(SEND_INFO_TO, sprintf(_('Nová registrace do VSmonitoringu: %s'), $NewOUser->GetUserLogin())));
-            $Email->SetMailHeaders(array('From' => EMAIL_FROM));
-            $Email->addItem(new EaseHtmlDivTag(null, _("Právě byl zaregistrován nový uživatel:\n")));
-            $Email->addItem(new EaseHtmlDivTag('login', ' Login: ' . $NewOUser->GetUserLogin() . "\n"));
-            $Email->addItem($NewOUser->CustomerAddress);
-            $Email->send();
+            $email = $oPage->addItem(new EaseMail(SEND_INFO_TO, sprintf(_('Nová registrace do VSmonitoringu: %s'), $newOUser->GetUserLogin())));
+            $email->setMailHeaders(array('From' => EMAIL_FROM));
+            $email->addItem(new EaseHtmlDivTag(null, _("Právě byl zaregistrován nový uživatel:\n")));
+            $email->addItem(new EaseHtmlDivTag('login', ' Login: ' . $newOUser->GetUserLogin() . "\n"));
+            $email->addItem($newOUser->customerAddress);
+            $email->send();
 
-            EaseShared::user($NewOUser)->loginSuccess();
+            EaseShared::user($newOUser)->loginSuccess();
 
-            $Contact = new IEContact();
-            $Contact->setData(array('contact_name' => $login, 'email' => $email_address, 'alias' => $firstname . ' ' . $lastname, 'use' => 'generic-contact', $Contact->userColumn => $UserID, 'generate' => true, 'register' => 1));
-            $ContactID = $Contact->insertToMySQL();
-            if ($ContactID) {
+            $contact = new IEContact();
+            $contact->setData(array('contact_name' => $login, 'email' => $email_address, 'alias' => $firstname . ' ' . $lastname, 'use' => 'generic-contact', $contact->userColumn => $UserID, 'generate' => true, 'register' => 1));
+            $contactID = $contact->saveToMySQL();
+            if ($contactID) {
                 $oUser->addStatusMessage(_('Prvotní kontakt byl založen'), 'success');
             } else {
                 $oUser->addStatusMessage(_('Prvotní kontakt nebyl založen'), 'warning');
             }
 
-            $CG = new IEContactgroup();
-            $CG->setData(array('contactgroup_name' => $login, 'alias' => _('Skupina') . '_' . $login, 'use' => 'generic-contact', 'generate' => true, 'register' => 1,$Contactgroup->userColumn => $UserID));
-            $CG->addMember('members', $ContactID, $login);
-            $CGID = $CG->insertToMySQL();
+            $contactGroup = new IEContactgroup();
+            $contactGroup->setData(array('contactgroup_name' => $login, 'alias' => _('Skupina') . '_' . $login, 'generate' => true, $contactGroup->userColumn => $UserID));
+            $contactGroup->addMember('members', $contactID, $login);
+            $cgID = $contactGroup->saveToMySQL();
 
-            if ($CGID) {
+            if ($cgID) {
                 $oUser->addStatusMessage(_('Prvotní kontaktní skupina byla založena'), 'success');
             } else {
                 $oUser->addStatusMessage(_('Prvotní kontaktní skupina nebyla založena'), 'warning');
@@ -120,9 +120,9 @@ if ($oPage->isPosted()) {
             exit;
         } else {
             $oUser->addStatusMessage(_('Zápis do databáze se nezdařil!'), 'error');
-            $Email = $oPage->addItem(new EaseMail(constant('SEND_ORDERS_TO'), 'Registrace uzivatel se nezdařila'));
-            $Email->addItem(new EaseHtmlDivTag('Fegistrace', $oPage->PrintPre($CustomerData)));
-            $Email->Send();
+            $email = $oPage->addItem(new EaseMail(constant('SEND_ORDERS_TO'), 'Registrace uzivatel se nezdařila'));
+            $email->addItem(new EaseHtmlDivTag('Fegistrace', $oPage->PrintPre($CustomerData)));
+            $email->Send();
         }
     }
 }

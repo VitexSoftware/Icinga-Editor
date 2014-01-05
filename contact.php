@@ -14,52 +14,52 @@ require_once 'classes/IECfgEditor.php';
 
 $oPage->onlyForLogged();
 
-$Contact = new IEContact($oPage->getRequestValue('contact_id', 'int'));
+$contact = new IEContact($oPage->getRequestValue('contact_id', 'int'));
 
 $autoCreate = $oPage->getRequestValue('autocreate');
 if($autoCreate == 'default'){
-    $Contact->setData(IEContact::ownContactData() );
-    $ContactID = $Contact->saveToMySQL();
+    $contact->setData(IEContact::ownContactData() );
+    $contactID = $contact->saveToMySQL();
 }
 
 if ($oPage->isPosted()) {
-    $Contact->takeData($_POST);
-    $ContactID = $Contact->saveToMySQL();
-    if (is_null($ContactID)) {
+    $contact->takeData($_POST);
+    $contactID = $contact->saveToMySQL();
+    if (is_null($contactID)) {
         $oUser->addStatusMessage(_('Kontakt nebyl uložen'), 'warning');
     } else {
         $oUser->addStatusMessage(_('Kontakt byl uložen'), 'success');
     }
 }
 
-    $Contact->saveMembers();
+    $contact->saveMembers();
 
 $delete = $oPage->getGetValue('delete', 'bool');
 if ($delete == 'true') {
-    $Contact->delete();
+    $contact->delete();
 }
 
 
-$oPage->addItem(new IEPageTop(_('Editace kontaktu') . ' ' . $Contact->getName()));
+$oPage->addItem(new IEPageTop(_('Editace kontaktu') . ' ' . $contact->getName()));
 
 
 
-$ContactEdit = new IECfgEditor($Contact);
+$ContactEdit = new IECfgEditor($contact);
 
 $form = $oPage->columnII->addItem(new EaseHtmlForm('Contact', 'contact.php', 'POST', $ContactEdit, array('class' => 'form-horizontal')));
 $form->setTagID($form->getTagName());
-if (!is_null($Contact->getMyKey())) {
-    $form->addItem(new EaseHtmlInputHiddenTag($Contact->getmyKeyColumn(), $Contact->getMyKey()));
+if (!is_null($contact->getMyKey())) {
+    $form->addItem(new EaseHtmlInputHiddenTag($contact->getmyKeyColumn(), $contact->getMyKey()));
 }
 $form->addItem('<br>');
 $form->addItem(new EaseTWSubmitButton(_('Uložit'),'success'));
 
-$oPage->columnIII->addItem($Contact->deleteButton());
+$oPage->columnIII->addItem($contact->deleteButton());
 $oPage->AddCss('
 input.ui-button { width: 100%; }
 ');
-if ($Contact->getId()) {
-    $oPage->columnI->addItem($Contact->ownerLinkButton());
+if ($contact->getId()) {
+    $oPage->columnI->addItem($contact->ownerLinkButton());
 }
 
 $oPage->addItem(new IEPageBottom());

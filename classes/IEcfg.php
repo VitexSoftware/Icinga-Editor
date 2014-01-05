@@ -52,7 +52,7 @@ class IEcfg extends EaseBrick
      * Sloupeček obsahující datum vložení záznamu
      * @var string
      */
-    public $MyCreateColumn = 'DatCreate';
+    public $myCreateColumn = 'DatCreate';
 
     /**
      * Sloupeček obsahující datum modifikace záznamu
@@ -70,7 +70,7 @@ class IEcfg extends EaseBrick
      * Přidat položky register a use ?
      * @var boolean
      */
-    public $AllowTemplating = false;
+    public $allowTemplating = false;
 
     /**
      * Dát tyto položky k dispozici i ostatním ?
@@ -132,7 +132,7 @@ class IEcfg extends EaseBrick
             }
         }
 
-        if ($this->AllowTemplating) {
+        if ($this->allowTemplating) {
             $this->useKeywords['name'] = 'VARCHAR(64)';
             $this->keywordsInfo['name'] = array(
                 'title' => _('Uložit jako předlohu pod jménem')
@@ -283,8 +283,8 @@ class IEcfg extends EaseBrick
             $myStruct = array_merge($myStruct, array($this->userColumn => 'INT'));
         }
 
-        if (!is_null($this->MyCreateColumn)) {
-            $myStruct = array_merge($myStruct, array($this->MyCreateColumn => 'DATETIME'));
+        if (!is_null($this->myCreateColumn)) {
+            $myStruct = array_merge($myStruct, array($this->myCreateColumn => 'DATETIME'));
         }
 
         if (!is_null($this->MyLastModifiedColumn)) {
@@ -471,7 +471,7 @@ class IEcfg extends EaseBrick
         foreach ($this->keywordsInfo as $keyword => $kwInfo) {
             if (isset($kwInfo['required']) && ($kwInfo['required'] == true)) {
 
-                if ($this->AllowTemplating) {
+                if ($this->allowTemplating) {
                     if ($this->isTemplate($data)) {
                         if (!strlen($data['name'])) {
                             $this->addStatusMessage($this->Keyword . ': ' . sprintf(_('Předloha %s není pojmenována'), $data[$this->nameColumn]), 'error');
@@ -556,7 +556,7 @@ class IEcfg extends EaseBrick
             }
         }
 
-        if ($this->AllowTemplating && $this->isTemplate()) {
+        if ($this->allowTemplating && $this->isTemplate()) {
             if (isset($data[$this->getmyKeyColumn()]) && (int) $data[$this->getmyKeyColumn()]) {
                 $Keycont = $this->myDbLink->queryToValue('SELECT COUNT(*) FROM ' . $this->myTable . ' WHERE `name`' . " = '" . $data['name'] . "' AND " . $this->myKeyColumn . ' != ' . $data[$this->getmyKeyColumn()]);
             } else {
@@ -570,7 +570,7 @@ class IEcfg extends EaseBrick
             }
         }
         if ($Keycont) {
-            if ($this->AllowTemplating && $this->isTemplate()) {
+            if ($this->allowTemplating && $this->isTemplate()) {
                 $this->addStatusMessage(sprintf(_('Předloha %s je již definována. Zvolte prosím jiný název.'), $data['name']), 'warning');
             } else {
                 $this->addStatusMessage(sprintf(_('%s %s je již definováno. Zvolte prosím jiné.'), $this->nameColumn, $data[$this->nameColumn]), 'warning');
@@ -629,7 +629,7 @@ class IEcfg extends EaseBrick
             $thisID = EaseShared::user()->getUserID();
         }
         $columnsToGet = array($this->getmyKeyColumn(), $this->nameColumn, 'generate', $this->MyLastModifiedColumn, $this->userColumn);
-        if ($this->AllowTemplating) {
+        if ($this->allowTemplating) {
             $columnsToGet[] = 'register';
             $columnsToGet[] = 'name';
         }
@@ -655,7 +655,7 @@ class IEcfg extends EaseBrick
     public function getName($data = null)
     {
         if (is_null($data)) {
-            if ($this->AllowTemplating) {
+            if ($this->allowTemplating) {
                 if ($this->isTemplate()) {
                     return $this->getDataValue('name');
                 }
@@ -663,7 +663,7 @@ class IEcfg extends EaseBrick
 
             return $this->getDataValue($this->nameColumn);
         } else {
-            if ($this->AllowTemplating) {
+            if ($this->allowTemplating) {
                 if ($this->isTemplate($data)) {
                     return $data['name'];
                 }
@@ -701,7 +701,7 @@ class IEcfg extends EaseBrick
     {
         if ($this->getOwnerID() == EaseShared::user()->getUserID()) {
 
-            if ($this->AllowTemplating && $this->isTemplate()) {
+            if ($this->allowTemplating && $this->isTemplate()) {
                 $columnsList = array($this->getmyKeyColumn(), $this->nameColumn, $this->userColumn);
                 if ($this->publicRecords) {
                     $columnsList[] = 'public';
@@ -833,7 +833,7 @@ class IEcfg extends EaseBrick
             }
             if (is_array($buffer) && str_replace(' ', '', $cfgLine) == '}') {
                 if (!is_null($commonValues)) {
-                    if (!$this->AllowTemplating) {
+                    if (!$this->allowTemplating) {
                         unset($commonValues['register']);
                     }
                     if (!$this->publicRecords) {

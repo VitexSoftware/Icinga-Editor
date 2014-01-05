@@ -2,7 +2,7 @@
 
 /**
  * Konfigurace Skupin contactů
- * 
+ *
  * @package    IcingaEditor
  * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
@@ -20,7 +20,7 @@ class IEContactgroup extends IECfg
 
     /**
      * Dát tyto položky k dispozici i ostatním ?
-     * @var boolean 
+     * @var boolean
      */
     public $publicRecords = false;
     public $useKeywords = array(
@@ -55,10 +55,8 @@ class IEContactgroup extends IECfg
     );
     /**
      * URL dokumentace objektu
-     * @var string 
+     * @var string
      */
     public $DocumentationLink = 'http://docs.icinga.org/latest/en/objectdefinitions.html#objectdefinitions-contactgroup';
 
 }
-
-?>

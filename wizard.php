@@ -152,8 +152,8 @@ if ($HostName || $Address || $Address6) {
     }
 }
 
-$Contact = new IEContact();
-$PocContact = $Contact->getMyRecordsCount();
+$contact = new IEContact();
+$PocContact = $contact->getMyRecordsCount();
 if (!$PocContact) {
     $Warning = $oPage->columnIII->addItem(new EaseHtmlDivTag('Contact', _('Nemáte definovaný kontakt'), array('class' => 'alert alert-info')));
     $Warning->addItem(new EaseTWBLinkButton('contact.php?autocreate=default', _('Založit výchozí kontakt').' '.EaseTWBPart::GlyphIcon('edit')));

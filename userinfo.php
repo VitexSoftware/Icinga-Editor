@@ -32,8 +32,8 @@ $UserInfoFrame->addItem($user);
 
 
 
-$Contact = new IETimeperiod();
-$PocTimeperiods = $Contact->getMyRecordsCount($UserID);
+$contact = new IETimeperiod();
+$PocTimeperiods = $contact->getMyRecordsCount($UserID);
 if ($PocTimeperiods) {
     $Success = $oPage->columnIII->addItem(new EaseHtmlDivTag('Timeperiod', new EaseTWBLinkButton('timeperiods.php', _('<i class="icon-list"></i>').' '.sprintf(_('Definováno %s časových period'), $PocTimeperiods)), array('class' => 'alert alert-success')));
 } 

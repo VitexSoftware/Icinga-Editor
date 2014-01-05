@@ -86,8 +86,8 @@ $oUser->setSettingValue('admin',TRUE);
                     switch (trim($keywords[2])) {
                         case 'specified for contact':
                             $ErrorLine->addItem(' specifikovaná pro kontakt ');
-                            $Contact = new IEContact($keywords[3]);
-                            $ErrorLine->addItem(new EaseHtmlATag('contact.php?contact_id=' . $Contact->getMyKey(), $keywords[3]));
+                            $contact = new IEContact($keywords[3]);
+                            $ErrorLine->addItem(new EaseHtmlATag('contact.php?contact_id=' . $contact->getMyKey(), $keywords[3]));
                             break;
 
                         default:

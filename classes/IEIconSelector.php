@@ -86,9 +86,10 @@ class IEIconSelector extends EaseContainer
     }
 
     /**
-     * Otestuje zdali je soubor PNG/GIF/JPF
+     * Otestuje zdali je soubor PNG/GIF/JPG
      *
-     * @param type $tmpfilename
+
+     *      * @param type $tmpfilename
      */
     public static function imageTypeOK($tmpfilename)
     {

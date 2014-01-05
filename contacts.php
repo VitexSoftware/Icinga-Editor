@@ -18,8 +18,8 @@ $oPage->addItem(new IEPageTop(_('Přehled contactů')));
 
 
 
-$Contact = new IEContact();
-$Contacts = $Contact->getListing();
+$contact = new IEContact();
+$Contacts = $contact->getListing();
 
 if ($Contacts) {
     $oPage->columnII->addItem(new EaseHtmlH4Tag(_('Kontakty')));
@@ -35,7 +35,7 @@ if ($Contacts) {
             $LastRow->setTagCss(array('border-right' => '1px solid red'));
         }
         if($CInfo['public'] == 1){
-            if($CInfo[$Contact->userColumn] == $oUser->getUserID()){
+            if($CInfo[$contact->userColumn] == $oUser->getUserID()){
                 $LastRow->setTagCss(array('border-left'=>'1px solid green'));
             } else {
                 $LastRow->setTagCss(array('border-left'=>'1px solid blue'));
@@ -57,7 +57,7 @@ if ($Contacts) {
             $LastRow->setTagCss(array('border-right' => '1px solid red'));
         }
        if($CInfo['public'] == 1){
-            if($CInfo[$Contact->userColumn] == $oUser->getUserID()){
+            if($CInfo[$contact->userColumn] == $oUser->getUserID()){
                 $LastRow->setTagCss(array('border-left'=>'1px solid green'));
             } else {
                 $LastRow->setTagCss(array('border-left'=>'1px solid blue'));

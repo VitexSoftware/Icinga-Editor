@@ -215,7 +215,7 @@ class IECfgEditor extends EaseContainer
             $this->ObjectEdited->useKeywords[$this->ObjectEdited->userColumn] = 'USER';
         }
 
-        if ($this->ObjectEdited->AllowTemplating) {
+        if ($this->ObjectEdited->allowTemplating) {
             if (!(int) $this->ObjectEdited->getDataValue('register')) {
                 $this->addStatusMessage('toto je pouze předloha');
                 foreach ($this->ObjectEdited->keywordsInfo as $Kw => $Props) {
@@ -281,7 +281,7 @@ class IECfgEditor extends EaseContainer
                 $value = null;
             }
 
-            if ($this->ObjectEdited->AllowTemplating) {
+            if ($this->ObjectEdited->allowTemplating) {
                 if ($this->ObjectEdited->isTemplate()) {
                     if (EaseShared::webPage()->isPosted() && is_null($value) && $required) {
                         $this->addStatusMessage(_('Není vyplněna povinná položka') . ' ' . $KeywordInfo['title'], 'warning');
@@ -413,7 +413,7 @@ class IECfgEditor extends EaseContainer
                 $value = null;
             }
 
-            if ($this->ObjectEdited->AllowTemplating) {
+            if ($this->ObjectEdited->allowTemplating) {
                 if ($this->ObjectEdited->isTemplate()) {
                     if (EaseShared::webPage()->isPosted() && is_null($value) && $Required) {
                         $this->addStatusMessage(_('Není vyplněna povinná položka') . ' ' . $keywordInfo['title'], 'warning');

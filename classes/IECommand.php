@@ -25,7 +25,7 @@ class IECommand extends IECfg
      * Přidat položky register a use ?
      * @var boolean 
      */
-    public $AllowTemplating = false;
+    public $allowTemplating = false;
 
     /**
      * Položky

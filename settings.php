@@ -49,12 +49,12 @@ $(\'#UserMail\').change( function () {
 ', NULL, TRUE);
 
 $settingsFrame = new EaseHtmlFieldSet(_('nastavení'));
-$settingsFrame->AddItem(new EaseHtmlATag('https://secure.gravatar.com/', $oUser, array('title' => 'klikni pro změnu ikony')));
+$settingsFrame->addItem(new EaseHtmlATag('https://secure.gravatar.com/', $oUser, array('title' => 'klikni pro změnu ikony')));
 
-$settingsFrame->AddItem(new IETextInputSaver('login', $oUser->getUserLogin(), _('přihlašovací jméno')));
-$settingsFrame->AddItem(new EaseTWBLinkButton('changepassword.php', _('změna hesla')));
+$settingsFrame->addItem(new IETextInputSaver('login', $oUser->getUserLogin(), _('přihlašovací jméno')));
+$settingsFrame->addItem(new EaseTWBLinkButton('changepassword.php', _('změna hesla')));
 
-$settingsFrame->AddItem(new IETextInputSaver('email', $oUser->getUserEmail(), _('emailová adresa'), array('id' => 'UserMail')));
+$settingsFrame->addItem(new IETextInputSaver('email', $oUser->getUserEmail(), _('emailová adresa'), array('id' => 'UserMail')));
 
 $settingsFrame->addItem('<br>');
 
@@ -70,6 +70,6 @@ if ((bool) $oUser->getSettingValue('admin')) {
 //    $oPage->columnIII->addItem(new EaseTWBLinkButton('?action=untwittering', _('Odpojit od twiteru')));
 //}
 //
-$oPage->AddItem(new IEPageBottom());
+$oPage->addItem(new IEPageBottom());
 
-$oPage->Draw();
+$oPage->draw();

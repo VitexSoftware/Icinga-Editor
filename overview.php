@@ -35,8 +35,8 @@ if ($PocTimeperiods) {
 
 
 
-$Contact = new IEContact();
-$PocContact = $Contact->getMyRecordsCount();
+$contact = new IEContact();
+$PocContact = $contact->getMyRecordsCount();
 if ($PocContact) {
     $Success = $oPage->columnII->addItem(new EaseHtmlDivTag('Contact', new EaseTWBLinkButton('contacts.php', _('<i class="icon-list"></i>').' '.sprintf(_('Definováno %s kontaktů'), $PocContact)), array('class' => 'alert alert-success')));
     

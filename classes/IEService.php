@@ -31,7 +31,7 @@ class IEService extends IECfg
      * Přidat položky register a use ?
      * @var boolean 
      */
-    public $AllowTemplating = true;
+    public $allowTemplating = true;
 
     /**
      * Dát tyto položky k dispozici i ostatním ?

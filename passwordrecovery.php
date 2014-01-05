@@ -38,13 +38,13 @@ if ($EmailTo) {
         $PassChanger = new EaseUser($UserID);
         $PassChanger->passwordChange($NewPassword);
 
-        $Email = $oPage->addItem(new EaseShopMail($UserEmail, _('Nové heslo pro ') . $_SERVER['SERVER_NAME']));
-        $Email->addItem(_("Tvoje přihlašovací údaje byly změněny:\n"));
+        $email = $oPage->addItem(new EaseShopMail($UserEmail, _('Nové heslo pro ') . $_SERVER['SERVER_NAME']));
+        $email->addItem(_("Tvoje přihlašovací údaje byly změněny:\n"));
 
-        $Email->addItem(' Login: ' . $UserLogin . "\n");
-        $Email->addItem(' Heslo: ' . $NewPassword . "\n");
+        $email->addItem(' Login: ' . $UserLogin . "\n");
+        $email->addItem(' Heslo: ' . $NewPassword . "\n");
 
-        $Email->send();
+        $email->send();
 
         $oUser->addStatusMessage('Tvoje nové heslo vám bylo odesláno mailem na zadanou adresu <strong>' . $_REQUEST['Email'] . '</strong>');
         $Success = true;

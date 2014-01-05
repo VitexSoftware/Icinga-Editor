@@ -57,13 +57,13 @@ if ($FormOK && isset($_POST)) {
     if ($oUser->saveToMySQL()) {
         $oUser->addStatusMessage('Heslo bylo změněno', 'success');
 
-        $Email = $oPage->addItem(new EaseMail($oUser->getDataValue($oUser->MailColumn), 'Změněné heslo pro FragCC'));
-        $Email->addItem("Vážený zákazníku vaše přihlašovací údaje byly změněny:\n");
+        $email = $oPage->addItem(new EaseMail($oUser->getDataValue($oUser->MailColumn), 'Změněné heslo pro FragCC'));
+        $email->addItem("Vážený zákazníku vaše přihlašovací údaje byly změněny:\n");
 
-        $Email->addItem(' Login: ' . $oUser->getUserLogin() . "\n");
-        $Email->addItem(' Heslo: ' . $_POST['password'] . "\n");
+        $email->addItem(' Login: ' . $oUser->getUserLogin() . "\n");
+        $email->addItem(' Heslo: ' . $_POST['password'] . "\n");
 
-        $Email->send();
+        $email->send();
     }
 } else {
     $LoginForm = new EaseHtmlForm(NULL);
@@ -80,7 +80,7 @@ if ($FormOK && isset($_POST)) {
     $oPage->columnII->addItem( new EaseHtmlFieldSet(_('změna hesla'), $LoginForm));
 }
 
-$oPage->AddItem(new IEPageBottom());
+$oPage->addItem(new IEPageBottom());
 
 $oPage->Draw();
 ?>
