@@ -277,6 +277,11 @@ class IECfgEditor extends EaseContainer
             }
 
             $value = $this->objectEdited->getDataValue($fieldName);
+            
+            if(!EaseShared::webPage()->isPosted()){
+                $value = '';
+            }
+            
             if(is_null($value)){
                 continue;
             }
@@ -415,6 +420,11 @@ class IECfgEditor extends EaseContainer
             }
 
             $value = $this->objectEdited->getDataValue($fieldName);
+            
+            if(!EaseShared::webPage()->isPosted()){
+                $value = '';
+            }
+            
             if(is_null($value)){
                 continue;
             }
