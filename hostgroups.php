@@ -20,13 +20,13 @@ $PocContactgroup = $Hostgroup->getMyRecordsCount();
 
 if ($PocContactgroup) {
     $Hostgroups = $Hostgroup->myDbLink->queryToArray('SELECT ' . $Hostgroup->getmyKeyColumn() . ', hostgroup_name, DatSave FROM ' . $Hostgroup->myTable . ' WHERE user_id=' . $oUser->getUserID(), 'hostgroup_id');
-    $CntList = new EaseHtmlTableTag(null,array('class'=>'table'));
+    $cntList = new EaseHtmlTableTag(null,array('class'=>'table'));
 
     $Cid = 1;
     foreach ($Hostgroups as $CID => $CInfo) {
-        $CntList->addRowColumns(array($Cid++, new EaseHtmlATag('hostgroup.php?hostgroup_id=' . $CInfo['hostgroup_id'], $CInfo['hostgroup_name'].' <i class="icon-edit"></i>')));
+        $cntList->addRowColumns(array($Cid++, new EaseHtmlATag('hostgroup.php?hostgroup_id=' . $CInfo['hostgroup_id'], $CInfo['hostgroup_name'].' <i class="icon-edit"></i>')));
     }
-    $oPage->columnII->addItem($CntList);
+    $oPage->columnII->addItem($cntList);
 } else {
     $oUser->addStatusMessage(_('Nemáte definovou skupinu hostů'), 'warning');
 }

@@ -23,13 +23,13 @@ $PocServicegroup = $Servicegroup->getMyRecordsCount();
 
 if ($PocServicegroup) {
     $Servicegroups = $Servicegroup->myDbLink->queryToArray('SELECT ' . $Servicegroup->getmyKeyColumn() . ', servicegroup_name, DatSave FROM ' . $Servicegroup->myTable . ' WHERE user_id=' . $oUser->getUserID(), 'servicegroup_id');
-    $CntList = new EaseHtmlTableTag(null,array('class'=>'table'));
+    $cntList = new EaseHtmlTableTag(null,array('class'=>'table'));
 
     $Cid = 1;
     foreach ($Servicegroups as $CID => $CInfo) {
-        $CntList->addRowColumns(array($Cid++, new EaseHtmlATag('servicegroup.php?servicegroup_id=' . $CInfo['servicegroup_id'], $CInfo['servicegroup_name'].' <i class="icon-edit"></i>')));
+        $cntList->addRowColumns(array($Cid++, new EaseHtmlATag('servicegroup.php?servicegroup_id=' . $CInfo['servicegroup_id'], $CInfo['servicegroup_name'].' <i class="icon-edit"></i>')));
     }
-    $oPage->columnII->addItem($CntList);
+    $oPage->columnII->addItem($cntList);
 } else {
     $oUser->addStatusMessage(_('Nemáte definovou skupinu služeb'), 'warning');
 }

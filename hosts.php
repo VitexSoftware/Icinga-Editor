@@ -23,25 +23,25 @@ $hosts = $host->getListing();
 
 if ($hosts) {
     $oPage->columnII->addItem(new EaseHtmlH4Tag(_('Hosty')));
-    $CntList = new EaseHtmlTableTag(null,array('class'=>'table'));
+    $cntList = new EaseHtmlTableTag(null,array('class'=>'table'));
     $Cid = 1;
     foreach ($hosts as $CID => $CInfo) {
         if($CInfo['register'] != 1){
             continue;
         }
-        $LastRow = $CntList->addRowColumns(array($Cid++, new EaseHtmlATag('host.php?host_id=' . $CInfo['host_id'], $CInfo['host_name'].' <i class="icon-edit"></i>')));
+        $lastRow = $cntList->addRowColumns(array($Cid++, new EaseHtmlATag('host.php?host_id=' . $CInfo['host_id'], $CInfo['host_name'].' <i class="icon-edit"></i>')));
         if ($CInfo['generate'] == 0) {
-            $LastRow->setTagCss(array('border-right' => '1px solid red'));
+            $lastRow->setTagCss(array('border-right' => '1px solid red'));
         }
         if($CInfo['public'] == 1){
             if($CInfo[$host->userColumn] == $oUser->getUserID()){
-                $LastRow->setTagCss(array('border-left'=>'1px solid green'));
+                $lastRow->setTagCss(array('border-left'=>'1px solid green'));
             } else {
-                $LastRow->setTagCss(array('border-left'=>'1px solid blue'));
+                $lastRow->setTagCss(array('border-left'=>'1px solid blue'));
             }
         }
     }
-    $oPage->columnII->addItem($CntList);
+    $oPage->columnII->addItem($cntList);
 
     $oPage->columnI->addItem(new EaseHtmlH4Tag(_('Předlohy')));
     $Cnt2List = new EaseHtmlTableTag(null,array('class'=>'table'));
@@ -50,15 +50,15 @@ if ($hosts) {
         if(intval($CInfo['register'])){
             continue;
         }
-        $LastRow = $Cnt2List->addRowColumns(array($Cid++, new EaseHtmlATag('host.php?host_id=' . $CInfo['host_id'], $CInfo['name'].' '.EaseTWBPart::GlyphIcon('edit')),new EaseHtmlATag('host.php?use='. urldecode($CInfo['name']), _('Odvodit <i class="icon-edit"></i>'))));
+        $lastRow = $Cnt2List->addRowColumns(array($Cid++, new EaseHtmlATag('host.php?host_id=' . $CInfo['host_id'], $CInfo['name'].' '.EaseTWBPart::GlyphIcon('edit')),new EaseHtmlATag('host.php?use='. urldecode($CInfo['name']), _('Odvodit <i class="icon-edit"></i>'))));
         if ($CInfo['generate'] == 0) {
-            $LastRow->setTagCss(array('border-right' => '1px solid red'));
+            $lastRow->setTagCss(array('border-right' => '1px solid red'));
         }
        if($CInfo['public'] == 1){
             if($CInfo[$host->userColumn] == $oUser->getUserID()){
-                $LastRow->setTagCss(array('border-left'=>'1px solid green'));
+                $lastRow->setTagCss(array('border-left'=>'1px solid green'));
             } else {
-                $LastRow->setTagCss(array('border-left'=>'1px solid blue'));
+                $lastRow->setTagCss(array('border-left'=>'1px solid blue'));
             }
         }
     }

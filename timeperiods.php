@@ -21,23 +21,23 @@ $Periods = $Timeperiod->getListing();
 
 if ($Periods) {
 
-    $CntList = new EaseHtmlTableTag(null,array('class'=>'table'));
+    $cntList = new EaseHtmlTableTag(null,array('class'=>'table'));
 
     $Cid = 1;
     foreach ($Periods as $CID => $CInfo) {
-        $LastRow = $CntList->addRowColumns(array($Cid++, new EaseHtmlATag('timeperiod.php?timeperiod_id=' . $CInfo['timeperiod_id'], $CInfo['timeperiod_name'].' <i class="icon-edit"></i>')));
+        $lastRow = $cntList->addRowColumns(array($Cid++, new EaseHtmlATag('timeperiod.php?timeperiod_id=' . $CInfo['timeperiod_id'], $CInfo['timeperiod_name'].' <i class="icon-edit"></i>')));
         if($CInfo['generate'] == 0){
-            $LastRow->setTagCss(array('border-right'=>'1px solid red'));
+            $lastRow->setTagCss(array('border-right'=>'1px solid red'));
         }
         if($CInfo['public'] == 1){
             if($CInfo[$Timeperiod->userColumn] == $oUser->getUserID()){
-                $LastRow->setTagCss(array('border-left'=>'1px solid green'));
+                $lastRow->setTagCss(array('border-left'=>'1px solid green'));
             } else {
-                $LastRow->setTagCss(array('border-left'=>'1px solid blue'));
+                $lastRow->setTagCss(array('border-left'=>'1px solid blue'));
             }
         }
     }
-    $oPage->columnII->addItem($CntList);
+    $oPage->columnII->addItem($cntList);
 } else {
     $oUser->addStatusMessage(_('Nemáte definované časové periody'), 'warning');
 }

@@ -21,16 +21,16 @@ $users = $user->getColumnsFromMySQL(array('id', 'login'), null, 'login', $oUser-
 
 if ($users) {
     $oPage->columnII->addItem(new EaseHtmlH4Tag(_('Uživatelé')));
-    $CntList = new EaseHtmlTableTag(null, array('class' => 'table'));
+    $cntList = new EaseHtmlTableTag(null, array('class' => 'table'));
     $Cid = 1;
     foreach ($users as $CID => $CInfo) {
-        $LastRow = $CntList->addRowColumns(array($Cid++, new EaseUser((int) $CID),
+        $lastRow = $cntList->addRowColumns(array($Cid++, new EaseUser((int) $CID),
             new EaseHtmlATag('userinfo.php?user_id=' . $CID, $CInfo['login'] . ' <i class="icon-edit"></i>'),
             new EaseHtmlATag('apply.php?force_user_id=' . $CID, _('Přegenerovat konfiguraci') . ' <i class="icon-repeat"></i>')
                 )
         );
     }
-    $oPage->columnII->addItem($CntList);
+    $oPage->columnII->addItem($cntList);
 }
 
 $oPage->columnIII->addItem(new EaseTWBLinkButton('createaccount.php', _('Založit uživatele').' '.EaseTWBPart::GlyphIcon('edit')));

@@ -24,41 +24,41 @@ $Commands = $Command->getListing(null,null,array('command_local','command_remote
 
 
 if ($Commands) {
-    $CntList = new EaseHtmlTableTag(null, array('class' => 'table'));
+    $cntList = new EaseHtmlTableTag(null, array('class' => 'table'));
 
     $Cid = 1;
     foreach ($Commands as $CID => $CInfo) {
         if (intval($CInfo['command_local'])) {
-            $LastRow = $CntList->addRowColumns(array($Cid++, new EaseHtmlATag('command.php?command_id=' . $CInfo['command_id'], $CInfo['command_name'])));
+            $lastRow = $cntList->addRowColumns(array($Cid++, new EaseHtmlATag('command.php?command_id=' . $CInfo['command_id'], $CInfo['command_name'])));
             if ($CInfo['generate'] == 0) {
-                $LastRow->setTagCss(array('border-right' => '1px solid red'));
+                $lastRow->setTagCss(array('border-right' => '1px solid red'));
             }
             if ($CInfo['public'] == 1) {
                 if ($CInfo[$Command->userColumn] == $oUser->getUserID()) {
-                    $LastRow->setTagCss(array('border-left' => '1px solid green'));
+                    $lastRow->setTagCss(array('border-left' => '1px solid green'));
                 } else {
-                    $LastRow->setTagCss(array('border-left' => '1px solid blue'));
+                    $lastRow->setTagCss(array('border-left' => '1px solid blue'));
                 }
             }
             unset($Commands[$CID]);
         }
     }
     $oPage->columnI->addItem(new EaseHtmlH4Tag(_('Místní příkazy')));
-    $oPage->columnI->addItem($CntList);
+    $oPage->columnI->addItem($cntList);
 
-    $CntList = new EaseHtmlTableTag(null, array('class' => 'table'));
+    $cntList = new EaseHtmlTableTag(null, array('class' => 'table'));
     $Cid = 1;
     foreach ($Commands as $CID => $CInfo) {
         if (intval($CInfo['command_remote'])) {
-            $LastRow = $CntList->addRowColumns(array($Cid++, new EaseHtmlATag('command.php?command_id=' . $CInfo['command_id'], $CInfo['command_name'])));
+            $lastRow = $cntList->addRowColumns(array($Cid++, new EaseHtmlATag('command.php?command_id=' . $CInfo['command_id'], $CInfo['command_name'])));
             if ($CInfo['generate'] == 0) {
-                $LastRow->setTagCss(array('border-right' => '1px solid red'));
+                $lastRow->setTagCss(array('border-right' => '1px solid red'));
             }
             if ($CInfo['public'] == 1) {
                 if ($CInfo[$Command->userColumn] == $oUser->getUserID()) {
-                    $LastRow->setTagCss(array('border-left' => '1px solid green'));
+                    $lastRow->setTagCss(array('border-left' => '1px solid green'));
                 } else {
-                    $LastRow->setTagCss(array('border-left' => '1px solid blue'));
+                    $lastRow->setTagCss(array('border-left' => '1px solid blue'));
                 }
             }
             unset($Commands[$CID]);
@@ -66,25 +66,25 @@ if ($Commands) {
         
     }
     $oPage->columnII->addItem(new EaseHtmlH4Tag(_('vzdálené příkazy')));
-    $oPage->columnII->addItem($CntList);
+    $oPage->columnII->addItem($cntList);
 
-    $CntList = new EaseHtmlTableTag(null, array('class' => 'table'));
+    $cntList = new EaseHtmlTableTag(null, array('class' => 'table'));
     foreach ($Commands as $CID => $CInfo) {
-            $LastRow = $CntList->addRowColumns(array($Cid++, new EaseHtmlATag('command.php?command_id=' . $CInfo['command_id'], $CInfo['command_name'])));
+            $lastRow = $cntList->addRowColumns(array($Cid++, new EaseHtmlATag('command.php?command_id=' . $CInfo['command_id'], $CInfo['command_name'])));
             if ($CInfo['generate'] == 0) {
-                $LastRow->setTagCss(array('border-right' => '1px solid red'));
+                $lastRow->setTagCss(array('border-right' => '1px solid red'));
             }
             if ($CInfo['public'] == 1) {
                 if ($CInfo[$Command->userColumn] == $oUser->getUserID()) {
-                    $LastRow->setTagCss(array('border-left' => '1px solid green'));
+                    $lastRow->setTagCss(array('border-left' => '1px solid green'));
                 } else {
-                    $LastRow->setTagCss(array('border-left' => '1px solid blue'));
+                    $lastRow->setTagCss(array('border-left' => '1px solid blue'));
                 }
             }
             unset($Commands[$CID]);
     }
     $oPage->columnIII->addItem(new EaseHtmlH4Tag(_('neurčené příkazy')));
-    $oPage->columnIII->addItem($CntList);
+    $oPage->columnIII->addItem($cntList);
     
     
     

@@ -23,13 +23,13 @@ $PocContactgroup = $Contactgroup->getMyRecordsCount();
 
 if ($PocContactgroup) {
     $Contactgroups = $Contactgroup->myDbLink->queryToArray('SELECT ' . $Contactgroup->getmyKeyColumn() . ', contactgroup_name, DatSave FROM ' . $Contactgroup->myTable . ' WHERE user_id=' . $oUser->getUserID(), 'contactgroup_id');
-    $CntList = new EaseHtmlTableTag(null,array('class'=>'table'));
+    $cntList = new EaseHtmlTableTag(null,array('class'=>'table'));
 
     $Cid = 1;
     foreach ($Contactgroups as $CID => $CInfo) {
-        $CntList->addRowColumns(array($Cid++, new EaseHtmlATag('contactgroup.php?contactgroup_id=' . $CInfo['contactgroup_id'], $CInfo['contactgroup_name'].' <i class="icon-edit"></i>')));
+        $cntList->addRowColumns(array($Cid++, new EaseHtmlATag('contactgroup.php?contactgroup_id=' . $CInfo['contactgroup_id'], $CInfo['contactgroup_name'].' <i class="icon-edit"></i>')));
     }
-    $oPage->columnII->addItem($CntList);
+    $oPage->columnII->addItem($cntList);
 } else {
     $oUser->addStatusMessage(_('Nemáte definovou skupinu kontaktů'), 'warning');
 }
