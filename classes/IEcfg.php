@@ -228,12 +228,11 @@ class IEcfg extends EaseBrick
         $cfg = fopen(constant('CFG_GENERATED') . '/' . $filename, 'a+');
         if ($cfg) {
             $cmdlen = 0;
+            unset($columns['public']);
+            unset($columns['platform']);
             foreach ($columns as $columnName => $columnValue) {
                 if ($columnValue == 'NULL') {
                     unset($columns[$columnName]);
-                }
-                if ($columnName == 'public') {
-                    unset($columns['public']);
                 }
                 if (strlen($columnName) > $cmdlen) {
                     $cmdlen = strlen($columnName);
@@ -441,19 +440,19 @@ class IEcfg extends EaseBrick
 
     /**
      * Načte všechny záznamy uživatele a vygeneruje z nich konfigurační soubory
-     * @param  string  $FileName Soubor do kterého se bude generovat konfigirace
+     * @param  string  $fileName Soubor do kterého se bude generovat konfigirace
      * @return boolean
      */
-    public function writeConfig($FileName)
+    public function writeConfig($fileName)
     {
-        $AllData = $this->getAllData();
-        foreach ($AllData as $CfgID => $Columns) {
-            if (intval($Columns['generate'])) {
-                unset($Columns['generate']);
-                if (isset($Columns['register']) && (int) $Columns['register']) {
-                    unset($Columns['register']);
+        $allData = $this->getAllData();
+        foreach ($allData as $CfgID => $columns) {
+            if (intval($columns['generate'])) {
+                unset($columns['generate']);
+                if (isset($columns['register']) && (int) $columns['register']) {
+                    unset($columns['register']);
                 }
-                $this->writeConf($FileName, $Columns);
+                $this->writeConf($fileName, $columns);
             }
         }
 
@@ -579,6 +578,9 @@ class IEcfg extends EaseBrick
             return null;
         } else {
             $result = parent::saveToMySQL($data, $searchForID);
+            if(!is_null($result)){
+                EaseShared::user()->setSettingValue('unsaved',true);                
+            }
         }
         $this->setMyKey($result);
 

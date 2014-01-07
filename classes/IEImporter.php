@@ -2,7 +2,7 @@
 
 /**
  * Třída pro import konfigurace
- * 
+ *
  * @package    IcingaEditor
  * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
@@ -22,10 +22,10 @@ class IEImporter extends IECfg
 
     /**
      * Třída pro hromadné operace s konfigurací
-     * 
+     *
      * @param null $ItemID
      */
-    function __construct($Params = null)
+    public function __construct($Params = null)
     {
         parent::__construct();
         $this->registerClass('IETimeperiod');
@@ -41,7 +41,7 @@ class IEImporter extends IECfg
         }
     }
 
-    function registerClass($ClassName)
+    public function registerClass($ClassName)
     {
         if (file_exists('classes/' . $ClassName . '.php')) {
             include_once $ClassName . '.php';
@@ -53,7 +53,7 @@ class IEImporter extends IECfg
     /**
      * Znovu vytvoří struktury tabulek obejktů
      */
-    function dbInit()
+    public function dbInit()
     {
         foreach ($this->IEClasses as $IEClass) {
             $IEClass->dbInit();
@@ -62,37 +62,34 @@ class IEImporter extends IECfg
 
     /**
      * Naimportuje konfiguraci ze souboru
-     * 
-     * @param string $CfgFile
-     * @return int počet uložených konfigurací
+     *
+     * @param  string $CfgFile
+     * @return int    počet uložených konfigurací
      */
-    function importCfgFile($CfgFile)
+    public function importCfgFile($CfgFile)
     {
         return $this->importCfg(IECfg::readRawConfigFile($CfgFile));
     }
 
     /**
      * Naimportuje konfiguraci z textového řetězce
-     * 
-     * @param string $CfgText text
-     * @param array $CommonValues globálně uplatněné hodnoty
-     * @return int počet vloženýh konfigurací
+     *
+     * @param  string $CfgText      text
+     * @param  array  $CommonValues globálně uplatněné hodnoty
+     * @return int    počet vloženýh konfigurací
      */
-    function importCfgText($CfgText, $CommonValues)
+    public function importCfgText($CfgText, $CommonValues)
     {
         return $this->importCfg(array_map('trim', preg_split('/\r\n|\n|\r/',$CfgText)));
     }
 
-
-
-
     /**
      * Naimportuje konfiguraci ze souboru
-     * 
-     * @param string $CfgFile
-     * @return int počet uložených konfigurací
+     *
+     * @param  string $CfgFile
+     * @return int    počet uložených konfigurací
      */
-    function importCfg($Cfg)
+    public function importCfg($Cfg)
     {
         $DoneCount = 0;
         if (count($Cfg)) {
@@ -105,31 +102,34 @@ class IEImporter extends IECfg
             $this->setDataValue($this->userColumn, EaseShared::user()->getUserID());
         }
 
-        if(is_null($this->getDataValue('register'))){
+        if (is_null($this->getDataValue('register'))) {
             $this->setDataValue('register', 1);
         }
-        
+
         foreach ($this->IEClasses as $IEClass) {
             $DoneCount += $IEClass->importArray($Cfg, $this->getData());
         }
         if ($DoneCount) {
             $this->addStatusMessage(sprintf(_('Bylo naimportováno %s konfigurací'), $DoneCount), 'success');
         }
+
         return $DoneCount;
     }
 
-        
-    function writeConfigs($FileName)
+    /**
+     * Vygeneruje do souboru konfiguraci icingy aktuálního uživatele
+     * 
+     * @param string $fileName soubor
+     */
+    public function writeConfigs($fileName)
     {
-        foreach ($this->IEClasses as $IEClass) {
-            if ($IEClass->writeConfig($FileName)) {
-                $this->addStatusMessage( $IEClass->keyword.': '._('konfigurace byla vygenerována'), 'success');
+        foreach ($this->IEClasses as $ieClass) {
+            if ($ieClass->writeConfig($fileName)) {
+                $this->addStatusMessage( $ieClass->keyword.': '._('konfigurace byla vygenerována'), 'success');
             } else {
-                $this->addStatusMessage($IEClass->keyword.': '._('konfigurace nebyla vygenerována'), 'warning');
+                $this->addStatusMessage($ieClass->keyword.': '._('konfigurace nebyla vygenerována'), 'warning');
             }
         }
     }
 
 }
-
-?>

@@ -18,76 +18,76 @@ $oPage->addItem(new IEPageTop(_('Přegenerování veškeré konfigurace')));
 
 system('rm '.constant('CFG_GENERATED').'/*');
 
-$OriginalUserID = $oUser->getUserID();
+$originalUserID = $oUser->getUserID();
 $users = EaseShared::user()->getAllFromMySQL();
 foreach ($users as $UserData) {
     EaseShared::user(new EaseUser(intval($UserData['id'])));
     EaseShared::user()->loginSuccess();
 
 
-    $FileName = $oUser->getUserLogin() . '.cfg';
+    $fileName = $oUser->getUserLogin() . '.cfg';
 
-    $Cfg = fopen(constant('CFG_GENERATED') . '/' . $FileName, 'w');
-    if ($Cfg) {
-        fclose($Cfg);
-        $oUser->addStatusMessage(sprintf(_('konfigurační soubor %s byl znovu vytvořen'), $FileName), 'success');
+    $cfg = fopen(constant('CFG_GENERATED') . '/' . $fileName, 'w');
+    if ($cfg) {
+        fclose($cfg);
+        $oUser->addStatusMessage(sprintf(_('konfigurační soubor %s byl znovu vytvořen'), $fileName), 'success');
     } else {
-        $oUser->addStatusMessage(sprintf(_('konfigurační soubor  %s nebyl znovu vytvořen'), $FileName), 'warning');
+        $oUser->addStatusMessage(sprintf(_('konfigurační soubor  %s nebyl znovu vytvořen'), $fileName), 'warning');
     }
 
-    $Generator = new IEImporter();
-    $Generator->writeConfigs($FileName);
+    $generator = new IEImporter();
+    $generator->writeConfigs($fileName);
 
 }
-EaseShared::user(new EaseUser($OriginalUserID));
+EaseShared::user(new EaseUser($originalUserID));
 EaseShared::user()->loginSuccess();
 $oUser->setSettingValue('admin',TRUE);
 
-    $Testing = popen("sudo /usr/sbin/icinga -v /etc/icinga/icinga.cfg", 'r');
-    if ($Testing) {
+    $testing = popen("sudo /usr/sbin/icinga -v /etc/icinga/icinga.cfg", 'r');
+    if ($testing) {
         $ErrorCount = 0;
         $LineNo = 0;
         $WarningCount = null;
-        while (!feof($Testing)) {
-            $Line = fgets($Testing);
+        while (!feof($testing)) {
+            $Line = fgets($testing);
             $LineNo++;
 
             if (($Line === false) && ($LineNo == 1)) {
-                $ErrorLine = $oPage->addItem(new EaseHtmlDivTag(null, '<span class="label label-important">' . _('Chyba:') . '</span>', array('class' => 'alert alert-error')));
+                $errorLine = $oPage->addItem(new EaseHtmlDivTag(null, '<span class="label label-important">' . _('Chyba:') . '</span>', array('class' => 'alert alert-error')));
                 $oUser->addStatusMessage(_('Kontrola konfigurace nevrátila výsledek.'), 'error');
-                $ErrorLine->addItem(_('Zkontroluj prosím zdlali nechybí potřebný fragment v /etc/sudoers:'));
-                $ErrorLine->addItem(new EaseHtmlDivTag(null, 'User_Alias APACHE = www-data'));
-                $ErrorLine->addItem(new EaseHtmlDivTag(null, 'Cmnd_Alias ICINGA = /usr/sbin/icinga, /etc/init.d/icinga'));
-                $ErrorLine->addItem(new EaseHtmlDivTag(null, 'APACHE ALL = (ALL) NOPASSWD: ICINGA'));
+                $errorLine->addItem(_('Zkontroluj prosím zdlali nechybí potřebný fragment v /etc/sudoers:'));
+                $errorLine->addItem(new EaseHtmlDivTag(null, 'User_Alias APACHE = www-data'));
+                $errorLine->addItem(new EaseHtmlDivTag(null, 'Cmnd_Alias ICINGA = /usr/sbin/icinga, /etc/init.d/icinga'));
+                $errorLine->addItem(new EaseHtmlDivTag(null, 'APACHE ALL = (ALL) NOPASSWD: ICINGA'));
                 break;
             }
 
             if (strstr($Line, 'Error:')) {
                 $Line = str_replace('Error:', '', $Line);
-                $ErrorLine = $oPage->addItem(new EaseHtmlDivTag(null, '<span class="label label-important">' . _('Chyba:') . '</span>', array('class' => 'alert alert-error')));
+                $errorLine = $oPage->addItem(new EaseHtmlDivTag(null, '<span class="label label-important">' . _('Chyba:') . '</span>', array('class' => 'alert alert-error')));
 
                 $keywords = preg_split("/['(.*)']+/", $Line);
                 switch (trim($keywords[0])) {
                     case 'Service notification period':
-                        $ErrorLine->addItem(' <a href="timeperiods.php">' . _('Notifikační perioda') . '</a> služeb ');
-                        $ErrorLine->addItem(new EaseHtmlATag('timeperiod.php?timeperiod_name=' . $keywords[1], $keywords[1]));
+                        $errorLine->addItem(' <a href="timeperiods.php">' . _('Notifikační perioda') . '</a> služeb ');
+                        $errorLine->addItem(new EaseHtmlATag('timeperiod.php?timeperiod_name=' . $keywords[1], $keywords[1]));
                         break;
                     case 'Host notification period':
-                        $ErrorLine->addItem(' <a href="timeperiods.php">' . _('Notifikační perioda') . '</a> hostů');
-                        $ErrorLine->addItem(new EaseHtmlATag('timeperiod.php?timeperiod_name=' . $keywords[1], $keywords[1]));
+                        $errorLine->addItem(' <a href="timeperiods.php">' . _('Notifikační perioda') . '</a> hostů');
+                        $errorLine->addItem(new EaseHtmlATag('timeperiod.php?timeperiod_name=' . $keywords[1], $keywords[1]));
                         break;
 
                     default:
-                        $ErrorLine->addItem($Line);
+                        $errorLine->addItem($Line);
                         break;
                 }
 
                 if (isset($keywords[2])) {
                     switch (trim($keywords[2])) {
                         case 'specified for contact':
-                            $ErrorLine->addItem(' specifikovaná pro kontakt ');
+                            $errorLine->addItem(' specifikovaná pro kontakt ');
                             $contact = new IEContact($keywords[3]);
-                            $ErrorLine->addItem(new EaseHtmlATag('contact.php?contact_id=' . $contact->getMyKey(), $keywords[3]));
+                            $errorLine->addItem(new EaseHtmlATag('contact.php?contact_id=' . $contact->getMyKey(), $keywords[3]));
                             break;
 
                         default:
@@ -97,7 +97,7 @@ $oUser->setSettingValue('admin',TRUE);
                 if (isset($keywords[4])) {
                     switch (trim($keywords[4])) {
                         case 'is not defined anywhere!':
-                            $ErrorLine->addItem(' není nikde definován/a ');
+                            $errorLine->addItem(' není nikde definován/a ');
                             break;
                     }
                 }
@@ -106,9 +106,9 @@ $oUser->setSettingValue('admin',TRUE);
 
             if (strstr($Line, 'Error in configuration file')) {
                 $keywords = preg_split("/'|\(|\)| - Line /", $Line);
-                $ErrorLine = $oPage->addItem(new EaseHtmlDivTag(null, '<span class="label label-error">' . _('Chyba v konfiguračním souboru'), array('class' => 'alert alert-error')));
-                $ErrorLine->addItem(new EaseHtmlATag('cfgfile.php?file=' . $keywords[1] . '&line=' . $keywords[3], $keywords[1]));
-                $ErrorLine->addItem($keywords[4]);
+                $errorLine = $oPage->addItem(new EaseHtmlDivTag(null, '<span class="label label-error">' . _('Chyba v konfiguračním souboru'), array('class' => 'alert alert-error')));
+                $errorLine->addItem(new EaseHtmlATag('cfgfile.php?file=' . $keywords[1] . '&line=' . $keywords[3], $keywords[1]));
+                $errorLine->addItem($keywords[4]);
                 $ErrorCount++;
             }
 
@@ -117,7 +117,7 @@ $oUser->setSettingValue('admin',TRUE);
 
                 if (strstr($Line, 'has no services associated with it!')) {
                     preg_match("/\'(.*)\'/", $Line, $keywords);
-                    $host = & $Generator->IEClasses['host'];
+                    $host = & $generator->IEClasses['host'];
                     $host->setmyKeyColumn($host->nameColumn);
                     $host->loadFromMySql($keywords[1]);
                     $host->resetObjectIdentity();
@@ -147,7 +147,7 @@ $oUser->setSettingValue('admin',TRUE);
                 }
             }
         }
-        fclose($Testing);
+        fclose($testing);
 
         if (!intval($ErrorCount) && !is_null($WarningCount)) {
             $oPage->columnIII->addItem(new EaseTWBLinkButton('reload.php', _('Reload icingy') . ' <i class="icon-refresh"></i>'));

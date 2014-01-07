@@ -289,8 +289,12 @@ class IEMainMenu extends EaseHtmlDivTag
                 }
             }
 
-            $nav->addMenuItem(new EaseHtmlATag('apply.php', _('Uplatnit změny <i class="icon-ok"></i>'), array('class' => 'btn btn-warning')),'right');
-            
+
+            if (EaseShared::user()->getSettingValue('unsaved') == true) {
+                $nav->addMenuItem(new EaseHtmlATag('apply.php', _('Uplatnit změny <i class="icon-ok"></i>'), array('class' => 'btn btn-success')), 'right');
+            } else {
+                $nav->addMenuItem(new EaseHtmlATag('apply.php', _('Uplatnit změny <i class="icon-ok"></i>'), array('class' => 'btn btn-warning')), 'right');
+            }
             $nav->addDropDownMenu(_('Hosti'), array_merge($hostGroupMenuItem, $hostMenuItem, array(
                 'wizard.php' => '<i class="icon-cog"></i>&nbsp;' . _('Průvodce rychlým založením'),
                 'hosts.php' => '<i class="icon-list"></i>&nbsp;' . _('Přehled hostů'),
