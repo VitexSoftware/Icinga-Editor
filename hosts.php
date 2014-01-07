@@ -10,16 +10,17 @@
  */
 require_once 'includes/IEInit.php';
 require_once 'classes/IEHost.php';
+require_once 'classes/IEHostOverview.php';
 
 $oPage->onlyForLogged();
 
 $oPage->addItem(new IEPageTop(_('Přehled hostů')));
 
-
+$oPage->addCss('td img { height: 14px; }');
 
 
 $host = new IEHost();
-$hosts = $host->getListing();
+$hosts = $host->getListing(null,true,array('icon_image','platform'));
 
 if ($hosts) {
     $oPage->columnII->addItem(new EaseHtmlH4Tag(_('Hosty')));
@@ -29,7 +30,7 @@ if ($hosts) {
         if($CInfo['register'] != 1){
             continue;
         }
-        $lastRow = $cntList->addRowColumns(array($Cid++, new EaseHtmlATag('host.php?host_id=' . $CInfo['host_id'], $CInfo['host_name'].' <i class="icon-edit"></i>')));
+        $lastRow = $cntList->addRowColumns(array($Cid++, IEHostOverview::icon($CInfo), new EaseHtmlATag('host.php?host_id=' . $CInfo['host_id'], $CInfo['host_name'].' <i class="icon-edit"></i>'),  IEHostOverview::platformIcon($CInfo['platform'])));
         if ($CInfo['generate'] == 0) {
             $lastRow->setTagCss(array('border-right' => '1px solid red'));
         }
@@ -50,7 +51,7 @@ if ($hosts) {
         if(intval($CInfo['register'])){
             continue;
         }
-        $lastRow = $Cnt2List->addRowColumns(array($Cid++, new EaseHtmlATag('host.php?host_id=' . $CInfo['host_id'], $CInfo['name'].' '.EaseTWBPart::GlyphIcon('edit')),new EaseHtmlATag('host.php?use='. urldecode($CInfo['name']), _('Odvodit <i class="icon-edit"></i>'))));
+        $lastRow = $Cnt2List->addRowColumns(array($Cid++, IEHostOverview::icon($CInfo), new EaseHtmlATag('host.php?host_id=' . $CInfo['host_id'], $CInfo['name'].' '.EaseTWBPart::GlyphIcon('edit')),new EaseHtmlATag('host.php?use='. urldecode($CInfo['name']), _('Odvodit <i class="icon-edit"></i>'))));
         if ($CInfo['generate'] == 0) {
             $lastRow->setTagCss(array('border-right' => '1px solid red'));
         }

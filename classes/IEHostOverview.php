@@ -27,9 +27,13 @@ class IEHostOverview extends EaseHtmlDivTag
 
     public static function icon($host)
     {
-        $image = $host->getDataValue('icon_image');
-        if (!$image) {
-            $image = 'unknown.gif';
+        $image = 'unknown.gif';
+        if(is_array($host)){
+            if(isset($host['icon_image'])){
+                $image = $host['icon_image'];
+            } 
+        } else {
+            $image = $host->getDataValue('icon_image');
         }
         return new EaseHtmlImgTag('/icinga/images/logos/' . $image);
     }
