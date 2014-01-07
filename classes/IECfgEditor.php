@@ -277,13 +277,14 @@ class IECfgEditor extends EaseContainer
             }
 
             $value = $this->objectEdited->getDataValue($fieldName);
-            
-            if(!EaseShared::webPage()->isPosted()){
-                $value = '';
-            }
-            
-            if(is_null($value)){
-                continue;
+
+
+            if (is_null($value)) {
+                if (!EaseShared::webPage()->isPosted()) {
+                    $value = '';
+                } else {
+                    continue;
+                }
             }
             if ($value == 'NULL') {
                 $value = null;
@@ -420,13 +421,13 @@ class IECfgEditor extends EaseContainer
             }
 
             $value = $this->objectEdited->getDataValue($fieldName);
-            
-            if(!EaseShared::webPage()->isPosted()){
-                $value = '';
-            }
-            
-            if(is_null($value)){
-                continue;
+
+            if (is_null($value)) {
+                if (!EaseShared::webPage()->isPosted()) {
+                    $value = '';
+                } else {
+                    continue;
+                }
             }
             if ($value == 'NULL') {
                 $value = null;
