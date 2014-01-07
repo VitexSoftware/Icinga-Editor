@@ -39,13 +39,13 @@ if ($PocTimeperiods) {
 } 
 
 $host = new IEHost();
-$PocHostu = $host->getMyRecordsCount($UserID);
-if ($PocHostu) {
-    $Success = $oPage->columnII->addItem(new EaseHtmlDivTag('Host', new EaseTWBLinkButton('hosts.php', _('<i class="icon-list"></i>').' '.sprintf(_('Definováno %s hostů'), $PocHostu)), array('class' => 'alert alert-success')));
+$pocHostu = $host->getMyRecordsCount($UserID);
+if ($pocHostu) {
+    $Success = $oPage->columnII->addItem(new EaseHtmlDivTag('Host', new EaseTWBLinkButton('hosts.php', _('<i class="icon-list"></i>').' '.sprintf(_('Definováno %s hostů'), $pocHostu)), array('class' => 'alert alert-success')));
 } else {
     if ($PocTimeperiods) {
-        $Warning = $oPage->columnII->addItem(new EaseHtmlDivTag('Host', _('Nemáte definovaný žádný host'), array('class' => 'alert alert-info')));
-        $Warning->addItem(new EaseTWBLinkButton('host.php', _('Založit první host').' '.EaseTWBPart::GlyphIcon('edit')));
+        $warning = $oPage->columnII->addItem(new EaseHtmlDivTag('Host', _('Nemáte definovaný žádný host'), array('class' => 'alert alert-info')));
+        $warning->addItem(new EaseTWBLinkButton('host.php', _('Založit první host').' '.EaseTWBPart::GlyphIcon('edit')));
     }
 }
 
@@ -69,8 +69,8 @@ if ($PocServices) {
 } else {
     if ($PocCommands) {
         if ($PocTimeperiods) {
-            $Warning = $oPage->columnIII->addItem(new EaseHtmlDivTag('Host', _('Nemáte definovaný žádné služby'), array('class' => 'alert alert-info')));
-            $Warning->addItem(new EaseTWBLinkButton('service.php', _('Založit první službu') . ' <i class="icon-edit"></i>'));
+            $warning = $oPage->columnIII->addItem(new EaseHtmlDivTag('Host', _('Nemáte definovaný žádné služby'), array('class' => 'alert alert-info')));
+            $warning->addItem(new EaseTWBLinkButton('service.php', _('Založit první službu') . ' <i class="icon-edit"></i>'));
         }
     }
 }

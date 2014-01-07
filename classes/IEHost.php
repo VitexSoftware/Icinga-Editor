@@ -91,7 +91,9 @@ class IEHost extends IECfg
         'vrml_image' => 'VARCHAR(64)',
         'statusmap_image' => 'VARCHAR(64)',
         '2d_coords' => 'VARCHAR(32)',
-        '3d_coords' => 'VARCHAR(64)');
+        '3d_coords' => 'VARCHAR(64)',
+        'platform' => "ENUM('generic','linux','windows')"        
+        );
     public $keywordsInfo = array(
         'host_name' => array('title' => 'Jméno hosta', 'required' => true),
         'alias' => array('title' => 'alias hosta', 'required' => true),
@@ -210,7 +212,9 @@ class IEHost extends IECfg
         'vrml_image' => array('title' => '3D ikona'),
         'statusmap_image' => array('title' => 'ikona statusmapy'),
         '2d_coords' => array('title' => 'dvourozměrné koordináty'),
-        '3d_coords' => array('title' => 'třírozměrné koordináty'));
+        '3d_coords' => array('title' => 'třírozměrné koordináty'),
+        'platform' => array( 'title' => 'Platforma','mandatory' => true ),
+);
 
     /**
      * URL dokumentace objektu
@@ -244,7 +248,7 @@ class IEHost extends IECfg
             $service->loadFromMySQL($ServiceID);
             $service->delHostName($this->getId(), $this->getName());
             if (!$service->saveToMySQL()) {
-                $this->addStatusMessage(sprintf(_('Nepodařilo se odregistrovat %s ze služby %s'), $this->getName(), $service->getName()), $Type);
+                $this->addStatusMessage(sprintf(_('Nepodařilo se odregistrovat %s ze služby %s'), $this->getName(), $service->getName()), 'Error');
                 $delAll = false;
             }
         }

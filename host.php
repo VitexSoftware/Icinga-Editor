@@ -151,6 +151,18 @@ switch ($oPage->getRequestValue('action')) {
 
 $oPage->columnII->addItem(new IEHostOverview($host));
 
+
+$hostEdit = new IECfgEditor($host);
+$form = $oPage->columnII->addItem(new EaseHtmlForm('Host', 'host.php', 'POST', $hostEdit, array('class' => 'form-horizontal')));
+$form->setTagID($form->getTagName());
+$form->addItem(new EaseHtmlInputHiddenTag($host->getmyKeyColumn(), $host->getMyKey()));
+$form->addItem('<br>');
+$form->addItem(new EaseTWSubmitButton(_('Uložit'), 'success'));
+$oPage->AddCss('
+input.ui-button { width: 100%; }
+');
+
+
 $oPage->columnIII->addItem($host->deleteButton());
 
 $oPage->columnIII->addItem(new EaseTWBLinkButton('?action=populate&host_id=' . $host->getID(), _('Oskenovat a sledovat služby')));

@@ -11,18 +11,18 @@
  */
 class IEUserSelect extends EaseHtmlSelect
 {
-    function __construct($name, $Items = null, $DefaultValue = null, $ItemsIDs = false, $Properties = null)
+    function __construct($name, $items = null, $DefaultValue = null, $ItemsIDs = false, $Properties = null)
     {
-        if(is_null($Items)){
-            $Items = $this->loadItems();
-            foreach ($Items as $ItemID => $Item){
+        if(is_null($items)){
+            $items = $this->loadItems();
+            foreach ($items as $ItemID => $Item){
                 if($ItemID == $DefaultValue){
                     $DefaultValue = $Item;
                 }
             }
-            $this->addItems($Items);
+            $this->addItems($items);
         }
-        parent::__construct($name, $Items, $DefaultValue, $ItemsIDs, $Properties);
+        parent::__construct($name, $items, $DefaultValue, $ItemsIDs, $Properties);
     }
     function loadItems()
     {   

@@ -111,9 +111,9 @@ class IECfgEditor extends EaseContainer
                 break;
             case 'ENUM':
                 $flags = explode(',', str_replace(array($fType, "'", '(', ')'), '', $fieldType));
-                $Selector = $fieldBlock->addItem(new EaseLabeledSelect($fieldName, $value, $keywordInfo['title']));
-                $Selector->addItems(array_combine($flags, $flags));
-                $Selector->enclosedElement->setTagCss(array('width' => '100%'));
+                $selector = $fieldBlock->addItem(new EaseLabeledSelect($fieldName, $value, $keywordInfo['title']));
+                $selector->addItems(array_combine($flags, $flags));
+                $selector->enclosedElement->setTagCss(array('width' => '100%'));
                 break;
             case 'RADIO':
                 $flags = explode(',', str_replace(array($fType, "'", '(', ')'), '', $fieldType));
@@ -121,9 +121,9 @@ class IECfgEditor extends EaseContainer
                     foreach (array_values($flags) as $flag) {
                         $InfoFlags[$flag] = '&nbsp;' . $keywordInfo[$flag] . '<br>';
                     }
-                    $Buttons = new EaseHtmlRadiobuttonGroup($fieldName, $InfoFlags);
-                    $Buttons->setValue($value);
-                    $FB = $fieldBlock->addItem(new EaseHtmlFieldSet($keywordInfo['title'], $Buttons));
+                    $buttons = new EaseHtmlRadiobuttonGroup($fieldName, $InfoFlags);
+                    $buttons->setValue($value);
+                    $FB = $fieldBlock->addItem(new EaseHtmlFieldSet($keywordInfo['title'], $buttons));
                     $FB->setTagCss(array('width' => '100%'));
                 }
                 break;
@@ -145,12 +145,12 @@ class IECfgEditor extends EaseContainer
                         'WHERE ' . $sqlConds . ' ' .
                         'ORDER BY ' . $nameColumn, $IDColumn);
 
-                $Selector = $fieldBlock->addItem(new EaseLabeledSelect($fieldName, $value, $keywordInfo['title']));
+                $selector = $fieldBlock->addItem(new EaseLabeledSelect($fieldName, $value, $keywordInfo['title']));
                 if (!$required) {
-                    $Selector->addItems(array('' => ''));
+                    $selector->addItems(array('' => ''));
                 }
                 if (count($membersAviableArray)) {
-                    $Selector->addItems(array_combine($membersAviableArray, $membersAviableArray));
+                    $selector->addItems(array_combine($membersAviableArray, $membersAviableArray));
                 }
                 break;
 
@@ -175,12 +175,12 @@ class IECfgEditor extends EaseContainer
                         'WHERE ' . $sqlConds . ' ' .
                         'ORDER BY ' . $nameColumn, $IDColumn);
 
-                $Selector = $fieldBlock->addItem(new EaseLabeledSelect($fieldName, $value, $keywordInfo['title']));
+                $selector = $fieldBlock->addItem(new EaseLabeledSelect($fieldName, $value, $keywordInfo['title']));
                 if (!$required) {
-                    $Selector->addItems(array('' => ''));
+                    $selector->addItems(array('' => ''));
                 }
                 if (count($membersAviableArray)) {
-                    $Selector->addItems(array_combine($membersAviableArray, $membersAviableArray));
+                    $selector->addItems(array_combine($membersAviableArray, $membersAviableArray));
                 }
 
                 $sqlConds = " ( " . $this->objectEdited->myDbLink->prepSelect(array_merge($conditions, array('command_remote' => true, $this->objectEdited->userColumn => EaseShared::user()->getUserID()))) . " ) OR ( " . $this->objectEdited->myDbLink->prepSelect($conditions) . " AND public=1 )  ";
@@ -452,7 +452,7 @@ class IECfgEditor extends EaseContainer
             }
 
             if (isset($template)) {
-                $tempValue = $template->getDataValue($fiedlName);
+                $tempValue = $template->getDataValue($fieldName);
                 if (!is_null($tempValue) && ($fieldName != $this->objectEdited->nameColumn) && !$required) { //Skrýt nedůležité položky
                     EaseShared::webPage()->addJavaScript("$('#" . $fieldName . "-controls').hide();", null, true);
                 }

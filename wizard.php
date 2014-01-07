@@ -2,7 +2,7 @@
 
 /**
  * Icinga Editor - titulní strana
- * 
+ *
  * @package    IcingaEditor
  * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
@@ -18,24 +18,22 @@ require_once 'classes/IECommand.php';
 require_once 'classes/IEServicegroup.php';
 require_once 'classes/IEPortScanner.php';
 
-
 $oPage->onlyForLogged();
-
 
 $oPage->addItem(new IEPageTop(_('Icinga Editor')));
 
-$HostName = $oPage->getRequestValue('host_name');
-$Address = $oPage->getRequestValue('address');
-$Address6 = $oPage->getRequestValue('address6');
+$hostName = $oPage->getRequestValue('host_name');
+$address = $oPage->getRequestValue('address');
+$addressSix = $oPage->getRequestValue('address6');
 
-function gethostbyname6($host, $try_a = false)
+function gethostbyname6($host, $tryA = false)
 {
     // get AAAA record for $host
     // if $try_a is true, if AAAA fails, it tries for A
     // the first match found is returned
     // otherwise returns false
 
-    $dns = gethostbynamel6($host, $try_a);
+    $dns = gethostbynamel6($host, $tryA);
     if ($dns == false) {
         return false;
     } else {
@@ -43,139 +41,136 @@ function gethostbyname6($host, $try_a = false)
     }
 }
 
-function gethostbynamel6($host, $try_a = false)
+function gethostbynamel6($host, $tryA = false)
 {
     // get AAAA records for $host,
     // if $try_a is true, if AAAA fails, it tries for A
     // results are returned in an array of ips found matching type
     // otherwise returns false
 
-    $dns6 = dns_get_record($host, DNS_AAAA);
-    if ($try_a == true) {
-        $dns4 = dns_get_record($host, DNS_A);
-        $dns = array_merge($dns4, $dns6);
+    $dnsSix = dns_get_record($host, DNS_AAAA);
+    if ($tryA == true) {
+        $dnsFour = dns_get_record($host, DNS_A);
+        $dns = array_merge($dnsFour, $dnsSix);
     } else {
-        $dns = $dns6;
+        $dns = $dnsSix;
     }
-    $ip6 = array();
-    $ip4 = array();
+    $ipSix = array();
+    $ipFour = array();
     foreach ($dns as $record) {
         if ($record["type"] == "A") {
-            $ip4[] = $record["ip"];
+            $ipFour[] = $record["ip"];
         }
         if ($record["type"] == "AAAA") {
-            $ip6[] = $record["ipv6"];
+            $ipSix[] = $record["ipv6"];
         }
     }
-    if (count($ip6) < 1) {
-        if ($try_a == true) {
-            if (count($ip4) < 1) {
+    if (count($ipSix) < 1) {
+        if ($tryA == true) {
+            if (count($ipFour) < 1) {
                 return false;
             } else {
-                return $ip4;
+                return $ipFour;
             }
         } else {
             return false;
         }
     } else {
-        return $ip6;
+        return $ipSix;
     }
 }
 
 $host = new IEHost();
 
-
-if ($HostName || $Address || $Address6) {
-    if (!$HostName) {
-        if ($Address) {
-            $HostName = gethostbyaddr($Address);
+if ($hostName || $address || $addressSix) {
+    if (!$hostName) {
+        if ($address) {
+            $hostName = gethostbyaddr($address);
         } else {
-            if ($Address6) {
-                $HostName = gethostbyaddr6($Address6);
+            if ($addressSix) {
+                $hostName = gethostbyaddr6($addressSix);
             }
         }
     }
 
-    if (!$Address) {
-        if ($HostName) {
-            $Address = gethostbyname($HostName);
+    if (!$address) {
+        if ($hostName) {
+            $address = gethostbyname($hostName);
         }
-        if (!$HostName) {
-            if ($Address) {
-                $HostName = gethostbyaddr($Address);
+        if (!$hostName) {
+            if ($address) {
+                $hostName = gethostbyaddr($address);
             } else {
-                if ($Address6) {
-                    $HostName = gethostbyaddr6($Address6);
+                if ($addressSix) {
+                    $hostName = gethostbyaddr6($addressSix);
                 }
             }
         }
     }
 
-    if (!$Address6) {
-        $Address6 = gethostbyname6($HostName);
+    if (!$addressSix) {
+        $addressSix = gethostbyname6($hostName);
     }
 
-    $oUser->addStatusMessage('HostName: ' . $HostName);
-    $oUser->addStatusMessage('Address: ' . $Address);
-    $oUser->addStatusMessage('Address6: ' . $Address6);
+    $oUser->addStatusMessage('HostName: ' . $hostName);
+    $oUser->addStatusMessage('Address: ' . $address);
+    $oUser->addStatusMessage('Address6: ' . $addressSix);
 
-    $host->setData(array(
+    $host->setData(
+        array(
         $host->userColumn => $oUser->getUserID(),
 //        'check_command'=>'check-host-alive',
-        'host_name' => $HostName,
-        'address' => $Address,
-        'address6' => $Address6,
+        'host_name' => $hostName,
+        'address' => $address,
+        'address6' => $addressSix,
         'use' => 'generic-host',
         'register' => true,
         'generate' => TRUE,
-        'alias' => $HostName,
-        'contacts' => array($oUser->getFirstContactName()))
+        'alias' => $hostName,
+        'contacts' => array($oUser->getFirstContactName())
+                )
     );
 
     if ($host->saveToMysql()) {
-        
+
         $service = new IEService('PING');
         $service->addMember('host_name', $host->getId(), $host->getName());
         $service->saveToMySQL();
-        
+
         $host->autoPopulateServices();
-        
-        $HostGroup = new IEHostgroup;
-        if($HostGroup->loadDefault()){
-            $HostGroup->setDataValue($HostGroup->nameColumn, EaseShared::user()->getUserLogin());
+
+        $hostGroup = new IEHostgroup;
+        if ($hostGroup->loadDefault()) {
+            $hostGroup->setDataValue($hostGroup->nameColumn, EaseShared::user()->getUserLogin());
         }
-        $HostGroup->addMember('members', $host->getId(), $host->getName());
-        $HostGroup->saveToMySQL();
-        
+        $hostGroup->addMember('members', $host->getId(), $host->getName());
+        $hostGroup->saveToMySQL();
+
         $oPage->redirect('apply.php');
         exit();
     }
 }
 
 $contact = new IEContact();
-$PocContact = $contact->getMyRecordsCount();
-if (!$PocContact) {
-    $Warning = $oPage->columnIII->addItem(new EaseHtmlDivTag('Contact', _('Nemáte definovaný kontakt'), array('class' => 'alert alert-info')));
-    $Warning->addItem(new EaseTWBLinkButton('contact.php?autocreate=default', _('Založit výchozí kontakt').' '.EaseTWBPart::GlyphIcon('edit')));
+$pocContact = $contact->getMyRecordsCount();
+if (!$pocContact) {
+    $warning = $oPage->columnIII->addItem(new EaseHtmlDivTag('Contact', _('Nemáte definovaný kontakt'), array('class' => 'alert alert-info')));
+    $warning->addItem(new EaseTWBLinkButton('contact.php?autocreate=default', _('Založit výchozí kontakt').' '.EaseTWBPart::GlyphIcon('edit')));
 }
 
-
-$PocHostu = $host->getMyRecordsCount();
-if ($PocHostu) {
-    $Success = $oPage->columnIII->addItem(new EaseHtmlDivTag('Host', new EaseTWBLinkButton('hosts.php', _('<i class="icon-list"></i>') . ' ' . sprintf(_('Definováno %s hostů'), $PocHostu)), array('class' => 'alert alert-success')));
+$pocHostu = $host->getMyRecordsCount();
+if ($pocHostu) {
+    $Success = $oPage->columnIII->addItem(new EaseHtmlDivTag('Host', new EaseTWBLinkButton('hosts.php', _('<i class="icon-list"></i>') . ' ' . sprintf(_('Definováno %s hostů'), $pocHostu)), array('class' => 'alert alert-success')));
 }
 
+$warning = $oPage->columnII->addItem(new EaseHtmlDivTag('Host', _('Vyplňte prosím alespoň jednu položku:'), array('class' => 'alert')));
 
-$Warning = $oPage->columnII->addItem(new EaseHtmlDivTag('Host', _('Vyplńte prosím alespoň jednu položku:'), array('class' => 'alert')));
-
-$FirstHost = $Warning->addItem(new EaseHtmlForm('firsthost'));
-$FirstHost->addItem(new EaseLabeledTextInput('host_name', $HostName, _('Hostname serveru')));
-$FirstHost->addItem(new EaseLabeledTextInput('address', $Address, _('IPv4 Adresa')));
-$FirstHost->addItem(new EaseLabeledTextInput('address6', $Address6, _('IPv6 Adresa')));
-$FirstHost->addItem($Submit = new EaseHtmlInputSubmitTag('Ok'));
+$firstHost = $warning->addItem(new EaseHtmlForm('firsthost'));
+$firstHost->addItem(new EaseLabeledTextInput('host_name', $hostName, _('Hostname serveru')));
+$firstHost->addItem(new EaseLabeledTextInput('address', $address, _('IPv4 Adresa')));
+$firstHost->addItem(new EaseLabeledTextInput('address6', $addressSix, _('IPv6 Adresa')));
+$firstHost->addItem($Submit = new EaseHtmlInputSubmitTag('Ok'));
 $Submit->setTagClass('btn');
-
-
 
 if ($oUser->getSettingValue('admin')) {
     $oPage->columnIII->addItem(new EaseJQConfirmedLinkButton('install.php', _('Reinicializace z konfiguračních souborů') . ' <i class="icon-refresh"></i>'));
@@ -183,6 +178,4 @@ if ($oUser->getSettingValue('admin')) {
 
 $oPage->addItem(new IEPageBottom());
 
-
 $oPage->draw();
-?>

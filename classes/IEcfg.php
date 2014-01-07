@@ -381,12 +381,12 @@ class IEcfg extends EaseBrick
                 $data[$key] = null;
             }
             if (strstr($key, '#')) {
-                list($Column, $State) = explode('#', $key);
+                list($column, $state) = explode('#', $key);
                 if ($value == 'on') {
-                    if (isset($data[$Column])) {
-                        $data[$Column] .= $State;
+                    if (isset($data[$column])) {
+                        $data[$column] .= $state;
                     } else {
-                        $data[$Column] = $State;
+                        $data[$column] = $state;
                     }
                 }
                 unset($data[$key]);
@@ -558,18 +558,18 @@ class IEcfg extends EaseBrick
 
         if ($this->allowTemplating && $this->isTemplate()) {
             if (isset($data[$this->getmyKeyColumn()]) && (int) $data[$this->getmyKeyColumn()]) {
-                $Keycont = $this->myDbLink->queryToValue('SELECT COUNT(*) FROM ' . $this->myTable . ' WHERE `name`' . " = '" . $data['name'] . "' AND " . $this->myKeyColumn . ' != ' . $data[$this->getmyKeyColumn()]);
+                $dbId = $this->myDbLink->queryToValue('SELECT `'. $this->myKeyColumn .'` FROM ' . $this->myTable . ' WHERE `name`' . " = '" . $data['name'] . "' AND " . $this->myKeyColumn . ' != ' . $data[$this->getmyKeyColumn()]);
             } else {
-                $Keycont = $this->myDbLink->queryToValue('SELECT COUNT(*) FROM ' . $this->myTable . ' WHERE `name`' . " = '" . $data['name'] . "'");
+                $dbId = $this->myDbLink->queryToValue('SELECT `'. $this->myKeyColumn .'` FROM ' . $this->myTable . ' WHERE `name`' . " = '" . $data['name'] . "'");
             }
         } else {
             if (isset($data[$this->getmyKeyColumn()]) && (int) $data[$this->getmyKeyColumn()]) {
-                $Keycont = $this->myDbLink->queryToValue('SELECT COUNT(*) FROM ' . $this->myTable . ' WHERE ' . $this->nameColumn . " = '" . $data[$this->nameColumn] . "' AND " . $this->myKeyColumn . ' != ' . $data[$this->getmyKeyColumn()]);
+                $dbId = $this->myDbLink->queryToValue('SELECT `'. $this->myKeyColumn .'` FROM ' . $this->myTable . ' WHERE ' . $this->nameColumn . " = '" . $data[$this->nameColumn] . "' AND " . $this->myKeyColumn . ' != ' . $data[$this->getmyKeyColumn()]);
             } else {
-                $Keycont = $this->myDbLink->queryToValue('SELECT COUNT(*) FROM ' . $this->myTable . ' WHERE ' . $this->nameColumn . " = '" . $data[$this->nameColumn] . "'");
+                $dbId = $this->myDbLink->queryToValue('SELECT `'. $this->myKeyColumn .'` FROM ' . $this->myTable . ' WHERE ' . $this->nameColumn . " = '" . $data[$this->nameColumn] . "'");
             }
         }
-        if ($Keycont) {
+        if (!is_null($dbId) && ($dbId != $this->getMyKey( $data) ) ) {
             if ($this->allowTemplating && $this->isTemplate()) {
                 $this->addStatusMessage(sprintf(_('Předloha %s je již definována. Zvolte prosím jiný název.'), $data['name']), 'warning');
             } else {
