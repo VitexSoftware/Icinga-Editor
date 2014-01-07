@@ -277,6 +277,9 @@ class IECfgEditor extends EaseContainer
             }
 
             $value = $this->objectEdited->getDataValue($fieldName);
+            if(is_null($value)){
+                continue;
+            }
             if ($value == 'NULL') {
                 $value = null;
             }
@@ -412,6 +415,9 @@ class IECfgEditor extends EaseContainer
             }
 
             $value = $this->objectEdited->getDataValue($fieldName);
+            if(is_null($value)){
+                continue;
+            }
             if ($value == 'NULL') {
                 $value = null;
             }

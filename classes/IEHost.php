@@ -213,7 +213,7 @@ class IEHost extends IECfg
         'statusmap_image' => array('title' => 'ikona statusmapy'),
         '2d_coords' => array('title' => 'dvourozměrné koordináty'),
         '3d_coords' => array('title' => 'třírozměrné koordináty'),
-        'platform' => array( 'title' => 'Platforma','mandatory' => true ),
+        'platform' => array( 'title' => 'Platforma','mandatory' => true )
 );
 
     /**

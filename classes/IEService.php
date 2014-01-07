@@ -84,7 +84,8 @@ class IEService extends IECfg
         'notes_url' => 'VARCHAR(64)',
         'action_url' => 'VARCHAR(64)',
         'icon_image' => 'VARCHAR(64)',
-        'icon_image_alt' => 'VARCHAR(64)'
+        'icon_image_alt' => 'VARCHAR(64)',
+        'platform' => "ENUM('generic','linux','windows')"        
     );
     public $keywordsInfo = array(
         'host_name' => array(
@@ -214,6 +215,7 @@ class IEService extends IECfg
         'action_url' => array('title' => 'url dodatečné akce'),
         'icon_image' => array('title' => 'ikona služby'),
         'icon_image_alt' => array('title' => 'alternativní ikona služby'),
+        'platform' => array( 'title' => 'Platforma','mandatory' => true )
     );
 
     /**

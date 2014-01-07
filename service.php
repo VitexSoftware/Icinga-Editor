@@ -11,6 +11,7 @@
 require_once 'includes/IEInit.php';
 require_once 'classes/IEService.php';
 require_once 'classes/IECfgEditor.php';
+require_once 'classes/IEHostOverview.php';
 
 $oPage->onlyForLogged();
 
@@ -55,9 +56,10 @@ if ($delete == 'true') {
 
 $oPage->addItem(new IEPageTop(_('Editace služby') . ' ' . $service->getName()));
 
+$oPage->columnII->addItem(new EaseHtmlH3Tag(array(IEHostOverview::platformIcon($service->getDataValue('platform')),$service->getName())));
+
 $serviceEdit = new IECfgEditor($service);
 
-$oPage->columnII->addItem($serviceEdit);
 
 $oPage->columnIII->addItem($service->deleteButton());
 $oPage->columnIII->addItem($service->cloneButton());
@@ -65,6 +67,21 @@ $oPage->columnIII->addItem($service->cloneButton());
 if ($service->getId()) {
     $oPage->columnI->addItem($service->ownerLinkButton());
 }
+
+
+
+$form = $oPage->columnII->addItem(new EaseHtmlForm('Service', 'service.php', 'POST', $serviceEdit, array('class' => 'form-horizontal')));
+$form->setTagID($form->getTagName());
+if (!is_null($service->getMyKey())) {
+    $form->addItem(new EaseHtmlInputHiddenTag($service->getMyKeyColumn(), $service->getMyKey()));
+}
+$form->addItem('<br>');
+$form->addItem(new EaseTWSubmitButton(_('Uložit'),'success'));
+$oPage->AddCss('
+input.ui-button { width: 100%; }
+');
+
+
 $oPage->addItem(new IEPageBottom());
 
 $oPage->draw();
