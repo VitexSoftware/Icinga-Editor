@@ -11,7 +11,7 @@
 require_once 'includes/IEInit.php';
 require_once 'Ease/EaseMail.php';
 require_once 'Ease/EaseHtmlForm.php';
-$Success = false;
+$success = false;
 
 $EmailTo = $oPage->getPostValue('Email');
 
@@ -47,7 +47,7 @@ if ($EmailTo) {
         $email->send();
 
         $oUser->addStatusMessage('Tvoje nové heslo vám bylo odesláno mailem na zadanou adresu <strong>' . $_REQUEST['Email'] . '</strong>');
-        $Success = true;
+        $success = true;
     } else {
         $oUser->addStatusMessage('Promiňnte, ale email <strong>' . $_REQUEST['Email'] . '</strong> nebyl v databázi nalezen', 'warning');
     }
@@ -60,7 +60,7 @@ $oPage->addItem(new IEPageTop(_('Obnova zapomenutého hesla')));
 
 
 
-if (!$Success) {
+if (!$success) {
     $oPage->columnI->addItem('<h1>Zapoměl jsem své heslo!</h1>');
 
     $oPage->columnIII->addItem(_('Zapoměl jste heslo? Vložte svou e-mailovou adresu, kterou jste zadal při registraci a my Vám pošleme nové.'));

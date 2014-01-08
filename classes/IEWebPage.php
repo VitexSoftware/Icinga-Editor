@@ -12,6 +12,7 @@ require_once 'Ease/EaseHtmlForm.php';
 require_once 'Ease/EaseJQueryWidgets.php';
 require_once 'Ease/EaseTWBootstrap.php';
 require_once 'IEHost.php';
+require_once 'IEHostOverview.php';
 
 class IEWebPage extends EaseTWBWebPage
 {
@@ -49,15 +50,15 @@ class IEWebPage extends EaseTWBWebPage
     /**
      * Základní objekt stránky
      *
-     * @param VSUser $UserObject
+     * @param VSUser $userObject
      */
-    public function __construct($pageTitle = null, &$UserObject = null)
+    public function __construct($pageTitle = null, &$userObject = null)
     {
-        if (is_null($UserObject)) {
-            $UserObject = EaseShared::user();
+        if (is_null($userObject)) {
+            $userObject = EaseShared::user();
         }
-        $this->jQueryUISkin = $UserObject->getSettingValue('Skin');
-        parent::__construct($pageTitle, $UserObject);
+        $this->jQueryUISkin = $userObject->getSettingValue('Skin');
+        parent::__construct($pageTitle, $userObject);
         $this->IncludeCss('css/bootstrap.css');
         $this->IncludeCss('css/default.css');
         $this->head->addItem('<meta name="viewport" content="width=device-width, initial-scale=1.0">');
@@ -84,13 +85,13 @@ class IEWebPage extends EaseTWBWebPage
     /**
      * Pouze pro admina
      *
-     * @param string $LoginPage
+     * @param string $loginPage
      */
-    public function onlyForAdmin($LoginPage = 'login.php')
+    public function onlyForAdmin($loginPage = 'login.php')
     {
         if (!$this->User->getSettingValue('admin')) {
             EaseShared::user()->addStatusMessage(_('Nejprve se prosím přihlašte jako admin'), 'warning');
-            $this->redirect($LoginPage);
+            $this->redirect($loginPage);
             exit;
         }
     }
@@ -177,14 +178,20 @@ class IEBootstrapMenu extends EaseTWBNavbar
 </div>', 'right'
             );
         } else {
-            $this->addMenuItem('
-<li class="dropdown" style="width: 120px; text-align: right; background-image: url( ' . $user->getIcon() . ' ) ;  background-repeat: no-repeat; background-position: left center; background-size: 40px 40px;"><a href="#" class="dropdown-toggle" data-toggle="dropdown">' . $user->getUserLogin() . ' <b class="caret"></b></a>
+            
+            $userMenu = '<li class="dropdown" style="width: 120px; text-align: right; background-image: url( ' . $user->getIcon() . ' ) ;  background-repeat: no-repeat; background-position: left center; background-size: 40px 40px;"><a href="#" class="dropdown-toggle" data-toggle="dropdown">' . $user->getUserLogin() . ' <b class="caret"></b></a>
 <ul class="dropdown-menu" style="text-align: left; left: -60px;">
-<li><a href="settings.php"><i class="icon-cog"></i> ' . _('Nastavení') . '</a></li>
-<li><a href="overview.php"><i class="icon-list"></i> ' . _('Přehled konfigurací') . '</a></li>
-<li><a href="http://v.s.cz/kontakt.php"><i class="icon-envelope"></i> ' . _('Uživatelská podpora') . '</a></li>
+<li><a href="settings.php">'. EaseTWBPart::GlyphIcon('wrench') . '<i class="icon-cog"></i> ' . _('Nastavení') . '</a></li>
+';
+ 
+            if ($user->getSettingValue('admin')) {
+                $userMenu .= '<li><a href="overview.php"><i class="icon-list"></i> ' . _('Přehled konfigurací') . '</a></li>';
+            }
+            
+            $this->addMenuItem($userMenu.'
+<li><a href="http://v.s.cz/kontakt.php">'. EaseTWBPart::GlyphIcon('envelope') . ' ' . _('Uživatelská podpora') . '</a></li>
 <li class="divider"></li>
-<li><a href="logout.php"><i class="icon-off"></i> ' . _('Odhlášení') . '</a></li>
+<li><a href="logout.php">'. EaseTWBPart::GlyphIcon('off') . ' ' . _('Odhlášení') . '</a></li>
 </ul>
 </li>
 ', 'right');
@@ -253,25 +260,14 @@ class IEMainMenu extends EaseHtmlDivTag
                         ))
                 );
             }
-
-            $hostgroup = new IEHostgroup();
-            $hostGroupMenuItem = array();
-            $pocHostgroup = $hostgroup->getMyRecordsCount();
-
-            if ($pocHostgroup) {
-                $hostgroups = $hostgroup->myDbLink->queryToArray('SELECT ' . $hostgroup->getmyKeyColumn() . ', hostgroup_name, DatSave FROM ' . $hostgroup->myTable . ' WHERE user_id=' . $user->getUserID(), 'hostgroup_id');
-
-                foreach ($hostgroups as $cID => $cInfo) {
-                    $hostGroupMenuItem['hostgroup.php?hostgroup_id=' . $cInfo['hostgroup_id']] = $cInfo['hostgroup_name'] . ' ' . EaseTWBPart::GlyphIcon('edit');
-                }
-                if (count($hostGroupMenuItem)) {
-                    $hostGroupMenuItem[''] = '';
-                }
-            }
-
             $host = new IEHost();
-            $hosts = $host->getListing(null, null, array('icon_image'));
-            $hostMenuItem = array();
+            $hosts = $host->getListing(null, null, array('icon_image', 'platform'));
+            $hostMenuItem = array(
+                'wizard.php' => EaseTWBPart::GlyphIcon('forward') . ' ' . _('Průvodce založením hostu'),
+            );
+            if ($user->getSettingValue('admin')) {
+                $hostMenuItem['host.php'] = EaseTWBPart::GlyphIcon('edit') . ' ' . _('Nový Host');
+            }
             if ($hosts) {
                 foreach ($hosts as $cID => $cInfo) {
                     if ($cInfo['register'] != 1) {
@@ -282,29 +278,46 @@ class IEMainMenu extends EaseHtmlDivTag
                         $image = 'unknown.gif';
                     }
 
-                    $hostMenuItem['host.php?host_id=' . $cInfo['host_id']] = '<img class="menuico" src="/icinga/images/logos/' . $image . '"> ' . $cInfo['host_name'] . ' ' . EaseTWBPart::GlyphIcon('edit');
+                    $hostMenuItem['host.php?host_id=' . $cInfo['host_id']] = IEHostOverview::icon($cInfo) . ' ' .
+                            $cInfo['host_name'] . ' ' .
+                            IEHostOverview::platformIcon($cInfo['platform']);
                 }
-                if (count($hostMenuItem)) {
-                    $hostMenuItem[] = '';
+                $hostMenuItem['hosts.php'] = EaseTWBPart::GlyphIcon('list') . ' ' . _('Detailní přehled hostů');
+                $hostMenuItem[] = '';
+                
+                $hostgroup = new IEHostgroup();
+                $hostGroupMenuItem = array(
+                    'hostgroup.php' => EaseTWBPart::GlyphIcon('plus') . ' ' . _('Nová skupina hostů')/* ,
+                          'exthostinfo.php' => _('Rozšířené informace hostů'),
+                          'hostdependency.php' => _('Závislosti hostů'),
+                          'hostescalation.php' => _('Eskalace hostů') */
+                );
+                $pocHostgroup = $hostgroup->getMyRecordsCount();
+
+                if ($pocHostgroup) {
+                    $hostgroups = $hostgroup->myDbLink->queryToArray('SELECT ' . $hostgroup->getmyKeyColumn() . ', hostgroup_name, DatSave FROM ' . $hostgroup->myTable . ' WHERE user_id=' . $user->getUserID(), 'hostgroup_id');
+
+                    foreach ($hostgroups as $cID => $cInfo) {
+                        $hostGroupMenuItem['hostgroup.php?hostgroup_id=' . $cInfo['hostgroup_id']] = EaseTWBPart::GlyphIcon('cloud') . ' ' . $cInfo['hostgroup_name'] . ' ' . EaseTWBPart::GlyphIcon('edit');
+                    }
+                    if (count($hostGroupMenuItem)) {
+                        $hostGroupMenuItem['hostgroups.php'] = EaseTWBPart::GlyphIcon('list-alt') . ' ' . _('Přehled skupin hostů');
+                        $hostGroupMenuItem[''] = '';
+                    }
                 }
+            } else {
+                $hostGroupMenuItem = array();
             }
 
-
             if (EaseShared::user()->getSettingValue('unsaved') == true) {
-                $nav->addMenuItem(new EaseHtmlATag('apply.php', _('Uplatnit změny <i class="icon-ok"></i>'), array('class' => 'btn btn-success')), 'right');
+                $nav->addMenuItem(
+                        new EaseHtmlATag(
+                        'apply.php', _('Uplatnit změny <i class="icon-ok"></i>'), array('class' => 'btn btn-success')), 'right'
+                );
             } else {
                 $nav->addMenuItem(new EaseHtmlATag('apply.php', _('Uplatnit změny <i class="icon-ok"></i>'), array('class' => 'btn btn-warning')), 'right');
             }
-            $nav->addDropDownMenu(_('Hosti'), array_merge($hostGroupMenuItem, $hostMenuItem, array(
-                'wizard.php' => '<i class="icon-cog"></i>&nbsp;' . _('Průvodce rychlým založením'),
-                'hosts.php' => '<i class="icon-list"></i>&nbsp;' . _('Přehled hostů'),
-                'host.php' => EaseTWBPart::GlyphIcon('edit') . ' ' . _('Nový Host'),
-                'hostgroups.php' => '<i class="icon-list"></i>&nbsp;' . _('Přehled skupin hostů'),
-                'hostgroup.php' => EaseTWBPart::GlyphIcon('edit') . ' ' . _('Nová skupina hostů')/* ,
-                              'exthostinfo.php' => _('Rozšířené informace hostů'),
-                              'hostdependency.php' => _('Závislosti hostů'),
-                              'hostescalation.php' => _('Eskalace hostů') */)
-            ));
+            $nav->addDropDownMenu(_('Hosti'), array_merge($hostGroupMenuItem, $hostMenuItem));
             if (EaseShared::user()->getSettingValue('admin')) {
                 $nav->addDropDownMenu(_('Služby'), array(
                     'service.php' => '<i class="icon-edit"></i> ' . _('Nová služba'),

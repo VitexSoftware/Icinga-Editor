@@ -24,6 +24,11 @@ $oPage->onlyForLogged();
 $oPage->addItem(new IEPageTop(_('Monitoring')));
 
 
+if(!count($hosts)){
+    $oPage->addItem();
+}
+
+
 $oPage->addItem(new IEPageBottom());
 
 

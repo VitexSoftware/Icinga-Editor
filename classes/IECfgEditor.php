@@ -278,7 +278,6 @@ class IECfgEditor extends EaseContainer
 
             $value = $this->objectEdited->getDataValue($fieldName);
 
-
             if (is_null($value)) {
                 if (!EaseShared::webPage()->isPosted()) {
                     $value = '';
@@ -397,6 +396,10 @@ class IECfgEditor extends EaseContainer
         foreach ($this->objectEdited->useKeywords as $fieldName => $fieldType) {
 
             $keywordInfo = $this->objectEdited->keywordsInfo[$fieldName];
+
+            if ($fieldName == $this->objectEdited->nameColumn) {
+                continue;
+            }
 
             if (!count($keywordInfo)) {
                 continue;

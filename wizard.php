@@ -160,7 +160,7 @@ if (!$pocContact) {
 
 $pocHostu = $host->getMyRecordsCount();
 if ($pocHostu) {
-    $Success = $oPage->columnIII->addItem(new EaseHtmlDivTag('Host', new EaseTWBLinkButton('hosts.php', _('<i class="icon-list"></i>') . ' ' . sprintf(_('Definováno %s hostů'), $pocHostu)), array('class' => 'alert alert-success')));
+    $success = $oPage->columnIII->addItem(new EaseHtmlDivTag('Host', new EaseTWBLinkButton('hosts.php', _('<i class="icon-list"></i>') . ' ' . sprintf(_('Definováno %s hostů'), $pocHostu)), array('class' => 'alert alert-success')));
 }
 
 $warning = $oPage->columnII->addItem(new EaseHtmlDivTag('Host', _('Vyplňte prosím alespoň jednu položku:'), array('class' => 'alert')));
@@ -175,6 +175,10 @@ $Submit->setTagClass('btn');
 if ($oUser->getSettingValue('admin')) {
     $oPage->columnIII->addItem(new EaseJQConfirmedLinkButton('install.php', _('Reinicializace z konfiguračních souborů') . ' <i class="icon-refresh"></i>'));
 }
+
+$oPage->columnI->addItem( _('Po zadání alespoň jednoho vstupního údaje si tento '
+        . 'průvodce dohledá ostatní a provede sken na některé základní služby.'
+        . 'Pokud budou tyto nalezeny aktivují se jejich testy.') );
 
 $oPage->addItem(new IEPageBottom());
 
