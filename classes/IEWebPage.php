@@ -185,7 +185,7 @@ class IEBootstrapMenu extends EaseTWBNavbar
 ';
  
             if ($user->getSettingValue('admin')) {
-                $userMenu .= '<li><a href="overview.php"><i class="icon-list"></i> ' . _('Přehled konfigurací') . '</a></li>';
+                $userMenu .= '<li><a href="overview.php">'. EaseTWBPart::GlyphIcon('lsit') . ' ' . _('Přehled konfigurací') . '</a></li>';
             }
             
             $this->addMenuItem($userMenu.'
@@ -284,7 +284,7 @@ class IEMainMenu extends EaseHtmlDivTag
                 }
                 $hostMenuItem['hosts.php'] = EaseTWBPart::GlyphIcon('list') . ' ' . _('Detailní přehled hostů');
                 $hostMenuItem[] = '';
-                
+            }
                 $hostgroup = new IEHostgroup();
                 $hostGroupMenuItem = array(
                     'hostgroup.php' => EaseTWBPart::GlyphIcon('plus') . ' ' . _('Nová skupina hostů')/* ,
@@ -304,10 +304,10 @@ class IEMainMenu extends EaseHtmlDivTag
                         $hostGroupMenuItem['hostgroups.php'] = EaseTWBPart::GlyphIcon('list-alt') . ' ' . _('Přehled skupin hostů');
                         $hostGroupMenuItem[''] = '';
                     }
-                }
-            } else {
+                }else {
                 $hostGroupMenuItem = array();
             }
+             
 
             if (EaseShared::user()->getSettingValue('unsaved') == true) {
                 $nav->addMenuItem(

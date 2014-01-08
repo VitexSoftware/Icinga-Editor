@@ -2,7 +2,7 @@
 
 /**
  * Icinga Editor - titulní strana
- * 
+ *
  * @package    IcingaEditor
  * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
@@ -17,20 +17,18 @@ require_once 'classes/IETimeperiod.php';
 require_once 'classes/IECommand.php';
 require_once 'classes/IEServicegroup.php';
 
-
 $oPage->onlyForLogged();
-
 
 $oPage->addItem(new IEPageTop(_('Monitoring')));
 
+$host = new IEHost();
+$hosts = $host->getListing(null,false);
 
-if(!count($hosts)){
-    $oPage->addItem();
+if (!count($hosts)) {
+    $oPage->columnII->addItem( new EaseTWBLinkButton('wizard.php', _('Založte si první sledovaný host'), 'success') );
+    $oUser->addStatusMessage(_('Zatím není zaregistrovaný žádný sledovaný host'),'warning');
 }
-
 
 $oPage->addItem(new IEPageBottom());
 
-
 $oPage->draw();
-?>

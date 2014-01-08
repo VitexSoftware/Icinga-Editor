@@ -96,9 +96,9 @@ class IEHostgroup extends IECfg
     }
 
     function loadDefault(){
-        $GroupID = EaseShared::myDbLink()->queryToValue('SELECT '.$this->getmyKeyColumn().' FROM '. $this->myTable.' WHERE '.$this->userColumn.'= ' . EaseShared::user()->getUserID().' ORDER BY '.$this->getmyKeyColumn().' DESC LIMIT 1');
-        if($GroupID){
-            $this->loadFromMySQL((int)$GroupID);
+        $groupID = EaseShared::myDbLink()->queryToValue('SELECT '.$this->getmyKeyColumn().' FROM '. $this->myTable.' WHERE '.$this->userColumn.'= ' . EaseShared::user()->getUserID().' ORDER BY '.$this->getmyKeyColumn().' DESC LIMIT 1');
+        if($groupID){
+            $this->loadFromMySQL((int)$groupID);
             return true;
         }
         return false;

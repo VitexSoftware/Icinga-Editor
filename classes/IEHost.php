@@ -11,6 +11,7 @@
 require_once 'IEService.php';
 require_once 'IEPortScanner.php';
 require_once 'IEHostgroup.php';
+require_once 'IEIconSelector.php';
 
 /**
  * Description of IEHosts
@@ -42,6 +43,7 @@ class IEHost extends IECfg
      * @var boolean
      */
     public $publicRecords = true;
+
     /**
      * Sloupce záznamu
      * @var array
@@ -92,8 +94,8 @@ class IEHost extends IECfg
         'statusmap_image' => 'VARCHAR(64)',
         '2d_coords' => 'VARCHAR(32)',
         '3d_coords' => 'VARCHAR(64)',
-        'platform' => "ENUM('generic','linux','windows')"        
-        );
+        'platform' => "ENUM('generic','linux','windows')"
+    );
     public $keywordsInfo = array(
         'host_name' => array('title' => 'Jméno hosta', 'required' => true),
         'alias' => array('title' => 'alias hosta', 'required' => true),
@@ -213,8 +215,8 @@ class IEHost extends IECfg
         'statusmap_image' => array('title' => 'ikona statusmapy'),
         '2d_coords' => array('title' => 'dvourozměrné koordináty'),
         '3d_coords' => array('title' => 'třírozměrné koordináty'),
-        'platform' => array( 'title' => 'Platforma','mandatory' => true )
-);
+        'platform' => array('title' => 'Platforma', 'mandatory' => true)
+    );
 
     /**
      * URL dokumentace objektu
@@ -282,9 +284,9 @@ class IEHost extends IECfg
      */
     public function autoPopulateServices()
     {
-        $Scanner = new IEPortScanner($this);
+        $scanner = new IEPortScanner($this);
 
-        return $Scanner->assignServices();
+        return $scanner->assignServices();
     }
 
     /**
@@ -297,12 +299,12 @@ class IEHost extends IECfg
         $this->setDataValue($this->nameColumn, $newname);
 
         $hostGroup = new IEHostgroup();
-        $hostGroup->renameHost($oldname,$newname);
+        $hostGroup->renameHost($oldname, $newname);
 
         $renameAll = true;
         $service = new IEService();
-        $ServicesAssigned = $service->myDbLink->queryToArray('SELECT ' . $service->myKeyColumn . ',' . $service->nameColumn . ' FROM ' . $service->myTable . ' WHERE ' . 'host_name' . ' LIKE \'%"' . $oldname . '"%\'', $service->myKeyColumn);
-        foreach ($ServicesAssigned as $ServiceID => $ServiceInfo) {
+        $servicesAssigned = $service->myDbLink->queryToArray('SELECT ' . $service->myKeyColumn . ',' . $service->nameColumn . ' FROM ' . $service->myTable . ' WHERE ' . 'host_name' . ' LIKE \'%"' . $oldname . '"%\'', $service->myKeyColumn);
+        foreach ($servicesAssigned as $ServiceID => $ServiceInfo) {
             $service->loadFromMySQL($ServiceID);
             $service->renameHostName($this->getId(), $newname);
             if (!$service->saveToMySQL()) {
@@ -312,6 +314,111 @@ class IEHost extends IECfg
         }
         if ($this->save() && $renameAll) {
             return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Zjistí ikonu, stahne jí z netu, zkonvertuje a použije jako ikonu hosta
+     */
+    public function favToIcon()
+    {
+        $icoUrl = false;
+        $baseUrl = 'http://' . $this->getDataValue('host_name');
+        $indexpage = @file_get_contents($baseUrl);
+        $icoUrls = array();
+        if (strlen($indexpage)) {
+            $dom = new DOMDocument();
+            @$dom->loadHTML($indexpage);
+            $links = $dom->getElementsByTagName('link');
+            foreach ($links as $link) {
+                $urlLink = false;
+                if (isset($link->attributes)) {
+                    foreach ($link->attributes as $atribut) {
+                        if (($atribut->name == 'rel') && stristr($atribut->value, 'icon')) {
+                            $urlLink = true;
+                            $rel = $atribut->value;
+                        }
+                        if (($atribut->name == 'href')) {
+                            $url = $atribut->value;
+                        }
+                    }
+                    if ($urlLink) {
+                        if (strstr($url, '://')) {
+                            $icoUrls[$rel] = $url;
+                        } else {
+                            $icoUrls[$rel] = $baseUrl . $url;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (!count($icoUrls)) {
+            $icoUrls[] = $baseUrl . '/favicon.ico';
+        } else {
+            if (count($icoUrls) == 1) {
+                $icoUrl = current($icoUrls);
+            } else {
+                foreach ($icoUrls as $ico) {
+                    if (strstr($ico, '.png')) {
+                        $icoUrl = $ico;
+                    }
+                }
+
+                if (!$icoUrl) {
+                    foreach ($icoUrls as $ico) {
+                        if (strstr($ico, '.gif')) {
+                            $icoUrl = $ico;
+                        }
+                    }
+                }
+
+                if (!$icoUrl) {
+                    foreach ($icoUrls as $ico) {
+                        if (strstr($ico, '.jpg')) {
+                            $icoUrl = $ico;
+                        }
+                    }
+                }
+
+                if (!$icoUrl) {
+                    $icoUrl = current($icoUrls);
+                }
+            }
+        }
+
+
+
+        $tmpfilename = sys_get_temp_dir() . '/' . EaseSand::randomString();
+
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $icoUrl);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
+        $downloaded = curl_exec($ch);
+        curl_close($ch);
+
+        file_put_contents($tmpfilename, $downloaded);
+
+
+
+        if (IEIconSelector::imageTypeOK($tmpfilename)) {
+
+            EaseShared::webPage()->addStatusMessage(sprintf(_('Nalezena ikona %s'), $icoUrl), 'success');
+
+            $newicon = IEIconSelector::saveIcon($tmpfilename, $this);
+
+            if ($newicon) {
+                $this->setDataValue('icon_image', $newicon);
+                $this->setDataValue('statusmap_image', $newicon);
+                return true;
+            }
+        } else {
+            unlink($tmpfilename);
         }
 
         return false;

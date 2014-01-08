@@ -81,6 +81,8 @@ function gethostbynamel6($host, $tryA = false)
 }
 
 $host = new IEHost();
+$host->owner = &$oUser;
+
 
 if ($hostName || $address || $addressSix) {
     if (!$hostName) {
@@ -142,9 +144,9 @@ if ($hostName || $address || $addressSix) {
         $hostGroup = new IEHostgroup;
         if ($hostGroup->loadDefault()) {
             $hostGroup->setDataValue($hostGroup->nameColumn, EaseShared::user()->getUserLogin());
+            $hostGroup->addMember('members', $host->getId(), $host->getName());
+            $hostGroup->saveToMySQL();
         }
-        $hostGroup->addMember('members', $host->getId(), $host->getName());
-        $hostGroup->saveToMySQL();
 
         $oPage->redirect('apply.php');
         exit();
@@ -169,8 +171,8 @@ $firstHost = $warning->addItem(new EaseHtmlForm('firsthost'));
 $firstHost->addItem(new EaseLabeledTextInput('host_name', $hostName, _('Hostname serveru')));
 $firstHost->addItem(new EaseLabeledTextInput('address', $address, _('IPv4 Adresa')));
 $firstHost->addItem(new EaseLabeledTextInput('address6', $addressSix, _('IPv6 Adresa')));
-$firstHost->addItem($Submit = new EaseHtmlInputSubmitTag('Ok'));
-$Submit->setTagClass('btn');
+$firstHost->addItem($submit = new EaseHtmlInputSubmitTag('Ok'));
+$submit->setTagClass('btn');
 
 if ($oUser->getSettingValue('admin')) {
     $oPage->columnIII->addItem(new EaseJQConfirmedLinkButton('install.php', _('Reinicializace z konfiguračních souborů') . ' <i class="icon-refresh"></i>'));

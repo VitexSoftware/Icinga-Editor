@@ -107,6 +107,9 @@ class IEIconSelector extends EaseContainer
         if (strstr($info, 'jpeg')) {
             return true;
         }
+        if (strstr($info, 'ico')) {
+            return true;
+        }
 
         return false;
     }
@@ -121,85 +124,94 @@ class IEIconSelector extends EaseContainer
     public static function saveIcon($tmpfilename, $host)
     {
         $id = $host->owner->getUserID();
-        $thumbnail_image_path = $tmpfilename . '40';
+        $thumbnailImagePath = $tmpfilename . '40';
 
-        list($source_image_width, $source_image_height, $source_image_type) = getimagesize($tmpfilename);
-        switch ($source_image_type) {
+        list($sourceImageWidth, $sourceImageHeight, $sourceImageType) = getimagesize($tmpfilename);
+        switch ($sourceImageType) {
+            case IMAGETYPE_ICO:
+                $tmpfilenameIco = $tmpfilename.'.ico';
+                $tmpfilenameGif = $tmpfilename.'.gif';
+                rename($tmpfilename, $tmpfilenameIco);
+                system("convert '". $tmpfilenameIco ."[0]' ".$tmpfilenameGif);
+                $tmpfilename = $tmpfilenameGif;
+                unlink($tmpfilenameIco);
             case IMAGETYPE_GIF:
-                $source_gd_image = imagecreatefromgif($tmpfilename);
+                $sourceGdImage = imagecreatefromgif($tmpfilename);
                 $suffix = 'gif';
                 break;
             case IMAGETYPE_JPEG:
-                $source_gd_image = imagecreatefromjpeg($tmpfilename);
+                $sourceGdImage = imagecreatefromjpeg($tmpfilename);
                 $suffix = 'jpg';
                 break;
             case IMAGETYPE_PNG:
-                $source_gd_image = imagecreatefrompng($tmpfilename);
+                $sourceGdImage = imagecreatefrompng($tmpfilename);
                 $suffix = 'png';
                 break;
         }
 
-        if (!$source_image_height || !$source_image_width) {
+        if (!$sourceImageHeight || !$sourceImageWidth) {
             return NULL;
         }
 
-        if ($source_image_width > $source_image_height) {
-            $thumbnail_image_width = self::$imageSize;
+        if ($sourceImageWidth > $sourceImageHeight) {
+            $thumbnailImageWidth = self::$imageSize;
         } else {
-            $thumbnail_image_height = self::$imageSize;
+            $thumbnailImageHeight = self::$imageSize;
         }
 
-        if (isset($thumbnail_image_width) AND !isset($thumbnail_image_height)) {
+        if (isset($thumbnailImageWidth) AND !isset($thumbnailImageHeight)) {
             // autocompute height if only width is set
-            if ($thumbnail_image_width) {
-                $thumbnail_image_height = (100 / ($source_image_width / $thumbnail_image_width)) * .01;
+            if ($thumbnailImageWidth) {
+                $thumbnailImageHeight = (100 / ($sourceImageWidth / $thumbnailImageWidth)) * .01;
             }
-            $thumbnail_image_height = @round($source_image_height * $thumbnail_image_height);
-        } elseif (isset($thumbnail_image_height) AND !isset($thumbnail_image_width)) {
+            $thumbnailImageHeight = @round($sourceImageHeight * $thumbnailImageHeight);
+        } elseif (isset($thumbnailImageHeight) AND !isset($thumbnailImageWidth)) {
             // autocompute width if only height is set
-            if ($thumbnail_image_height) {
-                $thumbnail_image_width = (100 / ($source_image_height / $thumbnail_image_height)) * .01;
+            if ($thumbnailImageHeight) {
+                $thumbnailImageWidth = (100 / ($sourceImageHeight / $thumbnailImageHeight)) * .01;
             }
-            $thumbnail_image_width = @round($source_image_width * $thumbnail_image_width);
-        } elseif (isset($thumbnail_image_height) AND isset($thumbnail_image_width) AND isset($constrain)) {
+            $thumbnailImageWidth = @round($sourceImageWidth * $thumbnailImageWidth);
+        } elseif (isset($thumbnailImageHeight) AND isset($thumbnailImageWidth) AND isset($constrain)) {
             // get the smaller resulting image dimension if both height
             // and width are set and $constrain is also set
-            $hx = (100 / ($source_image_width / $thumbnail_image_width)) * .01;
-            $hx = @round($source_image_height * $hx);
+            $hx = (100 / ($sourceImageWidth / $thumbnailImageWidth)) * .01;
+            $hx = @round($sourceImageHeight * $hx);
 
-            $wx = (100 / ($source_image_height / $thumbnail_image_height)) * .01;
-            $wx = @round($source_image_width * $wx);
+            $wx = (100 / ($sourceImageHeight / $thumbnailImageHeight)) * .01;
+            $wx = @round($sourceImageWidth * $wx);
 
-            if ($hx < $thumbnail_image_height) {
-                $thumbnail_image_height = (100 / ($source_image_width / $thumbnail_image_width)) * .01;
-                $thumbnail_image_height = @round($source_image_height * $thumbnail_image_height);
+            if ($hx < $thumbnailImageHeight) {
+                $thumbnailImageHeight = (100 / ($sourceImageWidth / $thumbnailImageWidth)) * .01;
+                $thumbnailImageHeight = @round($sourceImageHeight * $thumbnailImageHeight);
             } else {
-                $thumbnail_image_width = (100 / ($source_image_height / $thumbnail_image_height)) * .01;
-                $thumbnail_image_width = @round($source_image_width * $thumbnail_image_width);
+                $thumbnailImageWidth = (100 / ($sourceImageHeight / $thumbnailImageHeight)) * .01;
+                $thumbnailImageWidth = @round($sourceImageWidth * $thumbnailImageWidth);
             }
         }
 
-        $thumbnail_gd_image = imagecreatetruecolor($thumbnail_image_width, $thumbnail_image_height);
-        imagecopyresampled($thumbnail_gd_image, $source_gd_image, 0, 0, 0, 0, $thumbnail_image_width, $thumbnail_image_height, $source_image_width, $source_image_height);
+        $thumbnailGdImage = imagecreatetruecolor($thumbnailImageWidth, $thumbnailImageHeight);
+        imagecopyresampled($thumbnailGdImage, $sourceGdImage, 0, 0, 0, 0, $thumbnailImageWidth, $thumbnailImageHeight, $sourceImageWidth, $sourceImageHeight);
 
-        switch ($source_image_type) {
+        switch ($sourceImageType) {
+            case IMAGETYPE_ICO:
             case IMAGETYPE_GIF:
-                imagegif($thumbnail_gd_image, $thumbnail_image_path);
+                imagegif($thumbnailGdImage, $thumbnailImagePath);
                 break;
             case IMAGETYPE_JPEG:
-                imagejpeg($thumbnail_gd_image, $thumbnail_image_path, 90);
+                imagejpeg($thumbnailGdImage, $thumbnailImagePath, 90);
                 break;
             case IMAGETYPE_PNG:
-                imagepng($thumbnail_gd_image, $thumbnail_image_path, 9);
+                imagepng($thumbnailGdImage, $thumbnailImagePath, 9);
                 break;
         }
 
-        imagedestroy($source_gd_image);
-        imagedestroy($thumbnail_gd_image);
+        imagedestroy($sourceGdImage);
+        imagedestroy($thumbnailGdImage);
 
         $newname = 'custom/' . $id . '-' . $host->getName() . '.' . $suffix;
-        if (rename($thumbnail_image_path, self::$webdir . self::$icodir . '/' . $newname)) {
+        if (rename($thumbnailImagePath, self::$webdir . self::$icodir . '/' . $newname)) {
             unlink($tmpfilename);
+
             return $newname;
         }
 

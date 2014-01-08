@@ -111,7 +111,6 @@ class IEcfg extends EaseBrick
     {
         $this->setmyTable(constant('DB_PREFIX') . $this->myTable);
         parent::__construct();
-
 //       foreach ($this->useKeywords as $KeyWord => $ColumnType) {
 //            switch ($ColumnType) {
 //                case 'IDLIST':

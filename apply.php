@@ -144,7 +144,8 @@ if ($testing) {
 
     if (!intval($ErrorCount) && !is_null($WarningCount)) {
         if (IECfg::reloadIcinga()) {
-            $oPage->columnII->addItem(new EaseTWBLinkButton('main.php', _('Hotovo') . EaseTWBPart::GlyphIcon('ok-sign'), 'success'));
+            $oPage->columnI->addItem(_('Všechny vaše konfigurační soubory byly přegenerovány'));
+            $oPage->columnII->addItem(new EaseTWBLinkButton('main.php',  _('Hotovo') .' ' . EaseTWBPart::GlyphIcon('ok-sign'), 'success'));
             EaseShared::user()->setSettingValue('unsaved',false);
         }
     }
