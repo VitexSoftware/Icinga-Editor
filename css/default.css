@@ -67,3 +67,5 @@ a img.avatar { height: 30px; width: 30px;}
 
 .dropdown-menu img { height: 14px; }
 .host_icon { height: 40px; }
+
+#preload { position: absolute; top: 40%; z-index: 20; top: 40%; left: 40%; visibility: hidden; }

@@ -17,6 +17,7 @@ require_once 'classes/IETimeperiod.php';
 require_once 'classes/IECommand.php';
 require_once 'classes/IEServicegroup.php';
 require_once 'classes/IEPortScanner.php';
+require_once 'classes/IEFXPreloader.php';
 
 $oPage->onlyForLogged();
 
@@ -168,6 +169,7 @@ if ($pocHostu) {
 $warning = $oPage->columnII->addItem(new EaseHtmlDivTag('Host', _('Vyplňte prosím alespoň jednu položku:'), array('class' => 'alert')));
 
 $firstHost = $warning->addItem(new EaseHtmlForm('firsthost'));
+$firstHost->setTagProperties(array('onSubmit'=>"$('#preload').css('visibility', 'visible');"));
 $firstHost->addItem(new EaseLabeledTextInput('host_name', $hostName, _('Hostname serveru')));
 $firstHost->addItem(new EaseLabeledTextInput('address', $address, _('IPv4 Adresa')));
 $firstHost->addItem(new EaseLabeledTextInput('address6', $addressSix, _('IPv6 Adresa')));
@@ -181,6 +183,9 @@ if ($oUser->getSettingValue('admin')) {
 $oPage->columnI->addItem( _('Po zadání alespoň jednoho vstupního údaje si tento '
         . 'průvodce dohledá ostatní a provede sken na některé základní služby.'
         . 'Pokud budou tyto nalezeny aktivují se jejich testy.') );
+
+
+$oPage->addItem( new EaseHtmlDivTag('preload', new IEFXPreloader(),array('class'=>'fuelux')));
 
 $oPage->addItem(new IEPageBottom());
 

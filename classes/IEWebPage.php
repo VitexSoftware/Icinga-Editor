@@ -312,10 +312,10 @@ class IEMainMenu extends EaseHtmlDivTag
             if (EaseShared::user()->getSettingValue('unsaved') == true) {
                 $nav->addMenuItem(
                         new EaseHtmlATag(
-                        'apply.php', _('Uplatnit změny <i class="icon-ok"></i>'), array('class' => 'btn btn-success')), 'right'
+                        'apply.php', _('Uplatnit změny'), array('class' => 'btn btn-success')), 'right'
                 );
             } else {
-                $nav->addMenuItem(new EaseHtmlATag('apply.php', _('Uplatnit změny <i class="icon-ok"></i>'), array('class' => 'btn btn-warning')), 'right');
+                $nav->addMenuItem(new EaseHtmlATag('apply.php', _('Uplatnit změny'), array('class' => 'btn btn-inverse')), 'right');
             }
             $nav->addDropDownMenu(_('Hosti'), array_merge($hostGroupMenuItem, $hostMenuItem));
             if (EaseShared::user()->getSettingValue('admin')) {
