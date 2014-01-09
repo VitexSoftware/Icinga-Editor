@@ -398,7 +398,9 @@ class IECfgEditor extends EaseContainer
             $keywordInfo = $this->objectEdited->keywordsInfo[$fieldName];
 
             if ($fieldName == $this->objectEdited->nameColumn) {
-                continue;
+                if ($this->objectEdited->getId()) {
+                    continue;
+                }
             }
 
             if (!count($keywordInfo)) {
