@@ -14,6 +14,7 @@ require_once 'classes/IECfgEditor.php';
 require_once 'classes/IEServiceSelector.php';
 require_once 'classes/IEIconSelector.php';
 require_once 'classes/IEHostOverview.php';
+require_once 'classes/IEFXPreloader.php';
 
 $oPage->onlyForLogged();
 
@@ -165,7 +166,8 @@ input.ui-button { width: 100%; }
 
 $oPage->columnIII->addItem($host->deleteButton());
 
-$oPage->columnIII->addItem(new EaseTWBLinkButton('?action=populate&host_id=' . $host->getID(), _('Oskenovat a sledovat služby')));
+$oPage->columnIII->addItem(new EaseTWBLinkButton('?action=populate&host_id=' . $host->getID(), _('Oskenovat a sledovat služby'), null, array('onClick'=>"$('#preload').css('visibility', 'visible');") ));
+$oPage->addItem( new EaseHtmlDivTag('preload', new IEFXPreloader(),array('class'=>'fuelux')));
 
 $renameForm = new EaseTWBForm('Rename', '?action=rename&amp;host_id=' . $host->getID());
 $renameForm->addItem(new EaseHtmlInputTextTag('newname'), $host->getName(), array('class' => 'form-control'));
