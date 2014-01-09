@@ -23,10 +23,10 @@ if ($users) {
     $oPage->columnII->addItem(new EaseHtmlH4Tag(_('Uživatelé')));
     $cntList = new EaseHtmlTableTag(null, array('class' => 'table'));
     $Cid = 1;
-    foreach ($users as $CID => $CInfo) {
-        $lastRow = $cntList->addRowColumns(array($Cid++, new EaseUser((int) $CID),
-            new EaseHtmlATag('userinfo.php?user_id=' . $CID, $CInfo['login'] . ' <i class="icon-edit"></i>'),
-            new EaseHtmlATag('apply.php?force_user_id=' . $CID, _('Přegenerovat konfiguraci') . ' <i class="icon-repeat"></i>')
+    foreach ($users as $cId => $cInfo) {
+        $lastRow = $cntList->addRowColumns(array($Cid++, new EaseUser((int) $cId),
+            new EaseHtmlATag('userinfo.php?user_id=' . $cId, $cInfo['login'] . ' <i class="icon-edit"></i>'),
+            new EaseHtmlATag('apply.php?force_user_id=' . $cId, _('Přegenerovat konfiguraci') . ' <i class="icon-repeat"></i>')
                 )
         );
     }

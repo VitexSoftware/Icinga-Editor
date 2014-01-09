@@ -28,14 +28,17 @@ class IEHostOverview extends EaseHtmlDivTag
     public static function icon($host)
     {
         $image = 'unknown.gif';
+        $title = '';
         if(is_array($host)){
             if(isset($host['icon_image'])){
                 $image = $host['icon_image'];
+                $title = $host['host_name'];
             } 
         } else {
             $image = $host->getDataValue('icon_image');
+            $title = $host->getName();
         }
-        return new EaseHtmlImgTag('/icinga/images/logos/' . $image);
+        return new EaseHtmlImgTag('/icinga/images/logos/' . $image,$title);
     }
 
     public static function platformIcon($platform)

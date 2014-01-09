@@ -2,7 +2,7 @@
 
 /**
  * Icinga Editor - skupina hostů
- * 
+ *
  * @package    IcingaEditor
  * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
@@ -14,34 +14,38 @@ require_once 'classes/IECfgEditor.php';
 
 $oPage->onlyForLogged();
 
-$Hostgroup = new IEHostgroup($oPage->getRequestValue('hostgroup_id', 'int'));
+$hostgroup = new IEHostgroup($oPage->getRequestValue('hostgroup_id', 'int'));
 
 if ($oPage->isPosted()) {
-    $Hostgroup->takeData($_POST);
-    $HostgroupID = $Hostgroup->saveToMySQL();
-    if (is_null($HostgroupID)) {
+    $hostgroup->takeData($_POST);
+    
+    if(!$hostgroup->getId()){
+        $hostgroup->setDataValue('members', array());
+    }
+    
+    $hostgroupID = $hostgroup->saveToMySQL();
+    if (is_null($hostgroupID)) {
         $oUser->addStatusMessage(_('Skupina hostů nebyla uložena'), 'warning');
     } else {
         $oUser->addStatusMessage(_('Skupina hostů byla uložena'), 'success');
     }
 }
 
-$Hostgroup->saveMembers();
+$hostgroup->saveMembers();
 
 $delete = $oPage->getGetValue('delete', 'bool');
 if ($delete == 'true') {
-    $Hostgroup->delete();
+    $hostgroup->delete();
 }
 
+$oPage->addItem(new IEPageTop(_('Editace skupiny hostů') . ' ' . $hostgroup->getName()));
 
-$oPage->addItem(new IEPageTop(_('Editace skupiny hostů') . ' ' . $Hostgroup->getName()));
-
-$HostgroupEdit = new IECfgEditor($Hostgroup);
+$HostgroupEdit = new IECfgEditor($hostgroup);
 
 $form = $oPage->columnII->addItem(new EaseHtmlForm('Hostgroup', 'hostgroup.php', 'POST', $HostgroupEdit, array('class' => 'form-horizontal')));
 $form->setTagID($form->getTagName());
-if (!is_null($Hostgroup->getMyKey())) {
-    $form->addItem(new EaseHtmlInputHiddenTag($Hostgroup->getmyKeyColumn(), $Hostgroup->getMyKey()));
+if (!is_null($hostgroup->getMyKey())) {
+    $form->addItem(new EaseHtmlInputHiddenTag($hostgroup->getmyKeyColumn(), $hostgroup->getMyKey()));
 }
 $form->addItem('<br>');
 $form->addItem(new EaseTWSubmitButton(_('Uložit'), 'success'));
@@ -50,15 +54,12 @@ $oPage->AddCss('
 input.ui-button { width: 100%; }
 ');
 
-$oPage->columnIII->addItem($Hostgroup->deleteButton());
+$oPage->columnIII->addItem($hostgroup->deleteButton());
 
-if ($Hostgroup->getId()) {
-    $oPage->columnI->addItem($Hostgroup->ownerLinkButton());
+if ($hostgroup->getId()) {
+    $oPage->columnI->addItem($hostgroup->ownerLinkButton());
 }
-
 
 $oPage->addItem(new IEPageBottom());
 
-
 $oPage->draw();
-?>

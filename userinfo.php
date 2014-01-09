@@ -49,8 +49,8 @@ if ($pocHostu) {
     }
 }
 
-$Hostgroup = new IEHostgroup();
-$PocHostgroups = $Hostgroup->getMyRecordsCount($UserID);
+$hostgroup = new IEHostgroup();
+$PocHostgroups = $hostgroup->getMyRecordsCount($UserID);
 if ($PocHostgroups) {
     $success = $oPage->columnII->addItem(new EaseHtmlDivTag('Hostgroup', new EaseTWBLinkButton('hostgroups.php', _('<i class="icon-list"></i>').' '.sprintf(_('Definováno %s skupin hostů'), $PocHostgroups)), array('class' => 'alert alert-success')));
 }

@@ -26,8 +26,8 @@ if ($PocServicegroup) {
     $cntList = new EaseHtmlTableTag(null,array('class'=>'table'));
 
     $Cid = 1;
-    foreach ($Servicegroups as $CID => $CInfo) {
-        $cntList->addRowColumns(array($Cid++, new EaseHtmlATag('servicegroup.php?servicegroup_id=' . $CInfo['servicegroup_id'], $CInfo['servicegroup_name'].' <i class="icon-edit"></i>')));
+    foreach ($Servicegroups as $cId => $cInfo) {
+        $cntList->addRowColumns(array($Cid++, new EaseHtmlATag('servicegroup.php?servicegroup_id=' . $cInfo['servicegroup_id'], $cInfo['servicegroup_name'].' <i class="icon-edit"></i>')));
     }
     $oPage->columnII->addItem($cntList);
 } else {

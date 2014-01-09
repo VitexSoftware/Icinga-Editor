@@ -50,9 +50,9 @@ if ($pocContact) {
 }
 
 $Contactgroup = new IEContactgroup();
-$PocContactgroup = $Contactgroup->getMyRecordsCount();
-if ($PocContactgroup) {
-    $success = $oPage->columnII->addItem(new EaseHtmlDivTag('Contactgroup', new EaseTWBLinkButton('contactgroups.php', _('<i class="icon-list"></i>').' '.sprintf(_('Definováno %s skupin kontaktů'), $PocContactgroup)), array('class' => 'alert alert-success')));
+$pocContactgroup = $Contactgroup->getMyRecordsCount();
+if ($pocContactgroup) {
+    $success = $oPage->columnII->addItem(new EaseHtmlDivTag('Contactgroup', new EaseTWBLinkButton('contactgroups.php', _('<i class="icon-list"></i>').' '.sprintf(_('Definováno %s skupin kontaktů'), $pocContactgroup)), array('class' => 'alert alert-success')));
     
 } else {
     $warning = $oPage->columnII->addItem(new EaseHtmlDivTag('Contactgroup', _('Nemáte definovanou skupinu kontaktů'), array('class' => 'alert alert-info')));
@@ -73,8 +73,8 @@ if ($pocHostu) {
     }
 }
 
-$Hostgroup = new IEHostgroup();
-$PocHostgroups = $Hostgroup->getMyRecordsCount();
+$hostgroup = new IEHostgroup();
+$PocHostgroups = $hostgroup->getMyRecordsCount();
 if ($PocHostgroups) {
     $success = $oPage->columnI->addItem(new EaseHtmlDivTag('Hostgroup', new EaseTWBLinkButton('hostgroups.php', _('<i class="icon-list"></i>').' '.sprintf(_('Definováno %s skupin hostů'), $PocHostgroups)), array('class' => 'alert alert-success')));
 } else {

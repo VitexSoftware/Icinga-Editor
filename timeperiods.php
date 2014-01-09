@@ -24,13 +24,13 @@ if ($Periods) {
     $cntList = new EaseHtmlTableTag(null,array('class'=>'table'));
 
     $Cid = 1;
-    foreach ($Periods as $CID => $CInfo) {
-        $lastRow = $cntList->addRowColumns(array($Cid++, new EaseHtmlATag('timeperiod.php?timeperiod_id=' . $CInfo['timeperiod_id'], $CInfo['timeperiod_name'].' <i class="icon-edit"></i>')));
-        if($CInfo['generate'] == 0){
+    foreach ($Periods as $cId => $cInfo) {
+        $lastRow = $cntList->addRowColumns(array($Cid++, new EaseHtmlATag('timeperiod.php?timeperiod_id=' . $cInfo['timeperiod_id'], $cInfo['timeperiod_name'].' <i class="icon-edit"></i>')));
+        if($cInfo['generate'] == 0){
             $lastRow->setTagCss(array('border-right'=>'1px solid red'));
         }
-        if($CInfo['public'] == 1){
-            if($CInfo[$Timeperiod->userColumn] == $oUser->getUserID()){
+        if($cInfo['public'] == 1){
+            if($cInfo[$Timeperiod->userColumn] == $oUser->getUserID()){
                 $lastRow->setTagCss(array('border-left'=>'1px solid green'));
             } else {
                 $lastRow->setTagCss(array('border-left'=>'1px solid blue'));

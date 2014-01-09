@@ -15,23 +15,28 @@ $oPage->onlyForLogged();
 
 $oPage->addItem(new IEPageTop(_('Přehled skupin hostů')));
 
-$Hostgroup = new IEHostgroup();
-$PocContactgroup = $Hostgroup->getMyRecordsCount();
+$hostgroup = new IEHostgroup();
+$pocContactgroup = $hostgroup->getMyRecordsCount();
 
-if ($PocContactgroup) {
-    $Hostgroups = $Hostgroup->myDbLink->queryToArray('SELECT ' . $Hostgroup->getmyKeyColumn() . ', hostgroup_name, DatSave FROM ' . $Hostgroup->myTable . ' WHERE user_id=' . $oUser->getUserID(), 'hostgroup_id');
-    $cntList = new EaseHtmlTableTag(null,array('class'=>'table'));
+if ($pocContactgroup) {
+    $hgList = $hostgroup->getListing(null,false);
 
-    $Cid = 1;
-    foreach ($Hostgroups as $CID => $CInfo) {
-        $cntList->addRowColumns(array($Cid++, new EaseHtmlATag('hostgroup.php?hostgroup_id=' . $CInfo['hostgroup_id'], $CInfo['hostgroup_name'].' <i class="icon-edit"></i>')));
+    
+    foreach ($hgList as $cId => $cInfo) {
+        $cntList = new EaseHtmlDivTag('listing',null,array('class'=>'well'));
+        $hostgroup = new IEHostgroup($cId);
+        $cntList->addItem( new EaseHtmlH3Tag( new EaseHtmlATag('hostgroup.php?hostgroup_id=' . $cInfo['hostgroup_id'], EaseTWBPart::GlyphIcon('edit').' '.$hostgroup->getName()) ) );
+        $cntList->addItem( new EaseHtmlDivTag( null, $hostgroup->getDataValue('alias') ) );
+        foreach ( $hostgroup->getDataValue('members') as $memberID => $memberName ) {
+            $cntList->addItem( new EaseHtmlATag('host.php?host_id='.$memberID,  new IEHost( $memberID ) ) );
+        }
+        $oPage->addItem($cntList);
     }
-    $oPage->columnII->addItem($cntList);
 } else {
     $oUser->addStatusMessage(_('Nemáte definovou skupinu hostů'), 'warning');
 }
 
-$oPage->columnIII->addItem(new EaseTWBLinkButton('hostgroup.php', _('Založit skupinu hostů <i class="icon-edit"></i>')));
+//$oPage->addItem(new EaseTWBLinkButton('hostgroup.php', EaseTWBPart::GlyphIcon('plus').' '._('Založit skupinu hostů')));
 
 $oPage->addItem(new IEPageBottom());
 

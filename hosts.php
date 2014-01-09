@@ -26,16 +26,16 @@ if ($hosts) {
     $oPage->columnII->addItem(new EaseHtmlH4Tag(_('Hosty')));
     $cntList = new EaseHtmlTableTag(null,array('class'=>'table'));
     $Cid = 1;
-    foreach ($hosts as $CID => $CInfo) {
-        if($CInfo['register'] != 1){
+    foreach ($hosts as $cId => $cInfo) {
+        if($cInfo['register'] != 1){
             continue;
         }
-        $lastRow = $cntList->addRowColumns(array($Cid++, IEHostOverview::icon($CInfo), new EaseHtmlATag('host.php?host_id=' . $CInfo['host_id'], $CInfo['host_name'].' <i class="icon-edit"></i>'),  IEHostOverview::platformIcon($CInfo['platform'])));
-        if ($CInfo['generate'] == 0) {
+        $lastRow = $cntList->addRowColumns(array($Cid++, IEHostOverview::icon($cInfo), new EaseHtmlATag('host.php?host_id=' . $cInfo['host_id'], $cInfo['host_name'].' <i class="icon-edit"></i>'),  IEHostOverview::platformIcon($cInfo['platform'])));
+        if ($cInfo['generate'] == 0) {
             $lastRow->setTagCss(array('border-right' => '1px solid red'));
         }
-        if($CInfo['public'] == 1){
-            if($CInfo[$host->userColumn] == $oUser->getUserID()){
+        if($cInfo['public'] == 1){
+            if($cInfo[$host->userColumn] == $oUser->getUserID()){
                 $lastRow->setTagCss(array('border-left'=>'1px solid green'));
             } else {
                 $lastRow->setTagCss(array('border-left'=>'1px solid blue'));
@@ -47,16 +47,16 @@ if ($hosts) {
     $oPage->columnI->addItem(new EaseHtmlH4Tag(_('Předlohy')));
     $Cnt2List = new EaseHtmlTableTag(null,array('class'=>'table'));
     $Cid = 1;
-    foreach ($hosts as $CID => $CInfo) {
-        if(intval($CInfo['register'])){
+    foreach ($hosts as $cId => $cInfo) {
+        if(intval($cInfo['register'])){
             continue;
         }
-        $lastRow = $Cnt2List->addRowColumns(array($Cid++, IEHostOverview::icon($CInfo), new EaseHtmlATag('host.php?host_id=' . $CInfo['host_id'], $CInfo['name'].' '.EaseTWBPart::GlyphIcon('edit')),new EaseHtmlATag('host.php?use='. urldecode($CInfo['name']), _('Odvodit <i class="icon-edit"></i>'))));
-        if ($CInfo['generate'] == 0) {
+        $lastRow = $Cnt2List->addRowColumns(array($Cid++, IEHostOverview::icon($cInfo), new EaseHtmlATag('host.php?host_id=' . $cInfo['host_id'], $cInfo['name'].' '.EaseTWBPart::GlyphIcon('edit')),new EaseHtmlATag('host.php?use='. urldecode($cInfo['name']), _('Odvodit <i class="icon-edit"></i>'))));
+        if ($cInfo['generate'] == 0) {
             $lastRow->setTagCss(array('border-right' => '1px solid red'));
         }
-       if($CInfo['public'] == 1){
-            if($CInfo[$host->userColumn] == $oUser->getUserID()){
+       if($cInfo['public'] == 1){
+            if($cInfo[$host->userColumn] == $oUser->getUserID()){
                 $lastRow->setTagCss(array('border-left'=>'1px solid green'));
             } else {
                 $lastRow->setTagCss(array('border-left'=>'1px solid blue'));

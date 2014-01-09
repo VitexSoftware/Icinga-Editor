@@ -25,17 +25,17 @@ if ($Contacts) {
     $oPage->columnII->addItem(new EaseHtmlH4Tag(_('Kontakty')));
     $cntList = new EaseHtmlTableTag(null,array('class'=>'table'));
     $Cid = 1;
-    foreach ($Contacts as $CID => $CInfo) {
-        $CInfo['public'] = false;
-        if($CInfo['register'] != 1){
+    foreach ($Contacts as $cId => $cInfo) {
+        $cInfo['public'] = false;
+        if($cInfo['register'] != 1){
             continue;
         }
-        $lastRow = $cntList->addRowColumns(array($Cid++, new EaseHtmlATag('contact.php?contact_id=' . $CInfo['contact_id'], $CInfo['contact_name'].' <i class="icon-edit"></i>')));
-        if ($CInfo['generate'] == 0) {
+        $lastRow = $cntList->addRowColumns(array($Cid++, new EaseHtmlATag('contact.php?contact_id=' . $cInfo['contact_id'], $cInfo['contact_name'].' <i class="icon-edit"></i>')));
+        if ($cInfo['generate'] == 0) {
             $lastRow->setTagCss(array('border-right' => '1px solid red'));
         }
-        if($CInfo['public'] == 1){
-            if($CInfo[$contact->userColumn] == $oUser->getUserID()){
+        if($cInfo['public'] == 1){
+            if($cInfo[$contact->userColumn] == $oUser->getUserID()){
                 $lastRow->setTagCss(array('border-left'=>'1px solid green'));
             } else {
                 $lastRow->setTagCss(array('border-left'=>'1px solid blue'));
@@ -47,17 +47,17 @@ if ($Contacts) {
     $oPage->columnI->addItem(new EaseHtmlH4Tag(_('Předlohy')));
     $Cnt2List = new EaseHtmlTableTag(null,array('class'=>'table'));
     $Cid = 1;
-    foreach ($Contacts as $CID => $CInfo) {
-        $CInfo['public'] = false;
-        if(intval($CInfo['register'])){
+    foreach ($Contacts as $cId => $cInfo) {
+        $cInfo['public'] = false;
+        if(intval($cInfo['register'])){
             continue;
         }
-        $lastRow = $Cnt2List->addRowColumns(array($Cid++, new EaseHtmlATag('contact.php?contact_id=' . $CInfo['contact_id'], $CInfo['name'].' <i class="icon-edit"></i>'),new EaseHtmlATag('contact.php?use='. urldecode($CInfo['name']), _('Odvodit <i class="icon-edit"></i>'))));
-        if ($CInfo['generate'] == 0) {
+        $lastRow = $Cnt2List->addRowColumns(array($Cid++, new EaseHtmlATag('contact.php?contact_id=' . $cInfo['contact_id'], $cInfo['name'].' <i class="icon-edit"></i>'),new EaseHtmlATag('contact.php?use='. urldecode($cInfo['name']), _('Odvodit <i class="icon-edit"></i>'))));
+        if ($cInfo['generate'] == 0) {
             $lastRow->setTagCss(array('border-right' => '1px solid red'));
         }
-       if($CInfo['public'] == 1){
-            if($CInfo[$contact->userColumn] == $oUser->getUserID()){
+       if($cInfo['public'] == 1){
+            if($cInfo[$contact->userColumn] == $oUser->getUserID()){
                 $lastRow->setTagCss(array('border-left'=>'1px solid green'));
             } else {
                 $lastRow->setTagCss(array('border-left'=>'1px solid blue'));

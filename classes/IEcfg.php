@@ -1071,4 +1071,7 @@ class IEcfg extends EaseBrick
         return new \EaseTWBLinkButton('?action=clone&' . $this->getmyKeyColumn() . '=' . $this->getId(), _('Klonovat'));
     }
 
+    function draw(){
+        echo $this->getName();
+    }
 }

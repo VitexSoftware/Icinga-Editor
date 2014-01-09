@@ -424,4 +424,9 @@ class IEHost extends IECfg
         return false;
     }
 
+    function draw()
+    {
+        echo IEHostOverview::icon($this);
+    }
+    
 }

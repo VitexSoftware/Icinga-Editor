@@ -19,15 +19,15 @@ $oPage->addItem(new IEPageTop(_('Přehled kontaktů')));
 
 
 $Contactgroup = new IEContactgroup();
-$PocContactgroup = $Contactgroup->getMyRecordsCount();
+$pocContactgroup = $Contactgroup->getMyRecordsCount();
 
-if ($PocContactgroup) {
+if ($pocContactgroup) {
     $Contactgroups = $Contactgroup->myDbLink->queryToArray('SELECT ' . $Contactgroup->getmyKeyColumn() . ', contactgroup_name, DatSave FROM ' . $Contactgroup->myTable . ' WHERE user_id=' . $oUser->getUserID(), 'contactgroup_id');
     $cntList = new EaseHtmlTableTag(null,array('class'=>'table'));
 
     $Cid = 1;
-    foreach ($Contactgroups as $CID => $CInfo) {
-        $cntList->addRowColumns(array($Cid++, new EaseHtmlATag('contactgroup.php?contactgroup_id=' . $CInfo['contactgroup_id'], $CInfo['contactgroup_name'].' <i class="icon-edit"></i>')));
+    foreach ($Contactgroups as $cId => $cInfo) {
+        $cntList->addRowColumns(array($Cid++, new EaseHtmlATag('contactgroup.php?contactgroup_id=' . $cInfo['contactgroup_id'], $cInfo['contactgroup_name'].' <i class="icon-edit"></i>')));
     }
     $oPage->columnII->addItem($cntList);
 } else {
