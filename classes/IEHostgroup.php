@@ -92,7 +92,7 @@ class IEHostgroup extends IECfg
      */
     function deleteButton($name = null)
     {
-        return parent::deleteButton(_('Skupinu hostů'));
+        return parent::deleteButton(_('skupinu hostů'));
     }
 
     function loadDefault(){

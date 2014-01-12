@@ -15,34 +15,34 @@ class IEPortScanner extends EaseSand
 
     /**
      * Porty k oskenování
-     * @var array 
+     * @var array
      */
     public $ports = array();
 
     /**
      * Výsledky scanu
-     * @var array 
+     * @var array
      */
     public $results = array();
 
     /**
      * Objekt služby
-     * @var IEService 
+     * @var IEService
      */
     public $service = null;
 
     /**
      * Objekt hosta
-     * @var IEHost 
+     * @var IEHost
      */
     public $host = null;
 
     /**
      * Oskenuje hosta v argumentu na otevřené porty registrovaných služeb
-     * 
+     *
      * @param IEHost $hostToScan
      */
-    function __construct($hostToScan = null)
+    public function __construct($hostToScan = null)
     {
         parent::__construct();
         $this->service = new IEService();
@@ -58,38 +58,39 @@ class IEPortScanner extends EaseSand
      */
     public function assignServices()
     {
-        $Success = 0;
-        foreach ($this->results as $port){
-            if($port == 80){
-                if($this->host->favToIcon()){
+        $success = 0;
+        foreach ($this->results as $port) {
+            if ($port == 80) {
+                if ($this->host->favToIcon()) {
                     $this->host->saveToMySQL();
                 }
             }
             $this->service->loadFromMySQL($port);
             $this->service->addMember('host_name', $this->host->getId(), $this->host->getName());
-            if($this->service->saveToMySQL()){
+            if ($this->service->saveToMySQL()) {
                 $this->addStatusMessage(sprintf(_('Přidána sledovaná služba: %s'),  $this->service->getName()),'success');
-                $Success++;
+                $success++;
             } else {
                 $this->addStatusMessage(sprintf(_('Přidání sledované služby: %s se nezdařilo'),  $this->service->getName()),'error');
             }
         }
-        return $Success;
+
+        return $success;
     }
 
-    
     /**
      * Vrací porty služeb k dispozici
      */
     public function getServicePorts()
     {
-        $Ports = $this->service->getColumnsFromMySQL('tcp_port', 'tcp_port IS NOT NULL','tcp_port','tcp_port');
-        return array_keys($Ports);
+        $ports = $this->service->getColumnsFromMySQL('tcp_port', 'tcp_port IS NOT NULL AND public = 1','tcp_port','tcp_port');
+
+        return array_keys($ports);
     }
 
     /**
-     * Oskenuje porty 
-     * 
+     * Oskenuje porty
+     *
      * @return int počet otestovaných portů
      */
     public function performScan()
@@ -99,25 +100,25 @@ class IEPortScanner extends EaseSand
             $this->ports = $this->getServicePorts();
         }
 
-        foreach ($this->ports as $Port) {
-            if ($this->scan($Port))
-                $this->results[$Port] = $Port;
+        foreach ($this->ports as $port) {
+            if ($this->scan($port))
+                $this->results[$port] = $port;
         }
+
         return count($this->ports);
     }
 
     /**
      * Zkusí se připojit k portu
-     * 
-     * @param int $Port
+     *
+     * @param int $port
      */
-    function scan($Port)
+    public function scan($port)
     {
-        $fp = @fsockopen($this->host->getDataValue('address'), $Port,$errno, $errstr, 2);
+        $fp = @fsockopen($this->host->getDataValue('address'), $port,$errno, $errstr, 2);
         @fclose($fp);
+
         return $fp;
     }
 
 }
-
-?>

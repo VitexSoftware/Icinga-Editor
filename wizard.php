@@ -180,9 +180,9 @@ if ($oUser->getSettingValue('admin')) {
     $oPage->columnIII->addItem(new EaseJQConfirmedLinkButton('install.php', _('Reinicializace z konfiguračních souborů') . ' <i class="icon-refresh"></i>'));
 }
 
-$oPage->columnI->addItem( _('Po zadání alespoň jednoho vstupního údaje si tento '
+$oPage->columnI->addItem( new EaseHtmlDivTag(null, _('Po zadání alespoň jednoho vstupního údaje si tento '
         . 'průvodce dohledá ostatní a provede sken na některé základní služby.'
-        . 'Pokud budou tyto nalezeny aktivují se jejich testy.') );
+        . 'Pokud budou tyto nalezeny aktivují se jejich testy.'), array('class'=>'well')  )  );
 
 
 $oPage->addItem( new EaseHtmlDivTag('preload', new IEFXPreloader(),array('class'=>'fuelux')));

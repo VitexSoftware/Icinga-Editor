@@ -178,20 +178,20 @@ class IEBootstrapMenu extends EaseTWBNavbar
 </div>', 'right'
             );
         } else {
-            
+
             $userMenu = '<li class="dropdown" style="width: 120px; text-align: right; background-image: url( ' . $user->getIcon() . ' ) ;  background-repeat: no-repeat; background-position: left center; background-size: 40px 40px;"><a href="#" class="dropdown-toggle" data-toggle="dropdown">' . $user->getUserLogin() . ' <b class="caret"></b></a>
 <ul class="dropdown-menu" style="text-align: left; left: -60px;">
-<li><a href="settings.php">'. EaseTWBPart::GlyphIcon('wrench') . '<i class="icon-cog"></i> ' . _('Nastavení') . '</a></li>
+<li><a href="settings.php">' . EaseTWBPart::GlyphIcon('wrench') . '<i class="icon-cog"></i> ' . _('Nastavení') . '</a></li>
 ';
- 
+
             if ($user->getSettingValue('admin')) {
-                $userMenu .= '<li><a href="overview.php">'. EaseTWBPart::GlyphIcon('list') . ' ' . _('Přehled konfigurací') . '</a></li>';
+                $userMenu .= '<li><a href="overview.php">' . EaseTWBPart::GlyphIcon('list') . ' ' . _('Přehled konfigurací') . '</a></li>';
             }
-            
-            $this->addMenuItem($userMenu.'
-<li><a href="http://v.s.cz/kontakt.php">'. EaseTWBPart::GlyphIcon('envelope') . ' ' . _('Uživatelská podpora') . '</a></li>
+
+            $this->addMenuItem($userMenu . '
+<li><a href="http://v.s.cz/kontakt.php">' . EaseTWBPart::GlyphIcon('envelope') . ' ' . _('Uživatelská podpora') . '</a></li>
 <li class="divider"></li>
-<li><a href="logout.php">'. EaseTWBPart::GlyphIcon('off') . ' ' . _('Odhlášení') . '</a></li>
+<li><a href="logout.php">' . EaseTWBPart::GlyphIcon('off') . ' ' . _('Odhlášení') . '</a></li>
 </ul>
 </li>
 ', 'right');
@@ -242,7 +242,7 @@ class IEMainMenu extends EaseHtmlDivTag
 
             if ($user->getSettingValue('admin')) {
 
-                $users = $user->getColumnsFromMySQL(array('id', 'login'), array('id'=>'!0'), 'login', $user->getmyKeyColumn());
+                $users = $user->getColumnsFromMySQL(array('id', 'login'), array('id' => '!0'), 'login', $user->getmyKeyColumn());
 
                 $userList = array();
                 if ($users) {
@@ -255,7 +255,7 @@ class IEMainMenu extends EaseHtmlDivTag
                 }
 
                 $nav->addDropDownMenu(_('Uživatelé'), array_merge($userList, array(
-                    'users.php' => EaseTWBPart::GlyphIcon('list').'&nbsp;' . _('Přehled uživatelů'),
+                    'users.php' => EaseTWBPart::GlyphIcon('list') . '&nbsp;' . _('Přehled uživatelů'),
                     'createaccount.php' => EaseTWBPart::GlyphIcon('plus') . ' ' . _('Nový uživatel'),
                         ))
                 );
@@ -285,29 +285,31 @@ class IEMainMenu extends EaseHtmlDivTag
                 $hostMenuItem['hosts.php'] = EaseTWBPart::GlyphIcon('list') . ' ' . _('Detailní přehled hostů');
                 $hostMenuItem[] = '';
             }
-                $hostgroup = new IEHostgroup();
-                $hostGroupMenuItem = array(
-                    'hostgroup.php' => EaseTWBPart::GlyphIcon('plus') . ' ' . _('Nová skupina hostů')/* ,
-                          'exthostinfo.php' => _('Rozšířené informace hostů'),
-                          'hostdependency.php' => _('Závislosti hostů'),
-                          'hostescalation.php' => _('Eskalace hostů') */
-                );
-                $pocHostgroup = $hostgroup->getMyRecordsCount();
+            $hostgroup = new IEHostgroup();
+            $hostGroupMenuItem = array(
+                'hostgroup.php' => EaseTWBPart::GlyphIcon('plus') . ' ' . _('Nová skupina hostů')/* ,
+                      'exthostinfo.php' => _('Rozšířené informace hostů'),
+                      'hostdependency.php' => _('Závislosti hostů'),
+                      'hostescalation.php' => _('Eskalace hostů') */
+            );
+            $pocHostgroup = $hostgroup->getMyRecordsCount();
 
-                if ($pocHostgroup) {
-                    $hostgroups = $hostgroup->myDbLink->queryToArray('SELECT ' . $hostgroup->getmyKeyColumn() . ', hostgroup_name, DatSave FROM ' . $hostgroup->myTable . ' WHERE user_id=' . $user->getUserID(), 'hostgroup_id');
+            if ($pocHostgroup) {
+                $hostgroups = $hostgroup->myDbLink->queryToArray('SELECT ' . $hostgroup->getmyKeyColumn() . ', hostgroup_name, DatSave FROM ' . $hostgroup->myTable . ' WHERE user_id=' . $user->getUserID(), 'hostgroup_id');
 
-                    foreach ($hostgroups as $cID => $cInfo) {
-                        $hostGroupMenuItem['hostgroup.php?hostgroup_id=' . $cInfo['hostgroup_id']] = EaseTWBPart::GlyphIcon('cloud') . ' ' . $cInfo['hostgroup_name'] . ' ' . EaseTWBPart::GlyphIcon('edit');
-                    }
-                    if (count($hostGroupMenuItem)) {
-                        $hostGroupMenuItem['hostgroups.php'] = EaseTWBPart::GlyphIcon('list-alt') . ' ' . _('Přehled skupin hostů');
-                        $hostGroupMenuItem[''] = '';
-                    }
-                }else {
-                $hostGroupMenuItem = array();
+                foreach ($hostgroups as $cID => $cInfo) {
+                    $hostGroupMenuItem['hostgroup.php?hostgroup_id=' . $cInfo['hostgroup_id']] = EaseTWBPart::GlyphIcon('cloud') . ' ' . $cInfo['hostgroup_name'] . ' ' . EaseTWBPart::GlyphIcon('edit');
+                }
+                if (count($hostGroupMenuItem)) {
+                    $hostGroupMenuItem['hostgroups.php'] = EaseTWBPart::GlyphIcon('list-alt') . ' ' . _('Přehled skupin hostů');
+                    $hostGroupMenuItem[''] = '';
+                }
+            } else {
+                if (!count($hosts)) {
+                    $hostGroupMenuItem = array();
+                }
             }
-             
+
 
             if (EaseShared::user()->getSettingValue('unsaved') == true) {
                 $nav->addMenuItem(
@@ -338,16 +340,16 @@ class IEMainMenu extends EaseHtmlDivTag
 
             if ($user->getSettingValue('admin')) {
                 $nav->addDropDownMenu(_('Příkaz'), array(
-                    'commands.php' => EaseTWBPart::GlyphIcon('list-alt') . ' '  . _('Přehled příkazů'),
+                    'commands.php' => EaseTWBPart::GlyphIcon('list-alt') . ' ' . _('Přehled příkazů'),
                     'command.php' => EaseTWBPart::GlyphIcon('edit') . ' ' . _('Nový příkaz'),
-                    'importcommand.php' => EaseTWBPart::GlyphIcon('download') . ' '  . _('Importovat'))
+                    'importcommand.php' => EaseTWBPart::GlyphIcon('download') . ' ' . _('Importovat'))
                 );
                 $nav->addDropDownMenu(_('Rozšířené'), array(
                     'timeperiods.php' => EaseTWBPart::GlyphIcon('list') . ' ' . _('Přehled časových period'),
                     'timeperiod.php' => EaseTWBPart::GlyphIcon('plus') . ' ' . _('Nová časová perioda'),
                     'regenall.php' => EaseTWBPart::GlyphIcon('ok') . ' ' . _('Přegenerovat všechny konfiguráky'),
                     'dbrecreate.php' => EaseTWBPart::GlyphIcon('wrench') . ' ' . _('Reinicializovat databázi'),
-                    'import.php' => EaseTWBPart::GlyphIcon('download') . ' '. _('Importovat')
+                    'import.php' => EaseTWBPart::GlyphIcon('download') . ' ' . _('Importovat')
                         /* 'module.php' => _('definice modulů') */                        )
                 );
             }

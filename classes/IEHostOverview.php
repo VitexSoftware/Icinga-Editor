@@ -38,7 +38,7 @@ class IEHostOverview extends EaseHtmlDivTag
             $image = $host->getDataValue('icon_image');
             $title = $host->getName();
         }
-        return new EaseHtmlImgTag('/icinga/images/logos/' . $image,$title);
+        return new EaseHtmlImgTag('/icinga/images/logos/' . $image,$title,null,null,array('class'=>'host_icon'));
     }
 
     public static function platformIcon($platform)

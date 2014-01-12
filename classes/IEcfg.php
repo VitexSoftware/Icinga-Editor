@@ -644,7 +644,7 @@ class IEcfg extends EaseBrick
 
             return $this->getColumnsFromMySQL($columnsToGet, $this->userColumn . '=' . $thisID . ' OR ' . $this->userColumn . ' IS NULL OR public=1 ', $this->nameColumn, $this->getmyKeyColumn());
         } else {
-            return $this->getColumnsFromMySQL($columnsToGet, $this->userColumn . '=' . $thisID . ' OR ' . $this->userColumn . ' IS NULL ', $this->nameColumn, $this->getmyKeyColumn());
+            return $this->getColumnsFromMySQL($columnsToGet, $this->userColumn . '=' . $thisID , $this->nameColumn, $this->getmyKeyColumn());
         }
     }
 
@@ -710,11 +710,11 @@ class IEcfg extends EaseBrick
                 $used = $this->getColumnsFromMySQL($columnsList, array('use' => $this->getDataValue('name')), $this->nameColumn, $this->getmyKeyColumn());
                 if (count($used)) {
                     $usedFrame = new EaseHtmlFieldSet(_('je předlohou pro'));
-                    foreach ($used as $UsId => $UsInfo) {
-                        if ($this->publicRecords && ($UsInfo['public'] != true) && ($UsInfo[$this->userColumn] != EaseShared::user()->getUserID() )) {
-                            $usedFrame->addItem(new EaseHtmlSpanTag(null, $UsInfo[$this->nameColumn], array('class' => 'jellybean gray')));
+                    foreach ($used as $usId => $usInfo) {
+                        if ($this->publicRecords && ($usInfo['public'] != true) && ($usInfo[$this->userColumn] != EaseShared::user()->getUserID() )) {
+                            $usedFrame->addItem(new EaseHtmlSpanTag(null, $usInfo[$this->nameColumn], array('class' => 'jellybean gray')));
                         } else {
-                            $usedFrame->addItem(new EaseHtmlSpanTag(null, new EaseHtmlATag('?' . $this->getmyKeyColumn() . '=' . $UsId, $UsInfo[$this->nameColumn]), array('class' => 'jellybean')));
+                            $usedFrame->addItem(new EaseHtmlSpanTag(null, new EaseHtmlATag('?' . $this->getmyKeyColumn() . '=' . $usId, $usInfo[$this->nameColumn]), array('class' => 'jellybean')));
                         }
                     }
 
@@ -722,7 +722,7 @@ class IEcfg extends EaseBrick
                 }
             }
 
-            return new EaseJQConfirmedLinkButton('?' . $this->getmyKeyColumn() . '=' . $this->getID() . '&delete=true', _('Smazat ') . $name . ' <i class="icon-remove-sign"></i>');
+            return new EaseJQConfirmedLinkButton('?' . $this->getmyKeyColumn() . '=' . $this->getID() . '&delete=true', _('Smazat ') . $name . ' '. EaseTWBPart::GlyphIcon('remove-sign'));
         } else {
             return '';
         }
