@@ -21,6 +21,7 @@ $host = new IEHost($oPage->getRequestValue('host_id', 'int'));
 
 if($service->getOwnerID() != $oUser->getMyKey() ){
     $service->delMember('host_name', $host->getId(), $host->getName());
+    $service->setDataValue('action_url', $_SERVER['REQUEST_URI']);
     $service->saveToMySQL();
     
     $service->unsetDataValue($service->getmyKeyColumn());
