@@ -2,7 +2,7 @@
 
 /**
  * Konfigurace Služeb
- * 
+ *
  * @package    IcingaEditor
  * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
@@ -11,7 +11,7 @@
 require_once 'IEcfg.php';
 
 /**
- * Služby 
+ * Služby
  */
 class IEService extends IECfg
 {
@@ -23,19 +23,19 @@ class IEService extends IECfg
 
     /**
      * Weblink
-     * @var string 
+     * @var string
      */
     public $webLinkColumn = 'action_url';
 
     /**
      * Přidat položky register a use ?
-     * @var boolean 
+     * @var boolean
      */
     public $allowTemplating = true;
 
     /**
      * Dát tyto položky k dispozici i ostatním ?
-     * @var boolean 
+     * @var boolean
      */
     public $publicRecords = true;
     public $useKeywords = array(
@@ -85,7 +85,8 @@ class IEService extends IECfg
         'action_url' => 'VARCHAR(64)',
         'icon_image' => 'VARCHAR(64)',
         'icon_image_alt' => 'VARCHAR(64)',
-        'platform' => "ENUM('generic','linux','windows')"        
+        'configurator' => 'VARCHAR(64)',
+        'platform' => "ENUM('generic','linux','windows')"
     );
     public $keywordsInfo = array(
         'host_name' => array(
@@ -215,176 +216,179 @@ class IEService extends IECfg
         'action_url' => array('title' => 'url dodatečné akce'),
         'icon_image' => array('title' => 'ikona služby'),
         'icon_image_alt' => array('title' => 'alternativní ikona služby'),
+        'configurator' => array('title' => 'Plugin pro konfiguraci služby'),
         'platform' => array( 'title' => 'Platforma','mandatory' => true )
     );
 
     /**
      * URL dokumentace objektu
-     * @var string 
+     * @var string
      */
     public $documentationLink = 'http://docs.icinga.org/latest/en/objectdefinitions.html#objectdefinitions-service';
 
     /**
      * Vrací všechna data uživatele
-     * 
-     * @return array 
+     *
+     * @return array
      */
-    function getAllUserData()
+    public function getAllUserData()
     {
-        $User = EaseShared::user();
-        $UserID = $User->getUserID();
-        $AllData = parent::getAllUserData();
-        foreach ($AllData as $ADkey => $AD) {
-            if ($AllData[$ADkey]['check_command-remote']) {
-                $Params = ' ' . $AllData[$ADkey]['check_command-remote'] . '!' . $AllData[$ADkey]['check_command-params'];
+        $user = EaseShared::user();
+        $userID = $user->getUserID();
+        $allData = parent::getAllUserData();
+        foreach ($allData as $adKey => $ad) {
+            if ($allData[$adKey]['check_command-remote']) {
+                $params = ' ' . $allData[$adKey]['check_command-remote'] . '!' .
+                        $allData[$adKey]['check_command-params'];
             } else {
-                $Params = ' ' . $AllData[$ADkey]['check_command-params'];
+                $params = ' ' . $allData[$adKey]['check_command-params'];
             }
-            unset($AllData[$ADkey]['check_command-remote']);
-            unset($AllData[$ADkey]['check_command-params']);
-            $AllData[$ADkey]['check_command'].= $Params;
-            unset($AllData[$ADkey]['tcp_port']);
-            
-            if (is_array($AD['contacts']) && count($AD['contacts'])) { //Projít kontakty, vyhodit nevlastněné uživatelem
-                foreach ($AD['contacts'] as $ContactID => $ContactName) {
-                    $ContactUserID = $this->myDbLink->QueryToValue('SELECT user_id FROM ' . DB_PREFIX . 'contact WHERE contact_id=' . $ContactID);
-                    if ($UserID != $ContactUserID) {
-                        unset($AllData[$ADkey]['contacts'][$ContactID]);
+            unset($allData[$adKey]['check_command-remote']);
+            unset($allData[$adKey]['check_command-params']);
+            $allData[$adKey]['check_command'].= $params;
+            unset($allData[$adKey]['tcp_port']);
+
+            if (is_array($ad['contacts']) && count($ad['contacts'])) { //Projít kontakty, vyhodit nevlastněné uživatelem
+                foreach ($ad['contacts'] as $ContactID => $ContactName) {
+                    $contactUserID = $this->myDbLink->QueryToValue('SELECT user_id FROM ' . DB_PREFIX . 'contact WHERE contact_id=' . $ContactID);
+                    if ($userID != $contactUserID) {
+                        unset($allData[$adKey]['contacts'][$ContactID]);
                     }
                 }
             }
 
-            if (is_array($AD['host_name']) && count($AD['host_name'])) { //Projít kontakty, vyhodit nevlastněné uživatelem
-                foreach ($AD['host_name'] as $HostID => $HostName) {
-                    $HostUserID = $this->myDbLink->QueryToValue('SELECT user_id FROM ' . DB_PREFIX . 'hosts WHERE host_id=' . $HostID);
-                    if ($UserID != $HostUserID) {
-                        unset($AllData[$ADkey]['host_name'][$HostID]);
+            if (is_array($ad['host_name']) && count($ad['host_name'])) { //Projít kontakty, vyhodit nevlastněné uživatelem
+                foreach ($ad['host_name'] as $hostID => $HostName) {
+                    $hostUserID = $this->myDbLink->QueryToValue('SELECT user_id FROM ' . DB_PREFIX . 'hosts WHERE host_id=' . $hostID);
+                    if ($userID != $hostUserID) {
+                        unset($allData[$adKey]['host_name'][$hostID]);
                     }
                 }
             }
 
-
-            if (!$this->isTemplate($AllData[$ADkey])) {
-                $AllData[$ADkey][$this->nameColumn] = $AllData[$ADkey][$this->nameColumn] . '-' . EaseShared::user()->getUserLogin(); //Přejmenovat službu podle uživatele
-                if (!count($AllData[$ADkey]['host_name'])) { //Negenerovat nepoužité služby
-                    unset($AllData[$ADkey]);
+            if (!$this->isTemplate($allData[$adKey])) {
+                $allData[$adKey][$this->nameColumn] =
+                        $allData[$adKey][$this->nameColumn] . '-' .
+                        EaseShared::user()->getUserLogin(); //Přejmenovat službu podle uživatele
+                if (!count($allData[$adKey]['host_name'])) { //Negenerovat nepoužité služby
+                    unset($allData[$adKey]);
                 }
             }
         }
 
-
-
-        return $AllData;
+        return $allData;
     }
 
     /**
      * Vrací všechna data
-     * 
-     * @return array 
+     *
+     * @return array
      */
-    function getAllData()
+    public function getAllData()
     {
         $allData = parent::getAllData();
-        foreach ($allData as $ADkey => $AD) {
-            $Params = $allData[$ADkey]['check_command-params'];
+        foreach ($allData as $adKey => $AD) {
+            $params = $allData[$adKey]['check_command-params'];
 
-
-            if (strlen($allData[$ADkey]['check_command-remote'])) {
-                if (strlen($Params)) {
-                    $allData[$ADkey]['check_command'].= '!'.$allData[$ADkey]['check_command-remote'] . '!' . $Params;
+            if (strlen($allData[$adKey]['check_command-remote'])) {
+                if (strlen($params)) {
+                    $allData[$adKey]['check_command'].= '!'.$allData[$adKey]['check_command-remote'] . '!' . $params;
                 } else {
-                    $allData[$ADkey]['check_command'].= '!'.$allData[$ADkey]['check_command-remote'];
+                    $allData[$adKey]['check_command'].= '!'.$allData[$adKey]['check_command-remote'];
                 }
             } else {
-                if (strlen($Params)) {
-                    $allData[$ADkey]['check_command'].= '!' . $Params;
+                if (strlen($params)) {
+                    $allData[$adKey]['check_command'].= '!' . $params;
                 }
             }
-            unset($allData[$ADkey]['check_command-remote']);
-            unset($allData[$ADkey]['check_command-params']);
-            unset($allData[$ADkey]['tcp_port']);
+            unset($allData[$adKey]['check_command-remote']);
+            unset($allData[$adKey]['check_command-params']);
+            unset($allData[$adKey]['tcp_port']);
+            unset($allData[$adKey]['configurator']);
         }
+
         return $allData;
     }
 
     /**
      * Zkontroluje všechny položky
-     * 
-     * @param array $AllData
+     *
+     * @param  array $allData
      * @return array
      */
-    function controlAllData($AllData)
+    public function controlAllData($allData)
     {
-        $User = EaseShared::user();
-        $UserID = $User->getUserID();
-        foreach ($AllData as $ADkey => $AD) {
+        $user = EaseShared::user();
+        $userID = $user->getUserID();
+        foreach ($allData as $adKey => $ad) {
 
-            if ($AD[$this->nameColumn] == 'FTP') {
+            if ($ad[$this->nameColumn] == 'FTP') {
                 echo '';
             }
 
-            if ($this->isTemplate($AD)) { //Předloha
-                if ($UserID != (int) $AD[$this->userColumn]) {
-                    unset($AllData[$ADkey]);
+            if ($this->isTemplate($ad)) { //Předloha
+                if ($userID != (int) $ad[$this->userColumn]) {
+                    unset($allData[$adKey]);
                     continue;
                 }
-                if (!(int) $this->myDbLink->QueryToValue('SELECT COUNT(*) FROM ' . $this->myTable . ' WHERE `use`=\'' . $AD['name'] . '\'')) {
-                    $this->addStatusMessage(sprintf(_('Předloha služby %s není použita. Negeneruji do konfigurace'), $AD['name']), 'info');
-                    unset($AllData[$ADkey]);
+                if (!(int) $this->myDbLink->QueryToValue('SELECT COUNT(*) FROM ' . $this->myTable . ' WHERE `use`=\'' . $ad['name'] . '\'')) {
+                    $this->addStatusMessage(sprintf(_('Předloha služby %s není použita. Negeneruji do konfigurace'), $ad['name']), 'info');
+                    unset($allData[$adKey]);
                     continue;
                 }
             } else { //záznam
-                $AllData[$ADkey][$this->nameColumn] = $AllData[$ADkey][$this->nameColumn] . '-' . $User->getUserLogin();
+                $allData[$adKey][$this->nameColumn] = $allData[$adKey][$this->nameColumn] . '-' . $user->getUserLogin();
 
-                if (is_array($AD['contacts']) && count($AD['contacts'])) { //Projít kontakty, vyhodit nevlastněné uživatelem
-                    foreach ($AD['contacts'] as $ContactID => $ContactName) {
+                if (is_array($ad['contacts']) && count($ad['contacts'])) { //Projít kontakty, vyhodit nevlastněné uživatelem
+                    foreach ($ad['contacts'] as $ContactID => $ContactName) {
                         $ContactUserID = $this->myDbLink->QueryToValue('SELECT user_id FROM ' . DB_PREFIX . 'contact WHERE contact_id=' . $ContactID);
-                        if ($UserID != $ContactUserID) {
-                            unset($AllData[$ADkey]['contacts'][$ContactID]);
+                        if ($userID != $ContactUserID) {
+                            unset($allData[$adKey]['contacts'][$ContactID]);
                         }
                     }
                 }
 
-                if (is_array($AD['host_name']) && count($AD['host_name'])) { //Projít kontakty, vyhodit nevlastněné uživatelem
-                    foreach ($AD['host_name'] as $HostID => $HostName) {
-                        $HostUserID = (int) $this->myDbLink->QueryToValue('SELECT user_id FROM ' . DB_PREFIX . 'hosts WHERE host_id=' . $HostID);
-                        if ($UserID != $HostUserID) {
-                            unset($AllData[$ADkey]['host_name'][$HostID]);
+                if (is_array($ad['host_name']) && count($ad['host_name'])) { //Projít kontakty, vyhodit nevlastněné uživatelem
+                    foreach ($ad['host_name'] as $HostID => $HostName) {
+                        $hostUserID = (int) $this->myDbLink->QueryToValue('SELECT user_id FROM ' . DB_PREFIX . 'hosts WHERE host_id=' . $HostID);
+                        if ($userID != $hostUserID) {
+                            unset($allData[$adKey]['host_name'][$HostID]);
                         };
                     }
                 }
 
-                if (is_null($AllData[$ADkey]['host_name']) || !count($AllData[$ADkey]['host_name'])) {
-                    if ($AD[$this->userColumn] == $UserID) {
-                        $this->addStatusMessage(sprintf(_('Služba %s není použita. Negeneruji do konfigurace'), $AD[$this->nameColumn]), 'info');
+                if (is_null($allData[$adKey]['host_name']) || !count($allData[$adKey]['host_name'])) {
+                    if ($ad[$this->userColumn] == $userID) {
+                        $this->addStatusMessage(sprintf(_('Služba %s není použita. Negeneruji do konfigurace'), $ad[$this->nameColumn]), 'info');
                     }
-                    unset($AllData[$ADkey]);
+                    unset($allData[$adKey]);
                     continue;
                 }
 
-                if ($AllData[$ADkey]['max_check_attempts'] == 0) {
-                    unset($AllData[$ADkey]['max_check_attempts']);
+                if ($allData[$adKey]['max_check_attempts'] == 0) {
+                    unset($allData[$adKey]['max_check_attempts']);
                 }
-                if ($AllData[$ADkey]['check_interval'] == 0) {
-                    unset($AllData[$ADkey]['check_interval']);
+                if ($allData[$adKey]['check_interval'] == 0) {
+                    unset($allData[$adKey]['check_interval']);
                 }
-                if ($AllData[$ADkey]['retry_interval'] == 0) {
-                    $AllData[$ADkey]['retry_interval'] == 60;
+                if ($allData[$adKey]['retry_interval'] == 0) {
+                    $allData[$adKey]['retry_interval'] == 60;
                 }
-                if ($AllData[$ADkey]['notification_interval'] == 0) {
-                    unset($AllData[$ADkey]['notification_interval']);
+                if ($allData[$adKey]['notification_interval'] == 0) {
+                    unset($allData[$adKey]['notification_interval']);
                 }
             }
         }
-        return $AllData;
+
+        return $allData;
     }
 
     /**
      * Přestane službu sledovat pro daný host
-     * 
+     *
      * @param int    $hostID
      * @param string $hostName
-     * 
+     *
      * @return bool success
      */
     public function delHostName($hostID, $hostName)
@@ -392,16 +396,20 @@ class IEService extends IECfg
         return $this->delMember('host_name', $hostID, $hostName);
     }
 
+    /**
+     * Provede přejmenování hostu
+     * 
+     * @param int    $hostid
+     * @param string $newname
+     * @return type
+     */
     public function renameHostName($hostid, $newname)
     {
         return $this->renameMember('host_name', $hostid, $newname);
     }
-
-   
 
 }
 
 /*
   UPDATE `iciedit`.`iciedit_services` SET `max_check_attempts` = NULL, `check_interval` = NULL, `retry_interval` = NULL, `active_checks_enabled` = NULL, `passive_checks_enabled` = NULL, `check_period` = NULL, `parallelize_check` = NULL, `normal_check_interval` = NULL, `retry_check_interval` = NULL, `obsess_over_service` = NULL, `check_freshness` = NULL, `freshness_threshold` = NULL, `event_handler` = NULL, `event_handler_enabled` = NULL, `low_flap_threshold` = NULL, `high_flap_threshold` = NULL, `flap_detection_enabled` = NULL, `flap_detection_options` = NULL, `failure_prediction_enabled` = NULL, `process_perf_data` = NULL, `retain_status_information` = NULL, `retain_nonstatus_information` = NULL, `notification_interval` = NULL, `first_notification_delay` = NULL, `notification_period` = NULL, `notification_options` = NULL, `notifications_enabled` = NULL WHERE `iciedit_services`.`service_id` = 15;
  */
-?>
