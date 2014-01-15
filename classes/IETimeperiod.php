@@ -2,7 +2,7 @@
 
 /**
  * Konfigurace Period
- * 
+ *
  * @package    IcingaEditor
  * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
@@ -30,32 +30,32 @@ class IETimeperiod extends IECfg
 
     /**
      * Pole časových period
-     * @var array 
+     * @var array
      */
-    public $Timeperiods = array();
+    public $timeperiods = array();
 
     /**
      * Dát tyto položky k dispozici i ostatním ?
-     * @var boolean 
+     * @var boolean
      */
     public $publicRecords = true;
 
     /**
      * URL dokumentace objektu
-     * @var string 
+     * @var string
      */
     public $documentationLink = 'http://docs.icinga.org/latest/en/objectdefinitions.html#objectdefinitions-timeperiod';
 
     /**
      * Převezme data
-     * 
-     * @param type $data
-     * @param type $DataPrefix
-     * @return type 
+     *
+     * @param  type $data
+     * @param  type $dataPrefix
+     * @return type
      */
-    function takeData($data, $DataPrefix = null)
+    public function takeData($data, $dataPrefix = null)
     {
-        $this->Timeperiods = array();
+        $this->timeperiods = array();
         if (isset($data['NewKey']) && strlen(trim($data['NewKey'])) && isset($data['NewTimes']) && strlen(trim($data['NewTimes']))) {
             $this->addTime($data['NewKey'], $data['NewTimes']);
         }
@@ -69,56 +69,60 @@ class IETimeperiod extends IECfg
                 $this->addTime($Key, $value);
             }
         }
-        return parent::takeData($this->getData(), $DataPrefix);
+
+        return parent::takeData($this->getData(), $dataPrefix);
     }
 
     /**
      * Načte časovou periodu z databáze
-     * 
-     * @param int $ItemID
-     * @param string $DataPrefix
-     * @param bool $Multiplete
-     * @return array 
+     *
+     * @param  int    $itemID
+     * @param  string $dataPrefix
+     * @param  bool   $multiplete
+     * @return array
      */
-    function loadFromMySQL($ItemID = null, $DataPrefix = null, $Multiplete = false)
+    public function loadFromMySQL($itemID = null, $dataPrefix = null, $multiplete = false)
     {
-        $Restult = parent::loadFromMySQL($ItemID, $DataPrefix, $Multiplete);
+        $Restult = parent::loadFromMySQL($itemID, $dataPrefix, $multiplete);
         $Members = $this->getDataValue('periods');
         if (strlen($Members)) {
-            $this->Timeperiods = unserialize($Members);
+            $this->timeperiods = unserialize($Members);
         }
+
         return $Restult;
     }
 
     /**
      * Uloží časovou periodu do databáze
-     * 
-     * @param array $data
-     * @param bool $SearchForID
-     * @return int 
+     *
+     * @param  array $data
+     * @param  bool  $searchForID
+     * @return int
      */
-    function saveToMySQL($data = null, $SearchForID = false)
+    public function saveToMySQL($data = null, $searchForID = false)
     {
         if (is_null($data)) {
             $data = $this->getData();
         }
-        if (count($this->Timeperiods)) {
-            $data['periods'] = serialize($this->Timeperiods);
+        if (count($this->timeperiods)) {
+            $data['periods'] = serialize($this->timeperiods);
         }
         $this->setData($data);
-        return parent::saveToMySQL($data, $SearchForID);
+
+        return parent::saveToMySQL($data, $searchForID);
     }
 
     /**
      * Přidá čas do periody
-     * 
+     *
      * @param string $MemberID
-     * @param string $MemberName 
+     * @param string $MemberName
      */
-    function addTime($TimeName, $TimeInterval)
+    public function addTime($timeName, $timeInterval)
     {
-        if (strlen($TimeName) && strlen($TimeInterval)) {
-            $this->Timeperiods[trim($TimeName)] = trim($TimeInterval);
+        if (strlen($timeName) && strlen($timeInterval)) {
+            $this->timeperiods[trim($timeName)] = trim($timeInterval);
+
             return true;
         } else {
             return false;
@@ -127,62 +131,64 @@ class IETimeperiod extends IECfg
 
     /**
      * Odebere čas z periody
-     * 
-     * @param string $MemberName
-     * @return boolean 
+     *
+     * @param  string  $MemberName
+     * @return boolean
      */
-    function delTime($MemberID)
+    public function delTime($memberID)
     {
-        if (isset($this->Timeperiods[$MemberID])) {
-            unset($this->Timeperiods[$MemberID]);
+        if (isset($this->timeperiods[$memberID])) {
+            unset($this->timeperiods[$memberID]);
+
             return true;
         }
     }
 
-    function getAllUserData()
+    public function getAllUserData()
     {
-        $AllData = parent::getAllUserData();
-        foreach ($AllData as $Key => $DataRow) {
-            $Periods = $DataRow['periods'];
-            if (is_array($Periods) && count($Periods)) {
-                foreach ($Periods as $TimeName => $TimeInterval) {
+        $allData = parent::getAllUserData();
+        foreach ($allData as $key => $dataRow) {
+            $periods = $dataRow['periods'];
+            if (is_array($periods) && count($periods)) {
+                foreach ($periods as $TimeName => $TimeInterval) {
                     $this->useKeywords[$TimeName] = true;
                 }
-                unset($AllData[$Key]['periods']);
-                if (count($Periods)) {
-                    $AllData[$Key] = array_merge($AllData[$Key], $Periods);
+                unset($allData[$key]['periods']);
+                if (count($periods)) {
+                    $allData[$key] = array_merge($allData[$key], $periods);
                 }
             }
         }
-        return $AllData;
+
+        return $allData;
     }
 
-    function getAllData()
+    public function getAllData()
     {
-        $AllData = parent::getAllData();
-        foreach ($AllData as $Key => $DataRow) {
-            $Periods = $DataRow['periods'];
-            if (count($Periods)) {
-                foreach ($Periods as $TimeName => $TimeInterval) {
-                    $this->useKeywords[$TimeName] = true;
+        $allData = parent::getAllData();
+        foreach ($allData as $key => $dataRow) {
+            $periods = $dataRow['periods'];
+            if (count($periods)) {
+                foreach ($periods as $timeName => $timeInterval) {
+                    $this->useKeywords[$timeName] = true;
                 }
-                $AllData[$Key] = array_merge($AllData[$Key], $Periods);
+                $allData[$key] = array_merge($allData[$key], $periods);
             }
-            unset($AllData[$Key]['periods']);
+            unset($allData[$key]['periods']);
         }
-        return $AllData;
+
+        return $allData;
     }
 
     /**
      * Vrací mazací tlačítko
-     * 
-     * @param string $name
-     * @return \EaseJQConfirmedLinkButton 
+     *
+     * @param  string                     $name
+     * @param  string                     $urlAdd Předávaná část URL
+     * @return \EaseJQConfirmedLinkButton
      */
-    function deleteButton($name = null)
+    public function deleteButton($name = null,$addUrl = '')
     {
-        return parent::deleteButton(_('Časovou periodu'));
+        return parent::deleteButton(_('Časovou periodu'),$addUrl);
     }
 }
-
-?>

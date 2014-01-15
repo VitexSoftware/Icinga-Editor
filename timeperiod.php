@@ -61,7 +61,7 @@ $TimesTable = new EaseHtmlTableTag();
 $TimesTable->addRowHeaderColumns(array(new EaseLabeledTextInput('NewKey', null, _('Označení')),
     new EaseLabeledTextInput('NewTimes', null, _('Interval(y)')), ''));
 
-foreach ($Timeperiod->Timeperiods as $TimeName => $TimeIntervals) {
+foreach ($Timeperiod->timeperiods as $TimeName => $TimeIntervals) {
     $TimesTable->addRowColumns(array($TimeName, $TimeIntervals, new EaseHtmlATag('?del=' . $TimeName . '&amp;' . $Timeperiod->getmyKeyColumn() . '=' . $Timeperiod->getMyKey(), '<i class="icon-remove"></i>')));
 }
 

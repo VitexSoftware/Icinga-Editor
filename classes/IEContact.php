@@ -2,7 +2,7 @@
 
 /**
  * Konfigurace Kontaktů
- * 
+ *
  * @package    IcingaEditor
  * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
@@ -11,7 +11,7 @@
 require_once 'IEcfg.php';
 
 /**
- * Spráce kontaktů 
+ * Spráce kontaktů
  */
 class IEContact extends IECfg
 {
@@ -19,7 +19,7 @@ class IEContact extends IECfg
     public $myTable = 'contact';
     /**
      * Klíčový sloupeček
-     * @var string 
+     * @var string
      */
     public $myKeyColumn = 'contact_id';
     public $nameColumn = 'contact_name';
@@ -27,13 +27,13 @@ class IEContact extends IECfg
 
     /**
      * Přidat položky register a use ?
-     * @var boolean 
+     * @var boolean
      */
     public $allowTemplating = true;
 
     /**
      * Dát tyto položky k dispozici i ostatním ?
-     * @var boolean 
+     * @var boolean
      */
     public $publicRecords = false;
     public $useKeywords = array(
@@ -161,29 +161,31 @@ class IEContact extends IECfg
 
     /**
      * URL dokumentace objektu
-     * @var string 
+     * @var string
      */
     public $documentationLink = 'http://docs.icinga.org/latest/en/objectdefinitions.html#objectdefinitions-contact';
 
     /**
      * Vrací mazací tlačítko
-     * 
-     * @param string $name
-     * @return \EaseJQConfirmedLinkButton 
+     *
+     * @param  string                     $name
+     * @param  string                     $urlAdd Předávaná část URL
+     * @return \EaseJQConfirmedLinkButton
      */
-    function deleteButton($name = null)
+    public function deleteButton($name = null,$addUrl = '')
     {
-        return parent::deleteButton(_('Kontakt'));
+        return parent::deleteButton(_('Kontakt'),$addUrl);
     }
 
     /**
      * vrací nastavení pro výchozí kontakt uživatele
-     * 
-     * @return  array Pole nastavení
+     *
+     * @return array Pole nastavení
      */
     public static function ownContactData()
     {
         $OUser = EaseShared::user();
+
         return array(
             'use' => 'generic-contact',
             'contact_name' => $OUser->getUserLogin(),
@@ -197,5 +199,3 @@ class IEContact extends IECfg
     }
 
 }
-
-?>

@@ -228,11 +228,12 @@ class IEHost extends IECfg
      * Vrací mazací tlačítko
      *
      * @param  string                     $name
+     * @param  string                     $urlAdd Předávaná část URL
      * @return \EaseJQConfirmedLinkButton
      */
-    public function deleteButton($name = null)
+    public function deleteButton($name = null,$addUrl = '')
     {
-        return parent::deleteButton(_('Hosta'));
+        return parent::deleteButton(_('Hosta'),$addUrl);
     }
 
     /**

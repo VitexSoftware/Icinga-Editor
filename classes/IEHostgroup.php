@@ -2,7 +2,7 @@
 
 /**
  * Konfigurace Skupin hostů
- * 
+ *
  * @package    IcingaEditor
  * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
@@ -20,7 +20,7 @@ class IEHostgroup extends IECfg
 
     /**
      * Dát tyto položky k dispozici i ostatním ?
-     * @var boolean 
+     * @var boolean
      */
     public $publicRecords = false;
     public $useKeywords = array(
@@ -57,7 +57,7 @@ class IEHostgroup extends IECfg
     );
     /**
      * URL dokumentace objektu
-     * @var string 
+     * @var string
      */
     public $documentationLink = 'http://docs.icinga.org/latest/en/objectdefinitions.html#objectdefinitions-hostgroup';
 
@@ -65,20 +65,20 @@ class IEHostgroup extends IECfg
      * Smaže hosta ze všech skupin, již je členem.
      * @param string $hostname
      */
-    function deleteHost($hostname)
+    public function deleteHost($hostname)
     {
         $MemberOf = EaseShared::myDbLink()->queryToArray('SELECT '.$this->getmyKeyColumn().','.$this->nameColumn.' FROM '. $this->myTable.' WHERE members LIKE \'%"'.$hostname.'"%\' ',$this->getmyKeyColumn() );
-        foreach ($MemberOf as $GroupID => $Group){
+        foreach ($MemberOf as $GroupID => $Group) {
             $Found = false;
             $this->loadFromMySQL($GroupID);
-            foreach ($this->data['members'] as $ID=>$Member){
-                if($Member == $hostname){
+            foreach ($this->data['members'] as $ID=>$Member) {
+                if ($Member == $hostname) {
                     $Found = true;
                     unset($this->data['members'][$ID]);
                     $this->addStatusMessage(sprintf(_(' %s byl odstraněn ze skupiny %s '),$hostname,$Group[$this->nameColumn]));
                 }
             }
-            if($Found){
+            if ($Found) {
                 $this->saveToMySQL();
             }
         }
@@ -86,44 +86,46 @@ class IEHostgroup extends IECfg
 
     /**
      * Vrací mazací tlačítko
-     * 
-     * @param string $name
-     * @return \EaseJQConfirmedLinkButton 
+     *
+     * @param  string                     $name
+     * @param  string                     $urlAdd Předávaná část URL
+     * @return \EaseJQConfirmedLinkButton
      */
-    function deleteButton($name = null)
+    public function deleteButton($name = null,$addUrl = '')
     {
-        return parent::deleteButton(_('skupinu hostů'));
+        return parent::deleteButton(_('skupinu hostů'),$addUrl);
     }
 
-    function loadDefault(){
+    public function loadDefault()
+    {
         $groupID = EaseShared::myDbLink()->queryToValue('SELECT '.$this->getmyKeyColumn().' FROM '. $this->myTable.' WHERE '.$this->userColumn.'= ' . EaseShared::user()->getUserID().' ORDER BY '.$this->getmyKeyColumn().' DESC LIMIT 1');
-        if($groupID){
-            $this->loadFromMySQL((int)$groupID);
+        if ($groupID) {
+            $this->loadFromMySQL((int) $groupID);
+
             return true;
         }
+
         return false;
     }
 
     public function renameHost($oldname, $newname)
     {
         $memberOf = EaseShared::myDbLink()->queryToArray('SELECT '.$this->getmyKeyColumn().','.$this->nameColumn.' FROM '. $this->myTable.' WHERE members LIKE \'%"'.$oldname.'"%\' ',$this->getmyKeyColumn() );
-        foreach ($memberOf as $groupID => $group){
+        foreach ($memberOf as $groupID => $group) {
             $found = false;
             $this->loadFromMySQL($groupID);
-            foreach ($this->data['members'] as $ID=>$Member){
-                if($Member == $hostname){
+            foreach ($this->data['members'] as $ID=>$Member) {
+                if ($Member == $hostname) {
                     $found = true;
                     $this->data['members'][$ID]= $newname;
                     $this->addStatusMessage(sprintf(_(' %s byl odstraněn ze skupiny %s '),$hostname,$group[$this->nameColumn]));
                 }
             }
-            if($found){
+            if ($found) {
                 $this->saveToMySQL();
             }
         }
-        
-    }
-    
-}
 
-?>
+    }
+
+}

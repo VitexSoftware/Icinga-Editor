@@ -2,7 +2,7 @@
 
 /**
  * Konfigurace Kontaktů
- * 
+ *
  * @package    IcingaEditor
  * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
@@ -11,7 +11,7 @@
 require_once 'IEcfg.php';
 
 /**
- * Spráce kontaktů 
+ * Spráce kontaktů
  */
 class IECommand extends IECfg
 {
@@ -23,7 +23,7 @@ class IECommand extends IECfg
 
     /**
      * Přidat položky register a use ?
-     * @var boolean 
+     * @var boolean
      */
     public $allowTemplating = false;
 
@@ -47,22 +47,22 @@ class IECommand extends IECfg
     );
     /**
      * URL dokumentace objektu
-     * @var string 
+     * @var string
      */
     public $documentationLink = 'http://docs.icinga.org/latest/en/objectdefinitions.html#objectdefinitions-command';
 
     /**
      * Dát tyto položky k dispozici i ostatním ?
-     * @var boolean 
+     * @var boolean
      */
     public $publicRecords = true;
 
     /**
      * Vrací všechna data uživatele
-     * 
-     * @return array 
+     *
+     * @return array
      */
-    function getAllUserData()
+    public function getAllUserData()
     {
         $AllData = parent::getAllUserData();
         foreach ($AllData as $ADkey => $AD) {
@@ -70,15 +70,16 @@ class IECommand extends IECfg
             unset($AllData[$ADkey]['command_local']);
             unset($AllData[$ADkey]['command_remote']);
         }
+
         return $AllData;
     }
 
     /**
      * Vrací všechna data
-     * 
-     * @return array 
+     *
+     * @return array
      */
-    function getAllData()
+    public function getAllData()
     {
         $AllData = parent::getAllData();
         foreach ($AllData as $ADkey => $AD) {
@@ -86,38 +87,39 @@ class IECommand extends IECfg
             unset($AllData[$ADkey]['command_remote']);
             unset($AllData[$ADkey]['command_type']);
         }
+
         return $AllData;
     }
     /**
      * Vrací mazací tlačítko
-     * 
-     * @param string $name
-     * @return \EaseJQConfirmedLinkButton 
+     *
+     * @param  string                     $name
+     * @param  string                     $urlAdd Předávaná část URL
+     * @return \EaseJQConfirmedLinkButton
      */
-    function deleteButton($name = null)
+    public function deleteButton($name = null,$addUrl = '')
     {
-        return parent::deleteButton(_('příkaz'));
+        return parent::deleteButton(_('příkaz'),$addUrl);
     }
 
     /**
      * Načte data do objektu
-     * 
-     * @param array  $data
-     * @param string $DataPrefix
-     * @return int počet převzatých řádek
+     *
+     * @param  array  $data
+     * @param  string $dataPrefix
+     * @return int    počet převzatých řádek
      */
-    function takeData($data, $DataPrefix = null)
+    public function takeData($data, $dataPrefix = null)
     {
-        if(!isset($data['command_type'])){
-            if(strstr($data[$this->nameColumn], 'notify')){
+        if (!isset($data['command_type'])) {
+            if (strstr($data[$this->nameColumn], 'notify')) {
                 $data['command_type'] = 'notify';
             } else {
                 $data['command_type'] = 'check';
             }
         }
-        return parent::takeData($data, $DataPrefix);
-    }
-    
-}
 
-?>
+        return parent::takeData($data, $dataPrefix);
+    }
+
+}

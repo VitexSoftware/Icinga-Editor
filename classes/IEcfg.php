@@ -98,7 +98,7 @@ class IEcfg extends EaseBrick
 
     /**
      * Objekt vlastníka objektu
-     * @var IEUser 
+     * @var IEUser
      */
     public $owner = null;
 
@@ -177,13 +177,14 @@ class IEcfg extends EaseBrick
      *
      * @return array Results
      */
-    function loadFromMySQL($itemID = null, $dataPrefix = null, $multiplete = false)
+    public function loadFromMySQL($itemID = null, $dataPrefix = null, $multiplete = false)
     {
         $result = parent::loadFromMySQL($itemID, $dataPrefix, $multiplete);
         $ownerid = $this->getDataValue($this->userColumn);
         if ($ownerid) {
-            $this->owner = new IEUser((int)$ownerid);
+            $this->owner = new IEUser((int) $ownerid);
         }
+
         return $result;
     }
 
@@ -577,8 +578,8 @@ class IEcfg extends EaseBrick
             return null;
         } else {
             $result = parent::saveToMySQL($data, $searchForID);
-            if(!is_null($result)){
-                EaseShared::user()->setSettingValue('unsaved',true);                
+            if (!is_null($result)) {
+                EaseShared::user()->setSettingValue('unsaved',true);
             }
         }
         $this->setMyKey($result);
@@ -695,10 +696,11 @@ class IEcfg extends EaseBrick
     /**
      * Vrací mazací tlačítko
      *
-     * @param  tring                      $name jméno objektu
+     * @param  string                     $name   jméno objektu
+     * @param  string                     $urlAdd Předávaná část URL
      * @return \EaseJQConfirmedLinkButton
      */
-    public function deleteButton($name = null)
+    public function deleteButton($name = null, $urlAdd = '')
     {
         if ($this->getOwnerID() == EaseShared::user()->getUserID()) {
 
@@ -714,7 +716,7 @@ class IEcfg extends EaseBrick
                         if ($this->publicRecords && ($usInfo['public'] != true) && ($usInfo[$this->userColumn] != EaseShared::user()->getUserID() )) {
                             $usedFrame->addItem(new EaseHtmlSpanTag(null, $usInfo[$this->nameColumn], array('class' => 'jellybean gray')));
                         } else {
-                            $usedFrame->addItem(new EaseHtmlSpanTag(null, new EaseHtmlATag('?' . $this->getmyKeyColumn() . '=' . $usId, $usInfo[$this->nameColumn]), array('class' => 'jellybean')));
+                            $usedFrame->addItem(new EaseHtmlSpanTag(null, new EaseHtmlATag('?' . $this->getmyKeyColumn() . '=' . $usId.'&'.$urlAdd, $usInfo[$this->nameColumn]), array('class' => 'jellybean')));
                         }
                     }
 
@@ -722,7 +724,7 @@ class IEcfg extends EaseBrick
                 }
             }
 
-            return new EaseJQConfirmedLinkButton('?' . $this->getmyKeyColumn() . '=' . $this->getID() . '&delete=true', _('Smazat ') . $name . ' '. EaseTWBPart::GlyphIcon('remove-sign'));
+            return new EaseJQConfirmedLinkButton('?' . $this->getmyKeyColumn() . '=' . $this->getID() . '&delete=true'.'&'.$urlAdd, _('Smazat ') . $name . ' '. EaseTWBPart::GlyphIcon('remove-sign'));
         } else {
             return '';
         }
@@ -1071,7 +1073,8 @@ class IEcfg extends EaseBrick
         return new \EaseTWBLinkButton('?action=clone&' . $this->getmyKeyColumn() . '=' . $this->getId(), _('Klonovat'));
     }
 
-    function draw(){
+    public function draw()
+    {
         echo $this->getName();
     }
 }
