@@ -330,6 +330,18 @@ class IEMainMenu extends EaseHtmlDivTag
                           'extserviceinfo.php' => _('Rozšířené informace služeb'),
                           'serviceescalation.php' => _('Eskalace služeb') */)
                 );
+            } else {
+                $service = new IEService();
+                $services = $service->getListing(null, null, array('icon_image', 'platform'));
+                
+                if(count($services)){
+                    $services_menu = array( 'services.php' => EaseTWBPart::GlyphIcon('list') . ' ' . _('Přehled služeb'));
+                    foreach ($services as $serviceID => $serviceInfo){
+                        $services_menu['servicetweak.php?service_id='.$serviceID] = $serviceInfo[$service->nameColumn];
+                    }
+                    $nav->addDropDownMenu(_('Služby'),$services_menu);
+                }
+                
             }
             $nav->addDropDownMenu(_('Kontakty'), array(
                 'contacts.php' => EaseTWBPart::GlyphIcon('list') . ' ' . _('Přehled kontaktů'),
