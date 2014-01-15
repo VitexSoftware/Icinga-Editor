@@ -557,18 +557,18 @@ class IEcfg extends EaseBrick
 
         if ($this->allowTemplating && $this->isTemplate()) {
             if (isset($data[$this->getmyKeyColumn()]) && (int) $data[$this->getmyKeyColumn()]) {
-                $dbId = $this->myDbLink->queryToValue('SELECT `'. $this->myKeyColumn .'` FROM ' . $this->myTable . ' WHERE `name`' . " = '" . $data['name'] . "' AND " . $this->myKeyColumn . ' != ' . $data[$this->getmyKeyColumn()]);
+                $dbId = $this->myDbLink->queryToValue('SELECT `' . $this->myKeyColumn . '` FROM ' . $this->myTable . ' WHERE `name`' . " = '" . $data['name'] . "' AND " . $this->myKeyColumn . ' != ' . $data[$this->getmyKeyColumn()]);
             } else {
-                $dbId = $this->myDbLink->queryToValue('SELECT `'. $this->myKeyColumn .'` FROM ' . $this->myTable . ' WHERE `name`' . " = '" . $data['name'] . "'");
+                $dbId = $this->myDbLink->queryToValue('SELECT `' . $this->myKeyColumn . '` FROM ' . $this->myTable . ' WHERE `name`' . " = '" . $data['name'] . "'");
             }
         } else {
             if (isset($data[$this->getmyKeyColumn()]) && (int) $data[$this->getmyKeyColumn()]) {
-                $dbId = $this->myDbLink->queryToValue('SELECT `'. $this->myKeyColumn .'` FROM ' . $this->myTable . ' WHERE ' . $this->nameColumn . " = '" . $data[$this->nameColumn] . "' AND " . $this->myKeyColumn . ' != ' . $data[$this->getmyKeyColumn()]);
+                $dbId = $this->myDbLink->queryToValue('SELECT `' . $this->myKeyColumn . '` FROM ' . $this->myTable . ' WHERE ' . $this->nameColumn . " = '" . $data[$this->nameColumn] . "' AND " . $this->myKeyColumn . ' != ' . $data[$this->getmyKeyColumn()]);
             } else {
-                $dbId = $this->myDbLink->queryToValue('SELECT `'. $this->myKeyColumn .'` FROM ' . $this->myTable . ' WHERE ' . $this->nameColumn . " = '" . $data[$this->nameColumn] . "'");
+                $dbId = $this->myDbLink->queryToValue('SELECT `' . $this->myKeyColumn . '` FROM ' . $this->myTable . ' WHERE ' . $this->nameColumn . " = '" . $data[$this->nameColumn] . "'");
             }
         }
-        if (!is_null($dbId) && ($dbId != $this->getMyKey( $data) ) ) {
+        if (!is_null($dbId) && ($dbId != $this->getMyKey($data) )) {
             if ($this->allowTemplating && $this->isTemplate()) {
                 $this->addStatusMessage(sprintf(_('Předloha %s je již definována. Zvolte prosím jiný název.'), $data['name']), 'warning');
             } else {
@@ -579,7 +579,7 @@ class IEcfg extends EaseBrick
         } else {
             $result = parent::saveToMySQL($data, $searchForID);
             if (!is_null($result)) {
-                EaseShared::user()->setSettingValue('unsaved',true);
+                EaseShared::user()->setSettingValue('unsaved', true);
             }
         }
         $this->setMyKey($result);
@@ -645,7 +645,7 @@ class IEcfg extends EaseBrick
 
             return $this->getColumnsFromMySQL($columnsToGet, $this->userColumn . '=' . $thisID . ' OR ' . $this->userColumn . ' IS NULL OR public=1 ', $this->nameColumn, $this->getmyKeyColumn());
         } else {
-            return $this->getColumnsFromMySQL($columnsToGet, $this->userColumn . '=' . $thisID , $this->nameColumn, $this->getmyKeyColumn());
+            return $this->getColumnsFromMySQL($columnsToGet, $this->userColumn . '=' . $thisID, $this->nameColumn, $this->getmyKeyColumn());
         }
     }
 
@@ -716,7 +716,7 @@ class IEcfg extends EaseBrick
                         if ($this->publicRecords && ($usInfo['public'] != true) && ($usInfo[$this->userColumn] != EaseShared::user()->getUserID() )) {
                             $usedFrame->addItem(new EaseHtmlSpanTag(null, $usInfo[$this->nameColumn], array('class' => 'jellybean gray')));
                         } else {
-                            $usedFrame->addItem(new EaseHtmlSpanTag(null, new EaseHtmlATag('?' . $this->getmyKeyColumn() . '=' . $usId.'&'.$urlAdd, $usInfo[$this->nameColumn]), array('class' => 'jellybean')));
+                            $usedFrame->addItem(new EaseHtmlSpanTag(null, new EaseHtmlATag('?' . $this->getmyKeyColumn() . '=' . $usId . '&' . $urlAdd, $usInfo[$this->nameColumn]), array('class' => 'jellybean')));
                         }
                     }
 
@@ -724,7 +724,7 @@ class IEcfg extends EaseBrick
                 }
             }
 
-            return new EaseJQConfirmedLinkButton('?' . $this->getmyKeyColumn() . '=' . $this->getID() . '&delete=true'.'&'.$urlAdd, _('Smazat ') . $name . ' '. EaseTWBPart::GlyphIcon('remove-sign'));
+            return new EaseJQConfirmedLinkButton('?' . $this->getmyKeyColumn() . '=' . $this->getID() . '&delete=true' . '&' . $urlAdd, _('Smazat ') . $name . ' ' . EaseTWBPart::GlyphIcon('remove-sign'));
         } else {
             return '';
         }
@@ -977,13 +977,21 @@ class IEcfg extends EaseBrick
      * @param  string  $memberName
      * @return boolean
      */
-    public function delMember($column, $memberID, $memberName)
+    public function delMember($column, $memberID, $memberName = null)
     {
-        if ($this->data[$column][$memberID] == $memberName) {
-            unset($this->data[$column][$memberID]);
+        if (isset($this->data[$column][$memberID])) {
 
-            return true;
+            if (!is_null($memberName)) {
+                if ($this->data[$column][$memberID] == $memberName) {
+                    unset($this->data[$column][$memberID]);
+                    return true;
+                }
+            } else {
+                unset($this->data[$column][$memberID]);
+                return true;
+            }
         }
+        return false;
     }
 
     /**
@@ -1077,4 +1085,5 @@ class IEcfg extends EaseBrick
     {
         echo $this->getName();
     }
+
 }

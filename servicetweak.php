@@ -40,7 +40,6 @@ if ($delete == 'true') {
     exit();
 }
 
-
 if ($service->getOwnerID() != $oUser->getMyKey()) {
     $service->delMember('host_name', $host->getId(), $host->getName());
     $service->saveToMySQL();
@@ -51,15 +50,34 @@ if ($service->getOwnerID() != $oUser->getMyKey()) {
     $service->setDataValue('action_url', $_SERVER['REQUEST_URI']);
     $service->setDataValue('parent_id', $service->getId());
     $service->setDataValue($service->userColumn, $oUser->getId());
-    $service->setDataValue($service->nameColumn, $service->getName() . ' ' . $host->getName());
+
+    $newname = $service->getName() . ' ' . $host->getName();
+
+    $servcount = $service->myDbLink->queryToCount('SELECT ' . $service->getmyKeyColumn() . ' FROM ' . $service->myTable . ' WHERE ' . $service->nameColumn . ' LIKE \'' . $newname . '%\' ');
+
+    if ($servcount) {
+        $newname .= ' ' . ($servcount + 1);
+    }
+
+    $service->setDataValue($service->nameColumn, $newname);
     $service->setDataValue('host_name', array());
     $service->addMember('host_name', $host->getId(), $host->getName());
-    
+
     if ($service->saveToMySQL()) {
         $oUser->addStatusMessage(_('Služba byla odvozena'), 'success');
     } else {
         $oUser->addStatusMessage(_('Služba nebyla odvozena'), 'error');
     }
+}
+
+$delhost = $oPage->getGetValue('delhost');
+if ($delhost) {
+    $service->delMember('host_name', $oPage->getGetValue('host_id', 'int'), $delhost );
+}
+
+$addhost = $oPage->getGetValue('addhost');
+if ($addhost) {
+    $service->addMember('host_name', $oPage->getGetValue('host_id', 'int'), $addhost );
 }
 
 $oPage->addItem(new IEPageTop(_('Editace služby') . ' ' . $service->getName()));
@@ -77,7 +95,6 @@ $renameForm->addItem(new EaseTWSubmitButton(_('Přejmenovat'), 'success'));
 $oPage->columnIII->addItem(new EaseHtmlFieldSet(_('Přejmenování'), $renameForm));
 
 $oPage->columnI->addItem(new IEHostSelector($service));
-
 
 $oPage->addItem(new IEPageBottom());
 

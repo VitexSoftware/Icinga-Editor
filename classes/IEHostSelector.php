@@ -20,6 +20,7 @@ class IEHostSelector extends EaseContainer
      */
     public function __construct($service)
     {
+        $hostsAssigned=array();
         parent::__construct();
         $fieldName = $this->getmyKeyColumn();
         $initialContent = new EaseHtmlFieldSet(_('Sledované hosty služby'));
@@ -74,7 +75,7 @@ class IEHostSelector extends EaseContainer
                             $hostInfo[$host->nameColumn], 'success', 'xs', array(
                         new EaseHtmlATag(
                                 '?delhost=' . $hostInfo[$host->nameColumn] . '&amp;host_id=' . $hostID . '&amp;' . $service->getmyKeyColumn() . '=' . $service->getMyKey() . '&amp;' . $service->nameColumn . '=' . $service->getName(), EaseTWBPart::GlyphIcon('remove') . ' ' . _('Přestat sledovat'))
-                        , new EaseHtmlATag('hosttweak.php?host_id=' . $hostID . '&amp;service_id=' . $service->getId(), EaseTWBPart::GlyphIcon('wrench') . ' ' . _('Editace'))
+                        , new EaseHtmlATag('host.php?host_id=' . $hostID . '&amp;service_id=' . $service->getId(), EaseTWBPart::GlyphIcon('wrench') . ' ' . _('Editace'))
                             )
                             )
                     );
