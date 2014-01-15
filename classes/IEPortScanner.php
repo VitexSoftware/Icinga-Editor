@@ -46,7 +46,6 @@ class IEPortScanner extends EaseSand
     {
         parent::__construct();
         $this->service = new IEService();
-        $this->service->setmyKeyColumn('tcp_port');
         if (is_object($hostToScan)) {
             $this->host = &$hostToScan;
             $this->performScan();
@@ -65,7 +64,9 @@ class IEPortScanner extends EaseSand
                     $this->host->saveToMySQL();
                 }
             }
+            $this->service->setmyKeyColumn('tcp_port');
             $this->service->loadFromMySQL($port);
+            $this->service->setmyKeyColumn('service_id');
             $this->service->addMember('host_name', $this->host->getId(), $this->host->getName());
             if ($this->service->saveToMySQL()) {
                 $this->addStatusMessage(sprintf(_('Přidána sledovaná služba: %s'),  $this->service->getName()),'success');

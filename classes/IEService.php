@@ -217,7 +217,7 @@ class IEService extends IECfg
         'icon_image' => array('title' => 'ikona služby'),
         'icon_image_alt' => array('title' => 'alternativní ikona služby'),
         'configurator' => array('title' => 'Plugin pro konfiguraci služby'),
-        'platform' => array( 'title' => 'Platforma','mandatory' => true )
+        'platform' => array('title' => 'Platforma', 'mandatory' => true)
     );
 
     /**
@@ -267,8 +267,7 @@ class IEService extends IECfg
             }
 
             if (!$this->isTemplate($allData[$adKey])) {
-                $allData[$adKey][$this->nameColumn] =
-                        $allData[$adKey][$this->nameColumn] . '-' .
+                $allData[$adKey][$this->nameColumn] = $allData[$adKey][$this->nameColumn] . '-' .
                         EaseShared::user()->getUserLogin(); //Přejmenovat službu podle uživatele
                 if (!count($allData[$adKey]['host_name'])) { //Negenerovat nepoužité služby
                     unset($allData[$adKey]);
@@ -292,9 +291,9 @@ class IEService extends IECfg
 
             if (strlen($allData[$adKey]['check_command-remote'])) {
                 if (strlen($params)) {
-                    $allData[$adKey]['check_command'].= '!'.$allData[$adKey]['check_command-remote'] . '!' . $params;
+                    $allData[$adKey]['check_command'].= '!' . $allData[$adKey]['check_command-remote'] . '!' . $params;
                 } else {
-                    $allData[$adKey]['check_command'].= '!'.$allData[$adKey]['check_command-remote'];
+                    $allData[$adKey]['check_command'].= '!' . $allData[$adKey]['check_command-remote'];
                 }
             } else {
                 if (strlen($params)) {
@@ -406,6 +405,21 @@ class IEService extends IECfg
     public function renameHostName($hostid, $newname)
     {
         return $this->renameMember('host_name', $hostid, $newname);
+    }
+
+    public function rename($newname)
+    {
+        $oldname = $this->getName();
+        $this->setDataValue($this->nameColumn, $newname);
+        
+        $renameAll = true;
+        
+        
+        if ($this->save() && $renameAll) {
+            return true;
+        }
+
+        return false;
     }
 
 }

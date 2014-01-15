@@ -64,7 +64,7 @@ class IEServiceConfigurator extends EaseHtmlDivTag
      */
     function afterAdd()
     {
-        if (EaseShared::webPage()->isPosted()) {
+        if (EaseShared::webPage()->isPosted() && (EaseShared::webPage()->getRequestValue('action') == 'tweak') ) {
             if ($this->configure()) {
                 $serviceID = $this->tweaker->service->saveToMySQL();
                 if (is_null($serviceID)) {
@@ -82,6 +82,7 @@ class IEServiceConfigurator extends EaseHtmlDivTag
         $this->form();
         $this->form->addItem(new EaseHtmlInputHiddenTag($this->tweaker->service->getMyKeyColumn(), $this->tweaker->service->getMyKey()));
         $this->form->addItem(new EaseHtmlInputHiddenTag($this->tweaker->host->getMyKeyColumn(), $this->tweaker->host->getMyKey()));
+        $this->form->addItem(new EaseHtmlInputHiddenTag('action','tweak'));
         $this->form->addItem(new EaseTWSubmitButton(_('Uložit'), 'success'));
     }
 

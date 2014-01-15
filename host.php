@@ -130,6 +130,8 @@ switch ($oPage->getRequestValue('action')) {
             $delete = $oPage->getGetValue('delete', 'bool');
             if ($delete == 'true') {
                 $host->delete();
+                $oPage->redirect('hosts.php');
+                exit();
             }
 
             IEServiceSelector::saveMembers($_REQUEST);

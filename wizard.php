@@ -127,6 +127,7 @@ if ($hostName || $address || $addressSix) {
         'address' => $address,
         'address6' => $addressSix,
         'use' => 'generic-host',
+        'platform' => 'generic',
         'register' => true,
         'generate' => TRUE,
         'alias' => $hostName,
