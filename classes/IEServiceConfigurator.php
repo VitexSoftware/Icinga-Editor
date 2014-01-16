@@ -43,7 +43,24 @@ class IEServiceConfigurator extends EaseHtmlDivTag
     {
         parent::__construct();
         $this->tweaker = &$tweaker;
+        if(!$this->tweaker->service->getDataValue('DatSave')){
+            if($this->init()){
+                $this->tweaker->service->saveToMySQL();
+            }
+        }
+        
     }
+
+    /**
+     * Výchozí konfigurace služby těsně po naklonování
+     * 
+     * @return boolean
+     */
+    public function init(){
+        return FALSE;
+    }
+
+    
 
     /**
      * Funkce pro vykreslení formuláře
@@ -84,7 +101,7 @@ class IEServiceConfigurator extends EaseHtmlDivTag
                     $this->addStatusMessage(_('Služba byla uložena'), 'success');
                 }
             } else {
-                $this->addStatusMessage(_('Formulář nebyl zpracován'), 'warning');
+                $this->addStatusMessage(_('Formulář nebyl uložen'), 'warning');
             }
         }
 

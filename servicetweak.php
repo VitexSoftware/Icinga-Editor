@@ -48,6 +48,8 @@ if ($service->getOwnerID() != $oUser->getMyKey()) {
     $service->unsetDataValue($service->getmyKeyColumn());
     $service->setDataValue('public', 0);
     $service->unsetDataValue('tcp_port');
+    $service->unsetDataValue('DatSave');
+    $service->unsetDataValue('DatCreate');
     $service->setDataValue('action_url', $_SERVER['REQUEST_URI']);
     $service->setDataValue($service->userColumn, $oUser->getId());
 

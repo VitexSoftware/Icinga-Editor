@@ -1,9 +1,11 @@
 <?php
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Formulář testu IMCP odezvy
+ *
+ * @package    IcingaEditor
+ * @subpackage plugins
+ * @author     Vitex <vitex@hippy.cz>
+ * @copyright  2014 Vitex@hippy.cz (G)
  */
 require_once 'classes/IEServiceConfigurator.php';
 

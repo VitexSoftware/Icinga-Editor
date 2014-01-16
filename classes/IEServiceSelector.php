@@ -99,6 +99,10 @@ class IEServiceSelector extends EaseContainer
                         $service->addMember('host_name', $request['host_id'], $request['host_name']);
                         if ($service->saveToMySQL()) {
                             $service->addStatusMessage(sprintf(_('položka %s byla přidána'), $request['addservice']), 'success');
+                            if(!$service->getDataValue('autocfg')){
+                                EaseShared::webPage()->redirect('servicetweak.php?host_id='.$request['host_id'].'&service_id='.$request[$service->myKeyColumn]);
+                                exit();
+                            }
                         } else {
                             $service->addStatusMessage(sprintf(_('položka %s nebyla přidána'), $request['addservice']), 'warning');
                         }
