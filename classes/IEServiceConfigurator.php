@@ -46,6 +46,7 @@ class IEServiceConfigurator extends EaseHtmlDivTag
         if(!$this->tweaker->service->getDataValue('DatSave')){
             if($this->init()){
                 $this->tweaker->service->saveToMySQL();
+                EaseShared::webPage()->addStatusMessage(_('Prosím potvrďte nastavení služby'));
             }
         }
         
