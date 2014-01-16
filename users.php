@@ -22,9 +22,9 @@ $users = $user->getColumnsFromMySQL(array('id', 'login'), null, 'login', $oUser-
 if ($users) {
     $oPage->columnII->addItem(new EaseHtmlH4Tag(_('Uživatelé')));
     $cntList = new EaseHtmlTableTag(null, array('class' => 'table'));
-    $Cid = 1;
+    $cid = 1;
     foreach ($users as $cId => $cInfo) {
-        $lastRow = $cntList->addRowColumns(array($Cid++, new EaseUser((int) $cId),
+        $lastRow = $cntList->addRowColumns(array($cid++, new EaseUser((int) $cId),
             new EaseHtmlATag('userinfo.php?user_id=' . $cId, $cInfo['login'] . ' <i class="icon-edit"></i>'),
             new EaseHtmlATag('apply.php?force_user_id=' . $cId, _('Přegenerovat konfiguraci') . ' <i class="icon-repeat"></i>')
                 )

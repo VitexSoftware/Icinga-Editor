@@ -17,27 +17,29 @@ class IEServiceConfigurator extends EaseHtmlDivTag
 
     /**
      * Objekt tweakeru
-     * @var IEServiceTweaker 
+     * @var IEServiceTweaker
      */
     public $tweaker = null;
 
     /**
      * Objekt formuláře
-     * @var EaseTWBForm 
+     * @var EaseTWBForm
      */
     public $form = null;
 
     /**
      * Pole konfiguračních parametrů příkazu služby
-     * @var array 
+     * @var array
      */
     public $commandParams = null;
+
+    public $commonFields = array('check_period');
 
     /**
      * Obecný modul pro konfiguraci služby
      * @param IEServiceTweaker $tweaker
      */
-    function __construct($tweaker)
+    public function __construct($tweaker)
     {
         parent::__construct();
         $this->tweaker = &$tweaker;
@@ -46,23 +48,32 @@ class IEServiceConfigurator extends EaseHtmlDivTag
     /**
      * Funkce pro vykreslení formuláře
      */
-    function form()
+    public function form()
     {
-        
+
     }
 
     /**
      * funkce pro zpracování hodnot formuláře
      */
-    function configure()
+    public function configure()
     {
-        return false;
+        foreach ($this->commonFields as $cf) {
+            $value = EaseShared::webPage()->getRequestValue($cf);
+            if ($value == 'NULL') {
+                $this->tweaker->service->setDataValue($cf,null);
+            } else {
+                $this->tweaker->service->setDataValue($cf,$value);
+            }
+        }
+
+        return true;
     }
 
     /**
      * Po přidání do stránky
      */
-    function afterAdd()
+    public function afterAdd()
     {
         if (EaseShared::webPage()->isPosted() && (EaseShared::webPage()->getRequestValue('action') == 'tweak') ) {
             if ($this->configure()) {
@@ -76,13 +87,20 @@ class IEServiceConfigurator extends EaseHtmlDivTag
                 $this->addStatusMessage(_('Formulář nebyl zpracován'), 'warning');
             }
         }
-        
+
         $this->commandParams = explode('!', $this->tweaker->service->getDataValue('check_command-params'));
+        $this->addItem(new EaseHtmlDivTag(null, _('Uloženo') . ': ' . $this->tweaker->service->getDataValue('DatSave')));
+        $this->addItem(new EaseHtmlDivTag(null, _('Založeno') . ': ' . $this->tweaker->service->getDataValue('DatCreate')));
         $this->form = $this->addItem(new EaseTWBForm('servconf'));
         $this->form();
+
+        foreach ($this->commonFields as $cf) {
+            $this->form->addItem(new IECfgEditor($this->tweaker->service,$cf));
+        }
         $this->form->addItem(new EaseHtmlInputHiddenTag($this->tweaker->service->getMyKeyColumn(), $this->tweaker->service->getMyKey()));
         $this->form->addItem(new EaseHtmlInputHiddenTag($this->tweaker->host->getMyKeyColumn(), $this->tweaker->host->getMyKey()));
         $this->form->addItem(new EaseHtmlInputHiddenTag('action','tweak'));
+        $this->form->addItem('<br/>');
         $this->form->addItem(new EaseTWSubmitButton(_('Uložit'), 'success'));
     }
 

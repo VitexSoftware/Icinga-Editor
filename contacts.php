@@ -24,13 +24,13 @@ $Contacts = $contact->getListing();
 if ($Contacts) {
     $oPage->columnII->addItem(new EaseHtmlH4Tag(_('Kontakty')));
     $cntList = new EaseHtmlTableTag(null,array('class'=>'table'));
-    $Cid = 1;
+    $cid = 1;
     foreach ($Contacts as $cId => $cInfo) {
         $cInfo['public'] = false;
         if($cInfo['register'] != 1){
             continue;
         }
-        $lastRow = $cntList->addRowColumns(array($Cid++, new EaseHtmlATag('contact.php?contact_id=' . $cInfo['contact_id'], $cInfo['contact_name'].' <i class="icon-edit"></i>')));
+        $lastRow = $cntList->addRowColumns(array($cid++, new EaseHtmlATag('contact.php?contact_id=' . $cInfo['contact_id'], $cInfo['contact_name'].' <i class="icon-edit"></i>')));
         if ($cInfo['generate'] == 0) {
             $lastRow->setTagCss(array('border-right' => '1px solid red'));
         }
@@ -45,14 +45,14 @@ if ($Contacts) {
     $oPage->columnII->addItem($cntList);
 
     $oPage->columnI->addItem(new EaseHtmlH4Tag(_('Předlohy')));
-    $Cnt2List = new EaseHtmlTableTag(null,array('class'=>'table'));
-    $Cid = 1;
+    $cnt2List = new EaseHtmlTableTag(null,array('class'=>'table'));
+    $cid = 1;
     foreach ($Contacts as $cId => $cInfo) {
         $cInfo['public'] = false;
         if(intval($cInfo['register'])){
             continue;
         }
-        $lastRow = $Cnt2List->addRowColumns(array($Cid++, new EaseHtmlATag('contact.php?contact_id=' . $cInfo['contact_id'], $cInfo['name'].' <i class="icon-edit"></i>'),new EaseHtmlATag('contact.php?use='. urldecode($cInfo['name']), _('Odvodit <i class="icon-edit"></i>'))));
+        $lastRow = $cnt2List->addRowColumns(array($cid++, new EaseHtmlATag('contact.php?contact_id=' . $cInfo['contact_id'], $cInfo['name'].' <i class="icon-edit"></i>'),new EaseHtmlATag('contact.php?use='. urldecode($cInfo['name']), _('Odvodit <i class="icon-edit"></i>'))));
         if ($cInfo['generate'] == 0) {
             $lastRow->setTagCss(array('border-right' => '1px solid red'));
         }
@@ -64,7 +64,7 @@ if ($Contacts) {
             }
         }
     }
-    $oPage->columnI->addItem($Cnt2List);
+    $oPage->columnI->addItem($cnt2List);
     
 } else {
     $oUser->addStatusMessage(_('Nemáte definovaný žádný contact'), 'warning');

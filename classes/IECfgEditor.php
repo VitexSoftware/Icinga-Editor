@@ -32,15 +32,21 @@ class IECfgEditor extends EaseContainer
      * Vytvoří editační formulář podle CFG objektu
      *
      * @param IECfg $this->ObjectEdited
+     * @param string $onlyColumn Vrací editační pole jen pro sloupec daného jména
      */
-    public function __construct($cfgObject)
+    public function __construct($cfgObject, $onlyColumn = null)
     {
         parent::__construct();
         $this->objectEdited = &$cfgObject;
-        if (EaseShared::user()->getSettingValue('admin')) {
-            $this->fullEditor();
+
+        if ($onlyColumn) {
+            $this->insertWidget($this, $onlyColumn, $this->objectEdited->getDataValue($onlyColumn));
         } else {
-            $this->lightEditor();
+            if (EaseShared::user()->getSettingValue('admin')) {
+                $this->fullEditor();
+            } else {
+                $this->lightEditor();
+            }
         }
     }
 
@@ -63,9 +69,9 @@ class IECfgEditor extends EaseContainer
             case 'STRING':
             case 'VARCHAR':
                 if ($required) {
-                    $fieldBlock->addItem(new EaseHtmlDivTag(null, new EaseLabeledTextInput($fieldName, $value, $keywordInfo['title'], array('class' => 'required', 'title' => $fieldName))));
+                    $fieldBlock->addItem(new EaseHtmlDivTag(null, new EaseLabeledTextInput($fieldName, $value, $keywordInfo['title'], array('class' => 'required form-control', 'title' => $fieldName))));
                 } else {
-                    $fieldBlock->addItem(new EaseLabeledTextInput($fieldName, $value, $keywordInfo['title'], array('title' => $fieldName)));
+                    $fieldBlock->addItem(new EaseLabeledTextInput($fieldName, $value, $keywordInfo['title'], array('title' => $fieldName,'class'=>'form-control')));
                 }
                 break;
             case 'TINYINT':
@@ -92,8 +98,8 @@ class IECfgEditor extends EaseContainer
                         $values[$chKey] = false;
                     }
                 }
-                $SliderField = $fieldBlock->addItem(new EaseHtmlFieldSet($keywordInfo['title'], new EaseHtmlCheckboxGroup($fieldName, $checkboxes, $values)));
-                $SliderField->setTagCss(array('width' => '100%'));
+                $sliderField = $fieldBlock->addItem(new EaseHtmlFieldSet($keywordInfo['title'], new EaseHtmlCheckboxGroup($fieldName, $checkboxes, $values)));
+                $sliderField->setTagCss(array('width' => '100%'));
                 break;
             case 'IDLIST':
                 if (!is_array($value)) {
@@ -102,8 +108,8 @@ class IECfgEditor extends EaseContainer
                 $fieldBlock->addItem(new IEGroupMembersEditor($fieldName, $keywordInfo['title'], $this->objectEdited, $value));
                 break;
             case 'SLIDER':
-                $SliderField = $fieldBlock->addItem(new EaseHtmlFieldSet($keywordInfo['title'], new EaseJQuerySlider($fieldName, (int) $value)));
-                $SliderField->setTagCss(array('width' => '100%'));
+                $sliderField = $fieldBlock->addItem(new EaseHtmlFieldSet($keywordInfo['title'], new EaseJQuerySlider($fieldName, (int) $value)));
+                $sliderField->setTagCss(array('width' => '100%'));
                 break;
             case 'TEXT':
                 $FB = $fieldBlock->addItem(new EaseLabeledTextarea($fieldName, $value, $keywordInfo['title']));
@@ -114,6 +120,7 @@ class IECfgEditor extends EaseContainer
                 $selector = $fieldBlock->addItem(new EaseLabeledSelect($fieldName, $value, $keywordInfo['title']));
                 $selector->addItems(array_combine($flags, $flags));
                 $selector->enclosedElement->setTagCss(array('width' => '100%'));
+                $selector->enclosedElement->setTagClass('form-control');
                 break;
             case 'RADIO':
                 $flags = explode(',', str_replace(array($fType, "'", '(', ')'), '', $fieldType));
@@ -130,7 +137,7 @@ class IECfgEditor extends EaseContainer
             case 'SELECT':
                 $IDColumn = $keywordInfo['refdata']['idcolumn'];
                 $nameColumn = $keywordInfo['refdata']['captioncolumn'];
-                $STable = $keywordInfo['refdata']['table'];
+                $sTable = $keywordInfo['refdata']['table'];
                 if (isset($keywordInfo['refdata']['condition'])) {
                     $conditions = $keywordInfo['refdata']['condition'];
                 } else {
@@ -141,13 +148,14 @@ class IECfgEditor extends EaseContainer
 
                 $membersAviableArray = EaseShared::myDbLink()->queryTo2DArray(
                         'SELECT ' . $nameColumn . ' ' .
-                        'FROM `' . DB_PREFIX . $STable . '` ' .
+                        'FROM `' . DB_PREFIX . $sTable . '` ' .
                         'WHERE ' . $sqlConds . ' ' .
                         'ORDER BY ' . $nameColumn, $IDColumn);
 
                 $selector = $fieldBlock->addItem(new EaseLabeledSelect($fieldName, $value, $keywordInfo['title']));
+                $selector->enclosedElement->setTagClass('form-control');
                 if (!$required) {
-                    $selector->addItems(array('' => ''));
+                    $selector->addItems(array('NULL' => _('Výchozí')));
                 }
                 if (count($membersAviableArray)) {
                     $selector->addItems(array_combine($membersAviableArray, $membersAviableArray));
@@ -157,7 +165,7 @@ class IECfgEditor extends EaseContainer
             case 'SELECT+PARAMS':
                 $IDColumn = $keywordInfo['refdata']['idcolumn'];
                 $nameColumn = $keywordInfo['refdata']['captioncolumn'];
-                $STable = $keywordInfo['refdata']['table'];
+                $sTable = $keywordInfo['refdata']['table'];
                 if (isset($keywordInfo['refdata']['condition'])) {
                     $conditions = $keywordInfo['refdata']['condition'];
                 } else {
@@ -171,11 +179,12 @@ class IECfgEditor extends EaseContainer
 
                 $membersAviableArray = EaseShared::myDbLink()->queryTo2DArray(
                         'SELECT ' . $nameColumn . ' ' .
-                        'FROM `' . DB_PREFIX . $STable . '` ' .
+                        'FROM `' . DB_PREFIX . $sTable . '` ' .
                         'WHERE ' . $sqlConds . ' ' .
                         'ORDER BY ' . $nameColumn, $IDColumn);
 
                 $selector = $fieldBlock->addItem(new EaseLabeledSelect($fieldName, $value, $keywordInfo['title']));
+                $selector->enclosedElement->setTagClass('form-control');
                 if (!$required) {
                     $selector->addItems(array('' => ''));
                 }
@@ -188,7 +197,7 @@ class IECfgEditor extends EaseContainer
 
                 $membersAviableArray = EaseShared::myDbLink()->queryTo2DArray(
                         'SELECT ' . $nameColumn . ' ' .
-                        'FROM `' . DB_PREFIX . $STable . '` ' .
+                        'FROM `' . DB_PREFIX . $sTable . '` ' .
                         'WHERE ' . $sqlConds . ' ' .
                         'ORDER BY ' . $nameColumn, $IDColumn);
 

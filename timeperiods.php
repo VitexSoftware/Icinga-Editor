@@ -23,9 +23,9 @@ if ($Periods) {
 
     $cntList = new EaseHtmlTableTag(null,array('class'=>'table'));
 
-    $Cid = 1;
+    $cid = 1;
     foreach ($Periods as $cId => $cInfo) {
-        $lastRow = $cntList->addRowColumns(array($Cid++, new EaseHtmlATag('timeperiod.php?timeperiod_id=' . $cInfo['timeperiod_id'], $cInfo['timeperiod_name'].' <i class="icon-edit"></i>')));
+        $lastRow = $cntList->addRowColumns(array($cid++, new EaseHtmlATag('timeperiod.php?timeperiod_id=' . $cInfo['timeperiod_id'], $cInfo['timeperiod_name'].' <i class="icon-edit"></i>')));
         if($cInfo['generate'] == 0){
             $lastRow->setTagCss(array('border-right'=>'1px solid red'));
         }

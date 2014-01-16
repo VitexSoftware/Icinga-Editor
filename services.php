@@ -27,12 +27,12 @@ if ($services) {
         $oPage->columnI->addItem(new EaseHtmlH4Tag(_('Předlohy služeb')));
 
         $cntList = new EaseHtmlTableTag(null, array('class' => 'table'));
-        $Cid = 1;
+        $cid = 1;
         foreach ($services as $servID => $servInfo) {
             if (intval($servInfo['register'])) {
                 continue;
             }
-            $lastRow = $cntList->addRowColumns(array($Cid++, new EaseHtmlATag('service.php?service_id=' . $servInfo['service_id'], $servInfo['name'] . ' <i class="icon-edit"></i>'), new EaseHtmlATag('service.php?use=' . urldecode($servInfo['name']), _('Odvodit <i class="icon-edit"></i>'))));
+            $lastRow = $cntList->addRowColumns(array($cid++, new EaseHtmlATag('service.php?service_id=' . $servInfo['service_id'], $servInfo['name'] . ' <i class="icon-edit"></i>'), new EaseHtmlATag('service.php?use=' . urldecode($servInfo['name']), _('Odvodit <i class="icon-edit"></i>'))));
             if ($servInfo['generate'] == 0) {
                 $lastRow->setTagCss(array('border-right' => '1px solid red'));
             }
@@ -48,7 +48,7 @@ if ($services) {
     }
     $oPage->columnII->addItem(new EaseHtmlH4Tag(_('Služby')));
     $cntList = new EaseHtmlTableTag(null, array('class' => 'table'));
-    $Cid = 1;
+    $cid = 1;
     foreach ($services as $servID => $servInfo) {
         if ($servInfo['register'] != 1) {
             continue;
@@ -60,7 +60,7 @@ if ($services) {
             $editorPage = 'servicetweak.php';
         }
 
-        $lastRow = $cntList->addRowColumns(array($Cid++, IEHostOverview::platformIcon($servInfo['platform']), new EaseHtmlATag($editorPage . '?service_id=' . $servInfo['service_id'], $servInfo[$service->nameColumn] . ' <i class="icon-edit"></i>')));
+        $lastRow = $cntList->addRowColumns(array($cid++, IEHostOverview::platformIcon($servInfo['platform']), new EaseHtmlATag($editorPage . '?service_id=' . $servInfo['service_id'], $servInfo[$service->nameColumn] . ' <i class="icon-edit"></i>')));
         if ($servInfo['generate'] == 0) {
             $lastRow->setTagCss(array('border-right' => '1px solid red'));
         }

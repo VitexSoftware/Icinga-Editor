@@ -25,9 +25,9 @@ if ($PocServicegroup) {
     $Servicegroups = $Servicegroup->myDbLink->queryToArray('SELECT ' . $Servicegroup->getmyKeyColumn() . ', servicegroup_name, DatSave FROM ' . $Servicegroup->myTable . ' WHERE user_id=' . $oUser->getUserID(), 'servicegroup_id');
     $cntList = new EaseHtmlTableTag(null,array('class'=>'table'));
 
-    $Cid = 1;
+    $cid = 1;
     foreach ($Servicegroups as $cId => $cInfo) {
-        $cntList->addRowColumns(array($Cid++, new EaseHtmlATag('servicegroup.php?servicegroup_id=' . $cInfo['servicegroup_id'], $cInfo['servicegroup_name'].' <i class="icon-edit"></i>')));
+        $cntList->addRowColumns(array($cid++, new EaseHtmlATag('servicegroup.php?servicegroup_id=' . $cInfo['servicegroup_id'], $cInfo['servicegroup_name'].' <i class="icon-edit"></i>')));
     }
     $oPage->columnII->addItem($cntList);
 } else {

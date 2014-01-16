@@ -2,7 +2,7 @@
 
 /**
  * Icinga Editor - přehled hostů
- * 
+ *
  * @package    IcingaEditor
  * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
@@ -18,63 +18,57 @@ $oPage->addItem(new IEPageTop(_('Přehled hostů')));
 
 $oPage->addCss('td img { height: 14px; }');
 
-
 $host = new IEHost();
-$hosts = $host->getListing(null,true,array('icon_image','platform'));
+$hosts = $host->getListing(null, true, array('icon_image', 'platform'));
 
 if ($hosts) {
     $oPage->columnII->addItem(new EaseHtmlH4Tag(_('Hosty')));
-    $cntList = new EaseHtmlTableTag(null,array('class'=>'table'));
-    $Cid = 1;
+    $cntList = new EaseHtmlTableTag(null, array('class' => 'table'));
+    $cid = 1;
     foreach ($hosts as $cId => $cInfo) {
-        if($cInfo['register'] != 1){
+        if ($cInfo['register'] != 1) {
             continue;
         }
-        $lastRow = $cntList->addRowColumns(array($Cid++, IEHostOverview::icon($cInfo), new EaseHtmlATag('host.php?host_id=' . $cInfo['host_id'], $cInfo['host_name'].' <i class="icon-edit"></i>'),  IEHostOverview::platformIcon($cInfo['platform'])));
+        $lastRow = $cntList->addRowColumns(array($cid++, IEHostOverview::icon($cInfo), new EaseHtmlATag('host.php?host_id=' . $cInfo['host_id'], $cInfo['host_name'] . ' <i class="icon-edit"></i>'), IEHostOverview::platformIcon($cInfo['platform'])));
         if ($cInfo['generate'] == 0) {
             $lastRow->setTagCss(array('border-right' => '1px solid red'));
         }
-        if($cInfo['public'] == 1){
-            if($cInfo[$host->userColumn] == $oUser->getUserID()){
-                $lastRow->setTagCss(array('border-left'=>'1px solid green'));
+        if ($cInfo['public'] == 1) {
+            if ($cInfo[$host->userColumn] == $oUser->getUserID()) {
+                $lastRow->setTagCss(array('border-left' => '1px solid green'));
             } else {
-                $lastRow->setTagCss(array('border-left'=>'1px solid blue'));
+                $lastRow->setTagCss(array('border-left' => '1px solid blue'));
             }
         }
     }
     $oPage->columnII->addItem($cntList);
 
-    $oPage->columnI->addItem(new EaseHtmlH4Tag(_('Předlohy')));
-    $Cnt2List = new EaseHtmlTableTag(null,array('class'=>'table'));
-    $Cid = 1;
-    foreach ($hosts as $cId => $cInfo) {
-        if(intval($cInfo['register'])){
-            continue;
-        }
-        $lastRow = $Cnt2List->addRowColumns(array($Cid++, IEHostOverview::icon($cInfo), new EaseHtmlATag('host.php?host_id=' . $cInfo['host_id'], $cInfo['name'].' '.EaseTWBPart::GlyphIcon('edit')),new EaseHtmlATag('host.php?use='. urldecode($cInfo['name']), _('Odvodit <i class="icon-edit"></i>'))));
-        if ($cInfo['generate'] == 0) {
-            $lastRow->setTagCss(array('border-right' => '1px solid red'));
-        }
-       if($cInfo['public'] == 1){
-            if($cInfo[$host->userColumn] == $oUser->getUserID()){
-                $lastRow->setTagCss(array('border-left'=>'1px solid green'));
-            } else {
-                $lastRow->setTagCss(array('border-left'=>'1px solid blue'));
+    if ($oUser->getSettingValue('admin')) {
+        $oPage->columnI->addItem(new EaseHtmlH4Tag(_('Předlohy')));
+        $cnt2List = new EaseHtmlTableTag(null, array('class' => 'table'));
+        $cid = 1;
+        foreach ($hosts as $cId => $cInfo) {
+            if (intval($cInfo['register'])) {
+                continue;
+            }
+            $lastRow = $cnt2List->addRowColumns(array($cid++, IEHostOverview::icon($cInfo), new EaseHtmlATag('host.php?host_id=' . $cInfo['host_id'], $cInfo['name'] . ' ' . EaseTWBPart::GlyphIcon('edit')), new EaseHtmlATag('host.php?use=' . urldecode($cInfo['name']), _('Odvodit <i class="icon-edit"></i>'))));
+            if ($cInfo['generate'] == 0) {
+                $lastRow->setTagCss(array('border-right' => '1px solid red'));
+            }
+            if ($cInfo['public'] == 1) {
+                if ($cInfo[$host->userColumn] == $oUser->getUserID()) {
+                    $lastRow->setTagCss(array('border-left' => '1px solid green'));
+                } else {
+                    $lastRow->setTagCss(array('border-left' => '1px solid blue'));
+                }
             }
         }
+        $oPage->columnI->addItem($cnt2List);
     }
-    $oPage->columnI->addItem($Cnt2List);
-    
 } else {
     $oUser->addStatusMessage(_('Nemáte definovaný žádný host'), 'warning');
 }
 
-$oPage->columnIII->addItem(new EaseTWBLinkButton('host.php', _('Založit host <i class="icon-edit"></i>')));
-
-
-
 $oPage->addItem(new IEPageBottom());
 
-
 $oPage->draw();
-?>

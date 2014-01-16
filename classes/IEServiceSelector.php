@@ -34,7 +34,7 @@ class IEServiceSelector extends EaseContainer
 
             $servicesAssigned = $service->myDbLink->queryToArray('SELECT ' . $service->myKeyColumn . ',' . $service->nameColumn . ' FROM ' . $service->myTable . ' WHERE ' . $fieldName . ' LIKE \'%"' . $host->getName() . '"%\'', $service->myKeyColumn);
 
-            $allServices = $service->getListing(null, true, array('platform'));
+            $allServices = $service->getListing(null, true, array('platform','parent_id'));
             foreach ($allServices as $serviceID => $serviceInfo) {
                 if ($serviceInfo['register'] != 1) {
                     unset($allServices[$serviceID]);
@@ -52,11 +52,16 @@ class IEServiceSelector extends EaseContainer
             if (count($allServices)) {
 
                 foreach ($allServices as $serviceID => $serviceInfo) {
+                    $unchMenu = array();
+                    
+                     if(intval($serviceInfo['parent_id'])){
+                         $unchMenu[] = new EaseHtmlATag('servicetweak.php?service_id=' . $serviceID, EaseTWBPart::GlyphIcon('wrench') . ' ' . _('Editace'));
+                     }       
+                     $unchMenu[] = new EaseHtmlATag('?addservice=' . $serviceInfo[$service->nameColumn] . '&amp;service_id=' . $serviceID . '&amp;' . $host->getmyKeyColumn() . '=' . $host->getMyKey() . '&amp;' . $host->nameColumn . '=' . $host->getName(), EaseTWBPart::GlyphIcon('plus') . ' ' . _('Začít sledovat'));
+                            
                     $initialContent->addItem(
                             new EaseTWBButtonDropdown(
-                            $serviceInfo[$service->nameColumn], 'inverse', 'xs', array(
-                        new EaseHtmlATag('?addservice=' . $serviceInfo[$service->nameColumn] . '&amp;service_id=' . $serviceID . '&amp;' . $host->getmyKeyColumn() . '=' . $host->getMyKey() . '&amp;' . $host->nameColumn . '=' . $host->getName(), EaseTWBPart::GlyphIcon('plus') . ' ' . _('Začít sledovat'))
-                    )));
+                            $serviceInfo[$service->nameColumn], 'inverse', 'xs', $unchMenu));
                 }
             }
 

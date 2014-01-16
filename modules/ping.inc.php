@@ -49,7 +49,7 @@ class ping extends IEServiceConfigurator
 
             $this->tweaker->service->setDataValue('check_command-params', $command);
 
-            return true;
+            return parent::configure();
         }
 
         return FALSE;

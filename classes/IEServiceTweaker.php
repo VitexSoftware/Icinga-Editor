@@ -6,6 +6,7 @@
  * and open the template in the editor.
  */
 require_once 'classes/IECommand.php';
+require_once 'classes/IEServiceConfigurator.php';
 
 /**
  * Description of IEServiceTweaker
@@ -45,7 +46,7 @@ class IEServiceTweaker extends EaseHtmlDivTag
      * @param IEService $service
      * @param IEHost    $host    ObjektHostu
      */
-    public function __construct($service,$host)
+    public function __construct($service, $host)
     {
         parent::__construct();
 
@@ -56,19 +57,18 @@ class IEServiceTweaker extends EaseHtmlDivTag
         $this->command->setmyKeyColumn($this->command->nameColumn);
         $this->command->loadFromMySQL($this->service->getDataValue('check_command'));
 
-        $this->addItem($this->command->getName());
-
         $configurator = $this->service->getDataValue('configurator');
         if ($configurator) {
-            $module = 'modules/'.$configurator.'.inc.php';
+            $module = 'modules/' . $configurator . '.inc.php';
             if (file_exists($module)) {
                 require_once $module;
-                $this->configurator = $this->addItem( new $configurator( $this) );
+                $this->configurator = $this->addItem(new $configurator($this));
             } else {
-                $this->addStatusMessage(sprintf(_('Modul %s nebyl nalezen'),$module), 'error');
+                $this->addStatusMessage(sprintf(_('Modul %s nebyl nalezen'), $module), 'error');
             }
+        } else {
+            $this->configurator = $this->addItem(new IEServiceConfigurator($this));
         }
-
     }
 
     public function discoveryParams()
@@ -99,7 +99,7 @@ class IEServiceTweaker extends EaseHtmlDivTag
         foreach ($helplines as $hip => $helpline) {
             $helpline = trim($helpline);
             if (strlen($helpline) && ($helpline[0] == '-')) {
-                $options[$helpline[1]] = trim($helplines[$hip+1]);
+                $options[$helpline[1]] = trim($helplines[$hip + 1]);
             }
         }
 
@@ -110,11 +110,10 @@ class IEServiceTweaker extends EaseHtmlDivTag
 
         foreach ($params as $id => $key) {
             if (isset($options[$key])) {
-                $twform->addItem( new EaseTWBFormGroup('arg'.$id, new EaseHtmlInputTextTag($options[$key], '') , null, $options[$key] ) );
+                $twform->addItem(new EaseTWBFormGroup('arg' . $id, new EaseHtmlInputTextTag($options[$key], ''), null, $options[$key]));
             }
         }
-        $this->addItem( $twform );
-
+        $this->addItem($twform);
     }
 
 }

@@ -26,10 +26,10 @@ $Commands = $Command->getListing(null,null,array('command_local','command_remote
 if ($Commands) {
     $cntList = new EaseHtmlTableTag(null, array('class' => 'table'));
 
-    $Cid = 1;
+    $cid = 1;
     foreach ($Commands as $cId => $cInfo) {
         if (intval($cInfo['command_local'])) {
-            $lastRow = $cntList->addRowColumns(array($Cid++, new EaseHtmlATag('command.php?command_id=' . $cInfo['command_id'], $cInfo['command_name'])));
+            $lastRow = $cntList->addRowColumns(array($cid++, new EaseHtmlATag('command.php?command_id=' . $cInfo['command_id'], $cInfo['command_name'])));
             if ($cInfo['generate'] == 0) {
                 $lastRow->setTagCss(array('border-right' => '1px solid red'));
             }
@@ -47,10 +47,10 @@ if ($Commands) {
     $oPage->columnI->addItem($cntList);
 
     $cntList = new EaseHtmlTableTag(null, array('class' => 'table'));
-    $Cid = 1;
+    $cid = 1;
     foreach ($Commands as $cId => $cInfo) {
         if (intval($cInfo['command_remote'])) {
-            $lastRow = $cntList->addRowColumns(array($Cid++, new EaseHtmlATag('command.php?command_id=' . $cInfo['command_id'], $cInfo['command_name'])));
+            $lastRow = $cntList->addRowColumns(array($cid++, new EaseHtmlATag('command.php?command_id=' . $cInfo['command_id'], $cInfo['command_name'])));
             if ($cInfo['generate'] == 0) {
                 $lastRow->setTagCss(array('border-right' => '1px solid red'));
             }
@@ -70,7 +70,7 @@ if ($Commands) {
 
     $cntList = new EaseHtmlTableTag(null, array('class' => 'table'));
     foreach ($Commands as $cId => $cInfo) {
-            $lastRow = $cntList->addRowColumns(array($Cid++, new EaseHtmlATag('command.php?command_id=' . $cInfo['command_id'], $cInfo['command_name'])));
+            $lastRow = $cntList->addRowColumns(array($cid++, new EaseHtmlATag('command.php?command_id=' . $cInfo['command_id'], $cInfo['command_name'])));
             if ($cInfo['generate'] == 0) {
                 $lastRow->setTagCss(array('border-right' => '1px solid red'));
             }

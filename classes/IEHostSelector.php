@@ -20,7 +20,7 @@ class IEHostSelector extends EaseContainer
      */
     public function __construct($service)
     {
-        $hostsAssigned=array();
+        $hostsAssigned = array();
         parent::__construct();
         $fieldName = $this->getmyKeyColumn();
         $initialContent = new EaseHtmlFieldSet(_('Sledované hosty služby'));
@@ -33,12 +33,14 @@ class IEHostSelector extends EaseContainer
             $host = new IEHost();
 
             if (EaseShared::user()->getSettingValue('admin')) {
-                $allHosts = $host->getAllFromMySQL(NULL, array($host->myKeyColumn,$host->nameColumn,'platform', 'register') , null, $host->nameColumn, $host->myKeyColumn);
+                $allHosts = $host->getAllFromMySQL(NULL, array($host->myKeyColumn, $host->nameColumn, 'platform', 'register'), null, $host->nameColumn, $host->myKeyColumn);
             } else {
                 $allHosts = $host->getListing(null, true, array('platform', 'register'));
             }
             foreach ($service->getDataValue('host_name') as $hostId => $hostName) {
-                $hostsAssigned[$hostId] = $allHosts[$hostId];
+                if(isset($allHosts[$hostId])){
+                    $hostsAssigned[$hostId] = $allHosts[$hostId];
+                }
             }
 
             foreach ($allHosts as $hostID => $hostInfo) {
@@ -61,6 +63,7 @@ class IEHostSelector extends EaseContainer
                     $initialContent->addItem(
                             new EaseTWBButtonDropdown(
                             $hostInfo[$host->nameColumn], 'inverse', 'xs', array(
+                        new EaseHtmlATag('host.php?host_id=' . $hostID . '&amp;service_id=' . $service->getId(), EaseTWBPart::GlyphIcon('wrench') . ' ' . _('Editace')),
                         new EaseHtmlATag('?addhost=' . $hostInfo[$host->nameColumn] . '&amp;host_id=' . $hostID . '&amp;' . $service->getmyKeyColumn() . '=' . $service->getMyKey() . '&amp;' . $service->nameColumn . '=' . $service->getName(), EaseTWBPart::GlyphIcon('plus') . ' ' . _('Začít sledovat'))
                     )));
                 }

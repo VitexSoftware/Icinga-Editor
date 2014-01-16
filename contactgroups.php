@@ -25,9 +25,9 @@ if ($pocContactgroup) {
     $Contactgroups = $Contactgroup->myDbLink->queryToArray('SELECT ' . $Contactgroup->getmyKeyColumn() . ', contactgroup_name, DatSave FROM ' . $Contactgroup->myTable . ' WHERE user_id=' . $oUser->getUserID(), 'contactgroup_id');
     $cntList = new EaseHtmlTableTag(null,array('class'=>'table'));
 
-    $Cid = 1;
+    $cid = 1;
     foreach ($Contactgroups as $cId => $cInfo) {
-        $cntList->addRowColumns(array($Cid++, new EaseHtmlATag('contactgroup.php?contactgroup_id=' . $cInfo['contactgroup_id'], $cInfo['contactgroup_name'].' <i class="icon-edit"></i>')));
+        $cntList->addRowColumns(array($cid++, new EaseHtmlATag('contactgroup.php?contactgroup_id=' . $cInfo['contactgroup_id'], $cInfo['contactgroup_name'].' <i class="icon-edit"></i>')));
     }
     $oPage->columnII->addItem($cntList);
 } else {

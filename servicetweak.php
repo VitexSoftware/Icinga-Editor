@@ -44,11 +44,11 @@ if ($service->getOwnerID() != $oUser->getMyKey()) {
     $service->delMember('host_name', $host->getId(), $host->getName());
     $service->saveToMySQL();
 
+    $service->setDataValue('parent_id', $service->getId());
     $service->unsetDataValue($service->getmyKeyColumn());
     $service->setDataValue('public', 0);
     $service->unsetDataValue('tcp_port');
     $service->setDataValue('action_url', $_SERVER['REQUEST_URI']);
-    $service->setDataValue('parent_id', $service->getId());
     $service->setDataValue($service->userColumn, $oUser->getId());
 
     $newname = $service->getName() . ' ' . $host->getName();
@@ -73,11 +73,13 @@ if ($service->getOwnerID() != $oUser->getMyKey()) {
 $delhost = $oPage->getGetValue('delhost');
 if ($delhost) {
     $service->delMember('host_name', $oPage->getGetValue('host_id', 'int'), $delhost );
+    $service->saveToMySql();
 }
 
 $addhost = $oPage->getGetValue('addhost');
 if ($addhost) {
     $service->addMember('host_name', $oPage->getGetValue('host_id', 'int'), $addhost );
+    $service->saveToMySql();
 }
 
 $oPage->addItem(new IEPageTop(_('Editace služby') . ' ' . $service->getName()));
