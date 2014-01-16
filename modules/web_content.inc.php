@@ -75,9 +75,9 @@ class web_content extends IEServiceConfigurator
             }
 
             $command = $testUrl . '!' . $reqText;
-            if (strlen($errText)) {
-                $command .= '!' . $errText;
-            }
+            $command .= '!' . $errText;
+            $command .= '!10'; //Timeout
+            
 
             $this->tweaker->service->setDataValue('check_command-params', $command);
 

@@ -2,7 +2,7 @@
 
 /**
  * Icinga Editor - titulní strana
- * 
+ *
  * @package    IcingaEditor
  * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
@@ -17,9 +17,7 @@ require_once 'classes/IETimeperiod.php';
 require_once 'classes/IECommand.php';
 require_once 'classes/IEServicegroup.php';
 
-
 $oPage->onlyForLogged();
-
 
 $oPage->addItem(new IEPageTop(_('Icinga Editor')));
 
@@ -30,13 +28,11 @@ $user= new EaseUser($UserID);
 $UserInfoFrame = $oPage->columnI->addItem( new EaseHtmlFieldSet($user->getUserLogin()) );
 $UserInfoFrame->addItem($user);
 
-
-
 $contact = new IETimeperiod();
 $PocTimeperiods = $contact->getMyRecordsCount($UserID);
 if ($PocTimeperiods) {
     $success = $oPage->columnIII->addItem(new EaseHtmlDivTag('Timeperiod', new EaseTWBLinkButton('timeperiods.php', _('<i class="icon-list"></i>').' '.sprintf(_('Definováno %s časových period'), $PocTimeperiods)), array('class' => 'alert alert-success')));
-} 
+}
 
 $host = new IEHost();
 $pocHostu = $host->getMyRecordsCount($UserID);
@@ -54,7 +50,6 @@ $PocHostgroups = $hostgroup->getMyRecordsCount($UserID);
 if ($PocHostgroups) {
     $success = $oPage->columnII->addItem(new EaseHtmlDivTag('Hostgroup', new EaseTWBLinkButton('hostgroups.php', _('<i class="icon-list"></i>').' '.sprintf(_('Definováno %s skupin hostů'), $PocHostgroups)), array('class' => 'alert alert-success')));
 }
-
 
 $Command = new IECommand();
 $PocCommands = $Command->getMyRecordsCount($UserID);
@@ -81,12 +76,10 @@ if ($PocServicegroups) {
     $success = $oPage->columnIII->addItem(new EaseHtmlDivTag('Servicegroup', new EaseTWBLinkButton('servicegroups.php', _('<i class="icon-list"></i>').' '.sprintf(_('Definováno %s skupin služeb'), $PocServicegroups)), array('class' => 'alert alert-success')));
 }
 
-if($oUser->getSettingValue('admin')){
+if ($oUser->getSettingValue('admin')) {
     $oPage->columnI->addItem(new EaseTWBLinkButton('login.php?force_id='.$UserID, _('Přihlásit se jako uživatel <i class="icon-refresh"></i>')));
 }
 
 $oPage->addItem(new IEPageBottom());
 
-
 $oPage->draw();
-?>

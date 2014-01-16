@@ -168,7 +168,7 @@ $form->setTagID($form->getTagName());
 $form->addItem(new EaseHtmlInputHiddenTag($host->getmyKeyColumn(), $host->getMyKey()));
 $form->addItem('<br>');
 $form->addItem(new EaseTWSubmitButton(_('Uložit'), 'success'));
-$oPage->AddCss('
+$oPage->addCss('
 input.ui-button { width: 100%; }
 ');
 

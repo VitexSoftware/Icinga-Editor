@@ -38,6 +38,21 @@ switch ($oPage->getRequestValue('action')) {
         }
 
         break;
+    case 'system':
+        $hosts = $service->getDataValue('host_name');
+        foreach ($hosts as $host_id => $host_name) {
+            $host = new IEHost($host_id);
+            $newService = new IEService($service->getId());
+            $newService->setDataValue($service->userColumn, 0);
+            $newService->setDataValue('public', 0);
+            if ($newService->fork($host, $host->getDataValue($host->userColumn))) {
+                $oUser->addStatusMessage(sprintf(_('Služba %s byla odvozena'),$newService->getName()), 'success');
+            } else {
+                $oUser->addStatusMessage(_('Služba nebyla odvozena'), 'error');
+            }
+        }
+        $service->loadFromMySQL($service->getId());
+        break;
 }
 
 if ($oPage->isPosted()) {
@@ -99,6 +114,11 @@ $renameForm->addItem(new EaseTWSubmitButton(_('Přejmenovat'), 'success'));
 
 $oPage->columnIII->addItem(new EaseHtmlFieldSet(_('Přejmenování'), $renameForm));
 $oPage->columnI->addItem(new IEHostSelector($service));
+
+if ($oUser->getSettingValue('admin')) {
+    $oPage->columnI->addItem(new EaseTWBLinkButton('?action=system&service_id=' . $service->getId(), _('Systémová služba')));
+}
+
 
 $oPage->addItem(new IEPageBottom());
 

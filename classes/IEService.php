@@ -411,15 +411,49 @@ class IEService extends IECfg
     {
         $oldname = $this->getName();
         $this->setDataValue($this->nameColumn, $newname);
-        
+
         $renameAll = true;
-        
-        
+
+
         if ($this->save() && $renameAll) {
             return true;
         }
 
         return false;
+    }
+
+    
+    
+    public function fork($host,$ownerId = null)
+    {
+        if(is_null($ownerId)){
+            $ownerId = EaseShared::user()->getUserID();
+        }        
+        $this->delMember('host_name', $host->getId(), $host->getName());
+        $this->saveToMySQL();
+
+        $this->setDataValue('parent_id', $this->getId());
+        $this->unsetDataValue($this->getmyKeyColumn());
+        $this->setDataValue('public', 0);
+        $this->unsetDataValue('tcp_port');
+        $this->unsetDataValue('DatSave');
+        $this->unsetDataValue('DatCreate');
+        $this->setDataValue('action_url',$_SERVER['REQUEST_URI']);
+        $this->setDataValue($this->userColumn, $ownerId);
+
+        $newname = $this->getName() . ' ' . $host->getName();
+
+        $servcount = $this->myDbLink->queryToCount('SELECT ' . $this->getmyKeyColumn() . ' FROM ' . $this->myTable . ' WHERE ' . $this->nameColumn . ' LIKE \'' . $newname . '%\' ');
+
+        if ($servcount) {
+            $newname .= ' ' . ($servcount + 1);
+        }
+
+        $this->setDataValue($this->nameColumn, $newname);
+        $this->setDataValue('host_name', array());
+        $this->addMember('host_name', $host->getId(), $host->getName());
+
+        return $this->saveToMySQL();
     }
 
 }
