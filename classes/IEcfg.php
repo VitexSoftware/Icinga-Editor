@@ -239,7 +239,7 @@ class IEcfg extends EaseBrick
                 }
             }
             ksort($columns);
-            fputs($cfg, "define " . $this->keyword . " {\n");
+            fputs($cfg, "define " . $this->keyword . " { #".$columns[$this->myKeyColumn]."@".$this->myTable." \n");
             foreach ($columns as $columnName => $columnValue) {
 
                 if (array_key_exists($columnName, $this->useKeywords)) {
