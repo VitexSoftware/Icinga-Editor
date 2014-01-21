@@ -1,7 +1,7 @@
 <?php
 
 /**
- * VitexSoftware 
+ * VitexSoftware
  *
  * @author    Vitex <vitex@hippy.cz>
  * @copyright 2010 Vitex@vitexsoftware.cz (G)
@@ -9,19 +9,19 @@
 date_default_timezone_set('Europe/Prague');
 
 /**
- * Adresa odesilatele  
+ * Adresa odesilatele
  */
 define('SEND_MAILS_FROM', 'noreply@vitexsoftware.cz');
 /**
- * Databázový server 
+ * Databázový server
  */
 define('DB_SERVER', 'localhost');
 /**
- * Uživatelské jméno k databázi 
+ * Uživatelské jméno k databázi
  */
 define('DB_SERVER_USERNAME', 'iciedit');
 /**
- * Heslo k databázi 
+ * Heslo k databázi
  */
 define('DB_SERVER_PASSWORD', 'LojAstod9');
 /**
@@ -35,22 +35,20 @@ define('DB_DATABASE', 'iciedit');
 define('DB_PREFIX', 'iciedit_');
 
 /**
- * Adresář pro zápis logů 
+ * Adresář pro zápis logů
  */
 define('LOG_DIRECTORY', '/var/tmp/');
 
 /**
  * Konfigurační adresář  Icingy
  */
-define('CFG_DIRECTORY', 'tmp');
+define('CFG_GENERATED', '/etc/icinga/generated/');
 
 /**
- * Výchozí odesilatel zpráv 
+ * Výchozí odesilatel zpráv
  */
 define('EMAIL_FROM','monitor@v.s.cz');
 /**
- * Kam posílat oznámení o nových registracích 
+ * Kam posílat oznámení o nových registracích
  */
-define('SEND_INFO_TO','info@vitexsoftware.cz')
-
-?>
+define('SEND_INFO_TO','info@vitexsoftware.cz');

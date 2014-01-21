@@ -17,6 +17,7 @@ class IEContact extends IECfg
 {
 
     public $myTable = 'contact';
+
     /**
      * Klíčový sloupeček
      * @var string
@@ -172,9 +173,9 @@ class IEContact extends IECfg
      * @param  string                     $urlAdd Předávaná část URL
      * @return \EaseJQConfirmedLinkButton
      */
-    public function deleteButton($name = null,$addUrl = '')
+    public function deleteButton($name = null, $addUrl = '')
     {
-        return parent::deleteButton(_('Kontakt'),$addUrl);
+        return parent::deleteButton(_('Kontakt'), $addUrl);
     }
 
     /**
@@ -184,18 +185,54 @@ class IEContact extends IECfg
      */
     public static function ownContactData()
     {
-        $OUser = EaseShared::user();
+        $oUser = EaseShared::user();
 
         return array(
             'use' => 'generic-contact',
-            'contact_name' => $OUser->getUserLogin(),
-            'alias' => $OUser->getUserName(),
-            'email' => $OUser->getUserEmail(),
+            'contact_name' => $oUser->getUserLogin(),
+            'alias' => $oUser->getUserName(),
+            'email' => $oUser->getUserEmail(),
             'host_notification_commands' => array('notify-host-by-email'),
             'service_notification_commands' => array('notify-service-by-email'),
             'generate' => TRUE,
-            'user_id' => $OUser->getUserID()
+            'user_id' => $oUser->getUserID()
         );
+    }
+
+    /**
+     * Vytovří odvozený kontakt
+     * @param type $changes
+     * @return type
+     */
+    public function fork($changes)
+    {
+        if (is_null($ownerId)) {
+            $ownerId = EaseShared::user()->getUserID();
+        }
+//        $this->delMember('service_name', $service->getId(), $service->getName());
+//        $this->saveToMySQL();
+
+        $this->setDataValue('alias', key($changes));
+        $this->setDataValue('parent_id', $this->getId());
+        $this->unsetDataValue($this->getmyKeyColumn());
+        $this->setDataValue('public', 0);
+        $this->unsetDataValue('DatSave');
+        $this->unsetDataValue('DatCreate');
+
+        $this->setDataValue($this->userColumn, $ownerId);
+        $this->setData($changes);
+
+        $newname = $this->getName() . ' ' . key($changes);
+
+        $servcount = $this->myDbLink->queryToCount('SELECT ' . $this->getmyKeyColumn() . ' FROM ' . $this->myTable . ' WHERE ' . $this->nameColumn . ' LIKE \'' . $newname . '%\' ');
+
+        if ($servcount) {
+            $newname .= ' ' . ($servcount + 1);
+        }
+
+        $this->setDataValue($this->nameColumn, $newname);
+
+        return $this->saveToMySQL();
     }
 
 }

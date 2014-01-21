@@ -24,4 +24,3 @@ $oPage->addItem(new IEPageBottom());
 
 
 $oPage->draw();
-?>

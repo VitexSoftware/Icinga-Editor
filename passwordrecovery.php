@@ -31,11 +31,11 @@ if ($EmailTo) {
     $UserEmail = $oPage->easeAddSlashes($EmailTo);
     $UserFound = $oPage->myDbLink->queryToArray('SELECT id,login FROM user WHERE email=\'' . $UserEmail . '\'');
     if (count($UserFound)) {
-        $UserID = intval($UserFound[0]['id']);
+        $userID = intval($UserFound[0]['id']);
         $UserLogin = $UserFound[0]['login'];
         $NewPassword = $oPage->randomString(8);
 
-        $PassChanger = new EaseUser($UserID);
+        $PassChanger = new EaseUser($userID);
         $PassChanger->passwordChange($NewPassword);
 
         $email = $oPage->addItem(new EaseShopMail($UserEmail, _('Nové heslo pro ') . $_SERVER['SERVER_NAME']));
