@@ -14,12 +14,12 @@ $process = false;
 if ($oPage->isPosted()) {
     $process = true;
 
-    $email_address = addslashes(strtolower($_POST['email_address']));
+    $emailAddress = addslashes(strtolower($_POST['email_address']));
 
     if (isset($_POST['parent'])) {
-        $CustomerParent = addslashes($_POST['parent']);
+        $customerParent = addslashes($_POST['parent']);
     } else {
-        $CustomerParent = $oUser->getUserID();
+        $customerParent = $oUser->getUserID();
     }
     $login = addslashes($_POST['login']);
     if (isset($_POST['password']))
@@ -29,18 +29,18 @@ if ($oPage->isPosted()) {
 
     $error = false;
 
-    if (strlen($email_address) < 5) {
+    if (strlen($emailAddress) < 5) {
         $error = true;
         $oUser->addStatusMessage(_('mailová adresa je příliš krátká'), 'warning');
     } else {
-        if (!$oUser->IsEmail($email_address, true)) {
+        if (!$oUser->IsEmail($emailAddress, true)) {
             $error = true;
             $oUser->addStatusMessage(_('chyba v mailové adrese'), 'warning');
         } else {
-            $check_email = EaseShared::myDbLink()->queryToValue("SELECT COUNT(*) AS total FROM user WHERE email = '" . $oPage->EaseAddSlashes($email_address) . "'");
+            $check_email = EaseShared::myDbLink()->queryToValue("SELECT COUNT(*) AS total FROM user WHERE email = '" . $oPage->EaseAddSlashes($emailAddress) . "'");
             if ($check_email > 0) {
                 $error = true;
-                $oUser->addStatusMessage(sprintf(_('Mailová adresa %s je již zaregistrována'), $email_address), 'warning');
+                $oUser->addStatusMessage(sprintf(_('Mailová adresa %s je již zaregistrována'), $emailAddress), 'warning');
             }
         }
     }
@@ -53,8 +53,8 @@ if ($oPage->isPosted()) {
         $oUser->addStatusMessage(_('kontrola hesla nesouhlasí'), 'warning');
     }
 
-    $UsedLogin = EaseShared::myDbLink()->QueryToValue('SELECT id FROM user WHERE login=\'' . $oPage->EaseAddSlashes($login) . '\'');
-    if ($UsedLogin) {
+    $usedLogin = EaseShared::myDbLink()->QueryToValue('SELECT id FROM user WHERE login=\'' . $oPage->EaseAddSlashes($login) . '\'');
+    if ($usedLogin) {
         $error = true;
         $oUser->addStatusMessage(sprintf(_('Zadané uživatelské jméno %s je již v databázi použito. Zvolte prosím jiné.'), $login), 'warning');
     }
@@ -64,18 +64,18 @@ if ($oPage->isPosted()) {
         $newOUser = new IEUser();
         //TODO zde by se měly doplnit defaultní hodnoty z konfiguráku registry.php
         $newOUser->setData(
-                array(
-                    'email' => $email_address,
+            array(
+                    'email' => $emailAddress,
                     'password' => $newOUser->encryptPassword($password),
-                    'parent' => (int) $CustomerParent,
+                    'parent' => (int) $customerParent,
                     'login' => $login
                 )
         );
 
-        $UserID = $newOUser->insertToMySQL();
+        $userID = $newOUser->insertToMySQL();
 
-        if ($UserID) {
-            $newOUser->setMyKey($UserID);
+        if ($userID) {
+            $newOUser->setMyKey($userID);
 
             $oUser->addStatusMessage(_('Uživatelský účet byl vytvořen'), 'success');
             $newOUser->loginSuccess();
@@ -97,17 +97,41 @@ if ($oPage->isPosted()) {
             EaseShared::user($newOUser)->loginSuccess();
 
             $contact = new IEContact();
-            $contact->setData(array('contact_name' => $login, 'email' => $email_address, 'alias' => $firstname . ' ' . $lastname, 'use' => 'generic-contact', $contact->userColumn => $UserID, 'generate' => true, 'register' => 1));
+            $contact->setData(
+                    array(
+                        'contact_name' => $login,
+                        'use' => 'generic-contact', 
+                        $contact->userColumn => $userID,
+                        'generate' => true,
+                        'host_notifications_enabled' => true,
+                        'service_notifications_enabled' => true,
+                        'host_notification_period' => '24x7',
+                        'service_notification_period' => '24x7',
+                        'service_notification_options' => ' w,u,c,r',
+                        'host_notification_options' => 'd,u,r',
+                        'service_notification_commands' => 'notify-service-by-email',
+                        'host_notification_commands' => 'notify-host-by-email',
+                        'register' => 1)
+            );
             $contactID = $contact->saveToMySQL();
             if ($contactID) {
-                $oUser->addStatusMessage(_('Prvotní kontakt byl založen'), 'success');
+                $oUser->addStatusMessage(_('Výchozí kontakt byl založen'), 'success');
             } else {
-                $oUser->addStatusMessage(_('Prvotní kontakt nebyl založen'), 'warning');
+                $oUser->addStatusMessage(_('Výchozí kontakt nebyl založen'), 'warning');
+            }
+
+
+            $mailID = $contact->fork(array('email' => $emailAddress));
+            if ($mailID) {
+                $oUser->addStatusMessage(_('Mailový kontakt byl založen'), 'success');
+            } else {
+                $oUser->addStatusMessage(_('Mailový kontakt nebyl založen'), 'warning');
             }
 
             $contactGroup = new IEContactgroup();
-            $contactGroup->setData(array('contactgroup_name' =>  _('Skupina') . '_' . $login, 'alias' => _('Skupina') . '_' . $login, 'generate' => true, $contactGroup->userColumn => $UserID));
+            $contactGroup->setData(array('contactgroup_name' => _('Skupina') . '_' . $login, 'alias' => _('Skupina') . '_' . $login, 'generate' => true, $contactGroup->userColumn => $userID));
             $contactGroup->addMember('members', $contactID, $login);
+            $contactGroup->addMember('members', $mailID, $contact->getName());
             $cgID = $contactGroup->saveToMySQL();
 
             if ($cgID) {
@@ -127,17 +151,24 @@ if ($oPage->isPosted()) {
     }
 }
 
-$oPage->AddCss('
-input.ui-button { width: 220px; }
-');
+$oPage->addCss('input.ui-button { width: 220px; }');
 
 $oPage->addItem(new IEPageTop(_('Registrace')));
 
-$oPage->columnI->addItem(new EaseHtmlDivTag('WelcomeHint', _('Vítejte v registraci')));
+$oPage->columnI->addItem(new EaseHtmlH2Tag(_('Vítejte v registraci')));
+$oPage->columnI->addItem(
+        new EaseHtmlUlTag(
+        array(
+    _('Po zaregistování budete rovnou vyzváni k zadání prvního sledovaného hosta.'),
+    _('Veškeré notifikace o výsledcích testů vám budou přicházet na zadaný email.'),
+    _('Pro zasílání notifikací pomocí XMPP (jabber) či SMS, zadejte tyto v nastavení vašeho kontaktu.')
+        )
+        )
+);
 
-$RegFace = $oPage->columnII->addItem(new EaseHtmlDivTag('RegFace'));
+$regFace = $oPage->columnII->addItem(new EaseHtmlDivTag('RegFace'));
 
-$RegForm = $RegFace->addItem(new EaseHtmlForm('create_account', 'createaccount.php', 'POST', null, array('class' => 'form-horizontal')));
+$RegForm = $regFace->addItem(new EaseHtmlForm('create_account', 'createaccount.php', 'POST', null, array('class' => 'form-horizontal')));
 if ($oUser->getUserID()) {
     $RegForm->addItem(new EaseHtmlInputHiddenTag('u_parent', $oUser->GetUserID()));
 }
@@ -149,7 +180,7 @@ $Account->addItem(new EaseLabeledPasswordControlInput('confirmation', NULL, _('p
 $Account->addItem(new EaseLabeledTextInput('email_address', NULL, _('emailová adresa') . ' *' . _(' (pouze malými písmeny)')));
 
 $RegForm->addItem(new EaseHtmlDivTag('Account', $Account));
-$RegForm->addItem(new EaseHtmlDivTag('Submit', new EaseHtmlInputSubmitTag('Register', _('Registrovat'), array('title'=>_('dokončit registraci'),'class' => 'btn btn-success'))));
+$RegForm->addItem(new EaseHtmlDivTag('Submit', new EaseHtmlInputSubmitTag('Register', _('Registrovat'), array('title' => _('dokončit registraci'), 'class' => 'btn btn-success'))));
 
 if (isset($_POST)) {
     $RegForm->fillUp($_POST);
