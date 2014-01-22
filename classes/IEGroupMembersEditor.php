@@ -18,7 +18,7 @@ class IEGroupMembersEditor extends EaseContainer
      * @param string $FieldCaption popisek políčka
      * @param array $DataSource pole(tabulka=>sloupec)
      */
-    function __construct($FieldName, $FieldCaption, $DataSource, $Members)
+    function __construct($FieldName, $FieldCaption, $DataSource, $members)
     {
         $IDColumn = $DataSource->keywordsInfo[$FieldName]['refdata']['idcolumn'];
         $nameColumn = $DataSource->keywordsInfo[$FieldName]['refdata']['captioncolumn'];
@@ -50,17 +50,17 @@ class IEGroupMembersEditor extends EaseContainer
             if (DB_PREFIX . $STable == $DataSource->myTable) {
                 $TmpKey = $DataSource->getMyKey();
                 if ($TmpKey) {
-                    $Members[$TmpKey] = true;
+                    $members[$TmpKey] = true;
                 }
             }
 
-            if ($Members && count($Members)) {
-                $AviavbleCond = 'AND ' . $IDColumn . ' NOT IN (' . join(',', array_keys($Members)) . ') ';
+            if ($members && count($members)) {
+                $AviavbleCond = 'AND ' . $IDColumn . ' NOT IN (' . join(',', array_keys($members)) . ') ';
             } else {
                 $AviavbleCond = '';
             }
 
-            $MembersAviableArray = EaseShared::myDbLink()->queryToArray(
+            $membersAviableArray = EaseShared::myDbLink()->queryToArray(
                     'SELECT ' . $nameColumn . ', ' . $IDColumn . ' ' .
                     'FROM `' . DB_PREFIX . $STable . '` ' .
                     'WHERE (' . $SqlConds . ') ' .
@@ -68,12 +68,12 @@ class IEGroupMembersEditor extends EaseContainer
                     'ORDER BY ' . $nameColumn, $IDColumn);
 
             if (DB_PREFIX . $STable == $DataSource->myTable) {
-                unset($Members[$DataSource->getMyKey()]);
+                unset($members[$DataSource->getMyKey()]);
             }
 
 
-            if (count($MembersAviableArray)) {
-                foreach ($MembersAviableArray as $MemberID => $MemberName) {
+            if (count($membersAviableArray)) {
+                foreach ($membersAviableArray as $MemberID => $MemberName) {
                     $Jellybean = new EaseHtmlSpanTag($MemberName[$nameColumn], null, array('class' => 'jellybean gray'));
                     $Jellybean->addItem(new EaseHtmlATag('?add=' . $FieldName . '&amp;member=' . $MemberID . '&amp;name=' . $MemberName[$nameColumn] . '&amp;' . $DataSource->getmyKeyColumn() . '=' . $DataSource->getMyKey() . '#' . $FieldName, EaseTWBPart::GlyphIcon('plus-sign').' '. $MemberName[$nameColumn]));
                     $InitialContent->addItem($Jellybean);
@@ -81,9 +81,9 @@ class IEGroupMembersEditor extends EaseContainer
             }
 
 
-            if ($Members && count($Members)) {
+            if ($members && count($members)) {
                 $InitialContent->addItem('</br>');
-                foreach ($Members as $MemberID => $MemberName) {
+                foreach ($members as $MemberID => $MemberName) {
                     $Jellybean = new EaseHtmlSpanTag($MemberName, null, array('class' => 'jellybean'));
                     $Jellybean->addItem($MemberName);
                     $Jellybean->addItem(new EaseHtmlATag('?del=' . $FieldName . '&amp;member=' . $MemberID . '&amp;name=' . $MemberName . '&amp;' . $DataSource->getmyKeyColumn() . '=' . $DataSource->getMyKey() . '#' . $FieldName, EaseTWBPart::GlyphIcon('remove')));

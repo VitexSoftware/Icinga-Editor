@@ -37,6 +37,8 @@ if ($oPage->isPosted()) {
 $delete = $oPage->getGetValue('delete', 'bool');
 if ($delete == 'true') {
     $contact->delete();
+    $oPage->redirect('contacts.php');
+    exit();
 }
 
 
@@ -44,9 +46,9 @@ $oPage->addItem(new IEPageTop(_('Editace kontaktu') . ' ' . $contact->getName())
 
 
 
-$ContactEdit = new IECfgEditor($contact);
+$contactEdit = new IECfgEditor($contact);
 
-$form = $oPage->columnII->addItem(new EaseHtmlForm('Contact', 'contact.php', 'POST', $ContactEdit, array('class' => 'form-horizontal')));
+$form = $oPage->columnII->addItem(new EaseHtmlForm('Contact', 'contact.php', 'POST', $contactEdit, array('class' => 'form-horizontal')));
 $form->setTagID($form->getTagName());
 if (!is_null($contact->getMyKey())) {
     $form->addItem(new EaseHtmlInputHiddenTag($contact->getmyKeyColumn(), $contact->getMyKey()));

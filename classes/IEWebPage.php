@@ -354,7 +354,7 @@ class IEMainMenu extends EaseHtmlDivTag {
 
             $nav->addDropDownMenu(_('Kontakty'), array_merge($contacts_menu, array(
                 'contacts.php' => EaseTWBPart::GlyphIcon('list') . ' ' . _('Přehled kontaktů'),
-                'contact.php' => EaseTWBPart::GlyphIcon('edit') . ' ' . _('Nový kontakt'),
+                'newcontact.php' => EaseTWBPart::GlyphIcon('plus') . ' ' . _('Nový kontakt'),
                 'contactgroups.php' => EaseTWBPart::GlyphIcon('list') . ' ' . _('Přehled skupin kontaktů'),
                 'contactgroup.php' => EaseTWBPart::GlyphIcon('edit') . ' ' . _('Nová skupina kontaktů'))
             ));

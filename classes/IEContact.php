@@ -199,20 +199,57 @@ class IEContact extends IECfg
         );
     }
 
+    function checkEmailAddress($email)
+    {
+        if (preg_match("/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/", $email))
+            return true;
+        return false;
+    }
+
     /**
      * Vytovří odvozený kontakt
-     * @param type $changes
+     * @param array $changes
      * @return type
      */
     public function fork($changes)
     {
-        if (is_null($ownerId)) {
-            $ownerId = EaseShared::user()->getUserID();
-        }
-//        $this->delMember('service_name', $service->getId(), $service->getName());
-//        $this->saveToMySQL();
+        $chType = key($changes);
+        $chVal = current($changes);
 
-        $this->setDataValue('alias', key($changes));
+        switch ($chType) {
+            case 'twitter':
+                $change = array('address2' => $chVal);
+                break;
+            case 'jabber':
+                if (!$this->checkEmailAddress($chVal)) {
+                    $this->addStatusMessage(_('Toto není platná jabberová adresa'), 'warning');
+                    return false;
+                }
+                $change = array('address1' => $chVal);
+                break;
+            case 'email':
+                if (!$this->checkEmailAddress($chVal)) {
+                    $this->addStatusMessage(_('Toto není platná mailová adresa'), 'warning');
+                    return false;
+                }
+                $change = $changes;
+                break;
+            case 'sms':
+                if (!preg_match("/^(\+420)? ?\d{3} ?\d{3} ?\d{3}$/i", $chVal)) {
+                    $this->addStatusMessage(_('Toto není platné telefoní číslo'), 'warning');
+                    return false;
+                } 
+                $change = array('pager' => $chVal);
+                break;
+            default :
+                $change = $changes;
+                break;
+        }
+
+
+        $ownerId = EaseShared::user()->getUserID();
+
+        $this->setDataValue('alias', $chType);
         $this->setDataValue('parent_id', $this->getId());
         $this->unsetDataValue($this->getmyKeyColumn());
         $this->setDataValue('public', 0);
@@ -220,9 +257,9 @@ class IEContact extends IECfg
         $this->unsetDataValue('DatCreate');
 
         $this->setDataValue($this->userColumn, $ownerId);
-        $this->setData($changes);
+        $this->setData($change);
 
-        $newname = $this->getName() . ' ' . key($changes);
+        $newname = $this->getName() . ' ' . $chType;
 
         $servcount = $this->myDbLink->queryToCount('SELECT ' . $this->getmyKeyColumn() . ' FROM ' . $this->myTable . ' WHERE ' . $this->nameColumn . ' LIKE \'' . $newname . '%\' ');
 
@@ -235,4 +272,35 @@ class IEContact extends IECfg
         return $this->saveToMySQL();
     }
 
+    /**
+     * Vrací seznam podřízených kontaktů a jejich typů
+     * @return array pole ID=>typ 
+     */
+    public function getChilds()
+    {
+        $subchilds = array();
+        $childs = $this->myDbLink->queryToArray('SELECT `alias`,`' . $this->myKeyColumn . '`,`'.$this->nameColumn.'`,`email`,`pager`,`address1`,`address2`  FROM `' . $this->myTable . '` WHERE `parent_id` = ' . $this->getId(), $this->myKeyColumn);
+        foreach ($childs as $childID => $childInfo){
+            $subchilds[$childID]['type'] = $childInfo['alias'];
+            $subchilds[$childID]['contact'] = $childInfo['email'].$childInfo['pager'].$childInfo['address1'].$childInfo['address2'];
+        }
+        return $subchilds;
+    }
+
+    /**
+     * Smazaže kontakt i jeho subkontakty
+     * 
+     * @return boolean
+     */
+    function delete($id = null)
+    {
+        if(is_null($id)){
+            $id = $this->getId();
+        }
+        $this->myDbLink->exeQuery('DELETE FROM `'.$this->myTable.'` WHERE `parent_id`='.$id);
+        
+        return parent::delete($id);
+    }
+    
+    
 }

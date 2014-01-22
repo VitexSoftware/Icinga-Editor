@@ -231,16 +231,20 @@ class IEHost extends IECfg
      * @param  string                     $urlAdd Předávaná část URL
      * @return \EaseJQConfirmedLinkButton
      */
-    public function deleteButton($name = null,$addUrl = '')
+    public function deleteButton($name = null, $addUrl = '')
     {
-        return parent::deleteButton(_('Hosta'),$addUrl);
+        return parent::deleteButton(_('Hosta'), $addUrl);
     }
 
     /**
      * Smaže záznam
      */
-    public function delete()
+    public function delete($id = null)
     {
+        if (!is_null($id)) {
+            $this->loadFromMySQL($id);
+        }
+
         $hostGroup = new IEHostgroup();
         $hostGroup->deleteHost($this->getName());
 
@@ -429,5 +433,5 @@ class IEHost extends IECfg
     {
         echo IEHostOverview::icon($this);
     }
-    
+
 }

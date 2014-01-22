@@ -239,7 +239,7 @@ class IEcfg extends EaseBrick
                 }
             }
             ksort($columns);
-            fputs($cfg, "define " . $this->keyword . " { #".$columns[$this->myKeyColumn]."@".$this->myTable." \n");
+            fputs($cfg, "define " . $this->keyword . " { #" . $columns[$this->myKeyColumn] . "@" . $this->myTable . " \n");
             foreach ($columns as $columnName => $columnValue) {
 
                 if (array_key_exists($columnName, $this->useKeywords)) {
@@ -753,15 +753,25 @@ class IEcfg extends EaseBrick
 
     /**
      * Smaže záznam
+     * 
+     * @param int $id má li být smazán jiný než aktuální záznam
+     * @return boolean smazal se záznam ?
      */
-    public function delete()
+    public function delete($id = null)
     {
-        foreach ($this->data as $columnName => $value) {
-            if (is_array($value)) {
-                $this->unsetDataValue($columnName);
+
+        if (is_null($id)) {
+            $id = $this->getId();
+        }
+
+        if (isset($this->data)) {
+            foreach ($this->data as $columnName => $value) {
+                if (is_array($value)) {
+                    $this->unsetDataValue($columnName);
+                }
             }
         }
-        if ($this->deleteFromMySQL()) {
+        if ($this->deleteFromMySQL($id)) {
             $this->addStatusMessage(sprintf(_(' %s %s byl smazán '), $this->keyword, $this->getName()), 'success');
             $this->dataReset();
 
