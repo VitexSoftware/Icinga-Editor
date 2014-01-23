@@ -13,6 +13,8 @@ require_once 'includes/IEInit.php';
 $oPage->addItem(new IEPageTop(_('Icinga Editor')));
 
 $oPage->heroUnit->addItem( new EaseHtmlImgTag('img/vsmonitoring.png') );
+$oPage->heroUnit->addItem( new EaseHtmlATag('http://icinga.org/',  new EaseHtmlImgTag('img/icinga_logo4-300x109.png') ) );
+$oPage->heroUnit->addItem( _('Monitoring služeb') );
 $oPage->heroUnit->setTagCss(array('text-align'=>'center'));
         
 $oPage->columnI->addItem(_('Sledování hostů'));

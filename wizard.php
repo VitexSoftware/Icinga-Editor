@@ -120,19 +120,19 @@ if ($hostName || $address || $addressSix) {
     $oUser->addStatusMessage('Address6: ' . $addressSix);
 
     $host->setData(
-        array(
-        $host->userColumn => $oUser->getUserID(),
+            array(
+                $host->userColumn => $oUser->getUserID(),
 //        'check_command'=>'check-host-alive',
-        'host_name' => $hostName,
-        'address' => $address,
-        'address6' => $addressSix,
-        'use' => 'generic-host',
-        'platform' => 'generic',
-        'register' => true,
-        'generate' => TRUE,
-        'alias' => $hostName,
-        'contacts' => array($oUser->getFirstContactName())
-                )
+                'host_name' => $hostName,
+                'address' => $address,
+                'address6' => $addressSix,
+                'use' => 'generic-host',
+                'platform' => 'generic',
+                'register' => true,
+                'generate' => TRUE,
+                'alias' => $hostName,
+                'contacts' => $oUser->getFirstContact()
+            )
     );
 
     if ($host->saveToMysql()) {
@@ -150,7 +150,7 @@ if ($hostName || $address || $addressSix) {
             $hostGroup->saveToMySQL();
         }
 
-        $oPage->redirect('apply.php');
+        $oPage->redirect('host.php?host_id=' . $host->getId());
         exit();
     }
 }
@@ -159,7 +159,7 @@ $contact = new IEContact();
 $pocContact = $contact->getMyRecordsCount();
 if (!$pocContact) {
     $warning = $oPage->columnIII->addItem(new EaseHtmlDivTag('Contact', _('Nemáte definovaný kontakt'), array('class' => 'alert alert-info')));
-    $warning->addItem(new EaseTWBLinkButton('contact.php?autocreate=default', _('Založit výchozí kontakt').' '.EaseTWBPart::GlyphIcon('edit')));
+    $warning->addItem(new EaseTWBLinkButton('contact.php?autocreate=default', _('Založit výchozí kontakt') . ' ' . EaseTWBPart::GlyphIcon('edit')));
 }
 
 $pocHostu = $host->getMyRecordsCount();
@@ -167,26 +167,23 @@ if ($pocHostu) {
     $success = $oPage->columnIII->addItem(new EaseHtmlDivTag('Host', new EaseTWBLinkButton('hosts.php', _('<i class="icon-list"></i>') . ' ' . sprintf(_('Definováno %s hostů'), $pocHostu)), array('class' => 'alert alert-success')));
 }
 
-$warning = $oPage->columnII->addItem(new EaseHtmlDivTag('Host', _('Vyplňte prosím alespoň jednu položku:'), array('class' => 'alert')));
 
-$firstHost = $warning->addItem(new EaseHtmlForm('firsthost'));
-$firstHost->setTagProperties(array('onSubmit'=>"$('#preload').css('visibility', 'visible');"));
-$firstHost->addItem(new EaseLabeledTextInput('host_name', $hostName, _('Hostname serveru')));
-$firstHost->addItem(new EaseLabeledTextInput('address', $address, _('IPv4 Adresa')));
-$firstHost->addItem(new EaseLabeledTextInput('address6', $addressSix, _('IPv6 Adresa')));
-$firstHost->addItem($submit = new EaseHtmlInputSubmitTag('Ok'));
-$submit->setTagClass('btn');
+$firstHost = $oPage->columnII->addItem(new EaseTWBForm('firsthost'));
+$firstHost->setTagProperties(array('onSubmit' => "$('#preload').css('visibility', 'visible');"));
 
-if ($oUser->getSettingValue('admin')) {
-    $oPage->columnIII->addItem(new EaseJQConfirmedLinkButton('install.php', _('Reinicializace z konfiguračních souborů') . ' <i class="icon-refresh"></i>'));
-}
+$firstHost->addItem(new EaseTWBFormGroup(_('Hostname serveru'), new EaseHtmlInputTextTag('host_name', $hostName), null, _('Název hostu, tedy to co následuje po http:// ve webové adrese až k prvnímu lomítku, nebo otazníku.')));
+$firstHost->addItem(new EaseTWBFormGroup(_('IPv4 Adresa'), new EaseHtmlInputTextTag('address', $address), null, _('čtyři číslice od 0 do 255 oddělené tečkou')));
+$firstHost->addItem(new EaseTWBFormGroup(_('IPv6 Adresa'), new EaseHtmlInputTextTag('address6', $addressSix), null, _('nejvíce osm skupin čtyř hexadecimálních číslic oddělených dvojtečkou')));
 
-$oPage->columnI->addItem( new EaseHtmlDivTag(null, _('Po zadání alespoň jednoho vstupního údaje si tento '
-        . 'průvodce dohledá ostatní a provede sken na některé základní služby.'
-        . 'Pokud budou tyto nalezeny aktivují se jejich testy.'), array('class'=>'well')  )  );
+$firstHost->addItem(new EaseTWSubmitButton(EaseTWBPart::GlyphIcon('plus').' '. _('Přidej host'), 'success'));
 
 
-$oPage->addItem( new EaseHtmlDivTag('preload', new IEFXPreloader(),array('class'=>'fuelux')));
+$oPage->columnI->addItem(new EaseHtmlDivTag(null, _('Po zadání alespoň jednoho vstupního údaje si tento '
+                . 'průvodce dohledá ostatní a provede sken na některé základní služby.'
+                . '<br>Pokud budou tyto nalezeny aktivují se jejich testy. Informace o stavu bude odesílána na první zadaný kontakt'), array('class' => 'well')));
+
+
+$oPage->addItem(new EaseHtmlDivTag('preload', new IEFXPreloader(), array('class' => 'fuelux')));
 
 $oPage->addItem(new IEPageBottom());
 

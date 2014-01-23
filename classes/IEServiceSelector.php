@@ -24,6 +24,9 @@ class IEServiceSelector extends EaseContainer
         $fieldName = $this->getmyKeyColumn();
         $initialContent = new EaseHtmlFieldSet(_('Sledované služby'));
         $initialContent->setTagCss(array('width' => '100%'));
+        if($host->getDataValue('platform')=='generic'){
+            $initialContent->addItem('<small><span class="label label-info">Tip:</span> '._('Další sledovatelné služby budou nabídnuty po nastavení platformy hosta a vzdáleného senzoru.').'</small>');
+        }
         
 
         if (is_null($host->getMyKey())) {

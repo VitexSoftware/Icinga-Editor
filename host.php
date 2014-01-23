@@ -15,6 +15,7 @@ require_once 'classes/IEServiceSelector.php';
 require_once 'classes/IEIconSelector.php';
 require_once 'classes/IEHostOverview.php';
 require_once 'classes/IEFXPreloader.php';
+require_once 'classes/IEContactSelector.php';
 
 $oPage->onlyForLogged();
 
@@ -147,6 +148,24 @@ switch ($oPage->getRequestValue('action')) {
         break;
 }
 
+$delcnt = $oPage->getGetValue('delcontact');
+if ($delcnt) {
+    $host->delMember(
+        'contacts', $oPage->getGetValue('contact_id', 'int'), $delcnt
+    );
+    $host->saveToMySql();
+}
+
+$addcnt = $oPage->getGetValue('addcontact');
+if ($addcnt) {
+    $host->addMember(
+        'contacts', $oPage->getGetValue('contact_id', 'int'), $addcnt
+    );
+    $host->saveToMySql();
+}
+
+
+
 $oPage->addItem(new IEPageTop(_('Editace hosta') . ' ' . $host->getName()));
 
 switch ($oPage->getRequestValue('action')) {
@@ -187,6 +206,7 @@ $oPage->columnI->addItem(new EaseTWBLinkButton('?action=parent&host_id=' . $host
 $oPage->columnI->addItem(new EaseTWBLinkButton('?action=icon&host_id=' . $host->getId(), _('Změnit ikonu'), 'success'));
 
 $oPage->columnI->addItem(new IEServiceSelector($host));
+$oPage->columnI->addItem(new IEContactSelector($host));
 
 if ($host->getId()) {
     $oPage->columnI->addItem($host->ownerLinkButton());

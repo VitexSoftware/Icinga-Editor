@@ -238,7 +238,7 @@ class IEContact extends IECfg
                 if (!preg_match("/^(\+420)? ?\d{3} ?\d{3} ?\d{3}$/i", $chVal)) {
                     $this->addStatusMessage(_('Toto není platné telefoní číslo'), 'warning');
                     return false;
-                } 
+                }
                 $change = array('pager' => $chVal);
                 break;
             default :
@@ -279,12 +279,46 @@ class IEContact extends IECfg
     public function getChilds()
     {
         $subchilds = array();
-        $childs = $this->myDbLink->queryToArray('SELECT `alias`,`' . $this->myKeyColumn . '`,`'.$this->nameColumn.'`,`email`,`pager`,`address1`,`address2`  FROM `' . $this->myTable . '` WHERE `parent_id` = ' . $this->getId(), $this->myKeyColumn);
-        foreach ($childs as $childID => $childInfo){
+        $childs = $this->myDbLink->queryToArray('SELECT `alias`,`' . $this->myKeyColumn . '`,`' . $this->nameColumn . '`,`email`,`pager`,`address1`,`address2`  FROM `' . $this->myTable . '` WHERE `parent_id` = ' . $this->getId(), $this->myKeyColumn);
+        foreach ($childs as $childID => $childInfo) {
             $subchilds[$childID]['type'] = $childInfo['alias'];
-            $subchilds[$childID]['contact'] = $childInfo['email'].$childInfo['pager'].$childInfo['address1'].$childInfo['address2'];
+            $subchilds[$childID]['contact'] = $childInfo['email'] . $childInfo['pager'] . $childInfo['address1'] . $childInfo['address2'];
         }
         return $subchilds;
+    }
+
+    /**
+     * Smaže kontakt i jeho subkontakty
+     * 
+     * @return boolean
+     */
+    function delete($id = null)
+    {
+        if (is_null($id)) {
+            $id = $this->getId();
+        } else {
+            if ($id != $this->getId()) {
+                $this->loadFromMySQL($id);
+            }
+        }
+
+        $service = new IEService();
+
+        $services = $this->myDbLink->queryTo2DArray('SELECT ' . $service->getmyKeyColumn() . ' FROM ' . $service->myTable . ' WHERE contacts LIKE \'%' . $this->getName() . '%\'');
+        if (count($services)) {
+            foreach ($services as $serviceID) {
+                $service->loadFromMySQL((int) $serviceID);
+                if ($service->delMember('contacts', $id)) {
+                    if ($service->saveToMySQL()) {
+                        $this->addStatusMessage(sprintf(_('Kontakt %s byl odebrán ze služby %s'), $this->getName(), $service->getName()));
+                    }
+                }
+            }
+        }
+
+        $this->myDbLink->exeQuery('DELETE FROM `' . $this->myTable . '` WHERE `parent_id`=' . $id);
+
+        return parent::delete($id);
     }
 
     /**
@@ -292,15 +326,34 @@ class IEContact extends IECfg
      * 
      * @return boolean
      */
-    function delete($id = null)
+    function rename($newname)
     {
-        if(is_null($id)){
-            $id = $this->getId();
+        $oldname = $this->getName();
+        $this->setDataValue($this->nameColumn, $newname);
+
+        if ($this->saveToMySQL()) {
+            $childs = $this->getChilds();
+            $subcontact = new IEContact();
+            $service = new IEService();
+            foreach ($childs as $childID => $childInfo) {
+                $subcontact->loadFromMySQL($childID);
+                $type = $subcontact->getDataValue('alias');
+                $subcontact->setDataValue($subcontact->nameColumn, $newname.' '.$type );
+                $services = $this->myDbLink->queryTo2DArray('SELECT ' . $service->getmyKeyColumn() . ' FROM ' . $service->myTable . ' WHERE contacts LIKE \'%' . $oldname.' '. $type . '%\'');
+                if (count($services)) {
+                    foreach ($services as $serviceID) {
+                        $service->loadFromMySQL((int) $serviceID);
+                        if ($service->delMember('contacts', $id)) {
+                            $service->addMember('contacts', $id, $newname.' '.$type);
+                            $service->saveToMySQL();
+                        }
+                    }
+                }
+                $subcontact->saveToMySQL();
+            }
+        } else {
+            $this->addStatusMessage(_('Kontakt nelze přejmenovat'), 'warning');
         }
-        $this->myDbLink->exeQuery('DELETE FROM `'.$this->myTable.'` WHERE `parent_id`='.$id);
-        
-        return parent::delete($id);
     }
-    
-    
+
 }

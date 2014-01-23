@@ -13,7 +13,7 @@ require_once 'classes/IEContact.php';
 
 $oPage->onlyForLogged();
 
-$oPage->addItem(new IEPageTop(_('Přehled contactů')));
+$oPage->addItem(new IEPageTop(_('Přehled kontaktů')));
 
 
 

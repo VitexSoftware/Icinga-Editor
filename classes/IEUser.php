@@ -32,12 +32,13 @@ class IEUser extends EaseUser
     /**
      * Vrací jméno prvního kontaktu uživatele
      */
-    public function getFirstContactName()
+    public function getFirstContact()
     {
-        $Contact = new IEContact();
-        $Cn = $Contact->getColumnsFromMySQL($Contact->nameColumn, array($Contact->userColumn => $this->getUserID()), $Contact->myKeyColumn, $Contact->nameColumn, 1);
-        if (count($Cn)) {
-            return current(current($Cn));
+        $contact = new IEContact();
+        $cn = $contact->getColumnsFromMySQL(array($contact->nameColumn,$contact->myKeyColumn ), array($contact->userColumn => $this->getUserID(),'parent_id'=>'IS NOT NULL'), $contact->myKeyColumn, $contact->nameColumn, 1);
+        if (count($cn)) {
+            $curcnt = current($cn);
+            return array( $curcnt[ $contact->myKeyColumn ] => $curcnt[ $contact->nameColumn ] );
         }
 
         return null;

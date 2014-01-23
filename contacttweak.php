@@ -30,7 +30,7 @@ switch ($oPage->getRequestValue('action')) {
             if ($contact->rename($newname)) {
                 $oUser->addStatusMessage(_('Kontakt byl přejmenován'), 'success');
             } else {
-                $oUser->addStatusMessage(_('Sužba nebyl přejmenován'), 'warning');
+                $oUser->addStatusMessage(_('Kontakt nebyl přejmenován'), 'warning');
             }
         }
         break;
@@ -45,8 +45,8 @@ if ($delete == 'true') {
 
 $delsubcont = $oPage->getGetValue('delsubcont_id', 'int');
 if ($delsubcont) {
-    $delcontact = clone $contact;
-    $delcontact->delete($delsubcont);
+    $delcnt = clone $contact;
+    $delcnt->delete($delsubcont);
 }
 
 

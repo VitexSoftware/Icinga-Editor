@@ -81,11 +81,9 @@ class IEContactTweaker extends EaseHtmlDivTag
     {
         $subcontatcts = $this->contact->getChilds();
         foreach ($subcontatcts as $subcontatctID => $subcontatctInfo) {
-            $this->addItem($subcontatctInfo['type']);
-            
             $this->addItem(
                             new EaseTWBButtonDropdown(
-                            $subcontatctInfo['contact'], 'success', 'xs', array(
+                            $subcontatctInfo['type'].' '.$subcontatctInfo['contact'], 'success', 'xs', array(
                                 new EaseHtmlATag('?contact_id='.$this->contact->getId().'&delsubcont_id='.$subcontatctID, _('smazat').' '. $subcontatctInfo['type'].' '. EaseTWBPart::GlyphIcon('ban-circle'))
                                                                     )
                            )
@@ -112,7 +110,7 @@ class IEContactTweaker extends EaseHtmlDivTag
 
         $this->addItem(new EaseHtmlFieldSet(_('Přidat kontaktní údaj'), $form));
         } else {
-            $this->addStatusMessage(_('K tomuto kontaktu není možné přidávat další údaje.'),'warning');
+            $this->addItem(new EaseHtmlDivTag('plno',_('K tomuto kontaktu již není možné přidávat další údaje.'),array('class'=>'well warning','style'=>'margin: 10px')));
         }
     }
 

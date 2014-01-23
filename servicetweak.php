@@ -14,6 +14,7 @@ require_once 'classes/IECfgEditor.php';
 require_once 'classes/IEHostOverview.php';
 require_once 'classes/IEServiceTweaker.php';
 require_once 'classes/IEHostSelector.php';
+require_once 'classes/IEContactSelector.php';
 
 $oPage->onlyForLogged();
 
@@ -46,20 +47,43 @@ if ($service->getOwnerID() != $oUser->getMyKey()) {
     } else {
         $oUser->addStatusMessage(_('Služba nebyla odvozena'), 'error');
     }
-    
 }
 
 $delhost = $oPage->getGetValue('delhost');
 if ($delhost) {
-    $service->delMember('host_name', $oPage->getGetValue('host_id', 'int'), $delhost );
+    $service->delMember(
+        'host_name', $oPage->getGetValue('host_id', 'int'), $delhost
+    );
     $service->saveToMySql();
 }
 
 $addhost = $oPage->getGetValue('addhost');
 if ($addhost) {
-    $service->addMember('host_name', $oPage->getGetValue('host_id', 'int'), $addhost );
+    $service->addMember(
+        'host_name', $oPage->getGetValue('host_id', 'int'), $addhost
+    );
     $service->saveToMySql();
 }
+
+
+$delcnt = $oPage->getGetValue('delcontact');
+if ($delcnt) {
+    $service->delMember(
+        'contacts', $oPage->getGetValue('contact_id', 'int'), $delcnt
+    );
+    $service->saveToMySql();
+}
+
+$addcnt = $oPage->getGetValue('addcontact');
+if ($addcnt) {
+    $service->addMember(
+        'contacts', $oPage->getGetValue('contact_id', 'int'), $addcnt
+    );
+    $service->saveToMySql();
+}
+
+
+
 
 $oPage->addItem(new IEPageTop(_('Editace služby') . ' ' . $service->getName()));
 
@@ -76,6 +100,7 @@ $renameForm->addItem(new EaseTWSubmitButton(_('Přejmenovat'), 'success'));
 $oPage->columnIII->addItem(new EaseHtmlFieldSet(_('Přejmenování'), $renameForm));
 
 $oPage->columnI->addItem(new IEHostSelector($service));
+$oPage->columnI->addItem(new IEContactSelector($service));
 
 $oPage->addItem(new IEPageBottom());
 
