@@ -47,6 +47,13 @@ if ($oPage->isPosted()) {
     }
 }
 
+$autoCreate = $oPage->getRequestValue('autocreate');
+if($autoCreate == 'default'){
+    $contact->setData(IEContact::ownContactData() );
+    $contactID = $contact->saveToMySQL();
+}
+
+
 $oPage->addItem(new IEPageTop(_('Založení kontaktu') . ' ' . $contact->getName()));
 
 $form = $oPage->columnII->addItem(new EaseTWBForm('Contact', 'newcontact.php'));

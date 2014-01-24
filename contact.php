@@ -16,11 +16,6 @@ $oPage->onlyForLogged();
 
 $contact = new IEContact($oPage->getRequestValue('contact_id', 'int'));
 
-$autoCreate = $oPage->getRequestValue('autocreate');
-if($autoCreate == 'default'){
-    $contact->setData(IEContact::ownContactData() );
-    $contactID = $contact->saveToMySQL();
-}
 
 if ($oPage->isPosted()) {
     $contact->takeData($_POST);
@@ -68,4 +63,4 @@ $oPage->addItem(new IEPageBottom());
 
 
 $oPage->draw();
-?>
+

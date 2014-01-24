@@ -66,7 +66,6 @@ if ($oPage->isPosted()) {
         $newOUser->setData(
             array(
                     'email' => $emailAddress,
-                    'password' => $newOUser->encryptPassword($password),
                     'parent' => (int) $customerParent,
                     'login' => $login
                 )
@@ -76,7 +75,8 @@ if ($oPage->isPosted()) {
 
         if ($userID) {
             $newOUser->setMyKey($userID);
-
+            $newOUser->passwordChange($password);
+            
             $oUser->addStatusMessage(_('Uživatelský účet byl vytvořen'), 'success');
             $newOUser->loginSuccess();
 

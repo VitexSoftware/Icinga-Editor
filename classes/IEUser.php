@@ -52,6 +52,24 @@ class IEUser extends EaseUser
         return (int) $this->getMyKey();
     }
 
+    /**
+     * Změní uživateli uložené heslo
+     *
+     * @param string $newPassword nové heslo
+     * @param int    $userID      id uživatele
+     *
+     * @return boolean password výsledek změny hesla
+     */
+    public function passwordChange($newPassword, $userID = null)
+    {
+        if(parent::passwordChange($newPassword,$userID)){
+            system('sudo htpasswd -b /etc/icinga/htpasswd.users '.$this->getUserLogin().' '.$newPassword);
+            return true;
+        }
+        return false;
+    }
+
+    
 }
 
 class IETwitterUser extends IEUser

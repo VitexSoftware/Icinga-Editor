@@ -23,7 +23,7 @@ if ($login) {
         if ($oUser->getUserID()==1) {
             $oUser->setSettingValue('admin',TRUE);
         }
-        $oUser->setSettingValue('plaintext',$_POST[$oUser->PasswordColumn]);
+        $oUser->setSettingValue('plaintext',$_POST[$oUser->passwordColumn]);
         $oPage->redirect('main.php');
         exit;
     }

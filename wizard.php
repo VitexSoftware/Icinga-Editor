@@ -23,9 +23,9 @@ $oPage->onlyForLogged();
 
 $oPage->addItem(new IEPageTop(_('Icinga Editor')));
 
-$hostName = $oPage->getRequestValue('host_name');
-$address = $oPage->getRequestValue('address');
-$addressSix = $oPage->getRequestValue('address6');
+$hostName = trim($oPage->getRequestValue('host_name'));
+$address = trim($oPage->getRequestValue('address'));
+$addressSix = trim($oPage->getRequestValue('address6'));
 
 function gethostbyname6($host, $tryA = false)
 {

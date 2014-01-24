@@ -52,7 +52,7 @@ if ($delsubcont) {
 
 $oPage->addItem(new IEPageTop(_('Editace kontaktu') . ' ' . $contact->getName()));
 
-$oPage->columnII->addItem(new EaseHtmlH3Tag(array(IEHostOverview::platformIcon($contact->getDataValue('platform')), $contact->getName())));
+$oPage->columnII->addItem(new EaseHtmlH3Tag($contact->getName()));
 
 $oPage->columnII->addItem(new IEContactTweaker($contact));
 

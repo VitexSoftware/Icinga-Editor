@@ -423,7 +423,13 @@ class IEService extends IECfg
     }
 
     
-    
+    /**
+     * Připraví podřízenu službu
+     * 
+     * @param IEHost $host
+     * @param int       $ownerId
+     * @return int ID nově vytvořené služby
+     */
     public function fork($host,$ownerId = null)
     {
         if(is_null($ownerId)){
@@ -440,6 +446,7 @@ class IEService extends IECfg
         $this->unsetDataValue('DatCreate');
         $this->setDataValue('action_url',$_SERVER['REQUEST_URI']);
         $this->setDataValue($this->userColumn, $ownerId);
+        $this->setDataValue('contacts', $host->owner->getFirstContact());
 
         $newname = $this->getName() . ' ' . $host->getName();
 

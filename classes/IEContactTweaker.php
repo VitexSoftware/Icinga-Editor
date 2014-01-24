@@ -56,8 +56,6 @@ class IEContactTweaker extends EaseHtmlDivTag
 
         $this->contact = $contact;
 
-        $this->addItem(new EaseHtmlDivTag(null, $this->contact->getDataValue('contact_name')));
-        $this->addItem(new EaseHtmlDivTag(null, _('Uloženo') . ': ' . $this->contact->getDataValue('DatSave')));
         $this->addItem(new EaseHtmlDivTag(null, _('Založeno') . ': ' . $this->contact->getDataValue('DatCreate')));
         $oPage = EaseShared::webPage();
         if($oPage->isPosted()){
@@ -84,7 +82,8 @@ class IEContactTweaker extends EaseHtmlDivTag
             $this->addItem(
                             new EaseTWBButtonDropdown(
                             $subcontatctInfo['type'].' '.$subcontatctInfo['contact'], 'success', 'xs', array(
-                                new EaseHtmlATag('?contact_id='.$this->contact->getId().'&delsubcont_id='.$subcontatctID, _('smazat').' '. $subcontatctInfo['type'].' '. EaseTWBPart::GlyphIcon('ban-circle'))
+                                new EaseHtmlATag('contact.php?parent_id='.$this->contact->getId().'&contact_id='.$subcontatctID, EaseTWBPart::GlyphIcon('wrench'). ' ' . _('Vlastnosti') ),
+                                new EaseHtmlATag('?contact_id='.$this->contact->getId().'&delsubcont_id='.$subcontatctID, EaseTWBPart::GlyphIcon('minus') . ' '._('smazat').' '. $subcontatctInfo['type'])
                                                                     )
                            )
                     );
