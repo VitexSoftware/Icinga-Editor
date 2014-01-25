@@ -18,8 +18,8 @@ $oPage->addItem(new IEPageTop(_('Přehled příkazů')));
 
 
 
-$Command = new IECommand();
-$Commands = $Command->getListing(null,null,array('command_local','command_remote','public'));
+$command = new IECommand();
+$Commands = $command->getListing(null,null,array('command_local','command_remote','public'));
 
 
 
@@ -34,7 +34,7 @@ if ($Commands) {
                 $lastRow->setTagCss(array('border-right' => '1px solid red'));
             }
             if ($cInfo['public'] == 1) {
-                if ($cInfo[$Command->userColumn] == $oUser->getUserID()) {
+                if ($cInfo[$command->userColumn] == $oUser->getUserID()) {
                     $lastRow->setTagCss(array('border-left' => '1px solid green'));
                 } else {
                     $lastRow->setTagCss(array('border-left' => '1px solid blue'));
@@ -55,7 +55,7 @@ if ($Commands) {
                 $lastRow->setTagCss(array('border-right' => '1px solid red'));
             }
             if ($cInfo['public'] == 1) {
-                if ($cInfo[$Command->userColumn] == $oUser->getUserID()) {
+                if ($cInfo[$command->userColumn] == $oUser->getUserID()) {
                     $lastRow->setTagCss(array('border-left' => '1px solid green'));
                 } else {
                     $lastRow->setTagCss(array('border-left' => '1px solid blue'));
@@ -75,7 +75,7 @@ if ($Commands) {
                 $lastRow->setTagCss(array('border-right' => '1px solid red'));
             }
             if ($cInfo['public'] == 1) {
-                if ($cInfo[$Command->userColumn] == $oUser->getUserID()) {
+                if ($cInfo[$command->userColumn] == $oUser->getUserID()) {
                     $lastRow->setTagCss(array('border-left' => '1px solid green'));
                 } else {
                     $lastRow->setTagCss(array('border-left' => '1px solid blue'));

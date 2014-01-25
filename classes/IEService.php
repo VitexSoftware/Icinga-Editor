@@ -304,6 +304,7 @@ class IEService extends IECfg
             unset($allData[$adKey]['check_command-params']);
             unset($allData[$adKey]['tcp_port']);
             unset($allData[$adKey]['configurator']);
+            unset($allData[$adKey]['price']);
         }
 
         return $allData;

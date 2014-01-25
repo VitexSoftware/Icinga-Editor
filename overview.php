@@ -25,9 +25,9 @@ $oPage->addItem(new IEPageTop(_('Icinga Editor')));
 
 
 $Timeperiod = new IETimeperiod();
-$PocTimeperiods = $Timeperiod->getMyRecordsCount();
-if ($PocTimeperiods) {
-    $success = $oPage->columnIII->addItem(new EaseHtmlDivTag('Timeperiod', new EaseTWBLinkButton('timeperiods.php', _('<i class="icon-list"></i>').' '.sprintf(_('Definováno %s časových period'), $PocTimeperiods)), array('class' => 'alert alert-success')));
+$pocTimeperiods = $Timeperiod->getMyRecordsCount();
+if ($pocTimeperiods) {
+    $success = $oPage->columnIII->addItem(new EaseHtmlDivTag('Timeperiod', new EaseTWBLinkButton('timeperiods.php', _('<i class="icon-list"></i>').' '.sprintf(_('Definováno %s časových period'), $pocTimeperiods)), array('class' => 'alert alert-success')));
 } else {
     $warning = $oPage->columnIII->addItem(new EaseHtmlDivTag('Host', _('Nemáte definovaný žádné časové periody'), array('class' => 'alert alert-info')));
     $warning->addItem(new EaseTWBLinkButton('timeperiod.php', _('Založit první časovou periodu <i class="icon-edit"></i>')));
@@ -41,7 +41,7 @@ if ($pocContact) {
     $success = $oPage->columnII->addItem(new EaseHtmlDivTag('Contact', new EaseTWBLinkButton('contacts.php', _('<i class="icon-list"></i>').' '.sprintf(_('Definováno %s kontaktů'), $pocContact)), array('class' => 'alert alert-success')));
     
 } else {
-    if ($PocTimeperiods) {
+    if ($pocTimeperiods) {
         $warning = $oPage->columnII->addItem(new EaseHtmlDivTag('Contact', _('Nemáte definovaný kontakt'), array('class' => 'alert alert-info')));
         $warning->addItem(new EaseTWBLinkButton('contact.php', _('Založit první kontakt '.EaseTWBPart::GlyphIcon('edit'))));
     } else {
@@ -65,7 +65,7 @@ $pocHostu = $host->getMyRecordsCount();
 if ($pocHostu) {
     $success = $oPage->columnI->addItem(new EaseHtmlDivTag('Host', new EaseTWBLinkButton('hosts.php', _('<i class="icon-list"></i>').' '.sprintf(_('Definováno %s hostů'), $pocHostu)), array('class' => 'alert alert-success')));
 } else {
-    if ($PocTimeperiods) {
+    if ($pocTimeperiods) {
         $warning = $oPage->columnI->addItem(new EaseHtmlDivTag('Host', _('Nemáte definovaný žádný host'), array('class' => 'alert alert-info')));
         $warning->addItem(new EaseTWBLinkButton('host.php', _('Založit první host').' '.EaseTWBPart::GlyphIcon('edit')));
     } else {
@@ -74,17 +74,17 @@ if ($pocHostu) {
 }
 
 $hostgroup = new IEHostgroup();
-$PocHostgroups = $hostgroup->getMyRecordsCount();
-if ($PocHostgroups) {
-    $success = $oPage->columnI->addItem(new EaseHtmlDivTag('Hostgroup', new EaseTWBLinkButton('hostgroups.php', _('<i class="icon-list"></i>').' '.sprintf(_('Definováno %s skupin hostů'), $PocHostgroups)), array('class' => 'alert alert-success')));
+$pocHostgroups = $hostgroup->getMyRecordsCount();
+if ($pocHostgroups) {
+    $success = $oPage->columnI->addItem(new EaseHtmlDivTag('Hostgroup', new EaseTWBLinkButton('hostgroups.php', _('<i class="icon-list"></i>').' '.sprintf(_('Definováno %s skupin hostů'), $pocHostgroups)), array('class' => 'alert alert-success')));
 } else {
     $warning = $oPage->columnI->addItem(new EaseHtmlDivTag('Host', _('Nemáte definovaný žádnou skupinu hostů'), array('class' => 'alert alert-info')));
     $warning->addItem(new EaseTWBLinkButton('hostgroup.php', _('Založit první skupinu hostů <i class="icon-edit"></i>')));
 }
 
 
-$Command = new IECommand();
-$PocCommands = $Command->getMyRecordsCount();
+$command = new IECommand();
+$PocCommands = $command->getMyRecordsCount();
 if ($PocCommands) {
     $success = $oPage->columnIII->addItem(new EaseHtmlDivTag('Command', new EaseTWBLinkButton('commands.php', _('<i class="icon-list"></i>').' '.sprintf(_('Definováno %s příkazů'), $PocCommands)), array('class' => 'alert alert-success')));
     
@@ -96,12 +96,12 @@ if ($PocCommands) {
 
 
 $service = new IEService();
-$PocServices = $service->getMyRecordsCount();
-if ($PocServices) {
-    $success = $oPage->columnIII->addItem(new EaseHtmlDivTag('Service', new EaseTWBLinkButton('services.php', _('<i class="icon-list"></i>').' '.sprintf(_('Definováno %s služeb'), $PocServices)), array('class' => 'alert alert-success')));
+$pocServices = $service->getMyRecordsCount();
+if ($pocServices) {
+    $success = $oPage->columnIII->addItem(new EaseHtmlDivTag('Service', new EaseTWBLinkButton('services.php', _('<i class="icon-list"></i>').' '.sprintf(_('Definováno %s služeb'), $pocServices)), array('class' => 'alert alert-success')));
 } else {
     if ($PocCommands) {
-        if ($PocTimeperiods) {
+        if ($pocTimeperiods) {
             $warning = $oPage->columnIII->addItem(new EaseHtmlDivTag('Host', _('Nemáte definovaný žádné služby'), array('class' => 'alert alert-info')));
             $warning->addItem(new EaseTWBLinkButton('service.php', _('Založit první službu') . ' <i class="icon-edit"></i>'));
         } else {
@@ -112,10 +112,10 @@ if ($PocServices) {
     }
 }
 
-$Servicegroup = new IEServicegroup();
-$PocServicegroups = $Servicegroup->getMyRecordsCount();
-if ($PocServicegroups) {
-    $success = $oPage->columnIII->addItem(new EaseHtmlDivTag('Servicegroup', new EaseTWBLinkButton('servicegroups.php', _('<i class="icon-list"></i>').' '.sprintf(_('Definováno %s skupin služeb'), $PocServicegroups)), array('class' => 'alert alert-success')));
+$serviceGroup = new IEServicegroup();
+$pocServicegroups = $serviceGroup->getMyRecordsCount();
+if ($pocServicegroups) {
+    $success = $oPage->columnIII->addItem(new EaseHtmlDivTag('Servicegroup', new EaseTWBLinkButton('servicegroups.php', _('<i class="icon-list"></i>').' '.sprintf(_('Definováno %s skupin služeb'), $pocServicegroups)), array('class' => 'alert alert-success')));
 } else {
     $warning = $oPage->columnIII->addItem(new EaseHtmlDivTag('Host', _('Nemáte definovaný žádné skupiny služeb'), array('class' => 'alert alert-info')));
     $warning->addItem(new EaseTWBLinkButton('servicegroup.php', _('Založit první skupinu služeb') . ' <i class="icon-edit"></i>'));

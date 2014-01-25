@@ -18,11 +18,11 @@ $oPage->addItem(new IEPageTop(_('Přehled skupin služeb')));
 
 
 
-$Servicegroup = new IEServicegroup();
-$PocServicegroup = $Servicegroup->getMyRecordsCount();
+$serviceGroup = new IEServicegroup();
+$PocServicegroup = $serviceGroup->getMyRecordsCount();
 
 if ($PocServicegroup) {
-    $Servicegroups = $Servicegroup->myDbLink->queryToArray('SELECT ' . $Servicegroup->getmyKeyColumn() . ', servicegroup_name, DatSave FROM ' . $Servicegroup->myTable . ' WHERE user_id=' . $oUser->getUserID(), 'servicegroup_id');
+    $Servicegroups = $serviceGroup->myDbLink->queryToArray('SELECT ' . $serviceGroup->getmyKeyColumn() . ', servicegroup_name, DatSave FROM ' . $serviceGroup->myTable . ' WHERE user_id=' . $oUser->getUserID(), 'servicegroup_id');
     $cntList = new EaseHtmlTableTag(null,array('class'=>'table'));
 
     $cid = 1;

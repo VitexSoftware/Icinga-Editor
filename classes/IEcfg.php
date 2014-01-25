@@ -774,6 +774,7 @@ class IEcfg extends EaseBrick
         if ($this->deleteFromMySQL($id)) {
             $this->addStatusMessage(sprintf(_(' %s %s byl smazán '), $this->keyword, $this->getName()), 'success');
             $this->dataReset();
+            EaseShared::user()->setSettingValue('unsaved', true);
 
             return true;
         } else {
@@ -785,6 +786,7 @@ class IEcfg extends EaseBrick
 
     /**
      * Je záznam vlastněn uživatelem ?
+     * 
      * @param  type $thisID
      * @return type
      */

@@ -14,11 +14,11 @@ require_once 'classes/IECfgEditor.php';
 
 $oPage->onlyForLogged();
 
-$Command = new IECommand($oPage->getRequestValue('command_id', 'int'));
+$command = new IECommand($oPage->getRequestValue('command_id', 'int'));
 
 if ($oPage->isPosted()) {
-    $Command->takeData($_POST);
-    $CommandID = $Command->saveToMySQL();
+    $command->takeData($_POST);
+    $CommandID = $command->saveToMySQL();
     if (is_null($CommandID)) {
         $oUser->addStatusMessage(_('Příkaz nebyl uložen'), 'warning');
     } else {
@@ -28,18 +28,18 @@ if ($oPage->isPosted()) {
 
 $delete = $oPage->getGetValue('delete', 'bool');
 if ($delete == 'true') {
-    $Command->delete();
+    $command->delete();
 }
 
 
-$oPage->addItem(new IEPageTop(_('Editace příkazu') . ' ' . $Command->getName()));
+$oPage->addItem(new IEPageTop(_('Editace příkazu') . ' ' . $command->getName()));
 
-$CommandEdit = new IECfgEditor($Command);
+$CommandEdit = new IECfgEditor($command);
 
 $form = $oPage->columnII->addItem(new EaseHtmlForm('Command', 'command.php', 'POST', $CommandEdit, array('class' => 'form-horizontal')));
 $form->setTagID($form->getTagName());
-if (!is_null($Command->getMyKey())) {
-    $form->addItem(new EaseHtmlInputHiddenTag($Command->getmyKeyColumn(), $Command->getMyKey()));
+if (!is_null($command->getMyKey())) {
+    $form->addItem(new EaseHtmlInputHiddenTag($command->getmyKeyColumn(), $command->getMyKey()));
 }
 $form->addItem('<br>');
 $form->addItem(new EaseTWSubmitButton(_('Uložit'),'success'));
@@ -48,10 +48,10 @@ input.ui-button { width: 100%; }
 ');
 
 
-$oPage->columnIII->addItem($Command->deleteButton());
+$oPage->columnIII->addItem($command->deleteButton());
 
-if ($Command->getId()) {
-    $oPage->columnI->addItem($Command->ownerLinkButton());
+if ($command->getId()) {
+    $oPage->columnI->addItem($command->ownerLinkButton());
 }
 
 $oPage->addItem(new IEPageBottom());

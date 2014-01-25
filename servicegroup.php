@@ -14,11 +14,11 @@ require_once 'classes/IECfgEditor.php';
 
 $oPage->onlyForLogged();
 
-$Servicegroup = new IEServicegroup($oPage->getRequestValue('servicegroup_id', 'int'));
+$serviceGroup = new IEServicegroup($oPage->getRequestValue('servicegroup_id', 'int'));
 
 if ($oPage->isPosted()) {
-    $Servicegroup->takeData($_POST);
-    $ServicegroupID = $Servicegroup->saveToMySQL();
+    $serviceGroup->takeData($_POST);
+    $ServicegroupID = $serviceGroup->saveToMySQL();
     if (is_null($ServicegroupID)) {
         $oUser->addStatusMessage(_('Skupina služeb nebyla uložena'), 'warning');
     } else {
@@ -27,21 +27,21 @@ if ($oPage->isPosted()) {
 }
 
 
-$Servicegroup->saveMembers();
+$serviceGroup->saveMembers();
 
 $delete = $oPage->getGetValue('delete', 'bool');
 if ($delete == 'true') {
-    $Servicegroup->delete();
+    $serviceGroup->delete();
 }
 
-$oPage->addItem(new IEPageTop(_('Editace skupiny služeb') . ' ' . $Servicegroup->getName()));
+$oPage->addItem(new IEPageTop(_('Editace skupiny služeb') . ' ' . $serviceGroup->getName()));
 
-$ServicegroupEdit = new IECfgEditor($Servicegroup);
+$ServicegroupEdit = new IECfgEditor($serviceGroup);
 
 $form = $oPage->columnII->addItem(new EaseHtmlForm('Servicegroup', 'servicegroup.php', 'POST', $ServicegroupEdit, array('class' => 'form-horizontal')));
 $form->setTagID($form->getTagName());
-if (!is_null($Servicegroup->getMyKey())) {
-    $form->addItem(new EaseHtmlInputHiddenTag($Servicegroup->getmyKeyColumn(), $Servicegroup->getMyKey()));
+if (!is_null($serviceGroup->getMyKey())) {
+    $form->addItem(new EaseHtmlInputHiddenTag($serviceGroup->getmyKeyColumn(), $serviceGroup->getMyKey()));
 }
 $form->addItem('<br>');
 $form->addItem(new EaseTWSubmitButton(_('Uložit'),'success'));

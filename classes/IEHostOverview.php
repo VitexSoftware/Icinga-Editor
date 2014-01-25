@@ -38,7 +38,7 @@ class IEHostOverview extends EaseHtmlDivTag
             $image = $host->getDataValue('icon_image');
             $title = $host->getName();
         }
-        return new EaseHtmlImgTag('/icinga/images/logos/' . $image,$title,null,null,array('class'=>'host_icon'));
+        return new EaseHtmlImgTag('logos/' . $image,$title,null,null,array('class'=>'host_icon'));
     }
 
     public static function platformIcon($platform)
@@ -54,7 +54,7 @@ class IEHostOverview extends EaseHtmlDivTag
                 $image = 'unknown.gif';
                 break;
         }
-        return new EaseHtmlImgTag('/icinga/images/logos/' . $image, $platform);
+        return new EaseHtmlImgTag('logos/' . $image, $platform);
     }
 
 }

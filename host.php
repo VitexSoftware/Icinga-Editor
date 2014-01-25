@@ -208,10 +208,6 @@ $oPage->columnI->addItem(new EaseTWBLinkButton('?action=icon&host_id=' . $host->
 $oPage->columnI->addItem(new IEServiceSelector($host));
 $oPage->columnI->addItem(new IEContactSelector($host));
 
-if ($host->getId()) {
-    $oPage->columnI->addItem($host->ownerLinkButton());
-}
-
 //$OPage->column3->addItem(new EaseHtmlH4Tag('Rozšířené info'));
 
 $oPage->addItem(new IEPageBottom());

@@ -24,6 +24,9 @@ if ($users) {
     $cntList = new EaseHtmlTableTag(null, array('class' => 'table'));
     $cid = 1;
     foreach ($users as $cId => $cInfo) {
+        if(!$cId){
+            continue;
+        }
         $lastRow = $cntList->addRowColumns(array($cid++, new EaseUser((int) $cId),
             new EaseHtmlATag('userinfo.php?user_id=' . $cId, $cInfo['login'] . ' <i class="icon-edit"></i>'),
             new EaseHtmlATag('apply.php?force_user_id=' . $cId, _('Přegenerovat konfiguraci') . ' <i class="icon-repeat"></i>')

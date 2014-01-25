@@ -12,7 +12,7 @@ class IEUser extends EaseUser
      * Budeme používat serializovaná nastavení uložená ve sloupečku
      * @var string
      */
-    public $SettingsColumn = 'settings';
+    public $settingsColumn = 'settings';
 
     /**
      * Vrací odkaz na ikonu
@@ -35,14 +35,15 @@ class IEUser extends EaseUser
     public function getFirstContact()
     {
         $contact = new IEContact();
-        $cn = $contact->getColumnsFromMySQL(array($contact->nameColumn,$contact->myKeyColumn ), array($contact->userColumn => $this->getUserID(),'parent_id'=>'IS NOT NULL'), $contact->myKeyColumn, $contact->nameColumn, 1);
+        $cn = $contact->getColumnsFromMySQL(array($contact->nameColumn, $contact->myKeyColumn), array($contact->userColumn => $this->getUserID(), 'parent_id' => 'IS NOT NULL'), $contact->myKeyColumn, $contact->nameColumn, 1);
         if (count($cn)) {
             $curcnt = current($cn);
-            return array( $curcnt[ $contact->myKeyColumn ] => $curcnt[ $contact->nameColumn ] );
+            return array($curcnt[$contact->myKeyColumn] => $curcnt[$contact->nameColumn]);
         }
 
         return null;
     }
+
     /**
      * Vrací ID aktuálního záznamu
      * @return int
@@ -62,14 +63,55 @@ class IEUser extends EaseUser
      */
     public function passwordChange($newPassword, $userID = null)
     {
-        if(parent::passwordChange($newPassword,$userID)){
-            system('sudo htpasswd -b /etc/icinga/htpasswd.users '.$this->getUserLogin().' '.$newPassword);
+        if (parent::passwordChange($newPassword, $userID)) {
+            system('sudo htpasswd -b /etc/icinga/htpasswd.users ' . $this->getUserLogin() . ' ' . $newPassword);
             return true;
         }
         return false;
     }
 
-    
+    /**
+     * Vrací mazací tlačítko
+     *
+     * @param  string                     $name   jméno objektu
+     * @param  string                     $urlAdd Předávaná část URL
+     * @return \EaseJQConfirmedLinkButton
+     */
+    public function deleteButton($name = null, $urlAdd = '')
+    {
+        return new EaseJQConfirmedLinkButton('?user_id=' . $this->getID() . '&delete=true' . '&' . $urlAdd, _('Smazat ') . ' ' . $this->getUserLogin() . ' ' . EaseTWBPart::GlyphIcon('remove-sign'));
+    }
+
+    function delete($id = null)
+    {
+        if (is_null($id)) {
+            $id = $this->getId();
+        }
+
+        if($id != $this->getId()){
+            $this->loadFromMySQL($id);
+        }
+        
+        $this->myDbLink->exeQuery('DELETE from ' . DB_PREFIX . 'command WHERE user_id=' . $id);
+        $this->myDbLink->exeQuery('DELETE from ' . DB_PREFIX . 'contact WHERE user_id=' . $id);
+        $this->myDbLink->exeQuery('DELETE from ' . DB_PREFIX . 'contactgroup WHERE user_id=' . $id);
+        $this->myDbLink->exeQuery('DELETE from ' . DB_PREFIX . 'hostgroup WHERE user_id=' . $id);
+        $this->myDbLink->exeQuery('DELETE from ' . DB_PREFIX . 'hosts WHERE user_id=' . $id);
+        $this->myDbLink->exeQuery('DELETE from ' . DB_PREFIX . 'servicegroup WHERE user_id=' . $id);
+        $this->myDbLink->exeQuery('DELETE from ' . DB_PREFIX . 'services WHERE user_id=' . $id);
+        $this->myDbLink->exeQuery('DELETE from ' . DB_PREFIX . 'timeperiods WHERE user_id=' . $id);
+
+        unlink(constant('CFG_GENERATED') . '/' . $this->getUserLogin() . '.cfg' );
+        
+        if($this->deleteFromMySQL()){
+           
+            $this->addStatusMessage(sprintf(_('Uživatel %s byl smazán'),  $this->getUserLogin()));
+            return true;
+        } else {
+            return FALSE;
+        }
+    }
+
 }
 
 class IETwitterUser extends IEUser
@@ -108,4 +150,5 @@ class IETwitterUser extends IEUser
             $this->setObjectName();
         }
     }
+
 }
