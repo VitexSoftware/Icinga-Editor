@@ -45,16 +45,16 @@ if ($login) {
 
 $oPage->addItem(new IEPageTop(_('Přihlaš se')));
 
-$LoginFace = new EaseHtmlDivTag('LoginFace');
+$loginFace = new EaseHtmlDivTag('LoginFace');
 
 $oPage->columnI->addItem(new EaseHtmlDivTag('WelcomeHint', _('Zadejte, prosím, Vaše přihlašovací údaje:')));
 
-$LoginForm = $LoginFace->addItem(new EaseTWBForm('Login'));
-$LoginForm->addItem(new EaseLabeledTextInput('login', NULL, _('Login')));
-$LoginForm->addItem(new EaseLabeledPasswordInput('password', NULL, _('Heslo')));
-$LoginForm->addItem(new EaseTWSubmitButton('LogIn', _('Přihlášení')));
+$loginForm = $loginFace->addItem(new EaseTWBForm('Login'));
+$loginForm->addItem(new EaseTWBFormGroup(_('Uživatelské jméno'), new EaseHtmlInputTextTag('login', $login)));
+$loginForm->addItem(new EaseTWBFormGroup(_('Heslo'), new EaseHtmlInputPasswordTag('password')));
+$loginForm->addItem(new EaseTWSubmitButton('LogIn', _('Přihlášení')));
 
-$oPage->columnII->addItem($LoginFace);
+$oPage->columnII->addItem($loginFace);
 
 $oPage->columnI->addItem(new EaseTWBLinkButton('passwordrecovery.php', _('Obnova hesla')));
 
