@@ -118,8 +118,9 @@ class IEPortScanner extends EaseSand
         }
 
         foreach ($this->ports as $port) {
-            if ($this->scan($port))
+            if ($this->scan($port)){
                 $this->results[$port] = $port;
+            }
         }
 
         return count($this->ports);

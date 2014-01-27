@@ -126,12 +126,13 @@ class IECfgEditor extends EaseContainer
                 $flags = explode(',', str_replace(array($fType, "'", '(', ')'), '', $fieldType));
                 if (is_array($flags)) {
                     foreach (array_values($flags) as $flag) {
-                        $InfoFlags[$flag] = '&nbsp;' . $keywordInfo[$flag] . '<br>';
+                        $infoFlags[$flag] = '&nbsp;' . $keywordInfo[$flag];
                     }
-                    $buttons = new EaseHtmlRadiobuttonGroup($fieldName, $InfoFlags);
+                    $buttons = new EaseHtmlRadiobuttonGroup($fieldName, $infoFlags);
                     $buttons->setValue($value);
-                    $FB = $fieldBlock->addItem(new EaseHtmlFieldSet($keywordInfo['title'], $buttons));
+                    $FB = $fieldBlock->addItem(new EaseHtmlFieldSet($keywordInfo['title'], new EaseTWRadioButtonGroup($fieldName,$infoFlags,$value)));
                     $FB->setTagCss(array('width' => '100%'));
+                    
                 }
                 break;
             case 'SELECT':

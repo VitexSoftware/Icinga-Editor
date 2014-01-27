@@ -36,6 +36,8 @@ $hostgroup->saveMembers();
 $delete = $oPage->getGetValue('delete', 'bool');
 if ($delete == 'true') {
     $hostgroup->delete();
+    $oPage->redirect('hostgroups.php');
+    exit();
 }
 
 $oPage->addItem(new IEPageTop(_('Editace skupiny hostů') . ' ' . $hostgroup->getName()));

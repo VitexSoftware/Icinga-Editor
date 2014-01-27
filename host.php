@@ -202,8 +202,8 @@ $renameForm->addItem(new EaseHtmlInputTextTag('newname'), $host->getName(), arra
 $renameForm->addItem(new EaseTWSubmitButton(_('Přejmenovat'), 'success'));
 
 $oPage->columnIII->addItem(new EaseHtmlFieldSet(_('Přejmenování'), $renameForm));
-$oPage->columnI->addItem(new EaseTWBLinkButton('?action=parent&host_id=' . $host->getId(), _('Přiřadit rodiče'), 'success'));
-$oPage->columnI->addItem(new EaseTWBLinkButton('?action=icon&host_id=' . $host->getId(), _('Změnit ikonu'), 'success'));
+$oPage->columnIII->addItem(new EaseTWBLinkButton('?action=parent&host_id=' . $host->getId(), _('Přiřadit rodiče'), 'success'));
+$oPage->columnIII->addItem(new EaseTWBLinkButton('?action=icon&host_id=' . $host->getId(), _('Změnit ikonu'), 'success'));
 
 $oPage->columnI->addItem(new IEServiceSelector($host));
 $oPage->columnI->addItem(new IEContactSelector($host));

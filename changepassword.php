@@ -69,18 +69,18 @@ if ($formOK && $oPage->isPosted()) {
         $email->send();
     }
 } else {
-    $LoginForm = new EaseHtmlForm(NULL);
+    $loginForm = new EaseHtmlForm(NULL);
 
-    $LoginForm->addItem(new EaseLabeledPasswordInput('CurrentPassword', NULL, _('Stávající heslo')));
+    $loginForm->addItem(new EaseLabeledPasswordInput('CurrentPassword', NULL, _('Stávající heslo')));
 
-    $LoginForm->addItem(new EaseLabeledPasswordStrongInput('password', NULL, _('Nové heslo') . ' *'));
-    $LoginForm->addItem(new EaseLabeledPasswordControlInput('passwordConfirm', NULL, _('potvrzení hesla') . ' *', array('id' => 'confirmation')));
+    $loginForm->addItem(new EaseLabeledPasswordStrongInput('password', NULL, _('Nové heslo') . ' *'));
+    $loginForm->addItem(new EaseLabeledPasswordControlInput('passwordConfirm', NULL, _('potvrzení hesla') . ' *', array('id' => 'confirmation')));
 
-    $LoginForm->addItem(new EaseJQuerySubmitButton('Ok' , 'Změnit heslo'));
+    $loginForm->addItem(new EaseJQuerySubmitButton('Ok' , 'Změnit heslo'));
 
-    $LoginForm->fillUp($_POST);
+    $loginForm->fillUp($_POST);
 
-    $oPage->columnII->addItem( new EaseHtmlFieldSet(_('změna hesla'), $LoginForm));
+    $oPage->columnII->addItem( new EaseHtmlFieldSet(_('změna hesla'), $loginForm));
 }
 
 $oPage->addItem(new IEPageBottom());
