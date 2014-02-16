@@ -15,7 +15,8 @@ require_once 'IEHost.php';
 require_once 'IEHostOverview.php';
 require_once 'IEContact.php';
 
-class IEWebPage extends EaseTWBWebPage {
+class IEWebPage extends EaseTWBWebPage
+{
 
     /**
      * Skin JQuery UI stránky
@@ -52,7 +53,8 @@ class IEWebPage extends EaseTWBWebPage {
      *
      * @param VSUser $userObject
      */
-    public function __construct($pageTitle = null, &$userObject = null) {
+    public function __construct($pageTitle = null, &$userObject = null)
+    {
         if (is_null($userObject)) {
             $userObject = EaseShared::user();
         }
@@ -86,7 +88,8 @@ class IEWebPage extends EaseTWBWebPage {
      *
      * @param string $loginPage
      */
-    public function onlyForAdmin($loginPage = 'login.php') {
+    public function onlyForAdmin($loginPage = 'login.php')
+    {
         if (!$this->User->getSettingValue('admin')) {
             EaseShared::user()->addStatusMessage(_('Nejprve se prosím přihlašte jako admin'), 'warning');
             $this->redirect($loginPage);
@@ -103,7 +106,8 @@ class IEWebPage extends EaseTWBWebPage {
  * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
  */
-class IEPageTop extends EaseHtmlDivTag {
+class IEPageTop extends EaseHtmlDivTag
+{
 
     /**
      * Titulek stránky
@@ -116,7 +120,8 @@ class IEPageTop extends EaseHtmlDivTag {
      *
      * @param string $pageTitle
      */
-    public function __construct($pageTitle = null) {
+    public function __construct($pageTitle = null)
+    {
         parent::__construct('header');
         if (!is_null($pageTitle)) {
             EaseShared::webPage()->setPageTitle($pageTitle);
@@ -126,14 +131,16 @@ class IEPageTop extends EaseHtmlDivTag {
     /**
      * Vloží vršek stránky a hlavní menu
      */
-    public function finalize() {
+    public function finalize()
+    {
         $this->SetupWebPage();
         $this->addItem(new IEMainMenu());
     }
 
 }
 
-class IEBootstrapMenu extends EaseTWBNavbar {
+class IEBootstrapMenu extends EaseTWBNavbar
+{
 
     /**
      * Navigace
@@ -148,7 +155,8 @@ class IEBootstrapMenu extends EaseTWBNavbar {
      * @param mixed  $content
      * @param array  $properties
      */
-    public function __construct($name = null, $content = null, $properties = null) {
+    public function __construct($name = null, $content = null, $properties = null)
+    {
         parent::__construct("Menu", 'VSMonitoring', array('class' => 'navbar-fixed-top'));
 
         $user = EaseShared::user();
@@ -194,7 +202,8 @@ class IEBootstrapMenu extends EaseTWBNavbar {
     /**
      * Vypíše stavové zprávy
      */
-    public function draw() {
+    public function draw()
+    {
         $statusMessages = $this->webPage->getStatusMessagesAsHtml();
         if ($statusMessages) {
             $this->addItem(new EaseHtmlDivTag('StatusMessages', $statusMessages, array('class' => 'well', 'title' => _('kliknutím skryjete zprávy'))));
@@ -211,19 +220,22 @@ class IEBootstrapMenu extends EaseTWBNavbar {
  * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
  */
-class IEMainMenu extends EaseHtmlDivTag {
+class IEMainMenu extends EaseHtmlDivTag
+{
 
     /**
      * Vytvoří hlavní menu
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct('MainMenu');
     }
 
     /**
      * Vložení menu
      */
-    public function afterAdd() {
+    public function afterAdd()
+    {
         $nav = $this->addItem(new IEBootstrapMenu());
         $user = EaseShared::user();
         $userID = $user->getUserID();
@@ -336,11 +348,11 @@ class IEMainMenu extends EaseHtmlDivTag {
             $contact = new IEContact();
             $contacts = $contact->getListing(null, null, array('parent_id'));
             foreach ($contacts as $contactID => $contactInfo) { //Vyfiltrovat pouze primární kontakty
-                if($contactInfo['parent_id']){
+                if ($contactInfo['parent_id']) {
                     unset($contacts[$contactID]);
                 }
             }
-            
+
             if (count($contacts)) {
                 $contacts_menu = array('contacts.php' => EaseTWBPart::GlyphIcon('list') . ' ' . _('Přehled Kontaktů'));
                 foreach ($contacts as $contactID => $contactInfo) {
@@ -359,6 +371,8 @@ class IEMainMenu extends EaseHtmlDivTag {
                 'contactgroup.php' => EaseTWBPart::GlyphIcon('edit') . ' ' . _('Nová skupina kontaktů'))
             ));
 
+
+
             if ($user->getSettingValue('admin')) {
                 $nav->addDropDownMenu(_('Příkaz'), array(
                     'commands.php' => EaseTWBPart::GlyphIcon('list-alt') . ' ' . _('Přehled příkazů'),
@@ -374,13 +388,19 @@ class IEMainMenu extends EaseHtmlDivTag {
                         /* 'module.php' => _('definice modulů') */                        )
                 );
             }
+            $nav->addDropDownMenu(_('Výsledky testů'), array(
+                'nagstamon.php' => EaseTWBPart::GlyphIcon('info') . ' ' . _('PC Lin/Win/Mac'),
+                'anag.php' => EaseTWBPart::GlyphIcon('info') . ' ' . _('Android'),
+                'wpnag.php' => EaseTWBPart::GlyphIcon('Info') . ' ' . _('Win Phone'))
+            );
         }
     }
 
     /**
      * Přidá do stránky javascript pro skrývání oblasti stavových zpráv
      */
-    public function finalize() {
+    public function finalize()
+    {
         EaseJQueryPart::jQueryze($this);
         $this->addJavaScript('$("#StatusMessages").click(function () { $("#StatusMessages").fadeTo("slow",0.25).slideUp("slow"); });', 3, true);
     }
@@ -394,12 +414,14 @@ class IEMainMenu extends EaseHtmlDivTag {
  * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
  */
-class IEPageBottom extends EaseHtmlDivTag {
+class IEPageBottom extends EaseHtmlDivTag
+{
 
     /**
      * Zobrazí přehled právě přihlášených a spodek stránky
      */
-    public function finalize() {
+    public function finalize()
+    {
         if (!count($this->webPage->heroUnit->pageParts)) {
             unset($this->webPage->container->pageParts['EaseHtmlDivTag@heroUnit']);
         };
