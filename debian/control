@@ -1,0 +1,17 @@
+Source: icinga-editor
+Build-Depends: debhelper (>= 7.0.50~)
+Standards-Version: 3.8.4
+Maintainer: Vítězslav Dvořák <info@vitexsoftware.cz>
+Uploaders: Vitex <vitex@hippy.cz>
+Priority: optional
+Homepage: http://vitexsoftware.cz/monitoring.php
+
+Package: ease-framework
+Depends: ${misc:Depends},libjs-twitter-bootstrap, ease-framework , php-mail, php-curl, icinga
+Architecture: all
+Section: web
+Priority: optional
+Description: Editor konfigurace icingy
+ Vygeneruje konfiguraci Iingy pro jednotlivé uživatele a jimi zvolené způsoby notifikace
+
+

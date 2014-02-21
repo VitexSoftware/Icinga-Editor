@@ -1,0 +1,17 @@
+#!/usr/bin/make -f
+
+PKG_PATH:=/usr/share/php/Ease
+BUILD_DIR:=build
+
+%:
+	dh $@
+
+override_dh_auto_build:
+	mkdir -p $(BUILD_DIR)
+	cp *.php  $(BUILD_DIR)
+	dh_auto_build
+
+override_dh_auto_clean:
+	rm -f $(DH_LINKS_FILE)
+	rm -rf $(BUILD_DIR)
+	dh_auto_clean
