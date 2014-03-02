@@ -8,7 +8,7 @@
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2012 Vitex@hippy.cz (G)
  */
-require_once 'Ease/EaseBase.php';
+require_once 'Ease/EaseBrick.php';
 
 /**
  * Description of IEHosts

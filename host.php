@@ -205,6 +205,10 @@ $oPage->columnIII->addItem(new EaseHtmlFieldSet(_('Přejmenování'), $renameFor
 $oPage->columnIII->addItem(new EaseTWBLinkButton('?action=parent&host_id=' . $host->getId(), _('Přiřadit rodiče'), 'success'));
 $oPage->columnIII->addItem(new EaseTWBLinkButton('?action=icon&host_id=' . $host->getId(), _('Změnit ikonu'), 'success'));
 
+if( $host->getDataValue('platform') != 'generic' ){
+    $oPage->columnIII->addItem(new EaseTWBLinkButton('sensor.php?host_id=' . $host->getId(), _('Nasadit senzor'), 'success'));
+}
+
 $oPage->columnI->addItem(new IEServiceSelector($host));
 $oPage->columnI->addItem(new IEContactSelector($host));
 
