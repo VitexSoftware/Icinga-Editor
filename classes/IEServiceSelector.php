@@ -34,6 +34,7 @@ class IEServiceSelector extends EaseContainer
         } else {
             $hostName = $host->getName();
             $service = new IEService();
+            $parentServUsed = array();
 
             $servicesAssigned = $service->myDbLink->queryToArray('SELECT ' . $service->myKeyColumn . ',' . $service->nameColumn . ' FROM ' . $service->myTable . ' WHERE ' . $fieldName . ' LIKE \'%"' . $host->getName() . '"%\'', $service->myKeyColumn);
 
@@ -49,12 +50,16 @@ class IEServiceSelector extends EaseContainer
             }
 
             foreach ($servicesAssigned as $serviceID => $serviceInfo) {
+                $parentServUsed[$allServices[$serviceID]['parent_id']] = $allServices[$serviceID]['parent_id']; 
                 unset($allServices[$serviceID]);
             }
 
             if (count($allServices)) {
 
                 foreach ($allServices as $serviceID => $serviceInfo) {
+                    if(isset($parentServUsed[$serviceInfo['parent_id']])){
+                        continue;
+                    }
                     $unchMenu = array();
                     
                      if(intval($serviceInfo['parent_id'])){
@@ -71,7 +76,7 @@ class IEServiceSelector extends EaseContainer
             if (count($servicesAssigned)) {
                 $initialContent->addItem('</br>');
                 foreach ($servicesAssigned as $serviceID => $serviceInfo) {
-
+                    
                     $initialContent->addItem(
                             new EaseTWBButtonDropdown(
                             $serviceInfo[$service->nameColumn], 'success', 'xs', array(

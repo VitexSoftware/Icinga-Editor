@@ -90,7 +90,7 @@ class IEWebPage extends EaseTWBWebPage
      */
     public function onlyForAdmin($loginPage = 'login.php')
     {
-        if (!$this->User->getSettingValue('admin')) {
+        if (!$this->user->getSettingValue('admin')) {
             EaseShared::user()->addStatusMessage(_('Nejprve se prosím přihlašte jako admin'), 'warning');
             $this->redirect($loginPage);
             exit;
