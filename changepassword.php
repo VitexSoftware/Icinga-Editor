@@ -60,7 +60,7 @@ if ($formOK && $oPage->isPosted()) {
         
         $oUser->addStatusMessage(_('Heslo bylo změněno'), 'success');
 
-        $email = $oPage->addItem(new EaseMail($oUser->getDataValue($oUser->MailColumn), _('Změněné heslo pro Monitoring')));
+        $email = $oPage->addItem(new EaseMail($oUser->getDataValue($oUser->mailColumn), _('Změněné heslo pro Monitoring')));
         $email->addItem(_('Vážený zákazníku vaše přihlašovací údaje byly změněny').":\n");
 
         $email->addItem(' Login: ' . $oUser->getUserLogin() . "\n");
