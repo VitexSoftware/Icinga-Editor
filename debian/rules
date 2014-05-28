@@ -1,17 +1,48 @@
 #!/usr/bin/make -f
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
 
-PKG_PATH:=/usr/share/php/Ease
-BUILD_DIR:=build
+REVISION := $(shell head -1 debian/changelog | sed 's/.*(//;s/).*//;s/.*-//')
 
-%:
-	dh $@
+build-arch:
 
-override_dh_auto_build:
-	mkdir -p $(BUILD_DIR)
-	cp *.php  $(BUILD_DIR)
-	dh_auto_build
+build: build-indep
+build-indep: build-stamp
+build-stamp:
+	dh_testdir
+	touch build-stamp
 
-override_dh_auto_clean:
-	rm -f $(DH_LINKS_FILE)
-	rm -rf $(BUILD_DIR)
-	dh_auto_clean
+clean: 
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp
+	dh_clean 
+	debconf-updatepo --podir=app/lang
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_prep
+	dh_installdirs
+	dh_install
+
+# Build architecture-independent files here.
+binary-indep: build install
+	dh_testdir
+	dh_testroot
+	dh_installdebconf	
+	dh_installman
+	dh_lintian
+	dh_link
+	dh_compress
+	dh_fixperms
+	dh_installdeb
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+# Build architecture-dependent files here.
+binary-arch:
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install

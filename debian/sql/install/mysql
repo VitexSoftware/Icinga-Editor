@@ -1,0 +1,748 @@
+-- phpMyAdmin SQL Dump
+-- version 4.2.1deb1
+-- http://www.phpmyadmin.net
+--
+-- Počítač: localhost
+-- Vytvořeno: Stř 28. kvě 2014, 21:20
+-- Verze serveru: 5.5.37-1-log
+-- Verze PHP: 5.5.12-2
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+
+--
+-- Databáze: `iciedit`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabulky `iciedit_command`
+--
+
+CREATE TABLE IF NOT EXISTS `iciedit_command` (
+`command_id` int(10) unsigned NOT NULL,
+  `command_name` varchar(128) COLLATE utf8_czech_ci DEFAULT NULL,
+  `command_line` text COLLATE utf8_czech_ci,
+  `command_type` enum('check','notify','handler') COLLATE utf8_czech_ci DEFAULT NULL,
+  `command_local` tinyint(1) DEFAULT NULL COMMENT 'lokální příkaz',
+  `command_remote` tinyint(1) DEFAULT NULL COMMENT 'vzdálený příkaz',
+  `public` tinyint(1) DEFAULT NULL,
+  `generate` tinyint(1) DEFAULT NULL,
+  `user_id` int(10) unsigned DEFAULT NULL,
+  `DatCreate` datetime DEFAULT NULL,
+  `DatSave` datetime DEFAULT NULL
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci AUTO_INCREMENT=197 ;
+
+--
+-- Vypisuji data pro tabulku `iciedit_command`
+--
+
+INSERT INTO `iciedit_command` (`command_id`, `command_name`, `command_line`, `command_type`, `command_local`, `command_remote`, `public`, `generate`, `user_id`, `DatCreate`, `DatSave`) VALUES
+(1, 'process-host-perfdata', '/usr/bin/printf "%b" "$LASTHOSTCHECK$	$HOSTNAME$	$HOSTSTATE$	$HOSTATTEMPT$	$HOSTSTATETYPE$	$HOSTEXECUTIONTIME$	$HOSTOUTPUT$	$HOSTPERFDATA$\n" >> /var/cache/icinga/host-perfdata.out', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(2, 'process-service-perfdata', '/usr/bin/printf "%b" "$LASTSERVICECHECK$	$HOSTNAME$	$SERVICEDESC$	$SERVICESTATE$	$SERVICEATTEMPT$	$SERVICESTATETYPE$	$SERVICEEXECUTIONTIME$	$SERVICELATENCY$	$SERVICEOUTPUT$	$SERVICEPERFDATA$\n" >> /var/cache/icinga/service-perfdata.out', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(3, 'check_nntp', '/usr/lib/nagios/plugins/check_nntp -H ''$HOSTADDRESS$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(4, 'check_nntp_4', '/usr/lib/nagios/plugins/check_nntp -H ''$HOSTADDRESS$'' -4', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(5, 'check_telnet', '/usr/lib/nagios/plugins/check_tcp -H ''$HOSTADDRESS$'' -p 23', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(6, 'check_telnet_4', '/usr/lib/nagios/plugins/check_tcp -H ''$HOSTADDRESS$'' -p 23 -4', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(7, 'check_ntp', '/usr/lib/nagios/plugins/check_ntp_peer -H ''$HOSTADDRESS$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(8, 'check_ntp_ntpq', '/usr/lib/nagios/plugins/check_ntp_peer -H ''$HOSTADDRESS$'' -j 10 -k 15', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(9, 'check_time', '/usr/lib/nagios/plugins/check_time -H ''$HOSTADDRESS$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(10, 'check_ldap', '/usr/lib/nagios/plugins/check_ldap -H ''$HOSTADDRESS$'' -b ''$ARG1$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(11, 'check_ldaps', '/usr/lib/nagios/plugins/check_ldaps -H ''$HOSTADDRESS$'' -b ''$ARG1$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(12, 'check_ldap_4', '/usr/lib/nagios/plugins/check_ldap -H ''$HOSTADDRESS$'' -b ''$ARG1$'' -4', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(13, 'check_ldaps_4', '/usr/lib/nagios/plugins/check_ldaps -H ''$HOSTADDRESS$'' -b ''$ARG1$'' -4', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(14, 'check_quake', '/usr/lib/nagios/plugins/check_game qs ''$HOSTADDRESS$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(15, 'check_unreal', '/usr/lib/nagios/plugins/check_game uns ''$HOSTADDRESS$'' -P ''$ARG1$'' -p 8', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(16, 'check_real_url', '/usr/lib/nagios/plugins/check_real ''$HOSTADDRESS$'' -p ''$ARG1$'' -wt ''$ARG2$'' -ct ''$ARG3$'' -to 5 -u ''$ARG4$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(17, 'check_real', '/usr/lib/nagios/plugins/check_real ''$HOSTADDRESS$'' -p ''$ARG1$'' -wt ''$ARG2$'' -ct ''$ARG3$'' -to 5', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(18, 'check_breeze', '/usr/lib/nagios/plugins/check_breeze -H ''$HOSTADDRESS$'' -w ''$ARG1$'' -c ''$ARG2$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(19, 'check_radius', '/usr/lib/nagios/plugins/check_radius -F /etc/radiusclient/radiusclient.conf -H ''$HOSTADDRESS$'' -P ''$ARG4$'' -t ''$ARG3$'' -u ''$ARG1$'' -p ''$ARG2$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(20, 'check-fast-alive', '/usr/lib/nagios/plugins/check_fping -H ''$HOSTADDRESS$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(21, 'check_mysql', '/usr/lib/nagios/plugins/check_mysql -H ''$HOSTADDRESS$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(22, 'check_mysql_cmdlinecred', '/usr/lib/nagios/plugins/check_mysql -H ''$HOSTADDRESS$'' -u ''$ARG1$'' -p ''$ARG2$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(23, 'check_mysql_database', '/usr/lib/nagios/plugins/check_mysql -d ''$ARG3$'' -H ''$HOSTADDRESS$'' -u ''$ARG1$'' -p ''$ARG2$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(24, 'check_mysql_slave', '/usr/lib/nagios/plugins/check_mysql -H ''$HOSTADDRESS$'' -u ''$ARG1$'' -p ''$ARG2$'' -S', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(25, 'check_pop', '/usr/lib/nagios/plugins/check_pop -H ''$HOSTADDRESS$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(26, 'check_spop', '/usr/lib/nagios/plugins/check_pop -p 995 -H ''$HOSTADDRESS$'' -S', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(27, 'check_pop_4', '/usr/lib/nagios/plugins/check_pop -H ''$HOSTADDRESS$'' -4', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(28, 'check_smtp_4', '/usr/lib/nagios/plugins/check_smtp -H ''$HOSTADDRESS$'' -4', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(29, 'check_ssmtp_4', '/usr/lib/nagios/plugins/check_ssmtp -H ''$HOSTADDRESS$'' -4', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(30, 'check_imap_4', '/usr/lib/nagios/plugins/check_imap -H ''$HOSTADDRESS$'' -4', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(31, 'check_spop_4', '/usr/lib/nagios/plugins/check_pop -p 995 -H ''$HOSTADDRESS$'' -S -4', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(32, 'check_simap_4', '/usr/lib/nagios/plugins/check_imap -p 993 -H ''$HOSTADDRESS$'' -S -4', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(33, 'check_flexlm', '/usr/lib/nagios/plugins/check_flexlm -F ''$ARG1$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(34, 'check_pgsql', '/usr/lib/nagios/plugins/check_pgsql -H ''$HOSTADDRESS$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(35, 'check_pgsql_4', '/usr/lib/nagios/plugins/check_pgsql -H ''$HOSTADDRESS$'' -4', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(36, 'check_users', '/usr/lib/nagios/plugins/check_users -w ''$ARG1$'' -c ''$ARG2$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(37, 'check-rpc', '/usr/lib/nagios/plugins/check_rpc -H ''$HOSTADDRESS$'' -C ''$ARG1$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(38, 'check-nfs', '/usr/lib/nagios/plugins/check_rpc -H ''$HOSTADDRESS$'' -C nfs -c2,3', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(39, 'snmp_load', '/usr/lib/nagios/plugins/check_snmp -H ''$HOSTADDRESS$'' -C ''$ARG1$'' -o .1.3.6.1.4.1.2021.10.1.5.1,.1.3.6.1.4.1.2021.10.1.5.2,.1.3.6.1.4.1.2021.10.1.5.3 -w :''$ARG2$'',:''$ARG3$'',:''$ARG4$'' -c :''$ARG5$'',:''$ARG6$'',:''$ARG7$'' -l load', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(40, 'snmp_cpustats', '/usr/lib/nagios/plugins/check_snmp -H ''$HOSTADDRESS$'' -C ''$ARG1$'' -o .1.3.6.1.4.1.2021.11.9.0,.1.3.6.1.4.1.2021.11.10.0,.1.3.6.1.4.1.2021.11.11.0 -l ''CPU usage (user system idle)'' -u ''%''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(41, 'snmp_procname', '/usr/lib/nagios/plugins/check_snmp -H ''$HOSTADDRESS$'' -C ''$ARG1$'' -o .1.3.6.1.4.1.2021.2.1.5.''$ARG2$'' -w ''$ARG3$'':''$ARG4$'' -c ''$ARG5$'':''$ARG6$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(42, 'snmp_disk', '/usr/lib/nagios/plugins/check_snmp -H ''$HOSTADDRESS$'' -C ''$ARG1$'' -o .1.3.6.1.4.1.2021.9.1.7.''$ARG2$'',.1.3.6.1.4.1.2021.9.1.9.''$ARG2$'' -w ''$ARG3$'':,:''$ARG4$'' -c ''$ARG5$'':,:''$ARG6$'' -u ''kB free ('',''% used)'' -l ''disk space''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(43, 'snmp_mem', '/usr/lib/nagios/plugins/check_snmp -H ''$HOSTADDRESS$'' -C ''$ARG1$'' -o .1.3.6.1.4.1.2021.4.6.0,.1.3.6.1.4.1.2021.4.5.0 -w ''$ARG2$'': -c ''$ARG3$'':', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(44, 'snmp_swap', '/usr/lib/nagios/plugins/check_snmp -H ''$HOSTADDRESS$'' -C ''$ARG1$'' -o .1.3.6.1.4.1.2021.4.4.0,.1.3.6.1.4.1.2021.4.3.0 -w ''$ARG2$'': -c ''$ARG3$'':', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(45, 'snmp_procs', '/usr/lib/nagios/plugins/check_snmp -H ''$HOSTADDRESS$'' -C ''$ARG1$'' -o host.hrSystem.hrSystemProcesses -w :''$ARG2$'' -c :''$ARG3$'' -l processes', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(46, 'snmp_users', '/usr/lib/nagios/plugins/check_snmp -H ''$HOSTADDRESS$'' -C ''$ARG1$'' -o host.hrSystem.hrSystemNumUsers -w :''$ARG2$'' -c :''$ARG3$'' -l users', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(47, 'snmp_mem2', '/usr/lib/nagios/plugins/check_snmp -H ''$HOSTADDRESS$'' -C ''$ARG1$'' -o host.hrStorage.hrStorageTable.hrStorageEntry.hrStorageUsed.''$ARG2$'',host.hrStorage.hrStorageTable.hrStorageEntry.hrStorageSize.''$ARG2$'' -w ''$ARG3$'' -c ''$ARG4$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(48, 'snmp_swap2', '/usr/lib/nagios/plugins/check_snmp -H ''$HOSTADDRESS$'' -C ''$ARG1$'' -o host.hrStorage.hrStorageTable.hrStorageEntry.hrStorageUsed.''$ARG2$'',host.hrStorage.hrStorageTable.hrStorageEntry.hrStorageSize.''$ARG2$'' -w ''$ARG3$'' -c ''$ARG4$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(49, 'snmp_mem3', '/usr/lib/nagios/plugins/check_snmp -H ''$HOSTADDRESS$'' -C ''$ARG1$'' -o host.hrStorage.hrStorageTable.hrStorageEntry.hrStorageUsed.''$ARG2$'',host.hrStorage.hrStorageTable.hrStorageEntry.hrStorageSize.''$ARG2$'' -w ''$ARG3$'' -c ''$ARG4$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(50, 'snmp_swap3', '/usr/lib/nagios/plugins/check_snmp -H ''$HOSTADDRESS$'' -C ''$ARG1$'' -o host.hrStorage.hrStorageTable.hrStorageEntry.hrStorageUsed.''$ARG2$'',host.hrStorage.hrStorageTable.hrStorageEntry.hrStorageSize.''$ARG2$'' -w ''$ARG3$'' -c ''$ARG4$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(51, 'snmp_disk2', '/usr/lib/nagios/plugins/check_snmp -H ''$HOSTADDRESS$'' -C ''$ARG1$'' -o host.hrStorage.hrStorageTable.hrStorageEntry.hrStorageUsed.''$ARG2$'' -w ''$ARG3$'' -c ''$ARG4$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(52, 'snmp_tcpopen', '/usr/lib/nagios/plugins/check_snmp -H ''$HOSTADDRESS$'' -C ''$ARG1$'' -o tcp.tcpCurrEstab.0 -w ''$ARG2$'' -c ''$ARG3$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(53, 'snmp_tcpstats', '/usr/lib/nagios/plugins/check_snmp -H ''$HOSTADDRESS$'' -C ''$ARG1$'' -o tcp.tcpActiveOpens.0,tcp.tcpPassiveOpens.0,tcp.tcpInSegs.0,tcp.tcpOutSegs.0,tcp.tcpRetransSegs.0 -l ''TCP stats''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(54, 'check_netapp_uptime', '/usr/lib/nagios/plugins/check_snmp -H ''$HOSTADDRESS$'' -C ''$ARG1$'' -o .1.3.6.1.2.1.1.3.0 --delimiter='')'' -l "Uptime is"', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(55, 'check_netapp_cpuload', '/usr/lib/nagios/plugins/check_snmp -H ''$HOSTADDRESS$'' -C ''$ARG1$'' -o .1.3.6.1.4.1.789.1.2.1.3.0 -w 90 -c 95 -u ''%'' -l "CPU LOAD "', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(56, 'check_netapp_numdisks', '/usr/lib/nagios/plugins/check_snmp -H ''$HOSTADDRESS$'' -C ''$ARG1$'' -o .1.3.6.1.4.1.789.1.6.4.1.0,.1.3.6.1.4.1.789.1.6.4.2.0,.1.3.6.1.4.1.789.1.6.4.8.0,.1.3.6.1.4.1.789.1.6.4.7.0 -u ''Total Disks'',''Active'',''Spare'',''Failed'' -l ""', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(57, 'check_compaq_thermalCondition', '/usr/lib/nagios/plugins/check_snmp -H ''$HOSTADDRESS$'' -C ''$ARG1$'' -o .1.3.6.1.4.1.232.6.2.1.0,.1.3.6.1.4.1.232.6.2.2.0,.1.3.6.1.4.1.232.6.2.3.0,.1.3.6.1.4.1.232.6.2.4.0 -u ''ThermalCondition'',''ThermalTemp'',''ThermalSystem'',''ThermalCPUFan'' -w 2:2,2:2,2:2,2:2 -c 1:2,1:2,1:2,1:2 -l "Thermal status "', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(58, 'check-printer-alive', '/usr/lib/nagios/plugins/check_ping -H ''$HOSTADDRESS$'' -w 5000,100% -c 5000,100% -p 1', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(59, 'check-switch-alive', '/usr/lib/nagios/plugins/check_ping -H ''$HOSTADDRESS$'' -w 5000,100% -c 5000,100% -p 1', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(60, 'check-router-alive', '/usr/lib/nagios/plugins/check_ping -H ''$HOSTADDRESS$'' -w 5000,100% -c 5000,100% -p 1', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(61, 'check_ping_4', '/usr/lib/nagios/plugins/check_ping -H ''$HOSTADDRESS$'' -w ''$ARG1$'' -c ''$ARG2$'' -4', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(62, 'check-host-alive_4', '/usr/lib/nagios/plugins/check_ping -H ''$HOSTADDRESS$'' -w 5000,100% -c 5000,100% -p 1 -4', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(63, 'check-printer-alive_4', '/usr/lib/nagios/plugins/check_ping -H ''$HOSTADDRESS$'' -w 5000,100% -c 5000,100% -p 1 -4', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(64, 'check-switch-alive_4', '/usr/lib/nagios/plugins/check_ping -H ''$HOSTADDRESS$'' -w 5000,100% -c 5000,100% -p 1 -4', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(65, 'check-router-alive_4', '/usr/lib/nagios/plugins/check_ping -H ''$HOSTADDRESS$'' -w 5000,100% -c 5000,100% -p 1 -4', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(66, 'check_mrtg', '/usr/lib/nagios/plugins/check_mrtg ''$ARG1$'' 10 AVG ''$ARG2$'' ''$ARG3$'' ''$ARG4$'' ''$ARG5$'' ''$ARG6$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(67, 'traffic_average', '/usr/lib/nagios/plugins/check_mrtgtraf ''$ARG1$'' 10 AVG ''$ARG2$'' ''$ARG3$'' ''$ARG4$'' ''$ARG5$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(68, 'check_dns', '/usr/lib/nagios/plugins/check_dns -H www.google.com -s ''$HOSTADDRESS$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(69, 'check_dig', '/usr/lib/nagios/plugins/check_dig -H ''$HOSTADDRESS$'' -l ''$ARG1$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(70, 'check_tcp_4', '/usr/lib/nagios/plugins/check_tcp -H ''$HOSTADDRESS$'' -p ''$ARG1$'' -4', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(71, 'check_udp_4', '/usr/lib/nagios/plugins/check_udp -H ''$HOSTADDRESS$'' -p ''$ARG1$'' -4', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(72, 'check_ssh_4', '/usr/lib/nagios/plugins/check_ssh -4 ''$HOSTADDRESS$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(73, 'check_ssh_port_4', '/usr/lib/nagios/plugins/check_ssh -4 -p ''$ARG1$'' ''$HOSTADDRESS$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(74, 'check_ifstatus', '/usr/lib/nagios/plugins/check_ifstatus -H ''$HOSTADDRESS$'' -C ''$ARG1$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(75, 'check_ifstatus_exclude', '/usr/lib/nagios/plugins/check_ifstatus -H ''$HOSTADDRESS$'' -C ''$ARG1$'' -x ''$ARG2$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(76, 'check_ifoperstatus_ifindex', '/usr/lib/nagios/plugins/check_ifoperstatus -H ''$HOSTADDRESS$'' -C ''$ARG1$'' -k ''$ARG2$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(77, 'check_ifoperstatus_ifdescr', '/usr/lib/nagios/plugins/check_ifoperstatus -H ''$HOSTADDRESS$'' -C ''$ARG1$'' -d ''$ARG2$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(78, 'return-ok', '/usr/lib/nagios/plugins/check_dummy 0', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(79, 'return-warning', '/usr/lib/nagios/plugins/check_dummy 1', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(80, 'return-critical', '/usr/lib/nagios/plugins/check_dummy 2', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(81, 'return-unknown', '/usr/lib/nagios/plugins/check_dummy 3', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(82, 'return-numeric', '/usr/lib/nagios/plugins/check_dummy ''$ARG1$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(83, 'check_load', '/usr/lib/nagios/plugins/check_load --warning=''$ARG1$,$ARG2$,$ARG3$'' --critical=''$ARG4$,$ARG5$,$ARG6$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(84, 'check_mailq_sendmail', '/usr/lib/nagios/plugins/check_mailq -w ''$ARG1$'' -c ''$ARG2$'' -M sendmail', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(85, 'check_mailq_postfix', '/usr/lib/nagios/plugins/check_mailq -w ''$ARG1$'' -c ''$ARG2$'' -M postfix', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(86, 'check_mailq_exim', '/usr/lib/nagios/plugins/check_mailq -w ''$ARG1$'' -c ''$ARG2$'' -M exim', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(87, 'check_mailq_qmail', '/usr/lib/nagios/plugins/check_mailq -w ''$ARG1$'' -c ''$ARG2$'' -M qmail', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(88, 'check_netware_logins', '/usr/lib/nagios/plugins/check_nwstat -H ''$HOSTADDRESS$'' -v "LOGINS" -w ''$ARG1$'' -c ''$ARG2$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(89, 'check_nwstat_conns', '/usr/lib/nagios/plugins/check_nwstat -H ''$HOSTADDRESS$'' -v CONNS -w ''$ARG1$'' -c ''$ARG2$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(90, 'check_netware_1load', '/usr/lib/nagios/plugins/check_nwstat -H ''$HOSTADDRESS$'' -v "LOAD1" -w 70 -c 90', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(91, 'check_netware_5load', '/usr/lib/nagios/plugins/check_nwstat -H ''$HOSTADDRESS$'' -v "LOAD5" -w 70 -c 90', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(92, 'check_netware_15load', '/usr/lib/nagios/plugins/check_nwstat -H ''$HOSTADDRESS$'' -v "LOAD15" -w 70 -c 90', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(93, 'check_nwstat_vol_p', '/usr/lib/nagios/plugins/check_nwstat -H ''$HOSTADDRESS$'' -v VPF''$ARG1$'' -w ''$ARG2$'' -c ''$ARG3$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(94, 'check_nwstat_vol_k', '/usr/lib/nagios/plugins/check_nwstat -H ''$HOSTADDRESS$'' -v VKF''$ARG1$'' -w ''$ARG2$'' -c ''$ARG3$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(95, 'check_nwstat_ltch', '/usr/lib/nagios/plugins/check_nwstat -H ''$HOSTADDRESS$'' -v LTCH -w ''$ARG1$'' -c ''$ARG2$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(96, 'check_nwstat_puprb', '/usr/lib/nagios/plugins/check_nwstat -H ''$HOSTADDRESS$'' -v PUPRB -w ''$ARG1$'' -c ''$ARG2$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(97, 'check_nwstat_dsdb', '/usr/lib/nagios/plugins/check_nwstat -H ''$HOSTADDRESS$'' -v DSDB', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(98, 'check_netware_abend', '/usr/lib/nagios/plugins/check_nwstat -H ''$HOSTADDRESS$'' -v "ABENDS" -w 10 -c 30', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(99, 'check_nwstat_csprocs', '/usr/lib/nagios/plugins/check_nwstat -H ''$HOSTADDRESS$'' -v CSPROCS -w ''$ARG1$'' -c ''$ARG2$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(100, 'check_procs', '/usr/lib/nagios/plugins/check_procs -w ''$ARG1$'' -c ''$ARG2$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(101, 'check_procs_zombie', '/usr/lib/nagios/plugins/check_procs -w ''$ARG1$'' -c ''$ARG2$'' -s Z', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(102, 'check_procs_httpd', '/usr/lib/nagios/plugins/check_procs -w 5:''$ARG1$'' -c 1:''$ARG2$'' -C httpd', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(103, 'check_ftp_4', '/usr/lib/nagios/plugins/check_ftp -H ''$HOSTADDRESS$'' -4', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(104, 'check_disk_smb', '/usr/lib/nagios/plugins/check_disk_smb -H ''$ARG1$'' -s ''$ARG2$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(105, 'check_disk_smb_workgroup', '/usr/lib/nagios/plugins/check_disk_smb -H ''$ARG1$'' -s ''$ARG2$'' -W ''$ARG3$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(106, 'check_disk_smb_host', '/usr/lib/nagios/plugins/check_disk_smb -a ''$HOSTADDRESS$'' -H ''$ARG1$'' -s ''$ARG2$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(107, 'check_disk_smb_workgroup_host', '/usr/lib/nagios/plugins/check_disk_smb -a ''$HOSTADDRESS$'' -H ''$ARG1$'' -s ''$ARG2$'' -W ''$ARG3$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(108, 'check_disk_smb_user', '/usr/lib/nagios/plugins/check_disk_smb -H ''$ARG1$'' -s ''$ARG2$'' -u ''$ARG3$'' -p ''$ARG4$'' -w ''$ARG5$'' -c ''$ARG6$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(109, 'check_disk_smb_workgroup_user', '/usr/lib/nagios/plugins/check_disk_smb -H ''$ARG1$'' -s ''$ARG2$'' -W ''$ARG3$'' -u ''$ARG4$'' -p ''$ARG5$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(110, 'check_disk_smb_host_user', '/usr/lib/nagios/plugins/check_disk_smb -a ''$HOSTADDRESS$'' -H ''$ARG1$'' -s ''$ARG2$'' -u ''$ARG3$'' -p ''$ARG4$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(111, 'check_disk_smb_workgroup_host_user', '/usr/lib/nagios/plugins/check_disk_smb -a ''$HOSTADDRESS$'' -H ''$ARG1$'' -s ''$ARG2$'' -W ''$ARG3$'' -u ''$ARG4$'' -p ''$ARG5$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(112, 'check_disk', '/usr/lib/nagios/plugins/check_disk -w ''$ARG1$'' -c ''$ARG2$'' -e -p ''$ARG3$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(113, 'check_all_disks', '/usr/lib/nagios/plugins/check_disk -w ''$ARG1$'' -c ''$ARG2$'' -e', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(114, 'ssh_disk', '/usr/lib/nagios/plugins/check_by_ssh -H ''$HOSTADDRESS$'' -C "/usr/lib/nagios/plugins/check_disk -w ''$ARG1$'' -c ''$ARG2$'' -e -p ''$ARG3$''"', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:17', NULL),
+(115, 'ssh_disk_4', '/usr/lib/nagios/plugins/check_by_ssh -H ''$HOSTADDRESS$'' -C "/usr/lib/nagios/plugins/check_disk -w ''$ARG1$'' -c ''$ARG2$'' -e -p ''$ARG3$''" -4', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:18', NULL),
+(116, 'check_httpname', '/usr/lib/nagios/plugins/check_http -H ''$HOSTNAME$'' -I ''$HOSTADDRESS$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:18', NULL),
+(117, 'check_http2', '/usr/lib/nagios/plugins/check_http -H ''$ARG1$'' -I ''$HOSTADDRESS$'' -w ''$ARG2$'' -c ''$ARG3$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:18', NULL),
+(118, 'check_squid', '/usr/lib/nagios/plugins/check_http -H ''$HOSTADDRESS$'' -p ''$ARG1$''  -u ''$ARG2$''  -e ''HTTP/1.0 200 OK''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:18', NULL),
+(119, 'check_https_hostname', '/usr/lib/nagios/plugins/check_http --ssl -H ''$HOSTNAME$'' -I ''$HOSTADDRESS$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:18', NULL),
+(120, 'check_https_auth', '/usr/lib/nagios/plugins/check_http --ssl -H ''$HOSTADDRESS$'' -I ''$HOSTADDRESS$'' -a ''$ARG1$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:18', NULL),
+(121, 'check_https_auth_hostname', '/usr/lib/nagios/plugins/check_http --ssl -H ''$HOSTNAME$'' -I ''$HOSTADDRESS$'' -a ''$ARG1$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:18', NULL),
+(122, 'check_cups', '/usr/lib/nagios/plugins/check_http -I ''$HOSTADDRESS$'' -p 631', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:18', NULL),
+(123, 'check_http_4', '/usr/lib/nagios/plugins/check_http -H ''$HOSTADDRESS$'' -I ''$HOSTADDRESS$'' -4', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:18', NULL),
+(124, 'check_httpname_4', '/usr/lib/nagios/plugins/check_http -H ''$HOSTNAME$'' -I ''$HOSTADDRESS$'' -4', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:18', NULL),
+(125, 'check_http2_4', '/usr/lib/nagios/plugins/check_http -H ''$ARG1$'' -I ''$HOSTADDRESS$'' -w ''$ARG2$'' -c ''$ARG3$'' -4', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:18', NULL),
+(126, 'check_squid_4', '/usr/lib/nagios/plugins/check_http -H ''$HOSTADDRESS$'' -p ''$ARG1$''  -u ''$ARG2$''  -e ''HTTP/1.0 200 OK'' -4', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:18', NULL),
+(127, 'check_https_4', '/usr/lib/nagios/plugins/check_http --ssl -H ''$HOSTADDRESS$'' -I ''$HOSTADDRESS$'' -4', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:18', NULL),
+(128, 'check_https_hostname_4', '/usr/lib/nagios/plugins/check_http --ssl -H ''$HOSTNAME$'' -I ''$HOSTADDRESS$'' -4', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:18', NULL),
+(129, 'check_https_auth_4', '/usr/lib/nagios/plugins/check_http --ssl -H ''$HOSTADDRESS$'' -I ''$HOSTADDRESS$'' -a ''$ARG1$'' -4', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:18', NULL),
+(130, 'check_https_auth_hostname_4', '/usr/lib/nagios/plugins/check_http --ssl -H ''$HOSTNAME'' -I ''$HOSTADDRESS$'' -a ''$ARG1$'' -4', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:18', NULL),
+(131, 'check_cups_4', '/usr/lib/nagios/plugins/check_http -I ''$HOSTADDRESS$'' -p 631 -4', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:18', NULL),
+(132, 'check_local_ido2db', '$USER1$/check_procs -w $ARG1$ -c $ARG2$ -C ido2db', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:18', NULL),
+(133, 'check_apt', '/usr/lib/nagios/plugins/check_apt', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:46', NULL),
+(134, 'check_apt_distupgrade', '/usr/lib/nagios/plugins/check_apt -d', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:46', NULL),
+(135, 'check_dhcp', '/usr/lib/nagios/plugins/check_dhcp -s ''$HOSTADDRESS$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:46', NULL),
+(136, 'check_dhcp_interface', '/usr/lib/nagios/plugins/check_dhcp -s ''$HOSTADDRESS$'' -i ''$ARG1$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:46', NULL),
+(137, 'check_email_delivery', '$USER1$/check_email_delivery -p ''$USER1$/check_smtp_send -H $HOSTADDRESS$ --mailfrom $ARG3$ --mailto $ARG4$ -U $ARG5$ -P $ARG6$ --header "Subject: Nagios %TOKEN1%" -w $ARG1$ -c $ARG2$'' -p ''$USER1$/check_imap_receive -H $HOSTADDRESS$ -U $ARG5$ -P $ARG6$ -s SUBJECT -s "Nagios %TOKEN1%" -w $ARG1$ -c $ARG2$'' -w $ARG1$,$ARG1$ -c $ARG2$,$ARG2$', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:46', NULL),
+(138, 'check_ftp', '/usr/lib/nagios/plugins/check_ftp -H ''$HOSTADDRESS$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:46', NULL),
+(139, 'check_haproxy', '/usr/lib/nagios/plugins/check_haproxy -u ''$ARG1$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:46', NULL),
+(140, 'check_hpjd', '/usr/lib/nagios/plugins/check_hpjd -H ''$HOSTADDRESS$'' -C public', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:46', NULL),
+(141, 'check_http', '/usr/lib/nagios/plugins/check_http -H ''$HOSTADDRESS$'' -I ''$HOSTADDRESS$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:46', NULL),
+(142, 'check_https', '/usr/lib/nagios/plugins/check_http --ssl -H ''$HOSTADDRESS$'' -I ''$HOSTADDRESS$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:46', NULL),
+(143, 'check_httpd_status', '/usr/lib/nagios/plugins/check_httpd_status -H $HOSTADDRESS$ -p ''$ARG1$'' -w ''$ARG2$'': -c ''$ARG3$'': ''$ARG4$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:46', NULL),
+(144, 'check_ipmi_sensor', '/usr/lib/nagios/plugins/check_ipmi_sensor -H $_HOSTIPMI_IP$ -f $ARG1$', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:46', NULL),
+(145, 'check_ipmi_sensor_exclude', '/usr/lib/nagios/plugins/check_ipmi_sensor -H $_HOSTIPMI_IP$ -f $ARG1$ -x $ARG2$', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:46', NULL),
+(146, 'check_lm_sensors_high', '/usr/lib/nagios/plugins/check_lm_sensors --high ''$ARG1$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:47', NULL),
+(147, 'check_lm_sensors_low', '/usr/lib/nagios/plugins/check_lm_sensors --low ''$ARG1$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:47', NULL),
+(148, 'check_lm_sensors_range', '/usr/lib/nagios/plugins/check_lm_sensors --range ''$ARG1$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:47', NULL),
+(149, 'check_smtp', '/usr/lib/nagios/plugins/check_smtp -H ''$HOSTADDRESS$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:47', NULL),
+(150, 'check_ssmtp', '/usr/lib/nagios/plugins/check_ssmtp -H ''$HOSTADDRESS$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:47', NULL),
+(151, 'check_imap', '/usr/lib/nagios/plugins/check_imap -H ''$HOSTADDRESS$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:47', NULL),
+(152, 'check_simap', '/usr/lib/nagios/plugins/check_imap -p 993 -H ''$HOSTADDRESS$'' -S', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:47', NULL),
+(153, 'check_memcached', '/usr/lib/nagios/plugins/check_memcached -H ''$HOSTADDRESS$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:47', NULL),
+(154, 'check_multipath', '/usr/lib/nagios/plugins/check_multipath', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:47', NULL),
+(155, 'check_nt', '/usr/lib/nagios/plugins/check_nt -H ''$HOSTADDRESS$'' -v ''$ARG1$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:47', NULL),
+(156, 'check_nscp', '/usr/lib/nagios/plugins/check_nt -H ''$HOSTADDRESS$'' -p 12489 -v ''$ARG1$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:47', NULL),
+(157, 'check_ping', '/usr/lib/nagios/plugins/check_ping -H ''$HOSTADDRESS$'' -w ''$ARG1$'' -c ''$ARG2$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:47', NULL),
+(158, 'check-host-alive', '/usr/lib/nagios/plugins/check_ping -H ''$HOSTADDRESS$'' -w 5000,100% -c 5000,100% -p 1', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:47', NULL),
+(159, 'check_printer', '/usr/lib/nagios/plugins/check_printer ''$HOSTADDRESS$'' ''$ARG1$'' ''$ARG2$'' ''$ARG3$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:47', NULL),
+(160, 'check_rbl', '/usr/lib/nagios/plugins/check_rbl -H ''$HOSTADDRESS$'' --extra-opts=''rbl@/etc/nagios-plugins/check_rbl.ini''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:47', NULL),
+(161, 'check_ssh', '/usr/lib/nagios/plugins/check_ssh ''$HOSTADDRESS$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:47', NULL),
+(162, 'check_ssh_port', '/usr/lib/nagios/plugins/check_ssh -p ''$ARG1$'' ''$HOSTADDRESS$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:47', NULL),
+(163, 'check_ssl_cert', '/usr/lib/nagios/plugins/check_ssl_cert -H $HOSTADDRESS$ -p ''$ARG1$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:47', '2012-10-26 00:55:57'),
+(164, 'check_tcp', '/usr/lib/nagios/plugins/check_tcp -H ''$HOSTADDRESS$'' -p ''$ARG1$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:47', NULL),
+(165, 'check_udp', '/usr/lib/nagios/plugins/check_udp -H ''$HOSTADDRESS$'' -p ''$ARG1$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:47', NULL),
+(166, 'check_webinject', '/usr/lib/nagios/plugins/check_webinject  ''$ARG1$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:47', NULL),
+(167, 'check_webinject_baseurl', '/usr/lib/nagios/plugins/check_webinject  -s ''baseurl=$ARG1$'' ''$ARG2$''', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:47', NULL),
+(168, 'check_whois', '/usr/lib/nagios/plugins/check_whois $HOSTADDRESS$', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:47', NULL),
+(169, 'check_zone_auth', '/usr/lib/nagios/plugins/check_zone_auth -Z $HOSTADDRESS$', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:47', NULL),
+(170, 'check_zone_rrsig', '/usr/lib/nagios/plugins/check_zone_rrsig -Z $HOSTADDRESS$', 'check', 1, 0, 1, 1, 0, '2012-08-30 15:55:47', NULL),
+(171, 'notify-audioalert', '/usr/local/bin/audioalert.sh', 'notify', 1, 0, 1, 1, 0, '2012-08-30 23:11:59', NULL),
+(172, 'notify-host-by-sms', '/usr/local/bin/icingasms.sh', 'notify', 1, 0, 1, 1, 0, '2012-08-30 23:13:02', NULL),
+(173, 'notify-service-by-email', '/usr/bin/printf "%b" "***** Icinga ***** \n \nNotification Type: $NOTIFICATIONTYPE$ \n \nService: $SERVICEDESC$ \nHost: $HOSTALIAS$ \nAddress: $HOSTADDRESS$ \nState: $SERVICESTATE$ \n \nDate/Time: $LONGDATETIME$ \n \nAdditional Info: \n \n$SERVICEOUTPUT$ \n" | /usr/bin/mail -s "** $NOTIFICATIONTYPE$ Service Alert: $HOSTALIAS$/$SERVICEDESC$ is $SERVICESTATE$ **" $CONTACTEMAIL$', 'notify', 1, 0, 1, 1, 0, '2012-08-30 23:13:52', NULL),
+(174, 'notify-host-by-email', '/usr/bin/printf "%b" "***** Icinga ***** \n \nNotification Type: $NOTIFICATIONTYPE$ \nHost: $HOSTNAME$ \nState: $HOSTSTATE$ \nAddress: $HOSTADDRESS$ \nInfo: $HOSTOUTPUT$ \n \nDate/Time: $LONGDATETIME$ \n" | /usr/bin/mail -s "** $NOTIFICATIONTYPE$ Host Alert: $HOSTNAME$ is $HOSTSTATE$ **" $CONTACTEMAIL$', 'notify', 1, 0, 1, 1, 0, '2012-08-30 23:14:58', NULL),
+(175, 'audioalert', '/usr/local/bin/audioalert.sh $NOTIFICATIONTYPE$', 'check', 1, 0, NULL, 1, 0, '2012-09-03 11:48:21', NULL),
+(176, 'check_nt_disk', '/usr/lib/nagios/plugins/check_nt -H ''$HOSTADDRESS$'' -p 12489 -v ''USEDDISKSPACE'' -l ''$ARG1$'' -w ''$ARG2$'' -c ''$ARG3$''', 'check', 1, 0, NULL, 1, 0, '2012-09-03 11:48:21', NULL),
+(177, 'check_nt_cpuload', '/usr/lib/nagios/plugins/check_nt -H ''$HOSTADDRESS$'' -p 12489 -v ''CPULOAD'' -l ''$ARG1$''', 'check', 1, 0, NULL, 1, 0, '2012-09-03 11:48:21', NULL),
+(178, 'check_nt_memuse', '/usr/lib/nagios/plugins/check_nt -H ''$HOSTADDRESS$'' -p 12489 -v ''MEMUSE'' -l ''$ARG1$''', 'check', 1, 0, NULL, 1, 0, '2012-09-03 11:48:21', NULL),
+(179, 'check_file_exists', '/usr/lib/nagios/plugins/check_file -e ''$ARG1$''', 'check', 1, 0, NULL, 1, 0, '2012-09-03 11:48:21', NULL),
+(180, 'check_imaps', '/usr/lib/nagios/plugins/check_imap -p 993 -H $HOSTADDRESS$ -S', 'check', 1, 0, 1, 1, 0, '2012-09-03 11:48:21', '2012-10-26 01:38:44'),
+(181, 'check_pops', '/usr/lib/nagios/plugins/check_pop -p 995 -H $HOSTADDRESS$ -S', 'check', 1, 0, NULL, 1, 0, '2012-09-03 11:48:21', NULL),
+(182, 'check_nrpe', '/usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c $ARG1$ -a $ARG2$', 'check', 1, 0, 1, 1, 0, '2012-09-03 11:52:49', NULL),
+(183, 'check_nrpe_1arg', '/usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c $ARG1$', 'check', 1, 0, NULL, 1, 0, '2012-09-03 11:52:49', NULL),
+(185, 'host-notify-by-jabber', '/usr/local/bin/icingajabber.sh', 'notify', 1, 0, 1, 1, 0, '2012-09-19 17:35:14', '2012-09-19 17:35:55'),
+(186, 'service-notify-by-jabber', '/usr/local/bin/icingajabber.sh', 'notify', 1, 0, 1, 1, 0, '2012-09-19 17:35:14', '2012-09-19 17:36:14'),
+(187, 'host-notify-by-twitter', '/usr/local/bin/twagios "$HOSTALIAS$ is $HOSTSTATE$. $HOSTOUTPUT$. Time: $SHORTDATETIME$"', 'notify', 1, NULL, 1, 1, 0, '2012-10-03 18:24:11', '2012-10-03 18:26:10'),
+(188, 'service-notify-by-twitter', '/usr/local/bin/twagios "$SERVICEDESC$ @ $HOSTNAME$ is $SERVICESTATE$. $SERVICEOUTPUT$. Time: $SHORTDATETIME$"', 'notify', 1, NULL, 1, 1, 0, '2012-10-03 18:24:11', '2012-10-03 18:26:25'),
+(189, 'check_ssl_certificate', '/usr/lib/nagios/plugins/check_ssl_certificate -H ''$HOSTADDRESS$'' -p ''$ARG1$'' ', 'check', NULL, NULL, 1, 1, 0, '2012-10-26 00:23:21', '2012-12-13 18:49:19'),
+(190, 'check_wireless_ssid', '/usr/lib/nagios/plugins/check_wireless_ssid  -d wlan0 -s ''$ARG1$''\r\n', 'check', 1, NULL, 1, 1, 0, '2012-10-26 00:57:49', '2012-10-26 01:39:12'),
+(193, 'check_website_response', '/usr/local/icinga/bin/check_website_response.sh -w 100 -c 200  -u ''$ARG1$'' ', 'check', NULL, NULL, 1, 1, 0, '2012-12-13 18:47:40', NULL),
+(194, 'check_dnsbl', '/usr/lib/nagios/plugins/check_dnsbl -H ''$HOSTADDRESS$'' -B bl.spamcop.net', 'check', 1, NULL, 1, 1, 0, '2013-02-25 21:50:47', NULL),
+(195, 'check_http_content', '$USER1$/check_http_content -U ''$ARG1$'' -m ''$ARG2$'' -x ''$ARG3$'' -t $ARG4$', 'check', 1, NULL, NULL, 1, 0, '2014-01-09 15:04:15', '2014-01-09 15:04:24'),
+(196, 'check_nrpe_sensor', '/usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ ', 'check', 1, 0, 1, 1, 0, '2012-09-03 11:52:49', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabulky `iciedit_contact`
+--
+
+CREATE TABLE IF NOT EXISTS `iciedit_contact` (
+`contact_id` int(10) unsigned NOT NULL,
+  `parent_id` int(11) unsigned DEFAULT NULL COMMENT 'Id nadřazeného kontaktu',
+  `contact_name` varchar(128) COLLATE utf8_czech_ci DEFAULT NULL,
+  `alias` varchar(255) COLLATE utf8_czech_ci DEFAULT NULL,
+  `contactgroups` varchar(255) COLLATE utf8_czech_ci DEFAULT NULL,
+  `host_notifications_enabled` tinyint(1) DEFAULT NULL,
+  `service_notifications_enabled` tinyint(1) DEFAULT NULL,
+  `host_notification_period` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
+  `service_notification_period` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
+  `host_notification_options` varchar(6) COLLATE utf8_czech_ci DEFAULT NULL,
+  `service_notification_options` varchar(7) COLLATE utf8_czech_ci DEFAULT NULL,
+  `host_notification_commands` varchar(255) COLLATE utf8_czech_ci DEFAULT NULL,
+  `service_notification_commands` varchar(255) COLLATE utf8_czech_ci DEFAULT NULL,
+  `email` varchar(128) COLLATE utf8_czech_ci DEFAULT NULL,
+  `pager` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
+  `address1` varchar(255) COLLATE utf8_czech_ci DEFAULT NULL,
+  `address2` varchar(80) COLLATE utf8_czech_ci DEFAULT NULL COMMENT 'Twitter ',
+  `can_submit_commands` tinyint(1) DEFAULT NULL,
+  `retain_status_information` tinyint(1) DEFAULT NULL,
+  `retain_nonstatus_information` tinyint(1) DEFAULT NULL,
+  `name` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
+  `register` tinyint(1) DEFAULT NULL,
+  `use` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
+  `generate` tinyint(1) DEFAULT NULL,
+  `user_id` int(10) unsigned DEFAULT NULL,
+  `public` tinyint(1) NOT NULL,
+  `DatCreate` datetime DEFAULT NULL,
+  `DatSave` datetime DEFAULT NULL
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci AUTO_INCREMENT=29 ;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabulky `iciedit_contactgroup`
+--
+
+CREATE TABLE IF NOT EXISTS `iciedit_contactgroup` (
+`contactgroup_id` int(10) unsigned NOT NULL,
+  `contactgroup_name` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
+  `alias` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
+  `members` varchar(255) COLLATE utf8_czech_ci DEFAULT NULL,
+  `contactgroup_members` varchar(255) COLLATE utf8_czech_ci DEFAULT NULL,
+  `generate` tinyint(1) DEFAULT NULL,
+  `user_id` int(10) unsigned DEFAULT NULL,
+  `DatCreate` datetime DEFAULT NULL,
+  `DatSave` datetime DEFAULT NULL
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci AUTO_INCREMENT=10 ;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabulky `iciedit_hostgroup`
+--
+
+CREATE TABLE IF NOT EXISTS `iciedit_hostgroup` (
+`hostgroup_id` int(10) unsigned NOT NULL,
+  `hostgroup_name` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
+  `alias` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
+  `members` varchar(600) COLLATE utf8_czech_ci DEFAULT NULL,
+  `hostgroup_members` varchar(255) COLLATE utf8_czech_ci DEFAULT NULL,
+  `notes` text COLLATE utf8_czech_ci,
+  `notes_url` varchar(255) COLLATE utf8_czech_ci DEFAULT NULL,
+  `action_url` varchar(255) COLLATE utf8_czech_ci DEFAULT NULL,
+  `generate` tinyint(1) DEFAULT NULL,
+  `user_id` int(10) unsigned DEFAULT NULL,
+  `DatCreate` datetime DEFAULT NULL,
+  `DatSave` datetime DEFAULT NULL
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci AUTO_INCREMENT=20 ;
+
+--
+-- Vypisuji data pro tabulku `iciedit_hostgroup`
+--
+
+INSERT INTO `iciedit_hostgroup` (`hostgroup_id`, `hostgroup_name`, `alias`, `members`, `hostgroup_members`, `notes`, `notes_url`, `action_url`, `generate`, `user_id`, `DatCreate`, `DatSave`) VALUES
+(12, NULL, NULL, 'a:1:{i:48;s:21:"james001.vpn.murka.cz";}', NULL, NULL, NULL, NULL, NULL, NULL, '2013-06-19 23:37:10', NULL),
+(17, NULL, NULL, 'a:1:{i:57;s:15:"www.madisson.cz";}', NULL, NULL, NULL, NULL, NULL, NULL, '2013-08-27 22:21:02', NULL),
+(15, NULL, NULL, 'a:1:{i:55;s:14:"192.168.222.30";}', NULL, NULL, NULL, NULL, NULL, NULL, '2013-08-14 12:24:54', NULL),
+(16, NULL, NULL, 'a:1:{i:56;s:14:"192.168.222.34";}', NULL, NULL, NULL, NULL, NULL, NULL, '2013-08-14 12:25:20', NULL),
+(18, NULL, NULL, 'a:1:{i:58;s:32:"171-232.customer.interconnect.cz";}', NULL, NULL, NULL, NULL, NULL, NULL, '2013-08-27 22:27:07', NULL),
+(19, NULL, NULL, 'a:1:{i:59;s:17:"james005-showpark";}', NULL, NULL, NULL, NULL, NULL, NULL, '2013-09-02 13:30:04', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabulky `iciedit_hosts`
+--
+
+CREATE TABLE IF NOT EXISTS `iciedit_hosts` (
+`host_id` int(10) unsigned NOT NULL,
+  `host_name` varchar(255) COLLATE utf8_czech_ci DEFAULT NULL,
+  `alias` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
+  `display_name` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
+  `address` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
+  `address6` varchar(128) COLLATE utf8_czech_ci DEFAULT NULL,
+  `parents` varchar(255) COLLATE utf8_czech_ci DEFAULT NULL,
+  `hostgroups` varchar(255) COLLATE utf8_czech_ci DEFAULT NULL,
+  `check_command` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
+  `initial_state` varchar(9) COLLATE utf8_czech_ci DEFAULT NULL,
+  `max_check_attempts` tinyint(3) DEFAULT NULL,
+  `check_interval` tinyint(3) DEFAULT NULL,
+  `retry_interval` tinyint(3) DEFAULT NULL,
+  `active_checks_enabled` tinyint(1) DEFAULT NULL,
+  `passive_checks_enabled` tinyint(1) DEFAULT NULL,
+  `check_period` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
+  `obsess_over_host` tinyint(1) DEFAULT NULL,
+  `check_freshness` tinyint(1) DEFAULT NULL,
+  `freshness_threshold` int(11) DEFAULT NULL,
+  `event_handler` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
+  `event_handler_enabled` tinyint(1) DEFAULT NULL,
+  `low_flap_threshold` int(11) DEFAULT NULL,
+  `high_flap_threshold` int(11) DEFAULT NULL,
+  `flap_detection_enabled` tinyint(1) DEFAULT NULL,
+  `flap_detection_options` varchar(3) COLLATE utf8_czech_ci DEFAULT NULL,
+  `failure_prediction_enabled` tinyint(1) DEFAULT NULL,
+  `process_perf_data` tinyint(1) DEFAULT NULL,
+  `retain_status_information` tinyint(1) DEFAULT NULL,
+  `retain_nonstatus_information` tinyint(1) DEFAULT NULL,
+  `contacts` varchar(255) COLLATE utf8_czech_ci DEFAULT NULL,
+  `contact_groups` varchar(255) COLLATE utf8_czech_ci DEFAULT NULL,
+  `notification_interval` tinyint(3) DEFAULT NULL,
+  `first_notification_delay` tinyint(3) DEFAULT NULL,
+  `notification_period` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
+  `notification_options` varchar(5) COLLATE utf8_czech_ci DEFAULT NULL,
+  `notifications_enabled` tinyint(1) DEFAULT NULL,
+  `stalking_options` varchar(3) COLLATE utf8_czech_ci DEFAULT NULL,
+  `notes` text COLLATE utf8_czech_ci,
+  `notes_url` varchar(128) COLLATE utf8_czech_ci DEFAULT NULL,
+  `action_url` varchar(128) COLLATE utf8_czech_ci DEFAULT NULL,
+  `icon_image` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
+  `icon_image_alt` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
+  `vrml_image` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
+  `statusmap_image` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
+  `2d_coords` varchar(32) COLLATE utf8_czech_ci DEFAULT NULL,
+  `3d_coords` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
+  `name` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
+  `register` tinyint(1) DEFAULT NULL,
+  `use` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
+  `public` tinyint(1) DEFAULT NULL,
+  `generate` tinyint(1) DEFAULT NULL,
+  `user_id` int(10) unsigned DEFAULT NULL,
+  `DatCreate` datetime DEFAULT NULL,
+  `DatSave` datetime DEFAULT NULL,
+  `platform` varchar(20) COLLATE utf8_czech_ci NOT NULL COMMENT 'Platforma'
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci AUTO_INCREMENT=71 ;
+
+--
+-- Vypisuji data pro tabulku `iciedit_hosts`
+--
+
+INSERT INTO `iciedit_hosts` (`host_id`, `host_name`, `alias`, `display_name`, `address`, `address6`, `parents`, `hostgroups`, `check_command`, `initial_state`, `max_check_attempts`, `check_interval`, `retry_interval`, `active_checks_enabled`, `passive_checks_enabled`, `check_period`, `obsess_over_host`, `check_freshness`, `freshness_threshold`, `event_handler`, `event_handler_enabled`, `low_flap_threshold`, `high_flap_threshold`, `flap_detection_enabled`, `flap_detection_options`, `failure_prediction_enabled`, `process_perf_data`, `retain_status_information`, `retain_nonstatus_information`, `contacts`, `contact_groups`, `notification_interval`, `first_notification_delay`, `notification_period`, `notification_options`, `notifications_enabled`, `stalking_options`, `notes`, `notes_url`, `action_url`, `icon_image`, `icon_image_alt`, `vrml_image`, `statusmap_image`, `2d_coords`, `3d_coords`, `name`, `register`, `use`, `public`, `generate`, `user_id`, `DatCreate`, `DatSave`, `platform`) VALUES
+(1, '', '', '', '', '', '', '', 'check-host-alive', '', 10, 0, 0, 1, 1, '', 0, 0, 0, '', 1, 0, 0, 1, '', 1, 1, 1, 1, '', 'a:1:{i:0;s:6:"admins";}', 0, 0, '24x7', 'dur', 1, '', '', '', '', '', '', '', '', '', '', 'generic-host', 0, '', 1, 1, 0, '2012-08-30 15:55:18', '2012-08-31 00:06:58', 'linux'),
+(3, '', '', '', '', '', '', '', 'check-host-alive', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'a:1:{i:0;s:6:"admins";}', NULL, NULL, 'workhours', NULL, NULL, '', '', '', '', '', '', '', '', '', '', 'linux-server', 0, 'generic-host', 1, 1, 0, '2012-08-30 15:55:18', '2012-08-31 00:07:59', 'linux'),
+(4, NULL, NULL, NULL, NULL, NULL, 'a:0:{}', 'a:0:{}', 'check-host-alive', NULL, 10, 5, 1, 1, 1, '24x7', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'a:0:{}', 'a:1:{i:0;s:6:"admins";}', 30, NULL, '24x7', 'd,r', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'windows-server', 0, 'generic-host', 1, 1, 0, '2012-08-30 15:55:18', '2013-02-01 13:23:51', 'linux'),
+(5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'check-host-alive', NULL, 10, 5, 1, 1, 1, '24x7', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'a:1:{i:0;s:6:"admins";}', 30, NULL, 'workhours', 'd,r', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'generic-printer', 0, 'generic-host', 1, 1, 0, '2012-08-30 15:55:18', NULL, 'linux'),
+(6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'check-host-alive', NULL, 10, 5, 1, 1, 1, '24x7', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'a:1:{i:0;s:6:"admins";}', 30, NULL, '24x7', 'd,r', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'generic-switch', 0, 'generic-host', 1, 1, 0, '2012-08-30 15:55:18', NULL, 'linux');
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabulky `iciedit_sensor`
+--
+
+CREATE TABLE IF NOT EXISTS `iciedit_sensor` (
+`sensor_id` int(9) unsigned NOT NULL,
+  `sensor_type` varchar(64) NOT NULL COMMENT 'nrpe/nscp',
+  `sensor_port` int(10) unsigned NOT NULL,
+  `sensor_host_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Přehled sensorů' AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabulky `iciedit_servicegroup`
+--
+
+CREATE TABLE IF NOT EXISTS `iciedit_servicegroup` (
+`servicegroup_id` int(10) unsigned NOT NULL,
+  `servicegroup_name` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
+  `alias` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
+  `members` text COLLATE utf8_czech_ci,
+  `servicegroup_members` varchar(255) COLLATE utf8_czech_ci DEFAULT NULL,
+  `notes` text COLLATE utf8_czech_ci,
+  `notes_url` varchar(128) COLLATE utf8_czech_ci DEFAULT NULL,
+  `action_url` varchar(128) COLLATE utf8_czech_ci DEFAULT NULL,
+  `generate` tinyint(1) DEFAULT NULL,
+  `user_id` int(10) unsigned DEFAULT NULL,
+  `DatCreate` datetime DEFAULT NULL,
+  `DatSave` datetime DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabulky `iciedit_services`
+--
+
+CREATE TABLE IF NOT EXISTS `iciedit_services` (
+`service_id` int(10) unsigned NOT NULL,
+  `display_name` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
+  `service_description` varchar(255) COLLATE utf8_czech_ci DEFAULT NULL,
+  `host_name` varchar(4084) COLLATE utf8_czech_ci DEFAULT NULL,
+  `hostgroup_name` varchar(255) COLLATE utf8_czech_ci DEFAULT NULL,
+  `servicegroups` varchar(255) COLLATE utf8_czech_ci DEFAULT NULL,
+  `is_volatile` varchar(7) COLLATE utf8_czech_ci DEFAULT NULL,
+  `check_command` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
+  `check_command-params` varchar(128) COLLATE utf8_czech_ci DEFAULT NULL,
+  `check_command-remote` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL COMMENT 'Vzdálený příkaz',
+  `tcp_port` int(9) unsigned DEFAULT NULL COMMENT 'sledovaná služba běží na portu',
+  `initial_state` varchar(4) COLLATE utf8_czech_ci DEFAULT NULL,
+  `max_check_attempts` tinyint(3) DEFAULT NULL,
+  `check_interval` tinyint(3) DEFAULT NULL,
+  `retry_interval` tinyint(3) DEFAULT NULL,
+  `active_checks_enabled` tinyint(1) DEFAULT NULL,
+  `passive_checks_enabled` tinyint(1) DEFAULT NULL,
+  `check_period` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
+  `parallelize_check` tinyint(1) DEFAULT NULL,
+  `normal_check_interval` int(11) DEFAULT NULL,
+  `retry_check_interval` int(11) DEFAULT NULL,
+  `obsess_over_service` tinyint(1) DEFAULT NULL,
+  `check_freshness` tinyint(1) DEFAULT NULL,
+  `freshness_threshold` int(11) DEFAULT NULL,
+  `event_handler` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
+  `event_handler_enabled` tinyint(1) DEFAULT NULL,
+  `low_flap_threshold` int(11) DEFAULT NULL,
+  `high_flap_threshold` int(11) DEFAULT NULL,
+  `flap_detection_enabled` tinyint(1) DEFAULT NULL,
+  `flap_detection_options` varchar(4) COLLATE utf8_czech_ci DEFAULT NULL,
+  `failure_prediction_enabled` tinyint(1) DEFAULT NULL,
+  `process_perf_data` tinyint(1) DEFAULT NULL,
+  `retain_status_information` tinyint(1) DEFAULT NULL,
+  `retain_nonstatus_information` tinyint(1) DEFAULT NULL,
+  `notification_interval` tinyint(3) DEFAULT NULL,
+  `first_notification_delay` tinyint(3) DEFAULT NULL,
+  `notification_period` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
+  `notification_options` varchar(6) COLLATE utf8_czech_ci DEFAULT NULL,
+  `notifications_enabled` tinyint(1) DEFAULT NULL,
+  `contacts` varchar(255) COLLATE utf8_czech_ci DEFAULT NULL,
+  `contact_groups` varchar(255) COLLATE utf8_czech_ci DEFAULT NULL,
+  `stalking_options` varchar(4) COLLATE utf8_czech_ci DEFAULT NULL,
+  `notes` varchar(255) COLLATE utf8_czech_ci DEFAULT NULL,
+  `notes_url` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
+  `action_url` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
+  `icon_image` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
+  `icon_image_alt` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
+  `name` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
+  `register` tinyint(1) DEFAULT NULL,
+  `use` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
+  `public` tinyint(1) DEFAULT NULL,
+  `generate` tinyint(1) DEFAULT NULL,
+  `user_id` int(10) unsigned DEFAULT NULL,
+  `DatCreate` datetime DEFAULT NULL,
+  `DatSave` datetime DEFAULT NULL,
+  `platform` varchar(20) COLLATE utf8_czech_ci NOT NULL COMMENT 'Platforma',
+  `configurator` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL COMMENT 'název konfiguračního pluginu',
+  `parent_id` int(10) unsigned DEFAULT NULL COMMENT 'ID rodičovské služby',
+  `autocfg` tinyint(4) NOT NULL COMMENT 'Je nutné službu po naklonování konfigurovat ručně ?',
+  `price` int(2) NOT NULL DEFAULT '0' COMMENT 'Měsíční cena za použití služby'
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci AUTO_INCREMENT=307 ;
+
+--
+-- Vypisuji data pro tabulku `iciedit_services`
+--
+
+INSERT INTO `iciedit_services` (`service_id`, `display_name`, `service_description`, `host_name`, `hostgroup_name`, `servicegroups`, `is_volatile`, `check_command`, `check_command-params`, `check_command-remote`, `tcp_port`, `initial_state`, `max_check_attempts`, `check_interval`, `retry_interval`, `active_checks_enabled`, `passive_checks_enabled`, `check_period`, `parallelize_check`, `normal_check_interval`, `retry_check_interval`, `obsess_over_service`, `check_freshness`, `freshness_threshold`, `event_handler`, `event_handler_enabled`, `low_flap_threshold`, `high_flap_threshold`, `flap_detection_enabled`, `flap_detection_options`, `failure_prediction_enabled`, `process_perf_data`, `retain_status_information`, `retain_nonstatus_information`, `notification_interval`, `first_notification_delay`, `notification_period`, `notification_options`, `notifications_enabled`, `contacts`, `contact_groups`, `stalking_options`, `notes`, `notes_url`, `action_url`, `icon_image`, `icon_image_alt`, `name`, `register`, `use`, `public`, `generate`, `user_id`, `DatCreate`, `DatSave`, `platform`, `configurator`, `parent_id`, `autocfg`, `price`) VALUES
+(1, NULL, 'ido2db Process', 'a:0:{}', 'a:0:{}', 'a:0:{}', NULL, 'check_local_ido2db', '1:1!1:3', NULL, NULL, NULL, 10, 1, 15, NULL, NULL, '24x7', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'a:0:{}', 'a:0:{}', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '2012-08-30 15:55:18', '2012-08-30 15:55:18', 'generic', '0', NULL, 1, 0),
+(2, NULL, 'Local Disk Space', 'a:0:{}', 'a:0:{}', 'a:0:{}', NULL, 'check_all_disks', '20%!10%', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'a:0:{}', 'a:0:{}', NULL, NULL, NULL, 'http://v.s.cz/IcingaEditor/service.php?service_id=2', NULL, NULL, NULL, 1, 'generic-service', NULL, 1, 0, '2012-08-30 15:55:18', '2012-08-30 15:55:18', 'generic', '0', NULL, 1, 0),
+(3, NULL, 'Current Users', 'a:0:{}', 'a:0:{}', 'a:0:{}', NULL, 'check_users', '20!50', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'a:0:{}', 'a:0:{}', NULL, NULL, NULL, 'http://v.s.cz/IcingaEditor/service.php?service_id=3', NULL, NULL, NULL, 1, 'generic-service', NULL, 1, 0, '2012-08-30 15:55:18', '2012-08-30 15:55:18', 'generic', '0', NULL, 1, 0),
+(49, NULL, 'remote Syslog Daemon', 'a:0:{}', 'a:0:{}', 'a:0:{}', NULL, 'check_nrpe', 'a', 'check_syslog', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'a:0:{}', 'a:0:{}', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'generic-service', 1, 1, 0, '2012-08-30 15:55:18', '2012-08-30 15:55:18', 'linux', '0', NULL, 1, 0),
+(5, NULL, 'local Current Load', 'a:0:{}', 'a:0:{}', 'a:0:{}', NULL, 'check_load', '5.0!4.0!3.0!10.0!6.0!4.0', NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, 'a:0:{}', 'a:0:{}', NULL, NULL, NULL, 'http://v.s.cz/IcingaEditor/service.php?service_id=5', NULL, NULL, NULL, 1, 'generic-service', NULL, 1, 0, '2012-08-30 15:55:18', '2012-08-30 15:55:18', 'generic', '0', NULL, 1, 0),
+(48, NULL, 'Remote James Sync', 'a:0:{}', 'a:0:{}', 'a:0:{}', NULL, 'check_nrpe', 'a', 'check_james_sync', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'a:0:{}', 'a:0:{}', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'generic-service', 1, 1, 0, '2012-08-30 15:55:18', '2012-08-30 15:55:18', 'linux', '0', NULL, 1, 0),
+(9, NULL, 'HTTP', 'a:1:{i:69;s:20:"servis-bar.spoj3.net";}', 'a:0:{}', 'a:0:{}', NULL, 'check_http', NULL, NULL, 80, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'a:0:{}', 'a:0:{}', NULL, NULL, NULL, 'http://v.s.cz/IcingaEditor/service.php?service_id=9', NULL, NULL, NULL, 1, 'generic-service', 1, 1, 0, '2012-08-30 15:55:18', '2012-08-30 15:55:18', 'generic', '0', NULL, 1, 0),
+(10, NULL, 'Lin Pevný disk', 'a:0:{}', 'a:0:{}', 'a:0:{}', NULL, 'check_nrpe', 'none', 'check_diskspace', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'a:0:{}', 'a:0:{}', NULL, NULL, NULL, 'http://v.s.cz/IcingaEditor/service.php?service_id=10', NULL, NULL, NULL, 1, 'generic-service', 1, 1, 0, '2012-08-30 15:55:18', '2012-08-30 15:55:18', 'linux', '0', NULL, 1, 0),
+(11, NULL, 'Volné místo /tmp', 'a:0:{}', 'a:0:{}', 'a:0:{}', NULL, 'check_nrpe', '20%!10%', 'check_diskspace_tmp', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'a:0:{}', 'a:0:{}', NULL, NULL, NULL, 'http://v.s.cz/IcingaEditor/service.php?service_id=11', NULL, NULL, NULL, 1, 'generic-service', 1, 1, 0, '2012-08-30 15:55:18', '2012-08-30 15:55:18', 'linux', '0', NULL, 1, 0),
+(13, NULL, 'MySQL', 'a:0:{}', 'a:0:{}', 'a:0:{}', NULL, 'check_nrpe', 'nagios!venkuvan', 'check_mysql_cmdlinecred', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'a:0:{}', 'a:0:{}', NULL, NULL, NULL, 'http://v.s.cz/IcingaEditor/service.php?service_id=13', NULL, NULL, NULL, 1, 'generic-service', 1, 1, 0, '2012-08-30 15:55:18', '2012-08-30 15:55:18', 'linux', '0', NULL, 1, 0),
+(14, NULL, 'Distro Upgrade', 'a:0:{}', 'a:0:{}', 'a:0:{}', NULL, 'check_nrpe', 'a', 'check_apt_distupgrade', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'a:0:{}', 'a:0:{}', NULL, NULL, NULL, 'http://v.s.cz/IcingaEditor/service.php?service_id=14', NULL, NULL, NULL, 1, 'generic-service', 1, 1, 0, '2012-08-30 15:55:18', '2012-08-30 15:55:18', 'linux', '0', NULL, 1, 0),
+(15, NULL, 'PING', 'a:1:{i:69;s:20:"servis-bar.spoj3.net";}', 'a:0:{}', 'a:0:{}', NULL, 'check_ping', '100.0,20%!500.0,60%', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'a:0:{}', 'a:0:{}', NULL, NULL, NULL, 'http://v.s.cz/IcingaEditor/service.php?service_id=15', NULL, NULL, NULL, 1, 'generic-service', 1, 1, 0, '2012-08-30 15:55:18', '2012-08-30 15:55:18', 'generic', 'ping', NULL, 1, 0),
+(16, NULL, 'NSClient++ Version', 'a:0:{}', 'a:0:{}', 'a:0:{}', NULL, 'check_nscp', NULL, 'CLIENTVERSION', 12489, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, 'a:0:{}', 'a:0:{}', NULL, NULL, NULL, 'http://v.s.cz/IcingaEditor/service.php?service_id=16', NULL, NULL, NULL, 1, 'generic-service', 1, 1, 0, '2012-08-30 15:55:18', '2012-08-30 15:55:18', 'windows', '0', NULL, 1, 0),
+(17, NULL, 'Win Užití paměti', 'a:0:{}', 'a:0:{}', 'a:0:{}', NULL, 'check_nscp', ' -w 80 -c 90', 'MEMUSE', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'a:0:{}', 'a:0:{}', NULL, NULL, NULL, 'http://v.s.cz/IcingaEditor/service.php?service_id=17', NULL, NULL, NULL, 1, 'generic-service', 1, 1, 0, '2012-08-30 15:55:18', '2012-08-30 15:55:18', 'windows', '0', NULL, 1, 0),
+(18, NULL, 'Win Uptime', 'a:0:{}', 'a:0:{}', 'a:0:{}', NULL, 'check_nscp', 'UPTIME', NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, 'a:0:{}', 'a:0:{}', NULL, NULL, NULL, 'http://v.s.cz/IcingaEditor/service.php?service_id=18', NULL, NULL, NULL, 1, 'generic-service', 1, 1, 0, '2012-08-30 15:55:18', '2012-08-30 15:55:18', 'windows', '0', NULL, 1, 0),
+(19, NULL, 'C: System Volné místo', 'a:0:{}', 'a:0:{}', 'a:0:{}', NULL, 'check_nt_disk', 'c!80!90', NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, 'a:0:{}', 'a:0:{}', NULL, NULL, NULL, 'http://v.s.cz/IcingaEditor/service.php?service_id=19', NULL, NULL, NULL, 1, 'generic-service', 1, 1, 0, '2012-08-30 15:55:18', '2012-08-30 15:55:18', 'windows', '0', NULL, 1, 0),
+(20, NULL, 'Win Zátízení procesoru', 'a:0:{}', 'a:0:{}', 'a:0:{}', NULL, 'check_nt_cpuload', '5,80,90', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'a:0:{}', 'a:0:{}', NULL, NULL, NULL, 'http://v.s.cz/IcingaEditor/service.php?service_id=20', NULL, NULL, NULL, 1, 'generic-service', 1, 1, 0, '2012-08-30 15:55:18', '2012-08-30 15:55:18', 'windows', '0', NULL, 1, 0),
+(21, NULL, 'SSH', 'a:0:{}', 'a:0:{}', 'a:0:{}', NULL, 'check_ssh', NULL, NULL, 22, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, 'a:0:{}', 'a:0:{}', NULL, NULL, NULL, 'http://v.s.cz/IcingaEditor/service.php?service_id=21', NULL, NULL, NULL, 1, 'generic-service', 1, 1, 0, '2012-08-30 15:55:18', '2012-08-30 15:55:18', 'generic', '0', NULL, 1, 0),
+(22, NULL, 'SMTP', 'a:0:{}', 'a:0:{}', 'a:0:{}', NULL, 'check_smtp', NULL, NULL, 25, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, 'a:0:{}', 'a:0:{}', NULL, NULL, NULL, 'http://v.s.cz/IcingaEditor/service.php?service_id=22', NULL, NULL, NULL, 1, 'generic-service', 1, 1, 0, '2012-08-30 15:55:18', '2012-08-30 15:55:18', 'generic', '0', NULL, 1, 0),
+(27, NULL, 'POP3', 'a:0:{}', 'a:0:{}', 'a:0:{}', NULL, 'check_pop', NULL, NULL, 110, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, 'a:0:{}', 'a:0:{}', NULL, NULL, NULL, 'http://v.s.cz/IcingaEditor/service.php?service_id=27', NULL, NULL, NULL, 1, 'generic-service', 1, 1, 0, '2012-08-30 15:55:18', '2012-08-30 15:55:18', 'generic', '0', NULL, 1, 0),
+(28, NULL, 'IMAP', 'a:0:{}', 'a:0:{}', 'a:0:{}', NULL, 'check_imap', NULL, NULL, 143, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, 'a:0:{}', 'a:0:{}', NULL, NULL, NULL, 'http://v.s.cz/IcingaEditor/service.php?service_id=28', NULL, NULL, NULL, 1, 'generic-service', 1, 1, 0, '2012-08-30 15:55:18', '2012-08-30 15:55:18', 'generic', '0', NULL, 1, 0),
+(29, NULL, 'FTP', 'a:0:{}', 'a:0:{}', 'a:0:{}', NULL, 'check_ftp', NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, 'a:0:{}', 'a:0:{}', NULL, NULL, NULL, 'http://v.s.cz/IcingaEditor/service.php?service_id=29', NULL, NULL, NULL, 1, 'generic-service', 1, 1, 0, '2012-08-30 15:55:18', '2012-08-30 15:55:18', 'generic', '0', NULL, 1, 0),
+(30, NULL, 'IMAP SSL', 'a:0:{}', 'a:0:{}', 'a:0:{}', '0', 'check_imaps', NULL, NULL, 993, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'a:0:{}', 'a:0:{}', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'generic-service', 1, 1, 0, '2012-10-02 19:23:09', '2012-10-02 19:24:18', 'generic', '0', NULL, 1, 0),
+(31, 'PgSQL', 'PostgeSQL', 'a:0:{}', 'a:0:{}', 'a:0:{}', '0', 'check_nrpe', ' -l nagios ', 'check_pgsql', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'a:0:{}', 'a:0:{}', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'generic-service', 1, 1, 0, '2012-10-06 01:48:08', '2012-10-06 01:48:13', 'linux', '0', NULL, 1, 0),
+(34, 'check_mailq', 'Fronta pošty', 'a:0:{}', 'a:0:{}', 'a:0:{}', NULL, 'check_nrpe', 'a', 'check_mailq', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'a:0:{}', 'a:0:{}', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'generic-service', 1, 1, 0, '2012-08-30 15:55:18', '2012-08-30 15:55:18', 'linux', '0', NULL, 1, 0),
+(36, NULL, 'Sensors Temp CPU0', 'a:0:{}', 'a:0:{}', 'a:0:{}', NULL, 'check_nrpe', 'a', 'check_core0_temp', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'a:0:{}', 'a:0:{}', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'generic-service', 1, 1, 0, '2012-08-30 15:55:18', '2012-08-30 15:55:18', 'linux', '0', NULL, 1, 0),
+(35, 'spamcop', 'spamcop check of ip', 'a:0:{}', 'a:0:{}', 'a:0:{}', NULL, 'check_dnsbl', NULL, NULL, NULL, 'o', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'a:0:{}', 'a:0:{}', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'generic-service', 1, 1, 0, '2013-02-25 21:54:11', '2013-02-25 21:54:51', 'generic', '0', NULL, 1, 0),
+(38, NULL, 'Sensors Temp CPU1', 'a:0:{}', 'a:0:{}', 'a:0:{}', NULL, 'check_nrpe', 'a', 'check_core1_temp', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'a:0:{}', 'a:0:{}', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'generic-service', 1, 1, 0, '2012-08-30 15:55:18', '2012-08-30 15:55:18', 'linux', '0', NULL, 1, 0),
+(50, NULL, 'Remote FS Virus check', 'a:0:{}', 'a:0:{}', 'a:0:{}', NULL, 'check_nrpe', 'a', 'check_clamscan', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'a:0:{}', 'a:0:{}', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'generic-service', 1, 1, 0, '2012-08-30 15:55:18', '2012-08-30 15:55:18', 'linux', '0', NULL, 1, 0),
+(37, NULL, 'Sensors Sys Temperature', 'a:0:{}', 'a:0:{}', 'a:0:{}', NULL, 'check_nrpe', 'a', 'check_SYSTIN', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'a:0:{}', 'a:0:{}', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'generic-service', 1, 1, 0, '2012-08-30 15:55:18', '2012-08-30 15:55:18', 'linux', '0', NULL, 1, 0),
+(39, NULL, 'eth0 link', 'a:0:{}', 'a:0:{}', 'a:0:{}', NULL, 'check_nrpe', 'eth0', 'check_network_link', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'a:0:{}', 'a:0:{}', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'generic-service', 1, 1, 0, '2012-08-30 15:55:18', '2012-08-30 15:55:18', 'linux', '0', NULL, 1, 0),
+(40, NULL, 'eth1 link', 'a:0:{}', 'a:0:{}', 'a:0:{}', NULL, 'check_nrpe', 'eth1', 'check_network_link', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'a:0:{}', 'a:0:{}', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'generic-service', 1, 1, 0, '2012-08-30 15:55:18', '2012-08-30 15:55:18', 'linux', '0', NULL, 1, 0),
+(41, NULL, 'James Daemon', 'a:0:{}', 'a:0:{}', 'a:0:{}', NULL, 'check_nrpe', 'a', 'check_james', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'a:0:{}', 'a:0:{}', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'generic-service', 1, 1, 0, '2012-08-30 15:55:18', '2012-08-30 15:55:18', 'linux', '0', NULL, 1, 0),
+(43, NULL, 'Remote BackupPC', 'a:0:{}', 'a:0:{}', 'a:0:{}', NULL, 'check_nrpe', 'a', 'check_backuppc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'a:0:{}', 'a:0:{}', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'generic-service', 1, 1, 0, '2012-08-30 15:55:18', '2012-08-30 15:55:18', 'linux', '0', NULL, 1, 0),
+(42, NULL, 'Remote Samba', 'a:0:{}', 'a:0:{}', 'a:0:{}', NULL, 'check_nrpe', 'a', 'check_samba', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'a:0:{}', 'a:0:{}', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'generic-service', 1, 1, 0, '2012-08-30 15:55:18', '2012-08-30 15:55:18', 'linux', '0', NULL, 1, 0),
+(44, NULL, 'Remote Load', 'a:0:{}', 'a:0:{}', 'a:0:{}', NULL, 'check_nrpe', 'a', 'check_load', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'a:0:{}', 'a:0:{}', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'generic-service', 1, 1, 0, '2012-08-30 15:55:18', '2012-08-30 15:55:18', 'linux', '0', NULL, 1, 0),
+(45, NULL, 'Remote Memory', 'a:0:{}', 'a:0:{}', 'a:0:{}', NULL, 'check_nrpe', 'a', 'check_memory', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'a:0:{}', 'a:0:{}', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'generic-service', 1, 1, 0, '2012-08-30 15:55:18', '2012-08-30 15:55:18', 'linux', '0', NULL, 1, 0),
+(46, NULL, 'Remote Iptables', 'a:0:{}', 'a:0:{}', 'a:0:{}', NULL, 'check_nrpe', 'a', 'check_iptables', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'a:0:{}', 'a:0:{}', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'generic-service', 1, 1, 0, '2012-08-30 15:55:18', '2012-08-30 15:55:18', 'linux', '0', NULL, 1, 0),
+(47, NULL, 'Remote OpenVPN', 'a:0:{}', 'a:0:{}', 'a:0:{}', NULL, 'check_nrpe', 'a', 'check_openvpn', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'a:0:{}', 'a:0:{}', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'generic-service', 1, 1, 0, '2012-08-30 15:55:18', '2012-08-30 15:55:18', 'linux', '0', NULL, 1, 0),
+(6, NULL, 'GSM Connected', 'a:0:{}', 'a:0:{}', 'a:0:{}', '0', 'check_file_exists', '/dev/ttyACM0', NULL, NULL, NULL, 10, 10, NULL, NULL, NULL, '24x7', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, 'a:0:{}', 'a:0:{}', NULL, NULL, NULL, 'http://v.s.cz/IcingaEditor/service.php?service_id=6', NULL, NULL, NULL, 1, 'generic-service', 0, 1, 0, '2012-08-30 15:55:18', '2012-08-30 15:55:18', 'generic', '0', NULL, 1, 0),
+(51, 'Otestuj webový obsah', 'Obsah webu', 'a:0:{}', 'a:0:{}', 'a:0:{}', '0', 'check_http_content', 'http://vitex.hippy.cz/!Seznam rubrik!Call Stack', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '24x7', 'wucrs', 1, 'a:0:{}', 'a:0:{}', NULL, NULL, NULL, 'http://v.s.cz/IcingaEditor/service.php?service_id=9', NULL, NULL, NULL, 1, 'generic-service', 1, 1, 0, '2012-08-30 15:55:18', '2012-08-30 15:55:18', 'generic', 'web_content', NULL, 0, 0),
+(303, 'NRPE', 'Vzdálený senzor UNIX', 'a:0:{}', 'a:0:{}', 'a:0:{}', '0', 'check_nrpe_sensor', NULL, NULL, 5666, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'a:0:{}', 'a:0:{}', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'generic-service', 1, 1, 0, '2012-08-30 15:55:18', '2012-08-30 15:55:18', 'linux', '0', NULL, 1, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabulky `iciedit_timeperiods`
+--
+
+CREATE TABLE IF NOT EXISTS `iciedit_timeperiods` (
+`timeperiod_id` int(10) unsigned NOT NULL,
+  `timeperiod_name` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
+  `alias` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
+  `periods` text COLLATE utf8_czech_ci,
+  `public` tinyint(1) DEFAULT NULL,
+  `generate` tinyint(1) DEFAULT NULL,
+  `user_id` int(10) unsigned DEFAULT NULL,
+  `DatCreate` datetime DEFAULT NULL,
+  `DatSave` datetime DEFAULT NULL
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci AUTO_INCREMENT=5 ;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabulky `sms`
+--
+
+CREATE TABLE IF NOT EXISTS `sms` (
+`id` int(10) unsigned NOT NULL COMMENT 'pořadí',
+  `sender` varchar(32) COLLATE utf8_czech_ci NOT NULL COMMENT 'odesílatel',
+  `reciver` varchar(32) COLLATE utf8_czech_ci NOT NULL COMMENT 'příjemce',
+  `message` varchar(255) COLLATE utf8_czech_ci NOT NULL COMMENT 'zpráva',
+  `date` datetime NOT NULL COMMENT 'čas'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabulky `user`
+--
+
+CREATE TABLE IF NOT EXISTS `user` (
+`id` int(11) NOT NULL,
+  `twitter_id` int(9) unsigned DEFAULT NULL,
+  `settings` longtext COLLATE utf8_czech_ci COMMENT 'Serializovana uzivatelska nastaveni',
+  `email` varchar(128) COLLATE utf8_czech_ci NOT NULL COMMENT 'Email',
+  `firstname` varchar(32) COLLATE utf8_czech_ci DEFAULT NULL,
+  `lastname` varchar(32) COLLATE utf8_czech_ci DEFAULT NULL,
+  `password` varchar(40) COLLATE utf8_czech_ci NOT NULL,
+  `login` varchar(32) COLLATE utf8_czech_ci NOT NULL COMMENT 'Login uzivatele',
+  `parent` int(10) unsigned DEFAULT NULL COMMENT 'predek klienta',
+  `partner` varchar(32) COLLATE utf8_czech_ci DEFAULT NULL COMMENT 'Kód partnera: ats apod.',
+  `DatCreate` datetime NOT NULL COMMENT 'Vytvření uživatele',
+  `DatSave` datetime DEFAULT NULL COMMENT 'poslední modifikace uživatele',
+  `last_modifier_id` int(10) unsigned DEFAULT NULL COMMENT 'id toho kdo záznam naposledy modifikoval'
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci AUTO_INCREMENT=17 ;
+
+--
+-- Vypisuji data pro tabulku `user`
+--
+
+INSERT INTO `user` (`id`, `twitter_id`, `settings`, `email`, `firstname`, `lastname`, `password`, `login`, `parent`, `partner`, `DatCreate`, `DatSave`, `last_modifier_id`) VALUES
+(0, NULL, NULL, 'monitoring@vitexsoftware.cz', NULL, NULL, '7d255aaee540e419d0a745cb5cbb173a:56', '_icinga', 1, '1', '2014-01-13 20:25:45', '2014-01-13 23:32:22', 1);
+
+--
+-- Klíče pro exportované tabulky
+--
+
+--
+-- Klíče pro tabulku `iciedit_command`
+--
+ALTER TABLE `iciedit_command`
+ ADD PRIMARY KEY (`command_id`), ADD KEY `user_id` (`user_id`);
+
+--
+-- Klíče pro tabulku `iciedit_contact`
+--
+ALTER TABLE `iciedit_contact`
+ ADD PRIMARY KEY (`contact_id`), ADD KEY `user_id` (`user_id`), ADD KEY `parent_id` (`parent_id`);
+
+--
+-- Klíče pro tabulku `iciedit_contactgroup`
+--
+ALTER TABLE `iciedit_contactgroup`
+ ADD PRIMARY KEY (`contactgroup_id`), ADD KEY `user_id` (`user_id`);
+
+--
+-- Klíče pro tabulku `iciedit_hostgroup`
+--
+ALTER TABLE `iciedit_hostgroup`
+ ADD PRIMARY KEY (`hostgroup_id`), ADD KEY `user_id` (`user_id`);
+
+--
+-- Klíče pro tabulku `iciedit_hosts`
+--
+ALTER TABLE `iciedit_hosts`
+ ADD PRIMARY KEY (`host_id`), ADD KEY `user_id` (`user_id`), ADD KEY `platform` (`platform`);
+
+--
+-- Klíče pro tabulku `iciedit_sensor`
+--
+ALTER TABLE `iciedit_sensor`
+ ADD PRIMARY KEY (`sensor_id`);
+
+--
+-- Klíče pro tabulku `iciedit_servicegroup`
+--
+ALTER TABLE `iciedit_servicegroup`
+ ADD PRIMARY KEY (`servicegroup_id`), ADD KEY `user_id` (`user_id`);
+
+--
+-- Klíče pro tabulku `iciedit_services`
+--
+ALTER TABLE `iciedit_services`
+ ADD PRIMARY KEY (`service_id`), ADD KEY `user_id` (`user_id`), ADD KEY `tcp_port` (`tcp_port`), ADD KEY `platform` (`platform`);
+
+--
+-- Klíče pro tabulku `iciedit_timeperiods`
+--
+ALTER TABLE `iciedit_timeperiods`
+ ADD PRIMARY KEY (`timeperiod_id`), ADD KEY `user_id` (`user_id`);
+
+--
+-- Klíče pro tabulku `sms`
+--
+ALTER TABLE `sms`
+ ADD PRIMARY KEY (`id`), ADD KEY `sender` (`sender`,`reciver`);
+
+--
+-- Klíče pro tabulku `user`
+--
+ALTER TABLE `user`
+ ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `customers_username` (`login`);
+
+--
+-- AUTO_INCREMENT pro tabulky
+--
+
+--
+-- AUTO_INCREMENT pro tabulku `iciedit_command`
+--
+ALTER TABLE `iciedit_command`
+MODIFY `command_id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=197;
+--
+-- AUTO_INCREMENT pro tabulku `iciedit_contact`
+--
+ALTER TABLE `iciedit_contact`
+MODIFY `contact_id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=29;
+--
+-- AUTO_INCREMENT pro tabulku `iciedit_contactgroup`
+--
+ALTER TABLE `iciedit_contactgroup`
+MODIFY `contactgroup_id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=10;
+--
+-- AUTO_INCREMENT pro tabulku `iciedit_hostgroup`
+--
+ALTER TABLE `iciedit_hostgroup`
+MODIFY `hostgroup_id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=20;
+--
+-- AUTO_INCREMENT pro tabulku `iciedit_hosts`
+--
+ALTER TABLE `iciedit_hosts`
+MODIFY `host_id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=71;
+--
+-- AUTO_INCREMENT pro tabulku `iciedit_sensor`
+--
+ALTER TABLE `iciedit_sensor`
+MODIFY `sensor_id` int(9) unsigned NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT pro tabulku `iciedit_servicegroup`
+--
+ALTER TABLE `iciedit_servicegroup`
+MODIFY `servicegroup_id` int(10) unsigned NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT pro tabulku `iciedit_services`
+--
+ALTER TABLE `iciedit_services`
+MODIFY `service_id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=307;
+--
+-- AUTO_INCREMENT pro tabulku `iciedit_timeperiods`
+--
+ALTER TABLE `iciedit_timeperiods`
+MODIFY `timeperiod_id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+--
+-- AUTO_INCREMENT pro tabulku `sms`
+--
+ALTER TABLE `sms`
+MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'pořadí';
+--
+-- AUTO_INCREMENT pro tabulku `user`
+--
+ALTER TABLE `user`
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=17;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

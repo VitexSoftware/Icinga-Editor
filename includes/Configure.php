@@ -55,4 +55,4 @@ define('SEND_INFO_TO','info@vitexsoftware.cz');
 /**
  * Veřejná IP nagiosu
  */
-define('PUBIP','77.87.241.140');
+define('ICINGA_SERVER_IP','77.87.241.140');

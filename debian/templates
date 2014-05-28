@@ -1,0 +1,10 @@
+Template: icinga-editor/SEND_MAILS_FROM
+Type: string
+Description: mail address of icinga admin 
+ Or simply press enter to use auto genrated name
+
+Template: icinga-editor/ICINGA_SERVER_IP
+Type: string
+Description: IP address of ICINGA server
+ Or simply press enter to use auto genrated value
+

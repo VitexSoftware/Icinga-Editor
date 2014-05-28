@@ -30,7 +30,7 @@ $oPage->addItem(new IEPageTop(_('Sensor')));
 $oPage->columnI->addItem(new EaseHtmlH1Tag(_('NRPE Senzor')));
 
 $oPage->columnI->addItem( new EaseHtmlDivTag(null,'sudo aptitude -y install nagios-nrpe-server' ) );
-$oPage->columnI->addItem( new EaseHtmlDivTag(null,'sudo echo "allowed_hosts='.PUBIP.'" >> /etc/nagios/nrpe_local.cfg' ) );
+$oPage->columnI->addItem( new EaseHtmlDivTag(null,'sudo echo "allowed_hosts='.ICINGA_SERVER_IP.'" >> /etc/nagios/nrpe_local.cfg' ) );
 $oPage->columnI->addItem( new EaseHtmlDivTag(null,'sudo echo "dont_blame_nrpe=1" >> /etc/nagios/nrpe_local.cfg' ) );
 $oPage->columnI->addItem( new EaseHtmlDivTag(null,'sudo service nagios-nrpe-server reload' ) );
 
