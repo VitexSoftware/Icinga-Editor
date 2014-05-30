@@ -8,7 +8,8 @@
             <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/classes/IECfgEditor.php</file>
         </group>
         <group>
-            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/changepassword.php</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/sensor.php</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/classes/IEWebPage.php</file>
         </group>
     </open-files>
 </project-private>

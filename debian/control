@@ -6,8 +6,8 @@ Uploaders: Vitex <vitex@hippy.cz>
 Priority: optional
 Homepage: http://vitexsoftware.cz/monitoring.php
 
-Package: ease-framework
-Depends: ${misc:Depends},libjs-twitter-bootstrap, ease-framework , php-mail, php-curl, icinga
+Package: icinga-editor
+Depends: ${misc:Depends},libjs-twitter-bootstrap, ease-framework , php-mail, php5-curl, icinga
 Architecture: all
 Section: web
 Priority: optional

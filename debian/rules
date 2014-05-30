@@ -17,7 +17,7 @@ clean:
 	dh_testroot
 	rm -f build-stamp
 	dh_clean 
-	debconf-updatepo --podir=app/lang
+#	debconf-updatepo --podir=app/lang
 
 install: build
 	dh_testdir

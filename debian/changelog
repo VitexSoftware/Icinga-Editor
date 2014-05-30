@@ -1,5 +1,5 @@
-icinga edito (0.4) UNRELEASED; urgency=medium
+icinga-editor (0.6-1) UNRELEASED; urgency=medium
 
-  * Doplněny informace o Nagstamonu
+  * Initial release. (Closes: #XXXXXX)
 
- -- Vítězslav Vitex Dvořák <vitex@hippy.cz>  Fri, 21 Feb 2014 05:20:03 +0100
+ -- Vítězslav Vitex Dvořák <vitex@hippy.cz>  Wed, 28 May 2014 22:28:16 +0200

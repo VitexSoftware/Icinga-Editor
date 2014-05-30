@@ -22,10 +22,12 @@ if ($oPage->isPosted()) {
         $customerParent = $oUser->getUserID();
     }
     $login = addslashes($_POST['login']);
-    if (isset($_POST['password']))
+    if (isset($_POST['password'])) {
         $password = addslashes($_POST['password']);
-    if (isset($_POST['confirmation']))
+    }
+    if (isset($_POST['confirmation'])) {
         $confirmation = addslashes($_POST['confirmation']);
+    }
 
     $error = false;
 
@@ -73,11 +75,17 @@ if ($oPage->isPosted()) {
 
         $userID = $newOUser->insertToMySQL();
 
-        if ($userID) {
+        if (!is_null($userID)) {
             $newOUser->setMyKey($userID);
             $newOUser->passwordChange($password);
             
-            $oUser->addStatusMessage(_('Uživatelský účet byl vytvořen'), 'success');
+            if($userID == 0){
+                $newOUser->setSettingValue('admin', TRUE);
+                $oUser->addStatusMessage(_('Administrátirský účet byl vytvořen'), 'success');
+                $newOUser->saveToMySQL();
+            } else {
+                $oUser->addStatusMessage(_('Uživatelský účet byl vytvořen'), 'success');
+            }
             $newOUser->loginSuccess();
 
             $email = $oPage->addItem(new EaseMail($newOUser->getDataValue('email'), _('Potvrzení registrace')));
@@ -146,7 +154,7 @@ if ($oPage->isPosted()) {
             $oUser->addStatusMessage(_('Zápis do databáze se nezdařil!'), 'error');
             $email = $oPage->addItem(new EaseMail(constant('SEND_ORDERS_TO'), 'Registrace uzivatel se nezdařila'));
             $email->addItem(new EaseHtmlDivTag('Fegistrace', $oPage->PrintPre($CustomerData)));
-            $email->Send();
+            $email->send();
         }
     }
 }
