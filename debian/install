@@ -1,7 +1,12 @@
 *.php		usr/share/icinga-editor
 *.ico		usr/share/icinga-editor
 css/*.css		usr/share/icinga-editor/css
-
+js/*.js		usr/share/icinga-editor/js
+img/*		usr/share/icinga-editor/img
+includes/*.php		usr/share/icinga-editor/includes
+clases/*.php		usr/share/icinga-editor/clases
+modules/*.php		usr/share/icinga-editor/modules
+    
 debian/sql/install/*    usr/share/dbconfig-common/data/icinga-editor/install
 
 debian/conf/icinga-editor.conf	etc/apache2/conf-available
