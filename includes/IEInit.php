@@ -7,7 +7,6 @@
  * @copyright Vitex@hippy.cz (G) 2010
  */
 require_once 'includes/Configure.php';
-set_include_path('classes' . PATH_SEPARATOR . get_include_path());
 
 $language = "cs_CZ";
 $codeset = "cs_CZ.UTF-8";

@@ -58,6 +58,9 @@ if [ "$1" = "configure" ]; then
 
 	db_version 2.0
 
+        mkdir -p /usr/share/icinga-editor/log
+        mkdir -p /usr/share/icinga-editor/temp
+
 	chown -R www-data:www-data    /usr/share/icinga-editor/log
 	chown -R www-data:www-data    /usr/share/icinga-editor/temp
 
