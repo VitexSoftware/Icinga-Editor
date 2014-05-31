@@ -76,6 +76,14 @@ if [ "$1" = "configure" ]; then
             fi
         fi
 
+        if [ -f /etc/init.d/avahi ] ; then
+            if [ -x /usr/sbin/invoke-rc.d ]; then
+                invoke-rc.d avahi reload 3>/dev/null || true
+            else
+                /etc/init.d/avahi reload 3>/dev/null || true
+            fi
+        fi
+
 fi
 
 #DEBHELPER#
