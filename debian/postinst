@@ -58,7 +58,8 @@ if [ ! -f $IECFG ] ; then
     echo "define('ICINGA_SERVER_IP','$ICINGA_SERVER_IP');" >> $IECFG 
 
     #rm -f /etc/icinga-editor/config-db.sh
-
+    ln -s   /usr/share/icinga/htdocs/images/logos /usr/share/icinga-editor/logos
+    
 
     if [ "$1" = "configure" ]; then
 
