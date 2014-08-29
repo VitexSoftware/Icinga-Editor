@@ -2,7 +2,7 @@
 
 /**
  * Icinga Editor - titulní strana
- * 
+ *
  * @package    IcingaEditor
  * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
@@ -17,23 +17,18 @@ require_once 'classes/IETimeperiod.php';
 require_once 'classes/IECommand.php';
 require_once 'classes/IEServicegroup.php';
 
-
 $oPage->onlyForLogged();
 
 $File = $oPage->getRequestValue('file');
 $Line = $oPage->getRequestValue('line');
 
-
 $oPage->addItem(new IEPageTop(_('Icinga Editor')));
 
 $Lines = file($File);
-foreach ($Lines as $Line){
+foreach ($Lines as $Line) {
     $oPage->addItem($Line.'<br>');
 }
 
-
 $oPage->addItem(new IEPageBottom());
 
-
 $oPage->draw();
-?>

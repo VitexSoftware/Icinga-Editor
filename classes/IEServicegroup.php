@@ -2,7 +2,7 @@
 
 /**
  * Konfigurace Skupin služeb
- * 
+ *
  * @package    IcingaEditor
  * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
@@ -20,7 +20,7 @@ class IEServicegroup extends IECfg
 
     /**
      * Dát tyto položky k dispozici i ostatním ?
-     * @var boolean 
+     * @var boolean
      */
     public $publicRecords = false;
     public $useKeywords = array(
@@ -67,11 +67,8 @@ class IEServicegroup extends IECfg
     );
     /**
      * URL dokumentace objektu
-     * @var string 
+     * @var string
      */
     public $documentationLink = 'http://docs.icinga.org/latest/en/objectdefinitions.html#objectdefinitions-servicegroup';
 
-
 }
-
-?>

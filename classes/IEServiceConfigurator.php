@@ -43,25 +43,24 @@ class IEServiceConfigurator extends EaseHtmlDivTag
     {
         parent::__construct();
         $this->tweaker = &$tweaker;
-        if(!$this->tweaker->service->getDataValue('DatSave')){
-            if($this->init()){
+        if (!$this->tweaker->service->getDataValue('DatSave')) {
+            if ($this->init()) {
                 $this->tweaker->service->saveToMySQL();
                 EaseShared::webPage()->addStatusMessage(_('Prosím potvrďte nastavení služby'));
             }
         }
-        
+
     }
 
     /**
      * Výchozí konfigurace služby těsně po naklonování
-     * 
+     *
      * @return boolean
      */
-    public function init(){
+    public function init()
+    {
         return FALSE;
     }
-
-    
 
     /**
      * Funkce pro vykreslení formuláře

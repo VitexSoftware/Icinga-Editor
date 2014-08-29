@@ -33,7 +33,7 @@ if (!isset($_SESSION['User']) || !is_object($_SESSION['User'])) {
 $oUser = & EaseShared::user();
 $oUser->SettingsColumn = 'settings';
 
-require_once 'IEWebPage.php';
+require_once 'classes/IEWebPage.php';
 
 /* @var $oPage IEWebPage */
 $oPage = new IEWebPage();

@@ -2,7 +2,7 @@
 
 /**
  * Icinga Editor - přehled userů
- * 
+ *
  * @package    IcingaEditor
  * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
@@ -24,7 +24,7 @@ if ($users) {
     $cntList = new EaseHtmlTableTag(null, array('class' => 'table'));
     $cid = 1;
     foreach ($users as $cId => $cInfo) {
-        if(!$cId){
+        if (!$cId) {
             continue;
         }
         $lastRow = $cntList->addRowColumns(array($cid++, new EaseUser((int) $cId),
@@ -40,6 +40,4 @@ $oPage->columnIII->addItem(new EaseTWBLinkButton('createaccount.php', _('Založi
 
 $oPage->addItem(new IEPageBottom());
 
-
 $oPage->draw();
-

@@ -18,11 +18,11 @@ $hostgroup = new IEHostgroup($oPage->getRequestValue('hostgroup_id', 'int'));
 
 if ($oPage->isPosted()) {
     $hostgroup->takeData($_POST);
-    
-    if(!$hostgroup->getId()){
+
+    if (!$hostgroup->getId()) {
         $hostgroup->setDataValue('members', array());
     }
-    
+
     $hostgroupID = $hostgroup->saveToMySQL();
     if (is_null($hostgroupID)) {
         $oUser->addStatusMessage(_('Skupina hostů nebyla uložena'), 'warning');

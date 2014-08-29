@@ -2,7 +2,7 @@
 
 /**
  * Icinga Editor - titulní strana
- * 
+ *
  * @package    IcingaEditor
  * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
@@ -17,12 +17,9 @@ require_once 'classes/IETimeperiod.php';
 require_once 'classes/IECommand.php';
 require_once 'classes/IEServicegroup.php';
 
-
 $oPage->onlyForLogged();
 
-
 $oPage->addItem(new IEPageTop(_('Icinga Editor')));
-
 
 $Timeperiod = new IETimeperiod();
 $pocTimeperiods = $Timeperiod->getMyRecordsCount();
@@ -33,13 +30,11 @@ if ($pocTimeperiods) {
     $warning->addItem(new EaseTWBLinkButton('timeperiod.php', _('Založit první časovou periodu <i class="icon-edit"></i>')));
 }
 
-
-
 $contact = new IEContact();
 $pocContact = $contact->getMyRecordsCount();
 if ($pocContact) {
     $success = $oPage->columnII->addItem(new EaseHtmlDivTag('Contact', new EaseTWBLinkButton('contacts.php', _('<i class="icon-list"></i>').' '.sprintf(_('Definováno %s kontaktů'), $pocContact)), array('class' => 'alert alert-success')));
-    
+
 } else {
     if ($pocTimeperiods) {
         $warning = $oPage->columnII->addItem(new EaseHtmlDivTag('Contact', _('Nemáte definovaný kontakt'), array('class' => 'alert alert-info')));
@@ -53,12 +48,11 @@ $Contactgroup = new IEContactgroup();
 $pocContactgroup = $Contactgroup->getMyRecordsCount();
 if ($pocContactgroup) {
     $success = $oPage->columnII->addItem(new EaseHtmlDivTag('Contactgroup', new EaseTWBLinkButton('contactgroups.php', _('<i class="icon-list"></i>').' '.sprintf(_('Definováno %s skupin kontaktů'), $pocContactgroup)), array('class' => 'alert alert-success')));
-    
+
 } else {
     $warning = $oPage->columnII->addItem(new EaseHtmlDivTag('Contactgroup', _('Nemáte definovanou skupinu kontaktů'), array('class' => 'alert alert-info')));
     $warning->addItem(new EaseTWBLinkButton('contactgroup.php', _('Založit první skupinu kontaktů '.EaseTWBPart::GlyphIcon('edit'))));
 }
-
 
 $host = new IEHost();
 $pocHostu = $host->getMyRecordsCount();
@@ -82,18 +76,16 @@ if ($pocHostgroups) {
     $warning->addItem(new EaseTWBLinkButton('hostgroup.php', _('Založit první skupinu hostů <i class="icon-edit"></i>')));
 }
 
-
 $command = new IECommand();
 $PocCommands = $command->getMyRecordsCount();
 if ($PocCommands) {
     $success = $oPage->columnIII->addItem(new EaseHtmlDivTag('Command', new EaseTWBLinkButton('commands.php', _('<i class="icon-list"></i>').' '.sprintf(_('Definováno %s příkazů'), $PocCommands)), array('class' => 'alert alert-success')));
-    
+
 } else {
     $warning = $oPage->columnIII->addItem(new EaseHtmlDivTag('Host', _('Nemáte definovaný žádné příkazy'), array('class' => 'alert alert-info')));
     $warning->addItem(new EaseTWBLinkButton('importcommand.php', _('Importovat příkazy') . ' <i class="icon-download"></i>'));
-    
-}
 
+}
 
 $service = new IEService();
 $pocServices = $service->getMyRecordsCount();
@@ -123,6 +115,4 @@ if ($pocServicegroups) {
 
 $oPage->addItem(new IEPageBottom());
 
-
 $oPage->draw();
-?>

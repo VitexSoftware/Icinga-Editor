@@ -290,7 +290,7 @@ class IEService extends IECfg
             $params = $allData[$adKey]['check_command-params'];
 
             if (strlen($allData[$adKey]['check_command-remote'])) {
-                if (strlen($params)) {
+                if (!is_null($params)) {
                     $allData[$adKey]['check_command'].= '!' . $allData[$adKey]['check_command-remote'] . '!' . $params;
                 } else {
                     $allData[$adKey]['check_command'].= '!' . $allData[$adKey]['check_command-remote'];
@@ -398,9 +398,9 @@ class IEService extends IECfg
 
     /**
      * Provede přejmenování hostu
-     * 
-     * @param int    $hostid
-     * @param string $newname
+     *
+     * @param  int    $hostid
+     * @param  string $newname
      * @return type
      */
     public function renameHostName($hostid, $newname)
@@ -415,7 +415,6 @@ class IEService extends IECfg
 
         $renameAll = true;
 
-
         if ($this->save() && $renameAll) {
             return true;
         }
@@ -423,19 +422,18 @@ class IEService extends IECfg
         return false;
     }
 
-    
     /**
      * Připraví podřízenu službu
-     * 
-     * @param IEHost $host
-     * @param int       $ownerId
-     * @return int ID nově vytvořené služby
+     *
+     * @param  IEHost $host
+     * @param  int    $ownerId
+     * @return int    ID nově vytvořené služby
      */
     public function fork($host,$ownerId = null)
     {
-        if(is_null($ownerId)){
+        if (is_null($ownerId)) {
             $ownerId = EaseShared::user()->getUserID();
-        }        
+        }
         $this->delMember('host_name', $host->getId(), $host->getName());
         $this->saveToMySQL();
 

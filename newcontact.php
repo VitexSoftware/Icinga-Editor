@@ -2,7 +2,7 @@
 
 /**
  * Icinga Editor - nový kontakt
- * 
+ *
  * @package    IcingaEditor
  * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
@@ -18,7 +18,7 @@ $contact = new IEContact($oPage->getRequestValue('contact_id', 'int'));
 $name = $oPage->getRequestValue('name');
 
 if ($oPage->isPosted()) {
-    
+
     $contact->setData(
             array(
                 'contact_name' => $name,
@@ -36,7 +36,6 @@ if ($oPage->isPosted()) {
                 'register' => 1)
     );
 
-
     $contactID = $contact->saveToMySQL();
     if (is_null($contactID)) {
         $oUser->addStatusMessage(_('Kontakt nebyl založen'), 'warning');
@@ -48,11 +47,10 @@ if ($oPage->isPosted()) {
 }
 
 $autoCreate = $oPage->getRequestValue('autocreate');
-if($autoCreate == 'default'){
+if ($autoCreate == 'default') {
     $contact->setData(IEContact::ownContactData() );
     $contactID = $contact->saveToMySQL();
 }
-
 
 $oPage->addItem(new IEPageTop(_('Založení kontaktu') . ' ' . $contact->getName()));
 
@@ -65,8 +63,6 @@ if (!is_null($contact->getMyKey())) {
 $form->addItem('<br>');
 $form->addItem(new EaseTWSubmitButton(_('Uložit'), 'success'));
 
-
 $oPage->addItem(new IEPageBottom());
-
 
 $oPage->draw();

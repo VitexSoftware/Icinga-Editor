@@ -2,7 +2,7 @@
 
 /**
  * Icinga Editor - přehled contactů
- * 
+ *
  * @package    IcingaEditor
  * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
@@ -15,9 +15,6 @@ $oPage->onlyForLogged();
 
 $oPage->addItem(new IEPageTop(_('Přehled kontaktů')));
 
-
-
-
 $contact = new IEContact();
 $Contacts = $contact->getListing();
 
@@ -27,15 +24,15 @@ if ($Contacts) {
     $cid = 1;
     foreach ($Contacts as $cId => $cInfo) {
         $cInfo['public'] = false;
-        if($cInfo['register'] != 1){
+        if ($cInfo['register'] != 1) {
             continue;
         }
         $lastRow = $cntList->addRowColumns(array($cid++, new EaseHtmlATag('contact.php?contact_id=' . $cInfo['contact_id'], $cInfo['contact_name'].' <i class="icon-edit"></i>')));
         if ($cInfo['generate'] == 0) {
             $lastRow->setTagCss(array('border-right' => '1px solid red'));
         }
-        if($cInfo['public'] == 1){
-            if($cInfo[$contact->userColumn] == $oUser->getUserID()){
+        if ($cInfo['public'] == 1) {
+            if ($cInfo[$contact->userColumn] == $oUser->getUserID()) {
                 $lastRow->setTagCss(array('border-left'=>'1px solid green'));
             } else {
                 $lastRow->setTagCss(array('border-left'=>'1px solid blue'));
@@ -49,15 +46,15 @@ if ($Contacts) {
     $cid = 1;
     foreach ($Contacts as $cId => $cInfo) {
         $cInfo['public'] = false;
-        if(intval($cInfo['register'])){
+        if (intval($cInfo['register'])) {
             continue;
         }
         $lastRow = $cnt2List->addRowColumns(array($cid++, new EaseHtmlATag('contact.php?contact_id=' . $cInfo['contact_id'], $cInfo['name'].' <i class="icon-edit"></i>'),new EaseHtmlATag('contact.php?use='. urldecode($cInfo['name']), _('Odvodit <i class="icon-edit"></i>'))));
         if ($cInfo['generate'] == 0) {
             $lastRow->setTagCss(array('border-right' => '1px solid red'));
         }
-       if($cInfo['public'] == 1){
-            if($cInfo[$contact->userColumn] == $oUser->getUserID()){
+       if ($cInfo['public'] == 1) {
+            if ($cInfo[$contact->userColumn] == $oUser->getUserID()) {
                 $lastRow->setTagCss(array('border-left'=>'1px solid green'));
             } else {
                 $lastRow->setTagCss(array('border-left'=>'1px solid blue'));
@@ -65,7 +62,7 @@ if ($Contacts) {
         }
     }
     $oPage->columnI->addItem($cnt2List);
-    
+
 } else {
     $oUser->addStatusMessage(_('Nemáte definovaný žádný contact'), 'warning');
     $oPage->columnIII->addItem(new EaseTWBLinkButton('contact.php?autocreate=default', _('Založit výchozí kontakt <i class="icon-edit"></i>')));
@@ -73,9 +70,6 @@ if ($Contacts) {
 
 $oPage->columnIII->addItem(new EaseTWBLinkButton('contact.php', _('Založit kontakt <i class="icon-edit"></i>')));
 
-
-
 $oPage->addItem(new IEPageBottom());
-
 
 $oPage->draw();

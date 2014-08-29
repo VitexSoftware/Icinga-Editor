@@ -446,7 +446,7 @@ class IEcfg extends EaseBrick
     public function writeConfig($fileName)
     {
         $allData = $this->getAllData();
-        foreach ($allData as $CfgID => $columns) {
+        foreach ($allData as $cfgID => $columns) {
             if (intval($columns['generate'])) {
                 unset($columns['generate']);
                 if (isset($columns['register']) && (int) $columns['register']) {
@@ -498,9 +498,9 @@ class IEcfg extends EaseBrick
     {
         $allDataOK = array();
         $userID = EaseShared::user()->getUserID();
-        foreach ($allData as $AdKey => $data) {
+        foreach ($allData as $adKey => $data) {
             if ($data[$this->userColumn] == $userID) {
-                $allDataOK[$AdKey] = $data;
+                $allDataOK[$adKey] = $data;
             }
         }
 
@@ -753,8 +753,8 @@ class IEcfg extends EaseBrick
 
     /**
      * Smaže záznam
-     * 
-     * @param int $id má li být smazán jiný než aktuální záznam
+     *
+     * @param  int     $id má li být smazán jiný než aktuální záznam
      * @return boolean smazal se záznam ?
      */
     public function delete($id = null)
@@ -786,7 +786,7 @@ class IEcfg extends EaseBrick
 
     /**
      * Je záznam vlastněn uživatelem ?
-     * 
+     *
      * @param  type $thisID
      * @return type
      */
@@ -996,13 +996,16 @@ class IEcfg extends EaseBrick
             if (!is_null($memberName)) {
                 if ($this->data[$column][$memberID] == $memberName) {
                     unset($this->data[$column][$memberID]);
+
                     return true;
                 }
             } else {
                 unset($this->data[$column][$memberID]);
+
                 return true;
             }
         }
+
         return false;
     }
 

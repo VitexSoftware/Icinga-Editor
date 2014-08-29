@@ -2,7 +2,7 @@
 
 /**
  * Icinga Editor - titulní strana
- * 
+ *
  * @package    IcingaEditor
  * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
@@ -15,7 +15,6 @@ require_once 'classes/IECfgEditor.php';
 $oPage->onlyForLogged();
 
 $contact = new IEContact($oPage->getRequestValue('contact_id', 'int'));
-
 
 if ($oPage->isPosted()) {
     $contact->takeData($_POST);
@@ -36,10 +35,7 @@ if ($delete == 'true') {
     exit();
 }
 
-
 $oPage->addItem(new IEPageTop(_('Editace kontaktu') . ' ' . $contact->getName()));
-
-
 
 $contactEdit = new IECfgEditor($contact);
 
@@ -61,6 +57,4 @@ if ($contact->getId()) {
 
 $oPage->addItem(new IEPageBottom());
 
-
 $oPage->draw();
-

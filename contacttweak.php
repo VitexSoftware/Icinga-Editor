@@ -18,7 +18,7 @@ require_once 'classes/IEHostSelector.php';
 $oPage->onlyForLogged();
 
 $contact = new IEContact($oPage->getRequestValue('contact_id', 'int'));
-if(!$contact->getId()){
+if (!$contact->getId()) {
     $oPage->redirect('contacts.php');
     exit();
 }
@@ -48,7 +48,6 @@ if ($delsubcont) {
     $delcnt = clone $contact;
     $delcnt->delete($delsubcont);
 }
-
 
 $oPage->addItem(new IEPageTop(_('Editace kontaktu') . ' ' . $contact->getName()));
 

@@ -65,7 +65,6 @@ if ($addhost) {
     $service->saveToMySql();
 }
 
-
 $delcnt = $oPage->getGetValue('delcontact');
 if ($delcnt) {
     $service->delMember(
@@ -81,9 +80,6 @@ if ($addcnt) {
     );
     $service->saveToMySql();
 }
-
-
-
 
 $oPage->addItem(new IEPageTop(_('Editace služby') . ' ' . $service->getName()));
 

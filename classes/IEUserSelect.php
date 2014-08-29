@@ -2,7 +2,7 @@
 
 /**
  * Volba služeb patřičných k hostu
- * 
+ *
  * @todo dodělat
  * @package    IcingaEditor
  * @subpackage WebUI
@@ -11,12 +11,12 @@
  */
 class IEUserSelect extends EaseHtmlSelect
 {
-    function __construct($name, $items = null, $DefaultValue = null, $ItemsIDs = false, $Properties = null)
+    public function __construct($name, $items = null, $DefaultValue = null, $ItemsIDs = false, $Properties = null)
     {
-        if(is_null($items)){
+        if (is_null($items)) {
             $items = $this->loadItems();
-            foreach ($items as $ItemID => $Item){
-                if($ItemID == $DefaultValue){
+            foreach ($items as $ItemID => $Item) {
+                if ($ItemID == $DefaultValue) {
                     $DefaultValue = $Item;
                 }
             }
@@ -24,16 +24,15 @@ class IEUserSelect extends EaseHtmlSelect
         }
         parent::__construct($name, $items, $DefaultValue, $ItemsIDs, $Properties);
     }
-    function loadItems()
-    {   
+    public function loadItems()
+    {
         $User = new EaseUser();
         $UI = array();
-        foreach ($User->getAllFromMySQL('user',array('id','login'),null,'login','id') as $UserInfo){
+        foreach ($User->getAllFromMySQL('user',array('id','login'),null,'login','id') as $UserInfo) {
             $UI[$UserInfo['id']] = $UserInfo['login'];
         }
+
         return $UI;
     }
 
 }
-
-?>

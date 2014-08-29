@@ -118,7 +118,7 @@ class IEImporter extends IECfg
 
     /**
      * Vygeneruje do souboru konfiguraci icingy aktuálního uživatele
-     * 
+     *
      * @param string $fileName soubor
      */
     public function writeConfigs($fileName)

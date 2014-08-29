@@ -2,7 +2,7 @@
 
 /**
  * Volba služeb patřičných k hostu
- * 
+ *
  * @todo dodělat
  * @package    IcingaEditor
  * @subpackage WebUI
@@ -14,15 +14,14 @@ class IEChildrenSelector extends EaseContainer
 
     /**
      * Editor k přidávání členů skupiny
-     * 
+     *
      * @param IEHosts $Host
      */
-    function __construct($Host)
+    public function __construct($Host)
     {
         $FieldName = 'parents';
         $InitialContent = new EaseHtmlFieldSet(_('Sledované služby'));
         $InitialContent->setTagCss(array('width' => '100%'));
-
 
         if (is_null($Host->getMyKey())) {
             $InitialContent->addItem(_('Nejprve je potřeba uložit záznam'));
@@ -34,7 +33,7 @@ class IEChildrenSelector extends EaseContainer
 
             $AllServices = $Service->getListing();
             foreach ($AllServices as $ServiceID => $ServiceInfo) {
-                if($ServiceInfo['register']!=1){
+                if ($ServiceInfo['register']!=1) {
                     unset($AllServices[$ServiceID]);
                 }
             }
@@ -52,7 +51,6 @@ class IEChildrenSelector extends EaseContainer
                 }
             }
 
-
             if (count($ServicesAssigned)) {
                 $InitialContent->addItem('</br>');
                 foreach ($ServicesAssigned as $ServiceID => $ServiceInfo) {
@@ -68,10 +66,10 @@ class IEChildrenSelector extends EaseContainer
 
     /**
      * Uloží položky
-     * 
-     * @param array $Request 
+     *
+     * @param array $Request
      */
-    static function saveMembers($Request)
+    public static function saveMembers($Request)
     {
         $Service = new IEService();
         if (isset($Request[$Service->myKeyColumn])) {
@@ -99,5 +97,3 @@ class IEChildrenSelector extends EaseContainer
     }
 
 }
-
-?>

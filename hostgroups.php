@@ -21,7 +21,6 @@ $pocContactgroup = $hostgroup->getMyRecordsCount();
 if ($pocContactgroup) {
     $hgList = $hostgroup->getListing(null,false);
 
-    
     foreach ($hgList as $cId => $cInfo) {
         $cntList = new EaseHtmlDivTag('listing',null,array('class'=>'well'));
         $hostgroup = new IEHostgroup($cId);

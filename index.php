@@ -2,7 +2,7 @@
 
 /**
  * Icinga Editor - hlavní strana
- * 
+ *
  * @package    IcingaEditor
  * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
@@ -16,13 +16,11 @@ $oPage->heroUnit->addItem( new EaseHtmlImgTag('img/vsmonitoring.png') );
 $oPage->heroUnit->addItem( new EaseHtmlATag('http://icinga.org/',  new EaseHtmlImgTag('img/icinga_logo4-300x109.png') ) );
 $oPage->heroUnit->addItem( _('Monitoring služeb') );
 $oPage->heroUnit->setTagCss(array('text-align'=>'center'));
-        
+
 $oPage->columnI->addItem(_('Sledování hostů'));
 $oPage->columnII->addItem(_('Sledování služeb'));
 $oPage->columnIII->addItem(_('Notifikace mail/jabber/sms/twitter'));
 
-
 $oPage->addItem(new IEPageBottom());
-
 
 $oPage->draw();

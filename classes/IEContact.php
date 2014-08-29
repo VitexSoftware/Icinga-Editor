@@ -199,16 +199,17 @@ class IEContact extends IECfg
         );
     }
 
-    function checkEmailAddress($email)
+    public function checkEmailAddress($email)
     {
         if (preg_match("/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/", $email))
+
             return true;
         return false;
     }
 
     /**
      * Vytovří odvozený kontakt
-     * @param array $changes
+     * @param  array $changes
      * @return type
      */
     public function fork($changes)
@@ -223,6 +224,7 @@ class IEContact extends IECfg
             case 'jabber':
                 if (!$this->checkEmailAddress($chVal)) {
                     $this->addStatusMessage(_('Toto není platná jabberová adresa'), 'warning');
+
                     return false;
                 }
                 $change = array('address1' => $chVal);
@@ -230,6 +232,7 @@ class IEContact extends IECfg
             case 'email':
                 if (!$this->checkEmailAddress($chVal)) {
                     $this->addStatusMessage(_('Toto není platná mailová adresa'), 'warning');
+
                     return false;
                 }
                 $change = $changes;
@@ -237,6 +240,7 @@ class IEContact extends IECfg
             case 'sms':
                 if (!preg_match("/^(\+420)? ?\d{3} ?\d{3} ?\d{3}$/i", $chVal)) {
                     $this->addStatusMessage(_('Toto není platné telefoní číslo'), 'warning');
+
                     return false;
                 }
                 $change = array('pager' => $chVal);
@@ -245,7 +249,6 @@ class IEContact extends IECfg
                 $change = $changes;
                 break;
         }
-
 
         $ownerId = EaseShared::user()->getUserID();
 
@@ -274,7 +277,7 @@ class IEContact extends IECfg
 
     /**
      * Vrací seznam podřízených kontaktů a jejich typů
-     * @return array pole ID=>typ 
+     * @return array pole ID=>typ
      */
     public function getChilds()
     {
@@ -284,15 +287,16 @@ class IEContact extends IECfg
             $subchilds[$childID]['type'] = $childInfo['alias'];
             $subchilds[$childID]['contact'] = $childInfo['email'] . $childInfo['pager'] . $childInfo['address1'] . $childInfo['address2'];
         }
+
         return $subchilds;
     }
 
     /**
      * Smaže kontakt i jeho subkontakty
-     * 
+     *
      * @return boolean
      */
-    function delete($id = null)
+    public function delete($id = null)
     {
         if (is_null($id)) {
             $id = $this->getId();
@@ -323,10 +327,10 @@ class IEContact extends IECfg
 
     /**
      * Smazaže kontakt i jeho subkontakty
-     * 
+     *
      * @return boolean
      */
-    function rename($newname)
+    public function rename($newname)
     {
         $oldname = $this->getName();
         $this->setDataValue($this->nameColumn, $newname);

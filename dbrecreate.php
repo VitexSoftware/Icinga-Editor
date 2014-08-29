@@ -2,7 +2,7 @@
 
 /**
  * Icinga Editor - hlavní strana
- * 
+ *
  * @package    IcingaEditor
  * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
@@ -29,9 +29,6 @@ if ($oPage->getRequestValue('dbinit') ) {
     $oPage->columnII->addItem(new EaseHtmlFieldSet(_('Znovu vytvořit strukturu databáze'), $ImportForm));
 }
 
-
 $oPage->addItem(new IEPageBottom());
 
-
 $oPage->draw();
-?>

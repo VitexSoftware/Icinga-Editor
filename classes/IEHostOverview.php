@@ -10,7 +10,7 @@ require_once 'Ease/EaseHtml.php';
 class IEHostOverview extends EaseHtmlDivTag
 {
 
-    function __construct($host)
+    public function __construct($host)
     {
         parent::__construct();
         $this->addItem(new EaseHtmlH1Tag(array(self::icon($host), $host->getDataValue('alias'))));
@@ -29,15 +29,16 @@ class IEHostOverview extends EaseHtmlDivTag
     {
         $image = 'unknown.gif';
         $title = '';
-        if(is_array($host)){
-            if(isset($host['icon_image'])){
+        if (is_array($host)) {
+            if (isset($host['icon_image'])) {
                 $image = $host['icon_image'];
                 $title = $host['host_name'];
-            } 
+            }
         } else {
             $image = $host->getDataValue('icon_image');
             $title = $host->getName();
         }
+
         return new EaseHtmlImgTag('logos/' . $image,$title,null,null,array('class'=>'host_icon'));
     }
 
@@ -54,6 +55,7 @@ class IEHostOverview extends EaseHtmlDivTag
                 $image = 'unknown.gif';
                 break;
         }
+
         return new EaseHtmlImgTag('logos/' . $image, $platform);
     }
 

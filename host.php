@@ -21,7 +21,7 @@ $oPage->onlyForLogged();
 
 $hostId = $oPage->getRequestValue('host_id', 'int');
 
-if($hostId == 0){
+if ($hostId == 0) {
     $oPage->redirect('hosts.php');
     exit();
 }
@@ -56,7 +56,7 @@ switch ($oPage->getRequestValue('action')) {
             if (isset($_FILES) && count($_FILES)) {
                 $tmpfilename = $_FILES['icofile']['tmp_name'];
             } else {
-                if($oPage->isPosted()){
+                if ($oPage->isPosted()) {
                     $oPage->addStatusMessage(_('Nebyl vybrán soubor s ikonou hosta'), 'warning');
                 }
             }
@@ -164,8 +164,6 @@ if ($addcnt) {
     $host->saveToMySql();
 }
 
-
-
 $oPage->addItem(new IEPageTop(_('Editace hosta') . ' ' . $host->getName()));
 
 switch ($oPage->getRequestValue('action')) {
@@ -180,7 +178,6 @@ switch ($oPage->getRequestValue('action')) {
 
 $oPage->columnII->addItem(new IEHostOverview($host));
 
-
 $hostEdit = new IECfgEditor($host);
 $form = $oPage->columnII->addItem(new EaseHtmlForm('Host', 'host.php', 'POST', $hostEdit, array('class' => 'form-horizontal')));
 $form->setTagID($form->getTagName());
@@ -190,7 +187,6 @@ $form->addItem(new EaseTWSubmitButton(_('Uložit'), 'success'));
 $oPage->addCss('
 input.ui-button { width: 100%; }
 ');
-
 
 $oPage->columnIII->addItem($host->deleteButton());
 
@@ -205,7 +201,7 @@ $oPage->columnIII->addItem(new EaseHtmlFieldSet(_('Přejmenování'), $renameFor
 $oPage->columnIII->addItem(new EaseTWBLinkButton('?action=parent&host_id=' . $host->getId(), _('Přiřadit rodiče'), 'success'));
 $oPage->columnIII->addItem(new EaseTWBLinkButton('?action=icon&host_id=' . $host->getId(), _('Změnit ikonu'), 'success'));
 
-if( $host->getDataValue('platform') != 'generic' ){
+if ( $host->getDataValue('platform') != 'generic' ) {
     $oPage->columnIII->addItem(new EaseTWBLinkButton('sensor.php?host_id=' . $host->getId(), _('Nasadit senzor'), 'success'));
 }
 

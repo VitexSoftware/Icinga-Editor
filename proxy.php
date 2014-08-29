@@ -3,7 +3,7 @@
 
 /**
  * Icinga Editor - proxy pro zobrazení Icingy
- * 
+ *
  * @package    IcingaEditor
  * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
@@ -17,7 +17,7 @@ if (isset($_GET['t'])) {
     $page = file_get_contents('http://' . $oUser->getUserLogin() . ':'.$oUser->getSettingValue('plaintext').'@' . $_SERVER['HTTP_HOST'] . '' . $target);
 
     //$page = preg_replace('@(https?://([-\w\.]+)+(:\d+)?(/([\w/_\.%]*(\?\S+)?)?)?)@', '/cgi-bin/icinga/$1', $page);
-    
+
     $page = str_replace(array('href="','src=\'','src="','action="'), array('href="/cgi-bin/icinga/','src=\'/cgi-bin/icinga/','src="/cgi-bin/icinga/','action="/cgi-bin/icinga/'), $page);
     $page = str_replace('/cgi-bin/icinga//icinga/','/icinga/', $page);
     echo $page;

@@ -22,18 +22,18 @@ $oPage->onlyForLogged();
 $oPage->addItem(new IEPageTop(_('Icinga Editor')));
 
 $userID = $oPage->getRequestValue('user_id', 'int');
-if($userID){
+if ($userID) {
     $oPage->onlyForAdmin();
 }
 
 $user= new IEUser($userID);
 
-if($oPage->getRequestValue('delete')=='true'){
-    if($user->delete()){
+if ($oPage->getRequestValue('delete')=='true') {
+    if ($user->delete()) {
         $oPage->redirect('users.php');
         exit();
     }
-    
+
 }
 
 $userInfoFrame = $oPage->columnI->addItem( new EaseHtmlFieldSet($user->getUserLogin()) );
@@ -92,7 +92,6 @@ if ($oUser->getSettingValue('admin')) {
 }
 
 $oPage->columnIII->addItem($user->deleteButton());
-
 
 $oPage->addItem(new IEPageBottom());
 

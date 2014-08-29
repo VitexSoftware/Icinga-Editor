@@ -2,7 +2,7 @@
 
 /**
  * Icinga Editor - přehled kontaktů
- * 
+ *
  * @package    IcingaEditor
  * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
@@ -14,9 +14,6 @@ require_once 'classes/IEContactgroup.php';
 $oPage->onlyForLogged();
 
 $oPage->addItem(new IEPageTop(_('Přehled kontaktů')));
-
-
-
 
 $Contactgroup = new IEContactgroup();
 $pocContactgroup = $Contactgroup->getMyRecordsCount();
@@ -36,10 +33,6 @@ if ($pocContactgroup) {
 
 $oPage->columnIII->addItem(new EaseTWBLinkButton('contactgroup.php', _('Založit skupinu kontaktů <i class="icon-edit"></i>')));
 
-
-
 $oPage->addItem(new IEPageBottom());
 
-
 $oPage->draw();
-?>

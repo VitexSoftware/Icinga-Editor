@@ -2,7 +2,7 @@
 
 /**
  * Reset hesla
- * 
+ *
  * @package    IcingaEditor
  * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
@@ -24,7 +24,6 @@ $oPage->addJavascript('$("#PassworRecovery").validate({
     }
   }
 });',null,true);
-
 
 if ($EmailTo) {
     $oPage->takemyTable();
@@ -55,10 +54,7 @@ if ($EmailTo) {
     $oUser->addStatusMessage(_('Zadejte prosím váš eMail.'));
 }
 
-
 $oPage->addItem(new IEPageTop(_('Obnova zapomenutého hesla')));
-
-
 
 if (!$success) {
     $oPage->columnI->addItem('<h1>Zapoměl jsem své heslo!</h1>');
@@ -79,4 +75,3 @@ if (!$success) {
 $oPage->addItem(new IEPageBottom());
 
 $oPage->draw();
-?>

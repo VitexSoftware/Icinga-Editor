@@ -66,7 +66,7 @@ if ($oPage->isPosted()) {
         $newOUser = new IEUser();
         //TODO zde by se měly doplnit defaultní hodnoty z konfiguráku registry.php
         $newOUser->setData(
-            array(
+                array(
                     'email' => $emailAddress,
                     'parent' => (int) $customerParent,
                     'login' => $login
@@ -78,14 +78,17 @@ if ($oPage->isPosted()) {
         if (!is_null($userID)) {
             $newOUser->setMyKey($userID);
             $newOUser->passwordChange($password);
-            
-            if($userID == 0){
+
+            if ($userID == 0) {
                 $newOUser->setSettingValue('admin', TRUE);
                 $oUser->addStatusMessage(_('Administrátirský účet byl vytvořen'), 'success');
                 $newOUser->saveToMySQL();
             } else {
                 $oUser->addStatusMessage(_('Uživatelský účet byl vytvořen'), 'success');
             }
+
+            system('sudo htpasswd -b /etc/icinga/htpasswd.users ' . $newOUser->getUserLogin() . ' ' . $password);
+
             $newOUser->loginSuccess();
 
             $email = $oPage->addItem(new EaseMail($newOUser->getDataValue('email'), _('Potvrzení registrace')));
@@ -108,7 +111,7 @@ if ($oPage->isPosted()) {
             $contact->setData(
                     array(
                         'contact_name' => $login,
-                        'use' => 'generic-contact', 
+                        'use' => 'generic-contact',
                         $contact->userColumn => $userID,
                         'generate' => true,
                         'host_notifications_enabled' => true,
@@ -127,7 +130,6 @@ if ($oPage->isPosted()) {
             } else {
                 $oUser->addStatusMessage(_('Výchozí kontakt nebyl založen'), 'warning');
             }
-
 
             $mailID = $contact->fork(array('email' => $emailAddress));
             if ($mailID) {

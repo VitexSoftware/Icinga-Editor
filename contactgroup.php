@@ -2,7 +2,7 @@
 
 /**
  * Icinga Editor - skupina kontaktů
- * 
+ *
  * @package    IcingaEditor
  * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
@@ -11,7 +11,6 @@
 require_once 'includes/IEInit.php';
 require_once 'classes/IEContactgroup.php';
 require_once 'classes/IECfgEditor.php';
-
 
 $oPage->onlyForLogged();
 
@@ -31,12 +30,10 @@ if ($oPage->isPosted()) {
 
 $Contactgroup->saveMembers();
 
-
 $delete = $oPage->getGetValue('delete', 'bool');
 if ($delete == 'true') {
     $Contactgroup->delete();
 }
-
 
 $ContactgroupEdit = new IECfgEditor($Contactgroup);
 
@@ -50,6 +47,4 @@ $form->addItem(new EaseTWSubmitButton(_('Uložit'),'success'));
 
 $oPage->addItem(new IEPageBottom());
 
-
 $oPage->draw();
-?>

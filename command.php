@@ -2,7 +2,7 @@
 
 /**
  * Icinga Editor - titulní strana
- * 
+ *
  * @package    IcingaEditor
  * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
@@ -31,7 +31,6 @@ if ($delete == 'true') {
     $command->delete();
 }
 
-
 $oPage->addItem(new IEPageTop(_('Editace příkazu') . ' ' . $command->getName()));
 
 $CommandEdit = new IECfgEditor($command);
@@ -47,7 +46,6 @@ $oPage->AddCss('
 input.ui-button { width: 100%; }
 ');
 
-
 $oPage->columnIII->addItem($command->deleteButton());
 
 if ($command->getId()) {
@@ -56,6 +54,4 @@ if ($command->getId()) {
 
 $oPage->addItem(new IEPageBottom());
 
-
 $oPage->draw();
-?>

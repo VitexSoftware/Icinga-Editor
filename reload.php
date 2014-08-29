@@ -2,7 +2,7 @@
 
 /**
  * Icinga Editor - hlavní strana
- * 
+ *
  * @package    IcingaEditor
  * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
@@ -19,6 +19,4 @@ IECfg::reloadIcinga();
 
 $oPage->addItem(new IEPageBottom());
 
-
 $oPage->draw();
-?>

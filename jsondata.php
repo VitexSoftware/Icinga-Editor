@@ -12,11 +12,9 @@ if (!$oUser->GetUserID()) {
     die(_('nejprve se prosím přihlaš'));
 }
 
-
 header('Cache-Control: no-cache, must-revalidate');
 header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
 header('Content-type: application/json');
-
 
 $Request = $oPage->getRequestValue('term');
 $Source = $oPage->getRequestValue('source','array');
@@ -39,6 +37,3 @@ if ($Request) {
 }
 
 echo json_encode($MembersFound);
-
-
-?>

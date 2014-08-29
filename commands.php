@@ -2,7 +2,7 @@
 
 /**
  * Icinga Editor - přehled příkazů
- * 
+ *
  * @package    IcingaEditor
  * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
@@ -15,13 +15,8 @@ $oPage->onlyForLogged();
 
 $oPage->addItem(new IEPageTop(_('Přehled příkazů')));
 
-
-
-
 $command = new IECommand();
 $Commands = $command->getListing(null,null,array('command_local','command_remote','public'));
-
-
 
 if ($Commands) {
     $cntList = new EaseHtmlTableTag(null, array('class' => 'table'));
@@ -63,7 +58,7 @@ if ($Commands) {
             }
             unset($Commands[$cId]);
         }
-        
+
     }
     $oPage->columnII->addItem(new EaseHtmlH4Tag(_('vzdálené příkazy')));
     $oPage->columnII->addItem($cntList);
@@ -85,9 +80,7 @@ if ($Commands) {
     }
     $oPage->columnIII->addItem(new EaseHtmlH4Tag(_('neurčené příkazy')));
     $oPage->columnIII->addItem($cntList);
-    
-    
-    
+
 } else {
     $oUser->addStatusMessage(_('Nemáte definovaný příkaz'), 'warning');
 }
@@ -95,9 +88,6 @@ if ($Commands) {
 $oPage->columnIII->addItem(new EaseTWBLinkButton('command.php', _('Založit příkaz') . ' '.EaseTWBPart::GlyphIcon('edit')));
 $oPage->columnIII->addItem(new EaseTWBLinkButton('importcommand.php', _('Importovat příkazy') . ' <i class="icon-download"></i>'));
 
-
 $oPage->addItem(new IEPageBottom());
 
-
 $oPage->draw();
-?>

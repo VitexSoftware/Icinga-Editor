@@ -2,7 +2,7 @@
 
 /**
  * Icinga Editor - hlavní strana
- * 
+ *
  * @package    IcingaEditor
  * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
@@ -17,8 +17,6 @@ $oPage->addItem(new IEPageTop(_('Icinga Editor - iniciace databáze')));
 
 if ($oPage->isPosted()) {
 
-
-
     $Params = array('generate' => true);
     $Public = $oPage->getRequestValue('public');
     if ($Public) {
@@ -30,7 +28,6 @@ if ($oPage->isPosted()) {
     }
     $Importer->importCfg($oPage->getRequestValue('maincfg'));
 }
-
 
 $oPage->addItem(new IEPageBottom());
 
@@ -44,4 +41,3 @@ $ImportForm->addItem(new EaseJQuerySubmitButton('submit', _('importovat'), _('Sp
 $oPage->columnII->addItem(new EaseHtmlFieldSet(_('parametry inicializace'), $ImportForm));
 
 $oPage->draw();
-?>

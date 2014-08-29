@@ -24,7 +24,7 @@ if (!isset($_POST['password']) || !strlen($_POST['password'])) {
         $formOK = false;
     }
     /* TODO:
-      if(!$OUser->passwordCrackCheck($_POST['password'])){
+      if (!$OUser->passwordCrackCheck($_POST['password'])) {
       $OUser->addStatusMessage('Heslo není dostatečně bezpečné');
       $FormOK = false;
       }
@@ -49,15 +49,13 @@ if (!isset($_POST['CurrentPassword'])) {
     }
 }
 
-
 $oPage->addItem(new IEPageTop(_('Změna hesla uživatele')));
 
 if ($formOK && $oPage->isPosted()) {
     $plainPass = $oPage->getRequestValue('password');
-    
+
     if ($oUser->passwordChange($plainPass)) {
-        
-        
+
         $oUser->addStatusMessage(_('Heslo bylo změněno'), 'success');
 
         $email = $oPage->addItem(new EaseMail($oUser->getDataValue($oUser->mailColumn), _('Změněné heslo pro Monitoring')));
@@ -86,4 +84,3 @@ if ($formOK && $oPage->isPosted()) {
 $oPage->addItem(new IEPageBottom());
 
 $oPage->draw();
-

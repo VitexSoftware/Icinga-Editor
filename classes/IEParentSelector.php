@@ -23,12 +23,12 @@ class IEParentSelector extends EaseContainer
         parent::__construct();
         $fieldName = $host->getmyKeyColumn();
         $initialContent = new EaseHtmlFieldSet(_('rodiče hostu'));
-        
+
         $addparentForm = $initialContent->addItem( new EaseTWBForm('addparent') );
         $addparentForm->addItem( new EaseTWBFormGroup(_('IP nebo Hostname'), new EaseHtmlInputTextTag('newparent')) );
         $addparentForm->addItem( new EaseHtmlInputHiddenTag($fieldName, $host->getId()));
         $addparentForm->addItem( new EaseTWSubmitButton(_('Přidat rodiče'), 'success') );
-        
+
         $initialContent->setTagCss(array('width' => '100%'));
 
         if (is_null($host->getMyKey())) {
@@ -64,7 +64,7 @@ class IEParentSelector extends EaseContainer
                 foreach ($parentsAssigned as $parentID => $parentInfo) {
                     $jellybean = new EaseHtmlSpanTag($parentInfo, null, array('class' => 'jellybean'));
                     $jellybean->addItem($parentInfo);
-                    //localhost/IcingaEditor/host.php?del=parents&member=0&name=natwor&host_id=9#parents                    
+                    //localhost/IcingaEditor/host.php?del=parents&member=0&name=natwor&host_id=9#parents
                     $jellybean->addItem(new EaseHtmlATag('?del=parents&amp;name=' . $parentInfo . '&amp;member=' . $parentID . '&amp;' . $host->getmyKeyColumn() . '=' . $host->getMyKey() . '&amp;' . $host->myKeyColumn . '=' . $host->getId(), EaseTWBPart::GlyphIcon('remove')));
                     $initialContent->addItem($jellybean);
                 }

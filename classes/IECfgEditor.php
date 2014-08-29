@@ -31,8 +31,8 @@ class IECfgEditor extends EaseContainer
     /**
      * Vytvoří editační formulář podle CFG objektu
      *
-     * @param IECfg $this->ObjectEdited
-     * @param string $onlyColumn Vrací editační pole jen pro sloupec daného jména
+     * @param IECfg  $this->ObjectEdited
+     * @param string $onlyColumn         Vrací editační pole jen pro sloupec daného jména
      */
     public function __construct($cfgObject, $onlyColumn = null)
     {
@@ -132,7 +132,7 @@ class IECfgEditor extends EaseContainer
                     $buttons->setValue($value);
                     $FB = $fieldBlock->addItem(new EaseHtmlFieldSet($keywordInfo['title'], new EaseTWRadioButtonGroup($fieldName,$infoFlags,$value)));
                     $FB->setTagCss(array('width' => '100%'));
-                    
+
                 }
                 break;
             case 'SELECT':

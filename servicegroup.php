@@ -2,7 +2,7 @@
 
 /**
  * Icinga Editor - skupina služeb
- * 
+ *
  * @package    IcingaEditor
  * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
@@ -26,7 +26,6 @@ if ($oPage->isPosted()) {
     }
 }
 
-
 $serviceGroup->saveMembers();
 
 $delete = $oPage->getGetValue('delete', 'bool');
@@ -48,6 +47,4 @@ $form->addItem(new EaseTWSubmitButton(_('Uložit'),'success'));
 
 $oPage->addItem(new IEPageBottom());
 
-
 $oPage->draw();
-?>

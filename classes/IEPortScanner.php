@@ -92,6 +92,7 @@ class IEPortScanner extends EaseSand
         if ($hostmod) {
             $this->host->saveToMySQL();
         }
+
         return $success;
     }
 
@@ -118,7 +119,7 @@ class IEPortScanner extends EaseSand
         }
 
         foreach ($this->ports as $port) {
-            if ($this->scan($port)){
+            if ($this->scan($port)) {
                 $this->results[$port] = $port;
             }
         }

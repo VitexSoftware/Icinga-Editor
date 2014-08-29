@@ -2,7 +2,7 @@
 
 /**
  * Icinga Editor - přehled skupin služeb
- * 
+ *
  * @package    IcingaEditor
  * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
@@ -14,9 +14,6 @@ require_once 'classes/IEServicegroup.php';
 $oPage->onlyForLogged();
 
 $oPage->addItem(new IEPageTop(_('Přehled skupin služeb')));
-
-
-
 
 $serviceGroup = new IEServicegroup();
 $PocServicegroup = $serviceGroup->getMyRecordsCount();
@@ -36,10 +33,6 @@ if ($PocServicegroup) {
 
 $oPage->columnIII->addItem(new EaseTWBLinkButton('servicegroup.php', _('Založit skupinu služeb').' '.EaseTWBPart::GlyphIcon('edit')));
 
-
-
 $oPage->addItem(new IEPageBottom());
 
-
 $oPage->draw();
-?>

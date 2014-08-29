@@ -119,7 +119,6 @@ if ($oUser->getSettingValue('admin')) {
     $oPage->columnI->addItem(new EaseTWBLinkButton('?action=system&service_id=' . $service->getId(), _('Systémová služba')));
 }
 
-
 $oPage->addItem(new IEPageBottom());
 
 $oPage->draw();

@@ -2,7 +2,7 @@
 
 /**
  * Icinga Editor - časové periody
- * 
+ *
  * @package    IcingaEditor
  * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
@@ -15,7 +15,6 @@ $oPage->onlyForLogged();
 
 $oPage->addItem(new IEPageTop(_('Přehled časových period')));
 
-
 $Timeperiod = new IETimeperiod();
 $Periods = $Timeperiod->getListing();
 
@@ -26,11 +25,11 @@ if ($Periods) {
     $cid = 1;
     foreach ($Periods as $cId => $cInfo) {
         $lastRow = $cntList->addRowColumns(array($cid++, new EaseHtmlATag('timeperiod.php?timeperiod_id=' . $cInfo['timeperiod_id'], $cInfo['timeperiod_name'].' <i class="icon-edit"></i>')));
-        if($cInfo['generate'] == 0){
+        if ($cInfo['generate'] == 0) {
             $lastRow->setTagCss(array('border-right'=>'1px solid red'));
         }
-        if($cInfo['public'] == 1){
-            if($cInfo[$Timeperiod->userColumn] == $oUser->getUserID()){
+        if ($cInfo['public'] == 1) {
+            if ($cInfo[$Timeperiod->userColumn] == $oUser->getUserID()) {
                 $lastRow->setTagCss(array('border-left'=>'1px solid green'));
             } else {
                 $lastRow->setTagCss(array('border-left'=>'1px solid blue'));
@@ -44,10 +43,6 @@ if ($Periods) {
 
 $oPage->columnIII->addItem(new EaseTWBLinkButton('timeperiod.php', _('Založit časovou periodu '.EaseTWBPart::GlyphIcon('edit'))));
 
-
-
 $oPage->addItem(new IEPageBottom());
 
-
 $oPage->draw();
-?>

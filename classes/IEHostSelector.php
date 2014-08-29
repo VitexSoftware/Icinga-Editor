@@ -38,7 +38,7 @@ class IEHostSelector extends EaseContainer
                 $allHosts = $host->getListing(null, true, array('platform', 'register'));
             }
             foreach ($service->getDataValue('host_name') as $hostId => $hostName) {
-                if(isset($allHosts[$hostId])){
+                if (isset($allHosts[$hostId])) {
                     $hostsAssigned[$hostId] = $allHosts[$hostId];
                 }
             }

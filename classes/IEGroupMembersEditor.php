@@ -2,7 +2,7 @@
 
 /**
  * Konfigurátor členů skupiny
- * 
+ *
  * @package    IcingaEditor
  * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
@@ -13,12 +13,12 @@ class IEGroupMembersEditor extends EaseContainer
 
     /**
      * Editor k přidávání členů skupiny
-     * 
-     * @param string $FieldName název políčka formuláře
+     *
+     * @param string $FieldName    název políčka formuláře
      * @param string $FieldCaption popisek políčka
-     * @param array $DataSource pole(tabulka=>sloupec)
+     * @param array  $DataSource   pole(tabulka=>sloupec)
      */
-    function __construct($FieldName, $FieldCaption, $DataSource, $members)
+    public function __construct($FieldName, $FieldCaption, $DataSource, $members)
     {
         $IDColumn = $DataSource->keywordsInfo[$FieldName]['refdata']['idcolumn'];
         $nameColumn = $DataSource->keywordsInfo[$FieldName]['refdata']['captioncolumn'];
@@ -41,7 +41,6 @@ class IEGroupMembersEditor extends EaseContainer
 
 //        $AddNewItem = new EaseHtmlInputSearchTag($FieldName, '', array('class' => 'search-input', 'title' => _('přidání člena')));
 //        $AddNewItem->setDataSource('jsondata.php?source[' . key($DataSource) . ']=' . current($DataSource));
-
 
         if (is_null($DataSource->getMyKey())) {
             $InitialContent->addItem(_('Nejprve je potřeba uložit záznam'));
@@ -71,7 +70,6 @@ class IEGroupMembersEditor extends EaseContainer
                 unset($members[$DataSource->getMyKey()]);
             }
 
-
             if (count($membersAviableArray)) {
                 foreach ($membersAviableArray as $MemberID => $MemberName) {
                     $Jellybean = new EaseHtmlSpanTag($MemberName[$nameColumn], null, array('class' => 'jellybean gray'));
@@ -79,7 +77,6 @@ class IEGroupMembersEditor extends EaseContainer
                     $InitialContent->addItem($Jellybean);
                 }
             }
-
 
             if ($members && count($members)) {
                 $InitialContent->addItem('</br>');
@@ -95,5 +92,3 @@ class IEGroupMembersEditor extends EaseContainer
     }
 
 }
-
-?>

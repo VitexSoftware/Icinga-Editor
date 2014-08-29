@@ -22,8 +22,12 @@ div.error span { color: #d14; font-size: large; }
 fieldset { border: 1px solid #333333; margin: 10px; padding: 10px; display: inline-block; }
 legend {  border: 1px solid #333333; margin: 2px; padding: 2px; }
 
-#StatusMessages { background-color: #d7d7d6; border: 1px solid wheat; margin: 5px; padding: 5px; overflow: auto; max-height: 400px;}
-#StatusMessages.well {
+#StatusMessages.well .alert {
+    margin: 2px;
+    padding: 2px;
+}
+
+#StatusMessages {
     margin: 2px;
     padding: 2px;
 }

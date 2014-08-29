@@ -14,13 +14,13 @@
 class IEFXPreloader extends EaseHtmlDivTag
 {
 
-    function __construct($name = null)
+    public function __construct($name = null)
     {
         $properties['class'] = 'fuelux preloader';
         parent::__construct($name, '<i></i><i></i><i></i><i></i>', $properties);
     }
 
-    function finalize()
+    public function finalize()
     {
         EaseShared::webPage()->includeCss('twitter-bootstrap/css/fuelux.css', true);
         EaseShared::webPage()->includeCss('twitter-bootstrap/css/fuelux-responsive.css', true);

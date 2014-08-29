@@ -2,7 +2,7 @@
 
 /**
  * Přihlašovací stránka
- * 
+ *
  * @author    Vitex <vitex@hippy.cz>
  * @copyright Vitex@hippy.cz (G) 2009,2011
  * @package IcingaEditor
@@ -11,7 +11,6 @@ require_once 'includes/IEInit.php';
 require_once 'Ease/EaseJQueryWidgets.php';
 require_once 'classes/IETwitter.php';
 
-
 require 'classes/tmhOAuth.php';
 require 'classes/tmhUtilities.php';
 
@@ -19,7 +18,6 @@ $tmhOAuth = new tmhOAuth(array(
             'consumer_key' => IETwitter::$ConsumerKey,
             'consumer_secret' => IETwitter::$ConsumerSecret,
         ));
-
 
 $here = tmhUtilities::php_self();
 
@@ -109,7 +107,6 @@ if (isset($_REQUEST['wipe'])) {
 }
 $oPage->Redirect('index.php');
 
-
 /*
   <ul>
   <li><a href="?authenticate=1">Sign in with Twitter</a></li>
@@ -123,4 +120,3 @@ $oPage->Redirect('index.php');
   </ul>
 
  */
-?>

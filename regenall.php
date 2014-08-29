@@ -16,16 +16,20 @@ $oPage->onlyForAdmin();
 
 $oPage->addItem(new IEPageTop(_('Přegenerování veškeré konfigurace')));
 
-system('rm '.constant('CFG_GENERATED').'/*');
+system('rm ' . constant('CFG_GENERATED') . '/*');
 
 $originalUserID = $oUser->getUserID();
+
 $users = EaseShared::user()->getAllFromMySQL();
-foreach ($users as $UserData) {
-    EaseShared::user(new EaseUser(intval($UserData['id'])));
+$users[] = array('id'=>null,'user_id'=>null,'login'=>'_icinga');
+foreach ($users as $userData) {
+    EaseShared::user(new EaseUser(intval($userData['id'])));
     EaseShared::user()->loginSuccess();
 
-
     $fileName = $oUser->getUserLogin() . '.cfg';
+    if($fileName == '.cfg'){
+        $fileName = '_icinga.cfg';
+    }
 
     $cfg = fopen(constant('CFG_GENERATED') . '/' . $fileName, 'w');
     if ($cfg) {
@@ -37,126 +41,121 @@ foreach ($users as $UserData) {
 
     $generator = new IEImporter();
     $generator->writeConfigs($fileName);
-
 }
 EaseShared::user(new EaseUser($originalUserID));
 EaseShared::user()->loginSuccess();
-$oUser->setSettingValue('admin',TRUE);
+$oUser->setSettingValue('admin', TRUE);
 
-    $testing = popen("sudo /usr/sbin/icinga -v /etc/icinga/icinga.cfg", 'r');
-    if ($testing) {
-        $ErrorCount = 0;
-        $LineNo = 0;
-        $WarningCount = null;
-        while (!feof($testing)) {
-            $Line = fgets($testing);
-            $LineNo++;
+$testing = popen("sudo /usr/sbin/icinga -v /etc/icinga/icinga.cfg", 'r');
+if ($testing) {
+    $ErrorCount = 0;
+    $LineNo = 0;
+    $WarningCount = null;
+    while (!feof($testing)) {
+        $Line = fgets($testing);
+        $LineNo++;
 
-            if (($Line === false) && ($LineNo == 1)) {
-                $errorLine = $oPage->addItem(new EaseHtmlDivTag(null, '<span class="label label-important">' . _('Chyba:') . '</span>', array('class' => 'alert alert-error')));
-                $oUser->addStatusMessage(_('Kontrola konfigurace nevrátila výsledek.'), 'error');
-                $errorLine->addItem(_('Zkontroluj prosím zdlali nechybí potřebný fragment v /etc/sudoers:'));
-                $errorLine->addItem(new EaseHtmlDivTag(null, 'User_Alias APACHE = www-data'));
-                $errorLine->addItem(new EaseHtmlDivTag(null, 'Cmnd_Alias ICINGA = /usr/sbin/icinga, /etc/init.d/icinga'));
-                $errorLine->addItem(new EaseHtmlDivTag(null, 'APACHE ALL = (ALL) NOPASSWD: ICINGA'));
-                break;
+        if (($Line === false) && ($LineNo == 1)) {
+            $errorLine = $oPage->addItem(new EaseHtmlDivTag(null, '<span class="label label-important">' . _('Chyba:') . '</span>', array('class' => 'alert alert-error')));
+            $oUser->addStatusMessage(_('Kontrola konfigurace nevrátila výsledek.'), 'error');
+            $errorLine->addItem(_('Zkontroluj prosím zdlali nechybí potřebný fragment v /etc/sudoers:'));
+            $errorLine->addItem(new EaseHtmlDivTag(null, 'User_Alias APACHE = www-data'));
+            $errorLine->addItem(new EaseHtmlDivTag(null, 'Cmnd_Alias ICINGA = /usr/sbin/icinga, /etc/init.d/icinga'));
+            $errorLine->addItem(new EaseHtmlDivTag(null, 'APACHE ALL = (ALL) NOPASSWD: ICINGA'));
+            break;
+        }
+
+        if (strstr($Line, 'Error:')) {
+            $Line = str_replace('Error:', '', $Line);
+            $errorLine = $oPage->addItem(new EaseHtmlDivTag(null, '<span class="label label-important">' . _('Chyba:') . '</span>', array('class' => 'alert alert-error')));
+
+            $keywords = preg_split("/['(.*)']+/", $Line);
+            switch (trim($keywords[0])) {
+                case 'Service notification period':
+                    $errorLine->addItem(' <a href="timeperiods.php">' . _('Notifikační perioda') . '</a> služeb ');
+                    $errorLine->addItem(new EaseHtmlATag('timeperiod.php?timeperiod_name=' . $keywords[1], $keywords[1]));
+                    break;
+                case 'Host notification period':
+                    $errorLine->addItem(' <a href="timeperiods.php">' . _('Notifikační perioda') . '</a> hostů');
+                    $errorLine->addItem(new EaseHtmlATag('timeperiod.php?timeperiod_name=' . $keywords[1], $keywords[1]));
+                    break;
+
+                default:
+                    $errorLine->addItem($Line);
+                    break;
             }
 
-            if (strstr($Line, 'Error:')) {
-                $Line = str_replace('Error:', '', $Line);
-                $errorLine = $oPage->addItem(new EaseHtmlDivTag(null, '<span class="label label-important">' . _('Chyba:') . '</span>', array('class' => 'alert alert-error')));
-
-                $keywords = preg_split("/['(.*)']+/", $Line);
-                switch (trim($keywords[0])) {
-                    case 'Service notification period':
-                        $errorLine->addItem(' <a href="timeperiods.php">' . _('Notifikační perioda') . '</a> služeb ');
-                        $errorLine->addItem(new EaseHtmlATag('timeperiod.php?timeperiod_name=' . $keywords[1], $keywords[1]));
-                        break;
-                    case 'Host notification period':
-                        $errorLine->addItem(' <a href="timeperiods.php">' . _('Notifikační perioda') . '</a> hostů');
-                        $errorLine->addItem(new EaseHtmlATag('timeperiod.php?timeperiod_name=' . $keywords[1], $keywords[1]));
+            if (isset($keywords[2])) {
+                switch (trim($keywords[2])) {
+                    case 'specified for contact':
+                        $errorLine->addItem(' specifikovaná pro kontakt ');
+                        $contact = new IEContact($keywords[3]);
+                        $errorLine->addItem(new EaseHtmlATag('contact.php?contact_id=' . $contact->getMyKey(), $keywords[3]));
                         break;
 
                     default:
-                        $errorLine->addItem($Line);
                         break;
                 }
-
-                if (isset($keywords[2])) {
-                    switch (trim($keywords[2])) {
-                        case 'specified for contact':
-                            $errorLine->addItem(' specifikovaná pro kontakt ');
-                            $contact = new IEContact($keywords[3]);
-                            $errorLine->addItem(new EaseHtmlATag('contact.php?contact_id=' . $contact->getMyKey(), $keywords[3]));
-                            break;
-
-                        default:
-                            break;
-                    }
-                }
-                if (isset($keywords[4])) {
-                    switch (trim($keywords[4])) {
-                        case 'is not defined anywhere!':
-                            $errorLine->addItem(' není nikde definován/a ');
-                            break;
-                    }
-                }
-                //$OPage->addItem('<pre>' . EaseBrick::printPreBasic($keywords) . '</pre>');
             }
-
-            if (strstr($Line, 'Error in configuration file')) {
-                $keywords = preg_split("/'|\(|\)| - Line /", $Line);
-                $errorLine = $oPage->addItem(new EaseHtmlDivTag(null, '<span class="label label-error">' . _('Chyba v konfiguračním souboru'), array('class' => 'alert alert-error')));
-                $errorLine->addItem(new EaseHtmlATag('cfgfile.php?file=' . $keywords[1] . '&line=' . $keywords[3], $keywords[1]));
-                $errorLine->addItem($keywords[4]);
-                $ErrorCount++;
-            }
-
-
-            if (strstr($Line, 'Warning:')) {
-
-                if (strstr($Line, 'has no services associated with it!')) {
-                    preg_match("/\'(.*)\'/", $Line, $keywords);
-                    $host = & $generator->IEClasses['host'];
-                    $host->setmyKeyColumn($host->nameColumn);
-                    $host->loadFromMySql($keywords[1]);
-                    $host->resetObjectIdentity();
-                    $Line = '<span class="label label-warning">' . _('Varování:') . '</span> Host ' . '<a href="host.php?host_id=' . $host->getMyKey() . '">' . $host->getName() . '</a> ' . _('nemá přiřazené žádné služby');
-                } else {
-                    $Line = str_replace('Warning:', '<span class="label label-warning">' . _('Varování:') . '</span>', $Line);
-                }
-
-                //Duplicate definition found for command 'check_ping' (config file '/etc/icinga/generated/command_check_ping_vitex.cfg', starting on line 1) 
-                $oPage->addItem(new EaseHtmlDivTag(null, $Line, array('class' => 'alert alert-warning')));
-            }
-
-            if (strstr($Line, 'Total Warnings')) {
-                list($Msg, $WarningCount) = explode(':', $Line);
-                if (intval(trim($WarningCount))) {
-                    $oUser->addStatusMessage(sprintf(_('celkem %s varování'), $WarningCount), 'warning');
-                } else {
-                    $oUser->addStatusMessage(_('test proběhl bez varování'), 'success');
+            if (isset($keywords[4])) {
+                switch (trim($keywords[4])) {
+                    case 'is not defined anywhere!':
+                        $errorLine->addItem(' není nikde definován/a ');
+                        break;
                 }
             }
-            if (strstr($Line, 'Total Errors')) {
-                list($Msg, $ErrorCount) = explode(':', $Line);
-                if (intval(trim($ErrorCount))) {
-                    $oUser->addStatusMessage(sprintf(_('celkem %s chyb'), $ErrorCount), 'warning');
-                } else {
-                    $oUser->addStatusMessage(_('test proběhl bez chyb'), 'success');
-                }
+            //$OPage->addItem('<pre>' . EaseBrick::printPreBasic($keywords) . '</pre>');
+        }
+
+        if (strstr($Line, 'Error in configuration file')) {
+            $keywords = preg_split("/'|\(|\)| - Line /", $Line);
+            $errorLine = $oPage->addItem(new EaseHtmlDivTag(null, '<span class="label label-error">' . _('Chyba v konfiguračním souboru'), array('class' => 'alert alert-error')));
+            $errorLine->addItem(new EaseHtmlATag('cfgfile.php?file=' . $keywords[1] . '&line=' . $keywords[3], $keywords[1]));
+            $errorLine->addItem($keywords[4]);
+            $ErrorCount++;
+        }
+
+        if (strstr($Line, 'Warning:')) {
+
+            if (strstr($Line, 'has no services associated with it!')) {
+                preg_match("/\'(.*)\'/", $Line, $keywords);
+                $host = & $generator->IEClasses['host'];
+                $host->setmyKeyColumn($host->nameColumn);
+                $host->loadFromMySql($keywords[1]);
+                $host->resetObjectIdentity();
+                $Line = '<span class="label label-warning">' . _('Varování:') . '</span> Host ' . '<a href="host.php?host_id=' . $host->getMyKey() . '">' . $host->getName() . '</a> ' . _('nemá přiřazené žádné služby');
+            } else {
+                $Line = str_replace('Warning:', '<span class="label label-warning">' . _('Varování:') . '</span>', $Line);
+            }
+
+            //Duplicate definition found for command 'check_ping' (config file '/etc/icinga/generated/command_check_ping_vitex.cfg', starting on line 1)
+            $oPage->addItem(new EaseHtmlDivTag(null, $Line, array('class' => 'alert alert-warning')));
+        }
+
+        if (strstr($Line, 'Total Warnings')) {
+            list($Msg, $WarningCount) = explode(':', $Line);
+            if (intval(trim($WarningCount))) {
+                $oUser->addStatusMessage(sprintf(_('celkem %s varování'), $WarningCount), 'warning');
+            } else {
+                $oUser->addStatusMessage(_('test proběhl bez varování'), 'success');
             }
         }
-        fclose($testing);
-
-        if (!intval($ErrorCount) && !is_null($WarningCount)) {
-            $oPage->columnIII->addItem(new EaseTWBLinkButton('reload.php', _('Reload icingy') . ' <i class="icon-refresh"></i>'));
+        if (strstr($Line, 'Total Errors')) {
+            list($Msg, $ErrorCount) = explode(':', $Line);
+            if (intval(trim($ErrorCount))) {
+                $oUser->addStatusMessage(sprintf(_('celkem %s chyb'), $ErrorCount), 'warning');
+            } else {
+                $oUser->addStatusMessage(_('test proběhl bez chyb'), 'success');
+            }
         }
     }
+    fclose($testing);
 
-
+    if (!intval($ErrorCount) && !is_null($WarningCount)) {
+        $oPage->columnIII->addItem(new EaseTWBLinkButton('reload.php', _('Reload icingy') . ' <i class="icon-refresh"></i>'));
+    }
+}
 
 $oPage->addItem(new IEPageBottom());
 
 $oPage->draw();
-?>

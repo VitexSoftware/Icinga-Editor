@@ -2,15 +2,14 @@
 
 /**
  * Import ze souboru
- * 
+ *
  * @package    IcingaEditor
  * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2012 Vitex@hippy.cz (G)
  */
 require_once 'includes/IEInit.php';
-require_once 'IEImporter.php';
-
+require_once 'classes/IEImporter.php';
 
 $oPage->onlyForLogged();
 
@@ -27,7 +26,6 @@ if ($oPage->isPosted()) {
     }
     $Importer = new IEImporter($Params);
 
-
     $CfgText = $oPage->getRequestValue('cfgtext');
     if ($CfgText) {
         $Importer->importCfgText($CfgText);
@@ -39,7 +37,6 @@ if ($oPage->isPosted()) {
 } else {
     $oPage->addStatusMessage(_('Zadejte konfigurační fragment příkazu, nebo zvolte soubor k importu'));
 }
-
 
 $oPage->addItem(new IEPageTop(_('Import konfigurace')));
 
@@ -59,8 +56,8 @@ input.ui-button { width: 100%; }
 
 $oPage->columnII->addItem(new EaseHtmlFieldSet(_('Import konfigurace'), $ImportForm));
 
+$oPage->columnI->addItem( '<div class="well">'._('Vložte konfigurační fragment nagiosu / icingy').'</div>' );
+
 $oPage->addItem(new IEPageBottom());
 
-
 $oPage->draw();
-?>

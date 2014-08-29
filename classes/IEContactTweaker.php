@@ -34,12 +34,12 @@ class IEContactTweaker extends EaseHtmlDivTag
     public $configurator = null;
     /**
      *
-     * @var type 
+     * @var type
      */
     public $subcontactTypes = array('email', 'jabber', 'sms', 'twitter');
     /**
      *
-     * @var type 
+     * @var type
      */
     private $cnt;
 
@@ -58,12 +58,12 @@ class IEContactTweaker extends EaseHtmlDivTag
 
         $this->addItem(new EaseHtmlDivTag(null, _('Založeno') . ': ' . $this->contact->getDataValue('DatCreate')));
         $oPage = EaseShared::webPage();
-        if($oPage->isPosted()){
+        if ($oPage->isPosted()) {
             $oldId = $this->contact->getId();
             $contactType = $oPage->getRequestValue('contact');
             $contactData = $oPage->getRequestValue('cnt');
-            if(isset($contactType) && strlen($contactData)){
-                if($this->contact->fork(array($contactType => $contactData))){
+            if (isset($contactType) && strlen($contactData)) {
+                if ($this->contact->fork(array($contactType => $contactData))) {
                     $this->addStatusMessage(sprintf(_('Kontaktní údaj %s %s byl přidán'),$contactType,$contactData),'success');
                     $this->cnt = '';
                 } else {
@@ -75,7 +75,7 @@ class IEContactTweaker extends EaseHtmlDivTag
         }
     }
 
-    function finalize()
+    public function finalize()
     {
         $subcontatcts = $this->contact->getChilds();
         foreach ($subcontatcts as $subcontatctID => $subcontatctInfo) {
@@ -87,21 +87,20 @@ class IEContactTweaker extends EaseHtmlDivTag
                                                                     )
                            )
                     );
-            
-            
+
             unset($this->subcontactTypes[$subcontatctInfo['type']]);
             $this->addItem('<br/>');
         }
-        
-        if(count($this->subcontactTypes)){
-        
+
+        if (count($this->subcontactTypes)) {
+
         $form = new EaseTWBForm('ContatctTweak','contacttweak.php');
         $form->addItem(new EaseHtmlSelect('contact', $this->subcontactTypes));
         $form->addItem(new EaseHtmlInputHiddenTag('contact_id',  $this->contact->getId()));
         $form->addItem(
-                new EaseTWBFormGroup(_('Kontakt'), 
-                        new EaseHtmlInputTextTag('cnt',  $this->cnt), 
-                        EaseShared::webPage()->getRequestValue('cnt'), 
+                new EaseTWBFormGroup(_('Kontakt'),
+                        new EaseHtmlInputTextTag('cnt',  $this->cnt),
+                        EaseShared::webPage()->getRequestValue('cnt'),
                         _('telefonní číslo, email či jabberová adresa dle druhu kontaktu')
                         )
         );
