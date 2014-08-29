@@ -14,80 +14,83 @@ apache_install() {
 	fi
 }
 
-. /usr/share/debconf/confmodule
-
-db_input critical icinga-editor/SEND_MAILS_FROM || true
-db_go || true
-db_get icinga-editor/SEND_MAILS_FROM
-
-db_input critical icinga-editor/ICINGA_SERVER_IP || true
-db_go || true
-db_get icinga-editor/ICINGA_SERVER_IP
-
-
-if [ ! -e /etc/icinga-editor/config-db.sh ] ; then
-
-. /usr/share/dbconfig-common/dpkg/postinst.mysql
-dbc_generate_include_owner="root:www-data"
-dbc_generate_include_perms="0640"
-dbc_generate_include=sh:/etc/icinga-editor/config-db.sh
-
-
-if ! dbc_go icinga-editor $@ ; then
-	echo 'Automatic configuration using dbconfig-common failed!'
-fi
-
-. /etc/icinga-editor/config-db.sh
-
 IECFG="/usr/share/icinga-editor/includes/Configure.php"
 
-echo > $IECFG 
-echo "<?php" >> $IECFG 
-echo "define('SEND_MAILS_FROM', '$SEND_MAILS_FROM');" >> $IECFG 
-echo "define('DB_SERVER', 'localhost');" >> $IECFG 
-echo "define('DB_SERVER_USERNAME', '$dbuser');" >> $IECFG 
-echo "define('DB_SERVER_PASSWORD', '$dbpass');" >> $IECFG 
-echo "define('DB_DATABASE', '$dbname');" >> $IECFG 
-echo "define('DB_PREFIX', 'iciedit_');" >> $IECFG 
-echo "define('LOG_DIRECTORY', '/var/tmp/');" >> $IECFG 
-echo "define('CFG_GENERATED', '/etc/icinga/generated/');" >> $IECFG 
-echo "define('EMAIL_FROM','monitor@v.s.cz');" >> $IECFG 
-echo "define('SEND_INFO_TO','info@vitexsoftware.cz');" >> $IECFG 
-echo "define('ICINGA_SERVER_IP','$ICINGA_SERVER_IP');" >> $IECFG 
+if [ ! -f $IECFG ] ; then
 
-#rm -f /etc/icinga-editor/config-db.sh
+    . /usr/share/debconf/confmodule
 
-fi
+    db_input critical icinga-editor/SEND_MAILS_FROM || true
+    db_go || true
+    db_get icinga-editor/SEND_MAILS_FROM
 
-if [ "$1" = "configure" ]; then
+    db_input critical icinga-editor/ICINGA_SERVER_IP || true
+    db_go || true
+    db_get icinga-editor/ICINGA_SERVER_IP
 
-	db_version 2.0
 
-        mkdir -p /usr/share/icinga-editor/log
-        mkdir -p /usr/share/icinga-editor/temp
 
-	chown -R www-data:www-data    /usr/share/icinga-editor/log
-	chown -R www-data:www-data    /usr/share/icinga-editor/temp
+    . /usr/share/dbconfig-common/dpkg/postinst.mysql
+    dbc_generate_include_owner="root:www-data"
+    dbc_generate_include_perms="0640"
+    dbc_generate_include=sh:/etc/icinga-editor/config-db.sh
 
-	apache_install $1
-		# Reload webserver in any case, configuration might have changed
-		# Redirection of 3 is needed because Debconf uses it and it might 
-		# be inherited by webserver. See bug #446324.
-        if [ -f /etc/init.d/apache2 ] ; then
-            if [ -x /usr/sbin/invoke-rc.d ]; then
-                invoke-rc.d apache2 reload 3>/dev/null || true
-            else
-                /etc/init.d/apache2 reload 3>/dev/null || true
+
+    if ! dbc_go icinga-editor $@ ; then
+            echo 'Automatic configuration using dbconfig-common failed!'
+    fi
+
+    . /etc/icinga-editor/config-db.sh
+
+
+    echo > $IECFG 
+    echo "<?php" >> $IECFG 
+    echo "define('SEND_MAILS_FROM', '$SEND_MAILS_FROM');" >> $IECFG 
+    echo "define('DB_SERVER', 'localhost');" >> $IECFG 
+    echo "define('DB_SERVER_USERNAME', '$dbuser');" >> $IECFG 
+    echo "define('DB_SERVER_PASSWORD', '$dbpass');" >> $IECFG 
+    echo "define('DB_DATABASE', '$dbname');" >> $IECFG 
+    echo "define('DB_PREFIX', 'iciedit_');" >> $IECFG 
+    echo "define('LOG_DIRECTORY', '/var/tmp/');" >> $IECFG 
+    echo "define('CFG_GENERATED', '/etc/icinga/generated/');" >> $IECFG 
+    echo "define('EMAIL_FROM','monitor@v.s.cz');" >> $IECFG 
+    echo "define('SEND_INFO_TO','info@vitexsoftware.cz');" >> $IECFG 
+    echo "define('ICINGA_SERVER_IP','$ICINGA_SERVER_IP');" >> $IECFG 
+
+    #rm -f /etc/icinga-editor/config-db.sh
+
+
+    if [ "$1" = "configure" ]; then
+
+            db_version 2.0
+
+            mkdir -p /usr/share/icinga-editor/log
+            mkdir -p /usr/share/icinga-editor/temp
+
+            chown -R www-data:www-data    /usr/share/icinga-editor/log
+            chown -R www-data:www-data    /usr/share/icinga-editor/temp
+
+            apache_install $1
+                    # Reload webserver in any case, configuration might have changed
+                    # Redirection of 3 is needed because Debconf uses it and it might 
+                    # be inherited by webserver. See bug #446324.
+            if [ -f /etc/init.d/apache2 ] ; then
+                if [ -x /usr/sbin/invoke-rc.d ]; then
+                    invoke-rc.d apache2 reload 3>/dev/null || true
+                else
+                    /etc/init.d/apache2 reload 3>/dev/null || true
+                fi
             fi
-        fi
 
-        if [ -f /etc/init.d/avahi ] ; then
-            if [ -x /usr/sbin/invoke-rc.d ]; then
-                invoke-rc.d avahi reload 3>/dev/null || true
-            else
-                /etc/init.d/avahi reload 3>/dev/null || true
+            if [ -f /etc/init.d/avahi ] ; then
+                if [ -x /usr/sbin/invoke-rc.d ]; then
+                    invoke-rc.d avahi reload 3>/dev/null || true
+                else
+                    /etc/init.d/avahi reload 3>/dev/null || true
+                fi
             fi
-        fi
+
+    fi
 
 fi
 
