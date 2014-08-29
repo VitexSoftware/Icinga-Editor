@@ -24,17 +24,20 @@ db_input critical icinga-editor/ICINGA_SERVER_IP || true
 db_go || true
 db_get icinga-editor/ICINGA_SERVER_IP
 
+
+if [ ! -e /etc/icinga-editor/config-db.sh ] ; then
+
 . /usr/share/dbconfig-common/dpkg/postinst.mysql
 dbc_generate_include_owner="root:www-data"
 dbc_generate_include_perms="0640"
-dbc_generate_include=sh:/etc/icinga-editor-config-db.sh
+dbc_generate_include=sh:/etc/icinga-editor/config-db.sh
 
 
 if ! dbc_go icinga-editor $@ ; then
 	echo 'Automatic configuration using dbconfig-common failed!'
 fi
 
-. /etc/icinga-editor-config-db.sh
+. /etc/icinga-editor/config-db.sh
 
 IECFG="/usr/share/icinga-editor/includes/Configure.php"
 
@@ -52,7 +55,9 @@ echo "define('EMAIL_FROM','monitor@v.s.cz');" >> $IECFG
 echo "define('SEND_INFO_TO','info@vitexsoftware.cz');" >> $IECFG 
 echo "define('ICINGA_SERVER_IP','$ICINGA_SERVER_IP');" >> $IECFG 
 
-#rm -f /etc/icinga-editor-config-db.sh
+#rm -f /etc/icinga-editor/config-db.sh
+
+fi
 
 if [ "$1" = "configure" ]; then
 
