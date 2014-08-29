@@ -40,7 +40,7 @@ class IEMainMenu extends EaseHtmlDivTag {
     private function groupsHostsMenu($nav) {
 
         EaseShared::webPage()->addCss('.dropdown-menu { overflow-y: auto } ');
-        EaseShared::webPage()->addJavaScript("$('.dropdown-menu').css('max-height',$(window).height()-100);",null,true);
+        EaseShared::webPage()->addJavaScript("$('.dropdown-menu').css('max-height',$(window).height()-100);", null, true);
 
         $user = EaseShared::user();
         $host = new IEHost();
@@ -69,16 +69,21 @@ class IEMainMenu extends EaseHtmlDivTag {
             foreach ($hostgroups as $cID => $hgInfo) {
                 $hostGroupMenuItem['hostgroup.php?hostgroup_id=' . $hgInfo['hostgroup_id']] = EaseTWBPart::GlyphIcon('cloud') . ' ' . $hgInfo['hostgroup_name'];
                 foreach (unserialize($hgInfo['members']) as $hgMemeber) {
-                    $hInfo = & $hnames[$hgMemeber];
-
-                    $image = $hInfo['icon_image'];
+                    if ($hgMemeber == '*') {
+                        $image = null;
+                    } else {
+                        $hInfo = & $hnames[$hgMemeber];
+                        $image = $hInfo['icon_image'];
+                    }
                     if (!$image) {
                         $image = 'unknown.gif';
                     }
 
-                    $hostGroupMenuItem['host.php?host_id=' . $hInfo['host_id']] = '&nbsp;' . IEHostOverview::icon($hInfo) . ' ' .
-                            $hInfo['host_name'] . ' ' .
-                            IEHostOverview::platformIcon($hInfo['platform']);
+                    if (!is_null($hInfo)) {
+                        $hostGroupMenuItem['host.php?host_id=' . $hInfo['host_id']] = '&nbsp;' . IEHostOverview::icon($hInfo) . ' ' .
+                                $hInfo['host_name'] . ' ' .
+                                IEHostOverview::platformIcon($hInfo['platform']);
+                    }
                 }
             }
         }
