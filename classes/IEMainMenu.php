@@ -45,9 +45,11 @@ class IEMainMenu extends EaseHtmlDivTag {
         $user = EaseShared::user();
         $host = new IEHost();
         $hosts = $host->getListing(null, null, array('icon_image', 'platform'));
+        $hostsNotInGroup = array();
         $hnames = array();
         foreach ($hosts as $hID => $hInfo) {
             $hnames[$hInfo['host_name']] = & $hosts[$hID];
+            $hostsNotInGroup[$hInfo['host_name']] = $hInfo;
         }
         $topItems = array(
             'wizard.php' => EaseTWBPart::GlyphIcon('forward') . ' ' . _('Průvodce založením hostu'),
@@ -61,6 +63,7 @@ class IEMainMenu extends EaseHtmlDivTag {
           'hostescalation.php' => _('Eskalace hostů') */
 
         $pocHostgroup = $hostgroup->getMyRecordsCount();
+        $hostGroupMenuItem = array();
 
         if ($pocHostgroup) {
             //$hostgroups = $hostgroup->myDbLink->queryToArray('SELECT ' . $hostgroup->getmyKeyColumn() . ', hostgroup_name, DatSave FROM ' . $hostgroup->myTable . ' WHERE user_id=' . $user->getUserID(), 'hostgroup_id');
@@ -68,12 +71,13 @@ class IEMainMenu extends EaseHtmlDivTag {
 
             foreach ($hostgroups as $cID => $hgInfo) {
                 $hostGroupMenuItem['hostgroup.php?hostgroup_id=' . $hgInfo['hostgroup_id']] = EaseTWBPart::GlyphIcon('cloud') . ' ' . $hgInfo['hostgroup_name'];
-                foreach (unserialize($hgInfo['members']) as $hgMemeber) {
-                    if ($hgMemeber == '*') {
+                foreach (unserialize($hgInfo['members']) as $hgMember) {
+                    if ($hgMember == '*') {
                         $image = null;
                     } else {
-                        $hInfo = & $hnames[$hgMemeber];
+                        $hInfo = & $hnames[$hgMember];
                         $image = $hInfo['icon_image'];
+                        unset($hostsNotInGroup[$hgMember]);
                     }
                     if (!$image) {
                         $image = 'unknown.gif';
@@ -86,10 +90,24 @@ class IEMainMenu extends EaseHtmlDivTag {
                     }
                 }
             }
-        }
-        if (count($hostGroupMenuItem)) {
             $topItems['hostgroups.php'] = EaseTWBPart::GlyphIcon('list-alt') . ' ' . _('Přehled skupin hostů');
+        } else {
+            if(count($hostGroupMenuItem)) {
+                $hostGroupMenuItem[] = '';
+            }
         }
+
+        if (count($hostsNotInGroup)) {
+
+            foreach ($hostsNotInGroup as $menuHost) {
+                $hostGroupMenuItem['host.php?host_id=' . $menuHost['host_id']] = '&nbsp;' . IEHostOverview::icon($menuHost) . ' ' .
+                        $menuHost['host_name'] . ' ' .
+                        IEHostOverview::platformIcon($menuHost['platform']);
+            }
+        }
+
+
+
 
         $topItems['hosts.php'] = EaseTWBPart::GlyphIcon('list') . ' ' . _('Detailní přehled hostů');
 
