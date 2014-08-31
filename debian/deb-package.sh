@@ -9,5 +9,7 @@ rm -f ./debian/changelog
 EDITOR=echo dch --create --newversion $VERSION-1 --package icinga-editor
 
 debuild -i -d -us -uc -b
+rm -fr ./debian/icinga-editor/
+
 
 

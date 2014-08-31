@@ -55,8 +55,9 @@ $oPage->columnII->addItem(new EaseHtmlH3Tag($contact->getName()));
 
 $oPage->columnII->addItem(new IEContactTweaker($contact));
 
-$oPage->columnIII->addItem($contact->deleteButton($contact->getName(), 'contact_id=' . $contact->getId()));
-
+if ($contact->getName() != $oUser->getUserLogin()) {
+    $oPage->columnIII->addItem($contact->deleteButton($contact->getName(), 'contact_id=' . $contact->getId()));
+}
 $renameForm = new EaseTWBForm('Rename', '?action=rename&amp;contact_id=' . $contact->getID() . '&contact_id=' . $contact->getId());
 $renameForm->addItem(new EaseHtmlInputTextTag('newname'), $contact->getName(), array('class' => 'form-control'));
 $renameForm->addItem(new EaseTWSubmitButton(_('Přejmenovat'), 'success'));

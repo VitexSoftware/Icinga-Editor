@@ -18,8 +18,7 @@ require_once 'IEIconSelector.php';
  *
  * @author vitex
  */
-class IEHost extends IECfg
-{
+class IEHost extends IECfg {
 
     public $myTable = 'hosts';
     public $keyword = 'host';
@@ -231,16 +230,14 @@ class IEHost extends IECfg
      * @param  string                     $urlAdd Předávaná část URL
      * @return \EaseJQConfirmedLinkButton
      */
-    public function deleteButton($name = null, $addUrl = '')
-    {
+    public function deleteButton($name = null, $addUrl = '') {
         return parent::deleteButton(_('Hosta'), $addUrl);
     }
 
     /**
      * Smaže záznam
      */
-    public function delete($id = null)
-    {
+    public function delete($id = null) {
         if (!is_null($id)) {
             $this->loadFromMySQL($id);
         }
@@ -272,8 +269,7 @@ class IEHost extends IECfg
      * @param  array $allData
      * @return array
      */
-    public function controlAllData($allData)
-    {
+    public function controlAllData($allData) {
         foreach ($allData as $aDkey => $aD) {
             if ($allData[$aDkey]['max_check_attempts'] == 0) {
                 unset($allData[$aDkey]['max_check_attempts']);
@@ -287,8 +283,7 @@ class IEHost extends IECfg
      * Začne sledovat právě běžící TCP služby
      * @return int počet sledovaných
      */
-    public function autoPopulateServices()
-    {
+    public function autoPopulateServices() {
         $scanner = new IEPortScanner($this);
 
         return $scanner->assignServices();
@@ -298,8 +293,7 @@ class IEHost extends IECfg
      * Přejmenuje hosta a závistlosti
      * @param type $newname
      */
-    public function rename($newname)
-    {
+    public function rename($newname) {
         $oldname = $this->getName();
         $this->setDataValue($this->nameColumn, $newname);
 
@@ -327,10 +321,9 @@ class IEHost extends IECfg
     /**
      * Zjistí ikonu, stahne jí z netu, zkonvertuje a použije jako ikonu hosta
      */
-    public function favToIcon()
-    {
+    public function favToIcon() {
         $icoUrl = false;
-        $baseUrl = 'http://' . $this->getDataValue('host_name');
+        $baseUrl = 'http://' . $this->getDataValue('host_name') . '/';
         $indexpage = @file_get_contents($baseUrl);
         $icoUrls = array();
         if (strlen($indexpage)) {
@@ -341,12 +334,14 @@ class IEHost extends IECfg
                 $urlLink = false;
                 if (isset($link->attributes)) {
                     foreach ($link->attributes as $atribut) {
-                        if (($atribut->name == 'rel') && stristr($atribut->value, 'icon')) {
-                            $urlLink = true;
-                            $rel = $atribut->value;
-                        }
-                        if (($atribut->name == 'href')) {
-                            $url = $atribut->value;
+                        if ( isset($atribut->name)) {
+                            if (($atribut->name == 'rel') && stristr($atribut->value, 'icon')) {
+                                $urlLink = true;
+                                $rel = $atribut->value;
+                            }
+                            if (($atribut->name == 'href')) {
+                                $url = $atribut->value;
+                            }
                         }
                     }
                     if ($urlLink) {
@@ -429,8 +424,7 @@ class IEHost extends IECfg
         return false;
     }
 
-    function draw()
-    {
+    function draw() {
         echo IEHostOverview::icon($this);
     }
 

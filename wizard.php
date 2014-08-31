@@ -130,7 +130,7 @@ if ($hostName || $address || $addressSix) {
                 'register' => true,
                 'generate' => TRUE,
                 'alias' => $hostName,
-                'contacts' => $oUser->getFirstContact()
+                'contacts' => array($oUser->getUserLogin())
             )
     );
 

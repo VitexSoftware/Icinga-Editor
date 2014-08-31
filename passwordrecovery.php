@@ -6,14 +6,14 @@
  * @package    IcingaEditor
  * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
- * @copyright  2012 Vitex@hippy.cz (G)
+ * @copyright  2012-14 info@vitexsoftware.cz (G)
  */
 require_once 'includes/IEInit.php';
 require_once 'Ease/EaseMail.php';
 require_once 'Ease/EaseHtmlForm.php';
 $success = false;
 
-$EmailTo = $oPage->getPostValue('Email');
+$emailTo = $oPage->getPostValue('Email');
 
 $oPage->includeJavaScript('js/jquery.validate.js');
 $oPage->addJavascript('$("#PassworRecovery").validate({
@@ -25,23 +25,23 @@ $oPage->addJavascript('$("#PassworRecovery").validate({
   }
 });',null,true);
 
-if ($EmailTo) {
+if ($emailTo) {
     $oPage->takemyTable();
-    $UserEmail = $oPage->easeAddSlashes($EmailTo);
-    $UserFound = $oPage->myDbLink->queryToArray('SELECT id,login FROM user WHERE email=\'' . $UserEmail . '\'');
-    if (count($UserFound)) {
-        $userID = intval($UserFound[0]['id']);
-        $UserLogin = $UserFound[0]['login'];
-        $NewPassword = $oPage->randomString(8);
+    $userEmail = $oPage->easeAddSlashes($emailTo);
+    $userFound = $oPage->myDbLink->queryToArray('SELECT id,login FROM user WHERE email=\'' . $userEmail . '\'');
+    if (count($userFound)) {
+        $userID = intval($userFound[0]['id']);
+        $userLogin = $userFound[0]['login'];
+        $newPassword = $oPage->randomString(8);
 
         $PassChanger = new EaseUser($userID);
-        $PassChanger->passwordChange($NewPassword);
+        $PassChanger->passwordChange($newPassword);
 
-        $email = $oPage->addItem(new EaseShopMail($UserEmail, _('Nové heslo pro ') . $_SERVER['SERVER_NAME']));
+        $email = $oPage->addItem(new EaseMail($userEmail,'Icinga Editor -'. _('Nové heslo pro').' ' . $_SERVER['SERVER_NAME']));
         $email->addItem(_("Tvoje přihlašovací údaje byly změněny:\n"));
 
-        $email->addItem(' Login: ' . $UserLogin . "\n");
-        $email->addItem(' Heslo: ' . $NewPassword . "\n");
+        $email->addItem(' Login: ' . $userLogin . "\n");
+        $email->addItem(' Heslo: ' . $newPassword . "\n");
 
         $email->send();
 
