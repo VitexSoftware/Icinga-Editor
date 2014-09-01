@@ -280,6 +280,43 @@ class IEHost extends IECfg {
     }
 
     /**
+     * Vrací všechna data
+     * 
+     * @return array Data hostu k uložení do konfiguráků
+     */
+    public function getAllData() {
+        $allData = parent::getAllData();
+        foreach ($allData as $hostID => $hostInfo) {
+            if(!intval($hostInfo['register'])){
+                continue;
+            }
+            if (intval($hostInfo['user_id'])) {
+                if (is_object($this->owner)) {
+                    if ($this->owner->getUserID() != $hostInfo['user_id']) {
+                        $this->owner->loadFromMySQL((int) $hostInfo['user_id']);
+                    }
+                } else {
+                    $this->owner = new IEUser((int) $hostInfo['user_id']);
+                }
+                
+                $hostOwnerLogin = $this->owner->getUserLogin();
+                /* Každý host musí mít jak kontakt login uživatele který ho má vidět */
+                if (is_array($hostInfo['contacts'])) {
+                    if (array_search($hostOwnerLogin, $hostInfo['contacts']) === false) {
+                        $allData[$hostID]['contacts'][] = $hostOwnerLogin;
+                    }
+                } else {
+                    $allData[$hostID]['contacts'] = array($hostOwnerLogin);
+                }
+            } else {
+                $this->addStatusMessage(_('Host bez vlastníka').': #'.$hostInfo[$this->myKeyColumn].': '.$hostInfo[$this->nameColumn],'warning');
+            }
+        }
+
+        return $allData;
+    }
+
+    /**
      * Začne sledovat právě běžící TCP služby
      * @return int počet sledovaných
      */
@@ -334,7 +371,7 @@ class IEHost extends IECfg {
                 $urlLink = false;
                 if (isset($link->attributes)) {
                     foreach ($link->attributes as $atribut) {
-                        if ( isset($atribut->name)) {
+                        if (isset($atribut->name)) {
                             if (($atribut->name == 'rel') && stristr($atribut->value, 'icon')) {
                                 $urlLink = true;
                                 $rel = $atribut->value;

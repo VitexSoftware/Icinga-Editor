@@ -38,15 +38,11 @@ class IEContactSelector extends EaseContainer
                 }
             }
             
-            $hostOwnerLogin = $holder->owner->getUserLogin();
             foreach ($allContacts as $contactID => $contactInfo) {
                 if ($contactInfo['register'] != 1) {
                     unset($allContacts[$contactID]);
                 }
                 if (!$contactInfo['parent_id']) {
-                    unset($allContacts[$contactID]);
-                }
-                if ($contactInfo['contact_name'] == $hostOwnerLogin) {
                     unset($allContacts[$contactID]);
                 }
                 

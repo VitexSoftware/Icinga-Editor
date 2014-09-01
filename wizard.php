@@ -129,8 +129,7 @@ if ($hostName || $address || $addressSix) {
                 'platform' => 'generic',
                 'register' => true,
                 'generate' => TRUE,
-                'alias' => $hostName,
-                'contacts' => array($oUser->getUserLogin())
+                'alias' => $hostName
             )
     );
 
