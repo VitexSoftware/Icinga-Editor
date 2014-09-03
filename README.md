@@ -1,7 +1,7 @@
 icinga_config_editor
 ====================
 
-Gui for generating Icinga configuration files
+Gui for generating Icinga configuration files 
 
 Instalace:
 
@@ -10,5 +10,6 @@ Instalace:
     aptitude update
     aptitude install icinga-editor
 
+Note: Current version works only with MySQL.
 
 
