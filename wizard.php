@@ -178,6 +178,13 @@ $oPage->columnI->addItem(new EaseHtmlDivTag(null, _('Po zadání alespoň jednoh
                 . 'průvodce dohledá ostatní a provede sken na některé základní služby.'
                 . '<br>Pokud budou tyto nalezeny aktivují se jejich testy. Informace o stavu bude odesílána na první zadaný kontakt'), array('class' => 'well')));
 
+$oPage->columnI->addItem(new EaseHtmlDivTag(null, _('Pro instalaci nového vzdáleného senzoru prosím nejprve na sledovaném počítači nainstalujte balík'
+        . ' a poté '
+        . '<code>wget -O - http://v.s.cz/info@vitexsoftware.cz.gpg.key | sudo apt-key add -</code>
+<code>echo deb http://v.s.cz/ stable main | sudo tee /etc/apt/sources.list.d/vitexsoftware.list</code>
+<code>sudo aptitude update</code>
+<code>aptitude install nagios-nrpe-server nagios-check-clamscan</code>'), array('class' => 'well')));
+
 $oPage->addItem(new EaseHtmlDivTag('preload', new IEFXPreloader(), array('class' => 'fuelux')));
 
 $oPage->addItem(new IEPageBottom());

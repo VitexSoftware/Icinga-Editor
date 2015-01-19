@@ -7,25 +7,28 @@
  * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
  */
-class IEMainMenu extends EaseHtmlDivTag {
+class IEMainMenu extends EaseHtmlDivTag
+{
 
     /**
      * Vytvoří hlavní menu
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct('MainMenu');
     }
 
     /**
      * Add "Apply Changes" Button into menu
-     * 
+     *
      * @param IEBootstrapMenu $nav
      */
-    private function changesButton($nav) {
+    private function changesButton($nav)
+    {
         if (EaseShared::user()->getSettingValue('unsaved') == true) {
             $nav->addMenuItem(
-                    new EaseHtmlATag(
-                    'apply.php', _('Uplatnit změny'), array('class' => 'btn btn-success')), 'right'
+                new EaseHtmlATag(
+                'apply.php', _('Uplatnit změny'), array('class' => 'btn btn-success')), 'right'
             );
         } else {
             $nav->addMenuItem(new EaseHtmlATag('apply.php', _('Uplatnit změny'), array('class' => 'btn btn-inverse')), 'right');
@@ -34,10 +37,11 @@ class IEMainMenu extends EaseHtmlDivTag {
 
     /**
      * Add Groups/Hosts into menu
-     * 
+     *
      * @param IEBootstrapMenu $nav
      */
-    private function groupsHostsMenu($nav) {
+    private function groupsHostsMenu($nav)
+    {
 
         EaseShared::webPage()->addCss('.dropdown-menu { overflow-y: auto } ');
         EaseShared::webPage()->addJavaScript("$('.dropdown-menu').css('max-height',$(window).height()-100);", null, true);
@@ -52,7 +56,7 @@ class IEMainMenu extends EaseHtmlDivTag {
             $hostsNotInGroup[$hInfo['host_name']] = $hInfo;
         }
         $topItems = array(
-            'wizard.php' => EaseTWBPart::GlyphIcon('forward') . ' ' . _('Průvodce založením hostu'),
+          'wizard.php' => EaseTWBPart::GlyphIcon('forward') . ' ' . _('Průvodce založením hostu'),
         );
         $topItems['host.php'] = EaseTWBPart::GlyphIcon('edit') . ' ' . _('Nový Host');
 
@@ -71,28 +75,30 @@ class IEMainMenu extends EaseHtmlDivTag {
 
             foreach ($hostgroups as $cID => $hgInfo) {
                 $hostGroupMenuItem['hostgroup.php?hostgroup_id=' . $hgInfo['hostgroup_id']] = EaseTWBPart::GlyphIcon('cloud') . ' ' . $hgInfo['hostgroup_name'];
-                foreach (unserialize($hgInfo['members']) as $hgMember) {
-                    if ($hgMember == '*') {
-                        $image = null;
-                    } else {
-                        $hInfo = & $hnames[$hgMember];
-                        $image = $hInfo['icon_image'];
-                        unset($hostsNotInGroup[$hgMember]);
-                    }
-                    if (!$image) {
-                        $image = 'unknown.gif';
-                    }
+                if (strlen($hgInfo['members'])) {
+                    foreach (unserialize($hgInfo['members']) as $hgMember) {
+                        if ($hgMember == '*') {
+                            $image = null;
+                        } else {
+                            $hInfo = & $hnames[$hgMember];
+                            $image = $hInfo['icon_image'];
+                            unset($hostsNotInGroup[$hgMember]);
+                        }
+                        if (!$image) {
+                            $image = 'unknown.gif';
+                        }
 
-                    if (!is_null($hInfo)) {
-                        $hostGroupMenuItem['host.php?host_id=' . $hInfo['host_id']] = '&nbsp;' . IEHostOverview::icon($hInfo) . ' ' .
+                        if (!is_null($hInfo)) {
+                            $hostGroupMenuItem['host.php?host_id=' . $hInfo['host_id']] = '&nbsp;' . IEHostOverview::icon($hInfo) . ' ' .
                                 $hInfo['host_name'] . ' ' .
                                 IEHostOverview::platformIcon($hInfo['platform']);
+                        }
                     }
                 }
             }
             $topItems['hostgroups.php'] = EaseTWBPart::GlyphIcon('list-alt') . ' ' . _('Přehled skupin hostů');
         } else {
-            if(count($hostGroupMenuItem)) {
+            if (count($hostGroupMenuItem)) {
                 $hostGroupMenuItem[] = '';
             }
         }
@@ -101,8 +107,8 @@ class IEMainMenu extends EaseHtmlDivTag {
 
             foreach ($hostsNotInGroup as $menuHost) {
                 $hostGroupMenuItem['host.php?host_id=' . $menuHost['host_id']] = '&nbsp;' . IEHostOverview::icon($menuHost) . ' ' .
-                        $menuHost['host_name'] . ' ' .
-                        IEHostOverview::platformIcon($menuHost['platform']);
+                    $menuHost['host_name'] . ' ' .
+                    IEHostOverview::platformIcon($menuHost['platform']);
             }
         }
 
@@ -117,7 +123,8 @@ class IEMainMenu extends EaseHtmlDivTag {
     /**
      * Vložení menu
      */
-    public function afterAdd() {
+    public function afterAdd()
+    {
         $nav = $this->addItem(new IEBootstrapMenu());
         $user = EaseShared::user();
         $userID = $user->getUserID();
@@ -137,9 +144,9 @@ class IEMainMenu extends EaseHtmlDivTag {
                 }
 
                 $nav->addDropDownMenu(_('Uživatelé'), array_merge($userList, array(
-                    'users.php' => EaseTWBPart::GlyphIcon('list') . '&nbsp;' . _('Přehled uživatelů'),
-                    'createaccount.php' => EaseTWBPart::GlyphIcon('plus') . ' ' . _('Nový uživatel'),
-                        ))
+                  'users.php' => EaseTWBPart::GlyphIcon('list') . '&nbsp;' . _('Přehled uživatelů'),
+                  'createaccount.php' => EaseTWBPart::GlyphIcon('plus') . ' ' . _('Nový uživatel'),
+                    ))
                 );
             }
 
@@ -153,13 +160,13 @@ class IEMainMenu extends EaseHtmlDivTag {
 //            $nav->addDropDownMenu(_('Hosti'), $hostGroupHostsMenuItem);
             if (EaseShared::user()->getSettingValue('admin')) {
                 $nav->addDropDownMenu(_('Služby'), array(
-                    'service.php' => EaseTWBPart::GlyphIcon('plus') . ' ' . _('Nová služba'),
-                    'services.php' => EaseTWBPart::GlyphIcon('list') . ' ' . _('Přehled služeb'),
-                    'servicegroup.php' => EaseTWBPart::GlyphIcon('plus') . ' ' . _('Nová skupina služeb'),
-                    'servicegroups.php' => EaseTWBPart::GlyphIcon('list') . ' ' . _('Přehled skupin služeb'), /*
-                          'servicedependency.php' => _('Závislosti služeb'),
-                          'extserviceinfo.php' => _('Rozšířené informace služeb'),
-                          'serviceescalation.php' => _('Eskalace služeb') */)
+                  'service.php' => EaseTWBPart::GlyphIcon('plus') . ' ' . _('Nová služba'),
+                  'services.php' => EaseTWBPart::GlyphIcon('list') . ' ' . _('Přehled služeb'),
+                  'servicegroup.php' => EaseTWBPart::GlyphIcon('plus') . ' ' . _('Nová skupina služeb'),
+                  'servicegroups.php' => EaseTWBPart::GlyphIcon('list') . ' ' . _('Přehled skupin služeb'), /*
+                      'servicedependency.php' => _('Závislosti služeb'),
+                      'extserviceinfo.php' => _('Rozšířené informace služeb'),
+                      'serviceescalation.php' => _('Eskalace služeb') */)
                 );
             } else {
                 $service = new IEService();
@@ -193,31 +200,31 @@ class IEMainMenu extends EaseHtmlDivTag {
             }
 
             $nav->addDropDownMenu(_('Kontakty'), array_merge($contacts_menu, array(
-                'contacts.php' => EaseTWBPart::GlyphIcon('list') . ' ' . _('Přehled kontaktů'),
-                'newcontact.php' => EaseTWBPart::GlyphIcon('plus') . ' ' . _('Nový kontakt'),
-                'contactgroups.php' => EaseTWBPart::GlyphIcon('list') . ' ' . _('Přehled skupin kontaktů'),
-                'contactgroup.php' => EaseTWBPart::GlyphIcon('edit') . ' ' . _('Nová skupina kontaktů'))
+              'contacts.php' => EaseTWBPart::GlyphIcon('list') . ' ' . _('Přehled kontaktů'),
+              'newcontact.php' => EaseTWBPart::GlyphIcon('plus') . ' ' . _('Nový kontakt'),
+              'contactgroups.php' => EaseTWBPart::GlyphIcon('list') . ' ' . _('Přehled skupin kontaktů'),
+              'contactgroup.php' => EaseTWBPart::GlyphIcon('edit') . ' ' . _('Nová skupina kontaktů'))
             ));
 
             if ($user->getSettingValue('admin')) {
                 $nav->addDropDownMenu(_('Příkaz'), array(
-                    'commands.php' => EaseTWBPart::GlyphIcon('list-alt') . ' ' . _('Přehled příkazů'),
-                    'command.php' => EaseTWBPart::GlyphIcon('edit') . ' ' . _('Nový příkaz'),
-                    'importcommand.php' => EaseTWBPart::GlyphIcon('download') . ' ' . _('Importovat'))
+                  'commands.php' => EaseTWBPart::GlyphIcon('list-alt') . ' ' . _('Přehled příkazů'),
+                  'command.php' => EaseTWBPart::GlyphIcon('edit') . ' ' . _('Nový příkaz'),
+                  'importcommand.php' => EaseTWBPart::GlyphIcon('download') . ' ' . _('Importovat'))
                 );
                 $nav->addDropDownMenu(_('Rozšířené'), array(
-                    'timeperiods.php' => EaseTWBPart::GlyphIcon('list') . ' ' . _('Přehled časových period'),
-                    'timeperiod.php' => EaseTWBPart::GlyphIcon('plus') . ' ' . _('Nová časová perioda'),
-                    'regenall.php' => EaseTWBPart::GlyphIcon('ok') . ' ' . _('Přegenerovat všechny konfiguráky'),
-                    'dbrecreate.php' => EaseTWBPart::GlyphIcon('wrench') . ' ' . _('Reinicializovat databázi'),
-                    'import.php' => EaseTWBPart::GlyphIcon('download') . ' ' . _('Importovat')
-                        /* 'module.php' => _('definice modulů') */                        )
+                  'timeperiods.php' => EaseTWBPart::GlyphIcon('list') . ' ' . _('Přehled časových period'),
+                  'timeperiod.php' => EaseTWBPart::GlyphIcon('plus') . ' ' . _('Nová časová perioda'),
+                  'regenall.php' => EaseTWBPart::GlyphIcon('ok') . ' ' . _('Přegenerovat všechny konfiguráky'),
+                  'dbrecreate.php' => EaseTWBPart::GlyphIcon('wrench') . ' ' . _('Reinicializovat databázi'),
+                  'import.php' => EaseTWBPart::GlyphIcon('download') . ' ' . _('Importovat')
+                    /* 'module.php' => _('definice modulů') */                    )
                 );
             }
             $nav->addDropDownMenu(_('Výsledky testů'), array(
-                'nagstamon.php' => EaseTWBPart::GlyphIcon('info') . ' ' . _('PC Lin/Win/Mac'),
-                'anag.php' => EaseTWBPart::GlyphIcon('info') . ' ' . _('Android'),
-                'wpnag.php' => EaseTWBPart::GlyphIcon('Info') . ' ' . _('Win Phone'))
+              'nagstamon.php' => EaseTWBPart::GlyphIcon('info') . ' ' . _('PC Lin/Win/Mac'),
+              'anag.php' => EaseTWBPart::GlyphIcon('info') . ' ' . _('Android'),
+              'wpnag.php' => EaseTWBPart::GlyphIcon('Info') . ' ' . _('Win Phone'))
             );
         }
     }
@@ -225,7 +232,8 @@ class IEMainMenu extends EaseHtmlDivTag {
     /**
      * Přidá do stránky javascript pro skrývání oblasti stavových zpráv
      */
-    public function finalize() {
+    public function finalize()
+    {
         EaseJQueryPart::jQueryze($this);
         $this->addJavaScript('$("#StatusMessages").click(function () { $("#StatusMessages").fadeTo("slow",0.25).slideUp("slow"); });', 3, true);
     }

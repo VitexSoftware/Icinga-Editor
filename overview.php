@@ -40,7 +40,7 @@ if ($pocContact) {
         $warning = $oPage->columnII->addItem(new EaseHtmlDivTag('Contact', _('Nemáte definovaný kontakt'), array('class' => 'alert alert-info')));
         $warning->addItem(new EaseTWBLinkButton('contact.php', _('Založit první kontakt '.EaseTWBPart::GlyphIcon('edit'))));
     } else {
-        $oPage->columnII->addItem(new EaseHtmlDivTag('Contact', _('Kontakty vyžadují časovou periodu'), array('class' => 'alert alert-error')));
+        $oPage->columnII->addItem(new EaseHtmlDivTag('Contact', _('Kontakty vyžadují časovou periodu'), array('class' => 'alert alert-danger')));
     }
 }
 
@@ -63,7 +63,7 @@ if ($pocHostu) {
         $warning = $oPage->columnI->addItem(new EaseHtmlDivTag('Host', _('Nemáte definovaný žádný host'), array('class' => 'alert alert-info')));
         $warning->addItem(new EaseTWBLinkButton('host.php', _('Založit první host').' '.EaseTWBPart::GlyphIcon('edit')));
     } else {
-        $warning = $oPage->columnI->addItem(new EaseHtmlDivTag('Host', _('Hosty vyžadují časovou periodu ..'), array('class' => 'alert alert-error')));
+        $warning = $oPage->columnI->addItem(new EaseHtmlDivTag('Host', _('Hosty vyžadují časovou periodu ..'), array('class' => 'alert alert-danger')));
     }
 }
 
@@ -97,10 +97,10 @@ if ($pocServices) {
             $warning = $oPage->columnIII->addItem(new EaseHtmlDivTag('Host', _('Nemáte definovaný žádné služby'), array('class' => 'alert alert-info')));
             $warning->addItem(new EaseTWBLinkButton('service.php', _('Založit první službu') . ' <i class="icon-edit"></i>'));
         } else {
-            $warning = $oPage->columnIII->addItem(new EaseHtmlDivTag('Host', _('Služby vyžadují časovou periodu ..'), array('class' => 'alert alert-error')));
+            $warning = $oPage->columnIII->addItem(new EaseHtmlDivTag('Host', _('Služby vyžadují časovou periodu ..'), array('class' => 'alert alert-danger')));
         }
     } else {
-        $warning = $oPage->columnIII->addItem(new EaseHtmlDivTag('Host', _('Služby vyžadují příkazy ..'), array('class' => 'alert alert-error')));
+        $warning = $oPage->columnIII->addItem(new EaseHtmlDivTag('Host', _('Služby vyžadují příkazy ..'), array('class' => 'alert alert-danger')));
     }
 }
 

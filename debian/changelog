@@ -1,5 +1,5 @@
-icinga-editor (0.37-1) UNRELEASED; urgency=medium
+icinga-editor (0.38-1) UNRELEASED; urgency=medium
 
   * Initial release. (Closes: #XXXXXX)
 
- -- Vítězslav Vitex Dvořák <vitex@hippy.cz>  Sun, 31 Aug 2014 21:24:20 +0200
+ -- Vítězslav Vitex Dvořák <vitex@hippy.cz>  Mon, 01 Sep 2014 23:28:12 +0200

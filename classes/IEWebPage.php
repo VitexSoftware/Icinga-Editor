@@ -166,7 +166,7 @@ class IEBootstrapMenu extends EaseTWBNavbar
         if (!$user->getUserID()) {
             $this->addMenuItem('<a href="createaccount.php">' . EaseTWBPart::GlyphIcon('leaf') . ' ' . _('Registrace') . '</a>', 'right');
             $this->addMenuItem(
-                    '
+                '
 <li class="divider-vertical"></li>
 <li class="dropdown">
 <a class="dropdown-toggle" href="login.php" data-toggle="dropdown"><i class="icon-circle-arrow-left"></i> ' . _('Přihlášení') . '<strong class="caret"></strong></a>
@@ -222,7 +222,7 @@ class IEBootstrapMenu extends EaseTWBNavbar
  * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
  */
-class IEPageBottom extends EaseHtmlDivTag
+class IEPageBottom extends EaseTWBContainer
 {
 
     /**
@@ -237,8 +237,8 @@ class IEPageBottom extends EaseHtmlDivTag
         $this->addItem('<hr>');
         $this->addJavaScript('!function (d,s,id) {var js,fjs=d.getElementsByTagName(s)[0];if (!d.getElementById(id)) {js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");');
         $Foot = $this->addItem(new EaseHtmlDivTag('FootAbout'));
-        $Foot->addItem('<a href="http://www.spoje.net"><img style="position: relative; top: -7px; left: -10px;" align="right" style="border:0" src="img/spojenet_small_white.gif" alt="SPOJE.NET" title="Housing zajišťují SPOJE.NET s.r.o." /></a>');
-        $Foot->addItem('<span style="position: relative; top: -4px; left: -10px;">&nbsp;&nbsp; &copy; 2012 <a href="http://vitexsoftware.cz/">Vitex Software</a></span>');
+        $Foot->addItem('&nbsp;<a href="http://www.spoje.net"><img style="position: relative; top: -7px; left: -10px;" align="right" style="border:0" src="img/spojenet_small_white.gif" alt="SPOJE.NET" title="Housing zajišťují SPOJE.NET s.r.o." /></a>');
+        $Foot->addItem('&nbsp;<span style="position: relative; top: -4px; left: -10px;">&nbsp;&nbsp; &copy; 2012 <a href="http://vitexsoftware.cz/">Vitex Software</a></span>');
 
 //        $Foot->addItem('<a href="https://twitter.com/VSMonitoring" class="twitter-follow-button" data-show-count="true" data-lang="cs">Sledovat @VSMonitoring</a>');
     }

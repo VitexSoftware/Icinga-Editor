@@ -47,7 +47,7 @@ if ($testing) {
         $LineNo++;
 
         if (($Line === false) && ($LineNo == 1)) {
-            $errorLine = $oPage->addItem(new EaseHtmlDivTag(null, '<span class="label label-important">' . _('Chyba:') . '</span>', array('class' => 'alert alert-error')));
+            $errorLine = $oPage->addItem(new EaseHtmlDivTag(null, '<span class="label label-important">' . _('Chyba:') . '</span>', array('class' => 'alert alert-danger')));
             $oUser->addStatusMessage(_('Kontrola konfigurace nevrátila výsledek.'), 'error');
             $errorLine->addItem(_('Zkontroluj prosím zdlali nechybí potřebný fragment v /etc/sudoers:'));
             $errorLine->addItem(new EaseHtmlDivTag(null, 'User_Alias APACHE = www-data'));
@@ -58,7 +58,7 @@ if ($testing) {
 
         if (strstr($Line, 'Error:')) {
             $Line = str_replace('Error:', '', $Line);
-            $errorLine = $oPage->addItem(new EaseHtmlDivTag(null, '<span class="label label-important">' . _('Chyba:') . '</span>', array('class' => 'alert alert-error')));
+            $errorLine = $oPage->addItem(new EaseHtmlDivTag(null, '<span class="label label-important">' . _('Chyba:') . '</span>', array('class' => 'alert alert-danger')));
 
             $keywords = preg_split("/['(.*)']+/", $Line);
             switch (trim($keywords[0])) {
@@ -100,7 +100,7 @@ if ($testing) {
 
         if (strstr($Line, 'Error in configuration file')) {
             $keywords = preg_split("/'|\(|\)| - Line /", $Line);
-            $errorLine = $oPage->addItem(new EaseHtmlDivTag(null, '<span class="label label-error">' . _('Chyba v konfiguračním souboru'), array('class' => 'alert alert-error')));
+            $errorLine = $oPage->addItem(new EaseHtmlDivTag(null, '<span class="label label-error">' . _('Chyba v konfiguračním souboru'), array('class' => 'alert alert-danger')));
             $errorLine->addItem(new EaseHtmlATag('cfgfile.php?file=' . $keywords[1] . '&line=' . $keywords[3], $keywords[1]));
             $errorLine->addItem($keywords[4]);
             $ErrorCount++;
