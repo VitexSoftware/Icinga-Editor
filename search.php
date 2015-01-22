@@ -28,7 +28,8 @@ foreach ($results as $rectype => $records) {
 }
 
 if (count($found) == 1) {
-    header('Location: ' . $found[0]['url']);
+    $oPage->addStatusMessage(_('Nalezen pouze jeden výsledek', 'success'));
+    header('Location: ' . $found[0]['url'] . '&search=' . $query);
     exit;
 }
 

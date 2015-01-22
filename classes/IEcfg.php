@@ -1110,7 +1110,7 @@ class IEcfg extends EaseBrick
     public function searchString($what)
     {
         $results = array();
-        $res = EaseShared::db()->queryToArray("SELECT " . $this->myKeyColumn . "," . $this->nameColumn . " FROM " . $this->myTable . " WHERE " . $this->nameColumn . " LIKE '%" . $what . "%'", $this->myKeyColumn);
+        $res = EaseShared::db()->queryToArray("SELECT " . $this->myKeyColumn . "," . $this->nameColumn . " FROM " . $this->myTable . " WHERE " . $this->nameColumn . " LIKE '%" . $what . "%'" . ' ORDER BY ' . $this->nameColumn, $this->myKeyColumn);
         foreach ($res as $result) {
             $results[$result[$this->myKeyColumn]] = $result[$this->nameColumn];
         }

@@ -45,6 +45,7 @@ class IENavBarSearchBox extends EaseTWBForm
 
     function finalize()
     {
+
         EaseShared::webPage()->includeJavaScript('js/handlebars.js');
         EaseShared::webPage()->includeJavaScript('js/typeahead.bundle.js');
         EaseShared::webPage()->addCss('
@@ -69,6 +70,8 @@ class IENavBarSearchBox extends EaseTWBForm
     border: 1px solid rgba(0, 0, 0, 0.2);
     border-radius: 8px;
     box-shadow: 0 5px 10px rgba(0,0,0,.2);
+    overflow-y: auto;
+    max-height: 500px;
 }
 
 .tt-suggestion {
@@ -93,6 +96,7 @@ class IENavBarSearchBox extends EaseTWBForm
 
 
 var bestPictures = new Bloodhound({
+    limit: 1000,
     datumTokenizer: Bloodhound.tokenizers.obj.whitespace(\'value\'),
     queryTokenizer: Bloodhound.tokenizers.whitespace,
     remote: \'searcher.php?q=%QUERY\'

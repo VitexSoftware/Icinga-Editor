@@ -32,19 +32,20 @@ class IECommand extends IECfg
      * @var array
      */
     public $useKeywords = array(
-        'command_name' => 'VARCHAR(128)',
-        'command_line' => 'TEXT',
-        'command_type' => "ENUM('check','notify','handler')",
-        'command_local' => 'BOOL',
-        'command_remote' => 'BOOL'
+      'command_name' => 'VARCHAR(128)',
+      'command_line' => 'TEXT',
+      'command_type' => "ENUM('check','notify','handler')",
+      'command_local' => 'BOOL',
+      'command_remote' => 'BOOL'
     );
     public $keywordsInfo = array(
-        'command_name' => array('title' => 'název příkazu', 'required' => true),
-        'command_line' => array('title' => 'příkaz', 'required' => true),
-        'command_type' => array('title' => 'druh příkazu', 'required' => true),
-        'command_local' => array('title' => 'lokální příkaz'),
-        'command_remote' => array('title' => 'vzdálený příkaz NRPE/Nsc++')
+      'command_name' => array('title' => 'název příkazu', 'required' => true),
+      'command_line' => array('title' => 'příkaz', 'required' => true),
+      'command_type' => array('title' => 'druh příkazu', 'required' => true),
+      'command_local' => array('title' => 'lokální příkaz'),
+      'command_remote' => array('title' => 'vzdálený příkaz NRPE/Nsc++')
     );
+
     /**
      * URL dokumentace objektu
      * @var string
@@ -90,6 +91,7 @@ class IECommand extends IECfg
 
         return $AllData;
     }
+
     /**
      * Vrací mazací tlačítko
      *
@@ -97,9 +99,9 @@ class IECommand extends IECfg
      * @param  string                     $urlAdd Předávaná část URL
      * @return \EaseJQConfirmedLinkButton
      */
-    public function deleteButton($name = null,$addUrl = '')
+    public function deleteButton($name = null, $addUrl = '')
     {
-        return parent::deleteButton(_('příkaz'),$addUrl);
+        return parent::deleteButton(_('příkaz'), $addUrl);
     }
 
     /**
@@ -120,6 +122,25 @@ class IECommand extends IECfg
         }
 
         return parent::takeData($data, $dataPrefix);
+    }
+
+    /**
+     * Vyhledavani v záznamech objektu
+     *
+     * @param tstring $what hledaný výraz
+     * @return array pole výsledků
+     */
+    public function searchString($what)
+    {
+        $results = array();
+        $res = EaseShared::db()->queryToArray("SELECT " . $this->myKeyColumn . "," . $this->nameColumn . " FROM " . $this->myTable . " WHERE "
+            . $this->nameColumn . " LIKE '%" . $what . "%'" . ' OR ' .
+            " command_line LIKE '%" . $what . "%'" . ' '
+            . 'ORDER BY ' . $this->nameColumn, $this->myKeyColumn);
+        foreach ($res as $result) {
+            $results[$result[$this->myKeyColumn]] = $result[$this->nameColumn];
+        }
+        return $results;
     }
 
 }
