@@ -132,7 +132,7 @@ class IEMainMenu extends EaseHtmlDivTag
         $user = EaseShared::user();
         $userID = $user->getUserID();
         if ($userID) { //Authenticated user
-            $nav->addMenuItem(new IENavBarSearchBox('search'));
+            $nav->addMenuItem(new IENavBarSearchBox('search', 'search.php'));
 
 
             if ($user->getSettingValue('admin')) {

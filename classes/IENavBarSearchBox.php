@@ -27,15 +27,20 @@ class IENavBarSearchBox extends EaseTWBForm
     function __construct($formName, $formAction = null, $formMethod = 'post', $formContents = null, $tagProperties = null)
     {
         parent::__construct($formName, $formAction, $formMethod, $formContents, $tagProperties);
+        $term = EaseShared::webPage()->getRequestValue('search', 'string');
+
         $this->setTagProperties(array('class' => 'navbar-form', 'role' => 'search'));
         $group = $this->addItem(
             new EaseHtmlDivTag(null, new EaseHtmlInputTextTag(
-            'search', '', array(
+            'search', $term, array(
           'class' => 'form-control pull-right typeahead',
           'style' => 'width: 150px; margin-right: 35px, border: 1px solid black; background-color: #e5e5e5;',
           'placeholder' => _('Hledání'),
             )), array('class' => 'input-group'))
         );
+        $buttons = $group->addItem(new EaseHtmlSpanTag(null, null, array('class' => 'input-group-btn')));
+        $buttons->addItem(new EaseHtmlButtonTag(new EaseHtmlSpanTag(null, new EaseHtmlSpanTag(NULL, _('Zavřít'), array('class' => 'sr-only')), array('class' => 'glyphicon glyphicon-remove')), array('type' => 'reset', 'class' => 'btn btn-default')));
+        $buttons->addItem(new EaseHtmlButtonTag(new EaseHtmlSpanTag(null, new EaseHtmlSpanTag(NULL, _('Hledat'), array('class' => 'sr-only')), array('class' => 'glyphicon glyphicon-search')), array('type' => 'submit', 'class' => 'btn btn-default')));
     }
 
     function finalize()
