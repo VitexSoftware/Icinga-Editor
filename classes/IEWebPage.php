@@ -159,7 +159,7 @@ class IEBootstrapMenu extends EaseTWBNavbar
      */
     public function __construct($name = null, $content = null, $properties = null)
     {
-        parent::__construct("Menu", 'VSMonitoring', array('class' => 'navbar-fixed-top'));
+        parent::__construct("Menu", new EaseHtmlImgTag('img/vsmonitoring.png', 'VSMonitoring', 20, 20, array('class' => 'img-rounded')), array('class' => 'navbar-fixed-top'));
 
         $user = EaseShared::user();
         EaseTWBPart::twBootstrapize();

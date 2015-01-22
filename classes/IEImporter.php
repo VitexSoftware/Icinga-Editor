@@ -25,7 +25,7 @@ class IEImporter extends IECfg
      *
      * @param null $ItemID
      */
-    public function __construct($Params = null)
+    public function __construct($params = null)
     {
         parent::__construct();
         $this->registerClass('IETimeperiod');
@@ -36,18 +36,18 @@ class IEImporter extends IECfg
         $this->registerClass('IEContactgroup');
         $this->registerClass('IEHost');
         $this->registerClass('IEHostgroup');
-        if (is_array($Params)) {
-            $this->setData($Params);
+        if (is_array($params)) {
+            $this->setData($params);
         }
     }
 
-    public function registerClass($ClassName)
+    public function registerClass($className)
     {
-        if (file_exists('classes/' . $ClassName . '.php')) {
-            include_once $ClassName . '.php';
+        if (file_exists('classes/' . $className . '.php')) {
+            include_once $className . '.php';
         }
-        $NewClass = new $ClassName;
-        $this->IEClasses[$NewClass->keyword] = new $ClassName;
+        $NewClass = new $className;
+        $this->IEClasses[$NewClass->keyword] = new $className;
     }
 
     /**
@@ -63,39 +63,39 @@ class IEImporter extends IECfg
     /**
      * Naimportuje konfiguraci ze souboru
      *
-     * @param  string $CfgFile
+     * @param  string $cfgFile
      * @return int    počet uložených konfigurací
      */
-    public function importCfgFile($CfgFile)
+    public function importCfgFile($cfgFile)
     {
-        return $this->importCfg(IECfg::readRawConfigFile($CfgFile));
+        return $this->importCfg(IECfg::readRawConfigFile($cfgFile));
     }
 
     /**
      * Naimportuje konfiguraci z textového řetězce
      *
-     * @param  string $CfgText      text
-     * @param  array  $CommonValues globálně uplatněné hodnoty
+     * @param  string $cfgText      text
+     * @param  array  $commonValues globálně uplatněné hodnoty
      * @return int    počet vloženýh konfigurací
      */
-    public function importCfgText($CfgText, $CommonValues)
+    public function importCfgText($cfgText, $commonValues)
     {
-        return $this->importCfg(array_map('trim', preg_split('/\r\n|\n|\r/',$CfgText)));
+        return $this->importCfg(array_map('trim', preg_split('/\r\n|\n|\r/', $cfgText)));
     }
 
     /**
      * Naimportuje konfiguraci ze souboru
      *
-     * @param  string $CfgFile
+     * @param  string $cfg
      * @return int    počet uložených konfigurací
      */
-    public function importCfg($Cfg)
+    public function importCfg($cfg)
     {
-        $DoneCount = 0;
-        if (count($Cfg)) {
-            $this->addStatusMessage(sprintf(_('Načteno %s řádek konfigurace'), count($Cfg)), 'success');
+        $doneCount = 0;
+        if (count($cfg)) {
+            $this->addStatusMessage(sprintf(_('Načteno %s řádek konfigurace'), count($cfg)), 'success');
         } else {
-            $this->addStatusMessage(sprintf(_('konfigurace nebyla načtena'), count($Cfg)), 'warning');
+            $this->addStatusMessage(sprintf(_('konfigurace nebyla načtena'), count($cfg)), 'warning');
         }
 
         if ($this->userColumn) {
@@ -107,13 +107,13 @@ class IEImporter extends IECfg
         }
 
         foreach ($this->IEClasses as $IEClass) {
-            $DoneCount += $IEClass->importArray($Cfg, $this->getData());
+            $doneCount += $IEClass->importArray($cfg, $this->getData());
         }
-        if ($DoneCount) {
-            $this->addStatusMessage(sprintf(_('Bylo naimportováno %s konfigurací'), $DoneCount), 'success');
+        if ($doneCount) {
+            $this->addStatusMessage(sprintf(_('Bylo naimportováno %s konfigurací'), $doneCount), 'success');
         }
 
-        return $DoneCount;
+        return $doneCount;
     }
 
     /**
@@ -125,11 +125,23 @@ class IEImporter extends IECfg
     {
         foreach ($this->IEClasses as $ieClass) {
             if ($ieClass->writeConfig($fileName)) {
-                $this->addStatusMessage( $ieClass->keyword.': '._('konfigurace byla vygenerována'), 'success');
+                $this->addStatusMessage($ieClass->keyword . ': ' . _('konfigurace byla vygenerována'), 'success');
             } else {
-                $this->addStatusMessage($ieClass->keyword.': '._('konfigurace nebyla vygenerována'), 'warning');
+                $this->addStatusMessage($ieClass->keyword . ': ' . _('konfigurace nebyla vygenerována'), 'warning');
             }
         }
+    }
+
+    public function searchAll($term)
+    {
+        $results = array();
+        foreach ($this->IEClasses as $ieClass) {
+            $found = $ieClass->searchString($term);
+            if ($found) {
+                $results[$ieClass->keyword] = $found;
+            }
+        }
+        return $results;
     }
 
 }

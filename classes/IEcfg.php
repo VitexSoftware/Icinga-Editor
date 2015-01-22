@@ -134,37 +134,37 @@ class IEcfg extends EaseBrick
         if ($this->allowTemplating) {
             $this->useKeywords['name'] = 'VARCHAR(64)';
             $this->keywordsInfo['name'] = array(
-                'title' => _('Uložit jako předlohu pod jménem')
+              'title' => _('Uložit jako předlohu pod jménem')
             );
             $this->useKeywords['register'] = 'BOOL';
             $this->useKeywords['use'] = 'SELECT';
             $this->keywordsInfo['register'] = array(
-                'title' => _('Není předloha')
+              'title' => _('Není předloha')
             );
             $this->keywordsInfo['use'] = array(
-                'title' => 'použít předlohu - template',
-                'mandatory' => true,
-                'refdata' => array(
-                    'table' => str_replace(DB_PREFIX, '', $this->myTable),
-                    'captioncolumn' => 'name',
-                    'idcolumn' => $this->myKeyColumn,
-                    'condition' => array('register' => 0)
-                )
+              'title' => 'použít předlohu - template',
+              'mandatory' => true,
+              'refdata' => array(
+                'table' => str_replace(DB_PREFIX, '', $this->myTable),
+                'captioncolumn' => 'name',
+                'idcolumn' => $this->myKeyColumn,
+                'condition' => array('register' => 0)
+              )
             );
         }
 
         if ($this->publicRecords) {
             $this->useKeywords['public'] = 'BOOL';
             $this->keywordsInfo['public'] = array(
-                'title' => 'Veřejně k dispozici ostatním',
-                'mandatory' => true
+              'title' => 'Veřejně k dispozici ostatním',
+              'mandatory' => true
             );
             $this->keywordsInfo['use']['refdata']['public'] = true;
         }
         $this->useKeywords['generate'] = 'BOOL';
         $this->keywordsInfo['generate'] = array(
-            'title' => 'Generovat do konfigurace',
-            'mandatory' => true
+          'title' => 'Generovat do konfigurace',
+          'mandatory' => true
         );
     }
 
@@ -867,12 +867,12 @@ class IEcfg extends EaseBrick
                     } else {
                         if (!is_null($this->webLinkColumn) && !isset($buffer[$this->webLinkColumn])) {
                             $this->updateToMySQL(
-                                    array($this->getmyKeyColumn() => $this->getMyKey(),
-                                        $this->webLinkColumn =>
-                                        (str_replace(basename(EaseWebPage::getUri()), '', EaseWebPage::phpSelf(true))) .
-                                        $this->keyword . '.php?' .
-                                        $this->getmyKeyColumn() . '=' .
-                                        $this->getMyKey()));
+                                array($this->getmyKeyColumn() => $this->getMyKey(),
+                                  $this->webLinkColumn =>
+                                  (str_replace(basename(EaseWebPage::getUri()), '', EaseWebPage::phpSelf(true))) .
+                                  $this->keyword . '.php?' .
+                                  $this->getmyKeyColumn() . '=' .
+                                  $this->getMyKey()));
                         }
                         $this->addStatusMessage($this->keyword . ' <strong>' . $buffer[$this->nameColumn] . '</strong>' . _(' byl naimportován'), 'success');
                     }
@@ -1099,6 +1099,22 @@ class IEcfg extends EaseBrick
     public function draw()
     {
         echo $this->getName();
+    }
+
+    /**
+     * Vyhledavani v záznamech objektu
+     *
+     * @param tstring $what hledaný výraz
+     * @return array pole výsledků
+     */
+    public function searchString($what)
+    {
+        $results = array();
+        $res = EaseShared::db()->queryToArray("SELECT " . $this->myKeyColumn . "," . $this->nameColumn . " FROM " . $this->myTable . " WHERE " . $this->nameColumn . " LIKE '%" . $what . "%'", $this->myKeyColumn);
+        foreach ($res as $result) {
+            $results[$result[$this->myKeyColumn]] = $result[$this->nameColumn];
+        }
+        return $results;
     }
 
 }

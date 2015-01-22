@@ -1,5 +1,7 @@
 <?php
 
+require_once 'IENavBarSearchBox.php';
+
 /**
  * Hlavní menu
  *
@@ -28,7 +30,8 @@ class IEMainMenu extends EaseHtmlDivTag
         if (EaseShared::user()->getSettingValue('unsaved') == true) {
             $nav->addMenuItem(
                 new EaseHtmlATag(
-                'apply.php', _('Uplatnit změny'), array('class' => 'btn btn-success')), 'right'
+                'apply.php', _('Uplatnit změny'), array('class' => 'btn btn-success')
+                ), 'right'
             );
         } else {
             $nav->addMenuItem(new EaseHtmlATag('apply.php', _('Uplatnit změny'), array('class' => 'btn btn-inverse')), 'right');
@@ -129,6 +132,9 @@ class IEMainMenu extends EaseHtmlDivTag
         $user = EaseShared::user();
         $userID = $user->getUserID();
         if ($userID) { //Authenticated user
+            $nav->addMenuItem(new IENavBarSearchBox('search'));
+
+
             if ($user->getSettingValue('admin')) {
 
                 $users = $user->getColumnsFromMySQL(array('id', 'login'), array('id' => '!0'), 'login', $user->getmyKeyColumn());
