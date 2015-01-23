@@ -89,6 +89,8 @@ $oPage->columnII->addItem(new IEServiceTweaker($service, $host));
 
 $oPage->columnIII->addItem($service->deleteButton($service->getName(), 'host_id=' . $host->getId()));
 
+$oPage->columnIII->addItem(new EaseTWBLinkButton('service.php?service_id=' . $service->getID(), _('Editace služby') . ' ' . $service->getName()));
+
 $renameForm = new EaseTWBForm('Rename', '?action=rename&amp;host_id=' . $host->getID() . '&service_id=' . $service->getId());
 $renameForm->addItem(new EaseHtmlInputTextTag('newname'), $service->getName(), array('class' => 'form-control'));
 $renameForm->addItem(new EaseTWSubmitButton(_('Přejmenovat'), 'success'));
