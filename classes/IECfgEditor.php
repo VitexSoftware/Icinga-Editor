@@ -71,7 +71,7 @@ class IECfgEditor extends EaseContainer
                 if ($required) {
                     $fieldBlock->addItem(new EaseHtmlDivTag(null, new EaseLabeledTextInput($fieldName, $value, $keywordInfo['title'], array('class' => 'required form-control', 'title' => $fieldName))));
                 } else {
-                    $fieldBlock->addItem(new EaseLabeledTextInput($fieldName, $value, $keywordInfo['title'], array('title' => $fieldName,'class'=>'form-control')));
+                    $fieldBlock->addItem(new EaseLabeledTextInput($fieldName, $value, $keywordInfo['title'], array('title' => $fieldName, 'class' => 'form-control')));
                 }
                 break;
             case 'TINYINT':
@@ -130,9 +130,8 @@ class IECfgEditor extends EaseContainer
                     }
                     $buttons = new EaseHtmlRadiobuttonGroup($fieldName, $infoFlags);
                     $buttons->setValue($value);
-                    $FB = $fieldBlock->addItem(new EaseHtmlFieldSet($keywordInfo['title'], new EaseTWRadioButtonGroup($fieldName,$infoFlags,$value)));
+                    $FB = $fieldBlock->addItem(new EaseHtmlFieldSet($keywordInfo['title'], new EaseTWRadioButtonGroup($fieldName, $infoFlags, $value)));
                     $FB->setTagCss(array('width' => '100%'));
-
                 }
                 break;
             case 'SELECT':
@@ -148,10 +147,10 @@ class IECfgEditor extends EaseContainer
                 $sqlConds = " ( " . $this->objectEdited->myDbLink->prepSelect(array_merge($conditions, array($this->objectEdited->userColumn => EaseShared::user()->getUserID()))) . " ) OR ( " . $this->objectEdited->myDbLink->prepSelect(array_merge($conditions, array('public' => 1))) . ")  ";
 
                 $membersAviableArray = EaseShared::myDbLink()->queryTo2DArray(
-                        'SELECT ' . $nameColumn . ' ' .
-                        'FROM `' . DB_PREFIX . $sTable . '` ' .
-                        'WHERE ' . $sqlConds . ' ' .
-                        'ORDER BY ' . $nameColumn, $IDColumn);
+                    'SELECT ' . $nameColumn . ' ' .
+                    'FROM `' . DB_PREFIX . $sTable . '` ' .
+                    'WHERE ' . $sqlConds . ' ' .
+                    'ORDER BY ' . $nameColumn, $IDColumn);
 
                 $selector = $fieldBlock->addItem(new EaseLabeledSelect($fieldName, $value, $keywordInfo['title']));
                 $selector->enclosedElement->setTagClass('form-control');
@@ -179,10 +178,10 @@ class IECfgEditor extends EaseContainer
 //                    $SqlConds = $this->ObjectEdited->myDbLink->prepSelect(array_merge($Conditions, array($this->ObjectEdited->userColumn => EaseShared::user()->getUserID())));
 
                 $membersAviableArray = EaseShared::myDbLink()->queryTo2DArray(
-                        'SELECT ' . $nameColumn . ' ' .
-                        'FROM `' . DB_PREFIX . $sTable . '` ' .
-                        'WHERE ' . $sqlConds . ' ' .
-                        'ORDER BY ' . $nameColumn, $IDColumn);
+                    'SELECT ' . $nameColumn . ' ' .
+                    'FROM `' . DB_PREFIX . $sTable . '` ' .
+                    'WHERE ' . $sqlConds . ' ' .
+                    'ORDER BY ' . $nameColumn, $IDColumn);
 
                 $selector = $fieldBlock->addItem(new EaseLabeledSelect($fieldName, $value, $keywordInfo['title']));
                 $selector->enclosedElement->setTagClass('form-control');
@@ -197,10 +196,10 @@ class IECfgEditor extends EaseContainer
 //                    $SqlConds = $this->ObjectEdited->myDbLink->prepSelect(array_merge($Conditions, array($this->ObjectEdited->userColumn => EaseShared::user()->getUserID())));
 
                 $membersAviableArray = EaseShared::myDbLink()->queryTo2DArray(
-                        'SELECT ' . $nameColumn . ' ' .
-                        'FROM `' . DB_PREFIX . $sTable . '` ' .
-                        'WHERE ' . $sqlConds . ' ' .
-                        'ORDER BY ' . $nameColumn, $IDColumn);
+                    'SELECT ' . $nameColumn . ' ' .
+                    'FROM `' . DB_PREFIX . $sTable . '` ' .
+                    'WHERE ' . $sqlConds . ' ' .
+                    'ORDER BY ' . $nameColumn, $IDColumn);
 
                 $addNewItem = $fieldBlock->addItem(new EaseHtmlInputSearchTag($fieldName . '-remote', $this->objectEdited->getDataValue($fieldName . '-remote'), array('class' => 'search-input', 'title' => _('vzdálený test'))));
                 $addNewItem->setDataSource('jsoncommand.php?maxRows=10');
@@ -295,7 +294,7 @@ class IECfgEditor extends EaseContainer
                     continue;
                 }
             }
-            if ($value == 'NULL') {
+            if ($value === 'NULL') {
                 $value = null;
             }
 

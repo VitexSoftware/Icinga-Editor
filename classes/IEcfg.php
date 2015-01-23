@@ -402,6 +402,8 @@ class IEcfg extends EaseBrick
                         } else {
                             $data[$fieldName] = (bool) 0;
                         }
+                    } else {
+                        $data[$fieldName] = (bool) 0;
                     }
 
                     break;
