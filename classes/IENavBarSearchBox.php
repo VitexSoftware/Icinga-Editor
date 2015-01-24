@@ -54,7 +54,6 @@ class IENavBarSearchBox extends EaseTWBForm
 }
 
 .tt-input {
-    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
 }
 
 .tt-hint {
@@ -104,12 +103,12 @@ var bestPictures = new Bloodhound({
 
 bestPictures.initialize();
 
-$(\'input[name="search"]\').typeahead(null, {
+$(\'input[name="search"]\').css("top","2px").typeahead(null, {
     name: \'best-pictures\',
     displayKey: \'name\',
     source: bestPictures.ttAdapter(),
      templates: {
-        suggestion: Handlebars.compile(\'<p><a href="{{url}}"><strong>{{name}}</strong> – {{type}}</a></p>\')
+        suggestion: Handlebars.compile(\'<p><small>{{type}}</small><br><a href="{{url}}"><strong>{{name}}</strong> – {{what}}</a></p>\')
 }
 });
 

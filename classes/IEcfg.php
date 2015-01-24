@@ -1106,15 +1106,30 @@ class IEcfg extends EaseBrick
     /**
      * Vyhledavani v záznamech objektu
      *
-     * @param tstring $what hledaný výraz
+     * @param string $what hledaný výraz
      * @return array pole výsledků
      */
     public function searchString($what)
     {
         $results = array();
-        $res = EaseShared::db()->queryToArray("SELECT " . $this->myKeyColumn . "," . $this->nameColumn . " FROM " . $this->myTable . " WHERE " . $this->nameColumn . " LIKE '%" . $what . "%'" . ' ORDER BY ' . $this->nameColumn, $this->myKeyColumn);
+        $conds = array();
+        $columns[] = $this->myKeyColumn;
+        foreach ($this->useKeywords as $keyword => $keywordInfo) {
+            if (strstr($keywordInfo, 'VARCHAR')) {
+                $conds[] = " `$keyword` LIKE '%" . $what . "%'";
+                $columns[] = "`$keyword`";
+            }
+        }
+
+        $res = EaseShared::db()->queryToArray("SELECT " . implode(',', $columns) . "," . $this->nameColumn . " FROM " . $this->myTable . " WHERE " . implode(' OR ', $conds) . ' ORDER BY ' . $this->nameColumn, $this->myKeyColumn);
         foreach ($res as $result) {
-            $results[$result[$this->myKeyColumn]] = $result[$this->nameColumn];
+            $occurences = '';
+            foreach ($result as $key => $value) {
+                if (strstr($value, $what)) {
+                    $occurences .= '(' . $key . ': ' . $value . ') ';
+                }
+            }
+            $results[$result[$this->myKeyColumn]] = array($this->nameColumn => $result[$this->nameColumn], 'what' => $occurences);
         }
         return $results;
     }

@@ -474,25 +474,4 @@ class IEHost extends IECfg
         echo IEHostOverview::icon($this);
     }
 
-    /**
-     * Vyhledavani v záznamech objektu
-     *
-     * @param tstring $what hledaný výraz
-     * @return array pole výsledků
-     */
-    public function searchString($what)
-    {
-        $results = array();
-        $res = EaseShared::db()->queryToArray("SELECT " . $this->myKeyColumn . "," . $this->nameColumn . " FROM " . $this->myTable . " WHERE "
-            . $this->nameColumn . " LIKE '%" . $what . "%'" . ' OR ' .
-            " alias LIKE '%" . $what . "%'" . ' OR ' .
-            " address LIKE '%" . $what . "%'" . ' OR ' .
-            " address6 LIKE '%" . $what . "%'" . ' '
-            . 'ORDER BY ' . $this->nameColumn, $this->myKeyColumn);
-        foreach ($res as $result) {
-            $results[$result[$this->myKeyColumn]] = $result[$this->nameColumn];
-        }
-        return $results;
-    }
-
 }
