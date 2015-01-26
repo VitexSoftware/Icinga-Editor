@@ -1045,8 +1045,11 @@ class IEcfg extends EaseBrick
         }
         $delColumn = $webPage->getGetValue('del');
         if (!is_null($delColumn)) {
+            $thisID = null;
             $del = $this->delMember($delColumn, $webPage->getRequestValue('member', 'int'), $webPage->getGetValue('name'));
-            $thisID = $this->saveToMySQL();
+            if ($del) {
+                $thisID = $this->saveToMySQL();
+            }
             if (is_null($thisID) && !$del) {
                 $this->addStatusMessage(sprintf(_('položka %s nebyla odebrána z %s/%s/%s'), $name, $this->keyword, $this->getName(), $delColumn), 'warning');
             } else {
