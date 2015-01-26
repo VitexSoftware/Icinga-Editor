@@ -15,10 +15,13 @@ class IEHostOverview extends EaseHtmlDivTag
         parent::__construct();
         $this->addItem(new EaseHtmlH1Tag(array(self::icon($host), $host->getDataValue('alias'))));
         $this->addItem(new EaseHtmlH2Tag($host->getDataValue('host_name')));
-        $this->addItem(new EaseHtmlH3Tag(array(self::platformIcon($host->getDataValue('platform')),$host->getDataValue('display_name'))));
+        $this->addItem(new EaseHtmlH3Tag(array(self::platformIcon($host->getDataValue('platform')), $host->getDataValue('display_name'))));
         //$this->addItem(  );
         $parents = $host->getDataValue('parents');
         if ($parents) {
+            foreach ($parents as $pId => $pName) {
+                $parents[$pId] = '<a href="host.php?host_id=' . $pId . '">' . $pName . '</a>';
+            }
             $this->addItem(_('Rodiče') . ': ' . implode(',', $parents));
         }
         $this->addItem(new EaseHtmlDivTag(null, _('Uloženo') . ': ' . $host->getDataValue('DatSave')));
@@ -39,7 +42,7 @@ class IEHostOverview extends EaseHtmlDivTag
             $title = $host->getName();
         }
 
-        return new EaseHtmlImgTag('logos/' . $image,$title,null,null,array('class'=>'host_icon'));
+        return new EaseHtmlImgTag('logos/' . $image, $title, null, null, array('class' => 'host_icon'));
     }
 
     public static function platformIcon($platform)
