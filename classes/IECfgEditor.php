@@ -7,6 +7,7 @@
 
 require_once 'IEGroupMembersEditor.php';
 require_once 'IEUserSelect.php';
+require_once 'EaseTWBSlider.php';
 
 /**
  * Description of IECfgEditor
@@ -108,7 +109,7 @@ class IECfgEditor extends EaseContainer
                 $fieldBlock->addItem(new IEGroupMembersEditor($fieldName, $keywordInfo['title'], $this->objectEdited, $value));
                 break;
             case 'SLIDER':
-                $sliderField = $fieldBlock->addItem(new EaseHtmlFieldSet($keywordInfo['title'], new EaseJQuerySlider($fieldName, (int) $value)));
+                $sliderField = $fieldBlock->addItem(new EaseHtmlFieldSet($keywordInfo['title'], new EaseTWBSlider($fieldName, (int) $value, array('data-slider-min' => 0))));
                 $sliderField->setTagCss(array('width' => '100%'));
                 break;
             case 'TEXT':
