@@ -355,6 +355,7 @@ class IEHost extends IECfg
                 $renameAll = false;
             }
         }
+
         if ($this->save() && $renameAll) {
             return true;
         }

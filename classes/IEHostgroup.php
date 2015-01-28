@@ -24,37 +24,38 @@ class IEHostgroup extends IECfg
      */
     public $publicRecords = false;
     public $useKeywords = array(
-        'hostgroup_name' => 'VARCHAR(64)',
-        'alias' => 'VARCHAR(64)',
-        'members' => 'IDLIST',
-        'hostgroup_members' => 'IDLIST',
-        'notes' => 'TEXT',
-        'notes_url' => 'VARCHAR(255)',
-        'action_url' => 'VARCHAR(255)'
+      'hostgroup_name' => 'VARCHAR(64)',
+      'alias' => 'VARCHAR(64)',
+      'members' => 'IDLIST',
+      'hostgroup_members' => 'IDLIST',
+      'notes' => 'TEXT',
+      'notes_url' => 'VARCHAR(255)',
+      'action_url' => 'VARCHAR(255)'
     );
     public $keywordsInfo = array(
-        'hostgroup_name' => array('title' => 'název skupiny', 'required' => true),
-        'alias' => array('title' => 'alias skupiny', 'required' => true),
-        'members' => array(
-            'title' => 'členské hosty',
-            'mandatory' => true,
-            'refdata' => array(
-                'table' => 'hosts',
-                'captioncolumn' => 'host_name',
-                'idcolumn' => 'host_id',
-                'condition' => array('register' => 1))
-        ),
-        'hostgroup_members' => array(
-            'title' => 'členské skupiny hostů',
-            'refdata' => array(
-                'table' => 'hostgroup',
-                'captioncolumn' => 'hostgroup_name',
-                'idcolumn' => 'hostgroup_id')
-        ),
-        'notes' => array('title' => 'Poznámka'),
-        'notes_url' => array('title' => 'URL externích poznámek'),
-        'action_url' => array('title' => 'adresa doplnujícich akci')
+      'hostgroup_name' => array('title' => 'název skupiny', 'required' => true),
+      'alias' => array('title' => 'alias skupiny', 'required' => true),
+      'members' => array(
+        'title' => 'členské hosty',
+        'mandatory' => true,
+        'refdata' => array(
+          'table' => 'hosts',
+          'captioncolumn' => 'host_name',
+          'idcolumn' => 'host_id',
+          'condition' => array('register' => 1))
+      ),
+      'hostgroup_members' => array(
+        'title' => 'členské skupiny hostů',
+        'refdata' => array(
+          'table' => 'hostgroup',
+          'captioncolumn' => 'hostgroup_name',
+          'idcolumn' => 'hostgroup_id')
+      ),
+      'notes' => array('title' => 'Poznámka'),
+      'notes_url' => array('title' => 'URL externích poznámek'),
+      'action_url' => array('title' => 'adresa doplnujícich akci')
     );
+
     /**
      * URL dokumentace objektu
      * @var string
@@ -67,15 +68,15 @@ class IEHostgroup extends IECfg
      */
     public function deleteHost($hostname)
     {
-        $MemberOf = EaseShared::myDbLink()->queryToArray('SELECT '.$this->getmyKeyColumn().','.$this->nameColumn.' FROM '. $this->myTable.' WHERE members LIKE \'%"'.$hostname.'"%\' ',$this->getmyKeyColumn() );
+        $MemberOf = EaseShared::myDbLink()->queryToArray('SELECT ' . $this->getmyKeyColumn() . ',' . $this->nameColumn . ' FROM ' . $this->myTable . ' WHERE members LIKE \'%"' . $hostname . '"%\' ', $this->getmyKeyColumn());
         foreach ($MemberOf as $GroupID => $Group) {
             $Found = false;
             $this->loadFromMySQL($GroupID);
-            foreach ($this->data['members'] as $ID=>$Member) {
+            foreach ($this->data['members'] as $ID => $Member) {
                 if ($Member == $hostname) {
                     $Found = true;
                     unset($this->data['members'][$ID]);
-                    $this->addStatusMessage(sprintf(_(' %s byl odstraněn ze skupiny %s '),$hostname,$Group[$this->nameColumn]));
+                    $this->addStatusMessage(sprintf(_(' %s byl odstraněn ze skupiny %s '), $hostname, $Group[$this->nameColumn]));
                 }
             }
             if ($Found) {
@@ -91,14 +92,14 @@ class IEHostgroup extends IECfg
      * @param  string                     $urlAdd Předávaná část URL
      * @return \EaseJQConfirmedLinkButton
      */
-    public function deleteButton($name = null,$addUrl = '')
+    public function deleteButton($name = null, $addUrl = '')
     {
-        return parent::deleteButton(_('skupinu hostů'),$addUrl);
+        return parent::deleteButton(_('skupinu hostů'), $addUrl);
     }
 
     public function loadDefault()
     {
-        $groupID = EaseShared::myDbLink()->queryToValue('SELECT '.$this->getmyKeyColumn().' FROM '. $this->myTable.' WHERE '.$this->userColumn.'= ' . EaseShared::user()->getUserID().' ORDER BY '.$this->getmyKeyColumn().' DESC LIMIT 1');
+        $groupID = EaseShared::myDbLink()->queryToValue('SELECT ' . $this->getmyKeyColumn() . ' FROM ' . $this->myTable . ' WHERE ' . $this->userColumn . '= ' . EaseShared::user()->getUserID() . ' ORDER BY ' . $this->getmyKeyColumn() . ' DESC LIMIT 1');
         if ($groupID) {
             $this->loadFromMySQL((int) $groupID);
 
@@ -110,22 +111,21 @@ class IEHostgroup extends IECfg
 
     public function renameHost($oldname, $newname)
     {
-        $memberOf = EaseShared::myDbLink()->queryToArray('SELECT '.$this->getmyKeyColumn().','.$this->nameColumn.' FROM '. $this->myTable.' WHERE members LIKE \'%"'.$oldname.'"%\' ',$this->getmyKeyColumn() );
+        $memberOf = EaseShared::myDbLink()->queryToArray('SELECT ' . $this->getmyKeyColumn() . ',' . $this->nameColumn . ' FROM ' . $this->myTable . ' WHERE members LIKE \'%"' . $oldname . '"%\' ', $this->getmyKeyColumn());
         foreach ($memberOf as $groupID => $group) {
             $found = false;
             $this->loadFromMySQL($groupID);
-            foreach ($this->data['members'] as $ID=>$Member) {
-                if ($Member == $hostname) {
+            foreach ($this->data['members'] as $id => $member) {
+                if ($member == $oldname) {
                     $found = true;
-                    $this->data['members'][$ID]= $newname;
-                    $this->addStatusMessage(sprintf(_(' %s byl odstraněn ze skupiny %s '),$hostname,$group[$this->nameColumn]));
+                    $this->data['members'][$id] = $newname;
+                    $this->addStatusMessage(sprintf(_(' %s byl přejmenován na %s ve skupině %s '), $oldname, $newname, $group[$this->nameColumn]));
                 }
             }
             if ($found) {
                 $this->saveToMySQL();
             }
         }
-
     }
 
 }

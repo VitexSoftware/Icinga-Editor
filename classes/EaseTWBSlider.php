@@ -1,6 +1,7 @@
 <?php
 
 require_once 'Ease/EaseHtmlForm.php';
+require_once 'Ease/EaseTWBootstrap.php';
 
 /**
  * Description of EaseTWBSlider

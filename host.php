@@ -88,9 +88,9 @@ switch ($oPage->getRequestValue('action')) {
         $newname = $oPage->getRequestValue('newname');
         if (strlen($newname)) {
             if ($host->rename($newname)) {
-                $oUser->addStatusMessage(_('Host byl přejmenován'), 'warning');
+                $oUser->addStatusMessage(_('Host byl přejmenován'), 'success');
             } else {
-                $oUser->addStatusMessage(_('Host nebyl přejmenován'), 'success');
+                $oUser->addStatusMessage(_('Host nebyl přejmenován'), 'warning');
             }
         }
         break;
@@ -98,10 +98,10 @@ switch ($oPage->getRequestValue('action')) {
         $np = $oPage->getRequestValue('newparent');
         if ($np) {
             $newParent = EaseShared::myDbLink()->queryToValue('SELECT `' . $host->nameColumn . '` FROM ' . $host->myTable . ' '
-                    . 'WHERE `' . $host->nameColumn . '` = \'' . addSlashes($np) . '\' '
-                    . 'OR `alias` = \'' . addSlashes($np) . '\' '
-                    . 'OR `address` = \'' . addSlashes($np) . '\' '
-                    . 'OR `address6` = \'' . addSlashes($np) . '\' ');
+                . 'WHERE `' . $host->nameColumn . '` = \'' . addSlashes($np) . '\' '
+                . 'OR `alias` = \'' . addSlashes($np) . '\' '
+                . 'OR `address` = \'' . addSlashes($np) . '\' '
+                . 'OR `address6` = \'' . addSlashes($np) . '\' ');
             if (!$newParent) {
                 $oUser->addStatusMessage(_('Rodič nebyl nalezen'), 'warning');
             } else {
@@ -190,8 +190,8 @@ input.ui-button { width: 100%; }
 
 $oPage->columnIII->addItem($host->deleteButton());
 
-$oPage->columnIII->addItem(new EaseTWBLinkButton('?action=populate&host_id=' . $host->getID(), _('Oskenovat a sledovat služby'), null, array('onClick'=>"$('#preload').css('visibility', 'visible');") ));
-$oPage->addItem( new EaseHtmlDivTag('preload', new IEFXPreloader(),array('class'=>'fuelux')));
+$oPage->columnIII->addItem(new EaseTWBLinkButton('?action=populate&host_id=' . $host->getID(), _('Oskenovat a sledovat služby'), null, array('onClick' => "$('#preload').css('visibility', 'visible');")));
+$oPage->addItem(new EaseHtmlDivTag('preload', new IEFXPreloader(), array('class' => 'fuelux')));
 
 $renameForm = new EaseTWBForm('Rename', '?action=rename&amp;host_id=' . $host->getID());
 $renameForm->addItem(new EaseHtmlInputTextTag('newname'), $host->getName(), array('class' => 'form-control'));
@@ -201,7 +201,7 @@ $oPage->columnIII->addItem(new EaseHtmlFieldSet(_('Přejmenování'), $renameFor
 $oPage->columnIII->addItem(new EaseTWBLinkButton('?action=parent&host_id=' . $host->getId(), _('Přiřadit rodiče'), 'success'));
 $oPage->columnIII->addItem(new EaseTWBLinkButton('?action=icon&host_id=' . $host->getId(), _('Změnit ikonu'), 'success'));
 
-if ( $host->getDataValue('platform') != 'generic' ) {
+if ($host->getDataValue('platform') != 'generic') {
     $oPage->columnIII->addItem(new EaseTWBLinkButton('sensor.php?host_id=' . $host->getId(), _('Nasadit senzor'), 'success'));
 }
 
