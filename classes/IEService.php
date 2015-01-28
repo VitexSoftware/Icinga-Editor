@@ -57,8 +57,6 @@ class IEService extends IECfg
       'passive_checks_enabled' => 'BOOL',
       'check_period' => 'SELECT',
       'parallelize_check' => 'BOOL',
-      'normal_check_interval' => 'INT',
-      'retry_check_interval' => 'INT',
       'obsess_over_service' => 'BOOL',
       'check_freshness' => 'BOOL',
       'freshness_threshold' => 'INT',
@@ -152,8 +150,6 @@ class IEService extends IECfg
           'idcolumn' => 'timeperiod_id')
       ),
       'parallelize_check' => array('value' => '1', 'title' => ''),
-      'normal_check_interval' => array('value' => 5, 'title' => ''),
-      'retry_check_interval' => array('value' => 1, 'title' => ''),
       'obsess_over_service' => array('title' => ''),
       'check_freshness' => array('title' => ''),
       'freshness_threshold' => array('title' => ''),
@@ -474,5 +470,5 @@ class IEService extends IECfg
 }
 
 /*
-  UPDATE `iciedit`.`iciedit_services` SET `max_check_attempts` = NULL, `check_interval` = NULL, `retry_interval` = NULL, `active_checks_enabled` = NULL, `passive_checks_enabled` = NULL, `check_period` = NULL, `parallelize_check` = NULL, `normal_check_interval` = NULL, `retry_check_interval` = NULL, `obsess_over_service` = NULL, `check_freshness` = NULL, `freshness_threshold` = NULL, `event_handler` = NULL, `event_handler_enabled` = NULL, `low_flap_threshold` = NULL, `high_flap_threshold` = NULL, `flap_detection_enabled` = NULL, `flap_detection_options` = NULL, `failure_prediction_enabled` = NULL, `process_perf_data` = NULL, `retain_status_information` = NULL, `retain_nonstatus_information` = NULL, `notification_interval` = NULL, `first_notification_delay` = NULL, `notification_period` = NULL, `notification_options` = NULL, `notifications_enabled` = NULL WHERE `iciedit_services`.`service_id` = 15;
+  UPDATE `iciedit`.`iciedit_services` SET `max_check_attempts` = NULL, `check_interval` = NULL, `retry_interval` = NULL, `active_checks_enabled` = NULL, `passive_checks_enabled` = NULL, `check_period` = NULL, `parallelize_check` = NULL, `retry_check_interval` = NULL, `obsess_over_service` = NULL, `check_freshness` = NULL, `freshness_threshold` = NULL, `event_handler` = NULL, `event_handler_enabled` = NULL, `low_flap_threshold` = NULL, `high_flap_threshold` = NULL, `flap_detection_enabled` = NULL, `flap_detection_options` = NULL, `failure_prediction_enabled` = NULL, `process_perf_data` = NULL, `retain_status_information` = NULL, `retain_nonstatus_information` = NULL, `notification_interval` = NULL, `first_notification_delay` = NULL, `notification_period` = NULL, `notification_options` = NULL, `notifications_enabled` = NULL WHERE `iciedit_services`.`service_id` = 15;
  */
