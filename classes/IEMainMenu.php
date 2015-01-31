@@ -227,11 +227,16 @@ class IEMainMenu extends EaseHtmlDivTag
                     /* 'module.php' => _('definice modulů') */                    )
                 );
             }
-            $nav->addDropDownMenu(_('Výsledky testů'), array(
+            $results = array(
               'nagstamon.php' => EaseTWBPart::GlyphIcon('info') . ' ' . _('PC Lin/Win/Mac'),
               'anag.php' => EaseTWBPart::GlyphIcon('info') . ' ' . _('Android'),
-              'wpnag.php' => EaseTWBPart::GlyphIcon('Info') . ' ' . _('Win Phone'))
-            );
+              'wpnag.php' => EaseTWBPart::GlyphIcon('Info') . ' ' . _('Win Phone'));
+
+            if (file_exists('/etc/apache2/conf-enabled/icinga-web.conf')) {
+                $results['/icinga-web/'] = EaseTWBPart::GlyphIcon('Info') . ' ' . _('Web');
+            }
+
+            $nav->addDropDownMenu(_('Výsledky testů'), $results);
         }
     }
 
