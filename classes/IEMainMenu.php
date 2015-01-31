@@ -221,6 +221,7 @@ class IEMainMenu extends EaseHtmlDivTag
                 $nav->addDropDownMenu(_('Rozšířené'), array(
                   'timeperiods.php' => EaseTWBPart::GlyphIcon('list') . ' ' . _('Přehled časových period'),
                   'timeperiod.php' => EaseTWBPart::GlyphIcon('plus') . ' ' . _('Nová časová perioda'),
+                  'preferences.php' => EaseTWBPart::GlyphIcon('wrench') . ' ' . _('Nastavení icingy'),
                   'regenall.php' => EaseTWBPart::GlyphIcon('ok') . ' ' . _('Přegenerovat všechny konfiguráky'),
                   'dbrecreate.php' => EaseTWBPart::GlyphIcon('wrench') . ' ' . _('Reinicializovat databázi'),
                   'import.php' => EaseTWBPart::GlyphIcon('download') . ' ' . _('Importovat')
