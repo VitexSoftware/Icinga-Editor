@@ -202,7 +202,7 @@ $oPage->columnIII->addItem(new EaseTWBLinkButton('?action=parent&host_id=' . $ho
 $oPage->columnIII->addItem(new EaseTWBLinkButton('?action=icon&host_id=' . $host->getId(), _('Změnit ikonu'), 'success'));
 
 if ($host->getDataValue('platform') != 'generic') {
-    $oPage->columnIII->addItem(new EaseTWBLinkButton('sensor.php?host_id=' . $host->getId(), _('Nasadit senzor'), 'success'));
+    $oPage->columnIII->addItem(new EaseTWBLinkButton('sensor.php?host_id=' . $host->getId(), _('Nasadit senzor'), 'info'));
 }
 
 $oPage->columnI->addItem(new IEServiceSelector($host));
