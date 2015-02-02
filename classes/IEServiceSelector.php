@@ -34,8 +34,8 @@ class IEServiceSelector extends EaseContainer
             $hostName = $host->getName();
             $service = new IEService();
             $parentServUsed = array();
-            $host_active = $host->getDataValue('active_checks_enabled');
-            $host_passive = $host->getDataValue('passive_checks_enabled');
+            $host_active = (boolean) $host->getDataValue('active_checks_enabled');
+            $host_passive = (boolean) $host->getDataValue('passive_checks_enabled');
 
             $servicesAssigned = $service->myDbLink->queryToArray('SELECT ' . $service->myKeyColumn . ',' . $service->nameColumn . ' FROM ' . $service->myTable . ' WHERE ' . $fieldName . ' LIKE \'%"' . $host->getName() . '"%\'', $service->myKeyColumn);
 
@@ -45,6 +45,8 @@ class IEServiceSelector extends EaseContainer
                 )
             );
             foreach ($allServices as $serviceID => $serviceInfo) {
+                $servicePassive = (boolean) $serviceInfo['passive_checks_enabled'];
+                $serviceActive = (boolean) $serviceInfo['active_checks_enabled'];
                 if ($serviceInfo['register'] != 1) {
                     unset($allServices[$serviceID]);
                     continue;
@@ -54,11 +56,7 @@ class IEServiceSelector extends EaseContainer
                     unset($allServices[$serviceID]);
                     continue;
                 }
-                if (!$host_passive || !$serviceInfo['passive_checks_enabled']) {
-                    unset($allServices[$serviceID]);
-                    continue;
-                }
-                if (!$host_active || !$serviceInfo['active_checks_enabled']) {
+                if ((!$host_passive || !$servicePassive) && (!$host_active || !$serviceActive)) {
                     unset($allServices[$serviceID]);
                     continue;
                 }

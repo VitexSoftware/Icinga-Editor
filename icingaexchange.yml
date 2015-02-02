@@ -1,0 +1,8 @@
+name: icinga_configurator
+description: "file:///README.md"
+url: "https://www.vitexsoftware.cz/monitoring.php"
+tags: Monitoring, Configurator
+vendor: Debian
+target: Inventory,Database
+type: GUI
+license: gplv3

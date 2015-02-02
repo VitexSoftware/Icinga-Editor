@@ -41,14 +41,14 @@ $oPage->addCss('
     ');
 
 $oPage->columnI->addItem(
-    new EaseTWBPanel(_('Hosty'), 'success', _('Hosty jsou počítače nebo zařízení'))
+    new EaseTWBPanel(_('Aktivní'), 'success', _('Aktivni testy vyžadují aby byla icinga schopná dosáhnout na testovaný stroj.'))
 );
 $oPage->columnIII->addItem(
-    new EaseTWBPanel(_('Služby'), 'info', _('Služby jsou definice testů aplikované na hosty nebo jejich skupiny'))
+    new EaseTWBPanel(_('Pasivní'), 'info', _('Pasivní host zasílá sám na server kde běží icinga výsledky testů'))
 );
 
-$oPage->columnII->addItem(new EaseTWBLinkButton('wizard-host.php', _('Host'), 'success', array('class' => 'btn-xlarge')));
-$oPage->columnII->addItem(new EaseTWBLinkButton('wizard-service.php', _('Služba'), 'info', array('class' => 'btn-xlarge')));
+$oPage->columnII->addItem(new EaseTWBLinkButton('wizard-active-host.php', _('Aktivní'), 'success', array('class' => 'btn-xlarge')));
+$oPage->columnII->addItem(new EaseTWBLinkButton('wizard-passive-host.php', _('Pasivní'), 'info', array('class' => 'btn-xlarge')));
 
 $oPage->addItem(new IEPageBottom());
 

@@ -66,7 +66,7 @@ $oPage->addItem(new IEPageTop(_('Průvodce založením hosta')));
 
 
 
-$oPage->columnII->addItem(new NewPassiveCheckedHostForm('passive'));
+$oPage->columnII->addItem(new IEPassiveCheckedHostForm('passive'));
 
 $oPage->addItem(new IEPageBottom());
 

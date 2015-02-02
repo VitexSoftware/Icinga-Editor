@@ -3,6 +3,7 @@
 css/*.css	usr/share/icinga-editor/css
 js/*.js		usr/share/icinga-editor/js
 img/*		usr/share/icinga-editor/img
+images/*		usr/share/icinga-editor/images
 includes/*.php		usr/share/icinga-editor/includes
 classes/*.php		usr/share/icinga-editor/classes
 modules/*.php		usr/share/icinga-editor/modules

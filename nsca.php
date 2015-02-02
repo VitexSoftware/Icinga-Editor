@@ -50,6 +50,9 @@ if exist "%ProgramFiles%\NSCP*.msi" del "%ProgramFiles%\NSCP*.msi"
 
 xcopy "%ProgramFiles%\NSClient++\Win\System\*" "%SystemRoot%\System32" /s/e/c/k/i/y
 
+%NSCLIENT% service --install
+%NSCLIENT% service --stop
+
 %NSCLIENT% settings --generate --add-defaults --load-all
 %NSCLIENT% settings --path /modules --key Scheduler --set enabled
 %NSCLIENT% settings --path /modules --key CheckDisk --set enabled
@@ -77,7 +80,8 @@ xcopy "%ProgramFiles%\NSClient++\Win\System\*" "%SystemRoot%\System32" /s/e/c/k/
 %NSCLIENT% settings --path /settings/scheduler/schedules/default --key report --set all
 %NSCLIENT% settings --path /settings/scheduler/schedules --key "CPU Load-vitex" --set alias_cpu
 
-%NSCLIENT% test
+REM %NSCLIENT% test
+%NSCLIENT% service --start
 
     ';
 
