@@ -49,11 +49,9 @@ if ($serviceName) {
     }
 } else {
     if ($oPage->isPosted()) {
-        $oPage->addStatusMessage(_('Prosím zastejte název sledovaného servicea'), 'warning');
+        $oPage->addStatusMessage(_('Prosím zastejte název služby'), 'warning');
     }
 }
-
-
 
 
 $oPage->addItem(new IEPageTop(_('Průvodce založením služby')));
@@ -67,7 +65,7 @@ $oPage->addItem(new IEPageTop(_('Průvodce založením služby')));
 
 
 
-$oPage->columnII->addItem(new IEPassiveCheckedServiceForm('passive'));
+$oPage->columnII->addItem(new IEPassiveCheckedServiceForm($service));
 
 $oPage->addItem(new IEPageBottom());
 

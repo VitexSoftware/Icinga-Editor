@@ -1211,12 +1211,14 @@ class IEcfg extends EaseBrick
                             $values = unserialize($value);
                             if (isset($this->keywordsInfo[$key]['refdata'])) {
                                 $idcolumn = $this->keywordsInfo[$key]['refdata']['idcolumn'];
+                                $table = $this->keywordsInfo[$key]['refdata']['table'];
+                                $searchColumn = $this->keywordsInfo[$key]['refdata']['captioncolumn'];
                                 $target = str_replace('_id', '.php', $idcolumn);
                                 foreach ($values as $id => $name) {
                                     if ($id) {
-                                        $values[$id] = '<a href="' . $target . '?' . $idcolumn . '=' . $id . '">' . $name . '</a>';
+                                        $values[$id] = '<a title="' . $table . '" href="' . $target . '?' . $idcolumn . '=' . $id . '">' . $name . '</a>';
                                     } else {
-                                        $values[$id] = '<a href="search.php?search=' . $name . '">' . $name . '</a> ' . EaseTWBPart::glyphIcon('search');
+                                        $values[$id] = '<a title="' . $table . '" href="search.php?search=' . $name . '&table=' . $table . '&column=' . $searchColumn . '">' . $name . '</a> ' . EaseTWBPart::glyphIcon('search');
                                     }
                                 }
                             }
@@ -1224,12 +1226,20 @@ class IEcfg extends EaseBrick
                             $data[$rowId][$key] = $value;
                         }
                         break;
-                }
-                if (strstr($key, 'image') && strlen(trim($value))) {
-                    $data[$rowId][$key] = '<img src="' . $value . '" class="gridimg">';
-                }
-                if (strstr($key, 'url')) {
-                    $data[$rowId][$key] = '<a href="' . $value . '">' . $value . '</a>';
+                    default :
+                        if (isset($this->keywordsInfo[$key]['refdata']) && strlen(trim($value))) {
+                            $table = $this->keywordsInfo[$key]['refdata']['table'];
+                            $searchColumn = $this->keywordsInfo[$key]['refdata']['captioncolumn'];
+                            $data[$rowId][$key] = '<a title="' . $table . '" href="search.php?search=' . $value . '&table=' . $table . '&column=' . $searchColumn . '">' . $value . '</a> ' . EaseTWBPart::glyphIcon('search');
+                        }
+                        if (strstr($key, 'image') && strlen(trim($value))) {
+                            $data[$rowId][$key] = '<img src="' . $value . '" class="gridimg">';
+                        }
+                        if (strstr($key, 'url')) {
+                            $data[$rowId][$key] = '<a href="' . $value . '">' . $value . '</a>';
+                        }
+
+                        break;
                 }
             }
         }

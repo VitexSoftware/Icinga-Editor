@@ -19,12 +19,30 @@ require_once 'Ease/EaseTWBootstrap.php';
 class IEPassiveCheckedServiceForm extends EaseTWBForm
 {
 
+    /**
+     * Objekt služby
+     * @var IEService
+     */
+    public $service = null;
+
+    /**
+     * Formulář založení pasivní služby
+     *
+     * @param IEService $service
+     */
+    function __construct($service)
+    {
+        parent::__construct('passive-service');
+        $this->service = $service;
+    }
+
     function finalize()
     {
         parent::finalize();
 
-        $this->addItem(new EaseTWBFormGroup(_('Jméno'), new EaseHtmlInputTextTag('service_name'), $this->webPage->getRequestValue('host_name'), _('Volné místo disku'), _('Název služby testu')));
-        $this->addItem(new EaseTWBFormGroup(_('Platforma'), new IEPlatformSelector('platform'), null, _('Platforma sledovaného stroje')));
+        $this->addItem(new EaseTWBFormGroup(_('Jméno'), new EaseHtmlInputTextTag('service_name'), $this->service->getName(), _('Volné místo disku'), _('Název služby testu')));
+        $this->addItem(new EaseTWBFormGroup(_('Platforma'), new IEPlatformSelector('platform'), $this->service->getDataValue('platform'), _('Platforma sledovaného stroje')));
+
         $this->addItem(new EaseTWSubmitButton(_('Založit') . '&nbsp' . EaseTWBPart::GlyphIcon('forward'), 'success'));
     }
 

@@ -132,16 +132,4 @@ class IEImporter extends IECfg
         }
     }
 
-    public function searchAll($term)
-    {
-        $results = array();
-        foreach ($this->IEClasses as $ieClass) {
-            $found = $ieClass->searchString($term);
-            if ($found) {
-                $results[$ieClass->keyword] = $found;
-            }
-        }
-        return $results;
-    }
-
 }

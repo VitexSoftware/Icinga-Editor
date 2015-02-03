@@ -9,13 +9,13 @@
  * @copyright  2012 Vitex@hippy.cz (G)
  */
 require_once 'includes/IEInit.php';
-require_once './classes/IEImporter.php';
+require_once 'classes/IESearcher.php';
 
 $query = $oPage->getRequestValue('search', 'string');
 
 $found = array();
 
-$searcher = new IEImporter();
+$searcher = new IESearcher($oPage->getRequestValue('table', 'string'), $oPage->getRequestValue('column', 'string'));
 
 if (strlen($query) < 2) {
     $oPage->addStatusMessage(_('Vyheldávaný řetězec je příliš krátký'), 'warning');
