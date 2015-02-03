@@ -128,7 +128,8 @@ class IEService extends IECfg
           'condition' => array('command_type' => 'check')
         )
       ),
-      'check_command-params' => array(),
+      'check_command-remote' => array('title' => 'vzdálený příkaz'),
+      'check_command-params' => array('title' => 'parametry testů'),
       'initial_state' => array(
         'title' => 'výchozí stav',
         'o' => 'Ok',
@@ -207,7 +208,6 @@ class IEService extends IECfg
         'c' => 'stalk on CRITICAL states'
       ),
       'notes' => array('title' => 'poznámka'),
-      'check_command-remote' => array(),
       'notes_url' => array('title' => 'url dodatečných poznámek'),
       'action_url' => array('title' => 'url dodatečné akce'),
       'icon_image' => array('title' => 'ikona služby'),
