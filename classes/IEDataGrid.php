@@ -74,7 +74,11 @@ class IEDataGrid extends EaseDataGrid
     {
         foreach ($this->dataSource->useKeywords as $keyword => $type) {
             if (isset($this->dataSource->keywordsInfo[$keyword])) {
-                if (strstr($type, 'VARCHAR') || strstr($type, 'TEXT') || strstr($type, 'PLATFORM')) {
+                if (!isset($this->dataSource->keywordsInfo[$keyword]['title'])) {
+                    $this->addStatusMessage(_('Chybi titulek') . ' ' . $this->dataSource->keyword . ': ' . $keyword, 'warning');
+                    $this->dataSource->keywordsInfo[$keyword]['title'] = $keyword;
+                }
+                if (strstr($type, 'VARCHAR') || strstr($type, 'TEXT') || strstr($type, 'PLATFORM') || strstr($type, 'IDLIST')) {
                     $this->setColumn($keyword, $this->dataSource->keywordsInfo[$keyword]['title'], true);
                 } else {
                     $this->setColumn($keyword, $this->dataSource->keywordsInfo[$keyword]['title'], false);

@@ -16,9 +16,7 @@ $oPage->onlyForLogged();
 
 $oPage->addItem(new IEPageTop(_('Přehled příkazů')));
 
-$command = new IECommand();
-
-$oPage->addItem(new EaseTWBContainer(new IEDataGrid(_('Příkazy'), $command)));
+$oPage->addItem(new EaseTWBContainer(new IEDataGrid(_('Příkazy'), new IECommand)));
 
 $oPage->addItem(new IEPageBottom());
 

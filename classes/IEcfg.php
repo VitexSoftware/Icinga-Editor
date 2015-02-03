@@ -1191,7 +1191,7 @@ class IEcfg extends EaseBrick
                                 $icon = 'logos/unknown.gif';
                                 break;
                         }
-                        $data[$rowId][$key] = '<img class="platform" src="' . $icon . '"> ' . $value;
+                        $data[$rowId][$key] = '<img class="gridimg" src="' . $icon . '"> ' . $value;
                         break;
                     case 'BOOL':
                         if (is_null($value) || !strlen($value)) {
@@ -1206,6 +1206,30 @@ class IEcfg extends EaseBrick
                             }
                         }
                         break;
+                    case 'IDLIST':
+                        if (strlen($value)) {
+                            $values = unserialize($value);
+                            if (isset($this->keywordsInfo[$key]['refdata'])) {
+                                $idcolumn = $this->keywordsInfo[$key]['refdata']['idcolumn'];
+                                $target = str_replace('_id', '.php', $idcolumn);
+                                foreach ($values as $id => $name) {
+                                    if ($id) {
+                                        $values[$id] = '<a href="' . $target . '?' . $idcolumn . '=' . $id . '">' . $name . '</a>';
+                                    } else {
+                                        $values[$id] = '<a href="search.php?search=' . $name . '">' . $name . '</a> ' . EaseTWBPart::glyphIcon('search');
+                                    }
+                                }
+                            }
+                            $value = implode(',', $values);
+                            $data[$rowId][$key] = $value;
+                        }
+                        break;
+                }
+                if (strstr($key, 'image') && strlen(trim($value))) {
+                    $data[$rowId][$key] = '<img src="' . $value . '" class="gridimg">';
+                }
+                if (strstr($key, 'url')) {
+                    $data[$rowId][$key] = '<a href="' . $value . '">' . $value . '</a>';
                 }
             }
         }
