@@ -1166,4 +1166,50 @@ class IEcfg extends EaseBrick
         }
     }
 
+    public function htmlize($data)
+    {
+        foreach ($data as $rowId => $row) {
+            foreach ($row as $key => $value) {
+                if ($key == $this->myKeyColumn) {
+                    continue;
+                }
+                if (!isset($this->useKeywords[$key])) {
+                    continue;
+                }
+                $fieldType = $this->useKeywords[$key];
+                $fType = preg_replace('/\(.*\)/', '', $fieldType);
+                switch ($fType) {
+                    case 'PLATFORM':
+                        switch ($value) {
+                            case 'windows':
+                                $icon = 'logos/base/win40.gif';
+                                break;
+                            case 'linux':
+                                $icon = 'logos/base/linux40.gif';
+                                break;
+                            default:
+                                $icon = 'logos/unknown.gif';
+                                break;
+                        }
+                        $data[$rowId][$key] = '<img class="platform" src="' . $icon . '"> ' . $value;
+                        break;
+                    case 'BOOL':
+                        if (is_null($value) || !strlen($value)) {
+                            $data[$rowId][$key] = '<em>NULL</em>';
+                        } else {
+                            if ($value === '0') {
+                                $data[$rowId][$key] = EaseTWBPart::glyphIcon('unchecked');
+                            } else {
+                                if ($value === '1') {
+                                    $data[$rowId][$key] = EaseTWBPart::glyphIcon('check');
+                                }
+                            }
+                        }
+                        break;
+                }
+            }
+        }
+        return $data;
+    }
+
 }
