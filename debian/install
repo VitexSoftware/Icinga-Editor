@@ -2,6 +2,7 @@
 *.ico		usr/share/icinga-editor
 css/*.css	usr/share/icinga-editor/css
 css/images/*	usr/share/icinga-editor/css/images
+css/msdropdown/*	usr/share/icinga-editor/css/msdropdown
 js/*.js		usr/share/icinga-editor/js
 js/msdropdown/*.js		usr/share/icinga-editor/js/msdropdown
 img/*		usr/share/icinga-editor/img
