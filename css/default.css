@@ -79,3 +79,24 @@ a img.avatar { height: 30px; width: 30px;}
 
 #preload { position: absolute; top: 40%; z-index: 20; top: 40%; left: 40%; visibility: hidden; }
 #listing { margin: 20px;}
+
+.flexigrid div.fbutton .csvexport {
+    background: url(../img/csv.png) no-repeat center left;
+}
+
+.flexigrid div.fbutton .pdfexport {
+    background: url(../img/pdf.png) no-repeat center left;
+}
+
+.flexigrid div.fbutton .add {
+    background: url(../img/add.png) no-repeat center left;
+}
+
+.flexigrid div.fbutton .delete {
+    background: url(../img/close.png) no-repeat center left;
+}
+
+.flexigrid div.fbutton .edit {
+    background: url(../img/edit.png) no-repeat center left;
+}
+

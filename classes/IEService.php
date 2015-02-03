@@ -84,7 +84,7 @@ class IEService extends IECfg
       'icon_image' => 'VARCHAR(64)',
       'icon_image_alt' => 'VARCHAR(64)',
       'configurator' => 'VARCHAR(64)',
-      'platform' => "ENUM('generic','linux','windows')"
+      'platform' => "PLATFORM"
     );
     public $keywordsInfo = array(
       'host_name' => array(

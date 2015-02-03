@@ -1137,4 +1137,33 @@ class IEcfg extends EaseBrick
         return $results;
     }
 
+    public function getCsv($queryRaw)
+    {
+        $transactions = self::getListing($queryRaw);
+        $this->getCSVFile($transactions);
+    }
+
+    /**
+     * Vypíše výsledek SQL dotazu v požadovaném tvaru
+     *
+     * @param type $queryRaw
+     */
+    public function output($queryRaw)
+    {
+        switch (EaseShared::webPage()->getRequestValue('export')) {
+            case 'csv':
+                $this->getCsv($queryRaw);
+                break;
+            case 'pdf':
+                $this->getPdf($queryRaw);
+                break;
+
+            default:
+                // header("Content-type: application/json");
+
+                echo $this->getJson($queryRaw);
+                break;
+        }
+    }
+
 }

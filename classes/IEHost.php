@@ -94,7 +94,7 @@ class IEHost extends IECfg
       'statusmap_image' => 'VARCHAR(64)',
       '2d_coords' => 'VARCHAR(32)',
       '3d_coords' => 'VARCHAR(64)',
-      'platform' => "ENUM('generic','linux','windows')"
+      'platform' => "PLATFORM"
     );
     public $keywordsInfo = array(
       'host_name' => array('title' => 'Jméno hosta', 'required' => true),

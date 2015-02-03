@@ -43,11 +43,9 @@ class IEImporter extends IECfg
 
     public function registerClass($className)
     {
-        if (file_exists('classes/' . $className . '.php')) {
-            include_once $className . '.php';
-        }
-        $NewClass = new $className;
-        $this->IEClasses[$NewClass->keyword] = new $className;
+
+        $newClass = new $className;
+        $this->IEClasses[$newClass->keyword] = new $className;
     }
 
     /**

@@ -36,14 +36,16 @@ class IECommand extends IECfg
       'command_line' => 'TEXT',
       'command_type' => "ENUM('check','notify','handler')",
       'command_local' => 'BOOL',
-      'command_remote' => 'BOOL'
+      'command_remote' => 'BOOL',
+      'platform' => "PLATFORM"
     );
     public $keywordsInfo = array(
       'command_name' => array('title' => 'název příkazu', 'required' => true),
       'command_line' => array('title' => 'příkaz', 'required' => true),
       'command_type' => array('title' => 'druh příkazu', 'required' => true),
       'command_local' => array('title' => 'lokální příkaz'),
-      'command_remote' => array('title' => 'vzdálený příkaz NRPE/Nsc++')
+      'command_remote' => array('title' => 'vzdálený příkaz NRPE/Nsc++'),
+      'platform' => array('title' => 'Platforma', 'mandatory' => true)
     );
 
     /**

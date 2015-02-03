@@ -3,7 +3,10 @@
 /**
  * Volba platformy
  *
- * @author vitex
+ * @package    IcingaEditor
+ * @subpackage WebUI
+ * @author     Vitex <vitex@hippy.cz>
+ * @copyright  2012 Vitex@hippy.cz (G)
  */
 class IEPlatformSelector extends EaseHtmlSelect
 {
@@ -19,12 +22,6 @@ class IEPlatformSelector extends EaseHtmlSelect
         return array('generic' => 'generic', 'windows' => 'windows', 'linux' => 'linux');
     }
 
-    function afterAdd()
-    {
-        EaseShared::webPage()->includeJavaScript('js/msdropdown/jquery.dd.min.js');
-        EaseShared::webPage()->includeCss('css/msdropdown/dd.css');
-    }
-
     public function finalize()
     {
         parent::finalize();
@@ -36,18 +33,9 @@ class IEPlatformSelector extends EaseHtmlSelect
             }
             next($this->platforms);
         }
-        EaseShared::webPage()->addJavaScript('$("#' . $this->getTagID() . '").msDropDown()', null, true);
-    }
-
-    /**
-     * Formátuje cenu
-     *
-     * @param float $price
-     * @return string
-     */
-    function formatCurrency($price)
-    {
-        return round($price) . ' Kč';
+        EaseShared::webPage()->addJavaScript('$("#' . $this->getTagID() . '").msDropDown();', null, true);
+        EaseShared::webPage()->includeJavaScript('js/msdropdown/jquery.dd.min.js');
+        EaseShared::webPage()->includeCss('css/msdropdown/dd.css');
     }
 
 }

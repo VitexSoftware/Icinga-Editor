@@ -8,6 +8,7 @@
 require_once 'IEGroupMembersEditor.php';
 require_once 'IEUserSelect.php';
 require_once 'EaseTWBSlider.php';
+require_once 'IEPlatformSelector.php';
 
 /**
  * Description of IECfgEditor
@@ -123,6 +124,9 @@ class IECfgEditor extends EaseContainer
                 $selector->enclosedElement->setTagCss(array('width' => '100%'));
                 $selector->enclosedElement->setTagClass('form-control');
                 break;
+            case 'PLATFORM':
+                $fieldBlock->addItem(new EaseTWBFormGroup($keywordInfo['title'], new IEPlatformSelector($fieldName, null, $value)));
+                break;
             case 'RADIO':
                 $flags = explode(',', str_replace(array($fType, "'", '(', ')'), '', $fieldType));
                 if (is_array($flags)) {
@@ -177,6 +181,11 @@ class IECfgEditor extends EaseContainer
 
                 $sqlConds = " ( " . $this->objectEdited->myDbLink->prepSelect(array_merge($conditions, array('command_local' => true, $this->objectEdited->userColumn => EaseShared::user()->getUserID()))) . " ) OR ( " . $this->objectEdited->myDbLink->prepSelect($conditions) . " AND public=1 )  ";
 //                    $SqlConds = $this->ObjectEdited->myDbLink->prepSelect(array_merge($Conditions, array($this->ObjectEdited->userColumn => EaseShared::user()->getUserID())));
+
+                if (isset($this->objectEdited->keywordsInfo['platform'])) {
+                    $platform = $this->objectEdited->getDataValue('platform');
+                    $sqlConds .= " AND ((`platform` =  '" . $platform . "') OR (`platform` = 'generic') OR (`platform` IS NULL) OR (`platform`='') ) ";
+                }
 
                 $membersAviableArray = EaseShared::myDbLink()->queryTo2DArray(
                     'SELECT ' . $nameColumn . ' ' .
