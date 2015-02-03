@@ -1233,7 +1233,7 @@ class IEcfg extends EaseBrick
                             $data[$rowId][$key] = '<a title="' . $table . '" href="search.php?search=' . $value . '&table=' . $table . '&column=' . $searchColumn . '">' . $value . '</a> ' . EaseTWBPart::glyphIcon('search');
                         }
                         if (strstr($key, 'image') && strlen(trim($value))) {
-                            $data[$rowId][$key] = '<img src="' . $value . '" class="gridimg">';
+                            $data[$rowId][$key] = '<img title="' . $value . '" src="logos/' . $value . '" class="gridimg">';
                         }
                         if (strstr($key, 'url')) {
                             $data[$rowId][$key] = '<a href="' . $value . '">' . $value . '</a>';

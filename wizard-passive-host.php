@@ -9,7 +9,7 @@
  * @copyright  2012 Vitex@hippy.cz (G)
  */
 require_once 'includes/IEInit.php';
-require_once 'classes/NewPassiveCheckedHostForm.php';
+require_once 'classes/IEPassiveCheckedHostForm.php';
 
 $oPage->onlyForLogged();
 
