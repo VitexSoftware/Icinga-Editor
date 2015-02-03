@@ -1,6 +1,7 @@
 *.php		usr/share/icinga-editor
 *.ico		usr/share/icinga-editor
 css/*.css	usr/share/icinga-editor/css
+css/images/*	usr/share/icinga-editor/css/images
 js/*.js		usr/share/icinga-editor/js
 img/*		usr/share/icinga-editor/img
 images/*		usr/share/icinga-editor/images

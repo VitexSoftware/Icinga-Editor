@@ -7,7 +7,7 @@
  */
 require_once 'Ease/EaseBrick.php';
 define('K_PATH_IMAGES', dirname(__DIR__) . '/img/');
-require_once 'tcpdf/tcpdf.php';
+#require_once 'tcpdf/tcpdf.php';
 
 /**
  * Description of DBFDataSource
