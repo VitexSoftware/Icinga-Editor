@@ -16,22 +16,32 @@ header('Cache-Control: no-cache, must-revalidate');
 header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
 header('Content-type: application/json');
 
-$Request = $oPage->getRequestValue('term');
-$Source = $oPage->getRequestValue('source','array');
-$Limit = $oPage->getRequestValue('maxRows', 'int');
-if ($Limit) {
-    $Limit = 'LIMIT ' . $Limit;
+$request = $oPage->getRequestValue('term');
+$platform = $oPage->getRequestValue('platform');
+$Source = $oPage->getRequestValue('source', 'array');
+$limit = $oPage->getRequestValue('maxRows', 'int');
+if ($limit) {
+    $limit = 'LIMIT ' . $limit;
 } else {
-    $Limit = '';
+    $limit = '';
 }
 
 $MembersFound = array();
 
-if ($Request) {
-    $MembersFoundArray = EaseShared::myDbLink()->queryToArray('SELECT `command_name` FROM `'. DB_PREFIX . 'command` WHERE command_type=\'check\' AND (user_id='.$oUser->getUserID().' OR public=1) AND command_name LIKE \'%' . EaseShared::myDbLink()->AddSlashes($Request) . '%\' ORDER BY command_name ' . $Limit);
+if ($request) {
+
+    if ($platform) {
+        $sqlConds = " AND ((`platform` =  '" . $platform . "') OR (`platform` = 'generic') OR (`platform` IS NULL) OR (`platform`='') ) ";
+    } else {
+        $sqlConds = '';
+    }
+
+    $query = 'SELECT `command_name` FROM `' . DB_PREFIX . 'command` WHERE command_type=\'check\' AND (user_id=' . $oUser->getUserID() . ' OR public=1) AND command_name LIKE \'%' . EaseShared::myDbLink()->AddSlashes($request) . '%\' ' . $sqlConds . ' ORDER BY command_name ' . $limit;
+
+    $MembersFoundArray = EaseShared::myDbLink()->queryToArray($query);
     if (count($MembersFoundArray)) {
-        foreach ($MembersFoundArray as $Request) {
-            $MembersFound[] = $Request['command_name'];
+        foreach ($MembersFoundArray as $request) {
+            $MembersFound[] = $request['command_name'];
         }
     }
 }

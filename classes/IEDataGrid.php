@@ -26,7 +26,7 @@ class IEDataGrid extends EaseDataGrid
       'sortorder' => 'asc',
       'usepager' => true,
       'useRp' => true,
-      'rp' => 15,
+      'rp' => 20,
       'dblClickResize' => true,
       'showTableToggleBtn' => true,
       'add' => array(),
@@ -74,7 +74,7 @@ class IEDataGrid extends EaseDataGrid
     {
         foreach ($this->dataSource->useKeywords as $keyword => $type) {
             if (isset($this->dataSource->keywordsInfo[$keyword])) {
-                if (!isset($this->dataSource->keywordsInfo[$keyword]['title'])) {
+                if (!isset($this->dataSource->keywordsInfo[$keyword]['title']) || !strlen(trim($this->dataSource->keywordsInfo[$keyword]['title']))) {
                     $this->addStatusMessage(_('Chybi titulek') . ' ' . $this->dataSource->keyword . ': ' . $keyword, 'warning');
                     $this->dataSource->keywordsInfo[$keyword]['title'] = $keyword;
                 }

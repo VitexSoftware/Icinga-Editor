@@ -39,56 +39,24 @@ class IEPassiveCheckedServiceForm extends EaseTWBForm
     function finalize()
     {
         parent::finalize();
+        $platform = $this->service->getDataValue('platform');
+        $this->addItem(new EaseTWBFormGroup(_('Jméno'), new EaseHtmlInputTextTag('service_name', $this->service->getName()), $this->service->getName(), _('Název služby testu')));
 
-        $this->addItem(new EaseTWBFormGroup(_('Jméno'), new EaseHtmlInputTextTag('service_name'), $this->service->getName(), _('Volné místo disku'), _('Název služby testu')));
-        $this->addItem(new EaseTWBFormGroup(_('Platforma'), new IEPlatformSelector('platform'), $this->service->getDataValue('platform'), _('Platforma sledovaného stroje')));
+        $addNewItem = new EaseHtmlInputSearchTag('check_command-remote', $this->service->getDataValue('check_command-remote'), array('class' => 'search-input', 'title' => _('vzdálený test')));
+        $addNewItem->setDataSource('jsoncommand.php?maxRows=20&platform=' . $platform);
+
+        $this->addItem(new EaseTWBFormGroup(_('Vzdálený Příkaz'), $addNewItem, _('Hledej příkazy pro: ') . $platform, _('Příkaz vykonávaný vzdáleným senzorem NRPE/NSCP.exe')));
+
+        $this->addItem(new EaseTWBFormGroup(_('Parametry'), new EaseHtmlInputTextTag('check_command-params', $this->service->getDataValue('check_command-params')), $this->service->getDataValue('command-params'), _('Parametry vzdáleného příkazu. (Pro nrpe oddělované vykřičníkem.)')));
+
+
+        $this->addItem(new EaseTWBFormGroup(_('Platforma'), new IEPlatformSelector('platform', null, $platform), _('Platforma sledovaného stroje')));
 
         $this->addItem(new EaseTWSubmitButton(_('Založit') . '&nbsp' . EaseTWBPart::GlyphIcon('forward'), 'success'));
-    }
-
-    function commandSelector()
-    {
-        $dblink = EaseShared::db();
-        $IDColumn = 'command_id';
-        $nameColumn = 'command_name';
-        $sTable = DB_PREFIX . 'command';
-
-        $conditions['command_type'] = 'check';
-
-        $sqlConds = " ( " . $dblink->prepSelect(array_merge($conditions, array('command_local' => true, 'user_id' => EaseShared::user()->getUserID()))) . " ) OR ( " . $dblink->prepSelect($conditions) . " AND public=1 )  ";
-
-
-        $platform = 'generic';
-        $sqlConds .= " AND ((`platform` =  '" . $platform . "') OR (`platform` = 'generic') OR (`platform` IS NULL) OR (`platform`='') ) ";
-
-        $membersAviableArray = EaseShared::myDbLink()->queryTo2DArray(
-            'SELECT ' . $nameColumn . ' ' .
-            'FROM `' . DB_PREFIX . $sTable . '` ' .
-            'WHERE ' . $sqlConds . ' ' .
-            'ORDER BY ' . $nameColumn, $IDColumn);
-
-        $selector = $fieldBlock->addItem(new EaseLabeledSelect($fieldName, $value, $keywordInfo['title']));
-        $selector->enclosedElement->setTagClass('form-control');
-        if (!$required) {
-            $selector->addItems(array('' => ''));
+        $serviceId = $this->service->getId();
+        if ($serviceId) {
+            $this->addItem(new EaseHtmlInputHiddenTag('service_id', $serviceId));
         }
-        if (count($membersAviableArray)) {
-            $selector->addItems(array_combine($membersAviableArray, $membersAviableArray));
-        }
-
-        $sqlConds = " ( " . $dblink->prepSelect(array_merge($conditions, array('command_remote' => true, $this->objectEdited->userColumn => EaseShared::user()->getUserID()))) . " ) OR ( " . $dblink->prepSelect($conditions) . " AND public=1 )  ";
-//                    $SqlConds = $dblink->prepSelect(array_merge($Conditions, array($this->ObjectEdited->userColumn => EaseShared::user()->getUserID())));
-
-        $membersAviableArray = $dblink->queryTo2DArray(
-            'SELECT ' . $nameColumn . ' ' .
-            'FROM `' . DB_PREFIX . $sTable . '` ' .
-            'WHERE ' . $sqlConds . ' ' .
-            'ORDER BY ' . $nameColumn, $IDColumn);
-
-        $addNewItem = $fieldBlock->addItem(new EaseHtmlInputSearchTag($fieldName . '-remote', $this->objectEdited->getDataValue($fieldName . '-remote'), array('class' => 'search-input', 'title' => _('vzdálený test'))));
-        $addNewItem->setDataSource('jsoncommand.php?maxRows=10');
-
-        $fieldBlock->addItem(new EaseLabeledTextInput($fieldName . '-params', $this->objectEdited->getDataValue($fieldName . '-params'), _('Parametry'), array('style' => 'width: 100%')));
     }
 
 }

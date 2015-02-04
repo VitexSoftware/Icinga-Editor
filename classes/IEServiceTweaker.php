@@ -55,7 +55,13 @@ class IEServiceTweaker extends EaseHtmlDivTag
 
         $this->command = new IECommand();
         $this->command->setmyKeyColumn($this->command->nameColumn);
-        $this->command->loadFromMySQL($this->service->getDataValue('check_command'));
+
+        $checkLocal = $this->service->getDataValue('check_command');
+//        $checkRemote = $this->service->getDataValue('check_command-remote');
+
+        if (isset($checkLocal)) {
+            $this->command->loadFromMySQL($checkLocal);
+        }
 
         $configurator = $this->service->getDataValue('configurator');
         if ($configurator) {

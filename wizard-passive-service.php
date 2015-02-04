@@ -14,26 +14,40 @@ require_once 'classes/IEServicegroup.php';
 
 $oPage->onlyForLogged();
 
+$serviceId = $oPage->getRequestValue('service_id', 'int');
 $serviceName = trim($oPage->getRequestValue('service_name'));
+$remoteCmd = trim($oPage->getRequestValue('check_command-remote'));
+$remoteCmdParam = trim($oPage->getRequestValue('check_command-params'));
 $platform = trim($oPage->getRequestValue('platform'));
-$service = new IEService();
+$service = new IEService($serviceId);
 $service->owner = &$oUser;
+
+if (isset($platform)) {
+    $service->setDataValue('platform', $platform);
+}
+
 
 if ($serviceName) {
 
-    $service->setData(
-        array(
-          $service->userColumn => $oUser->getUserID(),
-          'service_description' => $serviceName,
-          'use' => 'generic-service',
-          'platform' => 'generic',
-          'register' => true,
-          'generate' => TRUE,
-          'platform' => $platform,
-          'display_name' => $serviceName,
-          'passive_checks_enabled' => true
-        )
+    $data = array(
+      $service->userColumn => $oUser->getUserID(),
+      'service_description' => $serviceName,
+      'use' => 'generic-service',
+      'register' => true,
+      'generate' => true,
+      'display_name' => $serviceName,
+      'passive_checks_enabled' => true
     );
+
+    if (isset($remoteCmd)) {
+        $data['check_command-remote'] = $remoteCmd;
+    }
+
+    if (isset($remoteCmdParam)) {
+        $data['check_command-params'] = $remoteCmdParam;
+    }
+
+    $service->setData($data);
 
     if ($service->saveToMysql()) {
         /*
@@ -44,8 +58,13 @@ if ($serviceName) {
           $serviceGroup->saveToMySQL();
           }
          */
-        $oPage->redirect('service.php?service_id=' . $service->getId());
-        exit();
+        if (strlen(trim($service->getDataValue('check_command-remote')))) {
+            $oPage->addStatusMessage(_('Služba byla založena'), 'success');
+            $oPage->redirect('service.php?service_id=' . $service->getId());
+            exit();
+        } else {
+            $oPage->addStatusMessage(_('Není zvolen vzdálený příkaz testu'), 'warning');
+        }
     }
 } else {
     if ($oPage->isPosted()) {
@@ -54,14 +73,14 @@ if ($serviceName) {
 }
 
 
-$oPage->addItem(new IEPageTop(_('Průvodce založením služby')));
+$oPage->addItem(new IEPageTop(_('Průvodce založením pasivně sledované služby')));
 
-//$oPage->columnI->addItem(
-//    new EaseTWBPanel(_('Volba druhu servicea'), 'success', _('Aktivni '))
-//);
-//$oPage->columnIII->addItem(
-//    new EaseTWBPanel(_('Volba druhu servicea'), 'info', _('Pasivní '))
-//);
+$oPage->columnI->addItem(
+    new EaseTWBPanel(_('Pasivní checky'), 'info', _('senzor (nrpe/nscp.exe) běží na vzdáleném hostu, který je z monitorovacího serveru nedostupný (např. za NATem) ale má přístup do internetu a tak výsledky nadefinovaných testů zasílá protokolem NSCA na monitorovací server, který je přímá a zpracovává jako by se jednalo o výsledky aktivních testů.'))
+);
+$oPage->columnIII->addItem(
+    new EaseTWBPanel(_('Pasivně sledovaná služba'), 'info', _('Nabízené příkazy jsou definovány jako vzdálené a odpovídající zvolené platformě. Parametry záleží na konkrétně zvoleném příkazu testu.'))
+);
 
 
 

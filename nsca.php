@@ -72,18 +72,58 @@ xcopy "%ProgramFiles%\NSClient++\Win\System\*" "%SystemRoot%\System32" /s/e/c/k/
 %NSCLIENT% settings --path /settings/NSCA/client/targets/default --key address --set %server_ip%
 %NSCLIENT% settings --path /settings/NSCA/client/targets/default --key port --set 5667
 %NSCLIENT% settings --path /settings/NSCA/client/targets/default --key timeout --set 30
-
-%NSCLIENT% settings --path "/settings/external scripts/alias" --key alias_cpu --set checkCPU warn=80 crit=90 time=5m time=1m time=30s
-
 %NSCLIENT% settings --path /settings/scheduler/schedules/default --key channel --set NSCA
 %NSCLIENT% settings --path /settings/scheduler/schedules/default --key interval --set 30s
 %NSCLIENT% settings --path /settings/scheduler/schedules/default --key report --set all
-%NSCLIENT% settings --path /settings/scheduler/schedules --key "CPU Load-vitex" --set alias_cpu
+';
 
+
+$hostName = $host->getName();
+$service = new IEService();
+
+$host_active = (boolean) $host->getDataValue('active_checks_enabled');
+$host_passive = (boolean) $host->getDataValue('passive_checks_enabled');
+
+$servicesAssigned = $service->myDbLink->queryToArray('SELECT ' . $service->myKeyColumn . ',' . $service->nameColumn . ' FROM ' . $service->myTable . ' WHERE host_name LIKE \'%"' . $host->getName() . '"%\'', $service->myKeyColumn);
+
+$allServices = $service->getListing(
+    null, true, array(
+  'platform', 'check_command-remote', 'check_command-params', 'passive_checks_enabled', 'active_checks_enabled'
+    )
+);
+
+foreach ($allServices as $serviceID => $serviceInfo) {
+    $servicePassive = (boolean) $serviceInfo['passive_checks_enabled'];
+    $serviceActive = (boolean) $serviceInfo['active_checks_enabled'];
+    if ($serviceInfo['register'] != 1) {
+        unset($allServices[$serviceID]);
+        continue;
+    }
+
+    if (($serviceInfo['platform'] != 'generic') && $serviceInfo['platform'] != $host->getDataValue('platform')) {
+        unset($allServices[$serviceID]);
+        continue;
+    }
+    if ((!$host_passive || !$servicePassive) && (!$host_active || !$serviceActive)) {
+        unset($allServices[$serviceID]);
+        continue;
+    }
+}
+
+foreach ($allServices as $service) {
+    $serviceName = $service['service_description'];
+    $serviceCmd = $service['check_command-remote'];
+    $serviceParams = $service['check_command-params'];
+    $nscabat .= "\nREM #" . $service['service_id'] . ' ' . $serviceName . "\n";
+    $nscabat .= '%NSCLIENT% settings --path "/settings/external scripts/alias" --key "' . $serviceName . '" --set ' . $serviceCmd . ' ' . $serviceParams . "\n";
+    $nscabat .= '%NSCLIENT% settings --path /settings/scheduler/schedules --key "' . $serviceName . '" --set ' . $serviceName . "\n";
+}
+
+$nscabat .= '
 REM %NSCLIENT% test
 %NSCLIENT% service --start
 
-    ';
+';
 
 
 

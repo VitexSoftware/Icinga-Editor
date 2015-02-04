@@ -249,9 +249,8 @@ class IEDataSource extends EaseBrick
                 );
                 $jsonData['rows'][] = $entry;
             }
-            return json_encode($jsonData);
         }
-        return null;
+        return json_encode($jsonData);
     }
 
     public function getCsv($queryRaw)

@@ -30,7 +30,7 @@ legend {  border: 1px solid #333333; margin: 2px; padding: 2px; }
 #StatusMessages {
     margin: 2px;
     padding: 2px;
-    overflow: auto;
+    overflow-y: auto;
 }
 
 .jellybean {
