@@ -115,8 +115,8 @@ foreach ($allServices as $service) {
     $serviceCmd = $service['check_command-remote'];
     $serviceParams = $service['check_command-params'];
     $nscabat .= "\nREM #" . $service['service_id'] . ' ' . $serviceName . "\n";
-    $nscabat .= '%NSCLIENT% settings --path "/settings/external scripts/alias" --key "' . $serviceName . '" --set ' . $serviceCmd . ' ' . $serviceParams . "\n";
-    $nscabat .= '%NSCLIENT% settings --path /settings/scheduler/schedules --key "' . $serviceName . '" --set ' . $serviceName . "\n";
+    $nscabat .= '%NSCLIENT% settings --path "/settings/external scripts/alias" --key "' . $serviceName . '" --set "' . $serviceCmd . ' ' . $serviceParams . "\"\n";
+    $nscabat .= '%NSCLIENT% settings --path "/settings/scheduler/schedules" --key "' . str_replace(' ', '_', $serviceName) . '-' . $oUser->getUserLogin() . '" --set "' . $serviceName . "\"\n";
 }
 
 $nscabat .= '
