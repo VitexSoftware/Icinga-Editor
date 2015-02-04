@@ -115,11 +115,11 @@ foreach ($allServices as $service) {
     $serviceCmd = $service['check_command-remote'];
     $serviceParams = $service['check_command-params'];
     $nscabat .= "\nREM #" . $service['service_id'] . ' ' . $serviceName . "\n";
-    $nscabat .= '%NSCLIENT% settings --path "/settings/external scripts/alias" --key "' . $serviceName . '" --set "' . $serviceCmd . ' ' . $serviceParams . "\"\n";
-    $nscabat .= '%NSCLIENT% settings --path "/settings/scheduler/schedules" --key "' . str_replace(' ', '_', $serviceName) . '-' . $oUser->getUserLogin() . '" --set "' . $serviceName . "\"\n";
-}
+    $nscabat .= '%NSCLIENT% settings --path "/settings/external scripts/alias" --key "' . str_replace ( ' ', '_', $serviceName ) . '" --set "' . $serviceCmd . ' ' . $serviceParams. "\"\n";
+        $nscabat .= '%NSCLIENT% settings --path "/settings/scheduler/schedules" --key "'  . $serviceName . '-' . $oUser->getUserLogin( ) . '" --set "' . str_replace ( ' ', '_', $serviceName) . "\"\n";
+        }
 
-$nscabat .= '
+        $nscabat .= '
 REM %NSCLIENT% test
 %NSCLIENT% service --start
 
@@ -128,16 +128,16 @@ REM %NSCLIENT% test
 
 
 
-if ($host->getDataValue('passive_checks_enabled')) {
-    if ($host->getDataValue('platform') == 'windows') {
+            if($host->getDataValue('passive_checks_enabled')) {
+            if($host->getDataValue ( 'platform') == 'windows') {
         header('Content-Description: File Transfer');
         header('Content-Type: application/octet-stream');
         header('Content-Disposition: attachment; filename=' . $host->getName() . '_nsca.bat');
         header('Content-Transfer-Encoding: binary');
-        header('Expires: 0');
+    header('Expires: 0');
         header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-        header('Pragma: public');
-        header('Content-Length: ' . strlen($nscabat));
-        echo str_replace("\n", "\r\n", $nscabat);
+    header('Pragma: public');
+        header ( 'Content-Length: ' . strlen($nscabat));
+         echo str_replace("\n", "\r\n", $nscabat);
     }
 }

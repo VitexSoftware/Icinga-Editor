@@ -342,7 +342,7 @@ class IEService extends IECfg
                     continue;
                 }
             } else { //záznam
-                $allData[$adKey][$this->nameColumn] = str_replace(' ', '_', $allData[$adKey][$this->nameColumn] . '-' . $user->getUserLogin());
+                $allData[$adKey][$this->nameColumn] = $allData[$adKey][$this->nameColumn] . '-' . $user->getUserLogin();
 
                 if (is_array($ad['contacts']) && count($ad['contacts'])) { //Projít kontakty, vyhodit nevlastněné uživatelem
                     foreach ($ad['contacts'] as $ContactID => $ContactName) {
