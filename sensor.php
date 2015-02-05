@@ -39,7 +39,7 @@ if ($host->getDataValue('active_checks_enabled')) {
     }
 
     if ($host->getDataValue('platform') == 'windows') {
-        $oPage->columnI->addItem('NSCP..');
+        $oPage->columnI->addItem(new EaseTWBLinkButton('nrpe.php?host_id=' . $hostId, $host->getName() . '_nrpe.bat ' . EaseTWBPart::GlyphIcon('download'), 'success'));
     }
 }
 
@@ -50,7 +50,7 @@ if ($host->getDataValue('passive_checks_enabled')) {
     }
 
     if ($host->getDataValue('platform') == 'linux') {
-        $oPage->columnI->addItem('NSCP..');
+        $oPage->columnI->addItem('Passive Linux');
     }
 }
 

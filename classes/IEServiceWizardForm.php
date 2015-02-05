@@ -16,7 +16,7 @@ require_once 'Ease/EaseTWBootstrap.php';
  *
  * @author vitex
  */
-class IEPassiveCheckedServiceForm extends EaseTWBForm
+class IEServiceWizardForm extends EaseTWBForm
 {
 
     /**

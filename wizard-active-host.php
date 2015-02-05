@@ -119,18 +119,19 @@ if ($hostName || $address || $addressSix) {
     $oUser->addStatusMessage('Address6: ' . $addressSix);
 
     $host->setData(
-            array(
-                $host->userColumn => $oUser->getUserID(),
+        array(
+          $host->userColumn => $oUser->getUserID(),
 //        'check_command'=>'check-host-alive',
-                'host_name' => $hostName,
-                'address' => $address,
-                'address6' => $addressSix,
-                'use' => 'generic-host',
-                'platform' => 'generic',
-                'register' => true,
-                'generate' => TRUE,
-                'alias' => $hostName
-            )
+          'host_name' => $hostName,
+          'address' => $address,
+          'address6' => $addressSix,
+          'use' => 'generic-host',
+          'platform' => 'generic',
+          'register' => true,
+          'generate' => TRUE,
+          'alias' => $hostName,
+          'active_checks_enabled' => true
+        )
     );
 
     if ($host->saveToMysql()) {
@@ -172,11 +173,11 @@ $firstHost->addItem(new EaseTWBFormGroup(_('Hostname serveru'), new EaseHtmlInpu
 $firstHost->addItem(new EaseTWBFormGroup(_('IPv4 Adresa'), new EaseHtmlInputTextTag('address', $address), null, _('čtyři číslice od 0 do 255 oddělené tečkou')));
 $firstHost->addItem(new EaseTWBFormGroup(_('IPv6 Adresa'), new EaseHtmlInputTextTag('address6', $addressSix), null, _('nejvíce osm skupin čtyř hexadecimálních číslic oddělených dvojtečkou')));
 
-$firstHost->addItem(new EaseTWSubmitButton(EaseTWBPart::GlyphIcon('plus').' '. _('Přidej host'), 'success'));
+$firstHost->addItem(new EaseTWSubmitButton(EaseTWBPart::GlyphIcon('plus') . ' ' . _('Přidej host'), 'success'));
 
 $oPage->columnI->addItem(new EaseHtmlDivTag(null, _('Po zadání alespoň jednoho vstupního údaje si tento '
-                . 'průvodce dohledá ostatní a provede sken na některé základní služby.'
-                . '<br>Pokud budou tyto nalezeny aktivují se jejich testy. Informace o stavu bude odesílána na první zadaný kontakt'), array('class' => 'well')));
+        . 'průvodce dohledá ostatní a provede sken na některé základní služby.'
+        . '<br>Pokud budou tyto nalezeny aktivují se jejich testy. Informace o stavu bude odesílána na první zadaný kontakt'), array('class' => 'well')));
 
 $oPage->columnI->addItem(new EaseHtmlDivTag(null, _('Pro instalaci nového vzdáleného senzoru prosím nejprve na sledovaném počítači nainstalujte balík'
         . ' a poté '

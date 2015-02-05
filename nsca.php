@@ -35,20 +35,18 @@ if /i "%processor_architecture%"=="x86" (
         echo ***App is Installed Successfully***
     ) else (
         echo ***INSTALLING NSCP-%cver%-Win32.msi ***
-	msiexec.exe /qb /lv %script_path%\instlog.txt  /a %script_path%\NSCP-%cver%-Win32.msi %inst_params%
+REM	msiexec.exe /qb /lv %script_path%\instlog.txt  /a %script_path%\NSCP-%cver%-Win32.msi %inst_params%
+	%script_path%\NSCP-%cver%-Win32.msi %inst_params%
     )
 ) else if /i "%processor_architecture%"=="X64" (
     if exist %NSCLIENT% (
         echo ***App is Installed Successfully***
     ) else (
         echo *** INSTALLING NSCP-%cver%-x64.msi ***
-	msiexec.exe /qb /a %script_path%\NSCP-%cver%-x64.msi  %inst_params%
+REM	msiexec.exe /qb /a %script_path%\NSCP-%cver%-x64.msi  %inst_params%
+	%script_path%\NSCP-%cver%-x64.msi  %inst_params%
     )
 )
-
-if exist "%ProgramFiles%\NSCP*.msi" del "%ProgramFiles%\NSCP*.msi"
-
-xcopy "%ProgramFiles%\NSClient++\Win\System\*" "%SystemRoot%\System32" /s/e/c/k/i/y
 
 %NSCLIENT% service --install
 %NSCLIENT% service --stop
@@ -62,7 +60,6 @@ xcopy "%ProgramFiles%\NSClient++\Win\System\*" "%SystemRoot%\System32" /s/e/c/k/
 %NSCLIENT% settings --path /modules --key CheckNSCP --set enabled
 %NSCLIENT% settings --path /modules --key CheckSystem --set enabled
 %NSCLIENT% settings --path /modules --key CheckWMI --set enabled
-%NSCLIENT% settings --path /modules --key NRPEServer --set enabled
 %NSCLIENT% settings --path /modules --key NSCAClient --set enabled
 %NSCLIENT% settings --path /settings/NSCA/client --key hostname --set ' . $host->getName() . '
 %NSCLIENT% settings --path /settings/NSCA/client --key channel --set NSCA

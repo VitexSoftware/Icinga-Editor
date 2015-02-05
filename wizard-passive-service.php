@@ -84,7 +84,7 @@ $oPage->columnIII->addItem(
 
 
 
-$oPage->columnII->addItem(new IEPassiveCheckedServiceForm($service));
+$oPage->columnII->addItem(new IEServiceWizardForm($service));
 
 $oPage->addItem(new IEPageBottom());
 
