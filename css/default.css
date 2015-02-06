@@ -52,7 +52,7 @@ legend {  border: 1px solid #333333; margin: 2px; padding: 2px; }
 .gray a { color: #222;  }
 
 
-    
+
 .fieldblock {
     border-bottom:  1px solid #b9d4d9;
     margin: 5px;
@@ -101,5 +101,7 @@ a img.avatar { height: 30px; width: 30px;}
 }
 
 .gridimg {
-        height: 16px;
+    height: 16px;
 }
+
+.inherited { color: #999; }

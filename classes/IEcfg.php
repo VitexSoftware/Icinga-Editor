@@ -1166,9 +1166,59 @@ class IEcfg extends EaseBrick
         }
     }
 
-    public function htmlize($data)
+    public function htmlizeData($data)
     {
-        foreach ($data as $rowId => $row) {
+        if (is_array($data) && count($data)) {
+            $usedCache = array();
+            foreach ($data as $rowId => $row) {
+
+                if ($this->allowTemplating && isset($row['use'])) {
+                    $use = $row['use'];
+                    if (!isset($usedCache[$use])) {
+                        $used = clone $this;
+                        $used->setmyKeyColumn('name');
+                        if ($used->loadFromMySQL($use)) {
+                            $used->resetObjectIdentity();
+                            $usedCache[$use] = $used->htmlizeData($used->getData());
+                        }
+                    }
+
+                    if (isset($usedCache[$use])) {
+                        foreach ($usedCache[$use] as $templateKey => $templateValue) {
+                            if (!is_null($templateValue)) {
+                                if (is_array($templateValue)) {
+                                    $templateValue = implode(',', $templateValue);
+                                }
+                                $data[$rowId][$templateKey] = '<span class="inherited" title="' . _('Předloha') . ': ' . $usedCache[$use]['name'] . '">' . $templateValue . '</span>';
+                            }
+                        }
+                    }
+                }
+
+                $htmlized = $this->htmlizeRow($row);
+
+                if (is_array($htmlized)) {
+                    foreach ($htmlized as $key => $value) {
+                        if (!is_null($value)) {
+                            $data[$rowId][$key] = $value;
+                        } else {
+                            if (!isset($data[$rowId][$key])) {
+                                $data[$rowId][$key] = $value;
+                            }
+                        }
+                    }
+                    if (isset($row['register']) && ($row['register'] == 1)) {
+                        $data[$rowId]['name'] = '';
+                    }
+                }
+            }
+        }
+        return $data;
+    }
+
+    public function htmlizeRow($row)
+    {
+        if (is_array($row) && count($row)) {
             foreach ($row as $key => $value) {
                 if ($key == $this->myKeyColumn) {
                     continue;
@@ -1191,17 +1241,17 @@ class IEcfg extends EaseBrick
                                 $icon = 'logos/unknown.gif';
                                 break;
                         }
-                        $data[$rowId][$key] = '<img class="gridimg" src="' . $icon . '"> ' . $value;
+                        $row[$key] = '<img class="gridimg" src="' . $icon . '"> ' . $value;
                         break;
                     case 'BOOL':
                         if (is_null($value) || !strlen($value)) {
-                            $data[$rowId][$key] = '<em>NULL</em>';
+                            $row[$key] = '<em>NULL</em>';
                         } else {
                             if ($value === '0') {
-                                $data[$rowId][$key] = EaseTWBPart::glyphIcon('unchecked');
+                                $row[$key] = EaseTWBPart::glyphIcon('unchecked');
                             } else {
                                 if ($value === '1') {
-                                    $data[$rowId][$key] = EaseTWBPart::glyphIcon('check');
+                                    $row[$key] = EaseTWBPart::glyphIcon('check');
                                 }
                             }
                         }
@@ -1223,27 +1273,27 @@ class IEcfg extends EaseBrick
                                 }
                             }
                             $value = implode(',', $values);
-                            $data[$rowId][$key] = $value;
+                            $row[$key] = $value;
                         }
                         break;
                     default :
                         if (isset($this->keywordsInfo[$key]['refdata']) && strlen(trim($value))) {
                             $table = $this->keywordsInfo[$key]['refdata']['table'];
                             $searchColumn = $this->keywordsInfo[$key]['refdata']['captioncolumn'];
-                            $data[$rowId][$key] = '<a title="' . $table . '" href="search.php?search=' . $value . '&table=' . $table . '&column=' . $searchColumn . '">' . $value . '</a> ' . EaseTWBPart::glyphIcon('search');
+                            $row[$key] = '<a title="' . $table . '" href="search.php?search=' . $value . '&table=' . $table . '&column=' . $searchColumn . '">' . $value . '</a> ' . EaseTWBPart::glyphIcon('search');
                         }
                         if (strstr($key, 'image') && strlen(trim($value))) {
-                            $data[$rowId][$key] = '<img title="' . $value . '" src="logos/' . $value . '" class="gridimg">';
+                            $row[$key] = '<img title="' . $value . '" src="logos/' . $value . '" class="gridimg">';
                         }
                         if (strstr($key, 'url')) {
-                            $data[$rowId][$key] = '<a href="' . $value . '">' . $value . '</a>';
+                            $row[$key] = '<a href="' . $value . '">' . $value . '</a>';
                         }
 
                         break;
                 }
             }
         }
-        return $data;
+        return $row;
     }
 
 }

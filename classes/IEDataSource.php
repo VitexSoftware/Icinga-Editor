@@ -200,7 +200,7 @@ class IEDataSource extends EaseBrick
 
         $query = "$queryRaw $where $sort $limit";
 
-        $resultRaw = $this->handledObejct->htmlize($this->handledObejct->myDbLink->queryToArray($query));
+        $resultRaw = $this->handledObejct->htmlizeData($this->handledObejct->myDbLink->queryToArray($query));
 
         if (!count($this->columns)) {
             return $resultRaw;

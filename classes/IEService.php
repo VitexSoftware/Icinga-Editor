@@ -413,6 +413,12 @@ class IEService extends IECfg
         return $this->renameMember('host_name', $hostid, $newname);
     }
 
+    /**
+     * Přejmenuje službu
+     *
+     * @param string $newname
+     * @return boolean
+     */
     public function rename($newname)
     {
         $oldname = $this->getName();

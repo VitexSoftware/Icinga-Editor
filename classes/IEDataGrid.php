@@ -45,6 +45,13 @@ class IEDataGrid extends EaseDataGrid
      */
     public $dataSource = null;
 
+    /**
+     * Zdroj dat pro flexigrid
+     *
+     * @param string $name ID elementu
+     * @param string $datasource URL
+     * @param array $properties vlastnosti elementu
+     */
     function __construct($name, $datasource, $properties = null)
     {
         $this->dataSource = $datasource;
@@ -78,7 +85,7 @@ class IEDataGrid extends EaseDataGrid
                     $this->addStatusMessage(_('Chybi titulek') . ' ' . $this->dataSource->keyword . ': ' . $keyword, 'warning');
                     $this->dataSource->keywordsInfo[$keyword]['title'] = $keyword;
                 }
-                if (strstr($type, 'VARCHAR') || strstr($type, 'TEXT') || strstr($type, 'PLATFORM') || strstr($type, 'IDLIST')) {
+                if (strstr($type, 'VARCHAR') || strstr($type, 'TEXT') || strstr($type, 'SELECT') || strstr($type, 'PLATFORM') || strstr($type, 'IDLIST')) {
                     $this->setColumn($keyword, $this->dataSource->keywordsInfo[$keyword]['title'], true);
                 } else {
                     $this->setColumn($keyword, $this->dataSource->keywordsInfo[$keyword]['title'], false);

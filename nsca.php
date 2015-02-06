@@ -78,10 +78,14 @@ REM	msiexec.exe /qb /a %script_path%\NSCP-%cver%-x64.msi  %inst_params%
 $hostName = $host->getName();
 $service = new IEService();
 
-$host_active = (boolean) $host->getDataValue('active_checks_enabled');
-$host_passive = (boolean) $host->getDataValue('passive_checks_enabled');
 
-$servicesAssigned = $service->myDbLink->queryToArray('SELECT ' . $service->myKeyColumn . ',' . $service->nameColumn . ' FROM ' . $service->myTable . ' WHERE host_name LIKE \'%"' . $host->getName() . '"%\'', $service->myKeyColumn);
+$host_passive = (boolean) $host->getDataValue('passive_checks_enabled');
+if (!$host_passive) {
+    die(_('Host neni konfigurovan pro pasivni checky'));
+}
+
+$servicesAssigned = $service->myDbLink->queryToArray('SELECT ' . $service->myKeyColumn . ',' . $service->nameColumn . ',use FROM ' . $service->myTable . ' WHERE host_name LIKE \'%"' . $host->getName() . '"%\'', $service->myKeyColumn);
+
 
 $allServices = $service->getListing(
     null, true, array(
