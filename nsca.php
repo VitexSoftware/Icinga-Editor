@@ -84,7 +84,7 @@ if (!$host_passive) {
     die(_('Host neni konfigurovan pro pasivni checky'));
 }
 
-$servicesAssigned = $service->myDbLink->queryToArray('SELECT ' . $service->myKeyColumn . ',' . $service->nameColumn . ',use FROM ' . $service->myTable . ' WHERE host_name LIKE \'%"' . $host->getName() . '"%\'', $service->myKeyColumn);
+$servicesAssigned = $service->myDbLink->queryToArray('SELECT ' . $service->myKeyColumn . ',' . $service->nameColumn . ',`use` FROM ' . $service->myTable . ' WHERE host_name LIKE \'%"' . $host->getName() . '"%\'', $service->myKeyColumn);
 
 
 $allServices = $service->getListing(
@@ -105,7 +105,8 @@ foreach ($allServices as $serviceID => $serviceInfo) {
         unset($allServices[$serviceID]);
         continue;
     }
-    if ((!$host_passive || !$servicePassive) && (!$host_active || !$serviceActive)) {
+
+    if (!$servicePassive) {
         unset($allServices[$serviceID]);
         continue;
     }
@@ -131,14 +132,14 @@ REM %NSCLIENT% test
 
 if ($host->getDataValue('passive_checks_enabled')) {
     if ($host->getDataValue('platform') == 'windows') {
-        header('Content-Description: File Transfer');
-        header('Content-Type: application/octet-stream');
-        header('Content-Disposition: attachment; filename=' . $host->getName() . '_nsca.bat');
-        header('Content-Transfer-Encoding: binary');
-        header('Expires: 0');
-        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-        header('Pragma: public');
-        header('Content-Length: ' . strlen($nscabat));
+//        header('Content-Description: File Transfer');
+//        header('Content-Type: application/octet-stream');
+//        header('Content-Disposition: attachment; filename=' . $host->getName() . '_nsca.bat');
+//        header('Content-Transfer-Encoding: binary');
+//        header('Expires: 0');
+//        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+//        header('Pragma: public');
+//        header('Content-Length: ' . strlen($nscabat));
         echo str_replace("\n", "\r\n", $nscabat);
     }
 }
