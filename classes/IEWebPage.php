@@ -61,7 +61,6 @@ class IEWebPage extends EaseTWBWebPage
         }
         $this->jQueryUISkin = $userObject->getSettingValue('Skin');
         parent::__construct($pageTitle, $userObject);
-        $this->IncludeCss('css/bootstrap.css');
         $this->IncludeCss('css/default.css');
         $this->head->addItem('<meta name="viewport" content="width=device-width, initial-scale=1.0">');
         $this->addCss('body {

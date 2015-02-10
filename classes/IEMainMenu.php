@@ -217,7 +217,7 @@ class IEMainMenu extends EaseHtmlDivTag
                 $nav->addDropDownMenu(_('Příkaz'), array(
                   'commands.php' => EaseTWBPart::GlyphIcon('list-alt') . ' ' . _('Přehled příkazů'),
                   'command.php' => EaseTWBPart::GlyphIcon('edit') . ' ' . _('Nový příkaz'),
-                  'importcommand.php' => EaseTWBPart::GlyphIcon('download') . ' ' . _('Importovat'))
+                  'importcommand.php' => EaseTWBPart::GlyphIcon('import') . ' ' . _('Importovat'))
                 );
                 $nav->addDropDownMenu(_('Rozšířené'), array(
                   'timeperiods.php' => EaseTWBPart::GlyphIcon('list') . ' ' . _('Přehled časových period'),
@@ -225,7 +225,7 @@ class IEMainMenu extends EaseHtmlDivTag
                   'preferences.php' => EaseTWBPart::GlyphIcon('wrench') . ' ' . _('Nastavení icingy'),
                   'regenall.php' => EaseTWBPart::GlyphIcon('ok') . ' ' . _('Přegenerovat všechny konfiguráky'),
                   'dbrecreate.php' => EaseTWBPart::GlyphIcon('wrench') . ' ' . _('Reinicializovat databázi'),
-                  'import.php' => EaseTWBPart::GlyphIcon('download') . ' ' . _('Importovat')
+                  'import.php' => EaseTWBPart::GlyphIcon('import') . ' ' . _('Importovat')
                     /* 'module.php' => _('definice modulů') */                    )
                 );
             }

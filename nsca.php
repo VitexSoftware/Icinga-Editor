@@ -12,6 +12,8 @@ require_once 'includes/IEInit.php';
 require_once 'classes/IEHost.php';
 require_once 'classes/IEPreferences.php';
 
+$oPage->onlyForLogged();
+
 $hostId = $oPage->getRequestValue('host_id', 'int');
 $host = new IEHost($hostId);
 
@@ -19,36 +21,9 @@ $preferences = new IEPreferences;
 $prefs = $preferences->getPrefs();
 
 $nscabat = '@echo OFF
-REM http://www.nsclient.org/download/
-set cver=0.4.3.88
-set server_ip=' . $prefs['serverip'] . '
-set inst_params=GENERATE_SAMPLE_CONFIG=0 ALLOW_CONFIGURATION=1 INSTALL_SAMPLE_CONFIG=0 ALLOWED_HOSTS=127.0.0.1,::1,%server_ip% TARGETDIR="%ProgramFiles%"
-
-SET mypath=%~dp0
-SET script_path=%mypath:~0,-1%
 
 set NSCLIENT="%ProgramFiles%\NSClient++\nscp.exe"
 
-
-if /i "%processor_architecture%"=="x86" (
-    if exist %NSCLIENT% (
-        echo ***App is Installed Successfully***
-    ) else (
-        echo ***INSTALLING NSCP-%cver%-Win32.msi ***
-REM	msiexec.exe /qb /lv %script_path%\instlog.txt  /a %script_path%\NSCP-%cver%-Win32.msi %inst_params%
-	%script_path%\NSCP-%cver%-Win32.msi %inst_params%
-    )
-) else if /i "%processor_architecture%"=="X64" (
-    if exist %NSCLIENT% (
-        echo ***App is Installed Successfully***
-    ) else (
-        echo *** INSTALLING NSCP-%cver%-x64.msi ***
-REM	msiexec.exe /qb /a %script_path%\NSCP-%cver%-x64.msi  %inst_params%
-	%script_path%\NSCP-%cver%-x64.msi  %inst_params%
-    )
-)
-
-%NSCLIENT% service --install
 %NSCLIENT% service --stop
 
 %NSCLIENT% settings --generate --add-defaults --load-all
@@ -69,9 +44,7 @@ REM	msiexec.exe /qb /a %script_path%\NSCP-%cver%-x64.msi  %inst_params%
 %NSCLIENT% settings --path /settings/NSCA/client/targets/default --key address --set %server_ip%
 %NSCLIENT% settings --path /settings/NSCA/client/targets/default --key port --set 5667
 %NSCLIENT% settings --path /settings/NSCA/client/targets/default --key timeout --set 30
-%NSCLIENT% settings --path /settings/scheduler/schedules/default --key channel --set NSCA
-%NSCLIENT% settings --path /settings/scheduler/schedules/default --key interval --set 30s
-%NSCLIENT% settings --path /settings/scheduler/schedules/default --key report --set all
+%NSCLIENT% settings --path /settings/scheduler/schedules/default --key interval --set 60s
 ';
 
 
@@ -89,7 +62,7 @@ $servicesAssigned = $service->myDbLink->queryToArray('SELECT ' . $service->myKey
 
 $allServices = $service->getListing(
     null, true, array(
-  'platform', 'check_command-remote', 'check_command-params', 'passive_checks_enabled', 'active_checks_enabled'
+  'platform', 'check_command-remote', 'check_command-params', 'passive_checks_enabled', 'active_checks_enabled', 'use', 'check_interval'
     )
 );
 
@@ -112,14 +85,73 @@ foreach ($allServices as $serviceID => $serviceInfo) {
     }
 }
 
-foreach ($allServices as $service) {
-    $serviceName = $service['service_description'];
-    $serviceCmd = $service['check_command-remote'];
-    $serviceParams = $service['check_command-params'];
-    $nscabat .= "\nREM #" . $service['service_id'] . ' ' . $serviceName . "\n";
-    $nscabat .= '%NSCLIENT% settings --path "/settings/external scripts/alias" --key "' . str_replace(' ', '_', $serviceName) . '" --set "' . $serviceCmd . ' ' . $serviceParams . "\"\n";
-    $nscabat .= '%NSCLIENT% settings --path "/settings/scheduler/schedules" --key "' . str_replace(' ', '_', $serviceName) . '-' . $oUser->getUserLogin() . '" --set "' . str_replace(' ', '_', $serviceName) . "\"\n";
+
+/* Naplní hodnoty z předloh */
+$usedCache = array();
+foreach ($allServices as $rowId => $service) {
+    if (isset($service['use'])) {
+        $use = $service['use'];
+
+        if (!isset($usedCache[$use])) {
+            $used = new IEService;
+            $used->setmyKeyColumn('name');
+            if ($used->loadFromMySQL($use)) {
+                $used->resetObjectIdentity();
+                $usedCache[$use] = $used->getData();
+            }
+        }
+        if (isset($usedCache[$use])) {
+            foreach ($usedCache[$use] as $templateKey => $templateValue) {
+                if ($templateKey != 'check_interval') {
+                    continue;
+                }
+                if (!is_null($templateValue) && !isset($allServices[$rowId][$templateKey])) {
+                    $allServices[$rowId][$templateKey] = $templateValue;
+                }
+            }
+        }
+    }
 }
+
+
+$intervals = array();
+foreach ($allServices as $rowId => $service) {
+    $intervals[$service['check_interval']][] = $rowId;
+}
+
+
+
+foreach ($intervals as $interval => $members) {
+    $nscabat .= '
+%NSCLIENT% settings --path /settings/scheduler/schedules/sch' . $interval . ' --key channel --set NSCA
+%NSCLIENT% settings --path /settings/scheduler/schedules/sch' . $interval . ' --key interval --set ' . $interval . 's
+%NSCLIENT% settings --path /settings/scheduler/schedules/sch' . $interval . ' --key report --set all
+%NSCLIENT% settings --path /settings/scheduler/schedules/sch' . $interval . ' --key "is template" --set true
+    ';
+
+
+
+    foreach ($allServices as $serviceId => $service) {
+        if (!in_array($service['service_id'], $members)) {
+            continue;
+        }
+        $serviceName = $service['service_description'];
+        $serviceCmd = $service['check_command-remote'];
+        $serviceParams = $service['check_command-params'];
+        $nscabat .= "\nREM #" . $service['service_id'] . ' ' . $serviceName . "\n";
+
+        if (strstr('scripts\\', $serviceCmd)) {
+            $nscabat .= '%NSCLIENT% settings --path "/settings/wrapperd scripts" --key "' . str_replace(' ', '_', $serviceName) . '" --set "' . $serviceCmd . ' ' . $serviceParams . "\"\n";
+        } else {
+            $nscabat .= '%NSCLIENT% settings --path "/settings/external scripts/alias" --key "' . str_replace(' ', '_', $serviceName) . '" --set "' . $serviceCmd . ' ' . $serviceParams . "\"\n";
+        }
+        $nscabat .= '%NSCLIENT% settings --path "/settings/scheduler/schedules/check' . str_replace(' ', '_', $serviceName) . '-' . $oUser->getUserLogin() . '" --key command --set "' . str_replace(' ', '_', $serviceName) . "\"\n";
+        $nscabat .= '%NSCLIENT% settings --path "/settings/scheduler/schedules/check' . str_replace(' ', '_', $serviceName) . '-' . $oUser->getUserLogin() . '" --key parent --set "sch' . $service['check_interval'] . "\"\n";
+    }
+}
+
+
+
 
 $nscabat .= '
 REM %NSCLIENT% test
@@ -132,14 +164,15 @@ REM %NSCLIENT% test
 
 if ($host->getDataValue('passive_checks_enabled')) {
     if ($host->getDataValue('platform') == 'windows') {
-//        header('Content-Description: File Transfer');
-//        header('Content-Type: application/octet-stream');
-//        header('Content-Disposition: attachment; filename=' . $host->getName() . '_nsca.bat');
-//        header('Content-Transfer-Encoding: binary');
-//        header('Expires: 0');
-//        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-//        header('Pragma: public');
-//        header('Content-Length: ' . strlen($nscabat));
+        header('Content-Description: File Transfer');
+        header('Content-Type: application/octet-stream');
+        header('Content-Disposition: attachment; filename=' . $host->getName() . '_nsca.bat');
+        header('Content-Transfer-Encoding: binary');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+        header('Pragma: public');
+        header('Content-Length: ' . strlen($nscabat));
         echo str_replace("\n", "\r\n", $nscabat);
     }
 }
+

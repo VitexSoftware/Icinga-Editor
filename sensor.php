@@ -46,6 +46,7 @@ if ($host->getDataValue('active_checks_enabled')) {
 if ($host->getDataValue('passive_checks_enabled')) {
     $oPage->columnI->addItem(new EaseHtmlH1Tag(_('NSCA Senzor')));
     if ($host->getDataValue('platform') == 'windows') {
+        $oPage->columnI->addItem(new EaseHtmlATag('http://www.nsclient.org/download/', 'NSClient++ ' . EaseTWBPart::GlyphIcon('save-file')));
         $oPage->columnI->addItem(new EaseTWBLinkButton('nsca.php?host_id=' . $hostId, $host->getName() . '_nsca.bat ' . EaseTWBPart::GlyphIcon('download'), 'success'));
     }
 

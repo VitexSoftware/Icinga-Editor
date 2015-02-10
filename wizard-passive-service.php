@@ -9,7 +9,7 @@
  * @copyright  2012 Vitex@hippy.cz (G)
  */
 require_once 'includes/IEInit.php';
-require_once 'classes/IEPassiveCheckedServiceForm.php';
+require_once 'classes/IEServiceWizardForm.php';
 require_once 'classes/IEServicegroup.php';
 
 $oPage->onlyForLogged();
