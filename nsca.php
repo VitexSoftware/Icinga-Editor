@@ -10,7 +10,9 @@
  */
 require_once 'includes/IEInit.php';
 require_once 'classes/IEHost.php';
+require_once 'classes/IECommand.php';
 require_once 'classes/IEPreferences.php';
+
 
 $oPage->onlyForLogged();
 
@@ -62,7 +64,7 @@ $servicesAssigned = $service->myDbLink->queryToArray('SELECT ' . $service->myKey
 
 $allServices = $service->getListing(
     null, true, array(
-  'platform', 'check_command-remote', 'check_command-params', 'passive_checks_enabled', 'active_checks_enabled', 'use', 'check_interval'
+  'platform', 'check_command-remote', 'check_command-params', 'passive_checks_enabled', 'active_checks_enabled', 'use', 'check_interval', 'check_command-remote'
     )
 );
 
@@ -88,7 +90,16 @@ foreach ($allServices as $serviceID => $serviceInfo) {
 
 /* Naplní hodnoty z předloh */
 $usedCache = array();
+$commandsCache = array();
 foreach ($allServices as $rowId => $service) {
+    if (isset($service['use'])) {
+        $remote = $service['check_command-remote'];
+        if (!isset($commandsCache[$remote])) {
+            $command = new IECommand($remote);
+            $commandsCache[$remote] = $command->getData();
+        }
+    }
+
     if (isset($service['use'])) {
         $use = $service['use'];
 
@@ -140,13 +151,20 @@ foreach ($intervals as $interval => $members) {
         $serviceParams = $service['check_command-params'];
         $nscabat .= "\nREM #" . $service['service_id'] . ' ' . $serviceName . "\n";
 
-        if (strstr('scripts\\', $serviceCmd)) {
-            $nscabat .= '%NSCLIENT% settings --path "/settings/wrapperd scripts" --key "' . str_replace(' ', '_', $serviceName) . '" --set "' . $serviceCmd . ' ' . $serviceParams . "\"\n";
+        if (isset($commandsCache[$serviceCmd])) {
+            $cmdline = $commandsCache[$serviceCmd]['command_line'];
         } else {
-            $nscabat .= '%NSCLIENT% settings --path "/settings/external scripts/alias" --key "' . str_replace(' ', '_', $serviceName) . '" --set "' . $serviceCmd . ' ' . $serviceParams . "\"\n";
+            $cmdline = $serviceCmd;
         }
-        $nscabat .= '%NSCLIENT% settings --path "/settings/scheduler/schedules/check' . str_replace(' ', '_', $serviceName) . '-' . $oUser->getUserLogin() . '" --key command --set "' . str_replace(' ', '_', $serviceName) . "\"\n";
-        $nscabat .= '%NSCLIENT% settings --path "/settings/scheduler/schedules/check' . str_replace(' ', '_', $serviceName) . '-' . $oUser->getUserLogin() . '" --key parent --set "sch' . $service['check_interval'] . "\"\n";
+
+        if (strstr($cmdline, 'scripts\\')) {
+            $nscabat .= '%NSCLIENT% settings --path "/settings/wrapperd scripts" --key "' . str_replace(' ', '_', $serviceName) . '" --set "' .
+                $cmdline . ' ' . $serviceParams . "\"\n";
+        } else {
+            $nscabat .= '%NSCLIENT% settings --path "/settings/external scripts/alias" --key "' . str_replace(' ', '_', $serviceName) . '" --set "' . $cmdline . ' ' . $serviceParams . "\"\n";
+        }
+        $nscabat .= '%NSCLIENT% settings --path "/settings/scheduler/schedules/' . str_replace(' ', '_', $serviceName) . '-' . $oUser->getUserLogin() . '" --key command --set "' . str_replace(' ', '_', $serviceName) . "\"\n";
+        $nscabat .= '%NSCLIENT% settings --path "/settings/scheduler/schedules/' . str_replace(' ', '_', $serviceName) . '-' . $oUser->getUserLogin() . '" --key parent --set "sch' . $service['check_interval'] . "\"\n";
     }
 }
 
