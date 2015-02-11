@@ -554,11 +554,11 @@ msgstr ""
 msgid "Služba %s není použita. Negeneruji do konfigurace"
 msgstr ""
 
-#: classes/IEServiceSelector.php:25 classes/IEChildrenSelector.php:23
+#: classes/IEUsedServiceSelector.php:25 classes/IEChildrenSelector.php:23
 msgid "Sledované služby"
 msgstr ""
 
-#: classes/IEServiceSelector.php:28
+#: classes/IEUsedServiceSelector.php:28
 msgid ""
 "Další sledovatelné služby budou nabídnuty po nastavení platformy hosta a "
 "vzdáleného senzoru."

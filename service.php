@@ -13,6 +13,8 @@ require_once 'classes/IEService.php';
 require_once 'classes/IECfgEditor.php';
 require_once 'classes/IEHostOverview.php';
 require_once 'classes/IEHostSelector.php';
+require_once 'classes/IEServiceSwapForm.php';
+
 $oPage->onlyForLogged();
 
 $service = new IEService($oPage->getRequestValue('service_id', 'int'));
@@ -46,12 +48,15 @@ switch ($oPage->getRequestValue('action')) {
             $newService->setDataValue($service->userColumn, 0);
             $newService->setDataValue('public', 0);
             if ($newService->fork($host, $host->getDataValue($host->userColumn))) {
-                $oUser->addStatusMessage(sprintf(_('Služba %s byla odvozena'),$newService->getName()), 'success');
+                $oUser->addStatusMessage(sprintf(_('Služba %s byla odvozena'), $newService->getName()), 'success');
             } else {
                 $oUser->addStatusMessage(_('Služba nebyla odvozena'), 'error');
             }
         }
         $service->loadFromMySQL($service->getId());
+        break;
+    case 'swap':
+        $service->swapTo($oPage->getRequestValue('new_service_id', 'int'));
         break;
 }
 
@@ -112,12 +117,15 @@ $renameForm = new EaseTWBForm('Rename', '?action=rename&service_id=' . $service-
 $renameForm->addItem(new EaseHtmlInputTextTag('newname'), $service->getName(), array('class' => 'form-control'));
 $renameForm->addItem(new EaseTWSubmitButton(_('Přejmenovat'), 'success'));
 
-$oPage->columnIII->addItem(new EaseHtmlFieldSet(_('Přejmenování'), $renameForm));
+$oPage->columnIII->addItem(new EaseTWBPanel(_('Přejmenování'), 'info', $renameForm));
 $oPage->columnI->addItem(new IEHostSelector($service));
 
 if ($oUser->getSettingValue('admin')) {
     $oPage->columnI->addItem(new EaseTWBLinkButton('?action=system&service_id=' . $service->getId(), _('Systémová služba')));
 }
+
+
+$oPage->columnIII->addItem(new EaseTWBPanel(_('Výměna služby'), 'info', new IEServiceSwapForm($service)));
 
 $oPage->addItem(new IEPageBottom());
 

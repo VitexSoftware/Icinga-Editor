@@ -13,8 +13,8 @@ class IEPlatformSelector extends EaseHtmlSelect
 
     public $platforms = array(
       'generic' => array('image' => 'logos/unknown.gif'),
-      'linux' => array('image' => 'logos/base/win40.gif'),
-      'windows' => array('image' => 'logos/base/linux40.gif'),
+      'windows' => array('image' => 'logos/base/win40.gif'),
+      'linux' => array('image' => 'logos/base/linux40.gif'),
     );
 
     function loadItems()

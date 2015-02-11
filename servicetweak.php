@@ -95,7 +95,7 @@ $renameForm = new EaseTWBForm('Rename', '?action=rename&amp;host_id=' . $host->g
 $renameForm->addItem(new EaseHtmlInputTextTag('newname'), $service->getName(), array('class' => 'form-control'));
 $renameForm->addItem(new EaseTWSubmitButton(_('Přejmenovat'), 'success'));
 
-$oPage->columnIII->addItem(new EaseHtmlFieldSet(_('Přejmenování'), $renameForm));
+$oPage->columnIII->addItem(new EaseTWBPanel(_('Přejmenování'), 'info', $renameForm));
 
 $oPage->columnI->addItem(new IEHostSelector($service));
 $oPage->columnI->addItem(new IEContactSelector($service));

@@ -570,12 +570,12 @@ msgstr "Předloha služby %s není použita. Negeneruji do konfigurace"
 msgid "Služba %s není použita. Negeneruji do konfigurace"
 msgstr "Služba %s není použita. Negeneruji do konfigurace"
 
-#: classes/IEServiceSelector.php:25
+#: classes/IEUsedServiceSelector.php:25
 #: classes/IEChildrenSelector.php:23
 msgid "Sledované služby"
 msgstr "Sledované služby"
 
-#: classes/IEServiceSelector.php:28
+#: classes/IEUsedServiceSelector.php:28
 msgid "Další sledovatelné služby budou nabídnuty po nastavení platformy hosta a vzdáleného senzoru."
 msgstr "Další sledovatelné služby budou nabídnuty po nastavení platformy hosta a vzdáleného senzoru."
 

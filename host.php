@@ -11,7 +11,7 @@
 require_once 'includes/IEInit.php';
 require_once 'classes/IEHost.php';
 require_once 'classes/IECfgEditor.php';
-require_once 'classes/IEServiceSelector.php';
+require_once 'classes/IEUsedServiceSelector.php';
 require_once 'classes/IEIconSelector.php';
 require_once 'classes/IEHostOverview.php';
 require_once 'classes/IEFXPreloader.php';
@@ -142,7 +142,7 @@ switch ($oPage->getRequestValue('action')) {
                 exit();
             }
 
-            IEServiceSelector::saveMembers($_REQUEST);
+            IEUsedServiceSelector::saveMembers($_REQUEST);
             $host->saveMembers();
         }
         break;
@@ -197,7 +197,7 @@ $renameForm = new EaseTWBForm('Rename', '?action=rename&amp;host_id=' . $host->g
 $renameForm->addItem(new EaseHtmlInputTextTag('newname'), $host->getName(), array('class' => 'form-control'));
 $renameForm->addItem(new EaseTWSubmitButton(_('Přejmenovat'), 'success'));
 
-$oPage->columnIII->addItem(new EaseHtmlFieldSet(_('Přejmenování'), $renameForm));
+$oPage->columnIII->addItem(new EaseTWBPanel(_('Přejmenování'), 'info', $renameForm));
 $oPage->columnIII->addItem(new EaseTWBLinkButton('?action=parent&host_id=' . $host->getId(), _('Přiřadit rodiče'), 'success'));
 $oPage->columnIII->addItem(new EaseTWBLinkButton('?action=icon&host_id=' . $host->getId(), _('Změnit ikonu'), 'success'));
 
@@ -205,7 +205,7 @@ if ($host->getDataValue('platform') != 'generic') {
     $oPage->columnIII->addItem(new EaseTWBLinkButton('sensor.php?host_id=' . $host->getId(), _('Nasadit senzor'), 'info'));
 }
 
-$oPage->columnI->addItem(new IEServiceSelector($host));
+$oPage->columnI->addItem(new IEUsedServiceSelector($host));
 $oPage->columnI->addItem(new IEContactSelector($host));
 
 //$OPage->column3->addItem(new EaseHtmlH4Tag('Rozšířené info'));

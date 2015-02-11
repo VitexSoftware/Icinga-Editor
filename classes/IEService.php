@@ -473,6 +473,42 @@ class IEService extends IECfg
         return $this->saveToMySQL();
     }
 
+    public function swapTo($swapToID)
+    {
+        $newService = new IEService($swapToID);
+        $thisName = $this->getName();
+        $hostsOK = array();
+        $hostsErr = array();
+        $host = new IEHost();
+
+        if (EaseShared::user()->getSettingValue('admin')) {
+            $allHosts = $host->getAllFromMySQL(NULL, array($host->myKeyColumn, $host->nameColumn, 'platform', 'register'), null, $host->nameColumn, $host->myKeyColumn);
+        } else {
+            $allHosts = $host->getListing(null, true, array('platform', 'register'));
+        }
+        $hosts = $this->getDataValue('host_name');
+        foreach ($hosts as $hostId => $hostName) {
+            if (isset($allHosts[$hostId])) {
+                $hostsAssigned[$hostId] = $allHosts[$hostId];
+            }
+        }
+
+        foreach ($hostsAssigned as $host_id => $hostAssigned) {
+            if ($this->delMember('host_name', $host_id, $hostAssigned['host_name']) && $newService->addMember('host_name', $host_id, $hostAssigned['host_name'])) {
+                $hostsOK[] = $hostAssigned['host_name'];
+            } else {
+                $hostsErr[] = $hostAssigned['host_name'];
+            }
+        }
+        if ($this->saveToMySQL() && $newService->saveToMySQL() && count($hostsOK)) {
+            $this->addStatusMessage(sprintf(_('%s byl přesunut z %s/%s do %s'), implode(',', $hostsOk), $this->keyword, $this->getName(), $newService->getName()), 'success');
+            return true;
+        } else {
+            $this->addStatusMessage(sprintf(_(' %s nebyl přesunut z %s/%s do %s'), implode(',', $hostsErr), $this->keyword, $this->getName(), $newService->getName()), 'warning');
+            return false;
+        }
+    }
+
 }
 
 /*

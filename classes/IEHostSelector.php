@@ -23,7 +23,7 @@ class IEHostSelector extends EaseContainer
         $hostsAssigned = array();
         parent::__construct();
         $fieldName = $this->getmyKeyColumn();
-        $initialContent = new EaseHtmlFieldSet(_('Sledované hosty služby'));
+        $initialContent = new EaseTWBPanel(_('Sledované hosty služby'), 'default');
         $initialContent->setTagCss(array('width' => '100%'));
 
         if (is_null($service->getMyKey())) {
@@ -61,10 +61,10 @@ class IEHostSelector extends EaseContainer
 
                 foreach ($allHosts as $hostID => $hostInfo) {
                     $initialContent->addItem(
-                            new EaseTWBButtonDropdown(
-                            $hostInfo[$host->nameColumn], 'inverse', 'xs', array(
-                        new EaseHtmlATag('host.php?host_id=' . $hostID . '&amp;service_id=' . $service->getId(), EaseTWBPart::GlyphIcon('wrench') . ' ' . _('Editace')),
-                        new EaseHtmlATag('?addhost=' . $hostInfo[$host->nameColumn] . '&amp;host_id=' . $hostID . '&amp;' . $service->getmyKeyColumn() . '=' . $service->getMyKey() . '&amp;' . $service->nameColumn . '=' . $service->getName(), EaseTWBPart::GlyphIcon('plus') . ' ' . _('Začít sledovat'))
+                        new EaseTWBButtonDropdown(
+                        $hostInfo[$host->nameColumn], 'inverse', 'xs', array(
+                      new EaseHtmlATag('host.php?host_id=' . $hostID . '&amp;service_id=' . $service->getId(), EaseTWBPart::GlyphIcon('wrench') . ' ' . _('Editace')),
+                      new EaseHtmlATag('?addhost=' . $hostInfo[$host->nameColumn] . '&amp;host_id=' . $hostID . '&amp;' . $service->getmyKeyColumn() . '=' . $service->getMyKey() . '&amp;' . $service->nameColumn . '=' . $service->getName(), EaseTWBPart::GlyphIcon('plus') . ' ' . _('Začít sledovat'))
                     )));
                 }
             }
@@ -74,13 +74,13 @@ class IEHostSelector extends EaseContainer
                 foreach ($hostsAssigned as $hostID => $hostInfo) {
 
                     $initialContent->addItem(
-                            new EaseTWBButtonDropdown(
-                            $hostInfo[$host->nameColumn], 'success', 'xs', array(
-                        new EaseHtmlATag(
-                                '?delhost=' . $hostInfo[$host->nameColumn] . '&amp;host_id=' . $hostID . '&amp;' . $service->getmyKeyColumn() . '=' . $service->getMyKey() . '&amp;' . $service->nameColumn . '=' . $service->getName(), EaseTWBPart::GlyphIcon('remove') . ' ' . _('Přestat sledovat'))
-                        , new EaseHtmlATag('host.php?host_id=' . $hostID . '&amp;service_id=' . $service->getId(), EaseTWBPart::GlyphIcon('wrench') . ' ' . _('Editace'))
-                            )
-                            )
+                        new EaseTWBButtonDropdown(
+                        $hostInfo[$host->nameColumn], 'success', 'xs', array(
+                      new EaseHtmlATag(
+                          '?delhost=' . $hostInfo[$host->nameColumn] . '&amp;host_id=' . $hostID . '&amp;' . $service->getmyKeyColumn() . '=' . $service->getMyKey() . '&amp;' . $service->nameColumn . '=' . $service->getName(), EaseTWBPart::GlyphIcon('remove') . ' ' . _('Přestat sledovat'))
+                      , new EaseHtmlATag('host.php?host_id=' . $hostID . '&amp;service_id=' . $service->getId(), EaseTWBPart::GlyphIcon('wrench') . ' ' . _('Editace'))
+                        )
+                        )
                     );
                 }
             }

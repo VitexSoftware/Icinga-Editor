@@ -23,7 +23,7 @@ class IEContactSelector extends EaseContainer
         $contactsAssigned = array();
         parent::__construct();
         $fieldName = $this->getmyKeyColumn();
-        $initialContent = new EaseHtmlFieldSet(_('Cíle notifikací'));
+        $initialContent = new EaseTWBPanel(_('Cíle notifikací'));
         $initialContent->setTagCss(array('width' => '100%'));
 
         if (is_null($holder->getMyKey())) {
@@ -37,7 +37,7 @@ class IEContactSelector extends EaseContainer
                     $contactsAssigned[$contactId] = $allContacts[$contactId];
                 }
             }
-            
+
             foreach ($allContacts as $contactID => $contactInfo) {
                 if ($contactInfo['register'] != 1) {
                     unset($allContacts[$contactID]);
@@ -45,7 +45,6 @@ class IEContactSelector extends EaseContainer
                 if (!$contactInfo['parent_id']) {
                     unset($allContacts[$contactID]);
                 }
-                
             }
 
             foreach ($contactsAssigned as $contactID => $contactInfo) {
@@ -56,10 +55,10 @@ class IEContactSelector extends EaseContainer
 
                 foreach ($allContacts as $contactID => $contactInfo) {
                     $initialContent->addItem(
-                            new EaseTWBButtonDropdown(
-                            $contactInfo[$contact->nameColumn], 'inverse', 'xs', array(
-                        new EaseHtmlATag('contacttweak.php?contact_id=' . $contactInfo['parent_id'] . '&amp;service_id=' . $holder->getId(), EaseTWBPart::GlyphIcon('wrench') . ' ' . _('Editace')),
-                        new EaseHtmlATag('?addcontact=' . $contactInfo[$contact->nameColumn] . '&amp;contact_id=' . $contactID . '&amp;' . $holder->getmyKeyColumn() . '=' . $holder->getMyKey() . '&amp;' . $holder->nameColumn . '=' . $holder->getName(), EaseTWBPart::GlyphIcon('plus') . ' ' . _('Začít obesílat'))
+                        new EaseTWBButtonDropdown(
+                        $contactInfo[$contact->nameColumn], 'inverse', 'xs', array(
+                      new EaseHtmlATag('contacttweak.php?contact_id=' . $contactInfo['parent_id'] . '&amp;service_id=' . $holder->getId(), EaseTWBPart::GlyphIcon('wrench') . ' ' . _('Editace')),
+                      new EaseHtmlATag('?addcontact=' . $contactInfo[$contact->nameColumn] . '&amp;contact_id=' . $contactID . '&amp;' . $holder->getmyKeyColumn() . '=' . $holder->getMyKey() . '&amp;' . $holder->nameColumn . '=' . $holder->getName(), EaseTWBPart::GlyphIcon('plus') . ' ' . _('Začít obesílat'))
                     )));
                 }
             }
@@ -69,13 +68,13 @@ class IEContactSelector extends EaseContainer
                 foreach ($contactsAssigned as $contactID => $contactInfo) {
 
                     $initialContent->addItem(
-                            new EaseTWBButtonDropdown(
-                            $contactInfo[$contact->nameColumn], 'success', 'xs', array(
-                        new EaseHtmlATag(
-                                '?delcontact=' . $contactInfo[$contact->nameColumn] . '&amp;contact_id=' . $contactID . '&amp;' . $holder->getmyKeyColumn() . '=' . $holder->getMyKey() . '&amp;' . $holder->nameColumn . '=' . $holder->getName(), EaseTWBPart::GlyphIcon('remove') . ' ' . _('Přestat obesílat'))
-                        , new EaseHtmlATag('contacttweak.php?contact_id=' . $contactInfo['parent_id'] . '&amp;service_id=' . $holder->getId(), EaseTWBPart::GlyphIcon('wrench') . ' ' . _('Editace'))
-                            )
-                            )
+                        new EaseTWBButtonDropdown(
+                        $contactInfo[$contact->nameColumn], 'success', 'xs', array(
+                      new EaseHtmlATag(
+                          '?delcontact=' . $contactInfo[$contact->nameColumn] . '&amp;contact_id=' . $contactID . '&amp;' . $holder->getmyKeyColumn() . '=' . $holder->getMyKey() . '&amp;' . $holder->nameColumn . '=' . $holder->getName(), EaseTWBPart::GlyphIcon('remove') . ' ' . _('Přestat obesílat'))
+                      , new EaseHtmlATag('contacttweak.php?contact_id=' . $contactInfo['parent_id'] . '&amp;service_id=' . $holder->getId(), EaseTWBPart::GlyphIcon('wrench') . ' ' . _('Editace'))
+                        )
+                        )
                     );
                 }
             }
