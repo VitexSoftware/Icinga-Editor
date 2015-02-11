@@ -22,13 +22,14 @@ $host = new IEHost($hostId);
 $preferences = new IEPreferences;
 $prefs = $preferences->getPrefs();
 
-$nscabat = '@echo OFF
-
+$nscabat = '
 set NSCLIENT="%ProgramFiles%\NSClient++\nscp.exe"
 
 %NSCLIENT% service --stop
 
+del "%ProgramFiles%\NSClient++\nsclient.ini"
 %NSCLIENT% settings --generate --add-defaults --load-all
+
 %NSCLIENT% settings --path /modules --key Scheduler --set enabled
 %NSCLIENT% settings --path /modules --key CheckDisk --set enabled
 %NSCLIENT% settings --path /modules --key CheckEventLog --set enabled
@@ -38,6 +39,7 @@ set NSCLIENT="%ProgramFiles%\NSClient++\nscp.exe"
 %NSCLIENT% settings --path /modules --key CheckSystem --set enabled
 %NSCLIENT% settings --path /modules --key CheckWMI --set enabled
 %NSCLIENT% settings --path /modules --key NSCAClient --set enabled
+
 %NSCLIENT% settings --path /settings/NSCA/client --key hostname --set ' . $host->getName() . '
 %NSCLIENT% settings --path /settings/NSCA/client --key channel --set NSCA
 %NSCLIENT% settings --path /settings/NSCA/client/targets/default --key "allowed ciphers" --set "ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH"
@@ -134,12 +136,11 @@ foreach ($allServices as $rowId => $service) {
 
 foreach ($intervals as $interval => $members) {
     $nscabat .= '
-%NSCLIENT% settings --path /settings/scheduler/schedules/sch' . $interval . ' --key channel --set NSCA
-%NSCLIENT% settings --path /settings/scheduler/schedules/sch' . $interval . ' --key interval --set ' . $interval . 's
-%NSCLIENT% settings --path /settings/scheduler/schedules/sch' . $interval . ' --key report --set all
-%NSCLIENT% settings --path /settings/scheduler/schedules/sch' . $interval . ' --key "is template" --set true
+%NSCLIENT% settings --path "/settings/scheduler/schedules/sch' . $interval . '" --key channel --set NSCA
+%NSCLIENT% settings --path "/settings/scheduler/schedules/sch' . $interval . '" --key interval --set ' . $interval . 's
+%NSCLIENT% settings --path "/settings/scheduler/schedules/sch' . $interval . '" --key report --set all
+%NSCLIENT% settings --path "/settings/scheduler/schedules/sch' . $interval . '" --key "is template" --set true
     ';
-
 
 
     foreach ($allServices as $serviceId => $service) {
@@ -158,7 +159,7 @@ foreach ($intervals as $interval => $members) {
         }
 
         if (strstr($cmdline, 'scripts\\')) {
-            $nscabat .= '%NSCLIENT% settings --path "/settings/wrapperd scripts" --key "' . str_replace(' ', '_', $serviceName) . '" --set "' .
+            $nscabat .= '%NSCLIENT% settings --path "/settings/external scripts/wrapped scripts" --key "' . str_replace(' ', '_', $serviceName) . '" --set "' .
                 $cmdline . ' ' . $serviceParams . "\"\n";
         } else {
             $nscabat .= '%NSCLIENT% settings --path "/settings/external scripts/alias" --key "' . str_replace(' ', '_', $serviceName) . '" --set "' . $cmdline . ' ' . $serviceParams . "\"\n";
@@ -172,9 +173,8 @@ foreach ($intervals as $interval => $members) {
 
 
 $nscabat .= '
-REM %NSCLIENT% test
+%NSCLIENT% test
 %NSCLIENT% service --start
-
 ';
 
 

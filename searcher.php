@@ -9,13 +9,13 @@
  * @copyright  2012 Vitex@hippy.cz (G)
  */
 require_once 'includes/IEInit.php';
-require_once './classes/IEImporter.php';
+require_once './classes/IESearcher.php';
 
 $query = $oPage->getRequestValue('q', 'string');
 
 $found = array();
 
-$searcher = new IEImporter();
+$searcher = new IESearcher;
 
 header('ContentType: text/json');
 
