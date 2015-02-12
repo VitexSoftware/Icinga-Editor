@@ -30,6 +30,7 @@ if ($hostName) {
           'generate' => TRUE,
           'platform' => $platform,
           'alias' => $hostName,
+          'active_checks_enabled' => false,
           'passive_checks_enabled' => true
         )
     );

@@ -36,6 +36,7 @@ if ($serviceName) {
       'register' => true,
       'generate' => true,
       'display_name' => $serviceName,
+      'active_checks_enabled' => false,
       'passive_checks_enabled' => true
     );
 

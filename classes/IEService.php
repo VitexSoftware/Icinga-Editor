@@ -511,7 +511,3 @@ class IEService extends IECfg
     }
 
 }
-
-/*
-  UPDATE `iciedit`.`iciedit_services` SET `max_check_attempts` = NULL, `check_interval` = NULL, `retry_interval` = NULL, `active_checks_enabled` = NULL, `passive_checks_enabled` = NULL, `check_period` = NULL, `parallelize_check` = NULL, `retry_check_interval` = NULL, `obsess_over_service` = NULL, `check_freshness` = NULL, `freshness_threshold` = NULL, `event_handler` = NULL, `event_handler_enabled` = NULL, `low_flap_threshold` = NULL, `high_flap_threshold` = NULL, `flap_detection_enabled` = NULL, `flap_detection_options` = NULL, `failure_prediction_enabled` = NULL, `process_perf_data` = NULL, `retain_status_information` = NULL, `retain_nonstatus_information` = NULL, `notification_interval` = NULL, `first_notification_delay` = NULL, `notification_period` = NULL, `notification_options` = NULL, `notifications_enabled` = NULL WHERE `iciedit_services`.`service_id` = 15;
- */
