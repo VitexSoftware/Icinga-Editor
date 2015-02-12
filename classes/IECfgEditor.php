@@ -100,7 +100,7 @@ class IECfgEditor extends EaseContainer
                         $values[$chKey] = false;
                     }
                 }
-                $sliderField = $fieldBlock->addItem(new EaseHtmlFieldSet($keywordInfo['title'], new EaseHtmlCheckboxGroup($fieldName, $checkboxes, $values)));
+                $sliderField = $fieldBlock->addItem(new EaseTWBPanel($keywordInfo['title'], 'default', new EaseHtmlCheckboxGroup($fieldName, $checkboxes, $values)));
                 $sliderField->setTagCss(array('width' => '100%'));
                 break;
             case 'IDLIST':
@@ -110,7 +110,7 @@ class IECfgEditor extends EaseContainer
                 $fieldBlock->addItem(new IEGroupMembersEditor($fieldName, $keywordInfo['title'], $this->objectEdited, $value));
                 break;
             case 'SLIDER':
-                $sliderField = $fieldBlock->addItem(new EaseHtmlFieldSet($keywordInfo['title'], new EaseTWBSlider($fieldName, (int) $value, array('data-slider-min' => 0))));
+                $sliderField = $fieldBlock->addItem(new EaseTWBPanel($keywordInfo['title'], 'default', new EaseTWBSlider($fieldName, (int) $value, array('data-slider-min' => 0))));
                 $sliderField->setTagCss(array('width' => '100%'));
                 break;
             case 'TEXT':
@@ -135,7 +135,7 @@ class IECfgEditor extends EaseContainer
                     }
                     $buttons = new EaseHtmlRadiobuttonGroup($fieldName, $infoFlags);
                     $buttons->setValue($value);
-                    $FB = $fieldBlock->addItem(new EaseHtmlFieldSet($keywordInfo['title'], new EaseTWRadioButtonGroup($fieldName, $infoFlags, $value)));
+                    $FB = $fieldBlock->addItem(new EaseTWBPanel($keywordInfo['title'], 'default', new EaseTWRadioButtonGroup($fieldName, $infoFlags, $value)));
                     $FB->setTagCss(array('width' => '100%'));
                 }
                 break;

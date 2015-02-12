@@ -20,7 +20,7 @@ class IEChildrenSelector extends EaseContainer
     public function __construct($Host)
     {
         $FieldName = 'parents';
-        $InitialContent = new EaseHtmlFieldSet(_('Sledované služby'));
+        $InitialContent = new EaseTWBPanel(_('Sledované služby'));
         $InitialContent->setTagCss(array('width' => '100%'));
 
         if (is_null($Host->getMyKey())) {
@@ -33,7 +33,7 @@ class IEChildrenSelector extends EaseContainer
 
             $AllServices = $Service->getListing();
             foreach ($AllServices as $ServiceID => $ServiceInfo) {
-                if ($ServiceInfo['register']!=1) {
+                if ($ServiceInfo['register'] != 1) {
                     unset($AllServices[$ServiceID]);
                 }
             }
@@ -78,17 +78,17 @@ class IEChildrenSelector extends EaseContainer
                     if (isset($Request['addservice'])) {
                         $Service->addHostName($Request['host_id'], $Request['host_name']);
                         if ($Service->saveToMySQL()) {
-                            $Service->addStatusMessage(sprintf(_('položka %s byla přidána'),$Request['addservice']), 'success');
+                            $Service->addStatusMessage(sprintf(_('položka %s byla přidána'), $Request['addservice']), 'success');
                         } else {
-                            $Service->addStatusMessage(sprintf(_('položka %s nebyla přidána'),$Request['addservice']), 'warning');
+                            $Service->addStatusMessage(sprintf(_('položka %s nebyla přidána'), $Request['addservice']), 'warning');
                         }
                     }
                     if (isset($Request['delservice'])) {
                         $Service->delHostName($Request['host_id'], $Request['host_name']);
                         if ($Service->saveToMySQL()) {
-                            $Service->addStatusMessage(sprintf(_('položka %s byla odebrána'),$Request['delservice']), 'success');
+                            $Service->addStatusMessage(sprintf(_('položka %s byla odebrána'), $Request['delservice']), 'success');
                         } else {
-                            $Service->addStatusMessage(sprintf(_('položka %s nebyla odebrána'),$Request['delservice']), 'warning');
+                            $Service->addStatusMessage(sprintf(_('položka %s nebyla odebrána'), $Request['delservice']), 'warning');
                         }
                     }
                 }

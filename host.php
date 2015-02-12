@@ -178,35 +178,51 @@ switch ($oPage->getRequestValue('action')) {
 
 $oPage->columnII->addItem(new IEHostOverview($host));
 
-$hostEdit = new IECfgEditor($host);
-$form = $oPage->columnII->addItem(new EaseHtmlForm('Host', 'host.php', 'POST', $hostEdit, array('class' => 'form-horizontal')));
-$form->setTagID($form->getTagName());
-$form->addItem(new EaseHtmlInputHiddenTag($host->getmyKeyColumn(), $host->getMyKey()));
-$form->addItem('<br>');
-$form->addItem(new EaseTWSubmitButton(_('Uložit'), 'success'));
-$oPage->addCss('
+
+switch ($oPage->getRequestValue('action')) {
+    case 'delete':
+        $confirmator = $oPage->columnII->addItem(new EaseTWBPanel(_('Opravdu smazat ?')), 'danger');
+        $confirmator->addItem(new EaseTWBLinkButton('?' . $host->myKeyColumn . '=' . $host->getID(), _('Ne') . ' ' . EaseTWBPart::glyphIcon('ok'), 'success'));
+        $confirmator->addItem(new EaseTWBLinkButton('?delete=true&' . $host->myKeyColumn . '=' . $host->getID(), _('Ano') . ' ' . EaseTWBPart::glyphIcon('remove'), 'danger'));
+
+        $oPage->columnI->addItem($host->ownerLinkButton());
+
+
+        break;
+    default :
+        $hostEdit = new IECfgEditor($host);
+        $form = $oPage->columnII->addItem(new EaseHtmlForm('Host', 'host.php', 'POST', $hostEdit, array('class' => 'form-horizontal')));
+        $form->setTagID($form->getTagName());
+        $form->addItem(new EaseHtmlInputHiddenTag($host->getmyKeyColumn(), $host->getMyKey()));
+        $form->addItem('<br>');
+        $form->addItem(new EaseTWSubmitButton(_('Uložit'), 'success'));
+        $oPage->addCss('
 input.ui-button { width: 100%; }
 ');
 
-$oPage->columnIII->addItem($host->deleteButton());
+        $oPage->columnIII->addItem($host->deleteButton());
 
-$oPage->columnIII->addItem(new EaseTWBLinkButton('?action=populate&host_id=' . $host->getID(), _('Oskenovat a sledovat služby'), null, array('onClick' => "$('#preload').css('visibility', 'visible');")));
-$oPage->addItem(new EaseHtmlDivTag('preload', new IEFXPreloader(), array('class' => 'fuelux')));
+        $oPage->columnIII->addItem(new EaseTWBLinkButton('?action=populate&host_id=' . $host->getID(), _('Oskenovat a sledovat služby'), null, array('onClick' => "$('#preload').css('visibility', 'visible');")));
+        $oPage->addItem(new EaseHtmlDivTag('preload', new IEFXPreloader(), array('class' => 'fuelux')));
 
-$renameForm = new EaseTWBForm('Rename', '?action=rename&amp;host_id=' . $host->getID());
-$renameForm->addItem(new EaseHtmlInputTextTag('newname'), $host->getName(), array('class' => 'form-control'));
-$renameForm->addItem(new EaseTWSubmitButton(_('Přejmenovat'), 'success'));
+        $renameForm = new EaseTWBForm('Rename', '?action=rename&amp;host_id=' . $host->getID());
+        $renameForm->addItem(new EaseHtmlInputTextTag('newname'), $host->getName(), array('class' => 'form-control'));
+        $renameForm->addItem(new EaseTWSubmitButton(_('Přejmenovat'), 'success'));
 
-$oPage->columnIII->addItem(new EaseTWBPanel(_('Přejmenování'), 'info', $renameForm));
-$oPage->columnIII->addItem(new EaseTWBLinkButton('?action=parent&host_id=' . $host->getId(), _('Přiřadit rodiče'), 'success'));
-$oPage->columnIII->addItem(new EaseTWBLinkButton('?action=icon&host_id=' . $host->getId(), _('Změnit ikonu'), 'success'));
+        $oPage->columnIII->addItem(new EaseTWBPanel(_('Přejmenování'), 'info', $renameForm));
+        $oPage->columnIII->addItem(new EaseTWBLinkButton('?action=parent&host_id=' . $host->getId(), _('Přiřadit rodiče'), 'success'));
+        $oPage->columnIII->addItem(new EaseTWBLinkButton('?action=icon&host_id=' . $host->getId(), _('Změnit ikonu'), 'success'));
 
-if ($host->getDataValue('platform') != 'generic') {
-    $oPage->columnIII->addItem(new EaseTWBLinkButton('sensor.php?host_id=' . $host->getId(), _('Nasadit senzor'), 'info'));
+        if ($host->getDataValue('platform') != 'generic') {
+            $oPage->columnIII->addItem(new EaseTWBLinkButton('sensor.php?host_id=' . $host->getId(), _('Nasadit senzor'), 'info'));
+        }
+
+        $oPage->columnI->addItem(new IEUsedServiceSelector($host));
+        $oPage->columnI->addItem(new IEContactSelector($host));
+        break;
 }
 
-$oPage->columnI->addItem(new IEUsedServiceSelector($host));
-$oPage->columnI->addItem(new IEContactSelector($host));
+
 
 //$OPage->column3->addItem(new EaseHtmlH4Tag('Rozšířené info'));
 

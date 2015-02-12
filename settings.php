@@ -48,7 +48,7 @@ $(\'#UserMail\').change( function () {
 );
 ', NULL, TRUE);
 
-$settingsFrame = new EaseHtmlFieldSet(_('nastavení'));
+$settingsFrame = new EaseTWBPanel(_('nastavení'));
 $settingsFrame->addItem(new EaseHtmlATag('https://secure.gravatar.com/', $oUser, array('title' => 'klikni pro změnu ikony')));
 
 $settingsFrame->addItem(new IETextInputSaver('login', $oUser->getUserLogin(), _('přihlašovací jméno')));
@@ -61,7 +61,7 @@ $settingsFrame->addItem('<br>');
 $oPage->columnII->addItem($settingsFrame);
 
 if ((bool) $oUser->getSettingValue('admin')) {
-    $oPage->columnIII->addItem(new EaseTWBLinkButton('?user=normal', _('Zahodit adminská oprávnění'),'danger'));
+    $oPage->columnIII->addItem(new EaseTWBLinkButton('?user=normal', _('Zahodit adminská oprávnění'), 'danger'));
 }
 //
 //if (!intval($oUser->getDataValue('twitter_id'))) {

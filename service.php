@@ -93,39 +93,57 @@ $oPage->addItem(new IEPageTop(_('Editace služby') . ' ' . $service->getName()))
 
 $oPage->columnII->addItem(new EaseHtmlH3Tag(array(IEHostOverview::platformIcon($service->getDataValue('platform')), $service->getName())));
 
-$serviceEdit = new IECfgEditor($service);
 
-$oPage->columnIII->addItem($service->deleteButton());
-$oPage->columnIII->addItem($service->cloneButton());
+switch ($oPage->getRequestValue('action')) {
+    case 'delete':
+        $confirmator = $oPage->columnII->addItem(new EaseTWBPanel(_('Opravdu smazat ?')), 'danger');
+        $confirmator->addItem(new EaseTWBLinkButton('?' . $service->myKeyColumn . '=' . $service->getID(), _('Ne') . ' ' . EaseTWBPart::glyphIcon('ok'), 'success'));
+        $confirmator->addItem(new EaseTWBLinkButton('?delete=true&' . $service->myKeyColumn . '=' . $service->getID(), _('Ano') . ' ' . EaseTWBPart::glyphIcon('remove'), 'danger'));
+        $oPage->columnIII->addItem(new EaseTWBPanel(_('Výměna služby'), 'info', new IEServiceSwapForm($service)));
+        $oPage->columnI->addItem($service->ownerLinkButton());
+        $oPage->columnII->addItem(new IEHostSelector($service));
 
-if ($service->getId()) {
-    $oPage->columnI->addItem($service->ownerLinkButton());
-}
+        break;
+    default :
 
-$form = $oPage->columnII->addItem(new EaseHtmlForm('Service', 'service.php', 'POST', $serviceEdit, array('class' => 'form-horizontal')));
-$form->setTagID($form->getTagName());
-if (!is_null($service->getMyKey())) {
-    $form->addItem(new EaseHtmlInputHiddenTag($service->getMyKeyColumn(), $service->getMyKey()));
-}
-$form->addItem('<br>');
-$form->addItem(new EaseTWSubmitButton(_('Uložit'), 'success'));
-$oPage->AddCss('
+        $serviceEdit = new IECfgEditor($service);
+
+        $oPage->columnIII->addItem($service->deleteButton());
+        $oPage->columnIII->addItem($service->cloneButton());
+
+        if ($service->getId()) {
+            $oPage->columnI->addItem($service->ownerLinkButton());
+        }
+
+        $form = $oPage->columnII->addItem(new EaseHtmlForm('Service', 'service.php', 'POST', $serviceEdit, array('class' => 'form-horizontal')));
+        $form->setTagID($form->getTagName());
+        if (!is_null($service->getMyKey())) {
+            $form->addItem(new EaseHtmlInputHiddenTag($service->getMyKeyColumn(), $service->getMyKey()));
+        }
+        $form->addItem('<br>');
+        $form->addItem(new EaseTWSubmitButton(_('Uložit'), 'success'));
+        $oPage->AddCss('
 input.ui-button { width: 100%; }
 ');
 
-$renameForm = new EaseTWBForm('Rename', '?action=rename&service_id=' . $service->getId());
-$renameForm->addItem(new EaseHtmlInputTextTag('newname'), $service->getName(), array('class' => 'form-control'));
-$renameForm->addItem(new EaseTWSubmitButton(_('Přejmenovat'), 'success'));
+        $renameForm = new EaseTWBForm('Rename', '?action=rename&service_id=' . $service->getId());
+        $renameForm->addItem(new EaseHtmlInputTextTag('newname'), $service->getName(), array('class' => 'form-control'));
+        $renameForm->addItem(new EaseTWSubmitButton(_('Přejmenovat'), 'success'));
 
-$oPage->columnIII->addItem(new EaseTWBPanel(_('Přejmenování'), 'info', $renameForm));
-$oPage->columnI->addItem(new IEHostSelector($service));
+        $oPage->columnIII->addItem(new EaseTWBPanel(_('Přejmenování'), 'info', $renameForm));
+        $oPage->columnI->addItem(new IEHostSelector($service));
 
-if ($oUser->getSettingValue('admin')) {
-    $oPage->columnI->addItem(new EaseTWBLinkButton('?action=system&service_id=' . $service->getId(), _('Systémová služba')));
+        if ($oUser->getSettingValue('admin')) {
+            $oPage->columnI->addItem(new EaseTWBLinkButton('?action=system&service_id=' . $service->getId(), _('Systémová služba')));
+        }
+
+
+        $oPage->columnIII->addItem(new EaseTWBPanel(_('Výměna služby'), 'info', new IEServiceSwapForm($service)));
+
+
+        break;
 }
 
-
-$oPage->columnIII->addItem(new EaseTWBPanel(_('Výměna služby'), 'info', new IEServiceSwapForm($service)));
 
 $oPage->addItem(new IEPageBottom());
 

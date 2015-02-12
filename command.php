@@ -41,19 +41,6 @@ $usages = $service->getColumnsFromMySQL(array($service->getMyKeyColumn(), $servi
 
 $oPage->addItem(new IEPageTop(_('Editace příkazu') . ' ' . $command->getName()));
 
-$CommandEdit = new IECfgEditor($command);
-
-$form = $oPage->columnII->addItem(new EaseHtmlForm('Command', 'command.php', 'POST', $CommandEdit, array('class' => 'form-horizontal')));
-$form->setTagID($form->getTagName());
-if (!is_null($command->getMyKey())) {
-    $form->addItem(new EaseHtmlInputHiddenTag($command->getmyKeyColumn(), $command->getMyKey()));
-}
-$form->addItem('<br>');
-$form->addItem(new EaseTWSubmitButton(_('Uložit'), 'success'));
-$oPage->AddCss('
-input.ui-button { width: 100%; }
-');
-
 
 if ($command->getId()) {
     $oPage->columnI->addItem($command->ownerLinkButton());
@@ -73,6 +60,38 @@ if (count($usages)) {
 } else {
     $oPage->columnIII->addItem($command->deleteButton());
 }
+
+
+
+switch ($oPage->getRequestValue('action')) {
+    case 'delete':
+
+        $oPage->columnII->addItem(new EaseHtmlH2Tag($command->getName()));
+
+        $confirmator = $oPage->columnII->addItem(new EaseTWBPanel(_('Opravdu smazat ?')), 'danger');
+        $confirmator->addItem(new EaseTWBLinkButton('?' . $command->myKeyColumn . '=' . $command->getID(), _('Ne') . ' ' . EaseTWBPart::glyphIcon('ok'), 'success'));
+        $confirmator->addItem(new EaseTWBLinkButton('?delete=true&' . $command->myKeyColumn . '=' . $command->getID(), _('Ano') . ' ' . EaseTWBPart::glyphIcon('remove'), 'danger'));
+
+
+        break;
+    default :
+        $CommandEdit = new IECfgEditor($command);
+
+        $form = $oPage->columnII->addItem(new EaseHtmlForm('Command', 'command.php', 'POST', $CommandEdit, array('class' => 'form-horizontal')));
+        $form->setTagID($form->getTagName());
+        if (!is_null($command->getMyKey())) {
+            $form->addItem(new EaseHtmlInputHiddenTag($command->getmyKeyColumn(), $command->getMyKey()));
+        }
+        $form->addItem('<br>');
+        $form->addItem(new EaseTWSubmitButton(_('Uložit'), 'success'));
+        $oPage->AddCss('
+input.ui-button { width: 100%; }
+');
+
+
+        break;
+}
+
 
 
 $oPage->addItem(new IEPageBottom());

@@ -178,7 +178,30 @@ class IEDataGrid extends EaseDataGrid
         }
         $this->addButton($title, 'delete', 'deleteRecord');
         $this->addJavaScript('function deleteRecord(com, grid) {
-              $(location).attr(\'href\',\'http://yourPage.com/\');
+
+        var numItems = $(\'.trSelected\').length
+        if(numItems){
+            if(numItems == 1) {
+                $(\'.trSelected\', grid).each(function() {
+                    var id = $(this).attr(\'id\');
+                    id = id.substring(id.lastIndexOf(\'row\')+3);
+                    $(location).attr(\'href\',\'' . $this->dataSource->keyword . '.php?action=delete&' . $this->dataSource->getMyKeyColumn() . '=\' +id);
+                });
+
+            } else {
+                $(\'.trSelected\', grid).each(function() {
+                    var id = $(this).attr(\'id\');
+                    id = id.substring(id.lastIndexOf(\'row\')+3);
+                    var url =\'' . $this->dataSource->keyword . '.php?action=delete&' . $this->dataSource->getMyKeyColumn() . '=\' +id;
+                    var win = window.open(url, \'_blank\');
+                    win.focus();
+                });
+            }
+        } else {
+            alert("' . _('Je třeba označit nějaké řádky') . '");
+        }
+
+
             }
         ', null, true);
     }

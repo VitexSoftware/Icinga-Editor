@@ -59,7 +59,7 @@ if ($formOK && $oPage->isPosted()) {
         $oUser->addStatusMessage(_('Heslo bylo změněno'), 'success');
 
         $email = $oPage->addItem(new EaseMail($oUser->getDataValue($oUser->mailColumn), _('Změněné heslo pro Monitoring')));
-        $email->addItem(_('Vážený zákazníku vaše přihlašovací údaje byly změněny').":\n");
+        $email->addItem(_('Vážený zákazníku vaše přihlašovací údaje byly změněny') . ":\n");
 
         $email->addItem(' Login: ' . $oUser->getUserLogin() . "\n");
         $email->addItem(' Heslo: ' . $plainPass . "\n");
@@ -74,11 +74,11 @@ if ($formOK && $oPage->isPosted()) {
     $loginForm->addItem(new EaseLabeledPasswordStrongInput('password', NULL, _('Nové heslo') . ' *'));
     $loginForm->addItem(new EaseLabeledPasswordControlInput('passwordConfirm', NULL, _('potvrzení hesla') . ' *', array('id' => 'confirmation')));
 
-    $loginForm->addItem(new EaseJQuerySubmitButton('Ok' , 'Změnit heslo'));
+    $loginForm->addItem(new EaseJQuerySubmitButton('Ok', 'Změnit heslo'));
 
     $loginForm->fillUp($_POST);
 
-    $oPage->columnII->addItem( new EaseHtmlFieldSet(_('změna hesla'), $loginForm));
+    $oPage->columnII->addItem(new EaseTWBPanel(_('změna hesla'), 'default', $loginForm));
 }
 
 $oPage->addItem(new IEPageBottom());

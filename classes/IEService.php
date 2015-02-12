@@ -479,6 +479,7 @@ class IEService extends IECfg
         $thisName = $this->getName();
         $hostsOK = array();
         $hostsErr = array();
+        $hostsAssigned = array();
         $host = new IEHost();
 
         if (EaseShared::user()->getSettingValue('admin')) {
@@ -501,7 +502,7 @@ class IEService extends IECfg
             }
         }
         if ($this->saveToMySQL() && $newService->saveToMySQL() && count($hostsOK)) {
-            $this->addStatusMessage(sprintf(_('%s byl přesunut z %s/%s do %s'), implode(',', $hostsOk), $this->keyword, $this->getName(), $newService->getName()), 'success');
+            $this->addStatusMessage(sprintf(_('%s byl přesunut z %s/%s do %s'), implode(',', $hostsOK), $this->keyword, $this->getName(), $newService->getName()), 'success');
             return true;
         } else {
             $this->addStatusMessage(sprintf(_(' %s nebyl přesunut z %s/%s do %s'), implode(',', $hostsErr), $this->keyword, $this->getName(), $newService->getName()), 'warning');

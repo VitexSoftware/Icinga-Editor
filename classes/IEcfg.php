@@ -712,7 +712,7 @@ class IEcfg extends EaseBrick
      */
     public function deleteButton($name = null, $urlAdd = '')
     {
-        if ($this->getOwnerID() == EaseShared::user()->getUserID()) {
+        if (($this->getOwnerID() == EaseShared::user()->getUserID()) || EaseShared::user()->getSettingValue('admin')) {
 
             if ($this->allowTemplating && $this->isTemplate()) {
                 $columnsList = array($this->getmyKeyColumn(), $this->nameColumn, $this->userColumn);
@@ -756,9 +756,13 @@ class IEcfg extends EaseBrick
     public function ownerLinkButton()
     {
         $ownerID = $this->getOwnerID();
-        $owner = new EaseUser($ownerID);
+        if ($ownerID) {
+            $owner = new EaseUser($ownerID);
 
-        return new EaseTWBLinkButton('userinfo.php?user_id=' . $ownerID, array($owner, '&nbsp;' . $owner->getUserLogin()));
+            return new EaseTWBLinkButton('userinfo.php?user_id=' . $ownerID, array($owner, '&nbsp;' . $owner->getUserLogin()));
+        } else {
+            return new EaseTWBLinkButton('overview.php', array('<img class="avatar" src="img/vsmonitoring.png">', '&nbsp;' . _('Bez vlastníka')));
+        }
     }
 
     /**

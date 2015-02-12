@@ -10,7 +10,8 @@ require_once 'IEHost.php';
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2012 Vitex@hippy.cz (G)
  */
-class IEIconSelector extends EaseContainer {
+class IEIconSelector extends EaseContainer
+{
 
     public static $webprefix = '/icinga/';
     public static $webdir = '/usr/share/icinga/htdocs/';
@@ -27,13 +28,14 @@ class IEIconSelector extends EaseContainer {
      *
      * @param IEHost $host
      */
-    public function __construct($host) {
+    public function __construct($host)
+    {
         parent::__construct();
         EaseJQueryPart::jQueryze($this);
 
         $icodirs = array('' => '');
 
-        $icoBox = $this->addItem(new EaseHtmlFieldSet(_('Vyber Ikonu')));
+        $icoBox = $this->addItem(new EaseTWBPanel(_('Vyber Ikonu')));
         $icoBox->setTagCss('width: 100%;');
 
         $icodir = self::$webdir . self::$icodir;
@@ -82,10 +84,10 @@ class IEIconSelector extends EaseContainer {
                 }
                 $d->close();
             }
-            if(!$subicodir){
+            if (!$subicodir) {
                 $subicodir = 'ico';
             }
-            $iconTabs->addTab($subicodir, $icons,$default);
+            $iconTabs->addTab($subicodir, $icons, $default);
         }
 
         $uplBox = $this->addItem(new EaseHtmlFieldSet(_('Nahraj vlastní')));
@@ -105,7 +107,8 @@ class IEIconSelector extends EaseContainer {
 
      *      * @param type $tmpfilename
      */
-    public static function imageTypeOK($tmpfilename) {
+    public static function imageTypeOK($tmpfilename)
+    {
         $finfo = new finfo(FILEINFO_MIME);
         $info = $finfo->file($tmpfilename);
         if (!$info) {
@@ -134,7 +137,8 @@ class IEIconSelector extends EaseContainer {
      * @param  IEHost  $host
      * @return boolean
      */
-    public static function saveIcon($tmpfilename, $host) {
+    public static function saveIcon($tmpfilename, $host)
+    {
         $id = $host->owner->getUserID();
         $thumbnailImagePath = $tmpfilename . '40';
 
