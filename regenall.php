@@ -52,10 +52,10 @@ if ($testing) {
     $LineNo = 0;
     $WarningCount = null;
     while (!feof($testing)) {
-        $Line = fgets($testing);
+        $line = fgets($testing);
         $LineNo++;
 
-        if (($Line === false) && ($LineNo == 1)) {
+        if (($line === false) && ($LineNo == 1)) {
             $errorLine = $oPage->addItem(new EaseHtmlDivTag(null, '<span class="label label-important">' . _('Chyba:') . '</span>', array('class' => 'alert alert-danger')));
             $oUser->addStatusMessage(_('Kontrola konfigurace nevrátila výsledek.'), 'error');
             $errorLine->addItem(_('Zkontroluj prosím zdlali nechybí potřebný fragment v /etc/sudoers:'));
@@ -65,11 +65,11 @@ if ($testing) {
             break;
         }
 
-        if (strstr($Line, 'Error:')) {
-            $Line = str_replace('Error:', '', $Line);
+        if (strstr($line, 'Error:')) {
+            $line = str_replace('Error:', '', $line);
             $errorLine = $oPage->addItem(new EaseHtmlDivTag(null, '<span class="label label-important">' . _('Chyba:') . '</span>', array('class' => 'alert alert-danger')));
 
-            $keywords = preg_split("/['(.*)']+/", $Line);
+            $keywords = preg_split("/['(.*)']+/", $line);
             switch (trim($keywords[0])) {
                 case 'Service notification period':
                     $errorLine->addItem(' <a href="timeperiods.php">' . _('Notifikační perioda') . '</a> služeb ');
@@ -81,7 +81,7 @@ if ($testing) {
                     break;
 
                 default:
-                    $errorLine->addItem($Line);
+                    $errorLine->addItem($line);
                     break;
             }
 
@@ -107,41 +107,41 @@ if ($testing) {
             //$OPage->addItem('<pre>' . EaseBrick::printPreBasic($keywords) . '</pre>');
         }
 
-        if (strstr($Line, 'Error in configuration file')) {
-            $keywords = preg_split("/'|\(|\)| - Line /", $Line);
+        if (strstr($line, 'Error in configuration file')) {
+            $keywords = preg_split("/'|\(|\)| - Line /", $line);
             $errorLine = $oPage->addItem(new EaseHtmlDivTag(null, '<span class="label label-error">' . _('Chyba v konfiguračním souboru'), array('class' => 'alert alert-danger')));
             $errorLine->addItem(new EaseHtmlATag('cfgfile.php?file=' . $keywords[1] . '&line=' . $keywords[3], $keywords[1]));
             $errorLine->addItem($keywords[4]);
             $ErrorCount++;
         }
 
-        if (strstr($Line, 'Warning:')) {
+        if (strstr($line, 'Warning:')) {
 
-            if (strstr($Line, 'has no services associated with it!')) {
-                preg_match("/\'(.*)\'/", $Line, $keywords);
+            if (strstr($line, 'has no services associated with it!')) {
+                preg_match("/\'(.*)\'/", $line, $keywords);
                 $host = & $generator->IEClasses['host'];
                 $host->setmyKeyColumn($host->nameColumn);
                 $host->loadFromMySql($keywords[1]);
                 $host->resetObjectIdentity();
-                $Line = '<span class="label label-warning">' . _('Varování:') . '</span> Host ' . '<a href="host.php?host_id=' . $host->getMyKey() . '">' . $host->getName() . '</a> ' . _('nemá přiřazené žádné služby');
+                $line = '<span class="label label-warning">' . _('Varování:') . '</span> Host ' . '<a href="host.php?host_id=' . $host->getMyKey() . '">' . $host->getName() . '</a> ' . _('nemá přiřazené žádné služby');
             } else {
-                $Line = str_replace('Warning:', '<span class="label label-warning">' . _('Varování:') . '</span>', $Line);
+                $line = str_replace('Warning:', '<span class="label label-warning">' . _('Varování:') . '</span>', $line);
             }
 
             //Duplicate definition found for command 'check_ping' (config file '/etc/icinga/generated/command_check_ping_vitex.cfg', starting on line 1)
-            $oPage->addItem(new EaseHtmlDivTag(null, $Line, array('class' => 'alert alert-warning')));
+            $oPage->addItem(new EaseHtmlDivTag(null, $line, array('class' => 'alert alert-warning')));
         }
 
-        if (strstr($Line, 'Total Warnings')) {
-            list($Msg, $WarningCount) = explode(':', $Line);
+        if (strstr($line, 'Total Warnings')) {
+            list($Msg, $WarningCount) = explode(':', $line);
             if (intval(trim($WarningCount))) {
                 $oUser->addStatusMessage(sprintf(_('celkem %s varování'), $WarningCount), 'warning');
             } else {
                 $oUser->addStatusMessage(_('test proběhl bez varování'), 'success');
             }
         }
-        if (strstr($Line, 'Total Errors')) {
-            list($Msg, $ErrorCount) = explode(':', $Line);
+        if (strstr($line, 'Total Errors')) {
+            list($Msg, $ErrorCount) = explode(':', $line);
             if (intval(trim($ErrorCount))) {
                 $oUser->addStatusMessage(sprintf(_('celkem %s chyb'), $ErrorCount), 'warning');
             } else {

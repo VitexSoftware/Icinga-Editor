@@ -20,13 +20,13 @@ require_once 'classes/IEServicegroup.php';
 $oPage->onlyForLogged();
 
 $File = $oPage->getRequestValue('file');
-$Line = $oPage->getRequestValue('line');
+$line = $oPage->getRequestValue('line');
 
 $oPage->addItem(new IEPageTop(_('Icinga Editor')));
 
 $Lines = file($File);
-foreach ($Lines as $Line) {
-    $oPage->addItem($Line.'<br>');
+foreach ($Lines as $line) {
+    $oPage->addItem($line.'<br>');
 }
 
 $oPage->addItem(new IEPageBottom());
