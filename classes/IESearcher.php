@@ -62,18 +62,8 @@ class IESearcher extends IECfg
         if (file_exists('classes/' . $className . '.php')) {
             include_once $className . '.php';
         }
-        $NewClass = new $className;
-        $this->IEClasses[$NewClass->keyword] = new $className;
-    }
-
-    /**
-     * Znovu vytvoří struktury tabulek obejktů
-     */
-    public function dbInit()
-    {
-        foreach ($this->IEClasses as $IEClass) {
-            $IEClass->dbInit();
-        }
+        $newClass = new $className;
+        $this->IEClasses[$newClass->keyword] = new $className;
     }
 
     public function searchAll($term)

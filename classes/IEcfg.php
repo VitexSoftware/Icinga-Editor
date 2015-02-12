@@ -598,7 +598,13 @@ class IEcfg extends EaseBrick
      */
     public function getDataFromMySQL($itemID = null)
     {
-        $data = parent::getDataFromMySQL($itemID);
+        if (is_string($itemID)) {
+            $this->setmyKeyColumn($this->nameColumn);
+            $data = parent::getDataFromMySQL($itemID);
+            $this->restoreObjectIdentity();
+        } else {
+            $data = parent::getDataFromMySQL($itemID);
+        }
         foreach ($data as $recordID => $record) {
             foreach ($this->useKeywords as $keyWord => $columnType) {
                 switch ($columnType) {
@@ -645,10 +651,12 @@ class IEcfg extends EaseBrick
         if ($this->publicRecords && $withShared) {
             $columnsToGet[] = 'public';
 
-            return $this->getColumnsFromMySQL($columnsToGet, $this->userColumn . '=' . $thisID . ' OR ' . $this->userColumn . ' IS NULL OR public=1 ', $this->nameColumn, $this->getmyKeyColumn());
+            $data = $this->getColumnsFromMySQL($columnsToGet, $this->userColumn . '=' . $thisID . ' OR ' . $this->userColumn . ' IS NULL OR public=1 ', $this->nameColumn, $this->getmyKeyColumn());
         } else {
-            return $this->getColumnsFromMySQL($columnsToGet, $this->userColumn . '=' . $thisID, $this->nameColumn, $this->getmyKeyColumn());
+            $data = $this->getColumnsFromMySQL($columnsToGet, $this->userColumn . '=' . $thisID, $this->nameColumn, $this->getmyKeyColumn());
         }
+
+        return $this->unserializeArrays($data);
     }
 
     /**
@@ -981,6 +989,7 @@ class IEcfg extends EaseBrick
     public function addMember($column, $memberID, $memberName)
     {
         $this->data[$column][$memberID] = $memberName;
+        return true;
     }
 
     /**

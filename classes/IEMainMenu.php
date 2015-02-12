@@ -78,8 +78,8 @@ class IEMainMenu extends EaseHtmlDivTag
 
             foreach ($hostgroups as $cID => $hgInfo) {
                 $hostGroupMenuItem['hostgroup.php?hostgroup_id=' . $hgInfo['hostgroup_id']] = EaseTWBPart::GlyphIcon('cloud') . ' ' . $hgInfo['hostgroup_name'];
-                if (strlen($hgInfo['members'])) {
-                    foreach (unserialize($hgInfo['members']) as $hgMember) {
+                if (count($hgInfo['members'])) {
+                    foreach ($hgInfo['members'] as $hgMember) {
                         if ($hgMember == '*') {
                             $image = null;
                         } else {
@@ -225,6 +225,7 @@ class IEMainMenu extends EaseHtmlDivTag
                   'preferences.php' => EaseTWBPart::GlyphIcon('wrench') . ' ' . _('Nastavení icingy'),
                   'regenall.php' => EaseTWBPart::GlyphIcon('ok') . ' ' . _('Přegenerovat všechny konfiguráky'),
                   'dbrecreate.php' => EaseTWBPart::GlyphIcon('wrench') . ' ' . _('Reinicializovat databázi'),
+                  'fixer.php' => EaseTWBPart::GlyphIcon('ok-circle') . ' ' . _('Opravit databázi'),
                   'import.php' => EaseTWBPart::GlyphIcon('import') . ' ' . _('Importovat')
                     /* 'module.php' => _('definice modulů') */                    )
                 );
