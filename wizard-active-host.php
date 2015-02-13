@@ -130,7 +130,8 @@ if ($hostName || $address || $addressSix) {
           'register' => true,
           'generate' => TRUE,
           'alias' => $hostName,
-          'active_checks_enabled' => true
+          'active_checks_enabled' => 1,
+          'passive_checks_enabled' => 0
         )
     );
 

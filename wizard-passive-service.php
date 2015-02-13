@@ -36,8 +36,8 @@ if ($serviceName) {
       'register' => true,
       'generate' => true,
       'display_name' => $serviceName,
-      'active_checks_enabled' => false,
-      'passive_checks_enabled' => true
+      'active_checks_enabled' => 0,
+      'passive_checks_enabled' => 1
     );
 
     if (isset($remoteCmd)) {
