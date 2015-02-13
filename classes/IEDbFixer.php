@@ -17,11 +17,11 @@ class IEDbFixer extends EaseHtmlUlTag
     public function __construct()
     {
         parent::__construct();
-        $this->fixServices();
+        $this->fixHostNameIDs();
         $this->setTagClass('list-group');
     }
 
-    public function fixServices()
+    public function fixHostNameIDs()
     {
         $hostsOK = array();
         $hostsErr = array();

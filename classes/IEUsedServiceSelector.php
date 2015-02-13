@@ -116,7 +116,7 @@ class IEUsedServiceSelector extends EaseContainer
     {
         $service = new IEService();
         if (isset($request[$service->myKeyColumn])) {
-            if ($service->loadFromMySQL($request[$service->myKeyColumn])) {
+            if ($service->loadFromMySQL((int) $request[$service->myKeyColumn])) {
                 if (isset($request['addservice']) || isset($request['delservice'])) {
                     if (isset($request['addservice'])) {
                         $service->addMember('host_name', $request['host_id'], $request['host_name']);
