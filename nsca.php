@@ -24,28 +24,27 @@ $prefs = $preferences->getPrefs();
 
 $nscabat = '
 set NSCLIENT="%ProgramFiles%\NSClient++\nscp.exe"
-
 %NSCLIENT% service --stop
 
 del "%ProgramFiles%\NSClient++\nsclient.ini"
 %NSCLIENT% settings --generate --add-defaults --load-all
 
-%NSCLIENT% settings --path /modules --key Scheduler --set enabled
-%NSCLIENT% settings --path /modules --key CheckDisk --set enabled
-%NSCLIENT% settings --path /modules --key CheckEventLog --set enabled
-%NSCLIENT% settings --path /modules --key CheckExternalScripts --set enabled
-%NSCLIENT% settings --path /modules --key CheckHelpers --set enabled
-%NSCLIENT% settings --path /modules --key CheckNSCP --set enabled
-%NSCLIENT% settings --path /modules --key CheckSystem --set enabled
-%NSCLIENT% settings --path /modules --key CheckWMI --set enabled
-%NSCLIENT% settings --path /modules --key NSCAClient --set enabled
+%NSCLIENT% settings --path "/modules" --key Scheduler --set enabled
+%NSCLIENT% settings --path "/modules" --key CheckDisk --set enabled
+%NSCLIENT% settings --path "/modules" --key CheckEventLog --set enabled
+%NSCLIENT% settings --path "/modules" --key CheckExternalScripts --set enabled
+%NSCLIENT% settings --path "/modules" --key CheckHelpers --set enabled
+%NSCLIENT% settings --path "/modules" --key CheckNSCP --set enabled
+%NSCLIENT% settings --path "/modules" --key CheckSystem --set enabled
+%NSCLIENT% settings --path "/modules" --key CheckWMI --set enabled
+%NSCLIENT% settings --path "/modules" --key NSCAClient --set enabled
 
 %NSCLIENT% settings --path /settings/NSCA/client --key hostname --set ' . $host->getName() . '
 %NSCLIENT% settings --path /settings/NSCA/client --key channel --set NSCA
 %NSCLIENT% settings --path /settings/NSCA/client/targets/default --key "allowed ciphers" --set "ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH"
 %NSCLIENT% settings --path /settings/NSCA/client/targets/default --key encryption --set 3des
 %NSCLIENT% settings --path /settings/NSCA/client/targets/default --key password --set ' . $prefs['nscapassword'] . '
-%NSCLIENT% settings --path /settings/NSCA/client/targets/default --key address --set %server_ip%
+%NSCLIENT% settings --path /settings/NSCA/client/targets/default --key address --set ' . $prefs['serverip'] . '
 %NSCLIENT% settings --path /settings/NSCA/client/targets/default --key port --set 5667
 %NSCLIENT% settings --path /settings/NSCA/client/targets/default --key timeout --set 30
 %NSCLIENT% settings --path /settings/scheduler/schedules/default --key interval --set 60s
