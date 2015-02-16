@@ -5,7 +5,14 @@ require_once 'Ease/EaseUser.php';
 /**
  * Uživatel Icinga Editoru
  */
-class IEUser extends EaseUser {
+class IEUser extends EaseUser
+{
+
+    /**
+     * Tabulka uživatelů
+     * @var string
+     */
+    public $myTable = 'iciedit_user';
 
     /**
      * Sloupeček obsahující datum vložení záznamu do shopu
@@ -30,7 +37,8 @@ class IEUser extends EaseUser {
      *
      * @return string
      */
-    public function getIcon() {
+    public function getIcon()
+    {
         $Icon = $this->GetSettingValue('icon');
         if (is_null($Icon)) {
             return parent::getIcon();
@@ -42,7 +50,8 @@ class IEUser extends EaseUser {
     /**
      * Vrací jméno prvního kontaktu uživatele
      */
-    public function getFirstContact() {
+    public function getFirstContact()
+    {
         $contact = new IEContact();
         $cn = $contact->getColumnsFromMySQL(array($contact->nameColumn, $contact->myKeyColumn), array($contact->userColumn => $this->getUserID(), 'parent_id' => 'IS NOT NULL'), $contact->myKeyColumn, $contact->nameColumn, 1);
         if (count($cn)) {
@@ -58,7 +67,8 @@ class IEUser extends EaseUser {
      * Vrací ID aktuálního záznamu
      * @return int
      */
-    public function getId() {
+    public function getId()
+    {
         return (int) $this->getMyKey();
     }
 
@@ -70,7 +80,8 @@ class IEUser extends EaseUser {
      *
      * @return boolean password výsledek změny hesla
      */
-    public function passwordChange($newPassword, $userID = null) {
+    public function passwordChange($newPassword, $userID = null)
+    {
         if (parent::passwordChange($newPassword, $userID)) {
             system('sudo htpasswd -b /etc/icinga/htpasswd.users ' . $this->getUserLogin() . ' ' . $newPassword);
 
@@ -87,11 +98,13 @@ class IEUser extends EaseUser {
      * @param  string                     $urlAdd Předávaná část URL
      * @return \EaseJQConfirmedLinkButton
      */
-    public function deleteButton($name = null, $urlAdd = '') {
+    public function deleteButton($name = null, $urlAdd = '')
+    {
         return new EaseJQConfirmedLinkButton('?user_id=' . $this->getID() . '&delete=true' . '&' . $urlAdd, _('Smazat ') . ' ' . $this->getUserLogin() . ' ' . EaseTWBPart::GlyphIcon('remove-sign'));
     }
 
-    public function delete($id = null) {
+    public function delete($id = null)
+    {
         if (is_null($id)) {
             $id = $this->getId();
         }
@@ -138,9 +151,30 @@ class IEUser extends EaseUser {
         }
     }
 
+    /**
+     * Give you user name
+     *
+     * @return string
+     */
+    public function getUserName()
+    {
+        $longname = trim($this->getDataValue('firstname') . ' ' . $this->getDataValue('lastname'));
+        if (strlen($longname)) {
+            return $longname;
+        } else {
+            return parent::getUserName();
+        }
+    }
+
+    function getEmail()
+    {
+        return $this->getDataValue('email');
+    }
+
 }
 
-class IETwitterUser extends IEUser {
+class IETwitterUser extends IEUser
+{
 
     /**
      * data z Twitteru
@@ -154,7 +188,8 @@ class IETwitterUser extends IEUser {
      * @param arrat  $Twitter     id uživatele
      * @param string $TwitterName jméno uživatele
      */
-    public function __construct($Twitter = null) {
+    public function __construct($Twitter = null)
+    {
         parent::__construct();
         if (!is_null($Twitter)) {
             $this->Twitter = $Twitter;

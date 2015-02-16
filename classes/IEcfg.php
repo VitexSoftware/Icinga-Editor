@@ -653,10 +653,19 @@ class IEcfg extends EaseBrick
 
             $data = $this->getColumnsFromMySQL($columnsToGet, $this->userColumn . '=' . $thisID . ' OR ' . $this->userColumn . ' IS NULL OR public=1 ', $this->nameColumn, $this->getmyKeyColumn());
         } else {
-            $data = $this->getColumnsFromMySQL($columnsToGet, $this->userColumn . '=' . $thisID, $this->nameColumn, $this->getmyKeyColumn());
+            $data = $this->getColumnsFromMySQL($columnsToGet, $this->ownershipCondition($thisID), $this->nameColumn, $this->getmyKeyColumn());
         }
 
         return $this->unserializeArrays($data);
+    }
+
+    public function ownershipCondition($thisID)
+    {
+        if (is_null($thisID)) {
+            $thisID = EaseShared::user()->getUserID();
+        }
+
+        return $this->userColumn . '=' . $thisID . ' OR ' . $this->userColumn . ' IN (SELECT DISTINCT user_id FROM user_to_group WHERE group_id IN (SELECT group_id FROM user_to_group WHERE user_id = ' . $thisID . '))';
     }
 
     /**

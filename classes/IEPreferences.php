@@ -11,7 +11,7 @@
  *
  * @author vitex
  */
-class IEPreferences extends EaseBrick
+class IEPreferences extends IEcfg
 {
 
     public $myTable = 'preferences';

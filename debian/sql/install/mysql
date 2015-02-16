@@ -524,8 +524,8 @@ CREATE TABLE IF NOT EXISTS `sms` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 
 
-DROP TABLE IF EXISTS `user`;
-CREATE TABLE IF NOT EXISTS `user` (
+DROP TABLE IF EXISTS `iciedit_user`;
+CREATE TABLE IF NOT EXISTS `iciedit_user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `twitter_id` int(9) unsigned DEFAULT NULL,
   `settings` longtext COLLATE utf8_czech_ci COMMENT 'Serializovana uzivatelska nastaveni',
@@ -543,13 +543,32 @@ CREATE TABLE IF NOT EXISTS `user` (
   UNIQUE KEY `customers_username` (`login`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 
-
-CREATE TABLE IF NOT EXISTS `preferences` (
+DROP TABLE IF EXISTS `iciedit_preferences`;
+CREATE TABLE IF NOT EXISTS `iciedit_preferences` (
   `key` varchar(64) NOT NULL,
   `value` varchar(256) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='app prefs';
-ALTER TABLE `preferences`
+ALTER TABLE `iciedit_preferences`
  ADD PRIMARY KEY (`key`);
+
+DROP TABLE IF EXISTS `iciedit_user_group`;
+CREATE TABLE IF NOT EXISTS `iciedit_user_group` (
+`usergroup_id` int(11) NOT NULL,
+  `usergroup_name` varchar(64) NOT NULL,
+  `usergroup_boss` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+ALTER TABLE `iciedit_usergroup`
+ ADD PRIMARY KEY (`usergroup_id`);
+ALTER TABLE `iciedit_user_group`
+MODIFY `usergroup_id` int(11) NOT NULL AUTO_INCREMENT;
+
+DROP TABLE IF EXISTS `user_to_group`;
+CREATE TABLE IF NOT EXISTS `user_to_group` (
+  `user_id` int(9) unsigned NOT NULL,
+  `group_id` int(9) unsigned NOT NULL,
+  UNIQUE KEY `uniq` (`user_id`,`group_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='přiřazení uživatelů do skupin';
+
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

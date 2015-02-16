@@ -15,7 +15,7 @@ $oPage->onlyForLogged();
 
 $oPage->addItem(new IEPageTop(_('Přehled uživatelů')));
 
-$user = new EaseUser;
+$user = new IEUser;
 
 $users = $user->getColumnsFromMySQL(array('id', 'login'), null, 'login', $oUser->getmyKeyColumn());
 
@@ -27,16 +27,16 @@ if ($users) {
         if (!$cId) {
             continue;
         }
-        $lastRow = $cntList->addRowColumns(array($cid++, new EaseUser((int) $cId),
-            new EaseHtmlATag('userinfo.php?user_id=' . $cId, $cInfo['login'] . ' <i class="icon-edit"></i>'),
-            new EaseHtmlATag('apply.php?force_user_id=' . $cId, _('Přegenerovat konfiguraci') . ' <i class="icon-repeat"></i>')
-                )
+        $lastRow = $cntList->addRowColumns(array($cid++, new IEUser((int) $cId),
+          new EaseHtmlATag('userinfo.php?user_id=' . $cId, $cInfo['login'] . ' <i class="icon-edit"></i>'),
+          new EaseHtmlATag('apply.php?force_user_id=' . $cId, _('Přegenerovat konfiguraci') . ' <i class="icon-repeat"></i>')
+            )
         );
     }
     $oPage->columnII->addItem($cntList);
 }
 
-$oPage->columnIII->addItem(new EaseTWBLinkButton('createaccount.php', _('Založit uživatele').' '.EaseTWBPart::GlyphIcon('edit')));
+$oPage->columnIII->addItem(new EaseTWBLinkButton('createaccount.php', _('Založit uživatele') . ' ' . EaseTWBPart::GlyphIcon('edit')));
 
 $oPage->addItem(new IEPageBottom());
 

@@ -39,7 +39,7 @@ if ($oPage->isPosted()) {
             $error = true;
             $oUser->addStatusMessage(_('chyba v mailové adrese'), 'warning');
         } else {
-            $check_email = EaseShared::myDbLink()->queryToValue("SELECT COUNT(*) AS total FROM user WHERE email = '" . $oPage->EaseAddSlashes($emailAddress) . "'");
+            $check_email = EaseShared::myDbLink()->queryToValue("SELECT COUNT(*) AS total FROM " . constant('DB_PREFIX') . "user WHERE email = '" . $oPage->EaseAddSlashes($emailAddress) . "'");
             if ($check_email > 0) {
                 $error = true;
                 $oUser->addStatusMessage(sprintf(_('Mailová adresa %s je již zaregistrována'), $emailAddress), 'warning');
@@ -55,7 +55,7 @@ if ($oPage->isPosted()) {
         $oUser->addStatusMessage(_('kontrola hesla nesouhlasí'), 'warning');
     }
 
-    $usedLogin = EaseShared::myDbLink()->QueryToValue('SELECT id FROM user WHERE login=\'' . $oPage->EaseAddSlashes($login) . '\'');
+    $usedLogin = EaseShared::myDbLink()->QueryToValue('SELECT id FROM ' . constant('DB_PREFIX') . 'user WHERE login=\'' . $oPage->EaseAddSlashes($login) . '\'');
     if ($usedLogin) {
         $error = true;
         $oUser->addStatusMessage(sprintf(_('Zadané uživatelské jméno %s je již v databázi použito. Zvolte prosím jiné.'), $login), 'warning');
@@ -66,11 +66,11 @@ if ($oPage->isPosted()) {
         $newOUser = new IEUser();
         //TODO zde by se měly doplnit defaultní hodnoty z konfiguráku registry.php
         $newOUser->setData(
-                array(
-                    'email' => $emailAddress,
-                    'parent' => (int) $customerParent,
-                    'login' => $login
-                )
+            array(
+              'email' => $emailAddress,
+              'parent' => (int) $customerParent,
+              'login' => $login
+            )
         );
 
         $userID = $newOUser->insertToMySQL();
@@ -109,20 +109,20 @@ if ($oPage->isPosted()) {
 
             $contact = new IEContact();
             $contact->setData(
-                    array(
-                        'contact_name' => $login,
-                        'use' => 'generic-contact',
-                        $contact->userColumn => $userID,
-                        'generate' => true,
-                        'host_notifications_enabled' => true,
-                        'service_notifications_enabled' => true,
-                        'host_notification_period' => '24x7',
-                        'service_notification_period' => '24x7',
-                        'service_notification_options' => ' w,u,c,r',
-                        'host_notification_options' => 'd,u,r',
-                        'service_notification_commands' => 'notify-service-by-email',
-                        'host_notification_commands' => 'notify-host-by-email',
-                        'register' => 1)
+                array(
+                  'contact_name' => $login,
+                  'use' => 'generic-contact',
+                  $contact->userColumn => $userID,
+                  'generate' => true,
+                  'host_notifications_enabled' => true,
+                  'service_notifications_enabled' => true,
+                  'host_notification_period' => '24x7',
+                  'service_notification_period' => '24x7',
+                  'service_notification_options' => ' w,u,c,r',
+                  'host_notification_options' => 'd,u,r',
+                  'service_notification_commands' => 'notify-service-by-email',
+                  'host_notification_commands' => 'notify-host-by-email',
+                  'register' => 1)
             );
             $contactID = $contact->saveToMySQL();
             if ($contactID) {
@@ -167,13 +167,13 @@ $oPage->addItem(new IEPageTop(_('Registrace')));
 
 $oPage->columnI->addItem(new EaseHtmlH2Tag(_('Vítejte v registraci')));
 $oPage->columnI->addItem(
-        new EaseHtmlUlTag(
-        array(
-    _('Po zaregistování budete rovnou vyzváni k zadání prvního sledovaného hosta.'),
-    _('Veškeré notifikace o výsledcích testů vám budou přicházet na zadaný email.'),
-    _('Pro zasílání notifikací pomocí XMPP (jabber) či SMS, zadejte tyto v nastavení vašeho kontaktu.')
-        )
-        )
+    new EaseHtmlUlTag(
+    array(
+  _('Po zaregistování budete rovnou vyzváni k zadání prvního sledovaného hosta.'),
+  _('Veškeré notifikace o výsledcích testů vám budou přicházet na zadaný email.'),
+  _('Pro zasílání notifikací pomocí XMPP (jabber) či SMS, zadejte tyto v nastavení vašeho kontaktu.')
+    )
+    )
 );
 
 $regFace = $oPage->columnII->addItem(new EaseHtmlDivTag('RegFace'));

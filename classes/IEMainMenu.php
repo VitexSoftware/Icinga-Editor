@@ -149,9 +149,14 @@ class IEMainMenu extends EaseHtmlDivTag
                     }
                 }
 
+//                $usergroups = $this->myDbLink->queryToArray('SELECT * FROM user_groups' . 'usergroup_id');
+
+
                 $nav->addDropDownMenu(_('Uživatelé'), array_merge($userList, array(
-                  'users.php' => EaseTWBPart::GlyphIcon('list') . '&nbsp;' . _('Přehled uživatelů'),
                   'createaccount.php' => EaseTWBPart::GlyphIcon('plus') . ' ' . _('Nový uživatel'),
+                  'users.php' => EaseTWBPart::GlyphIcon('list') . '&nbsp;' . _('Přehled uživatelů'),
+                  'usergroup.php' => EaseTWBPart::GlyphIcon('plus') . ' ' . _('Nová skupina uživatelů'),
+                  'usergroups.php' => EaseTWBPart::GlyphIcon('list') . '&nbsp;' . _('Přehled skupin uživatelů'),
                     ))
                 );
             }
