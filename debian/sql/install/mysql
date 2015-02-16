@@ -543,12 +543,12 @@ CREATE TABLE IF NOT EXISTS `iciedit_user` (
   UNIQUE KEY `customers_username` (`login`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 
-DROP TABLE IF EXISTS `iciedit_preferences`;
-CREATE TABLE IF NOT EXISTS `iciedit_preferences` (
+DROP TABLE IF EXISTS `preferences`;
+CREATE TABLE IF NOT EXISTS `preferences` (
   `key` varchar(64) NOT NULL,
   `value` varchar(256) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='app prefs';
-ALTER TABLE `iciedit_preferences`
+ALTER TABLE `preferences`
  ADD PRIMARY KEY (`key`);
 
 DROP TABLE IF EXISTS `iciedit_user_group`;
