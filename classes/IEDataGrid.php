@@ -32,7 +32,7 @@ class IEDataGrid extends EaseDataGrid
       'add' => array(),
       'edit' => array(),
       'buttons' => array(
-//        array('name' => 'CSV Export', 'bclass' => 'csvexport')
+        array('name' => 'CSV Export', 'bclass' => 'csvexport')
 //        , array('name' => 'PDF Export', 'bclass' => 'pdfexport')
       )
     );

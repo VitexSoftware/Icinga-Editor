@@ -13,8 +13,6 @@ require_once 'classes/IEDataSource.php';
 
 $oPage->onlyForLogged();
 
-
-
 $class = $oPage->getRequestValue('class');
 if ($class) {
     if (file_exists('classes/' . $class . '.php')) {

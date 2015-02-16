@@ -1179,6 +1179,23 @@ class IEcfg extends EaseBrick
         }
     }
 
+    public function csvizeData($data)
+    {
+        if (is_array($data) && count($data)) {
+            foreach ($data as $rowId => $row) {
+                foreach ($row as $column => $value) {
+                    if (strstr($value, ':{')) {
+                        $value = unserialize($value);
+                        if (is_array($value)) {
+                            $data[$rowId][$column] = implode('|', $value);
+                        }
+                    }
+                }
+            }
+        }
+        return $data;
+    }
+
     public function htmlizeData($data)
     {
         if (is_array($data) && count($data)) {

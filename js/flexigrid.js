@@ -83,25 +83,25 @@
 			url: false, //URL if using data from AJAX
 			method: 'POST', //data sending method
 			dataType: 'xml', //type of data for AJAX, either xml or json
-			errormsg: 'Connection Error',
+			errormsg: 'Chyba připojení',
 			usepager: false,
 			nowrap: true,
 			page: 1, //current page
 			total: 1, //total pages
 			useRp: true, //use the results per page select box
 			rp: 15, //results per page
-			rpOptions: [10, 15, 20, 30, 50], //allowed per-page values
+			rpOptions: [10, 15, 20, 30, 50, 100,200,500], //allowed per-page values
 			title: false,
 			idProperty: 'id',
-			pagestat: 'Displaying {from} to {to} of {total} items',
-			pagetext: 'Page',
-			outof: 'of',
-			findtext: 'Find',
+			pagestat: 'Zobrazuju od {from} do {to} z {total} položek',
+			pagetext: 'Strana',
+			outof: 'z',
+			findtext: 'Hledat',
 			params: [], //allow optional parameters to be passed around
 			procmsg: 'Processing, please wait ...',
 			query: '',
 			qtype: '',
-			nomsg: 'No items',
+			nomsg: 'žádné položky',
 			minColToggle: 1, //minimum allowed column to be hidden
 			showToggleBtn: true, //show or hide column toggle popup
 			hideOnSubmit: true,
@@ -586,7 +586,7 @@
 			buildpager: function () { //rebuild pager based on new properties
 				$('.pcontrol input', this.pDiv).val(p.page);
 				$('.pcontrol span', this.pDiv).html(p.pages);
-				var r1 = p.total == 0 ? 0 : (p.page - 1) * p.rp + 1;
+				var r1 = (p.page - 1) * p.rp + 1;
 				var r2 = r1 + p.rp - 1;
 				if (p.total < r2) {
 					r2 = p.total;
@@ -668,8 +668,15 @@
 				});
 			},
 			doSearch: function () {
-				p.query = $('input[name=q]', g.sDiv).val();
 				p.qtype = $('select[name=qtype]', g.sDiv).val();
+                                var squery = $('input[name=q]', g.sDiv).val();
+                                
+                                for (var si = 0; si < p.searchitems.length; si++) {
+                                    if( p.searchitems[si].name == p.qtype ){
+                                        var where = p.searchitems[si].where.replace(/%/gi,'%' + squery + '%');
+                                    }
+                                }
+				p.query = where;
 				p.newp = 1;
 				this.populate();
 			},
@@ -716,6 +723,70 @@
 				} else {
 					this.populate();
 				}
+			},
+                        dataExport: function ( etype ) {
+				if (this.loading) {
+					return true;
+				}
+				if (!p.url) {
+					return false;
+				}
+				if (!p.newp) {
+					p.newp = 1;
+				}
+				if (p.page > p.pages) {
+					p.page = p.pages;
+				}
+				var param = [{
+					name: 'page',
+					value: p.newp
+				}, {
+					name: 'rp',
+					value: p.rp
+				}, {
+					name: 'sortname',
+					value: p.sortname
+				}, {
+					name: 'sortorder',
+					value: p.sortorder
+				}, {
+					name: 'query',
+					value: p.query
+				}, {
+					name: 'title',
+					value: p.title
+				}, {
+					name: 'qtype',
+					value: p.qtype
+				}];
+				if (p.params.length) {
+					for (var pi = 0; pi < p.params.length; pi++) {
+						param[param.length] = p.params[pi];
+					}
+				}
+
+                                var prms = [];
+                                for (var pr = 0; pr < param.length; pr++) {
+                                    prms[pr] = param[pr].name + '=' + param[pr].value;
+                                }
+                                
+                                var cols = [];
+                                var names = [];
+
+                                var i = 0;
+                                $('thead tr:first th:visible', this.hDiv).each(function ( tag ) 
+                                    {
+                                        cols[i] = this.abbr; 
+                                        names[i] = this.textContent;
+                                        i++;
+                                    }
+                                );
+
+                                var exportUrl = p.url  + '&export=' + etype + '&' + prms.join('&') +
+                                '&cols=' + cols.join('|') + '&names=' + names.join('|');
+                                
+                                window.location.href = exportUrl;
+                            
 			},
 			addCellProp: function () {
 				$('tbody tr td', g.bDiv).each(function () {
@@ -1259,6 +1330,15 @@
 			}
 			$(g.gDiv).append(g.rDiv);
 		}
+                
+                $('.csvexport').click(function () {
+                        g.dataExport('csv');
+                });
+                $('.pdfexport').click(function () {
+                        g.dataExport('pdf');
+                });
+                
+                
 		// add pager
 		if (p.usepager) {
 			g.pDiv.className = 'pDiv';

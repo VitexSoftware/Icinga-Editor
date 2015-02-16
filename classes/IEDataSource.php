@@ -182,10 +182,11 @@ class IEDataSource extends EaseBrick
 
     /**
      *
-     * @param type $queryRaw
-     * @return type
+     * @param string $queryRaw
+     * @param string $transform html|csv|none
+     * @return array
      */
-    public function getListing($queryRaw)
+    public function getListing($queryRaw, $transform = 'html')
     {
         $page = isset($_REQUEST['page']) ? $_REQUEST['page'] : 1;
         $rp = isset($_REQUEST['rp']) ? $_REQUEST['rp'] : 10;
@@ -200,7 +201,18 @@ class IEDataSource extends EaseBrick
 
         $query = "$queryRaw $where $sort $limit";
 
-        $resultRaw = $this->handledObejct->htmlizeData($this->handledObejct->myDbLink->queryToArray($query));
+        switch ($transform) {
+            case 'csv':
+                $resultRaw = $this->handledObejct->csvizeData($this->handledObejct->myDbLink->queryToArray($query));
+                break;
+            case 'html':
+                $resultRaw = $this->handledObejct->htmlizeData($this->handledObejct->myDbLink->queryToArray($query));
+                break;
+
+            default:
+                $resultRaw = $this->handledObejct->myDbLink->queryToArray($query);
+                break;
+        }
 
         if (!count($this->columns)) {
             return $resultRaw;
@@ -237,7 +249,7 @@ class IEDataSource extends EaseBrick
             $total = count(explode(',', $rows));
         } else {
             $total = $this->getTotal($queryRaw . $this->getWhere());
-            $transactions = $this->getListing($queryRaw);
+            $transactions = $this->getListing($queryRaw, 'html');
         }
         $page = isset($_REQUEST['page']) ? $_REQUEST['page'] : 1;
         $jsonData = array('page' => $page, 'total' => $total, 'rows' => array());
@@ -255,7 +267,7 @@ class IEDataSource extends EaseBrick
 
     public function getCsv($queryRaw)
     {
-        $transactions = self::getListing($queryRaw);
+        $transactions = self::getListing($queryRaw, 'csv');
         $this->getCSVFile($transactions);
     }
 
