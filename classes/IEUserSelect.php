@@ -11,6 +11,7 @@
  */
 class IEUserSelect extends EaseHtmlSelect
 {
+
     public function __construct($name, $items = null, $DefaultValue = null, $ItemsIDs = false, $Properties = null)
     {
         if (is_null($items)) {
@@ -24,11 +25,12 @@ class IEUserSelect extends EaseHtmlSelect
         }
         parent::__construct($name, $items, $DefaultValue, $ItemsIDs, $Properties);
     }
+
     public function loadItems()
     {
         $User = new EaseUser();
         $UI = array();
-        foreach ($User->getAllFromMySQL('user',array('id','login'),null,'login','id') as $UserInfo) {
+        foreach ($User->getAllFromMySQL(EaseShared::user()->getMyTable(), array('id', 'login'), null, 'login', 'id') as $UserInfo) {
             $UI[$UserInfo['id']] = $UserInfo['login'];
         }
 

@@ -555,9 +555,11 @@ DROP TABLE IF EXISTS `iciedit_user_group`;
 CREATE TABLE IF NOT EXISTS `iciedit_user_group` (
 `usergroup_id` int(11) NOT NULL,
   `usergroup_name` varchar(64) NOT NULL,
-  `usergroup_boss` int(11) NOT NULL
+  `usergroup_boss` int(11) NOT NULL,
+  `DatCreate` datetime NOT NULL COMMENT 'Vytvření skupiny',
+  `DatSave` datetime DEFAULT NULL COMMENT 'poslední modifikace skupiny'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-ALTER TABLE `iciedit_usergroup`
+ALTER TABLE `iciedit_user_group`
  ADD PRIMARY KEY (`usergroup_id`);
 ALTER TABLE `iciedit_user_group`
 MODIFY `usergroup_id` int(11) NOT NULL AUTO_INCREMENT;

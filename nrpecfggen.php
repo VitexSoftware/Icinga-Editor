@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Icinga Editor - titulní strana
+ * Generátor konfigurace pro linuxový NRPE server
  *
  * @package    IcingaEditor
  * @subpackage WebUI

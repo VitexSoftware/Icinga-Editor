@@ -3,6 +3,7 @@
 /**
  * Icinga Editor - titulní strana
  *
+ * @deprecated since version 222
  * @package    IcingaEditor
  * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
