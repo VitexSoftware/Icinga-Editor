@@ -12,7 +12,7 @@ class IEUser extends EaseUser
      * Tabulka uživatelů
      * @var string
      */
-    public $myTable = 'iciedit_user';
+    public $myTable = 'user';
 
     /**
      * Sloupeček obsahující datum vložení záznamu do shopu

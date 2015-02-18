@@ -81,7 +81,7 @@ class IEUserGroup extends IEcfg
             $id = $this->getMyKey();
         }
         $members = array();
-        $mmbrs = $this->myDbLink->queryToArray('SELECT id,login FROM iciedit_user WHERE id IN ( SELECT user_id FROM user_to_group WHERE group_id=' . $id . ' )', 'id');
+        $mmbrs = $this->myDbLink->queryToArray('SELECT id,login FROM user WHERE id IN ( SELECT user_id FROM user_to_group WHERE group_id=' . $id . ' )', 'id');
         foreach ($mmbrs as $mId => $userInfo) {
             $members[$mId] = $userInfo['login'];
         }
@@ -98,7 +98,7 @@ class IEUserGroup extends IEcfg
         $users = array();
         $unassigned = array();
         if ($this->getMyKey()) {
-            $ua = $this->myDbLink->queryToArray('SELECT id,login FROM iciedit_user WHERE id NOT IN ( SELECT user_id FROM user_to_group WHERE group_id=' . $this->getMyKey() . ' )', 'id');
+            $ua = $this->myDbLink->queryToArray('SELECT id,login FROM user WHERE id NOT IN ( SELECT user_id FROM user_to_group WHERE group_id=' . $this->getMyKey() . ' )', 'id');
             foreach ($ua as $id => $userInfo) {
                 $unassigned[$id] = $userInfo['login'];
             }
