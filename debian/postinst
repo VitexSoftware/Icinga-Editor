@@ -53,9 +53,6 @@ if [ ! -f $IECFG ] ; then
     echo "define('DB_PREFIX', 'iciedit_');" >> $IECFG 
     echo "define('LOG_DIRECTORY', '/var/tmp/');" >> $IECFG 
     echo "define('CFG_GENERATED', '/etc/icinga/generated/');" >> $IECFG 
-    echo "define('EMAIL_FROM','monitor@v.s.cz');" >> $IECFG 
-    echo "define('SEND_INFO_TO','info@vitexsoftware.cz');" >> $IECFG 
-    echo "define('ICINGA_SERVER_IP','$ICINGA_SERVER_IP');" >> $IECFG 
 
     #rm -f /etc/icinga-editor/config-db.sh
     ln -s   /usr/share/icinga/htdocs/images/logos /usr/share/icinga-editor/logos
@@ -67,9 +64,11 @@ if [ ! -f $IECFG ] ; then
 
             mkdir -p /usr/share/icinga-editor/log
             mkdir -p /usr/share/icinga-editor/temp
+            mkdir -p /usr/share/icinga/htdocs/images/logos/custom
 
             chown -R www-data:www-data    /usr/share/icinga-editor/log
             chown -R www-data:www-data    /usr/share/icinga-editor/temp
+            chown -R www-data:www-data    /usr/share/icinga/htdocs/images/logos/custom
 
             apache_install $1
                     # Reload webserver in any case, configuration might have changed

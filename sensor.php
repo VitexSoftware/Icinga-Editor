@@ -41,8 +41,12 @@ switch ($host->getDataValue('platform')) {
         break;
     case 'linux':
         $pltIco = 'logos/base/linux40.gif';
+
+        $preferences = new IEPreferences;
+        $prefs = $preferences->getPrefs();
+
         $oPage->columnIII->addItem(new EaseHtmlDivTag(null, 'sudo aptitude -y install nagios-nrpe-server'));
-        $oPage->columnIII->addItem(new EaseHtmlDivTag(null, 'sudo echo "allowed_hosts=' . ICINGA_SERVER_IP . '" >> /etc/nagios/nrpe_local.cfg'));
+        $oPage->columnIII->addItem(new EaseHtmlDivTag(null, 'sudo echo "allowed_hosts=' . $prefs['serverip'] . '" >> /etc/nagios/nrpe_local.cfg'));
         $oPage->columnIII->addItem(new EaseHtmlDivTag(null, 'sudo echo "dont_blame_nrpe=1" >> /etc/nagios/nrpe_local.cfg'));
         $oPage->columnIII->addItem(new EaseHtmlDivTag(null, 'sudo service nagios-nrpe-server reload'));
 

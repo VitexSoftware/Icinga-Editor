@@ -1,0 +1,3 @@
+User_Alias APACHE = www-data
+Cmnd_Alias ICINGA = /usr/sbin/icinga, /etc/init.d/icinga
+APACHE ALL = (ALL) NOPASSWD: ICINGA
