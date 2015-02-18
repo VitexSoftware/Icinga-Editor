@@ -30,11 +30,6 @@ define('DB_SERVER_PASSWORD', 'LojAstod9');
 define('DB_DATABASE', 'iciedit');
 
 /**
- * Prefix tabulek
- */
-define('DB_PREFIX', 'iciedit_');
-
-/**
  * Adresář pro zápis logů
  */
 define('LOG_DIRECTORY', '/var/tmp/');
@@ -47,12 +42,12 @@ define('CFG_GENERATED', '/etc/icinga/generated/');
 /**
  * Výchozí odesilatel zpráv
  */
-define('EMAIL_FROM','monitor@v.s.cz');
+define('EMAIL_FROM', 'monitor@v.s.cz');
 /**
  * Kam posílat oznámení o nových registracích
  */
-define('SEND_INFO_TO','info@vitexsoftware.cz');
+define('SEND_INFO_TO', 'info@vitexsoftware.cz');
 /**
  * Veřejná IP nagiosu
  */
-define('ICINGA_SERVER_IP','77.87.241.140');
+define('ICINGA_SERVER_IP', '77.87.241.140');

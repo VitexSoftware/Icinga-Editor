@@ -113,14 +113,14 @@ class IEUser extends EaseUser
             $this->loadFromMySQL($id);
         }
 
-        $this->myDbLink->exeQuery('DELETE from ' . DB_PREFIX . 'command WHERE user_id=' . $id);
-        $this->myDbLink->exeQuery('DELETE from ' . DB_PREFIX . 'contact WHERE user_id=' . $id);
-        $this->myDbLink->exeQuery('DELETE from ' . DB_PREFIX . 'contactgroup WHERE user_id=' . $id);
-        $this->myDbLink->exeQuery('DELETE from ' . DB_PREFIX . 'hostgroup WHERE user_id=' . $id);
-        $this->myDbLink->exeQuery('DELETE from ' . DB_PREFIX . 'hosts WHERE user_id=' . $id);
-        $this->myDbLink->exeQuery('DELETE from ' . DB_PREFIX . 'servicegroup WHERE user_id=' . $id);
-        $this->myDbLink->exeQuery('DELETE from ' . DB_PREFIX . 'services WHERE user_id=' . $id);
-        $this->myDbLink->exeQuery('DELETE from ' . DB_PREFIX . 'timeperiods WHERE user_id=' . $id);
+        $this->myDbLink->exeQuery('DELETE from command WHERE user_id=' . $id);
+        $this->myDbLink->exeQuery('DELETE from contact WHERE user_id=' . $id);
+        $this->myDbLink->exeQuery('DELETE from contactgroup WHERE user_id=' . $id);
+        $this->myDbLink->exeQuery('DELETE from hostgroup WHERE user_id=' . $id);
+        $this->myDbLink->exeQuery('DELETE from hosts WHERE user_id=' . $id);
+        $this->myDbLink->exeQuery('DELETE from servicegroup WHERE user_id=' . $id);
+        $this->myDbLink->exeQuery('DELETE from services WHERE user_id=' . $id);
+        $this->myDbLink->exeQuery('DELETE from timeperiods WHERE user_id=' . $id);
 
         $cfgfile = constant('CFG_GENERATED') . '/' . $this->getUserLogin() . '.cfg';
         if (file_exists($cfgfile)) {

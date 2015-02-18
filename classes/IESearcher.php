@@ -70,7 +70,7 @@ class IESearcher extends IECfg
     {
         $results = array();
         foreach ($this->IEClasses as $ieClass) {
-            if (!is_null($this->table) && ( str_replace(DB_PREFIX, '', $ieClass->getMyTable()) != $this->table)) {
+            if (!is_null($this->table) && ($ieClass->getMyTable() != $this->table)) {
                 continue;
             }
             if (!is_null($this->column)) {

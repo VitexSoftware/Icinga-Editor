@@ -153,7 +153,7 @@ class IECfgEditor extends EaseContainer
 
                 $membersAviableArray = EaseShared::myDbLink()->queryTo2DArray(
                     'SELECT ' . $nameColumn . ' ' .
-                    'FROM `' . DB_PREFIX . $sTable . '` ' .
+                    'FROM `' . $sTable . '` ' .
                     'WHERE ' . $sqlConds . ' ' .
                     'ORDER BY ' . $nameColumn, $IDColumn);
 
@@ -189,7 +189,7 @@ class IECfgEditor extends EaseContainer
 
                 $membersAviableArray = EaseShared::myDbLink()->queryTo2DArray(
                     'SELECT ' . $nameColumn . ' ' .
-                    'FROM `' . DB_PREFIX . $sTable . '` ' .
+                    'FROM `' . $sTable . '` ' .
                     'WHERE ' . $sqlConds . ' ' .
                     'ORDER BY ' . $nameColumn, $IDColumn);
 
@@ -207,7 +207,7 @@ class IECfgEditor extends EaseContainer
 
                 $membersAviableArray = EaseShared::myDbLink()->queryTo2DArray(
                     'SELECT ' . $nameColumn . ' ' .
-                    'FROM `' . DB_PREFIX . $sTable . '` ' .
+                    'FROM `' . $sTable . '` ' .
                     'WHERE ' . $sqlConds . ' ' .
                     'ORDER BY ' . $nameColumn, $IDColumn);
 

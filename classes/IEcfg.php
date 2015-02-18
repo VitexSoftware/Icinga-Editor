@@ -109,7 +109,6 @@ class IEcfg extends EaseBrick
      */
     public function __construct($itemID = null)
     {
-        $this->setmyTable(constant('DB_PREFIX') . $this->myTable);
         parent::__construct();
 //       foreach ($this->useKeywords as $KeyWord => $ColumnType) {
 //            switch ($ColumnType) {
@@ -145,7 +144,7 @@ class IEcfg extends EaseBrick
               'title' => 'použít předlohu - template',
               'mandatory' => true,
               'refdata' => array(
-                'table' => str_replace(DB_PREFIX, '', $this->myTable),
+                'table' => $this->myTable,
                 'captioncolumn' => 'name',
                 'idcolumn' => $this->myKeyColumn,
                 'condition' => array('register' => 0)

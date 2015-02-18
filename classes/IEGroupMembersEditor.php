@@ -46,7 +46,7 @@ class IEGroupMembersEditor extends EaseContainer
             $InitialContent->addItem(_('Nejprve je potřeba uložit záznam'));
         } else {
 
-            if (DB_PREFIX . $STable == $DataSource->myTable) {
+            if ($STable == $DataSource->myTable) {
                 $TmpKey = $DataSource->getMyKey();
                 if ($TmpKey) {
                     $members[$TmpKey] = true;
@@ -61,12 +61,12 @@ class IEGroupMembersEditor extends EaseContainer
 
             $membersAviableArray = EaseShared::myDbLink()->queryToArray(
                 'SELECT ' . $nameColumn . ', ' . $IDColumn . ' ' .
-                'FROM `' . DB_PREFIX . $STable . '` ' .
+                'FROM `' . $STable . '` ' .
                 'WHERE (' . $SqlConds . ') ' .
                 $AviavbleCond .
                 'ORDER BY ' . $nameColumn, $IDColumn);
 
-            if (DB_PREFIX . $STable == $DataSource->myTable) {
+            if ($STable == $DataSource->myTable) {
                 unset($members[$DataSource->getMyKey()]);
             }
 

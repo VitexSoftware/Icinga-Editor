@@ -39,7 +39,7 @@ if ($oPage->isPosted()) {
             $error = true;
             $oUser->addStatusMessage(_('chyba v mailové adrese'), 'warning');
         } else {
-            $check_email = EaseShared::myDbLink()->queryToValue("SELECT COUNT(*) AS total FROM " . constant('DB_PREFIX') . "user WHERE email = '" . $oPage->EaseAddSlashes($emailAddress) . "'");
+            $check_email = EaseShared::myDbLink()->queryToValue("SELECT COUNT(*) AS total FROM user WHERE email = '" . $oPage->EaseAddSlashes($emailAddress) . "'");
             if ($check_email > 0) {
                 $error = true;
                 $oUser->addStatusMessage(sprintf(_('Mailová adresa %s je již zaregistrována'), $emailAddress), 'warning');
@@ -55,7 +55,7 @@ if ($oPage->isPosted()) {
         $oUser->addStatusMessage(_('kontrola hesla nesouhlasí'), 'warning');
     }
 
-    $usedLogin = EaseShared::myDbLink()->QueryToValue('SELECT id FROM ' . constant('DB_PREFIX') . 'user WHERE login=\'' . $oPage->EaseAddSlashes($login) . '\'');
+    $usedLogin = EaseShared::myDbLink()->QueryToValue('SELECT id FROM user WHERE login=\'' . $oPage->EaseAddSlashes($login) . '\'');
     if ($usedLogin) {
         $error = true;
         $oUser->addStatusMessage(sprintf(_('Zadané uživatelské jméno %s je již v databázi použito. Zvolte prosím jiné.'), $login), 'warning');

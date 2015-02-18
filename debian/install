@@ -13,4 +13,5 @@ modules/*.php		usr/share/icinga-editor/modules
 debian/sql/install/*    usr/share/dbconfig-common/data/icinga-editor/install
 debian/conf/icinga-editor.conf	etc/apache2/conf-available
 debian/conf/icinga-editor.service etc/avahi/services
-debian/conf/sudoers etc/sudoers.d/icinga
+debian/conf/icinga-editor etc/sudoers.d
+
