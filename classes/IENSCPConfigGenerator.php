@@ -119,11 +119,14 @@ del "%ProgramFiles%\NSClient++\nsclient.ini"
         $this->nscBatArray[] = '
 %NSCLIENT% settings --path "/modules" --key CheckDisk --set enabled
 %NSCLIENT% settings --path "/modules" --key CheckEventLog --set enabled
-%NSCLIENT% settings --path "/modules" --key CheckExternalScripts --set enabled
 %NSCLIENT% settings --path "/modules" --key CheckHelpers --set enabled
 %NSCLIENT% settings --path "/modules" --key CheckNSCP --set enabled
 %NSCLIENT% settings --path "/modules" --key CheckSystem --set enabled
 %NSCLIENT% settings --path "/modules" --key CheckWMI --set enabled
+
+%NSCLIENT% settings --path "/modules" --key CheckExternalScripts --set enabled
+%NSCLIENT% settings --path "/settings/external scripts/server" --key "allow arguments" --set enabled
+
 ';
     }
 
@@ -191,6 +194,9 @@ del "%ProgramFiles%\NSClient++\nsclient.ini"
 
             $serviceName = $service['service_description'];
             $serviceCmd = $service['check_command-remote'];
+            if (is_null($serviceCmd)) {
+                continue;
+            }
             $serviceParams = $service['check_command-params'];
             $this->nscBatArray[] = "\nREM #" . $service['service_id'] . ' ' . $serviceName . "\n";
 
@@ -200,7 +206,7 @@ del "%ProgramFiles%\NSClient++\nsclient.ini"
                 $cmdline = $serviceCmd;
             }
 
-            if (strstr($cmdline, 'scripts\\')) {
+            if (preg_match("/\.(vbs|bat)/", $cmdline)) {
                 $this->nscBatArray[] = '%NSCLIENT% settings --path "/settings/external scripts/wrapped scripts" --key "' . str_replace(' ', '_', $serviceName) . '" --set "' .
                     $cmdline . ' ' . $serviceParams . "\"\n";
             } else {
