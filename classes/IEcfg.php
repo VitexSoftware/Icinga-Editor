@@ -1214,7 +1214,7 @@ class IEcfg extends EaseBrick
                     $use = $row['use'];
                     if (!isset($usedCache[$use])) {
                         $used = clone $this;
-                        $used->setmyKeyColumn('name');
+                        $used->nameColumn = 'name';
                         if ($used->loadFromMySQL($use)) {
                             $used->resetObjectIdentity();
                             $usedCache[$use] = $used->htmlizeData($used->getData());

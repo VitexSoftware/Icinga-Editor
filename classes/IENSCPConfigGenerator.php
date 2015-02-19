@@ -61,6 +61,7 @@ class IENSCPConfigGenerator extends EaseAtom
         if ($this->hostPassiveMode) {
             $this->cfgPassiveSet();
         }
+        $this->cfgModules();
         $this->cfgServices();
         $this->cfgEnding();
     }
@@ -166,7 +167,8 @@ del "%ProgramFiles%\NSClient++\nsclient.ini"
 
                 if (!isset($usedCache[$use])) {
                     $used = new IEService;
-                    $used->setmyKeyColumn('name');
+                    $used->nameColumn = 'name';
+
                     if ($used->loadFromMySQL($use)) {
                         $used->resetObjectIdentity();
                         $usedCache[$use] = $used->getData();
@@ -209,7 +211,7 @@ del "%ProgramFiles%\NSClient++\nsclient.ini"
 
                 $this->nscBatArray[] = '%NSCLIENT% settings --path "/settings/scheduler/schedules/' . str_replace(' ', '_', $serviceName) . '-' . EaseShared::user()->getUserLogin() . '" --key command --set "' . str_replace(' ', '_', $serviceName) . "\"\n";
 
-                $this->nscBatArray[] = '%NSCLIENT% settings --path "/settings/scheduler/schedules/' . str_replace(' ', '_', $serviceName) . '-' . EaseShared::user()->getUserLogin() . '" --key interval --set "' . $service['check_interval'] . "\"\n";
+                $this->nscBatArray[] = '%NSCLIENT% settings --path "/settings/scheduler/schedules/' . str_replace(' ', '_', $serviceName) . '-' . EaseShared::user()->getUserLogin() . '" --key interval --set "' . $service['check_interval'] . "s\"\n";
             }
         }
     }
