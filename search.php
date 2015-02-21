@@ -11,6 +11,8 @@
 require_once 'includes/IEInit.php';
 require_once 'classes/IESearcher.php';
 
+$oPage->onlyForLogged();
+
 $query = $oPage->getRequestValue('search', 'string');
 
 $found = array();

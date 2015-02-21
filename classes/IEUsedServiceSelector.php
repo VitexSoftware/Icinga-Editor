@@ -1,5 +1,7 @@
 <?php
 
+require_once 'classes/IEHostSelect.php';
+
 /**
  * Volba služeb patřičných k hostu
  *
@@ -141,6 +143,12 @@ class IEUsedServiceSelector extends EaseContainer
                 }
             }
         }
+    }
+
+    public function useSameServicesTo()
+    {
+        // return new EaseTWBForm('', '', 'post', array(new IEHostSelect(), new EaseTWSubmitButton(_('Přiřadit'), 'success')));
+        return null;
     }
 
 }

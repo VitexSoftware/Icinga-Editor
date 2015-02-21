@@ -586,7 +586,7 @@
 			buildpager: function () { //rebuild pager based on new properties
 				$('.pcontrol input', this.pDiv).val(p.page);
 				$('.pcontrol span', this.pDiv).html(p.pages);
-				var r1 = (p.page - 1) * p.rp + 1;
+				var r1 = p.total == 0 ? 0 : (p.page - 1) * p.rp + 1;
 				var r2 = r1 + p.rp - 1;
 				if (p.total < r2) {
 					r2 = p.total;
@@ -668,15 +668,8 @@
 				});
 			},
 			doSearch: function () {
+				p.query = $('input[name=q]', g.sDiv).val();
 				p.qtype = $('select[name=qtype]', g.sDiv).val();
-                                var squery = $('input[name=q]', g.sDiv).val();
-                                
-                                for (var si = 0; si < p.searchitems.length; si++) {
-                                    if( p.searchitems[si].name == p.qtype ){
-                                        var where = p.searchitems[si].where.replace(/%/gi,'%' + squery + '%');
-                                    }
-                                }
-				p.query = where;
 				p.newp = 1;
 				this.populate();
 			},
