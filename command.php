@@ -17,15 +17,26 @@ $oPage->onlyForLogged();
 
 $command = new IECommand($oPage->getRequestValue('command_id', 'int'));
 
-if ($oPage->isPosted()) {
-    $command->takeData($_POST);
-    $CommandID = $command->saveToMySQL();
-    if (is_null($CommandID)) {
-        $oUser->addStatusMessage(_('Příkaz nebyl uložen'), 'warning');
-    } else {
-        $oUser->addStatusMessage(_('Příkaz byl uložen'), 'success');
-    }
+switch ($oPage->getRequestValue('action')) {
+    case 'import':
+        $command->importJson($json);
+        break;
+    case 'export':
+        $command->transfer($oPage->getRequestValue('destination'));
+        break;
+    default :
+        if ($oPage->isPosted()) {
+            $command->takeData($_POST);
+            $CommandID = $command->saveToMySQL();
+            if (is_null($CommandID)) {
+                $oUser->addStatusMessage(_('Příkaz nebyl uložen'), 'warning');
+            } else {
+                $oUser->addStatusMessage(_('Příkaz byl uložen'), 'success');
+            }
+        }
 }
+
+
 
 $delete = $oPage->getGetValue('delete', 'bool');
 if ($delete == 'true') {
@@ -62,7 +73,6 @@ if (count($usages)) {
 }
 
 
-
 switch ($oPage->getRequestValue('action')) {
     case 'delete':
 
@@ -75,9 +85,9 @@ switch ($oPage->getRequestValue('action')) {
 
         break;
     default :
-        $CommandEdit = new IECfgEditor($command);
+        $commandEditor = new IECfgEditor($command);
 
-        $form = $oPage->columnII->addItem(new EaseHtmlForm('Command', 'command.php', 'POST', $CommandEdit, array('class' => 'form-horizontal')));
+        $form = $oPage->columnII->addItem(new EaseHtmlForm('Command', 'command.php', 'POST', $commandEditor, array('class' => 'form-horizontal')));
         $form->setTagID($form->getTagName());
         if (!is_null($command->getMyKey())) {
             $form->addItem(new EaseHtmlInputHiddenTag($command->getmyKeyColumn(), $command->getMyKey()));
@@ -88,10 +98,9 @@ switch ($oPage->getRequestValue('action')) {
 input.ui-button { width: 100%; }
 ');
 
-
+        $oPage->columnIII->addItem(new EaseTWBPanel(_('Transfer'), 'warning', $command->transferForm()));
         break;
 }
-
 
 
 $oPage->addItem(new IEPageBottom());

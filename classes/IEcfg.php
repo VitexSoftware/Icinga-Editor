@@ -110,6 +110,7 @@ class IEcfg extends EaseBrick
     public function __construct($itemID = null)
     {
         parent::__construct();
+        $this->user = EaseShared::user();
 //       foreach ($this->useKeywords as $KeyWord => $ColumnType) {
 //            switch ($ColumnType) {
 //                case 'IDLIST':
@@ -441,6 +442,7 @@ class IEcfg extends EaseBrick
 
     /**
      * Načte všechny záznamy uživatele a vygeneruje z nich konfigurační soubory
+     *
      * @param  string  $fileName Soubor do kterého se bude generovat konfigirace
      * @return boolean
      */
@@ -579,8 +581,8 @@ class IEcfg extends EaseBrick
             return null;
         } else {
             $result = parent::saveToMySQL($data, $searchForID);
-            if (!is_null($result)) {
-                EaseShared::user()->setSettingValue('unsaved', true);
+            if (!is_null($result) && (get_class($this->user) == 'IEUser')) {
+                $this->user->setSettingValue('unsaved', true);
             }
         }
         $this->setMyKey($result);
@@ -1332,6 +1334,47 @@ class IEcfg extends EaseBrick
             }
         }
         return $row;
+    }
+
+    /**
+     * Vyexportuje data objektu jako json
+     */
+    public function transfer($target)
+    {
+        if (is_null($target)) {
+            $this->addStatusMessage(_('Není zadána URL adresa cíle exportu'), 'warning');
+        } else {
+            if ($this->user->getSettingValue('exporturl') != $target) {
+                $this->user->setSettingValue('exporturl', $target);
+                $this->user->saveToSQL();
+            }
+
+            $options = array(
+              'http' => array(
+                'header' => "Content-type: application/x-www-form-urlencoded\r\n",
+                'method' => 'POST',
+                'content' => http_build_query($this->getData()),
+              ),
+            );
+            $context = stream_context_create($options);
+            $result = file_get_contents($target . '/importer.php?class=' . $this->keyword, false, $context);
+
+            if (trim($result) == 'false') {
+                $this->addStatusMessage(_('Transfer se nezdařil'), 'warning');
+            } else {
+                $this->addStatusMessage($result, 'success');
+            }
+        }
+    }
+
+    public function &transferForm()
+    {
+        $exportForm = new EaseTWBForm('Export', $this->keyword . '.php');
+        $exportForm->addItem(new EaseHtmlInputHiddenTag('action', 'export'));
+        $exportForm->addItem(new EaseHtmlInputHiddenTag($this->myKeyColumn, $this->getId()));
+        $exportForm->addInput(new EaseHtmlInputTextTag('destination', $this->user->getSettingValue('exporturl')), _('Cíl exportu'));
+        $exportForm->addInput(new EaseTWSubmitButton(_('Exportovat'), 'warning'));
+        return $exportForm;
     }
 
 }
