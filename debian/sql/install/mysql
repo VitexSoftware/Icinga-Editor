@@ -7,8 +7,8 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 
-DROP TABLE IF EXISTS `iciedit_command`;
-CREATE TABLE IF NOT EXISTS `iciedit_command` (
+DROP TABLE IF EXISTS `command`;
+CREATE TABLE IF NOT EXISTS `command` (
 `command_id` int(10) unsigned NOT NULL,
   `command_name` varchar(128) COLLATE utf8_czech_ci DEFAULT NULL,
   `command_line` text COLLATE utf8_czech_ci,
@@ -24,10 +24,10 @@ CREATE TABLE IF NOT EXISTS `iciedit_command` (
 ) ENGINE=MyISAM AUTO_INCREMENT=197 DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 
 --
--- Vypisuji data pro tabulku `iciedit_command`
+-- Vypisuji data pro tabulku `command`
 --
 
-INSERT INTO `iciedit_command` (`command_id`, `command_name`, `command_line`, `command_type`, `command_local`, `command_remote`, `platform`, `public`, `generate`, `user_id`, `DatCreate`, `DatSave`) VALUES
+INSERT INTO `command` (`command_id`, `command_name`, `command_line`, `command_type`, `command_local`, `command_remote`, `platform`, `public`, `generate`, `user_id`, `DatCreate`, `DatSave`) VALUES
 (1, 'process-host-perfdata', '/usr/bin/printf "%b" "$LASTHOSTCHECK$	$HOSTNAME$	$HOSTSTATE$	$HOSTATTEMPT$	$HOSTSTATETYPE$	$HOSTEXECUTIONTIME$	$HOSTOUTPUT$	$HOSTPERFDATA$\n" >> /var/cache/icinga/host-perfdata.out', 'check', 1, 0, 'generic', 1, 1, 0, '2012-08-30 15:55:17', NULL),
 (2, 'process-service-perfdata', '/usr/bin/printf "%b" "$LASTSERVICECHECK$	$HOSTNAME$	$SERVICEDESC$	$SERVICESTATE$	$SERVICEATTEMPT$	$SERVICESTATETYPE$	$SERVICEEXECUTIONTIME$	$SERVICELATENCY$	$SERVICEOUTPUT$	$SERVICEPERFDATA$\n" >> /var/cache/icinga/service-perfdata.out', 'check', 1, 0, 'generic', 1, 1, 0, '2012-08-30 15:55:17', NULL),
 (3, 'check_nntp', '$USER1$/check_nntp -H ''$HOSTADDRESS$''', 'check', 1, 0, 'generic', 1, 1, 0, '2012-08-30 15:55:17', NULL),
@@ -222,11 +222,11 @@ INSERT INTO `iciedit_command` (`command_id`, `command_name`, `command_line`, `co
 (195, 'check_http_content', '$USER1$/check_http_content -U ''$ARG1$'' -m ''$ARG2$'' -x ''$ARG3$'' -t $ARG4$', 'check', 1, NULL, 'generic', NULL, 1, 0, '2014-01-09 15:04:15', '2014-01-09 15:04:24'),
 (196, 'check_nrpe_sensor', '$USER1$/check_nrpe -H $HOSTADDRESS$ ', 'check', 1, 0, 'generic', 1, 1, 0, '2012-09-03 11:52:49', NULL);
 
-ALTER TABLE `iciedit_command`
+ALTER TABLE `command`
  ADD PRIMARY KEY (`command_id`), ADD KEY `user_id` (`user_id`);
 
-DROP TABLE IF EXISTS `iciedit_contact`;
-CREATE TABLE IF NOT EXISTS `iciedit_contact` (
+DROP TABLE IF EXISTS `contact`;
+CREATE TABLE IF NOT EXISTS `contact` (
   `contact_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `parent_id` int(11) unsigned DEFAULT NULL COMMENT 'Id nadřazeného kontaktu',
   `contact_name` varchar(128) COLLATE utf8_czech_ci DEFAULT NULL,
@@ -260,8 +260,8 @@ CREATE TABLE IF NOT EXISTS `iciedit_contact` (
   KEY `parent_id` (`parent_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci ;
 
-DROP TABLE IF EXISTS `iciedit_contactgroup`;
-CREATE TABLE IF NOT EXISTS `iciedit_contactgroup` (
+DROP TABLE IF EXISTS `contactgroup`;
+CREATE TABLE IF NOT EXISTS `contactgroup` (
   `contactgroup_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `contactgroup_name` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
   `alias` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
@@ -274,9 +274,9 @@ CREATE TABLE IF NOT EXISTS `iciedit_contactgroup` (
   PRIMARY KEY (`contactgroup_id`),
   KEY `user_id` (`user_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
-DROP TABLE IF EXISTS `iciedit_hostgroup`;
+DROP TABLE IF EXISTS `hostgroup`;
 
-CREATE TABLE IF NOT EXISTS `iciedit_hostgroup` (
+CREATE TABLE IF NOT EXISTS `hostgroup` (
   `hostgroup_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `hostgroup_name` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
   `alias` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
@@ -294,8 +294,8 @@ CREATE TABLE IF NOT EXISTS `iciedit_hostgroup` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 
 
-DROP TABLE IF EXISTS `iciedit_hosts`;
-CREATE TABLE IF NOT EXISTS `iciedit_hosts` (
+DROP TABLE IF EXISTS `host`;
+CREATE TABLE IF NOT EXISTS `host` (
   `host_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `host_name` varchar(255) COLLATE utf8_czech_ci DEFAULT NULL,
   `alias` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
@@ -356,8 +356,8 @@ CREATE TABLE IF NOT EXISTS `iciedit_hosts` (
   KEY `platform` (`platform`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 
-DROP TABLE IF EXISTS `iciedit_servicegroup`;
-CREATE TABLE IF NOT EXISTS `iciedit_servicegroup` (
+DROP TABLE IF EXISTS `servicegroup`;
+CREATE TABLE IF NOT EXISTS `servicegroup` (
   `servicegroup_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `servicegroup_name` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
   `alias` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
@@ -375,8 +375,8 @@ CREATE TABLE IF NOT EXISTS `iciedit_servicegroup` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 
 
-DROP TABLE IF EXISTS `iciedit_services`;
-CREATE TABLE IF NOT EXISTS `iciedit_services` (
+DROP TABLE IF EXISTS `service`;
+CREATE TABLE IF NOT EXISTS `service` (
 `service_id` int(10) unsigned NOT NULL,
   `display_name` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
   `service_description` varchar(255) COLLATE utf8_czech_ci DEFAULT NULL,
@@ -438,10 +438,10 @@ CREATE TABLE IF NOT EXISTS `iciedit_services` (
 ) ENGINE=MyISAM AUTO_INCREMENT=304 DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 
 --
--- Vypisuji data pro tabulku `iciedit_services`
+-- Vypisuji data pro tabulku `service`
 --
 
-INSERT INTO `iciedit_services` (`service_id`, `display_name`, `service_description`, `host_name`, `hostgroup_name`, `servicegroups`, `is_volatile`, `check_command`, `check_command-params`, `check_command-remote`, `tcp_port`, `initial_state`, `max_check_attempts`, `check_interval`, `retry_interval`, `active_checks_enabled`, `passive_checks_enabled`, `check_period`, `parallelize_check`, `obsess_over_service`, `check_freshness`, `freshness_threshold`, `event_handler`, `event_handler_enabled`, `low_flap_threshold`, `high_flap_threshold`, `flap_detection_enabled`, `flap_detection_options`, `failure_prediction_enabled`, `process_perf_data`, `retain_status_information`, `retain_nonstatus_information`, `notification_interval`, `first_notification_delay`, `notification_period`, `notification_options`, `notifications_enabled`, `contacts`, `contact_groups`, `stalking_options`, `notes`, `notes_url`, `action_url`, `icon_image`, `icon_image_alt`, `name`, `register`, `use`, `public`, `generate`, `user_id`, `DatCreate`, `DatSave`, `platform`, `configurator`, `parent_id`, `autocfg`, `price`) VALUES
+INSERT INTO `service` (`service_id`, `display_name`, `service_description`, `host_name`, `hostgroup_name`, `servicegroups`, `is_volatile`, `check_command`, `check_command-params`, `check_command-remote`, `tcp_port`, `initial_state`, `max_check_attempts`, `check_interval`, `retry_interval`, `active_checks_enabled`, `passive_checks_enabled`, `check_period`, `parallelize_check`, `obsess_over_service`, `check_freshness`, `freshness_threshold`, `event_handler`, `event_handler_enabled`, `low_flap_threshold`, `high_flap_threshold`, `flap_detection_enabled`, `flap_detection_options`, `failure_prediction_enabled`, `process_perf_data`, `retain_status_information`, `retain_nonstatus_information`, `notification_interval`, `first_notification_delay`, `notification_period`, `notification_options`, `notifications_enabled`, `contacts`, `contact_groups`, `stalking_options`, `notes`, `notes_url`, `action_url`, `icon_image`, `icon_image_alt`, `name`, `register`, `use`, `public`, `generate`, `user_id`, `DatCreate`, `DatSave`, `platform`, `configurator`, `parent_id`, `autocfg`, `price`) VALUES
 (1, NULL, 'ido2db Process', 'a:0:{}', 'a:0:{}', 'a:0:{}', NULL, 'check_local_ido2db', '1:1!1:3', NULL, NULL, NULL, 10, 1, 15, NULL, NULL, '24x7', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'a:0:{}', 'a:0:{}', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '2012-08-30 15:55:18', '2012-08-30 15:55:18', 'generic', '0', NULL, 1, 0),
 (2, NULL, 'Local Disk Space', 'a:0:{}', 'a:0:{}', 'a:0:{}', NULL, 'check_all_disks', '20%!10%', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'a:0:{}', 'a:0:{}', NULL, NULL, NULL, 'http://v.s.cz/IcingaEditor/service.php?service_id=2', NULL, NULL, NULL, 1, 'generic-service', NULL, 1, 0, '2012-08-30 15:55:18', '2012-08-30 15:55:18', 'generic', '0', NULL, 1, 0),
 (3, NULL, 'Current Users', 'a:0:{}', 'a:0:{}', 'a:0:{}', NULL, 'check_users', '20!50', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'a:0:{}', 'a:0:{}', NULL, NULL, NULL, 'http://v.s.cz/IcingaEditor/service.php?service_id=3', NULL, NULL, NULL, 1, 'generic-service', NULL, 1, 0, '2012-08-30 15:55:18', '2012-08-30 15:55:18', 'generic', '0', NULL, 1, 0),
@@ -488,11 +488,11 @@ INSERT INTO `iciedit_services` (`service_id`, `display_name`, `service_descripti
 (51, 'Otestuj webový obsah', 'Obsah webu', 'a:0:{}', 'a:0:{}', 'a:0:{}', '0', 'check_http_content', 'http://vitex.hippy.cz/!Seznam rubrik!Call Stack', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '24x7', 'wucrs', 1, 'a:0:{}', 'a:0:{}', NULL, NULL, NULL, 'http://v.s.cz/IcingaEditor/service.php?service_id=9', NULL, NULL, NULL, 1, 'generic-service', 1, 1, NULL, '2012-08-30 15:55:18', '2012-08-30 15:55:18', 'generic', 'web_content', NULL, 0, 0),
 (53, 'NRPE', 'Vzdálený senzor NRPE', 'a:0:{}', 'a:0:{}', 'a:0:{}', '0', 'check_nrpe_sensor', NULL, NULL, 5666, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'a:0:{}', 'a:0:{}', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'generic-service', 1, 1, NULL, '2012-08-30 15:55:18', '2012-08-30 15:55:18', 'generic', '0', NULL, 1, 0);
 
-ALTER TABLE `iciedit_services`
+ALTER TABLE `service`
  ADD PRIMARY KEY (`service_id`), ADD KEY `user_id` (`user_id`), ADD KEY `tcp_port` (`tcp_port`), ADD KEY `platform` (`platform`);
 
-DROP TABLE IF EXISTS `iciedit_timeperiods`;
-CREATE TABLE IF NOT EXISTS `iciedit_timeperiods` (
+DROP TABLE IF EXISTS `timeperiod`;
+CREATE TABLE IF NOT EXISTS `timeperiod` (
   `timeperiod_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `timeperiod_name` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
   `alias` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
@@ -506,7 +506,7 @@ CREATE TABLE IF NOT EXISTS `iciedit_timeperiods` (
   KEY `user_id` (`user_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci ;
 
-INSERT INTO `iciedit_timeperiods` (`timeperiod_id`, `timeperiod_name`, `alias`, `periods`, `public`, `generate`, `user_id`, `DatCreate`, `DatSave`) VALUES
+INSERT INTO `timeperiod` (`timeperiod_id`, `timeperiod_name`, `alias`, `periods`, `public`, `generate`, `user_id`, `DatCreate`, `DatSave`) VALUES
 (1, '24x7', '24 Hours A Day, 7 Days A Week', 'a:7:{s:6:"sunday";s:11:"00:00-24:00";s:6:"monday";s:11:"00:00-24:00";s:7:"tuesday";s:11:"00:00-24:00";s:9:"wednesday";s:11:"00:00-24:00";s:8:"thursday";s:11:"00:00-24:00";s:6:"friday";s:11:"00:00-24:00";s:8:"saturday";s:11:"00:00-24:00";}', 1, 1, 1, '2012-08-30 15:55:17', NULL),
 (2, 'workhours', 'Standard Work Hours', 'a:5:{s:6:"monday";s:11:"09:00-17:00";s:7:"tuesday";s:11:"09:00-17:00";s:9:"wednesday";s:11:"09:00-17:00";s:8:"thursday";s:11:"09:00-17:00";s:6:"friday";s:11:"09:00-17:00";}', 1, 1, 1, '2012-08-30 15:55:17', NULL),
 (3, 'nonworkhours', 'Non-Work Hours', 'a:7:{s:6:"sunday";s:11:"00:00-24:00";s:6:"monday";s:23:"00:00-09:00,17:00-24:00";s:7:"tuesday";s:23:"00:00-09:00,17:00-24:00";s:9:"wednesday";s:23:"00:00-09:00,17:00-24:00";s:8:"thursday";s:23:"00:00-09:00,17:00-24:00";s:6:"friday";s:23:"00:00-09:00,17:00-24:00";s:8:"saturday";s:11:"00:00-24:00";}', 1, 1, 1, '2012-08-30 15:55:17', NULL),
@@ -524,8 +524,8 @@ CREATE TABLE IF NOT EXISTS `sms` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 
 
-DROP TABLE IF EXISTS `iciedit_user`;
-CREATE TABLE IF NOT EXISTS `iciedit_user` (
+DROP TABLE IF EXISTS `user`;
+CREATE TABLE IF NOT EXISTS `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `twitter_id` int(9) unsigned DEFAULT NULL,
   `settings` longtext COLLATE utf8_czech_ci COMMENT 'Serializovana uzivatelska nastaveni',
@@ -551,17 +551,17 @@ CREATE TABLE IF NOT EXISTS `preferences` (
 ALTER TABLE `preferences`
  ADD PRIMARY KEY (`key`);
 
-DROP TABLE IF EXISTS `iciedit_user_group`;
-CREATE TABLE IF NOT EXISTS `iciedit_user_group` (
+DROP TABLE IF EXISTS `user_group`;
+CREATE TABLE IF NOT EXISTS `user_group` (
 `usergroup_id` int(11) NOT NULL,
   `usergroup_name` varchar(64) NOT NULL,
   `usergroup_boss` int(11) NOT NULL,
   `DatCreate` datetime NOT NULL COMMENT 'Vytvření skupiny',
   `DatSave` datetime DEFAULT NULL COMMENT 'poslední modifikace skupiny'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-ALTER TABLE `iciedit_user_group`
+ALTER TABLE `user_group`
  ADD PRIMARY KEY (`usergroup_id`);
-ALTER TABLE `iciedit_user_group`
+ALTER TABLE `user_group`
 MODIFY `usergroup_id` int(11) NOT NULL AUTO_INCREMENT;
 
 DROP TABLE IF EXISTS `user_to_group`;

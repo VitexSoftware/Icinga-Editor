@@ -44,7 +44,7 @@ class IEServicegroup extends IECfg
       'members' => array(
         'title' => 'členské kontakty (zatím nutno definovat ručně)',
         'refdata' => array(
-          'table' => 'services',
+          'table' => 'service',
           'captioncolumn' => 'service_description',
           'idcolumn' => 'service_id',
           'condition' => array('register' => 1))

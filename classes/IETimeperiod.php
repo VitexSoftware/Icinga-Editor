@@ -13,19 +13,19 @@ require_once 'IEcfg.php';
 class IETimeperiod extends IECfg
 {
 
-    public $myTable = 'timeperiods';
+    public $myTable = 'timeperiod';
     public $myKeyColumn = 'timeperiod_id';
     public $keyword = 'timeperiod';
     public $nameColumn = 'timeperiod_name';
     public $useKeywords = array(
-        'timeperiod_name' => 'VARCHAR(64)',
-        'alias' => 'VARCHAR(64)',
-        'periods' => 'SERIAL'
+      'timeperiod_name' => 'VARCHAR(64)',
+      'alias' => 'VARCHAR(64)',
+      'periods' => 'SERIAL'
     );
     public $keywordsInfo = array(
-        'timeperiod_name' => array('title' => 'název periody', 'required' => true),
-        'alias' => array('title' => 'alias periody', 'required' => true),
-        'periods' => array('hidden' => true)
+      'timeperiod_name' => array('title' => 'název periody', 'required' => true),
+      'alias' => array('title' => 'alias periody', 'required' => true),
+      'periods' => array('hidden' => true)
     );
 
     /**
@@ -83,13 +83,13 @@ class IETimeperiod extends IECfg
      */
     public function loadFromMySQL($itemID = null, $dataPrefix = null, $multiplete = false)
     {
-        $Restult = parent::loadFromMySQL($itemID, $dataPrefix, $multiplete);
-        $Members = $this->getDataValue('periods');
-        if (strlen($Members)) {
-            $this->timeperiods = unserialize($Members);
+        $restult = parent::loadFromMySQL($itemID, $dataPrefix, $multiplete);
+        $members = $this->getDataValue('periods');
+        if (strlen($members)) {
+            $this->timeperiods = unserialize($members);
         }
 
-        return $Restult;
+        return $restult;
     }
 
     /**
@@ -187,8 +187,9 @@ class IETimeperiod extends IECfg
      * @param  string                     $urlAdd Předávaná část URL
      * @return \EaseJQConfirmedLinkButton
      */
-    public function deleteButton($name = null,$addUrl = '')
+    public function deleteButton($name = null, $addUrl = '')
     {
-        return parent::deleteButton(_('Časovou periodu'),$addUrl);
+        return parent::deleteButton(_('Časovou periodu'), $addUrl);
     }
+
 }

@@ -76,7 +76,7 @@ class IEContact extends IECfg
             'title' => 'notifikační perioda hostů',
             'required' => true,
             'refdata' => array(
-                'table' => 'timeperiods',
+                'table' => 'timeperiod',
                 'captioncolumn' => 'timeperiod_name',
                 'public' => true,
                 'idcolumn' => 'timeperiod_id')
@@ -85,7 +85,7 @@ class IEContact extends IECfg
             'title' => 'notifikační perioda služeb',
             'required' => true,
             'refdata' => array(
-                'table' => 'timeperiods',
+                'table' => 'timeperiod',
                 'captioncolumn' => 'timeperiod_name',
                 'public' => true,
                 'idcolumn' => 'timeperiod_id')

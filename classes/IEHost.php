@@ -21,7 +21,7 @@ require_once 'IEIconSelector.php';
 class IEHost extends IECfg
 {
 
-    public $myTable = 'hosts';
+    public $myTable = 'host';
     public $keyword = 'host';
     public $nameColumn = 'host_name';
     public $myKeyColumn = 'host_id';
@@ -105,7 +105,7 @@ class IEHost extends IECfg
       'parents' => array(
         'title' => 'rodiče',
         'refdata' => array(
-          'table' => 'hosts',
+          'table' => 'host',
           'captioncolumn' => 'host_name',
           'idcolumn' => 'host_id',
           'public' => true,
@@ -138,7 +138,7 @@ class IEHost extends IECfg
       'check_period' => array(
         'title' => 'testovací perioda',
         'refdata' => array(
-          'table' => 'timeperiods',
+          'table' => 'timeperiod',
           'captioncolumn' => 'timeperiod_name',
           'public' => true,
           'idcolumn' => 'timeperiod_id')
@@ -188,7 +188,7 @@ class IEHost extends IECfg
         'title' => 'perioda oznamování',
         'required' => true,
         'refdata' => array(
-          'table' => 'timeperiods',
+          'table' => 'timeperiod',
           'captioncolumn' => 'timeperiod_name',
           'public' => true,
           'idcolumn' => 'timeperiod_id')

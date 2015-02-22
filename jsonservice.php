@@ -36,7 +36,7 @@ if ($request) {
         $sqlConds = '';
     }
 
-    $query = 'SELECT `service_description` FROM `services` WHERE (user_id=' . $oUser->getUserID() . ' OR public=1) AND service_description LIKE \'%' . EaseShared::myDbLink()->AddSlashes($request) . '%\' ' . $sqlConds . ' ORDER BY  service_description ' . $limit;
+    $query = 'SELECT `service_description` FROM `service` WHERE (user_id=' . $oUser->getUserID() . ' OR public=1) AND service_description LIKE \'%' . EaseShared::myDbLink()->AddSlashes($request) . '%\' ' . $sqlConds . ' ORDER BY  service_description ' . $limit;
 
     $MembersFoundArray = EaseShared::myDbLink()->queryToArray($query);
     if (count($MembersFoundArray)) {

@@ -24,7 +24,7 @@ class IEServiceSelect extends EaseHtmlSelect
     function loadItems()
     {
         $MembersFound = array('' => '---');
-        $query = 'SELECT  `service_id`, `icon_image`,`platform`,`service_description` FROM `' . 'services` WHERE (user_id=' . $this->user->getUserID() . ' OR public=1) AND register=1 ORDER BY  service_description ';
+        $query = 'SELECT  `service_id`, `icon_image`,`platform`,`service_description` FROM `' . 'service` WHERE (user_id=' . $this->user->getUserID() . ' OR public=1) AND register=1 ORDER BY  service_description ';
 
         $MembersFoundArray = EaseShared::myDbLink()->queryToArray($query);
         if (count($MembersFoundArray)) {

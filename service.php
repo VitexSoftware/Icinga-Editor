@@ -59,7 +59,7 @@ switch ($oPage->getRequestValue('action')) {
         $service->swapTo($oPage->getRequestValue('new_service_id', 'int'));
         break;
     case 'export':
-        $service->transfer($oPage->getRequestValue('destination'));
+        $service->transferDeps($oPage->getRequestValue('destination'), $oPage->getRequestValue('rels'));
         break;
     default :
         if ($oPage->isPosted()) {

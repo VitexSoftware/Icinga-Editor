@@ -9,6 +9,7 @@
  * @copyright  2012 Vitex@hippy.cz (G)
  */
 require_once 'Ease/EaseBrick.php';
+require_once 'classes/EaseTWBSwitch.php';
 
 /**
  * Description of IEHosts
@@ -1337,7 +1338,7 @@ class IEcfg extends EaseBrick
     }
 
     /**
-     * Vyexportuje data objektu jako json
+     * Přenese data objektu do jiné instance Icinga Editoru
      */
     public function transfer($target)
     {
@@ -1349,11 +1350,17 @@ class IEcfg extends EaseBrick
                 $this->user->saveToSQL();
             }
 
+            $data = $this->getData();
+            if (!count($data)) {
+                $this->addStatusMessage(sprintf(_('Transfer %s / %s se nezdařil'), get_class($this), $this->getName()), 'error');
+                return false;
+            }
+
             $options = array(
               'http' => array(
                 'header' => "Content-type: application/x-www-form-urlencoded\r\n",
                 'method' => 'POST',
-                'content' => http_build_query($this->getData()),
+                'content' => http_build_query($data),
               ),
             );
             $context = stream_context_create($options);
@@ -1361,8 +1368,10 @@ class IEcfg extends EaseBrick
 
             if (!$result || trim($result) == 'false') {
                 $this->addStatusMessage(_('Transfer se nezdařil'), 'warning');
+                return true;
             } else {
                 $this->addStatusMessage($result, 'success');
+                return false;
             }
         }
     }
@@ -1373,6 +1382,15 @@ class IEcfg extends EaseBrick
         $exportForm->addItem(new EaseHtmlInputHiddenTag('action', 'export'));
         $exportForm->addItem(new EaseHtmlInputHiddenTag($this->myKeyColumn, $this->getId()));
         $exportForm->addInput(new EaseHtmlInputTextTag('destination', $this->user->getSettingValue('exporturl')), _('Cíl exportu'));
+
+        $exportForm->addItem(new EaseHtmlH4Tag(_('Rekurzivní import')));
+
+        foreach ($this->keywordsInfo as $columnName => $columnInfo) {
+            if (isset($columnInfo['refdata']['table'])) {
+                $exportForm->addInput(new EaseTWBSwitch('rels[' . $columnName . ']'), $columnInfo['title']);
+            }
+        }
+
         $exportForm->addInput(new EaseTWSubmitButton(_('Exportovat'), 'warning'));
         return $exportForm;
     }
@@ -1395,7 +1413,7 @@ class IEcfg extends EaseBrick
 
             switch ($columnType) {
                 case 'IDLIST':
-                    if (strstr($value, ':{')) {
+                    if (!is_array($value) && strstr($value, ':{')) {
                         $value = unserialize($value);
                     }
                     if (is_array($value)) {
@@ -1421,6 +1439,27 @@ class IEcfg extends EaseBrick
             }
         }
         return $this->takeData($dataRow);
+    }
+
+    /**
+     * Vyexportuje objekt včetně závistlostí
+     *
+     * @param strig $target URL cílové instalace Icinga editoru
+     * @return type
+     */
+    public function transferDeps($target, $rels = null)
+    {
+        foreach ($this->keywordsInfo as $columnName => $columnInfo) {
+            if (isset($columnInfo['refdata']['table'])) {
+                if (is_array($rels) && isset($rels[$columnName])) {
+                    $className = 'IE' . ucfirst($columnInfo['refdata']['table']);
+                    require_once 'classes/' . $className . '.php';
+                    $transfer = new $className($this->getDataValue($columnName));
+                    $transfer->transfer($target);
+                }
+            }
+        }
+        return $this->transfer($target);
     }
 
 }

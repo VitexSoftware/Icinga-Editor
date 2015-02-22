@@ -39,7 +39,7 @@ class IEHostgroup extends IECfg
         'title' => 'členské hosty',
         'mandatory' => true,
         'refdata' => array(
-          'table' => 'hosts',
+          'table' => 'host',
           'captioncolumn' => 'host_name',
           'idcolumn' => 'host_id',
           'condition' => array('register' => 1))

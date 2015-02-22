@@ -16,7 +16,7 @@ require_once 'IEcfg.php';
 class IEService extends IECfg
 {
 
-    public $myTable = 'services';
+    public $myTable = 'service';
     public $myKeyColumn = 'service_id';
     public $keyword = 'service';
     public $nameColumn = 'service_description';
@@ -91,7 +91,7 @@ class IEService extends IECfg
         'title' => 'hosty služby',
         'required' => true,
         'refdata' => array(
-          'table' => 'hosts',
+          'table' => 'host',
           'captioncolumn' => 'host_name',
           'idcolumn' => 'host_id',
           'condition' => array('register' => 1)
@@ -146,7 +146,7 @@ class IEService extends IECfg
       'passive_checks_enabled' => array('title' => ''),
       'check_period' => array('title' => 'perioda provádění testu', 'required' => true,
         'refdata' => array(
-          'table' => 'timeperiods',
+          'table' => 'timeperiod',
           'captioncolumn' => 'timeperiod_name',
           'idcolumn' => 'timeperiod_id')
       ),
@@ -175,7 +175,7 @@ class IEService extends IECfg
       'first_notification_delay' => array('title' => ''),
       'notification_period' => array('title' => 'notifikační perioda',
         'refdata' => array(
-          'table' => 'timeperiods',
+          'table' => 'timeperiod',
           'captioncolumn' => 'timeperiod_name',
           'idcolumn' => 'timeperiod_id')
       ),

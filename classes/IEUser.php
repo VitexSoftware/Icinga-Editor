@@ -119,8 +119,8 @@ class IEUser extends EaseUser
         $this->myDbLink->exeQuery('DELETE from hostgroup WHERE user_id=' . $id);
         $this->myDbLink->exeQuery('DELETE from hosts WHERE user_id=' . $id);
         $this->myDbLink->exeQuery('DELETE from servicegroup WHERE user_id=' . $id);
-        $this->myDbLink->exeQuery('DELETE from services WHERE user_id=' . $id);
-        $this->myDbLink->exeQuery('DELETE from timeperiods WHERE user_id=' . $id);
+        $this->myDbLink->exeQuery('DELETE from service WHERE user_id=' . $id);
+        $this->myDbLink->exeQuery('DELETE from timeperiod WHERE user_id=' . $id);
 
         $cfgfile = constant('CFG_GENERATED') . '/' . $this->getUserLogin() . '.cfg';
         if (file_exists($cfgfile)) {
