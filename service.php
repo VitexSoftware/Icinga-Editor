@@ -58,28 +58,31 @@ switch ($oPage->getRequestValue('action')) {
     case 'swap':
         $service->swapTo($oPage->getRequestValue('new_service_id', 'int'));
         break;
-}
-
-if ($oPage->isPosted()) {
-    if ($oPage->getRequestValue('action') != 'rename') {
-        if ($oPage->getRequestValue('action') == 'clone') {
-            $oUser->addStatusMessage(_('Služba byla zklonovana'), 'info');
-            $service->unsetDataValue($service->getMyKey());
+    case 'export':
+        $service->transfer($oPage->getRequestValue('destination'));
+        break;
+    default :
+        if ($oPage->isPosted()) {
+            if ($oPage->getRequestValue('action') != 'rename') {
+                if ($oPage->getRequestValue('action') == 'clone') {
+                    $oUser->addStatusMessage(_('Služba byla zklonovana'), 'info');
+                    $service->unsetDataValue($service->getMyKey());
+                } else {
+                    $service->takeData($_POST);
+                }
+                $serviceID = $service->saveToMySQL();
+                if (is_null($serviceID)) {
+                    $oUser->addStatusMessage(_('Služba nebyla uložena'), 'warning');
+                } else {
+                    $oUser->addStatusMessage(_('Služba byla uložena'), 'success');
+                }
+            }
         } else {
-            $service->takeData($_POST);
+            $use = $oPage->getGetValue('use');
+            if ($use) {
+                $service->setDataValue('use', $use);
+            }
         }
-        $serviceID = $service->saveToMySQL();
-        if (is_null($serviceID)) {
-            $oUser->addStatusMessage(_('Služba nebyla uložena'), 'warning');
-        } else {
-            $oUser->addStatusMessage(_('Služba byla uložena'), 'success');
-        }
-    }
-} else {
-    $use = $oPage->getGetValue('use');
-    if ($use) {
-        $service->setDataValue('use', $use);
-    }
 }
 
 $service->saveMembers();
@@ -108,12 +111,6 @@ switch ($oPage->getRequestValue('action')) {
 
         $serviceEdit = new IECfgEditor($service);
 
-        $oPage->columnIII->addItem($service->deleteButton());
-        $oPage->columnIII->addItem($service->cloneButton());
-
-        if ($service->getId()) {
-            $oPage->columnI->addItem($service->ownerLinkButton());
-        }
 
         $form = $oPage->columnII->addItem(new EaseHtmlForm('Service', 'service.php', 'POST', $serviceEdit, array('class' => 'form-horizontal')));
         $form->setTagID($form->getTagName());
@@ -126,21 +123,28 @@ switch ($oPage->getRequestValue('action')) {
 input.ui-button { width: 100%; }
 ');
 
-        $renameForm = new EaseTWBForm('Rename', '?action=rename&service_id=' . $service->getId());
-        $renameForm->addItem(new EaseHtmlInputTextTag('newname'), $service->getName(), array('class' => 'form-control'));
-        $renameForm->addItem(new EaseTWSubmitButton(_('Přejmenovat'), 'success'));
+        if ($service->getID()) {
+            $oPage->columnIII->addItem($service->deleteButton());
+            $oPage->columnIII->addItem($service->cloneButton());
 
-        $oPage->columnIII->addItem(new EaseTWBPanel(_('Přejmenování'), 'info', $renameForm));
-        $oPage->columnI->addItem(new IEHostSelector($service));
+            $oPage->columnI->addItem($service->ownerLinkButton());
+            $renameForm = new EaseTWBForm('Rename', '?action=rename&service_id=' . $service->getId());
+            $renameForm->addItem(new EaseHtmlInputTextTag('newname'), $service->getName(), array('class' => 'form-control'));
+            $renameForm->addItem(new EaseTWSubmitButton(_('Přejmenovat'), 'success'));
 
-        if ($oUser->getSettingValue('admin')) {
-            $oPage->columnI->addItem(new EaseTWBLinkButton('?action=system&service_id=' . $service->getId(), _('Systémová služba')));
+            $oPage->columnIII->addItem(new EaseTWBPanel(_('Přejmenování'), 'info', $renameForm));
+            $oPage->columnI->addItem(new IEHostSelector($service));
+
+            if ($oUser->getSettingValue('admin')) {
+                $oPage->columnI->addItem(new EaseTWBLinkButton('?action=system&service_id=' . $service->getId(), _('Systémová služba')));
+            }
+
+
+
+            $oPage->columnIII->addItem(new EaseTWBPanel(_('Výměna služby'), 'info', new IEServiceSwapForm($service)));
+
+            $oPage->columnIII->addItem(new EaseTWBPanel(_('Transfer'), 'warning', $service->transferForm()));
         }
-
-
-        $oPage->columnIII->addItem(new EaseTWBPanel(_('Výměna služby'), 'info', new IEServiceSwapForm($service)));
-
-
         break;
 }
 

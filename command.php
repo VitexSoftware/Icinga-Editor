@@ -18,9 +18,6 @@ $oPage->onlyForLogged();
 $command = new IECommand($oPage->getRequestValue('command_id', 'int'));
 
 switch ($oPage->getRequestValue('action')) {
-    case 'import':
-        $command->importJson($json);
-        break;
     case 'export':
         $command->transfer($oPage->getRequestValue('destination'));
         break;

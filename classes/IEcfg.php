@@ -408,7 +408,7 @@ class IEcfg extends EaseBrick
 
                     break;
                 case 'IDLIST':
-                    if (isset($data[$fieldName])) {
+                    if (isset($data[$fieldName]) && !is_array($data[$fieldName])) {
                         $data[$fieldName] = serialize(explode(',', $data[$fieldName]));
                     }
                     break;
@@ -1182,7 +1182,7 @@ class IEcfg extends EaseBrick
                 break;
 
             default:
-                // header("Content-type: application/json");
+// header("Content-type: application/json");
 
                 echo $this->getJson($queryRaw);
                 break;
@@ -1341,7 +1341,7 @@ class IEcfg extends EaseBrick
      */
     public function transfer($target)
     {
-        if (is_null($target)) {
+        if (is_null($target) || !strlen(trim($target))) {
             $this->addStatusMessage(_('Není zadána URL adresa cíle exportu'), 'warning');
         } else {
             if ($this->user->getSettingValue('exporturl') != $target) {
@@ -1359,7 +1359,7 @@ class IEcfg extends EaseBrick
             $context = stream_context_create($options);
             $result = file_get_contents($target . '/importer.php?class=' . $this->keyword, false, $context);
 
-            if (trim($result) == 'false') {
+            if (!$result || trim($result) == 'false') {
                 $this->addStatusMessage(_('Transfer se nezdařil'), 'warning');
             } else {
                 $this->addStatusMessage($result, 'success');
@@ -1375,6 +1375,52 @@ class IEcfg extends EaseBrick
         $exportForm->addInput(new EaseHtmlInputTextTag('destination', $this->user->getSettingValue('exporturl')), _('Cíl exportu'));
         $exportForm->addInput(new EaseTWSubmitButton(_('Exportovat'), 'warning'));
         return $exportForm;
+    }
+
+    public function importData($data)
+    {
+        foreach ($data as $rowId => $dataRow) {
+            $this->importDataRow($dataRow);
+        }
+    }
+
+    public function importDataRow($dataRow)
+    {
+        foreach ($dataRow as $column => $value) {
+            $columnType = 'unknown';
+            if (isset($this->useKeywords[$column])) {
+                $columnType = $this->useKeywords[$column];
+                $columnInfo = $this->keywordsInfo[$column];
+            }
+
+            switch ($columnType) {
+                case 'IDLIST':
+                    if (strstr($value, ':{')) {
+                        $value = unserialize($value);
+                    }
+                    if (is_array($value)) {
+                        $fixedValue = array();
+                        foreach ($value as $item) {
+                            $localId = $this->myDbLink->queryToValue('SELECT ' . $columnInfo['refdata']['idcolumn'] . ' FROM ' . $columnInfo['refdata']['table'] . ' WHERE ' . $columnInfo['refdata']['captioncolumn'] . " = '$item'");
+                            if ($localId) {
+                                $fixedValue[$localId] = $item;
+                            } else {
+                                $this->addStatusMessage(sprintf(_('Neznámá položka %s sloupec %s při importu'), $item, $column));
+                            }
+                        }
+                        $dataRow[$column] = $fixedValue;
+                    }
+
+
+                    break;
+                case 'unknown':
+                    unset($dataRow[$column]);
+                    $this->addStatusMessage(sprintf(_('Neznámý sloupec %s při importu'), $column));
+                    break;
+                default:
+            }
+        }
+        return $this->takeData($dataRow);
     }
 
 }
