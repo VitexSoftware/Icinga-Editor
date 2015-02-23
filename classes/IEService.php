@@ -355,7 +355,7 @@ class IEService extends IECfg
 
                 if (is_array($ad['host_name']) && count($ad['host_name'])) { //Projít kontakty, vyhodit nevlastněné uživatelem
                     foreach ($ad['host_name'] as $HostID => $HostName) {
-                        $hostUserID = (int) $this->myDbLink->QueryToValue('SELECT user_id FROM ' . 'hosts WHERE host_id=' . $HostID);
+                        $hostUserID = (int) $this->myDbLink->QueryToValue('SELECT user_id FROM ```host` WHERE host_id=' . $HostID);
                         if ($userID != $hostUserID) {
                             unset($allData[$adKey]['host_name'][$HostID]);
                         };
