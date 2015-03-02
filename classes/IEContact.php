@@ -9,6 +9,7 @@
  * @copyright  2012 Vitex@hippy.cz (G)
  */
 require_once 'IEcfg.php';
+require_once 'IEContactgroup.php';
 
 /**
  * Spráce kontaktů
@@ -38,126 +39,126 @@ class IEContact extends IECfg
      */
     public $publicRecords = false;
     public $useKeywords = array(
-        'contact_name' => 'VARCHAR(128)',
-        'alias' => 'VARCHAR()',
-        'contactgroups' => 'VARCHAR(255)',
-        'host_notifications_enabled' => 'BOOL',
-        'service_notifications_enabled' => 'BOOL',
-        'host_notification_period' => 'SELECT',
-        'service_notification_period' => 'SELECT',
-        'host_notification_options' => "FLAGS('d','u','r','f','s','n')",
-        'service_notification_options' => "FLAGS('w','u','c','r','f','s','n')",
-        'host_notification_commands' => 'IDLIST',
-        'service_notification_commands' => 'IDLIST',
-        'email' => 'VARCHAR(128)',
-        'pager' => 'VARCHAR(64)',
-        'address1' => 'VARCHAR(255)',
-        'address2' => 'VARCHAR(255)',
-        'can_submit_commands' => 'BOOL',
-        'retain_status_information' => 'BOOL',
-        'retain_nonstatus_information' => 'BOOL'
+      'contact_name' => 'VARCHAR(128)',
+      'alias' => 'VARCHAR()',
+      'contactgroups' => 'VARCHAR(255)',
+      'host_notifications_enabled' => 'BOOL',
+      'service_notifications_enabled' => 'BOOL',
+      'host_notification_period' => 'SELECT',
+      'service_notification_period' => 'SELECT',
+      'host_notification_options' => "FLAGS('d','u','r','f','s','n')",
+      'service_notification_options' => "FLAGS('w','u','c','r','f','s','n')",
+      'host_notification_commands' => 'IDLIST',
+      'service_notification_commands' => 'IDLIST',
+      'email' => 'VARCHAR(128)',
+      'pager' => 'VARCHAR(64)',
+      'address1' => 'VARCHAR(255)',
+      'address2' => 'VARCHAR(255)',
+      'can_submit_commands' => 'BOOL',
+      'retain_status_information' => 'BOOL',
+      'retain_nonstatus_information' => 'BOOL'
     );
     public $keywordsInfo = array(
-        'contact_name' => array('title' => 'název kontaktu', 'required' => true),
-        'alias' => array(
-            'title' => 'alias'
-        ),
-        'contactgroups' => array(
-            'title' => 'kontaktní skupiny',
-            'hidden' => true
-        ),
-        'host_notifications_enabled' => array(
-            'title' => 'oznamovat zprávy hostů',
-        ),
-        'service_notifications_enabled' => array(
-            'title' => 'oznamovat zprávy služeb',
-        ),
-        'host_notification_period' => array(
-            'title' => 'notifikační perioda hostů',
-            'required' => true,
-            'refdata' => array(
-                'table' => 'timeperiod',
-                'captioncolumn' => 'timeperiod_name',
-                'public' => true,
-                'idcolumn' => 'timeperiod_id')
-        ),
-        'service_notification_period' => array(
-            'title' => 'notifikační perioda služeb',
-            'required' => true,
-            'refdata' => array(
-                'table' => 'timeperiod',
-                'captioncolumn' => 'timeperiod_name',
-                'public' => true,
-                'idcolumn' => 'timeperiod_id')
-        ),
-        'host_notification_options' => array(
-            'title' => 'možnosti oznamování hostů',
-            'required' => true,
-            'd' => 'notify on DOWN host states',
-            'u' => 'notify on UNREACHABLE host states',
-            'r' => 'notify on host recoveries (UP states)',
-            'f' => 'notify when the host starts and stops flapping',
-            's' => 'send notifications when host or service scheduled downtime starts and ends',
-            'n' => 'nic neoznamovat'
-        ),
-        'service_notification_options' => array(
-            'title' => 'možnosti oznamování služeb',
-            'required' => true,
-            'w' => 'notify on WARNING service states',
-            'u' => 'notify on UNKNOWN service states',
-            'c' => 'notify on CRITICAL service states',
-            'r' => 'notify on service recoveries (OK states)',
-            'f' => 'notify when the service starts and stops flapping',
-            's' => 'send notifications when host or service scheduled downtime starts and ends',
-            'n' => 'nic neoznamovat'
-        ),
-        'host_notification_commands' => array(
-            'title' => 'způsob oznamování událostí hosta',
-            'required' => true,
-            'refdata' => array(
-                'table' => 'command',
-                'captioncolumn' => 'command_name',
-                'idcolumn' => 'command_id',
-                'public' => true,
-                'condition' => array('command_type' => 'notify')
-            )
-        ),
-        'service_notification_commands' => array(
-            'title' => 'způsob oznamování událostí služby',
-            'required' => true,
-            'refdata' => array(
-                'table' => 'command',
-                'captioncolumn' => 'command_name',
-                'idcolumn' => 'command_id',
-                'public' => true,
-                'condition' => array('command_type' => 'notify')
-            )
-        ),
-        'email' => array(
-            'title' => 'mailová adresa',
-            'mandatory' => true
-        ),
-        'pager' => array(
-            'title' => 'číslo pro příjem SMS',
-            'mandatory' => true
-        ),
-        'address1' => array(
-            'title' => 'jabberová adresa',
-            'mandatory' => true
-        ),
-        'address2' => array(
-            'title' => '@Twitter',
-            'mandatory' => true
-        ),
-        'can_submit_commands' => array(
-            'title' => 'Smí tento přihlášený kontakt zasílat externí příkazy ?'
-        ),
-        'retain_status_information' => array(
-            'title' => ''
-        ),
-        'retain_nonstatus_information' => array(
-            'title' => ''
+      'contact_name' => array('title' => 'název kontaktu', 'required' => true),
+      'alias' => array(
+        'title' => 'alias'
+      ),
+      'contactgroups' => array(
+        'title' => 'kontaktní skupiny',
+        'hidden' => true
+      ),
+      'host_notifications_enabled' => array(
+        'title' => 'oznamovat zprávy hostů',
+      ),
+      'service_notifications_enabled' => array(
+        'title' => 'oznamovat zprávy služeb',
+      ),
+      'host_notification_period' => array(
+        'title' => 'notifikační perioda hostů',
+        'required' => true,
+        'refdata' => array(
+          'table' => 'timeperiod',
+          'captioncolumn' => 'timeperiod_name',
+          'public' => true,
+          'idcolumn' => 'timeperiod_id')
+      ),
+      'service_notification_period' => array(
+        'title' => 'notifikační perioda služeb',
+        'required' => true,
+        'refdata' => array(
+          'table' => 'timeperiod',
+          'captioncolumn' => 'timeperiod_name',
+          'public' => true,
+          'idcolumn' => 'timeperiod_id')
+      ),
+      'host_notification_options' => array(
+        'title' => 'možnosti oznamování hostů',
+        'required' => true,
+        'd' => 'notify on DOWN host states',
+        'u' => 'notify on UNREACHABLE host states',
+        'r' => 'notify on host recoveries (UP states)',
+        'f' => 'notify when the host starts and stops flapping',
+        's' => 'send notifications when host or service scheduled downtime starts and ends',
+        'n' => 'nic neoznamovat'
+      ),
+      'service_notification_options' => array(
+        'title' => 'možnosti oznamování služeb',
+        'required' => true,
+        'w' => 'notify on WARNING service states',
+        'u' => 'notify on UNKNOWN service states',
+        'c' => 'notify on CRITICAL service states',
+        'r' => 'notify on service recoveries (OK states)',
+        'f' => 'notify when the service starts and stops flapping',
+        's' => 'send notifications when host or service scheduled downtime starts and ends',
+        'n' => 'nic neoznamovat'
+      ),
+      'host_notification_commands' => array(
+        'title' => 'způsob oznamování událostí hosta',
+        'required' => true,
+        'refdata' => array(
+          'table' => 'command',
+          'captioncolumn' => 'command_name',
+          'idcolumn' => 'command_id',
+          'public' => true,
+          'condition' => array('command_type' => 'notify')
         )
+      ),
+      'service_notification_commands' => array(
+        'title' => 'způsob oznamování událostí služby',
+        'required' => true,
+        'refdata' => array(
+          'table' => 'command',
+          'captioncolumn' => 'command_name',
+          'idcolumn' => 'command_id',
+          'public' => true,
+          'condition' => array('command_type' => 'notify')
+        )
+      ),
+      'email' => array(
+        'title' => 'mailová adresa',
+        'mandatory' => true
+      ),
+      'pager' => array(
+        'title' => 'číslo pro příjem SMS',
+        'mandatory' => true
+      ),
+      'address1' => array(
+        'title' => 'jabberová adresa',
+        'mandatory' => true
+      ),
+      'address2' => array(
+        'title' => '@Twitter',
+        'mandatory' => true
+      ),
+      'can_submit_commands' => array(
+        'title' => 'Smí tento přihlášený kontakt zasílat externí příkazy ?'
+      ),
+      'retain_status_information' => array(
+        'title' => ''
+      ),
+      'retain_nonstatus_information' => array(
+        'title' => ''
+      )
     );
 
     /**
@@ -188,21 +189,20 @@ class IEContact extends IECfg
         $oUser = EaseShared::user();
 
         return array(
-            'use' => 'generic-contact',
-            'contact_name' => $oUser->getUserLogin(),
-            'alias' => $oUser->getUserName(),
-            'email' => $oUser->getUserEmail(),
-            'host_notification_commands' => array('notify-host-by-email'),
-            'service_notification_commands' => array('notify-service-by-email'),
-            'generate' => TRUE,
-            'user_id' => $oUser->getUserID()
+          'use' => 'generic-contact',
+          'contact_name' => $oUser->getUserLogin(),
+          'alias' => $oUser->getUserName(),
+          'email' => $oUser->getUserEmail(),
+          'host_notification_commands' => array('notify-host-by-email'),
+          'service_notification_commands' => array('notify-service-by-email'),
+          'generate' => TRUE,
+          'user_id' => $oUser->getUserID()
         );
     }
 
     public function checkEmailAddress($email)
     {
         if (preg_match("/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/", $email))
-
             return true;
         return false;
     }
@@ -306,6 +306,20 @@ class IEContact extends IECfg
             }
         }
 
+        $contactgroup = new IEContactGroup();
+        $contactgroups = $this->myDbLink->queryTo2DArray('SELECT ' . $contactgroup->getmyKeyColumn() . ' FROM ' . $contactgroup->myTable . ' WHERE members LIKE \'%' . $this->getName() . '%\'');
+        if (count($contactgroups)) {
+            foreach ($contactgroups as $contactgroupID) {
+                $contactgroup->loadFromMySQL((int) $contactgroupID);
+                if ($contactgroup->delMember('members', null, $this->getName())) {
+                    if ($contactgroup->saveToMySQL()) {
+                        $this->addStatusMessage(sprintf(_('Kontakt %s byl odebrán ze skupiny %s'), $this->getName(), $contactgroup->getName()));
+                    }
+                }
+            }
+        }
+
+
         $service = new IEService();
 
         $services = $this->myDbLink->queryTo2DArray('SELECT ' . $service->getmyKeyColumn() . ' FROM ' . $service->myTable . ' WHERE contacts LIKE \'%' . $this->getName() . '%\'');
@@ -342,13 +356,13 @@ class IEContact extends IECfg
             foreach ($childs as $childID => $childInfo) {
                 $subcontact->loadFromMySQL($childID);
                 $type = $subcontact->getDataValue('alias');
-                $subcontact->setDataValue($subcontact->nameColumn, $newname.' '.$type );
-                $services = $this->myDbLink->queryTo2DArray('SELECT ' . $service->getmyKeyColumn() . ' FROM ' . $service->myTable . ' WHERE contacts LIKE \'%' . $oldname.' '. $type . '%\'');
+                $subcontact->setDataValue($subcontact->nameColumn, $newname . ' ' . $type);
+                $services = $this->myDbLink->queryTo2DArray('SELECT ' . $service->getmyKeyColumn() . ' FROM ' . $service->myTable . ' WHERE contacts LIKE \'%' . $oldname . ' ' . $type . '%\'');
                 if (count($services)) {
                     foreach ($services as $serviceID) {
                         $service->loadFromMySQL((int) $serviceID);
                         if ($service->delMember('contacts', $id)) {
-                            $service->addMember('contacts', $id, $newname.' '.$type);
+                            $service->addMember('contacts', $id, $newname . ' ' . $type);
                             $service->saveToMySQL();
                         }
                     }

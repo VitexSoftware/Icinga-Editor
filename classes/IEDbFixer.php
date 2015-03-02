@@ -17,6 +17,7 @@ class IEDbFixer extends EaseHtmlUlTag
     public function __construct()
     {
         parent::__construct();
+        //$this->fixContactIDs();
         $this->fixHostNameIDs();
         $this->setTagClass('list-group');
     }
@@ -46,6 +47,36 @@ class IEDbFixer extends EaseHtmlUlTag
                     $this->addItemSmart(sprintf(_('<strong>%s</strong> : %s'), $service->getName(), implode(',', $hostsOK)), array('class' => 'list-group-item'));
                     $this->addStatusMessage(sprintf(_('%s : %s'), $service->getName(), implode(',', $hostsOK)), 'success');
                     $hostsOK = array();
+                }
+            }
+        }
+    }
+
+    public function fixContactIDs()
+    {
+        $contactsOK = array();
+        $contactsErr = array();
+
+        $service = new IEService;
+        $contact = new IEContact;
+        $services = $service->getListing(0);
+        foreach ($services as $serviceId => $serviceInfo) {
+            $service->loadFromMySQL($serviceId);
+            foreach ($service->getDataValue('contact_name') as $contactId => $contactName) {
+                $contactFound = $contact->loadFromMySQL($contactName);
+                if ($contactId != $contact->getId()) {
+                    if ($service->delMember('contact_name', $contactId, $contactName) && $service->addMember('contact_name', $contact->getId(), $contactName)) {
+                        $contactsOK[] = $contactName;
+                    } else {
+                        $contactsErr[] = $contactName;
+                    }
+                }
+            }
+            if (count($contactsOK)) {
+                if ($service->saveToMySQL()) {
+                    $this->addItemSmart(sprintf(_('<strong>%s</strong> : %s'), $service->getName(), implode(',', $contactsOK)), array('class' => 'list-group-item'));
+                    $this->addStatusMessage(sprintf(_('%s : %s'), $service->getName(), implode(',', $contactsOK)), 'success');
+                    $contactsOK = array();
                 }
             }
         }

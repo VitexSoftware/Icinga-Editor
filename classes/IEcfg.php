@@ -1015,23 +1015,30 @@ class IEcfg extends EaseBrick
      * @param  string  $memberName
      * @return boolean
      */
-    public function delMember($column, $memberID, $memberName = null)
+    public function delMember($column, $memberID = null, $memberName = null)
     {
-        if (isset($this->data[$column][$memberID])) {
+        if (is_null($memberID)) {
+            $found = array_search($memberName, $this->data[$column]);
+            if ($found !== false) {
+                unset($this->data[$column][$found]);
+                return true;
+            }
+        } else {
+            if (isset($this->data[$column][$memberID])) {
 
-            if (!is_null($memberName)) {
-                if ($this->data[$column][$memberID] == $memberName) {
+                if (!is_null($memberName)) {
+                    if ($this->data[$column][$memberID] == $memberName) {
+                        unset($this->data[$column][$memberID]);
+
+                        return true;
+                    }
+                } else {
                     unset($this->data[$column][$memberID]);
 
                     return true;
                 }
-            } else {
-                unset($this->data[$column][$memberID]);
-
-                return true;
             }
         }
-
         return false;
     }
 
@@ -1190,6 +1197,12 @@ class IEcfg extends EaseBrick
         }
     }
 
+    /**
+     * Připaví data na export jak CSV
+     *
+     * @param array $data
+     * @return array
+     */
     public function csvizeData($data)
     {
         if (is_array($data) && count($data)) {
