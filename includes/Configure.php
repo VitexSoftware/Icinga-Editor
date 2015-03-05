@@ -47,7 +47,3 @@ define('EMAIL_FROM', 'monitor@v.s.cz');
  * Kam posílat oznámení o nových registracích
  */
 define('SEND_INFO_TO', 'info@vitexsoftware.cz');
-/**
- * Veřejná IP nagiosu
- */
-define('ICINGA_SERVER_IP', '77.87.241.140');

@@ -85,15 +85,6 @@ switch ($oPage->getRequestValue('action')) {
         $commandEditor = new IECfgEditor($command);
 
         $form = $oPage->columnII->addItem(new EaseHtmlForm('Command', 'command.php', 'POST', $commandEditor, array('class' => 'form-horizontal')));
-        $form->setTagID($form->getTagName());
-        if (!is_null($command->getMyKey())) {
-            $form->addItem(new EaseHtmlInputHiddenTag($command->getmyKeyColumn(), $command->getMyKey()));
-        }
-        $form->addItem('<br>');
-        $form->addItem(new EaseTWSubmitButton(_('Uložit'), 'success'));
-        $oPage->AddCss('
-input.ui-button { width: 100%; }
-');
 
         $oPage->columnIII->addItem(new EaseTWBPanel(_('Transfer'), 'warning', $command->transferForm()));
         break;

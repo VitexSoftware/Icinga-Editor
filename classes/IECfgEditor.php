@@ -9,6 +9,7 @@ require_once 'IEGroupMembersEditor.php';
 require_once 'IEUserSelect.php';
 require_once 'EaseTWBSlider.php';
 require_once 'IEPlatformSelector.php';
+require_once 'IETextarea.php';
 
 /**
  * Description of IECfgEditor
@@ -114,8 +115,7 @@ class IECfgEditor extends EaseContainer
                 $sliderField->setTagCss(array('width' => '100%'));
                 break;
             case 'TEXT':
-                $FB = $fieldBlock->addItem(new EaseLabeledTextarea($fieldName, $value, $keywordInfo['title']));
-                $FB->enclosedElement->setTagCss(array('width' => '100%'));
+                $fieldBlock->addItem(new EaseTWBFormGroup($fieldName, new EaseTWBTextarea($fieldName, $value, $keywordInfo['title'])));
                 break;
             case 'ENUM':
                 $flags = explode(',', str_replace(array($fType, "'", '(', ')'), '', $fieldType));
@@ -225,6 +225,13 @@ class IECfgEditor extends EaseContainer
                 $this->addStatusMessage(sprintf(_('Neznámý typ %s pro sloupec %s'), $fType, $fieldName), 'warning');
                 break;
         }
+        EaseShared::webPage()->includeJavaScript('js/jquery.autosave.js');
+        $autosave = array('url' => 'datasaver.php?SaverClass=' . get_class($this->objectEdited) . '&' . $this->objectEdited->getmyKeyColumn() . '=' . $this->objectEdited->getmyKey(),
+          'method' => 'post',
+          'grouped' => false,
+          'datatype' => 'html',
+          'success' => 'function(data) { alert( "Saved: ' . $fieldName . '  "  ); }');
+        EaseShared::webPage()->addJavaScript('$("[name=\'' . $fieldName . '\']").autosave({ ' . EaseJQueryUIPart::partPropertiesToString($autosave) . '});', null, true);
     }
 
     public function fullEditor()
