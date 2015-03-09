@@ -11,7 +11,6 @@
 require_once 'includes/IEInit.php';
 require_once 'classes/IEHost.php';
 require_once 'classes/IEFXPreloader.php';
-require_once 'classes/IEPreferences.php';
 
 $oPage->onlyForLogged();
 
@@ -26,6 +25,9 @@ $host = new IEHost($hostId);
 
 $oPage->addItem(new IEPageTop(_('Sensor')));
 
+$oPage->columnII->addItem(new EaseHtmlH1Tag($host->getName()));
+$oPage->columnII->addItem($host);
+
 switch ($host->getDataValue('platform')) {
     case 'windows':
         $pltIco = 'logos/base/win40.gif';
@@ -38,14 +40,13 @@ switch ($host->getDataValue('platform')) {
         if ($host->getDataValue('passive_checks_enabled')) {
             $oPage->columnI->addItem(new EaseHtmlH1Tag('<img src="' . $pltIco . '">' . _('pasivní NSCA pro NSC++')));
         }
-        $oPage->columnI->addItem(new EaseTWBLinkButton('nscpcfggen.php?host_id=' . $hostId, $host->getName() . '_nrpe.bat ' . EaseTWBPart::GlyphIcon('download'), 'success'));
+        $oPage->columnI->addItem(new EaseTWBLinkButton('nscpcfggen.php?host_id=' . $hostId, $host->getName() . '_nscp.bat ' . EaseTWBPart::GlyphIcon('download'), 'success'));
         break;
     case 'linux':
         $pltIco = 'logos/base/linux40.gif';
 
         $preferences = new IEPreferences;
         $prefs = $preferences->getPrefs();
-
 
         if ($host->getDataValue('active_checks_enabled')) {
             $oPage->columnIII->addItem(new EaseHtmlDivTag(null, 'sudo aptitude -y install nagios-nrpe-server'));
@@ -59,6 +60,7 @@ switch ($host->getDataValue('platform')) {
         if ($host->getDataValue('passive_checks_enabled')) {
             $oPage->columnI->addItem(new EaseHtmlH1Tag('<img src="' . $pltIco . '">' . _('pasivní NSCA pro NRPE Server')));
         }
+        $oPage->columnI->addItem(new EaseTWBLinkButton('nscpcfggen.php?host_id=' . $hostId, $host->getName() . '_nscp.sh ' . EaseTWBPart::GlyphIcon('download'), 'success'));
         break;
     default:
         $pltIco = 'logos/unknown.gif';

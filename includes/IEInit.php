@@ -19,11 +19,12 @@ bindtextdomain($domain, realpath("./locale"));
 textdomain($domain);
 
 require_once 'classes/IEUser.php';
+require_once 'classes/IEPreferences.php';
 
 session_start();
 
 if (!isset($_SESSION['User']) || !is_object($_SESSION['User'])) {
-    EaseShared::user( new EaseAnonym() );
+    EaseShared::user(new EaseAnonym());
 }
 
 /**

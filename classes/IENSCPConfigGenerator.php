@@ -42,6 +42,18 @@ class IENSCPConfigGenerator extends EaseAtom
     public $hostPassiveMode = false;
 
     /**
+     * Platforma
+     * @var string
+     */
+    public $platform = 'generic';
+
+    /**
+     * Volání proměnné s nsclient
+     * @var string
+     */
+    private $nscvar = '';
+
+    /**
      * Generátor konfigurace NSC++
      *
      * @param IEHost $host
@@ -49,6 +61,8 @@ class IENSCPConfigGenerator extends EaseAtom
     public function __construct($host)
     {
         $this->host = $host;
+        $this->setPlatform($host->getDataValue('platform'));
+
         $preferences = new IEPreferences;
         $this->prefs = $preferences->getPrefs();
         $this->cfgInit();
@@ -67,17 +81,70 @@ class IENSCPConfigGenerator extends EaseAtom
     }
 
     /**
+     * Vloží do kongfiguráku další direktivu
+     *
+     * @param string $path
+     * @param string $key
+     * @param string $value
+     */
+    private function addCfg($path, $key, $value)
+    {
+        $this->nscBatArray[] = "\n" . $this->nscvar . ' settings --path "' . $path . '" --key "' . $key . '" --set "' . $value . '"';
+    }
+
+    /**
+     * Nastaví platformu
+     * @param type $platform
+     */
+    private function setPlatform($platform)
+    {
+        $this->platform = $platform;
+        $this->setnscvar($platform);
+    }
+
+    /**
+     * Nastaví Proměnnou pro volání nsclienta ve výsledném skriptu
+     *
+     * @param string $platform
+     */
+    private function setnscvar($platform)
+    {
+        switch ($platform) {
+            case 'windows':
+                $nsclient = '%NSCLIENT%';
+                break;
+            case 'linux':
+                $nsclient = '$NSCLIENT';
+                break;
+            default:
+                $nsclient = 'nsclient';
+                break;
+        }
+        $this->nscvar = $nsclient;
+    }
+
+    /**
      * Připraví nouvou konfiguraci
      */
     function cfgInit()
     {
-        $this->nscBatArray = array('
+        switch ($this->platform) {
+            case 'windows':
+                $this->nscBatArray = array('
 set NSCLIENT="%ProgramFiles%\NSClient++\nscp.exe"
-%NSCLIENT% service --stop
-
+' . $this->nscvar . ' service --stop
 del "%ProgramFiles%\NSClient++\nsclient.ini"
-%NSCLIENT% settings --generate --add-defaults --load-all
 ');
+                break;
+            case 'linux':
+                $this->nscBatArray = array('
+set NSCLIENT=`which nscp`
+' . $this->nscvar . ' service --stop
+rm /etc/nsclient/nsclient.ini"
+');
+                break;
+        }
+        $this->nscBatArray[] = $this->nscvar . ' settings --generate --add-defaults --load-all';
     }
 
     /**
@@ -85,10 +152,8 @@ del "%ProgramFiles%\NSClient++\nsclient.ini"
      */
     function cfgActiveSet()
     {
-        $this->nscBatArray[] = '
-%NSCLIENT% settings --path "/modules" --key NRPEServer --set enabled
-%NSCLIENT% settings --path "/settings/default" --key "allowed hosts" --set "' . $this->prefs['serverip'] . '"
-';
+        $this->addCfg('/modules', 'NRPEServer', 'enabled');
+        $this->addCfg('/settings/default', 'allowed hosts', $this->prefs['serverip']);
     }
 
     /**
@@ -96,19 +161,17 @@ del "%ProgramFiles%\NSClient++\nsclient.ini"
      */
     function cfgPassiveSet()
     {
-        $this->nscBatArray[] = '
-%NSCLIENT% settings --path "/modules" --key Scheduler --set enabled
-%NSCLIENT% settings --path "/modules" --key NSCAClient --set enabled
-%NSCLIENT% settings --path /settings/NSCA/client --key hostname --set ' . $this->host->getName() . '
-%NSCLIENT% settings --path /settings/NSCA/client --key channel --set NSCA
-%NSCLIENT% settings --path /settings/NSCA/client/targets/default --key "allowed ciphers" --set "ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH"
-%NSCLIENT% settings --path /settings/NSCA/client/targets/default --key encryption --set 3des
-%NSCLIENT% settings --path /settings/NSCA/client/targets/default --key password --set "' . $this->prefs['nscapassword'] . '"
-%NSCLIENT% settings --path /settings/NSCA/client/targets/default --key address --set ' . $this->prefs['serverip'] . '
-%NSCLIENT% settings --path /settings/NSCA/client/targets/default --key port --set 5667
-%NSCLIENT% settings --path /settings/NSCA/client/targets/default --key timeout --set 30
-%NSCLIENT% settings --path /settings/scheduler/schedules/default --key interval --set 60s
-';
+        $this->addCfg('/modules', 'Scheduler', 'enabled');
+        $this->addCfg('/modules', 'NSCAClient', 'enabled');
+        $this->addCfg('/settings/NSCA/client', 'hostname', $this->host->getName());
+        $this->addCfg('/settings/NSCA/client', 'channel', 'NSCA');
+        $this->addCfg('/settings/NSCA/client/targets/default', 'allowed ciphers', 'ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH');
+        $this->addCfg('/settings/NSCA/client/targets/default', 'encryption', '3des');
+        $this->addCfg('/settings/NSCA/client/targets/default', 'password', $this->prefs['nscapassword']);
+        $this->addCfg('/settings/NSCA/client/targets/default', 'address', $this->prefs['serverip']);
+        $this->addCfg('/settings/NSCA/client/targets/default', 'port', '5667');
+        $this->addCfg('/settings/NSCA/client/targets/default', 'timeout', '30');
+        $this->addCfg('/settings/NSCA/client/targets/default', 'interval', '60s');
     }
 
     /**
@@ -116,28 +179,21 @@ del "%ProgramFiles%\NSClient++\nsclient.ini"
      */
     function cfgModules()
     {
-        $this->nscBatArray[] = '
-%NSCLIENT% settings --path "/modules" --key CheckDisk --set enabled
-%NSCLIENT% settings --path "/modules" --key CheckEventLog --set enabled
-%NSCLIENT% settings --path "/modules" --key CheckHelpers --set enabled
-%NSCLIENT% settings --path "/modules" --key CheckNSCP --set enabled
-%NSCLIENT% settings --path "/modules" --key CheckSystem --set enabled
-%NSCLIENT% settings --path "/modules" --key CheckWMI --set enabled
-
-%NSCLIENT% settings --path "/modules" --key CheckExternalScripts --set enabled
-%NSCLIENT% settings --path "/settings/external scripts/server" --key "allow arguments" --set enabled
-
-';
+        $this->addCfg('/modules', 'CheckDisk', 'enabled');
+        $this->addCfg('/modules', 'CheckEventLog', 'enabled');
+        $this->addCfg('/modules', 'CheckHelpers', 'enabled');
+        $this->addCfg('/modules', 'CheckNSCP', 'enabled');
+        $this->addCfg('/modules', 'CheckSystem', 'enabled');
+        $this->addCfg('/modules', 'CheckWMI', 'enabled');
+        $this->addCfg('/modules', 'CheckExternalScripts', 'enabled');
+        $this->addCfg('/settings/external scripts/server', 'allow arguments', 'enabled');
     }
 
     function cfgServices()
     {
         $service = new IEService();
 
-
-
         $servicesAssigned = $service->myDbLink->queryToArray('SELECT ' . $service->myKeyColumn . ',' . $service->nameColumn . ',`use` FROM ' . $service->myTable . ' WHERE host_name LIKE \'%"' . $this->host->getName() . '"%\'', $service->myKeyColumn);
-
 
         $allServices = $service->getListing(
             null, true, array(
@@ -198,7 +254,16 @@ del "%ProgramFiles%\NSClient++\nsclient.ini"
                 continue;
             }
             $serviceParams = $service['check_command-params'];
-            $this->nscBatArray[] = "\nREM #" . $service['service_id'] . ' ' . $serviceName . "\n";
+            switch ($this->platform) {
+                case 'windows':
+                    $this->nscBatArray[] = "\nREM #" . $service['service_id'] . ' ' . $serviceName . "\n";
+                    break;
+                case 'linux':
+                    $this->nscBatArray[] = "\n# #" . $service['service_id'] . ' ' . $serviceName . "\n";
+                    break;
+                default:
+                    break;
+            }
 
             if (isset($commandsCache[$serviceCmd])) {
                 $cmdline = $commandsCache[$serviceCmd]['command_line'];
@@ -207,17 +272,14 @@ del "%ProgramFiles%\NSClient++\nsclient.ini"
             }
 
             if (preg_match("/\.(vbs|bat)/", $cmdline)) {
-                $this->nscBatArray[] = '%NSCLIENT% settings --path "/settings/external scripts/wrapped scripts" --key "' . str_replace(' ', '_', $serviceName) . '" --set "' .
-                    $cmdline . ' ' . $serviceParams . "\"\n";
+                $this->addCfg('/settings/external scripts/wrapped scripts', str_replace(' ', '_', $serviceName), $cmdline . ' ' . $serviceParams);
             } else {
-                $this->nscBatArray[] = '%NSCLIENT% settings --path "/settings/external scripts/alias" --key "' . str_replace(' ', '_', $serviceName) . '" --set "' . $cmdline . ' ' . $serviceParams . "\"\n";
+                $this->addCfg('/settings/external scripts/alias', str_replace(' ', '_', $serviceName), $cmdline . ' ' . $serviceParams);
             }
 
             if ($this->hostPassiveMode) {
-
-                $this->nscBatArray[] = '%NSCLIENT% settings --path "/settings/scheduler/schedules/' . str_replace(' ', '_', $serviceName) . '-' . EaseShared::user()->getUserLogin() . '" --key command --set "' . str_replace(' ', '_', $serviceName) . "\"\n";
-
-                $this->nscBatArray[] = '%NSCLIENT% settings --path "/settings/scheduler/schedules/' . str_replace(' ', '_', $serviceName) . '-' . EaseShared::user()->getUserLogin() . '" --key interval --set "' . $service['check_interval'] . "s\"\n";
+                $this->addCfg('/settings/scheduler/schedules/' . str_replace(' ', '_', $serviceName) . '-' . EaseShared::user()->getUserLogin(), 'command', str_replace(' ', '_', $serviceName));
+                $this->addCfg('/settings/scheduler/schedules/' . str_replace(' ', '_', $serviceName) . '-' . EaseShared::user()->getUserLogin(), 'interval', $service['check_interval'] . 's');
             }
         }
     }
@@ -225,8 +287,8 @@ del "%ProgramFiles%\NSClient++\nsclient.ini"
     public function cfgEnding()
     {
         $this->nscBatArray[] = '
-%NSCLIENT% test
-%NSCLIENT% service --start
+' . $this->nscvar . ' test
+' . $this->nscvar . ' service --start
 ';
     }
 
@@ -235,13 +297,25 @@ del "%ProgramFiles%\NSClient++\nsclient.ini"
         $nscbat = implode('', $this->nscBatArray);
         header('Content-Description: File Transfer');
         header('Content-Type: application/octet-stream');
-        header('Content-Disposition: attachment; filename=' . $this->host->getName() . '_nsca.bat');
         header('Content-Transfer-Encoding: binary');
         header('Expires: 0');
         header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
         header('Pragma: public');
+
+        switch ($this->platform) {
+            case 'windows':
+                header('Content-Disposition: attachment; filename=' . $this->host->getName() . '_nscp.bat');
+                $nscbat = str_replace("\n", "\r\n", $nscbat);
+                break;
+            case 'linux':
+                header('Content-Disposition: attachment; filename=' . $this->host->getName() . '_nscp.sh');
+                break;
+
+            default:
+                break;
+        }
         header('Content-Length: ' . strlen($nscbat));
-        echo str_replace("\n", "\r\n", $nscbat);
+        echo $nscbat;
     }
 
 }
