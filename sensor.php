@@ -11,6 +11,7 @@
 require_once 'includes/IEInit.php';
 require_once 'classes/IEHost.php';
 require_once 'classes/IEFXPreloader.php';
+require_once 'classes/IEPreferences.php';
 
 $oPage->onlyForLogged();
 
@@ -45,18 +46,18 @@ switch ($host->getDataValue('platform')) {
         $preferences = new IEPreferences;
         $prefs = $preferences->getPrefs();
 
-        $oPage->columnIII->addItem(new EaseHtmlDivTag(null, 'sudo aptitude -y install nagios-nrpe-server'));
-        $oPage->columnIII->addItem(new EaseHtmlDivTag(null, 'sudo echo "allowed_hosts=' . $prefs['serverip'] . '" >> /etc/nagios/nrpe_local.cfg'));
-        $oPage->columnIII->addItem(new EaseHtmlDivTag(null, 'sudo echo "dont_blame_nrpe=1" >> /etc/nagios/nrpe_local.cfg'));
-        $oPage->columnIII->addItem(new EaseHtmlDivTag(null, 'sudo service nagios-nrpe-server reload'));
 
         if ($host->getDataValue('active_checks_enabled')) {
-            $oPage->columnI->addItem(new EaseHtmlH1Tag('<img src="' . $pltIco . '">' . _('aktivní NRPE pro NRPE Server')));
+            $oPage->columnIII->addItem(new EaseHtmlDivTag(null, 'sudo aptitude -y install nagios-nrpe-server'));
+            $oPage->columnIII->addItem(new EaseHtmlDivTag(null, 'sudo echo "allowed_hosts=' . $prefs['serverip'] . '" >> /etc/nagios/nrpe_local.cfg'));
+            $oPage->columnIII->addItem(new EaseHtmlDivTag(null, 'sudo echo "dont_blame_nrpe=1" >> /etc/nagios/nrpe_local.cfg'));
+            $oPage->columnIII->addItem(new EaseHtmlDivTag(null, 'sudo service nagios-nrpe-server reload'));
 
+            $oPage->columnI->addItem(new EaseHtmlH1Tag('<img src="' . $pltIco . '">' . _('aktivní NRPE pro NRPE Server')));
             $oPage->columnII->addItem(new EaseTWBLinkButton('host.php?action=populate&host_id=' . $host->getID(), _('Oskenovat a sledovat služby'), null, array('onClick' => "$('#preload').css('visibility', 'visible');")));
         }
         if ($host->getDataValue('passive_checks_enabled')) {
-            $oPage->columnI->addItem(new EaseHtmlH1Tag('<img src="' . $pltIco . '">' . _('pasiví NSCA pro NRPE Server')));
+            $oPage->columnI->addItem(new EaseHtmlH1Tag('<img src="' . $pltIco . '">' . _('pasivní NSCA pro NRPE Server')));
         }
         break;
     default:
