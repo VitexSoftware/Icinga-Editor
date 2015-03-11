@@ -39,7 +39,7 @@ $generator->writeConfigs($fileName);
 
 $testing = popen("sudo /usr/sbin/icinga -v /etc/icinga/icinga.cfg", 'r');
 if ($testing) {
-    $ErrorCount = 0;
+    $errorCount = 0;
     $LineNo = 0;
     $WarningCount = null;
     while (!feof($testing)) {
@@ -103,7 +103,7 @@ if ($testing) {
             $errorLine = $oPage->addItem(new EaseHtmlDivTag(null, '<span class="label label-error">' . _('Chyba v konfiguračním souboru'), array('class' => 'alert alert-danger')));
             $errorLine->addItem(new EaseHtmlATag('cfgfile.php?file=' . $keywords[1] . '&line=' . $keywords[3], $keywords[1]));
             $errorLine->addItem($keywords[4]);
-            $ErrorCount++;
+            $errorCount++;
         }
 
         if (strstr($line, 'Warning:')) {
@@ -133,9 +133,9 @@ if ($testing) {
             }
         }
         if (strstr($line, 'Total Errors')) {
-            list($Msg, $ErrorCount) = explode(':', $line);
-            if (intval(trim($ErrorCount))) {
-                $oUser->addStatusMessage(sprintf(_('celkem %s chyb'), $ErrorCount), 'warning');
+            list($Msg, $errorCount) = explode(':', $line);
+            if (intval(trim($errorCount))) {
+                $oUser->addStatusMessage(sprintf(_('celkem %s chyb'), $errorCount), 'warning');
             } else {
                 $oUser->addStatusMessage(_('test proběhl bez chyb'), 'success');
             }
@@ -143,7 +143,7 @@ if ($testing) {
     }
     fclose($testing);
 
-    if (!intval($ErrorCount) && !is_null($WarningCount)) {
+    if (!intval($errorCount) && !is_null($WarningCount)) {
         if (IECfg::reloadIcinga()) {
             $oPage->columnI->addItem(_('Všechny vaše konfigurační soubory byly přegenerovány'));
             $oPage->columnII->addItem(new EaseTWBLinkButton('main.php', _('Hotovo') . ' ' . EaseTWBPart::GlyphIcon('ok-sign'), 'success'));

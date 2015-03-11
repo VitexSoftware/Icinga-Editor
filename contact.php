@@ -26,7 +26,7 @@ if ($oPage->isPosted()) {
     }
 }
 
-    $contact->saveMembers();
+$contact->saveMembers();
 
 $delete = $oPage->getGetValue('delete', 'bool');
 if ($delete == 'true') {
@@ -45,7 +45,7 @@ if (!is_null($contact->getMyKey())) {
     $form->addItem(new EaseHtmlInputHiddenTag($contact->getmyKeyColumn(), $contact->getMyKey()));
 }
 $form->addItem('<br>');
-$form->addItem(new EaseTWSubmitButton(_('Uložit'),'success'));
+$form->addItem(new EaseTWSubmitButton(_('Uložit'), 'success'));
 
 $oPage->columnIII->addItem($contact->deleteButton());
 $oPage->AddCss('
@@ -54,6 +54,45 @@ input.ui-button { width: 100%; }
 if ($contact->getId()) {
     $oPage->columnI->addItem($contact->ownerLinkButton());
 }
+
+
+$service = new IEService;
+$serviceUsages = $service->getColumnsFromMySQL(array($service->getMyKeyColumn(), $service->nameColumn), array('contacts' => '%' . $contact->getName() . '%'), $service->nameColumn, $service->getMyKeyColumn());
+
+
+if (count($serviceUsages)) {
+    $usedBy = new EaseTWBPanel(_('Používající služby'));
+    $listing = $usedBy->addItem(new EaseHtmlUlTag(null, array('class' => 'list-group')));
+    foreach ($serviceUsages as $usage) {
+        $listing->addItem(
+            new EaseHtmlLiTag(
+            new EaseHtmlATag('service.php?service_id=' . $usage['service_id'], $usage[$service->nameColumn])
+            , array('class' => 'list-group-item'))
+        );
+    }
+    $form = $oPage->columnI->addItem($usedBy);
+}
+
+$host = new IEHost;
+$hostUsages = $host->getColumnsFromMySQL(array($host->getMyKeyColumn(), $host->nameColumn), array('contacts' => '%' . $contact->getName() . '%'), $host->nameColumn, $host->getMyKeyColumn());
+
+if (count($hostUsages)) {
+    $usedBy = new EaseTWBPanel(_('Používající hosty'));
+    $listing = $usedBy->addItem(new EaseHtmlUlTag(null, array('class' => 'list-group')));
+    foreach ($hostUsages as $usage) {
+        $listing->addItem(
+            new EaseHtmlLiTag(
+            new EaseHtmlATag('host.php?host_id=' . $usage['host_id'], $usage[$host->nameColumn])
+            , array('class' => 'list-group-item'))
+        );
+    }
+    $form = $oPage->columnI->addItem($usedBy);
+}
+
+
+
+
+
 
 $oPage->addItem(new IEPageBottom());
 

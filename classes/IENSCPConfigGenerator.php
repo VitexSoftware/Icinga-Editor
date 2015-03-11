@@ -138,13 +138,23 @@ del "%ProgramFiles%\NSClient++\nsclient.ini"
                 break;
             case 'linux':
                 $this->nscBatArray = array('
-set NSCLIENT=`which nscp`
+export NSCLIENT=`which nscp`
 ' . $this->nscvar . ' service --stop
-rm /etc/nsclient/nsclient.ini"
+export INI="/etc/nsclient/nsclient.ini"
+rm "$INI"
+
+echo "[/paths]" >> $INI
+echo "" >> $INI
+echo "shared-path=/usr/share/nsclient/" >> $INI
+echo "module-path=/usr/lib/nsclient/modules/" >> $INI
+echo "log-path=/var/log/nsclient" >> $INI
+echo "" >> $INI
+echo "[/settings/log]" >> $INI
+echo "file name=${log-path}/nsclient.log" >> $INI
 ');
                 break;
         }
-        $this->nscBatArray[] = $this->nscvar . ' settings --generate --add-defaults --load-all';
+        $this->nscBatArray[] = $this->nscvar . ' settings --generate';
     }
 
     /**
@@ -179,12 +189,21 @@ rm /etc/nsclient/nsclient.ini"
      */
     function cfgModules()
     {
-        $this->addCfg('/modules', 'CheckDisk', 'enabled');
-        $this->addCfg('/modules', 'CheckEventLog', 'enabled');
+        switch ($this->platform) {
+            case 'windows':
+                $this->addCfg('/modules', 'CheckWMI', 'enabled');
+                $this->addCfg('/modules', 'CheckSystem', 'enabled');
+                $this->addCfg('/modules', 'CheckEventLog', 'enabled');
+                $this->addCfg('/modules', 'CheckDisk', 'enabled');
+                break;
+            case 'linux':
+                $this->addCfg('/modules', 'CheckSystemUnix', 'enabled');
+                break;
+            default:
+                break;
+        }
         $this->addCfg('/modules', 'CheckHelpers', 'enabled');
         $this->addCfg('/modules', 'CheckNSCP', 'enabled');
-        $this->addCfg('/modules', 'CheckSystem', 'enabled');
-        $this->addCfg('/modules', 'CheckWMI', 'enabled');
         $this->addCfg('/modules', 'CheckExternalScripts', 'enabled');
         $this->addCfg('/settings/external scripts/server', 'allow arguments', 'enabled');
     }

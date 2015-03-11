@@ -14,6 +14,8 @@ require_once 'classes/IECfgEditor.php';
 require_once 'classes/IEHostOverview.php';
 require_once 'classes/IEContactTweaker.php';
 require_once 'classes/IEHostSelector.php';
+require_once 'classes/IEHost.php';
+require_once 'classes/IEService.php';
 
 $oPage->onlyForLogged();
 
@@ -62,7 +64,7 @@ $renameForm = new EaseTWBForm('Rename', '?action=rename&amp;contact_id=' . $cont
 $renameForm->addItem(new EaseHtmlInputTextTag('newname'), $contact->getName(), array('class' => 'form-control'));
 $renameForm->addItem(new EaseTWSubmitButton(_('Přejmenovat'), 'success'));
 
-$oPage->columnIII->addItem(new EaseHtmlFieldSet(_('Přejmenování'), $renameForm));
+$oPage->columnIII->addItem(new EaseTWBPanel(_('Přejmenování'), 'default', $renameForm));
 
 //$oPage->columnI->addItem(new IEHostSelector($contact));
 

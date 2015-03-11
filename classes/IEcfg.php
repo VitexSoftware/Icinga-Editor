@@ -1389,6 +1389,11 @@ class IEcfg extends EaseBrick
         }
     }
 
+    /**
+     * Formulář pro přenos konfigurace
+     *
+     * @return \EaseTWBForm
+     */
     public function &transferForm()
     {
         $exportForm = new EaseTWBForm('Export', $this->keyword . '.php');
@@ -1458,7 +1463,7 @@ class IEcfg extends EaseBrick
      * Vyexportuje objekt včetně závistlostí
      *
      * @param strig $target URL cílové instalace Icinga editoru
-     * @return type
+     * @return bool
      */
     public function transferDeps($target, $rels = null)
     {
