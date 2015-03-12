@@ -128,4 +128,9 @@ class IEHostgroup extends IECfg
         }
     }
 
+    public function getMembers()
+    {
+        return $this->getDataValue('members');
+    }
+
 }

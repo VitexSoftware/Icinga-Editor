@@ -17,28 +17,52 @@ $oPage->onlyForLogged();
 $hostgroup = new IEHostgroup($oPage->getRequestValue('hostgroup_id', 'int'));
 
 if ($oPage->isPosted()) {
-    $hostgroup->takeData($_POST);
 
-    if (!$hostgroup->getId()) {
-        $hostgroup->setDataValue('members', array());
-    }
+    switch ($oPage->getRequestValue('action')) {
+        case 'contactAsign':
+            $contact = new IEContact($oPage->getRequestValue('contact_id', 'int'));
+            if ($contact->getId()) {
+                $host = new IEHost;
+                $groupMembers = $hostgroup->getMembers();
+                foreach ($groupMembers as $gmID => $hostName) {
+                    $host->loadFromSQL((int) $gmID);
+                    $host->addMember('contacts', $contact->getId(), $contact->getName());
+                    if ($host->saveToMySQL()) {
+                        $host->addStatusMessage(sprintf(_('<strong>%s</strong> byl přidán mezi kontakty <strong>%s</strong>'), $contact->getName(), $host->getName()), 'success');
+                    } else {
+                        $host->addStatusMessage(sprintf(_('<strong>%s</strong> nebyl přidán mezi kontakty <strong>%s</strong>'), $contact->getName(), $host->getName()), 'warning');
+                    }
+                }
+            } else {
+                $hostgroup->addStatusMessage(_('Chyba přiřazení kontaktu'), 'warning');
+            }
+            break;
+        default :
+            $hostgroup->takeData($_POST);
 
-    $hostgroupID = $hostgroup->saveToMySQL();
-    if (is_null($hostgroupID)) {
-        $oUser->addStatusMessage(_('Skupina hostů nebyla uložena'), 'warning');
-    } else {
-        $oUser->addStatusMessage(_('Skupina hostů byla uložena'), 'success');
+            if (!$hostgroup->getId()) {
+                $hostgroup->setDataValue('members', array());
+            }
+
+            $hostgroupID = $hostgroup->saveToMySQL();
+            if (is_null($hostgroupID)) {
+                $oUser->addStatusMessage(_('Skupina hostů nebyla uložena'), 'warning');
+            } else {
+                $oUser->addStatusMessage(_('Skupina hostů byla uložena'), 'success');
+            }
+            $hostgroup->saveMembers();
+
+            $delete = $oPage->getGetValue('delete', 'bool');
+            if ($delete == 'true') {
+                $hostgroup->delete();
+                $oPage->redirect('hostgroups.php');
+                exit();
+            }
+
+            break;
     }
 }
 
-$hostgroup->saveMembers();
-
-$delete = $oPage->getGetValue('delete', 'bool');
-if ($delete == 'true') {
-    $hostgroup->delete();
-    $oPage->redirect('hostgroups.php');
-    exit();
-}
 
 $oPage->addItem(new IEPageTop(_('Editace skupiny hostů') . ' ' . $hostgroup->getName()));
 
@@ -61,6 +85,10 @@ $oPage->columnIII->addItem($hostgroup->deleteButton());
 if ($hostgroup->getId()) {
     $oPage->columnI->addItem($hostgroup->ownerLinkButton());
 }
+
+
+$operations = $oPage->columnIII->addItem(new EaseTWBPanel(_('Hromadné operace')), 'success');
+$operations->addItem(new IEContactAsignForm);
 
 $oPage->addItem(new IEPageBottom());
 

@@ -303,6 +303,9 @@ echo "file name=${log-path}/nsclient.log" >> $INI
         }
     }
 
+    /**
+     * Spustí testovací režim a po jeho ukončení nastartuje službu
+     */
     public function cfgEnding()
     {
         $this->nscBatArray[] = '
@@ -311,30 +314,41 @@ echo "file name=${log-path}/nsclient.log" >> $INI
 ';
     }
 
-    public function getCfg()
+    /**
+     * vrací vyrendrovaný konfigurační skript
+     */
+    public function getCfg($send = TRUE)
     {
         $nscbat = implode('', $this->nscBatArray);
-        header('Content-Description: File Transfer');
-        header('Content-Type: application/octet-stream');
-        header('Content-Transfer-Encoding: binary');
-        header('Expires: 0');
-        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-        header('Pragma: public');
-
+        if ($send) {
+            header('Content-Description: File Transfer');
+            header('Content-Type: application/octet-stream');
+            header('Content-Transfer-Encoding: binary');
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+            header('Pragma: public');
+        }
         switch ($this->platform) {
             case 'windows':
-                header('Content-Disposition: attachment; filename=' . $this->host->getName() . '_nscp.bat');
+                if ($send) {
+                    header('Content-Disposition: attachment; filename=' . $this->host->getName() . '_nscp.bat');
+                }
                 $nscbat = str_replace("\n", "\r\n", $nscbat);
                 break;
             case 'linux':
-                header('Content-Disposition: attachment; filename=' . $this->host->getName() . '_nscp.sh');
+                if ($send) {
+                    header('Content-Disposition: attachment; filename=' . $this->host->getName() . '_nscp.sh');
+                }
                 break;
-
             default:
                 break;
         }
-        header('Content-Length: ' . strlen($nscbat));
-        echo $nscbat;
+        if ($send) {
+            header('Content-Length: ' . strlen($nscbat));
+            echo $nscbat;
+        } else {
+            return $nscbat;
+        }
     }
 
 }
