@@ -44,6 +44,7 @@ class IECfgEditor extends EaseContainer
         if ($onlyColumn) {
             $this->insertWidget($this, $onlyColumn, $this->objectEdited->getDataValue($onlyColumn));
         } else {
+
             if (EaseShared::user()->getSettingValue('admin')) {
                 $this->fullEditor();
             } else {

@@ -130,6 +130,8 @@ class IEcfg extends EaseBrick
             } else {
                 $this->loadFromMySQL($itemID);
             }
+        } else {
+            $this->setDataValue($this->userColumn, $this->user->getID());
         }
 
         if ($this->allowTemplating) {
@@ -1302,10 +1304,10 @@ class IEcfg extends EaseBrick
                             $row[$key] = '<em>NULL</em>';
                         } else {
                             if ($value === '0') {
-                                $row[$key] = EaseTWBPart::glyphIcon('unchecked');
+                                $row[$key] = EaseTWBPart::glyphIcon('unchecked')->__toString();
                             } else {
                                 if ($value === '1') {
-                                    $row[$key] = EaseTWBPart::glyphIcon('check');
+                                    $row[$key] = EaseTWBPart::glyphIcon('check')->__toString();
                                 }
                             }
                         }

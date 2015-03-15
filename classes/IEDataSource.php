@@ -265,12 +265,22 @@ class IEDataSource extends EaseBrick
         return json_encode($jsonData);
     }
 
+    /**
+     * Vrací CSV
+     *
+     * @param type $queryRaw
+     */
     public function getCsv($queryRaw)
     {
         $transactions = self::getListing($queryRaw, 'csv');
         $this->getCSVFile($transactions);
     }
 
+    /**
+     * Vrací PDF
+     *
+     * @param string $queryRaw
+     */
     public function getPdf($queryRaw)
     {
         $transactions = self::getListing($queryRaw);
