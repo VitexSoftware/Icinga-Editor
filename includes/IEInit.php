@@ -8,6 +8,16 @@
  */
 require_once 'includes/Configure.php';
 
+function __autoload($class_name)
+{
+    $class_file = 'classes/' . $class_name . '.php';
+    if (file_exists($class_file)) {
+        include $class_file;
+        return TRUE;
+    }
+    return FALSE;
+}
+
 $language = "cs_CZ";
 $codeset = "cs_CZ.UTF-8";
 $domain = "messages";
