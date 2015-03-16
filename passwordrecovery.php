@@ -34,8 +34,8 @@ if ($emailTo) {
         $userLogin = $userFound[0]['login'];
         $newPassword = $oPage->randomString(8);
 
-        $PassChanger = new EaseUser($userID);
-        $PassChanger->passwordChange($newPassword);
+        $passChanger = new EaseUser($userID);
+        $passChanger->passwordChange($newPassword);
 
         $email = $oPage->addItem(new EaseMail($userEmail,'Icinga Editor -'. _('Nové heslo pro').' ' . $_SERVER['SERVER_NAME']));
         $email->addItem(_("Tvoje přihlašovací údaje byly změněny:\n"));

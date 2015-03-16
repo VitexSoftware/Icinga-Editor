@@ -39,7 +39,7 @@ if (!isset($_SESSION['User']) || !is_object($_SESSION['User'])) {
 
 /**
  * Objekt uživatele VSUser nebo VSAnonym
- * @global EaseUser
+ * @global EaseUser|IEUser
  */
 $oUser = & EaseShared::user();
 $oUser->SettingsColumn = 'settings';

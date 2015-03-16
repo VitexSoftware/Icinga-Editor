@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Ease/EaseUser.php';
+require_once 'classes/IEUser.php';
 
 /**
  * Uživatel Icinga Editoru

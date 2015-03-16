@@ -21,13 +21,13 @@ system('rm ' . constant('CFG_GENERATED') . '/*');
 $originalUserID = $oUser->getUserID();
 
 $users = EaseShared::user()->getAllFromMySQL();
-$users[] = array('id'=>null,'user_id'=>null,'login'=>'_icinga');
+$users[] = array('id' => null, 'user_id' => null, 'login' => '_icinga');
 foreach ($users as $userData) {
-    EaseShared::user(new EaseUser(intval($userData['id'])));
+    EaseShared::user(new IEUser(intval($userData['id'])));
     EaseShared::user()->loginSuccess();
 
     $fileName = $oUser->getUserLogin() . '.cfg';
-    if($fileName == '.cfg'){
+    if ($fileName == '.cfg') {
         $fileName = '_icinga.cfg';
     }
 
@@ -42,7 +42,7 @@ foreach ($users as $userData) {
     $generator = new IEImporter();
     $generator->writeConfigs($fileName);
 }
-EaseShared::user(new EaseUser($originalUserID));
+EaseShared::user(new IEUser($originalUserID));
 EaseShared::user()->loginSuccess();
 $oUser->setSettingValue('admin', TRUE);
 

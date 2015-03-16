@@ -14,6 +14,7 @@
  */
 class IETextInputSaver extends EaseLabeledTextInput
 {
+
     /**
      * Pracujeme s tabulkou mains
      * @var string
@@ -89,15 +90,15 @@ class IETextInputSaver extends EaseLabeledTextInput
 
     /**
      * Přiřadí objektu uživatele a nastaví DB
-     * @param  EaseUser     $User
+     * @param  EaseUser     $user
      * @param  object|mixed $TargetObject
      * @return boolen
      */
-    public function setUpUser(&$User, &$TargetObject = NULL)
+    public function setUpUser(&$user, &$TargetObject = NULL)
     {
-        $this->SetMyKey($User->GetUserID());
+        $this->SetMyKey($user->GetUserID());
 
-        return parent::SetUpUser($User, $TargetObject);
+        return parent::SetUpUser($user, $TargetObject);
     }
 
 }
