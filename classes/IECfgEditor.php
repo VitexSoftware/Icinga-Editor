@@ -9,6 +9,7 @@ require_once 'IEGroupMembersEditor.php';
 require_once 'IEUserSelect.php';
 require_once 'EaseTWBSlider.php';
 require_once 'IEPlatformSelector.php';
+require_once 'IEYesNoSwitch.php';
 
 /**
  * Description of IECfgEditor
@@ -50,6 +51,12 @@ class IECfgEditor extends EaseContainer
             } else {
                 $this->lightEditor();
             }
+
+            if ($cfgObject->getId()) {
+                $this->addItem(new EaseHtmlInputHiddenTag($cfgObject->getmyKeyColumn(), $cfgObject->getMyKey(), array('class' => 'keyId')));
+            }
+
+            $this->addItem(new EaseHtmlInputHiddenTag('class', get_class($cfgObject)));
         }
     }
 
@@ -79,7 +86,8 @@ class IECfgEditor extends EaseContainer
                 break;
             case 'TINYINT':
             case 'BOOL':
-                $fieldBlock->addItem(new EaseLabeledCheckbox($fieldName, $value, $keywordInfo['title'], array('title' => $fieldName)));
+                $fieldBlock->addItem(new EaseTWBFormGroup($keywordInfo['title'], new IEYesNoSwitch($fieldName, $value, 'on', array('id' => $keywordInfo['title'] . 'sw'))));
+
                 break;
             case 'FLAGS':
                 $values = array();
@@ -323,15 +331,16 @@ class IECfgEditor extends EaseContainer
 
             $mainFieldBlock = $this->addItem(new EaseHtmlDivTag($fieldName . '-block', null, array('class' => 'fieldblock')));
 
-            $fieldLabel = $mainFieldBlock->addItem(new EaseHtmlDivTag(null, '<a name="' . $fieldName . '">' . $fieldName . '</a>&nbsp;', array('class' => 'FieldLabel mandatory', 'onClick' => "$('#" . $fieldName . "-controls').toggle('slow');")));
+            /**
+              $fieldLabel = $mainFieldBlock->addItem(new EaseHtmlDivTag(null, '<a name="' . $fieldName . '">' . $fieldName . '</a>&nbsp;', array('class' => 'FieldLabel mandatory', 'onClick' => "$('#" . $fieldName . "-controls').toggle('slow');")));
 
-            if (!$required || !(int) $this->objectEdited->getDataValue('register')) {
-                $fieldLabel->addItem(new EaseHtmlATag('#', EaseTWBPart::GlyphIcon('remove'), array('onClick' => '$(\'#' . $fieldName . '-block\').empty().html(\'<input type=hidden name=' . $fieldName . ' value=NULL><div class=FieldLabel>' . $fieldName . '</div>\'); return false;')));
-                $fieldLabel->setTagClass('FieldLabel');
-            } else {
-                $mainFieldBlock->setTagClass('fieldblock req');
-            }
-
+              if (!$required || !(int) $this->objectEdited->getDataValue('register')) {
+              $fieldLabel->addItem(new EaseHtmlATag('#', EaseTWBPart::GlyphIcon('remove'), array('onClick' => '$(\'#' . $fieldName . '-block\').empty().html(\'<input type=hidden name=' . $fieldName . ' value=NULL><div class=FieldLabel>' . $fieldName . '</div>\'); return false;')));
+              $fieldLabel->setTagClass('FieldLabel');
+              } else {
+              $mainFieldBlock->setTagClass('fieldblock req');
+              }
+             */
             $fieldBlock = $mainFieldBlock->addItem(new EaseHtmlDivTag($fieldName . '-controls'));
 
             if (!$this->objectEdited->isOwnedBy() && !EaseShared::user()->getSettingValue('admin')) { //Editovat může pouze vlastník

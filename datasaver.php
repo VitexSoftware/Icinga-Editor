@@ -24,22 +24,26 @@ if (file_exists('classes/' . $saverClass . '.php')) {
     $oUser->addStatusMessage(_('Načítání souboru: classes/' . $saverClass . '.php'), 'warning');
 }
 
-$Field = $oPage->getRequestValue('Field');
+$field = $oPage->getRequestValue('Field');
 $value = $oPage->getRequestValue('Value');
+$key = $oPage->getRequestValue('Key', 'int');
 
-if (is_null($saverClass) || is_null($Field) || is_null($value)) {
+if (is_null($saverClass) || is_null($field) || is_null($value) || is_null($key)) {
+    header('HTTP/1.0 400 Bad Request', 400);
     die(_('Chybné volání'));
 }
 
-$Saver = new $saverClass($Field);
-$Saver->setUpUser($oUser);
-$Saver->setDataValue($Field, $value);
+$saver = new $saverClass();
+//$saver->setUpUser($oUser);
+$saver->setMyKey($key);
+$saver->takeData(array($field => $value));
 
-if (is_null($Saver->SaveToMySql())) {
+
+if (is_null($saver->saveToMySql())) {
     header('HTTP/1.0 501 Not Implemented', 501);
-    $oUser->addStatusMessage(_('Chyba ukládání do databáze: ') . ' ' . $Saver->myDbLink->ErrorText . ': ' .
+    $oUser->addStatusMessage(_('Chyba ukládání do databáze: ') . ' ' . $saver->myDbLink->ErrorText . ': ' .
         _('Třída') . ': <strong>' . $saverClass . '</strong> ' .
-        _('Tabulka') . ': <strong>' . $Saver->myTable . '</strong> ' .
-        _('Pole') . ': <strong>' . $Field . '</strong> ' .
-        _('Hodnota') . ': <strong>' . $value . '</strong> <tt>' . $Saver->myDbLink->LastQuery . '</tt>', 'error');
+        _('Tabulka') . ': <strong>' . $saver->myTable . '</strong> ' .
+        _('Pole') . ': <strong>' . $field . '</strong> ' .
+        _('Hodnota') . ': <strong>' . $value . '</strong> <tt>' . $saver->myDbLink->LastQuery . '</tt>', 'error');
 }

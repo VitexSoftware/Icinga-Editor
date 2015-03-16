@@ -131,7 +131,7 @@ class IEcfg extends EaseBrick
                 $this->loadFromMySQL($itemID);
             }
         } else {
-            $this->setDataValue($this->userColumn, $this->user->getID());
+            // $this->setDataValue($this->userColumn, $this->user->getID());
         }
 
         if ($this->allowTemplating) {
@@ -377,6 +377,7 @@ class IEcfg extends EaseBrick
         unset($data['add']);
         unset($data['del']);
         unset($data['Save']);
+        unset($data['class']);
         unset($data['CheckBoxGroups']);
         foreach ($data as $key => $value) {
             if ($value === 'NULL') {
@@ -396,18 +397,31 @@ class IEcfg extends EaseBrick
         }
 
         foreach ($this->useKeywords as $fieldName => $fieldType) {
-
+            if (!isset($data[$fieldName])) {
+                continue;
+            }
             switch ($fieldType) {
                 case 'BOOL':
-                    if (isset($data[$fieldName]) && ($data[$fieldName] !== null)) {
-                        if (($data[$fieldName] != '0') || ($data[$fieldName] == true )) {
-                            $data[$fieldName] = (bool) 1;
-                        } else {
-                            $data[$fieldName] = (bool) 0;
+                    if (is_string($data[$fieldName])) {
+                        switch ($data[$fieldName]) {
+                            case '1':
+                            case 'true':
+                            case 'on':
+                            case 'y':
+                                $data[$fieldName] = (bool) 1;
+                                break;
+                            case '0':
+                            case 'false':
+                            case 'off':
+                            case 'n':
+                            default:
+                                $data[$fieldName] = (bool) 0;
+                                break;
                         }
                     } else {
-                        $data[$fieldName] = (bool) 0;
+                        $data[$fieldName] = (bool) $data[$fieldName];
                     }
+
 
                     break;
                 case 'IDLIST':
@@ -420,9 +434,9 @@ class IEcfg extends EaseBrick
             }
         }
 
-        if (isset($this->userColumn) && !isset($data[$this->userColumn]) || !strlen($data[$this->userColumn])) {
-            $data[$this->userColumn] = EaseShared::user()->getUserID();
-        }
+//        if (isset($this->userColumn) && !isset($data[$this->userColumn]) || !strlen($data[$this->userColumn])) {
+//            $data[$this->userColumn] = EaseShared::user()->getUserID();
+//        }
 
         return parent::takeData($data, $dataPrefix);
     }
@@ -547,9 +561,12 @@ class IEcfg extends EaseBrick
             $data = $this->getData();
         }
         foreach ($this->useKeywords as $keyWord => $columnType) {
-            if (isset($data[$keyWord]) && !is_null($data[$keyWord]) && !is_array($data[$keyWord]) && !strlen($data[$keyWord])) {
-                $data[$keyWord] = null;
+            if (!isset($data[$keyWord])) {
+                continue;
             }
+//            if (isset($data[$keyWord]) && !is_null($data[$keyWord]) && !is_array($data[$keyWord]) && !strlen($data[$keyWord]) && is_bool($data[$keyWord])) {
+//                $data[$keyWord] = null;
+//            }
             switch ($columnType) {
                 case 'IDLIST':
                     if (isset($data[$keyWord]) && is_array($data[$keyWord])) {

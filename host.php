@@ -193,7 +193,6 @@ switch ($oPage->getRequestValue('action')) {
         $hostEdit = new IECfgEditor($host);
         $form = $oPage->columnII->addItem(new EaseHtmlForm('Host', 'host.php', 'POST', $hostEdit, array('class' => 'form-horizontal')));
         $form->setTagID($form->getTagName());
-        $form->addItem(new EaseHtmlInputHiddenTag($host->getmyKeyColumn(), $host->getMyKey()));
         $form->addItem('<br>');
         $form->addItem(new EaseTWSubmitButton(_('Uložit'), 'success'));
         $oPage->addCss('
