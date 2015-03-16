@@ -73,6 +73,9 @@ switch ($host->getDataValue('platform')) {
         break;
 }
 
+$cfgGenerator = new IENSCPConfigGenerator($host);
+$oPage->addItem(new EaseTWBContainer('<pre>' . $cfgGenerator->getCfg(false) . '</pre>', array('font-face' => 'fixed')));
+
 $oPage->addItem(new IEPageBottom());
 
 $oPage->draw();

@@ -66,6 +66,7 @@ class IENSCPConfigGenerator extends EaseAtom
         $preferences = new IEPreferences;
         $this->prefs = $preferences->getPrefs();
         $this->cfgInit();
+        $this->cfgGeneralSet();
 
         $this->hostActiveMode = (boolean) $host->getDataValue('active_checks_enabled');
         if ($this->hostActiveMode) {
@@ -155,6 +156,14 @@ echo "file name=${log-path}/nsclient.log" >> $INI
                 break;
         }
         $this->nscBatArray[] = $this->nscvar . ' settings --generate';
+    }
+
+    /**
+     * Nakonfiguruje režim pasivních testů odesílaných přez NSCA
+     */
+    function cfgGeneralSet()
+    {
+        $this->addCfg('/settings/external scripts', 'timeout', '3600');
     }
 
     /**
@@ -275,10 +284,10 @@ echo "file name=${log-path}/nsclient.log" >> $INI
             $serviceParams = $service['check_command-params'];
             switch ($this->platform) {
                 case 'windows':
-                    $this->nscBatArray[] = "\nREM #" . $service['service_id'] . ' ' . $serviceName . "\n";
+                    $this->nscBatArray[] = "\n\nREM #" . $service['service_id'] . ' ' . $serviceName . "\n";
                     break;
                 case 'linux':
-                    $this->nscBatArray[] = "\n# #" . $service['service_id'] . ' ' . $serviceName . "\n";
+                    $this->nscBatArray[] = "\n\n# #" . $service['service_id'] . ' ' . $serviceName . "\n";
                     break;
                 default:
                     break;
@@ -298,7 +307,7 @@ echo "file name=${log-path}/nsclient.log" >> $INI
 
             if ($this->hostPassiveMode) {
                 $this->addCfg('/settings/scheduler/schedules/' . str_replace(' ', '_', $serviceName) . '-' . EaseShared::user()->getUserLogin(), 'command', str_replace(' ', '_', $serviceName));
-                $this->addCfg('/settings/scheduler/schedules/' . str_replace(' ', '_', $serviceName) . '-' . EaseShared::user()->getUserLogin(), 'interval', $service['check_interval'] . 's');
+                $this->addCfg('/settings/scheduler/schedules/' . str_replace(' ', '_', $serviceName) . '-' . EaseShared::user()->getUserLogin(), 'interval', $service['check_interval'] . 'm');
             }
         }
     }
