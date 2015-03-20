@@ -341,7 +341,7 @@ class IECfgEditor extends EaseContainer
               $mainFieldBlock->setTagClass('fieldblock req');
               }
              */
-//            $fieldBlock = $mainFieldBlock->addItem(new EaseHtmlDivTag($fieldName . '-controls'));
+            $fieldBlock = $mainFieldBlock->addItem(new EaseHtmlDivTag($fieldName . '-controls'));
 
             if (!$this->objectEdited->isOwnedBy() && !EaseShared::user()->getSettingValue('admin')) { //Editovat může pouze vlastník
                 if ($this->objectEdited->getId()) {
