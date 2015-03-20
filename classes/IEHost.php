@@ -133,8 +133,8 @@ class IEHost extends IECfg
       'max_check_attempts' => array('title' => 'maximální počet pokusů'),
       'check_interval' => array('title' => 'interval otestování'),
       'retry_interval' => array('title' => 'interval dalšího pokusu o test'),
-      'active_checks_enabled' => array('title' => 'povolit aktivní testy'),
-      'passive_checks_enabled' => array('title' => 'povolit pasivní testy'),
+      'active_checks_enabled' => array('title' => 'povolit aktivní testy', 'mandatory' => true),
+      'passive_checks_enabled' => array('title' => 'povolit pasivní testy', 'mandatory' => true),
       'check_period' => array(
         'title' => 'testovací perioda',
         'refdata' => array(
