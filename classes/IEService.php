@@ -142,8 +142,8 @@ class IEService extends IECfg
       ),
       'check_interval' => array('title' => 'interval testu', 'required' => true),
       'retry_interval' => array('title' => 'interval opakování testu', 'required' => true),
-      'active_checks_enabled' => array('title' => ''),
-      'passive_checks_enabled' => array('title' => ''),
+      'active_checks_enabled' => array('title' => 'Aktivní režim', 'required' => true),
+      'passive_checks_enabled' => array('title' => 'Pasivní režim', 'required' => true),
       'check_period' => array('title' => 'perioda provádění testu', 'required' => true,
         'refdata' => array(
           'table' => 'timeperiod',
