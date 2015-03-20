@@ -357,8 +357,8 @@ class IECfgEditor extends EaseContainer
             }
 
             if (isset($template)) {
-                $TempValue = $template->getDataValue($fieldName);
-                if (!is_null($TempValue) && ($fieldName != $this->objectEdited->nameColumn) && !$required) { //Skrýt nedůležité položky
+                $tempValue = $template->getDataValue($fieldName);
+                if (!is_null($tempValue) && ($fieldName != $this->objectEdited->nameColumn) && !$required) { //Skrýt nedůležité položky
                     EaseShared::webPage()->addJavaScript("$('#" . $fieldName . "-controls').hide();", null, true);
                 }
             }
@@ -389,10 +389,10 @@ class IECfgEditor extends EaseContainer
             }
         },
   rules: {';
-            foreach ($this->reqFields as $FieldName => $FieldType) {
-                $FRules[] = "\n\"$FieldName\": \"required\"";
+            foreach ($this->reqFields as $fieldName => $fieldType) {
+                $fRules[] = "\n\"$fieldName\": \"required\"";
             }
-            $Rules.= implode(',', $FRules) . "\n}});\n";
+            $Rules.= implode(',', $fRules) . "\n}});\n";
 
             //$Rules = ' $("#' . $this->parentObject->getTagProperty('name') . '").validate();';
 
