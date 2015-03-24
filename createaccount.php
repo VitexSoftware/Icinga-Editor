@@ -164,6 +164,7 @@ if ($oPage->isPosted()) {
 $oPage->addCss('input.ui-button { width: 220px; }');
 
 $oPage->addItem(new IEPageTop(_('Registrace')));
+$oPage->addPageColumns();
 
 $oPage->columnI->addItem(new EaseHtmlH2Tag(_('Vítejte v registraci')));
 $oPage->columnI->addItem(

@@ -20,21 +20,21 @@ if ($login) {
     EaseShared::user(new IEUser());
     EaseShared::user()->SettingsColumn = 'settings';
     if ($oUser->tryToLogin($_POST)) {
-        if ($oUser->getUserID()==1) {
-            $oUser->setSettingValue('admin',TRUE);
+        if ($oUser->getUserID() == 1) {
+            $oUser->setSettingValue('admin', TRUE);
         }
-        $oUser->setSettingValue('plaintext',$_POST[$oUser->passwordColumn]);
+        $oUser->setSettingValue('plaintext', $_POST[$oUser->passwordColumn]);
         $oPage->redirect('main.php');
         exit;
     }
 } else {
 
-    $ForceID = $oPage->getRequestValue('force_id','int');
+    $ForceID = $oPage->getRequestValue('force_id', 'int');
     if (!is_null($ForceID)) {
         EaseShared::user(new IEUser($ForceID));
         EaseShared::user()->SettingsColumn = 'settings';
-        $oUser->setSettingValue('admin',TRUE);
-        $oUser->addStatusMessage(_('Přihlášen jako: ').$oUser->getUserLogin(),'success');
+        $oUser->setSettingValue('admin', TRUE);
+        $oUser->addStatusMessage(_('Přihlášen jako: ') . $oUser->getUserLogin(), 'success');
         EaseShared::user()->loginSuccess();
         $oPage->redirect('main.php');
         exit;
@@ -44,6 +44,7 @@ if ($login) {
 }
 
 $oPage->addItem(new IEPageTop(_('Přihlaš se')));
+$oPage->addPageColumns();
 
 $loginFace = new EaseHtmlDivTag('LoginFace');
 
@@ -59,13 +60,13 @@ $oPage->columnII->addItem($loginFace);
 $oPage->columnI->addItem(new EaseTWBLinkButton('passwordrecovery.php', _('Obnova hesla')));
 
 /*
-$oPage->columnII->addItem(new EaseHtmlDivTag('TwitterAuth', IETwitter::AuthButton('twauth.php')));
+  $oPage->columnII->addItem(new EaseHtmlDivTag('TwitterAuth', IETwitter::AuthButton('twauth.php')));
 
-$oPage->columnIII->addItem( '
-<a class="twitter-timeline"  href="https://twitter.com/VSMonitoring" data-widget-id="255378607919210497">Tweets by @VSMonitoring</a>
-<script>!function (d,s,id) {var js,fjs=d.getElementsByTagName(s)[0];if (!d.getElementById(id)) {js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-' );
-*/
+  $oPage->columnIII->addItem( '
+  <a class="twitter-timeline"  href="https://twitter.com/VSMonitoring" data-widget-id="255378607919210497">Tweets by @VSMonitoring</a>
+  <script>!function (d,s,id) {var js,fjs=d.getElementsByTagName(s)[0];if (!d.getElementById(id)) {js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+  ' );
+ */
 
 $oPage->addItem(new IEPageBottom());
 

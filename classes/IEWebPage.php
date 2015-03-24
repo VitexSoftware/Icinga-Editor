@@ -1,6 +1,6 @@
 <?php
 
-define('IE_VERSION', '0.96');
+define('IE_VERSION', '0.107');
 
 /**
  * Třídy pro vykreslení stránky
@@ -69,16 +69,16 @@ class IEWebPage extends EaseTWBWebPage
                 padding-top: 60px;
                 padding-bottom: 40px;
             }');
-        $this->head->addItem('<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://twitter.github.com/bootstrap/assets/ico/apple-touch-icon-144-precomposed.png">');
-        $this->head->addItem('<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://twitter.github.com/bootstrap/assets/ico/apple-touch-icon-114-precomposed.png">');
-        $this->head->addItem('<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://twitter.github.com/bootstrap/assets/ico/apple-touch-icon-72-precomposed.png">');
-        $this->head->addItem('<link rel="apple-touch-icon-precomposed" href="http://twitter.github.com/bootstrap/assets/ico/apple-touch-icon-57-precomposed.png">');
-        $this->head->addItem('<link rel="shortcut icon" href="favicon.ico">');
-
+//        $this->head->addItem('<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://twitter.github.com/bootstrap/assets/ico/apple-touch-icon-144-precomposed.png">');
+//        $this->head->addItem('<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://twitter.github.com/bootstrap/assets/ico/apple-touch-icon-114-precomposed.png">');
+//        $this->head->addItem('<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://twitter.github.com/bootstrap/assets/ico/apple-touch-icon-72-precomposed.png">');
+//        $this->head->addItem('<link rel="apple-touch-icon-precomposed" href="http://twitter.github.com/bootstrap/assets/ico/apple-touch-icon-57-precomposed.png">');
+//        $this->head->addItem('<link rel="shortcut icon" href="favicon.ico">');
         $this->container = $this->addItem(new EaseHtmlDivTag(null, null, array('class' => 'container')));
+    }
 
-        $this->heroUnit = $this->container->addItem(new EaseHtmlDivTag('heroUnit', null, array('class' => 'jumbotron')));
-
+    function addPageColumns()
+    {
         $row = $this->container->addItem(new EaseHtmlDivTag(null, null, array('class' => 'row')));
 
         $this->columnI = $row->addItem(new EaseHtmlDivTag(null, null, array('class' => 'col-md-4')));
@@ -173,8 +173,8 @@ class IEBootstrapMenu extends EaseTWBNavbar
 <a class="dropdown-toggle" href="login.php" data-toggle="dropdown"><i class="icon-circle-arrow-left"></i> ' . _('Přihlášení') . '<strong class="caret"></strong></a>
 <div class="dropdown-menu" style="padding: 15px; padding-bottom: 0px; left: -120px;">
 <form method="post" class="navbar-form navbar-left" action="login.php" accept-charset="UTF-8">
-<input style="margin-bottom: 15px;" type="text" placeholder="' . _('login') . '" id="username" name="login">
-<input style="margin-bottom: 15px;" type="password" placeholder="' . _('Heslo') . '" id="password" name="password">
+<input class="form-control" style="margin-bottom: 15px;" type="text" placeholder="' . _('login') . '" id="username" name="login">
+<input class="form-control" style="margin-bottom: 15px;" type="password" placeholder="' . _('Heslo') . '" id="password" name="password">
 <!-- input style="float: left; margin-right: 10px;" type="checkbox" name="remember-me" id="remember-me" value="1">
 <label class="string optional" for="remember-me"> ' . _('zapamatuj si mne') . '</label -->
 <input class="btn btn-primary btn-block" type="submit" id="sign-in" value="' . _('přihlásit') . '">
@@ -231,9 +231,6 @@ class IEPageBottom extends EaseTWBContainer
      */
     public function finalize()
     {
-        if (!count($this->webPage->heroUnit->pageParts)) {
-            unset($this->webPage->container->pageParts['EaseHtmlDivTag@heroUnit']);
-        };
         $this->SetTagID('footer');
         $this->addItem('<hr>');
         $this->addJavaScript('!function (d,s,id) {var js,fjs=d.getElementsByTagName(s)[0];if (!d.getElementById(id)) {js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");');

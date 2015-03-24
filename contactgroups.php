@@ -14,17 +14,18 @@ require_once 'classes/IEContactgroup.php';
 $oPage->onlyForLogged();
 
 $oPage->addItem(new IEPageTop(_('Přehled kontaktů')));
+$oPage->addPageColumns();
 
 $Contactgroup = new IEContactgroup();
 $pocContactgroup = $Contactgroup->getMyRecordsCount();
 
 if ($pocContactgroup) {
     $Contactgroups = $Contactgroup->myDbLink->queryToArray('SELECT ' . $Contactgroup->getmyKeyColumn() . ', contactgroup_name, DatSave FROM ' . $Contactgroup->myTable . ' WHERE user_id=' . $oUser->getUserID(), 'contactgroup_id');
-    $cntList = new EaseHtmlTableTag(null,array('class'=>'table'));
+    $cntList = new EaseHtmlTableTag(null, array('class' => 'table'));
 
     $cid = 1;
     foreach ($Contactgroups as $cId => $cInfo) {
-        $cntList->addRowColumns(array($cid++, new EaseHtmlATag('contactgroup.php?contactgroup_id=' . $cInfo['contactgroup_id'], $cInfo['contactgroup_name'].' <i class="icon-edit"></i>')));
+        $cntList->addRowColumns(array($cid++, new EaseHtmlATag('contactgroup.php?contactgroup_id=' . $cInfo['contactgroup_id'], $cInfo['contactgroup_name'] . ' <i class="icon-edit"></i>')));
     }
     $oPage->columnII->addItem($cntList);
 } else {

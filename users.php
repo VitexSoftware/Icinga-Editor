@@ -14,6 +14,7 @@ require_once 'classes/IEHost.php';
 $oPage->onlyForLogged();
 
 $oPage->addItem(new IEPageTop(_('Přehled uživatelů')));
+$oPage->addPageColumns();
 
 $user = new IEUser;
 

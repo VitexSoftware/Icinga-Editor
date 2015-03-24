@@ -23,7 +23,7 @@ $oPage->addJavascript('$("#PassworRecovery").validate({
       email: true
     }
   }
-});',null,true);
+});', null, true);
 
 if ($emailTo) {
     $oPage->takemyTable();
@@ -37,7 +37,7 @@ if ($emailTo) {
         $passChanger = new EaseUser($userID);
         $passChanger->passwordChange($newPassword);
 
-        $email = $oPage->addItem(new EaseMail($userEmail,'Icinga Editor -'. _('Nové heslo pro').' ' . $_SERVER['SERVER_NAME']));
+        $email = $oPage->addItem(new EaseMail($userEmail, 'Icinga Editor -' . _('Nové heslo pro') . ' ' . $_SERVER['SERVER_NAME']));
         $email->addItem(_("Tvoje přihlašovací údaje byly změněny:\n"));
 
         $email->addItem(' Login: ' . $userLogin . "\n");
@@ -55,6 +55,7 @@ if ($emailTo) {
 }
 
 $oPage->addItem(new IEPageTop(_('Obnova zapomenutého hesla')));
+$oPage->addPageColumns();
 
 if (!$success) {
     $oPage->columnI->addItem('<h1>Zapoměl jsem své heslo!</h1>');
@@ -62,7 +63,7 @@ if (!$success) {
     $oPage->columnIII->addItem(_('Zapoměl jste heslo? Vložte svou e-mailovou adresu, kterou jste zadal při registraci a my Vám pošleme nové.'));
 
     $EmailForm = $oPage->columnII->addItem(new EaseHtmlForm('PassworRecovery'));
-    $EmailForm->addItem(new EaseLabeledTextInput('Email', null,_('Email'), array('size' => '40')));
+    $EmailForm->addItem(new EaseLabeledTextInput('Email', null, _('Email'), array('size' => '40')));
     $EmailForm->addItem(new EaseJQuerySubmitButton('ok', _('Zaslat nové heslo')));
 
     if (isset($_POST)) {

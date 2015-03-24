@@ -26,6 +26,7 @@ if ($oPage->isPosted()) {
 }
 
 $oPage->addItem(new IEPageTop(_('Předvolby')));
+$oPage->addPageColumns();
 
 $form = new IEPreferencesForm('prefs');
 $form->fillUp($prefs->getPrefs());

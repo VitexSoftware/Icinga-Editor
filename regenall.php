@@ -15,6 +15,7 @@ require_once 'classes/IEImporter.php';
 $oPage->onlyForAdmin();
 
 $oPage->addItem(new IEPageTop(_('Přegenerování veškeré konfigurace')));
+$oPage->addPageColumns();
 
 system('rm ' . constant('CFG_GENERATED') . '/*');
 

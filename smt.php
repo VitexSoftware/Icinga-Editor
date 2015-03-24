@@ -16,6 +16,7 @@ $service = new IEService($oPage->getRequestValue('service_id', 'int'));
 
 
 $oPage->addItem(new IEPageTop(_('Migrace služby') . ' ' . $service->getName()));
+$oPage->addPageColumns();
 
 $oPage->columnII->addItem(new EaseHtmlH3Tag(array(IEHostOverview::platformIcon($service->getDataValue('platform')), $service->getName())));
 

@@ -75,6 +75,7 @@ if ($serviceName) {
 
 
 $oPage->addItem(new IEPageTop(_('Průvodce založením pasivně sledované služby')));
+$oPage->addPageColumns();
 
 $oPage->columnI->addItem(
     new EaseTWBPanel(_('Aktivní checky'), 'info', _('senzor (nrpe/nscp.exe) běží na vzdáleném hostu, a výsledky nadefinovaných testů zasílá protokolem NRPE na monitorovací server.'))

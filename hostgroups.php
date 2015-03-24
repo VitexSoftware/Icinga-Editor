@@ -14,20 +14,21 @@ require_once 'classes/IEHostgroup.php';
 $oPage->onlyForLogged();
 
 $oPage->addItem(new IEPageTop(_('Přehled skupin hostů')));
+$oPage->addPageColumns();
 
 $hostgroup = new IEHostgroup();
 $pocContactgroup = $hostgroup->getMyRecordsCount();
 
 if ($pocContactgroup) {
-    $hgList = $hostgroup->getListing(null,false);
+    $hgList = $hostgroup->getListing(null, false);
 
     foreach ($hgList as $cId => $cInfo) {
-        $cntList = new EaseHtmlDivTag('listing',null,array('class'=>'well'));
+        $cntList = new EaseHtmlDivTag('listing', null, array('class' => 'well'));
         $hostgroup = new IEHostgroup($cId);
-        $cntList->addItem( new EaseHtmlH3Tag( new EaseHtmlATag('hostgroup.php?hostgroup_id=' . $cInfo['hostgroup_id'], EaseTWBPart::GlyphIcon('edit').' '.$hostgroup->getName()) ) );
-        $cntList->addItem( new EaseHtmlDivTag( null, $hostgroup->getDataValue('alias') ) );
-        foreach ( $hostgroup->getDataValue('members') as $memberID => $memberName ) {
-            $cntList->addItem( new EaseHtmlATag('host.php?host_id='.$memberID,  new IEHost( $memberID ) ) );
+        $cntList->addItem(new EaseHtmlH3Tag(new EaseHtmlATag('hostgroup.php?hostgroup_id=' . $cInfo['hostgroup_id'], EaseTWBPart::GlyphIcon('edit') . ' ' . $hostgroup->getName())));
+        $cntList->addItem(new EaseHtmlDivTag(null, $hostgroup->getDataValue('alias')));
+        foreach ($hostgroup->getDataValue('members') as $memberID => $memberName) {
+            $cntList->addItem(new EaseHtmlATag('host.php?host_id=' . $memberID, new IEHost($memberID)));
         }
         $oPage->addItem($cntList);
     }

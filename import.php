@@ -39,6 +39,7 @@ if ($oPage->isPosted()) {
 }
 
 $oPage->addItem(new IEPageTop(_('Import konfigurace')));
+$oPage->addPageColumns();
 
 $ImportForm = new EaseHtmlForm('CfgFileUp', null, 'POST', null, array('class' => 'form-horizontal', 'enctype' => 'multipart/form-data'));
 $ImportForm->addItem(new EaseLabeledTextarea('cfgtext', '', _('konfigurační fragment')));
@@ -56,7 +57,7 @@ input.ui-button { width: 100%; }
 
 $oPage->columnII->addItem(new EaseHtmlFieldSet(_('Import konfigurace'), $ImportForm));
 
-$oPage->columnI->addItem( '<div class="well">'._('Vložte konfigurační fragment nagiosu / icingy').'</div>' );
+$oPage->columnI->addItem('<div class="well">' . _('Vložte konfigurační fragment nagiosu / icingy') . '</div>');
 
 $oPage->addItem(new IEPageBottom());
 

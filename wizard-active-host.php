@@ -22,6 +22,7 @@ require_once 'classes/IEFXPreloader.php';
 $oPage->onlyForLogged();
 
 $oPage->addItem(new IEPageTop(_('Icinga Editor')));
+$oPage->addPageColumns();
 
 $hostName = trim($oPage->getRequestValue('host_name'));
 $address = trim($oPage->getRequestValue('address'));

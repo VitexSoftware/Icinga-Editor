@@ -65,6 +65,7 @@ if ($oPage->isPosted()) {
 
 
 $oPage->addItem(new IEPageTop(_('Editace skupiny hostů') . ' ' . $hostgroup->getName()));
+$oPage->addPageColumns();
 
 $hostgroupEdit = new IECfgEditor($hostgroup);
 

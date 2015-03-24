@@ -36,6 +36,7 @@ if ($delete == 'true') {
 }
 
 $oPage->addItem(new IEPageTop(_('Editace kontaktu') . ' ' . $contact->getName()));
+$oPage->addPageColumns();
 
 $contactEdit = new IECfgEditor($contact);
 

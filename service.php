@@ -93,6 +93,7 @@ if ($delete == 'true') {
 }
 
 $oPage->addItem(new IEPageTop(_('Editace služby') . ' ' . $service->getName()));
+$oPage->addPageColumns();
 
 $oPage->columnII->addItem(new EaseHtmlH3Tag(array(IEHostOverview::platformIcon($service->getDataValue('platform')), $service->getName())));
 

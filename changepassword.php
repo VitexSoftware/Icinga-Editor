@@ -50,6 +50,7 @@ if (!isset($_POST['CurrentPassword'])) {
 }
 
 $oPage->addItem(new IEPageTop(_('Změna hesla uživatele')));
+$oPage->addPageColumns();
 
 if ($formOK && $oPage->isPosted()) {
     $plainPass = $oPage->getRequestValue('password');

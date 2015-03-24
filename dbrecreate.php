@@ -14,8 +14,10 @@ require_once 'classes/IEImporter.php';
 $oPage->onlyForLogged();
 
 $oPage->addItem(new IEPageTop(_('Icinga Editor - znovuvytvoření struktury databáze')));
+$oPage->addPageColumns();
 
-if ($oPage->getRequestValue('dbinit') ) {
+
+if ($oPage->getRequestValue('dbinit')) {
     $Importer = new IEImporter;
     $Importer->dbInit();
     $oPage->columnII->addItem(new EaseTWBLinkButton('wizard.php', _('vytvořit konfiguraci')));

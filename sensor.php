@@ -24,6 +24,7 @@ if ($hostId == 0) {
 $host = new IEHost($hostId);
 
 $oPage->addItem(new IEPageTop(_('Sensor')));
+$oPage->addPageColumns();
 
 $oPage->columnII->addItem(new EaseHtmlH1Tag($host->getName()));
 $oPage->columnII->addItem($host);

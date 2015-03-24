@@ -13,6 +13,7 @@ require_once 'includes/IEInit.php';
 $oPage->onlyForLogged();
 
 $oPage->addItem(new IEPageTop(_('Průvodce založením hosta')));
+$oPage->addPageColumns();
 
 $oPage->addCss('
 .btn-xlarge{

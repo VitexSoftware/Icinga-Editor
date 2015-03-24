@@ -19,6 +19,9 @@ if ($oUser->getUserID()) {
 }
 
 $oPage->addItem(new IEPageTop(_('Odhlášení')));
+$oPage->addPageColumns();
+
+$oPage->heroUnit = $this->container->addItem(new EaseHtmlDivTag('heroUnit', null, array('class' => 'jumbotron')));
 
 $oPage->heroUnit->addItem(new EaseHtmlDivTag(NULL, _('Děkujeme za vaši přízeň a těšíme se na další návštěvu')));
 

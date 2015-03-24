@@ -60,6 +60,7 @@ switch ($oPage->getRequestValue('action')) {
 
 
 $oPage->addItem(new IEPageTop(_('Uživatelská skupina')));
+$oPage->addPageColumns();
 
 
 switch ($oPage->getRequestValue('action')) {

@@ -20,13 +20,14 @@ require_once 'classes/IEServicegroup.php';
 $oPage->onlyForLogged();
 
 $oPage->addItem(new IEPageTop(_('Monitoring')));
+$oPage->addPageColumns();
 
 $host = new IEHost();
-$hosts = $host->getListing(null,false);
+$hosts = $host->getListing(null, false);
 
 if (!count($hosts)) {
-    $oPage->columnII->addItem( new EaseTWBLinkButton('wizard.php', _('Založte si první sledovaný host'), 'success') );
-    $oUser->addStatusMessage(_('Zatím není zaregistrovaný žádný sledovaný host'),'warning');
+    $oPage->columnII->addItem(new EaseTWBLinkButton('wizard.php', _('Založte si první sledovaný host'), 'success'));
+    $oUser->addStatusMessage(_('Zatím není zaregistrovaný žádný sledovaný host'), 'warning');
 }
 
 $oPage->addItem(new IEPageBottom());

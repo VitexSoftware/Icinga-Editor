@@ -47,6 +47,7 @@ if ($delete == 'true') {
 $service = new IEService;
 
 $oPage->addItem(new IEPageTop(_('Editace příkazu') . ' ' . $command->getName()));
+$oPage->addPageColumns();
 
 if ($command->getId()) {
     $usages = $service->getColumnsFromMySQL(array($service->getMyKeyColumn(), $service->nameColumn), array('check_command' => $command->getName()), $service->nameColumn, $service->getMyKeyColumn());

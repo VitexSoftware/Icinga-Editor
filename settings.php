@@ -31,6 +31,8 @@ switch ($oPage->getRequestValue('action')) {
 }
 
 $oPage->addItem(new IEPageTop(_('Profil uživatele') . ' ' . $oUser->GetUserLogin()));
+$oPage->addPageColumns();
+
 
 $oPage->AddJavaScript('
 function get_gravatar(email, size)

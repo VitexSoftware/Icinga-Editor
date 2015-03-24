@@ -44,6 +44,7 @@ if ($delete == 'true') {
 }
 
 $oPage->addItem(new IEPageTop(_('Editace časové periody') . ' ' . $Timeperiod->getName()));
+$oPage->addPageColumns();
 
 $TimepriodEdit = new IECfgEditor($Timeperiod);
 
@@ -55,7 +56,7 @@ if (!is_null($Timeperiod->getMyKey())) {
 $TimesTable = new EaseHtmlTableTag();
 
 $TimesTable->addRowHeaderColumns(array(new EaseLabeledTextInput('NewKey', null, _('Označení')),
-    new EaseLabeledTextInput('NewTimes', null, _('Interval(y)')), ''));
+  new EaseLabeledTextInput('NewTimes', null, _('Interval(y)')), ''));
 
 foreach ($Timeperiod->timeperiods as $TimeName => $TimeIntervals) {
     $TimesTable->addRowColumns(array($TimeName, $TimeIntervals, new EaseHtmlATag('?del=' . $TimeName . '&amp;' . $Timeperiod->getmyKeyColumn() . '=' . $Timeperiod->getMyKey(), '<i class="icon-remove"></i>')));
@@ -63,7 +64,7 @@ foreach ($Timeperiod->timeperiods as $TimeName => $TimeIntervals) {
 
 $form->addItem($TimesTable);
 
-$form->addItem(new EaseTWSubmitButton(_('Uložit'),'success'));
+$form->addItem(new EaseTWSubmitButton(_('Uložit'), 'success'));
 $oPage->AddCss('
 input.ui-button { width: 100%; }
 ');

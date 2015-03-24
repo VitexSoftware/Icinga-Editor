@@ -15,6 +15,7 @@ require_once 'classes/IECfgEditor.php';
 $oPage->onlyForLogged();
 
 $oPage->addItem(new IEPageTop(_('Editace skupiny kontaktu')));
+$oPage->addPageColumns();
 
 $Contactgroup = new IEContactgroup($oPage->getRequestValue('contactgroup_id', 'int'));
 
@@ -43,7 +44,7 @@ if (!is_null($Contactgroup->getMyKey())) {
     $form->addItem(new EaseHtmlInputHiddenTag($Contactgroup->getmyKeyColumn(), $Contactgroup->getMyKey()));
 }
 $form->addItem('<br>');
-$form->addItem(new EaseTWSubmitButton(_('Uložit'),'success'));
+$form->addItem(new EaseTWSubmitButton(_('Uložit'), 'success'));
 
 $oPage->addItem(new IEPageBottom());
 

@@ -15,6 +15,7 @@ require_once 'classes/IEImporter.php';
 $oPage->onlyForLogged();
 
 $oPage->addItem(new IEPageTop(_('Generování konfigurace')));
+$oPage->addPageColumns();
 
 if ($oUser->getSettingValue('admin')) {
     $forceUserID = $oPage->getRequestValue('force_user_id', 'int');

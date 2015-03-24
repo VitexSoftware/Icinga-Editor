@@ -57,6 +57,7 @@ if ($hostName) {
 
 
 $oPage->addItem(new IEPageTop(_('Průvodce založením hosta')));
+$oPage->addPageColumns();
 
 //$oPage->columnI->addItem(
 //    new EaseTWBPanel(_('Volba druhu hosta'), 'success', _('Aktivni '))

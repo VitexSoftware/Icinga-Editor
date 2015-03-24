@@ -14,6 +14,7 @@ require_once 'IEImporter.php';
 $oPage->onlyForLogged();
 
 $oPage->addItem(new IEPageTop(_('Icinga Editor - iniciace databáze')));
+$oPage->addPageColumns();
 
 if ($oPage->isPosted()) {
 
@@ -32,7 +33,7 @@ if ($oPage->isPosted()) {
 $oPage->addItem(new IEPageBottom());
 
 $ImportForm = new EaseHtmlForm('ImportForm');
-$ImportForm->addItem(new EaseLabeledTextInput('maincfg', constant('CFG_DIRECTORY').'icinga.cfg', _('hlavní soubor konfigurace')));
+$ImportForm->addItem(new EaseLabeledTextInput('maincfg', constant('CFG_DIRECTORY') . 'icinga.cfg', _('hlavní soubor konfigurace')));
 
 $ImportForm->addItem(new EaseLabeledCheckbox('dbinit', null, _('Znovu vytvořit strukturu databáze')));
 $ImportForm->addItem('<br clear="all">');
