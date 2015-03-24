@@ -1502,4 +1502,19 @@ class IEcfg extends EaseBrick
         return $this->transfer($target);
     }
 
+    /**
+     * Vrací typ sloupečku
+     *
+     * @param  string $columnName
+     * @return string
+     */
+    function getColumnType($columnName)
+    {
+        $columType = null;
+        if (isset($this->useKeywords[$columnName])) {
+            $columnType = $this->useKeywords[$columnName];
+        }
+        return $columnType;
+    }
+
 }

@@ -66,9 +66,9 @@ if ($oPage->isPosted()) {
 
 $oPage->addItem(new IEPageTop(_('Editace skupiny hostů') . ' ' . $hostgroup->getName()));
 
-$HostgroupEdit = new IECfgEditor($hostgroup);
+$hostgroupEdit = new IECfgEditor($hostgroup);
 
-$form = $oPage->columnII->addItem(new EaseHtmlForm('Hostgroup', 'hostgroup.php', 'POST', $HostgroupEdit, array('class' => 'form-horizontal')));
+$form = $oPage->columnII->addItem(new EaseHtmlForm('Hostgroup', 'hostgroup.php', 'POST', $hostgroupEdit, array('class' => 'form-horizontal')));
 $form->setTagID($form->getTagName());
 if (!is_null($hostgroup->getMyKey())) {
     $form->addItem(new EaseHtmlInputHiddenTag($hostgroup->getmyKeyColumn(), $hostgroup->getMyKey()));
@@ -89,6 +89,9 @@ if ($hostgroup->getId()) {
 
 $operations = $oPage->columnIII->addItem(new EaseTWBPanel(_('Hromadné operace')), 'success');
 $operations->addItem(new IEContactAsignForm);
+
+
+$oPage->columnIII->addItem(new EaseTWBLinkButton('wizard-host.php?hostgroup_id=' . $hostgroup->getId(), EaseTWBPart::GlyphIcon('plus') . _('nový host ve skupině'), 'success'));
 
 $oPage->addItem(new IEPageBottom());
 

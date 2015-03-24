@@ -202,8 +202,10 @@ echo "file name=${log-path}/nsclient.log" >> $INI
             case 'windows':
                 $this->addCfg('/modules', 'CheckWMI', 'enabled');
                 $this->addCfg('/modules', 'CheckSystem', 'enabled');
-                $this->addCfg('/modules', 'CheckEventLog', 'enabled');
                 $this->addCfg('/modules', 'CheckDisk', 'enabled');
+                if ($this->hostActiveMode) {
+                    $this->addCfg('/modules', 'CheckEventLog', 'enabled');
+                }
                 break;
             case 'linux':
                 $this->addCfg('/modules', 'CheckSystemUnix', 'enabled');

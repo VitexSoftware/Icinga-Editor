@@ -28,16 +28,41 @@ $field = $oPage->getRequestValue('Field');
 $value = $oPage->getRequestValue('Value');
 $key = $oPage->getRequestValue('Key', 'int');
 
-if (is_null($saverClass) || is_null($field) || is_null($value) || is_null($key)) {
-    header('HTTP/1.0 400 Bad Request', 400);
-    die(_('Chybné volání'));
-}
-
+/**
+ * @var IEcfg Třída pro ukládající data
+ */
 $saver = new $saverClass();
-//$saver->setUpUser($oUser);
 $saver->setMyKey($key);
-$saver->takeData(array($field => $value));
 
+
+switch ($saver->getColumnType($field)) {
+    case 'IDLIST':
+        $valueId = $oPage->getRequestValue('ValueID');
+        if (is_null($saverClass) || is_null($field) || is_null($value) || is_null($key) || is_null($value) || is_null($valueId)) {
+            header('HTTP/1.0 400 Bad Request', 400);
+            die(_('Chybné volání'));
+        }
+
+        $saver->loadFromMySQL();
+
+        switch ($oPage->getRequestValue('operation')) {
+            case 'add':
+                $saver->addMember($field, $valueId, $value);
+                break;
+            case 'del':
+                $saver->delMember($field, $valueId, $value);
+                break;
+        }
+
+        break;
+    default:
+        if (is_null($saverClass) || is_null($field) || is_null($value) || is_null($key)) {
+            header('HTTP/1.0 400 Bad Request', 400);
+            die(_('Chybné volání'));
+        }
+        $saver->takeData(array($field => $value));
+        break;
+}
 
 if (is_null($saver->saveToMySql())) {
     header('HTTP/1.0 501 Not Implemented', 501);
@@ -47,3 +72,6 @@ if (is_null($saver->saveToMySql())) {
         _('Pole') . ': <strong>' . $field . '</strong> ' .
         _('Hodnota') . ': <strong>' . $value . '</strong> <tt>' . $saver->myDbLink->LastQuery . '</tt>', 'error');
 }
+
+
+

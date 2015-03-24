@@ -14,81 +14,98 @@ class IEGroupMembersEditor extends EaseContainer
     /**
      * Editor k přidávání členů skupiny
      *
-     * @param string $FieldName    název políčka formuláře
-     * @param string $FieldCaption popisek políčka
-     * @param array  $DataSource   pole(tabulka=>sloupec)
+     * @param string $fieldName    název políčka formuláře
+     * @param string $fieldCaption popisek políčka
+     * @param IEcfg  $dataSource   editovaný objekt
      */
-    public function __construct($FieldName, $FieldCaption, $DataSource, $members)
+    public function __construct($fieldName, $fieldCaption, $dataSource, $members)
     {
-        $IDColumn = $DataSource->keywordsInfo[$FieldName]['refdata']['idcolumn'];
-        $nameColumn = $DataSource->keywordsInfo[$FieldName]['refdata']['captioncolumn'];
-        $STable = $DataSource->keywordsInfo[$FieldName]['refdata']['table'];
+        $iDColumn = $dataSource->keywordsInfo[$fieldName]['refdata']['idcolumn'];
+        $nameColumn = $dataSource->keywordsInfo[$fieldName]['refdata']['captioncolumn'];
+        $sTable = $dataSource->keywordsInfo[$fieldName]['refdata']['table'];
 
-        if (isset($DataSource->keywordsInfo[$FieldName]['refdata']['condition'])) {
-            $Conditions = $DataSource->keywordsInfo[$FieldName]['refdata']['condition'];
+        if (isset($dataSource->keywordsInfo[$fieldName]['refdata']['condition'])) {
+            $conditions = $dataSource->keywordsInfo[$fieldName]['refdata']['condition'];
         } else {
-            $Conditions = array();
+            $conditions = array();
         }
 
-        if (isset($DataSource->keywordsInfo[$FieldName]['refdata']['public']) && intval($DataSource->keywordsInfo[$FieldName]['refdata']['public'])) {
-            $SqlConds = " ( " . $DataSource->myDbLink->prepSelect(array_merge($Conditions, array($DataSource->userColumn => EaseShared::user()->getUserID()))) . " ) OR ( " . $DataSource->myDbLink->prepSelect(array_merge($Conditions, array('public' => 1))) . ")  ";
+        if (isset($dataSource->keywordsInfo[$fieldName]['refdata']['public']) && intval($dataSource->keywordsInfo[$fieldName]['refdata']['public'])) {
+            $sqlConds = " ( " . $dataSource->myDbLink->prepSelect(array_merge($conditions, array($dataSource->userColumn => EaseShared::user()->getUserID()))) . " ) OR ( " . $dataSource->myDbLink->prepSelect(array_merge($conditions, array('public' => 1))) . ")  ";
         } else {
-            $SqlConds = $DataSource->myDbLink->prepSelect(array_merge($Conditions, array($DataSource->userColumn => EaseShared::user()->getUserID())));
+            $sqlConds = $dataSource->myDbLink->prepSelect(array_merge($conditions, array($dataSource->userColumn => EaseShared::user()->getUserID())));
         }
 
-        $InitialContent = new EaseTWBPanel($FieldCaption);
-        $InitialContent->setTagCss(array('width' => '100%'));
+        $initialContent = new EaseTWBPanel($fieldCaption);
+        $initialContent->setTagCss(array('width' => '100%'));
 
 //        $AddNewItem = new EaseHtmlInputSearchTag($FieldName, '', array('class' => 'search-input', 'title' => _('přidání člena')));
 //        $AddNewItem->setDataSource('jsondata.php?source[' . key($DataSource) . ']=' . current($DataSource));
 
-        if (is_null($DataSource->getMyKey())) {
-            $InitialContent->addItem(_('Nejprve je potřeba uložit záznam'));
+        if (is_null($dataSource->getMyKey())) {
+            $initialContent->addItem(_('Nejprve je potřeba uložit záznam'));
         } else {
 
-            if ($STable == $DataSource->myTable) {
-                $TmpKey = $DataSource->getMyKey();
-                if ($TmpKey) {
-                    $members[$TmpKey] = true;
+            if ($sTable == $dataSource->myTable) {
+                $tmpKey = $dataSource->getMyKey();
+                if ($tmpKey) {
+                    $members[$tmpKey] = true;
                 }
             }
 
             if ($members && count($members)) {
-                $AviavbleCond = 'AND ' . $IDColumn . ' NOT IN (' . join(',', array_keys($members)) . ') ';
+                $aviavbleCond = 'AND ' . $iDColumn . ' NOT IN (' . join(',', array_keys($members)) . ') ';
             } else {
-                $AviavbleCond = '';
+                $aviavbleCond = '';
             }
 
             $membersAviableArray = EaseShared::myDbLink()->queryToArray(
-                'SELECT ' . $nameColumn . ', ' . $IDColumn . ' ' .
-                'FROM `' . $STable . '` ' .
-                'WHERE (' . $SqlConds . ') ' .
-                $AviavbleCond .
-                'ORDER BY ' . $nameColumn, $IDColumn);
+                'SELECT ' . $nameColumn . ', ' . $iDColumn . ' ' .
+                'FROM `' . $sTable . '` ' .
+                'WHERE (' . $sqlConds . ') ' .
+                $aviavbleCond .
+                'ORDER BY ' . $nameColumn, $iDColumn);
 
-            if ($STable == $DataSource->myTable) {
-                unset($members[$DataSource->getMyKey()]);
+            if ($sTable == $dataSource->myTable) {
+                unset($members[$dataSource->getMyKey()]);
             }
+            $addText = _('Přiřadit');
+            $delText = _('Odebrat');
 
             if (count($membersAviableArray)) {
-                foreach ($membersAviableArray as $MemberID => $MemberName) {
-                    $Jellybean = new EaseHtmlSpanTag($MemberName[$nameColumn], null, array('class' => 'jellybean gray'));
-                    $Jellybean->addItem(new EaseHtmlATag('?add=' . $FieldName . '&amp;member=' . $MemberID . '&amp;name=' . $MemberName[$nameColumn] . '&amp;' . $DataSource->getmyKeyColumn() . '=' . $DataSource->getMyKey() . '#' . $FieldName, EaseTWBPart::GlyphIcon('plus-sign') . ' ' . $MemberName[$nameColumn]));
-                    $InitialContent->addItem($Jellybean);
+                foreach ($membersAviableArray as $memberID => $memberName) {
+                    $initialContent->addItem(
+                        new EaseTWBButtonDropdown(
+                        $memberName[$nameColumn], 'inverse', 'xs', array(
+                      new EaseHtmlATag($dataSource->keywordsInfo[$fieldName]['refdata']['table'] . '.php?host_id=' . $memberID, EaseTWBPart::GlyphIcon('wrench') . ' ' . _('Editace')),
+                      new EaseHtmlATag(null, EaseTWBPart::GlyphIcon('plus-sign') . ' ' . $addText, array(
+                        'onClick' => "addGroupMember('" . get_class($dataSource) . "','" . $dataSource->getId() . "','" . $fieldName . "','" . $memberName[$nameColumn] . "','" . $memberID . "')"
+                        , 'class' => 'handle', 'data-addtext' => $addText, 'data-deltext' => $delText))
+                        ), array('id' => get_class($dataSource) . '_' . $fieldName . '_' . $memberID, 'style' => 'margin: 1px;')));
                 }
             }
 
             if ($members && count($members)) {
-                $InitialContent->addItem('</br>');
-                foreach ($members as $MemberID => $MemberName) {
-                    $Jellybean = new EaseHtmlSpanTag($MemberName, null, array('class' => 'jellybean'));
-                    $Jellybean->addItem($MemberName);
-                    $Jellybean->addItem(new EaseHtmlATag('?del=' . $FieldName . '&amp;member=' . $MemberID . '&amp;name=' . $MemberName . '&amp;' . $DataSource->getmyKeyColumn() . '=' . $DataSource->getMyKey() . '#' . $FieldName, EaseTWBPart::GlyphIcon('remove')));
-                    $InitialContent->addItem($Jellybean);
+                $initialContent->addItem('</br>');
+                foreach ($members as $memberID => $memberName) {
+                    $initialContent->addItem(
+                        new EaseTWBButtonDropdown(
+                        $memberName, 'success', 'xs', array(
+                      new EaseHtmlATag($dataSource->keywordsInfo[$fieldName]['refdata']['table'] . '.php?host_id=' . $memberID, EaseTWBPart::GlyphIcon('wrench') . ' ' . _('Editace')),
+                      new EaseHtmlATag(null, EaseTWBPart::GlyphIcon('remove') . ' ' . _('Odebrat'), array(
+                        'onClick' => "delGroupMember('" . get_class($dataSource) . "','" . $dataSource->getId() . "','" . $fieldName . "','" . $memberName . "','" . $memberID . "')"
+                        , 'class' => 'handle', 'data-addtext' => $addText, 'data-deltext' => $delText))
+                        ), array('id' => get_class($dataSource) . '_' . $fieldName . '_' . $memberID, 'style' => 'margin: 1px;'))
+                    );
                 }
             }
         }
-        parent::__construct($InitialContent);
+        parent::__construct($initialContent);
+    }
+
+    function finalize()
+    {
+        EaseShared::webPage()->includeJavaScript('js/groupmembers.js');
     }
 
 }
