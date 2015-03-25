@@ -54,8 +54,6 @@ class IEIconSelector extends EaseContainer
 
         $iconTabs = $icoBox->addItem(new EaseTWBTabs('IconTabs'));
 
-
-
         foreach ($icodirs as $subicodir) {
             $default = false;
             $icons = new EaseContainer;

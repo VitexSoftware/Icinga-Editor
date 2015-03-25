@@ -27,8 +27,9 @@ class IEDbFixer extends EaseHtmlUlTag
         $hostsOK = array();
         $hostsErr = array();
 
-        $service = new IEService;
         $host = new IEHost;
+
+        $service = new IEService;
         $services = $service->getListing(0);
         foreach ($services as $serviceId => $serviceInfo) {
             $service->loadFromMySQL($serviceId);
@@ -46,6 +47,29 @@ class IEDbFixer extends EaseHtmlUlTag
                 if ($service->saveToMySQL()) {
                     $this->addItemSmart(sprintf(_('<strong>%s</strong> : %s'), $service->getName(), implode(',', $hostsOK)), array('class' => 'list-group-item'));
                     $this->addStatusMessage(sprintf(_('%s : %s'), $service->getName(), implode(',', $hostsOK)), 'success');
+                    $hostsOK = array();
+                }
+            }
+        }
+
+        $hostgroup = new IEHostgroup;
+        $hostgroups = $hostgroup->getListing();
+        foreach ($hostgroups as $hostgroupId => $hostgroupInfo) {
+            $hostgroup->loadFromMySQL($hostgroupId);
+            foreach ($hostgroup->getDataValue('members') as $hostId => $hostName) {
+                $hostFound = $host->loadFromMySQL($hostName);
+                if ($hostId != $host->getId()) {
+                    if ($hostgroup->delMember('members', $hostId, $hostName) && $hostgroup->addMember('members', $host->getId(), $hostName)) {
+                        $hostsOK[] = $hostName;
+                    } else {
+                        $hostsErr[] = $hostName;
+                    }
+                }
+            }
+            if (count($hostsOK)) {
+                if ($hostgroup->saveToMySQL()) {
+                    $this->addItemSmart(sprintf(_('<strong>%s</strong> : %s'), $hostgroup->getName(), implode(',', $hostsOK)), array('class' => 'list-group-item'));
+                    $this->addStatusMessage(sprintf(_('%s : %s'), $hostgroup->getName(), implode(',', $hostsOK)), 'success');
                     $hostsOK = array();
                 }
             }

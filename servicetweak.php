@@ -101,6 +101,8 @@ $oPage->columnIII->addItem(new EaseTWBPanel(_('Přejmenování'), 'info', $renam
 $oPage->columnI->addItem(new IEHostSelector($service));
 $oPage->columnI->addItem(new IEContactSelector($service));
 
+$oPage->columnIII->addItem(new EaseTWBLinkButton('host.php?host_id=' . $host->getId(), array(_('Zpět na') . ' ', $host, ' ', $host->getName()), 'default'));
+
 $oPage->addItem(new IEPageBottom());
 
 $oPage->draw();

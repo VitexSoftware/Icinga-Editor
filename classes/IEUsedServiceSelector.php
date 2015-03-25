@@ -125,7 +125,8 @@ class IEUsedServiceSelector extends EaseContainer
                         $service->addMember('host_name', $request['host_id'], $request['host_name']);
                         if ($service->saveToMySQL()) {
                             $service->addStatusMessage(sprintf(_('položka %s byla přidána'), $request['addservice']), 'success');
-                            if (!$service->getDataValue('autocfg')) {
+                            if ($service->getDataValue('autocfg') == '1') {
+                                $service->addStatusMessage(sprintf(_('Službu %s je nutné nejprve zkonfigurovat'), $request['addservice']), 'warning');
                                 EaseShared::webPage()->redirect('servicetweak.php?host_id=' . $request ['host_id'] . '&service_id=' . $request[$service->myKeyColumn]);
                                 exit();
                             }
