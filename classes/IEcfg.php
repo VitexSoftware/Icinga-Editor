@@ -776,7 +776,7 @@ class IEcfg extends EaseBrick
 
             EaseShared::webPage()->addItem(new IEConfirmationDialog('delete' . $this->getId(), '?' . $this->getmyKeyColumn() . '=' . $this->getID() . '&delete=true' . '&' . $urlAdd, _('Smazat') . ' ' . $name, sprintf(_('Opravdu smazat %s ?'), '<strong>' . $this->getName() . '</strong>')));
             return new EaseHtmlButtonTag(
-                array(EaseTWBPart::GlyphIcon('remove'), _('Smazat') . ' ' . $this->keyword . ' ' . $this->getName()), array('style' => 'cursor: default', 'class' => 'btn btn-danger', 'id' => 'trigger-delete' . $this->getId(), 'data-id' => $this->getId()
+                array(EaseTWBPart::GlyphIcon('remove'), _('Smazat') . ' ' . $this->keyword . ' ' . $this->getName()), array('style' => 'cursor: default', 'class' => 'btn btn-danger', 'id' => 'triggerdelete' . $this->getId(), 'data-id' => $this->getId()
             ));
         } else {
             return '';

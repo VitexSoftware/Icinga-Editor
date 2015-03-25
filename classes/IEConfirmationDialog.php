@@ -56,10 +56,9 @@ $('#" . $this->getTagID() . "').on('show', function() {
 })
 
 $('#trigger" . $this->getTagID() . "').on('click', function(e) {
-    e.preventDefault();
-
     var id = $(this).data('id');
     $('#" . $this->getTagID() . "').data('id', id).modal('show');
+    e.preventDefault();
 });
 
 $('#" . $this->getTagID() . "btnYes').click(function() {

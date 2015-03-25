@@ -16,28 +16,29 @@ $oPage->onlyForLogged();
 
 $hostgroup = new IEHostgroup($oPage->getRequestValue('hostgroup_id', 'int'));
 
-if ($oPage->isPosted()) {
 
-    switch ($oPage->getRequestValue('action')) {
-        case 'contactAsign':
-            $contact = new IEContact($oPage->getRequestValue('contact_id', 'int'));
-            if ($contact->getId()) {
-                $host = new IEHost;
-                $groupMembers = $hostgroup->getMembers();
-                foreach ($groupMembers as $gmID => $hostName) {
-                    $host->loadFromSQL((int) $gmID);
-                    $host->addMember('contacts', $contact->getId(), $contact->getName());
-                    if ($host->saveToMySQL()) {
-                        $host->addStatusMessage(sprintf(_('<strong>%s</strong> byl přidán mezi kontakty <strong>%s</strong>'), $contact->getName(), $host->getName()), 'success');
-                    } else {
-                        $host->addStatusMessage(sprintf(_('<strong>%s</strong> nebyl přidán mezi kontakty <strong>%s</strong>'), $contact->getName(), $host->getName()), 'warning');
-                    }
+
+switch ($oPage->getRequestValue('action')) {
+    case 'contactAsign':
+        $contact = new IEContact($oPage->getRequestValue('contact_id', 'int'));
+        if ($contact->getId()) {
+            $host = new IEHost;
+            $groupMembers = $hostgroup->getMembers();
+            foreach ($groupMembers as $gmID => $hostName) {
+                $host->loadFromSQL((int) $gmID);
+                $host->addMember('contacts', $contact->getId(), $contact->getName());
+                if ($host->saveToMySQL()) {
+                    $host->addStatusMessage(sprintf(_('<strong>%s</strong> byl přidán mezi kontakty <strong>%s</strong>'), $contact->getName(), $host->getName()), 'success');
+                } else {
+                    $host->addStatusMessage(sprintf(_('<strong>%s</strong> nebyl přidán mezi kontakty <strong>%s</strong>'), $contact->getName(), $host->getName()), 'warning');
                 }
-            } else {
-                $hostgroup->addStatusMessage(_('Chyba přiřazení kontaktu'), 'warning');
             }
-            break;
-        default :
+        } else {
+            $hostgroup->addStatusMessage(_('Chyba přiřazení kontaktu'), 'warning');
+        }
+        break;
+    default :
+        if ($oPage->isPosted()) {
             $hostgroup->takeData($_POST);
 
             if (!$hostgroup->getId()) {
@@ -51,16 +52,15 @@ if ($oPage->isPosted()) {
                 $oUser->addStatusMessage(_('Skupina hostů byla uložena'), 'success');
             }
             $hostgroup->saveMembers();
+        }
+        $delete = $oPage->getGetValue('delete', 'bool');
+        if ($delete == 'true') {
+            $hostgroup->delete();
+            $oPage->redirect('hostgroups.php');
+            exit();
+        }
 
-            $delete = $oPage->getGetValue('delete', 'bool');
-            if ($delete == 'true') {
-                $hostgroup->delete();
-                $oPage->redirect('hostgroups.php');
-                exit();
-            }
-
-            break;
-    }
+        break;
 }
 
 
