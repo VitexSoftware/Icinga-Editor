@@ -97,12 +97,23 @@ class IEHost extends IECfg
       'platform' => "PLATFORM"
     );
     public $keywordsInfo = array(
-      'host_name' => array('title' => 'Jméno hosta', 'required' => true),
-      'alias' => array('title' => 'alias hosta', 'required' => true),
-      'display_name' => array('title' => 'zobrazované jméno'),
-      'address' => array('title' => 'IPv4 adresa ', 'mandatory' => true),
-      'address6' => array('title' => 'IPv6 adresa', 'mandatory' => true),
+      'host_name' => array(
+        'severity' => 'mandatory',
+        'title' => 'Jméno hosta', 'required' => true),
+      'alias' => array(
+        'severity' => 'optional',
+        'title' => 'alias hosta', 'required' => true),
+      'display_name' => array(
+        'severity' => 'optional',
+        'title' => 'zobrazované jméno'),
+      'address' => array(
+        'severity' => 'optional',
+        'title' => 'IPv4 adresa ', 'mandatory' => true),
+      'address6' => array(
+        'severity' => 'optional',
+        'title' => 'IPv6 adresa', 'mandatory' => true),
       'parents' => array(
+        'severity' => 'optional',
         'title' => 'rodiče',
         'refdata' => array(
           'table' => 'host',
@@ -110,13 +121,18 @@ class IEHost extends IECfg
           'idcolumn' => 'host_id',
           'public' => true,
           'condition' => array('register' => 1))),
-      'hostgroups' => array('title' => 'skupiny hostů',
+      'hostgroups' => array(
+        'severity' => 'optional',
+        'title' => 'skupiny hostů',
         'refdata' => array(
           'table' => 'hostgroup',
           'captioncolumn' => 'hostgroup_name',
           'idcolumn' => 'hostgroup_id')
       ),
-      'check_command' => array('title' => 'testovací příkaz',
+      'check_command' => array(
+        'severity' => 'advanced',
+        'title' => 'testovací příkaz',
+        'severity' => 'optional',
         'refdata' => array(
           'table' => 'command',
           'captioncolumn' => 'command_name',
@@ -126,16 +142,30 @@ class IEHost extends IECfg
         )
       ),
       'initial_state' => array('title' => 'výchozí předpokládaný stav',
+        'severity' => 'advanced',
         'o' => 'UP - spuštěn',
         'd' => 'DOWN - vypnut',
         'u' => 'UNREACHABLE - nedostupný',
       ),
-      'max_check_attempts' => array('title' => 'maximální počet pokusů'),
-      'check_interval' => array('title' => 'interval otestování'),
-      'retry_interval' => array('title' => 'interval dalšího pokusu o test'),
-      'active_checks_enabled' => array('title' => 'povolit aktivní testy'),
-      'passive_checks_enabled' => array('title' => 'povolit pasivní testy'),
+      'max_check_attempts' => array(
+        'title' => 'maximální počet pokusů',
+        'severity' => 'advanced',
+      ),
+      'check_interval' => array('title' => 'interval otestování',
+        'severity' => 'advanced',
+      ),
+      'retry_interval' => array(
+        'severity' => 'optional',
+        'title' => 'interval dalšího pokusu o test'
+      ),
+      'active_checks_enabled' => array(
+        'severity' => 'advanced',
+        'title' => 'povolit aktivní testy'),
+      'passive_checks_enabled' => array(
+        'severity' => 'advanced',
+        'title' => 'povolit pasivní testy'),
       'check_period' => array(
+        'severity' => 'optional',
         'title' => 'testovací perioda',
         'refdata' => array(
           'table' => 'timeperiod',
@@ -143,10 +173,17 @@ class IEHost extends IECfg
           'public' => true,
           'idcolumn' => 'timeperiod_id')
       ),
-      'obsess_over_host' => array('title' => 'Posedlost přes host'),
-      'check_freshness' => array('title' => 'testovat čerstvost'),
-      'freshness_threshold' => array('title' => 'práh čertvosti'),
+      'obsess_over_host' => array(
+        'severity' => 'advanced',
+        'title' => 'Posedlost přes host'),
+      'check_freshness' => array(
+        'severity' => 'advanced',
+        'title' => 'testovat čerstvost'),
+      'freshness_threshold' => array(
+        'severity' => 'advanced',
+        'title' => 'práh čertvosti'),
       'event_handler' => array('title' => 'ošetřovač událostí',
+        'severity' => 'advanced',
         'refdata' => array(
           'table' => 'command',
           'captioncolumn' => 'command_name',
@@ -155,36 +192,60 @@ class IEHost extends IECfg
           'condition' => array('command_type' => 'handler')
         )
       ),
-      'event_handler_enabled' => array('title' => 'povolit ošetření událostí'),
-      'low_flap_threshold' => array('title' => 'nižší práh plácání'),
-      'high_flap_threshold' => array('title' => 'vyšší práh plácání'),
-      'flap_detection_enabled' => array('title' => 'detekovat plácání'),
+      'event_handler_enabled' => array(
+        'severity' => 'advanced',
+        'title' => 'povolit ošetření událostí'),
+      'low_flap_threshold' => array(
+        'severity' => 'advanced',
+        'title' => 'nižší práh plácání'),
+      'high_flap_threshold' => array(
+        'severity' => 'advanced',
+        'title' => 'vyšší práh plácání'),
+      'flap_detection_enabled' => array(
+        'severity' => 'advanced',
+        'title' => 'detekovat plácání'),
       'flap_detection_options' => array(
+        'severity' => 'advanced',
         'title' => 'možnosti detekce plácání',
         'o' => 'Up',
         'd' => 'Down',
         'u' => 'Nedostupný',
       ),
-      'failure_prediction_enabled' => array('title' => 'Předpokládat výpadek'),
-      'process_perf_data' => array('title' => 'zpracovávat výkonostní data'),
-      'retain_status_information' => array('title' => 'držet stavové informace'),
-      'retain_nonstatus_information' => array('title' => 'držet nestavové informace'),
+      'failure_prediction_enabled' => array(
+        'severity' => 'advanced',
+        'title' => 'Předpokládat výpadek'),
+      'process_perf_data' => array(
+        'severity' => 'advanced',
+        'title' => 'zpracovávat výkonostní data'),
+      'retain_status_information' => array(
+        'severity' => 'advanced',
+        'title' => 'držet stavové informace'),
+      'retain_nonstatus_information' => array(
+        'severity' => 'advanced',
+        'title' => 'držet nestavové informace'),
       'contacts' => array(
+        'severity' => 'optional',
         'title' => 'kontakty',
         'refdata' => array(
           'table' => 'contact',
           'captioncolumn' => 'contact_name',
           'idcolumn' => 'contact_id')),
       'contact_groups' => array(
+        'severity' => 'optional',
         'title' => 'členské skupiny kontaktů',
         'refdata' => array(
           'table' => 'contactgroup',
           'captioncolumn' => 'contactgroup_name',
           'idcolumn' => 'contactgroup_id')
       ),
-      'notification_interval' => array('title' => 'interval notifikace'),
-      'first_notification_delay' => array('title' => 'první prodleva v oznamování'),
+      'notification_interval' => array(
+        'severity' => 'optional',
+        'title' => 'interval notifikace'),
+      'first_notification_delay' => array(
+        'severity' => 'advanced',
+        'title' => 'první prodleva v oznamování'),
       'notification_period' => array(
+        'severity' => 'optional',
         'title' => 'perioda oznamování',
         'required' => true,
         'refdata' => array(
@@ -194,6 +255,7 @@ class IEHost extends IECfg
           'idcolumn' => 'timeperiod_id')
       ),
       'notification_options' => array(
+        'severity' => 'advanced',
         'title' => 'oznamovat událost',
         'd' => 'Vypnutí',
         'u' => 'Nedostupnost',
@@ -201,21 +263,45 @@ class IEHost extends IECfg
         'f' => 'škytání',
         's' => 'plánovaný výpadek'
       ),
-      'notifications_enabled' => array('title' => 'povolit oznamování'),
-      'stalking_options' => array('title' => 'nastavení sledování',
+      'notifications_enabled' => array(
+        'severity' => 'optional',
+        'title' => 'povolit oznamování'),
+      'stalking_options' => array(
+        'severity' => 'advanced',
+        'title' => 'nastavení sledování',
         'o' => 'sledovat UP stavy',
         'd' => 'sledovat DOWN stavy',
         'u' => 'sledovat UNREACHABLE stavy'),
-      'notes' => array('title' => 'poznámka', 'mandatory' => true),
-      'notes_url' => array('title' => 'url externí poznámky'),
-      'action_url' => array('title' => 'url externí aplikace'),
-      'icon_image' => array('title' => 'ikona hostu', 'mandatory' => true),
-      'icon_image_alt' => array('title' => 'alternativní ikona'),
-      'vrml_image' => array('title' => '3D ikona'),
-      'statusmap_image' => array('title' => 'ikona statusmapy'),
-      '2d_coords' => array('title' => 'dvourozměrné koordináty'),
-      '3d_coords' => array('title' => 'třírozměrné koordináty'),
-      'platform' => array('title' => 'Platforma', 'mandatory' => true)
+      'notes' => array(
+        'severity' => 'basic',
+        'title' => 'poznámka', 'mandatory' => true),
+      'notes_url' => array(
+        'severity' => 'advanced',
+        'title' => 'url externí poznámky'),
+      'action_url' => array(
+        'severity' => 'advanced',
+        'title' => 'url externí aplikace'),
+      'icon_image' => array(
+        'severity' => 'advanced',
+        'title' => 'ikona hostu', 'mandatory' => true),
+      'icon_image_alt' => array(
+        'severity' => 'advanced',
+        'title' => 'alternativní ikona'),
+      'vrml_image' => array(
+        'severity' => 'advanced',
+        'title' => '3D ikona'),
+      'statusmap_image' => array(
+        'severity' => 'advanced',
+        'title' => 'ikona statusmapy'),
+      '2d_coords' => array(
+        'severity' => 'advanced',
+        'title' => 'dvourozměrné koordináty'),
+      '3d_coords' => array(
+        'severity' => 'advanced',
+        'title' => 'třírozměrné koordináty'),
+      'platform' => array(
+        'severity' => 'basic',
+        'title' => 'Platforma', 'mandatory' => true)
     );
 
     /**

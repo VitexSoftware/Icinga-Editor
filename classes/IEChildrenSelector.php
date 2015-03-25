@@ -20,7 +20,7 @@ class IEChildrenSelector extends EaseContainer
     public function __construct($Host)
     {
         $FieldName = 'parents';
-        $InitialContent = new EaseTWBPanel(_('Sledované služby'));
+        $InitialContent = new EaseTWBPanel(_('Potomci'));
         $InitialContent->setTagCss(array('width' => '100%'));
 
         if (is_null($Host->getMyKey())) {

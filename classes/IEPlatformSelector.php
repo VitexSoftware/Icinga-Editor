@@ -34,6 +34,9 @@ class IEPlatformSelector extends EaseHtmlSelect
             next($this->platforms);
         }
         EaseShared::webPage()->addJavaScript('$("#' . $this->getTagID() . '").msDropDown();', null, true);
+        EaseShared::webPage()->addJavaScript('$("#' . $this->getTagID() . '").on(\'change\', \'select\', function() {
+        alert($(this).val());
+    });', null, true);
         EaseShared::webPage()->includeJavaScript('js/msdropdown/jquery.dd.min.js');
         EaseShared::webPage()->includeCss('css/msdropdown/dd.css');
     }

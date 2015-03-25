@@ -13,7 +13,7 @@ require_once 'includes/IEInit.php';
 $oPage->addItem(new IEPageTop(_('Icinga Editor')));
 $oPage->addPageColumns();
 
-$oPage->heroUnit = $this->container->addItem(new EaseHtmlDivTag('heroUnit', null, array('class' => 'jumbotron')));
+$oPage->heroUnit = $oPage->container->addItem(new EaseHtmlDivTag('heroUnit', null, array('class' => 'jumbotron')));
 $oPage->heroUnit->addItem(new EaseHtmlImgTag('img/vsmonitoring.png'));
 $oPage->heroUnit->addItem(new EaseHtmlATag('http://icinga.org/', new EaseHtmlImgTag('img/icinga_logo4-300x109.png')));
 $oPage->heroUnit->addItem(_('Monitoring služeb'));

@@ -24,11 +24,15 @@ class IEUsedServiceSelector extends EaseContainer
     {
         parent::__construct();
         $fieldName = $this->getmyKeyColumn();
-        $initialContent = new EaseTWBPanel(_('Sledované služby'));
-        $initialContent->setTagCss(array('width' => '100%'));
+
         if ($host->getDataValue('platform') == 'generic') {
-            $initialContent->addItem('<small><span class="label label-info">Tip:</span> ' . _('Další sledovatelné služby budou nabídnuty po nastavení platformy hosta a vzdáleného senzoru.') . '</small>');
+            $note = '<small><span class="label label-info">Tip:</span> ' . _('Další sledovatelné služby budou nabídnuty po nastavení platformy hosta a vzdáleného senzoru.') . '</small>';
+        } else {
+            $note = null;
         }
+
+        $initialContent = new EaseTWBPanel(_('Sledované služby'), 'default', null, $note);
+        $initialContent->setTagCss(array('width' => '100%'));
 
         if (is_null($host->getMyKey())) {
             $initialContent->addItem(_('Nejprve je potřeba uložit záznam'));
@@ -54,7 +58,7 @@ class IEUsedServiceSelector extends EaseContainer
                     continue;
                 }
 
-                if (($serviceInfo['platform'] != 'generic') && $serviceInfo['platform'] != $host->getDataValue('platform')) {
+                if (($serviceInfo ['platform'] != 'generic' ) && $serviceInfo['platform'] != $host->getDataValue('platform')) {
                     unset($allServices[$serviceID]);
                     continue;
                 }
@@ -72,7 +76,6 @@ class IEUsedServiceSelector extends EaseContainer
             }
 
             if (count($allServices)) {
-
                 foreach ($allServices as $serviceID => $serviceInfo) {
                     if (isset($parentServUsed[$serviceInfo['parent_id']])) {
                         continue;
@@ -82,11 +85,10 @@ class IEUsedServiceSelector extends EaseContainer
                     if (intval($serviceInfo['parent_id'])) {
                         $unchMenu[] = new EaseHtmlATag('servicetweak.php?service_id=' . $serviceID, EaseTWBPart::GlyphIcon('wrench') . ' ' . _('Editace'));
                     }
-                    $unchMenu[] = new EaseHtmlATag('?addservice=' . $serviceInfo[$service->nameColumn] . '&amp;service_id=' . $serviceID . '&amp;' . $host->getmyKeyColumn() . '=' . $host->getMyKey() . '&amp;' . $host->nameColumn . '=' . $host->getName(), EaseTWBPart::GlyphIcon('plus') . ' ' . _('Začít sledovat'));
+                    $unchMenu [] = new EaseHtmlATag('?addservice=' . $serviceInfo[$service->nameColumn] . '&amp;service_id=' . $serviceID . '&amp;' . $host->getmyKeyColumn() . '=' . $host->getMyKey() . '&amp;' . $host->nameColumn . '=' . $host->getName(), EaseTWBPart::GlyphIcon('plus') . ' ' . _('Začít sledovat'));
 
                     $initialContent->addItem(
-                        new EaseTWBButtonDropdown(
-                        $serviceInfo[$service->nameColumn], 'inverse', 'xs', $unchMenu));
+                        new EaseTWBButtonDropdown($serviceInfo[$service->nameColumn], 'inverse', 'xs', $unchMenu));
                 }
             }
 
@@ -95,8 +97,7 @@ class IEUsedServiceSelector extends EaseContainer
                 foreach ($servicesAssigned as $serviceID => $serviceInfo) {
 
                     $initialContent->addItem(
-                        new EaseTWBButtonDropdown(
-                        $serviceInfo[$service->nameColumn], 'success', 'xs', array(
+                        new EaseTWBButtonDropdown($serviceInfo[$service->nameColumn], 'success', 'xs', array(
                       new EaseHtmlATag(
                           '?delservice=' . $serviceInfo[$service->nameColumn] . '&amp;service_id=' . $serviceID . '&amp;' . $host->getmyKeyColumn() . '=' . $host->getMyKey() . '&amp;' . $host->nameColumn . '=' . $host->getName(), EaseTWBPart::GlyphIcon('remove') . ' ' . _('Přestat sledovat'))
                       , new EaseHtmlATag('servicetweak.php?service_id=' . $serviceID . '&amp;host_id=' . $host->getId(), EaseTWBPart::GlyphIcon('wrench') . ' ' . _('Editace'))
@@ -125,7 +126,7 @@ class IEUsedServiceSelector extends EaseContainer
                         if ($service->saveToMySQL()) {
                             $service->addStatusMessage(sprintf(_('položka %s byla přidána'), $request['addservice']), 'success');
                             if (!$service->getDataValue('autocfg')) {
-                                EaseShared::webPage()->redirect('servicetweak.php?host_id=' . $request['host_id'] . '&service_id=' . $request[$service->myKeyColumn]);
+                                EaseShared::webPage()->redirect('servicetweak.php?host_id=' . $request ['host_id'] . '&service_id=' . $request[$service->myKeyColumn]);
                                 exit();
                             }
                         } else {
@@ -147,7 +148,7 @@ class IEUsedServiceSelector extends EaseContainer
 
     public function useSameServicesTo()
     {
-        // return new EaseTWBForm('', '', 'post', array(new IEHostSelect(), new EaseTWSubmitButton(_('Přiřadit'), 'success')));
+// return new EaseTWBForm('', '', 'post', array(new IEHostSelect(), new EaseTWSubmitButton(_('Přiřadit'), 'success')));
         return null;
     }
 

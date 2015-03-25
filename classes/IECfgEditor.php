@@ -238,8 +238,13 @@ class IECfgEditor extends EaseContainer
 
     public function fullEditor()
     {
+        $tabs = new EaseTWBTabs('editorTabs');
+        $tabs->addTab(_('Více nastavení:'));
+
         if (EaseShared::user()->getSettingValue('admin')) {
-            $this->objectEdited->keywordsInfo[$this->objectEdited->userColumn] = array('title' => 'vlastník');
+            $this->objectEdited->keywordsInfo[$this->objectEdited->userColumn] = array(
+              'severity' => 'advanced',
+              'title' => 'vlastník');
             $this->objectEdited->useKeywords[$this->objectEdited->userColumn] = 'USER';
         }
 
@@ -275,6 +280,10 @@ class IECfgEditor extends EaseContainer
         foreach ($this->objectEdited->useKeywords as $fieldName => $fieldType) {
 
             $keywordInfo = $this->objectEdited->keywordsInfo[$fieldName];
+            if (!isset($keywordInfo['severity'])) {
+                $this->addStatusMessage(sprintf(_('Sloupeček %s/%s nemá uvedenou závažnost'), $fieldName, get_class($this->objectEdited)), 'warning');
+                $keywordInfo['severity'] = null;
+            }
 
             if (!count($keywordInfo)) {
                 continue;
@@ -329,10 +338,29 @@ class IECfgEditor extends EaseContainer
                 }
             }
 
-            $mainFieldBlock = $this->addItem(new EaseHtmlDivTag($fieldName . '-block', null, array('class' => 'fieldblock')));
 
+
+            switch ($keywordInfo['severity']) {
+                case 'advanced':
+                    if (!isset($advancedTab)) {
+                        $advancedTab = $tabs->addTab(_('Rozšířené'));
+                    }
+                    $mainFieldBlock = $advancedTab->addItem(new EaseHtmlDivTag($fieldName . '-block', null, array('class' => 'fieldblock')));
+                    break;
+                case 'optional':
+                    if (!isset($optionalTab)) {
+                        $optionalTab = $tabs->addTab(_('Volitelné'));
+                    }
+                    $mainFieldBlock = $optionalTab->addItem(new EaseHtmlDivTag($fieldName . '-block', null, array('class' => 'fieldblock')));
+                    break;
+                default :
+                    $mainFieldBlock = $this->addItem(new EaseHtmlDivTag($fieldName . '-block', null, array('class' => 'fieldblock')));
+                    break;
+            }
+
+
+            $fieldLabel = $mainFieldBlock->addItem(new EaseHtmlDivTag(null, '<a name="' . $fieldName . '">' . $fieldName . '</a>&nbsp;', array('class' => 'FieldLabel', 'onClick' => "$('#" . $fieldName . "-controls').toggle('slow');")));
             /**
-              $fieldLabel = $mainFieldBlock->addItem(new EaseHtmlDivTag(null, '<a name="' . $fieldName . '">' . $fieldName . '</a>&nbsp;', array('class' => 'FieldLabel mandatory', 'onClick' => "$('#" . $fieldName . "-controls').toggle('slow');")));
 
               if (!$required || !(int) $this->objectEdited->getDataValue('register')) {
               $fieldLabel->addItem(new EaseHtmlATag('#', EaseTWBPart::GlyphIcon('remove'), array('onClick' => '$(\'#' . $fieldName . '-block\').empty().html(\'<input type=hidden name=' . $fieldName . ' value=NULL><div class=FieldLabel>' . $fieldName . '</div>\'); return false;')));
@@ -359,12 +387,14 @@ class IECfgEditor extends EaseContainer
             if (isset($template)) {
                 $tempValue = $template->getDataValue($fieldName);
                 if (!is_null($tempValue) && ($fieldName != $this->objectEdited->nameColumn) && !$required) { //Skrýt nedůležité položky
-                    EaseShared::webPage()->addJavaScript("$('#" . $fieldName . "-controls').hide();", null, true);
+                    // EaseShared::webPage()->addJavaScript("$('#" . $fieldName . "-controls').hide();", null, true);
                 }
             }
 
             $this->insertWidget($fieldBlock, $fieldName, $value);
         }
+
+        $this->addItem($tabs);
     }
 
     /**

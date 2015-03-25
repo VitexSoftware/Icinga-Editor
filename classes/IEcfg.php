@@ -137,14 +137,17 @@ class IEcfg extends EaseBrick
         if ($this->allowTemplating) {
             $this->useKeywords['name'] = 'VARCHAR(64)';
             $this->keywordsInfo['name'] = array(
+              'severity' => 'advanced',
               'title' => _('Uložit jako předlohu pod jménem')
             );
             $this->useKeywords['register'] = 'BOOL';
             $this->useKeywords['use'] = 'SELECT';
             $this->keywordsInfo['register'] = array(
+              'severity' => 'advanced',
               'title' => _('Není předloha')
             );
             $this->keywordsInfo['use'] = array(
+              'severity' => 'advanced',
               'title' => 'použít předlohu - template',
               'mandatory' => true,
               'refdata' => array(
@@ -159,14 +162,21 @@ class IEcfg extends EaseBrick
         if ($this->publicRecords) {
             $this->useKeywords['public'] = 'BOOL';
             $this->keywordsInfo['public'] = array(
+              'severity' => 'advanced',
               'title' => 'Veřejně k dispozici ostatním',
               'mandatory' => true
             );
             $this->keywordsInfo['use']['refdata']['public'] = true;
         }
+        $this->keywordsInfo['user_id'] = array(
+          'severity' => 'advanced',
+          'title' => _('Vlastník')
+        );
+
         $this->useKeywords['generate'] = 'BOOL';
         $this->keywordsInfo['generate'] = array(
           'title' => 'Generovat do konfigurace',
+          'severity' => 'advanced',
           'mandatory' => true
         );
     }

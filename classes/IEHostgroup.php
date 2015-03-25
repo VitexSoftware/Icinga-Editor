@@ -33,9 +33,14 @@ class IEHostgroup extends IECfg
       'action_url' => 'VARCHAR(255)'
     );
     public $keywordsInfo = array(
-      'hostgroup_name' => array('title' => 'název skupiny', 'required' => true),
-      'alias' => array('title' => 'alias skupiny', 'required' => true),
+      'hostgroup_name' => array(
+        'severity' => 'requied',
+        'title' => 'název skupiny', 'required' => true),
+      'alias' => array(
+        'severity' => 'optional',
+        'title' => 'alias skupiny', 'required' => true),
       'members' => array(
+        'severity' => 'basic',
         'title' => 'členské hosty',
         'mandatory' => true,
         'refdata' => array(
@@ -45,15 +50,22 @@ class IEHostgroup extends IECfg
           'condition' => array('register' => 1))
       ),
       'hostgroup_members' => array(
+        'severity' => 'optional',
         'title' => 'členské skupiny hostů',
         'refdata' => array(
           'table' => 'hostgroup',
           'captioncolumn' => 'hostgroup_name',
           'idcolumn' => 'hostgroup_id')
       ),
-      'notes' => array('title' => 'Poznámka'),
-      'notes_url' => array('title' => 'URL externích poznámek'),
-      'action_url' => array('title' => 'adresa doplnujícich akci')
+      'notes' => array(
+        'severity' => 'basic',
+        'title' => 'Poznámka'),
+      'notes_url' => array(
+        'severity' => 'advanced',
+        'title' => 'URL externích poznámek'),
+      'action_url' => array(
+        'severity' => 'advanced',
+        'title' => 'adresa doplnujících akcí')
     );
 
     /**

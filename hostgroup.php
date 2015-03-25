@@ -65,11 +65,19 @@ if ($oPage->isPosted()) {
 
 
 $oPage->addItem(new IEPageTop(_('Editace skupiny hostů') . ' ' . $hostgroup->getName()));
-$oPage->addPageColumns();
+
+
+$hostgroupPanel = $oPage->container->addItem(new EaseTWBPanel(new EaseHtmlH1Tag($hostgroup->getDataValue('alias') . ' <small>' . $hostgroup->getName() . '</small>')));
+
+$commonRow = $hostgroupPanel->addItem(new EaseTWBRow);
+$hostgroupParams = $commonRow->addColumn(8);
+$hostgroupTools = $commonRow->addColumn(4, new EaseHtmlH3Tag(_('Nástroje')));
+
+
 
 $hostgroupEdit = new IECfgEditor($hostgroup);
 
-$form = $oPage->columnII->addItem(new EaseHtmlForm('Hostgroup', 'hostgroup.php', 'POST', $hostgroupEdit, array('class' => 'form-horizontal')));
+$form = $hostgroupParams->addItem(new EaseHtmlForm('Hostgroup', 'hostgroup.php', 'POST', $hostgroupEdit, array('class' => 'form-horizontal')));
 $form->setTagID($form->getTagName());
 if (!is_null($hostgroup->getMyKey())) {
     $form->addItem(new EaseHtmlInputHiddenTag($hostgroup->getmyKeyColumn(), $hostgroup->getMyKey()));
@@ -81,18 +89,17 @@ $oPage->AddCss('
 input.ui-button { width: 100%; }
 ');
 
-$oPage->columnIII->addItem($hostgroup->deleteButton());
+$hostgroupTools->addItem($hostgroup->deleteButton());
 
 if ($hostgroup->getId()) {
-    $oPage->columnI->addItem($hostgroup->ownerLinkButton());
+    $hostgroupTools->addItem($hostgroup->ownerLinkButton());
 }
 
 
-$operations = $oPage->columnIII->addItem(new EaseTWBPanel(_('Hromadné operace')), 'success');
+$operations = $hostgroupTools->addItem(new EaseTWBPanel(_('Hromadné operace')), 'success');
 $operations->addItem(new IEContactAsignForm);
 
-
-$oPage->columnIII->addItem(new EaseTWBLinkButton('wizard-host.php?hostgroup_id=' . $hostgroup->getId(), EaseTWBPart::GlyphIcon('plus') . _('nový host ve skupině'), 'success'));
+$hostgroupTools->addItem(new EaseTWBLinkButton('wizard-host.php?hostgroup_id=' . $hostgroup->getId(), EaseTWBPart::GlyphIcon('plus') . _('nový host ve skupině'), 'success'));
 
 $oPage->addItem(new IEPageBottom());
 

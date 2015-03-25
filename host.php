@@ -171,9 +171,12 @@ $hostPanel = $oPage->container->addItem(new EaseTWBPanel(new EaseHtmlH1Tag($host
 
 $hostTabs = new EaseTWBTabs('hostTabs');
 
-$hostCommon = $hostTabs->addTab(_('Obecné'));
-$hostTools = $hostTabs->addTab(_('Nástroje'));
-$hostParams = $hostTabs->addTab(_('Ladění'));
+$commonTab = $hostTabs->addTab(_('Obecné'));
+$commonRow = $commonTab->addItem(new EaseTWBRow);
+$hostCommon = $commonRow->addColumn(8);
+$hostTools = $commonRow->addColumn(4, new EaseHtmlH3Tag(_('Nástroje')));
+
+$hostParams = $hostTabs->addTab(_('Konfigurace'));
 
 switch ($oPage->getRequestValue('action')) {
     case 'parent':
