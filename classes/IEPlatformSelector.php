@@ -34,9 +34,25 @@ class IEPlatformSelector extends EaseHtmlSelect
             next($this->platforms);
         }
         EaseShared::webPage()->addJavaScript('$("#' . $this->getTagID() . '").msDropDown();', null, true);
-        EaseShared::webPage()->addJavaScript('$("#' . $this->getTagID() . '").on(\'change\', \'select\', function() {
-        alert($(this).val());
-    });', null, true);
+        EaseShared::webPage()->addJavaScript('$("#' . $this->getTagID() . '").change(function() {
+            var oDropdown = $("#' . $this->getTagID() . '").msDropdown().data("dd");
+            var text = oDropdown.get("selectedText");
+            console.log(text);
+
+        var saverClass = $("[name=\'class\']").val();
+        var keyId = $(".keyId").val();
+        var columnName = $(this).attr("name");
+
+var jqxhr = $.post( "datasaver.php?SaverClass=" + saverClass , { Field: columnName, Value: text, Key: keyId }  ,   function() {
+    console.log( "success" );
+})
+.done(function() {
+    console.log( "second success" );
+})
+.fail(function() {
+    console.log( "error" );
+});
+        });', null, true);
         EaseShared::webPage()->includeJavaScript('js/msdropdown/jquery.dd.min.js');
         EaseShared::webPage()->includeCss('css/msdropdown/dd.css');
     }
