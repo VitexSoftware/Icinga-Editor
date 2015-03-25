@@ -181,10 +181,10 @@ $hostParams = $hostTabs->addTab(_('Konfigurace'));
 switch ($oPage->getRequestValue('action')) {
     case 'parent':
         require_once 'classes/IEParentSelector.php';
-        $oPage->columnII->addItem(new IEParentSelector($host));
+        $hostCommon->addItem(new IEParentSelector($host));
         break;
     case 'icon':
-        $oPage->columnII->addItem(new IEIconSelector($host));
+        $hostCommon->addItem(new IEIconSelector($host));
         break;
 }
 

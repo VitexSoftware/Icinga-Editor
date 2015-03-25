@@ -24,7 +24,7 @@ class IEParentSelector extends EaseContainer
     {
         parent::__construct();
         $fieldName = $host->getmyKeyColumn();
-        $initialContent = new EaseHtmlFieldSet(_('rodiče hostu'));
+        $initialContent = new EaseTWBPanel(_('rodiče hostu'));
 
         $addparentForm = $initialContent->addItem(new EaseTWBForm('addparent'));
         $addparentForm->addItem(new EaseTWBFormGroup(_('IP nebo Hostname'), new EaseHtmlInputTextTag('newparent')));

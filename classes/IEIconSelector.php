@@ -90,7 +90,7 @@ class IEIconSelector extends EaseContainer
             $iconTabs->addTab($subicodir, $icons, $default);
         }
 
-        $uplBox = $this->addItem(new EaseHtmlFieldSet(_('Nahraj vlastní')));
+        $uplBox = $this->addItem(new EaseTWBPanel(_('Nahraj vlastní'), 'info'));
         $uplBox->setTagCss('width: 100%;');
         $icoupform = $uplBox->addItem(new EaseTWBForm('icoUp', null, 'POST', null, array('enctype' => 'multipart/form-data')));
         $icoupform->addItem(new EaseHtmlEmTag(_('Obrázek typu GIF,PNG nebo JPG, nejlépe 40x40 px')));
