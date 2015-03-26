@@ -261,7 +261,7 @@ class IECfgEditor extends EaseContainer
                 $this->objectEdited->keywordsInfo['register']['required'] = false;
             }
         }
-        if (!(int) $this->objectEdited->getDataValue('generate')) {
+        if (!(int) $this->objectEdited->getDataValue('generate') && isset($this->objectEdited->useKeywords['generate'])) {
             $this->addStatusMessage(_('tento záznam se nebude generovat do konfigurace'));
         }
         if ($this->objectEdited->publicRecords) {

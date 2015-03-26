@@ -561,4 +561,23 @@ class IEHost extends IECfg
         echo IEHostOverview::icon($this);
     }
 
+    /**
+     * Vrací služby přiřazené ke sledování hosta
+     *
+     * @return array Seznam služeb
+     */
+    public function getServices()
+    {
+        $services = array();
+
+        $service = new IEService;
+        $servicesAssigned = $service->myDbLink->queryToArray('SELECT ' . $service->myKeyColumn . ',' . $service->nameColumn . ' FROM ' . $service->myTable . ' WHERE host_name LIKE \'%"' . $this->getName() . '"%\'', $service->myKeyColumn);
+        if ($servicesAssigned) {
+            foreach ($servicesAssigned as $service_id => $service_info) {
+                $services[$service_id] = $service_info[$service->nameColumn];
+            }
+        }
+        return $services;
+    }
+
 }

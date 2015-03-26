@@ -9,14 +9,14 @@
  * @copyright  2012 Vitex@hippy.cz (G)
  */
 require_once 'includes/IEInit.php';
-require_once 'classes/IECommand.php';
+
 require_once 'classes/IEDataGrid.php';
 
 $oPage->onlyForLogged();
 
-$oPage->addItem(new IEPageTop(_('Přehled příkazů')));
+$oPage->addItem(new IEPageTop(_('Přehled předloh sledovaných služeb')));
 
-$oPage->addItem(new EaseTWBContainer(new IEDataGrid(_('Příkazy'), new IECommand)));
+$oPage->addItem(new EaseTWBContainer(new IEDataGrid(_('Předlohy sledovaných služeb'), new IEStemplate)));
 
 $oPage->addItem(new IEPageBottom());
 

@@ -176,9 +176,13 @@ class IEMainMenu extends EaseHtmlDivTag
                   'services.php' => EaseTWBPart::GlyphIcon('list') . ' ' . _('Přehled služeb'),
                   'servicegroup.php' => EaseTWBPart::GlyphIcon('plus') . ' ' . _('Nová skupina služeb'),
                   'servicegroups.php' => EaseTWBPart::GlyphIcon('list') . ' ' . _('Přehled skupin služeb'), /*
-                      'servicedependency.php' => _('Závislosti služeb'),
-                      'extserviceinfo.php' => _('Rozšířené informace služeb'),
-                      'serviceescalation.php' => _('Eskalace služeb') */)
+                    'servicedependency.php' => _('Závislosti služeb'),
+                    'extserviceinfo.php' => _('Rozšířené informace služeb'),
+                    'serviceescalation.php' => _('Eskalace služeb') */
+                  '' => '',
+                  'stemplate.php?action=new' => EaseTWBPart::GlyphIcon('plus') . ' ' . _('Nová předloha sledované služby'),
+                  'stemplates.php' => EaseTWBPart::GlyphIcon('list') . ' ' . _('Přehled předloh sled. sl.')
+                    )
                 );
             } else {
                 $service = new IEService();

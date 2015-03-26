@@ -18,7 +18,7 @@ class IEUsedServiceSelector extends EaseContainer
     /**
      * Editor k přidávání členů skupiny
      *
-     * @param IEHosts $host
+     * @param IEHost $host
      */
     public function __construct($host)
     {
@@ -28,8 +28,9 @@ class IEUsedServiceSelector extends EaseContainer
         if ($host->getDataValue('platform') == 'generic') {
             $note = '<small><span class="label label-info">Tip:</span> ' . _('Další sledovatelné služby budou nabídnuty po nastavení platformy hosta a vzdáleného senzoru.') . '</small>';
         } else {
-            $note = null;
+            $note = array();
         }
+
 
         $initialContent = new EaseTWBPanel(_('Sledované služby'), 'default', null, $note);
         $initialContent->setTagCss(array('width' => '100%'));
@@ -93,6 +94,9 @@ class IEUsedServiceSelector extends EaseContainer
             }
 
             if (count($servicesAssigned)) {
+                $saveAsTemplateButton = new EaseTWBLinkButton('stemplate.php?action=copyhost&host_id=' . $host->getId(), _('Uložit jako předlohu'), 'success');
+                $initialContent->footer->addItem($saveAsTemplateButton);
+
                 $initialContent->addItem('</br>');
                 foreach ($servicesAssigned as $serviceID => $serviceInfo) {
 
@@ -105,6 +109,14 @@ class IEUsedServiceSelector extends EaseContainer
                         )
                     );
                 }
+            } else {
+                $presetSelForm = new EaseTWBForm('presetSelForm');
+                $presetSelForm->addItem(new EaseHtmlInputHiddenTag($host->getmyKeyColumn(), $host->getId()));
+                $presetSelForm->addItem(new EaseHtmlInputHiddenTag('action', 'applystemplate'));
+                $presetSelForm->addItem(new IEStemplateSelect('stemplate_id'));
+                $presetSelForm->addItem(new EaseTWSubmitButton(_('Aplikovat předlohu'), 'success'));
+                $presetSelForm->setTagClass('form-inline');
+                $initialContent->footer->addItem($presetSelForm);
             }
         }
         $this->addItem($initialContent);

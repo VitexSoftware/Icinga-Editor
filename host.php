@@ -29,6 +29,27 @@ if ($hostId == 0) {
 $host = new IEHost($hostId);
 
 switch ($oPage->getRequestValue('action')) {
+    case 'applystemplate':
+        $stemplate = new IEStemplate($oPage->getRequestValue('stemplate_id', 'int'));
+        $services = $stemplate->getDataValue('services');
+        if (count($services)) {
+            $service = new IEService;
+            foreach ($services as $service_id => $service_name) {
+                $service->loadFromMySQL($service_id);
+                $service->addMember('host_name', $host->getId(), $host->getName());
+                $service->saveToMySQL();
+                $service->dataReset();
+            }
+        }
+        $contacts = $stemplate->getDataValue('contacts');
+        if (count($contacts)) {
+            foreach ($contacts as $contact_id => $contact_name) {
+                $host->addMember('contacts', $contact_id, $contact_name);
+            }
+            $host->saveToMySQL();
+        }
+
+        break;
     case 'populate':
         $host->autoPopulateServices();
         break;
