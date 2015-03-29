@@ -656,6 +656,30 @@ class IEcfg extends EaseBrick
     }
 
     /**
+     * Vrací seznam položek uživatele
+     *
+     * @param int     $thisID       id jiného než přihlášeného uživatele
+     * @param array   $extraColumns další vracené položky
+     *
+     * @return array
+     */
+    public function getOwned($thisID = null, $extraColumns = null)
+    {
+        if (is_null($thisID)) {
+            $thisID = EaseShared::user()->getUserID();
+        }
+        $columnsToGet = array($this->getmyKeyColumn(), $this->nameColumn, 'generate', $this->myLastModifiedColumn, $this->userColumn);
+
+        if (!is_null($extraColumns)) {
+            $columnsToGet = array_merge($columnsToGet, $extraColumns);
+        }
+
+        $data = $this->getColumnsFromMySQL($columnsToGet, $this->userColumn . '=' . $thisID, $this->nameColumn, $this->getmyKeyColumn());
+
+        return $this->unserializeArrays($data);
+    }
+
+    /**
      * Vrací seznam dostupných položek
      *
      * @param int     $thisID       id jiného než přihlášeného uživatele

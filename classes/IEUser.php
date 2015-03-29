@@ -33,6 +33,12 @@ class IEUser extends EaseUser
     public $settingsColumn = 'settings';
 
     /**
+     * Klíčové slovo
+     * @var string
+     */
+    public $keyword = 'user';
+
+    /**
      * Vrací odkaz na ikonu
      *
      * @return string
@@ -100,7 +106,12 @@ class IEUser extends EaseUser
      */
     public function deleteButton($name = null, $urlAdd = '')
     {
-        return new EaseJQConfirmedLinkButton('?user_id=' . $this->getID() . '&delete=true' . '&' . $urlAdd, _('Smazat ') . ' ' . $this->getUserLogin() . ' ' . EaseTWBPart::GlyphIcon('remove-sign'));
+//        return new EaseJQConfirmedLinkButton('?user_id=' . $this->getID() . '&delete=true' . '&' . $urlAdd, _('Smazat ') . ' ' . $this->getUserLogin() . ' ' . EaseTWBPart::GlyphIcon('remove-sign'));
+
+        EaseShared::webPage()->addItem(new IEConfirmationDialog('delete' . $this->getId(), '?user_id=' . $this->getID() . '&delete=true' . '&' . $urlAdd, _('Smazat') . ' ' . $name, sprintf(_('Opravdu smazat %s ?'), '<strong>' . $this->getUserName() . '</strong>')));
+        return new EaseHtmlButtonTag(
+            array(EaseTWBPart::GlyphIcon('remove'), _('Smazat') . ' ' . $this->keyword . ' ' . $this->getUserName()), array('style' => 'cursor: default', 'class' => 'btn btn-danger', 'id' => 'triggerdelete' . $this->getId(), 'data-id' => $this->getId()
+        ));
     }
 
     public function delete($id = null)
@@ -113,14 +124,86 @@ class IEUser extends EaseUser
             $this->loadFromMySQL($id);
         }
 
-        $this->myDbLink->exeQuery('DELETE from command WHERE user_id=' . $id);
-        $this->myDbLink->exeQuery('DELETE from contact WHERE user_id=' . $id);
-        $this->myDbLink->exeQuery('DELETE from contactgroup WHERE user_id=' . $id);
-        $this->myDbLink->exeQuery('DELETE from hostgroup WHERE user_id=' . $id);
-        $this->myDbLink->exeQuery('DELETE from host WHERE user_id=' . $id);
-        $this->myDbLink->exeQuery('DELETE from servicegroup WHERE user_id=' . $id);
-        $this->myDbLink->exeQuery('DELETE from service WHERE user_id=' . $id);
-        $this->myDbLink->exeQuery('DELETE from timeperiod WHERE user_id=' . $id);
+
+        $userGroup = new IEUserGroup;
+        $userGroup->delUser($id);
+
+
+        $command = new IECommand;
+        $myCommand = $command->getOwned($id);
+        if ($myCommand) {
+            foreach ($myCommand as $command_id => $cmd) {
+                $command->loadFromMySQL((int) $command_id);
+                $command->delete();
+            }
+        }
+
+        $contact = new IEContact;
+        $myContact = $contact->getOwned($id);
+        if ($myContact) {
+            foreach ($myContact as $contact_id => $cmd) {
+                if ($contact->loadFromMySQL((int) $contact_id)) {
+                    $contact->delete();
+                }
+            }
+        }
+
+
+        $contactgroup = new IEContactgroup;
+        $myContactgroup = $contactgroup->getOwned($id);
+        if ($myContactgroup) {
+            foreach ($myContactgroup as $contactgroup_id => $cmd) {
+                $contactgroup->loadFromMySQL((int) $contactgroup_id);
+                $contactgroup->delete();
+            }
+        }
+
+
+        $hostgroup = new IEHostgroup;
+        $myHostgroup = $hostgroup->getOwned($id);
+        if ($myHostgroup) {
+            foreach ($myHostgroup as $hostgroup_id => $cmd) {
+                $hostgroup->loadFromMySQL((int) $hostgroup_id);
+                $hostgroup->delete();
+            }
+        }
+
+        $host = new IEHost;
+        $myHost = $host->getOwned($id);
+        if ($myHost) {
+            foreach ($myHost as $host_id => $cmd) {
+                $host->loadFromMySQL((int) $host_id);
+                $host->delete();
+            }
+        }
+
+        $servicegroup = new IEServicegroup;
+        $myServicegroup = $servicegroup->getOwned($id);
+        if ($myServicegroup) {
+            foreach ($myServicegroup as $servicegroup_id => $cmd) {
+                $servicegroup->loadFromMySQL((int) $servicegroup_id);
+                $servicegroup->delete();
+            }
+        }
+
+        $service = new IEService;
+        $myService = $service->getOwned($id);
+        if ($myService) {
+            foreach ($myService as $service_id => $cmd) {
+                $service->loadFromMySQL((int) $service_id);
+                $service->delete();
+            }
+        }
+
+        $timeperiod = new IETimeperiod;
+        $myTimeperiod = $timeperiod->getOwned($id);
+        if ($myTimeperiod) {
+            foreach ($myTimeperiod as $timeperiod_id => $cmd) {
+                $timeperiod->loadFromMySQL((int) $timeperiod_id);
+                $timeperiod->delete();
+            }
+        }
+
 
         $cfgfile = constant('CFG_GENERATED') . '/' . $this->getUserLogin() . '.cfg';
         if (file_exists($cfgfile)) {

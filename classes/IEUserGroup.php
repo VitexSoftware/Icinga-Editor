@@ -183,4 +183,14 @@ class IEUserGroup extends IEcfg
         return $row;
     }
 
+    /**
+     * Smaže uživatele ze skupin
+     *
+     * @param int $id UserID
+     */
+    public function delUser($id)
+    {
+        $this->myDbLink->exeQuery('DELETE FROM user_to_group WHERE user_id=' . $id);
+    }
+
 }

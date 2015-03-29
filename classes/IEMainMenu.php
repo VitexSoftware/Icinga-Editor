@@ -91,7 +91,7 @@ class IEMainMenu extends EaseHtmlDivTag
                             $image = 'unknown.gif';
                         }
 
-                        if (!is_null($hInfo)) {
+                        if (isset($hInfo) && !is_null($hInfo)) {
                             $hostGroupMenuItem['host.php?host_id=' . $hInfo['host_id']] = '&nbsp;' . IEHostOverview::icon($hInfo) . ' ' .
                                 $hInfo['host_name'] . ' ' .
                                 IEHostOverview::platformIcon($hInfo['platform']);

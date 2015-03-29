@@ -19,7 +19,6 @@ require_once 'classes/IEServicegroup.php';
 
 $oPage->onlyForLogged();
 
-$oPage->addItem(new IEPageTop(_('Icinga Editor')));
 $oPage->addPageColumns();
 
 $userID = $oPage->getRequestValue('user_id', 'int');
@@ -28,6 +27,9 @@ if ($userID) {
 }
 
 $user = new IEUser($userID);
+
+$oPage->addItem(new IEPageTop($user->getUserName()));
+
 
 if ($oPage->getRequestValue('delete') == 'true') {
     if ($user->delete()) {
