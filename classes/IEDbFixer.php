@@ -17,7 +17,7 @@ class IEDbFixer extends EaseHtmlUlTag
     public function __construct()
     {
         parent::__construct();
-        //$this->fixContactIDs();
+        $this->fixContactIDs();
         $this->fixHostNameIDs();
         $this->setTagClass('list-group');
     }
@@ -81,18 +81,22 @@ class IEDbFixer extends EaseHtmlUlTag
         $contactsOK = array();
         $contactsErr = array();
 
-        $service = new IEService;
         $contact = new IEContact;
-        $services = $service->getListing(0);
+        $service = new IEService;
+        $services = $service->getColumnsFromMySQL(array($service->myKeyColumn));
         foreach ($services as $serviceId => $serviceInfo) {
+            $serviceId = intval(current($serviceInfo));
             $service->loadFromMySQL($serviceId);
-            foreach ($service->getDataValue('contact_name') as $contactId => $contactName) {
-                $contactFound = $contact->loadFromMySQL($contactName);
-                if ($contactId != $contact->getId()) {
-                    if ($service->delMember('contact_name', $contactId, $contactName) && $service->addMember('contact_name', $contact->getId(), $contactName)) {
-                        $contactsOK[] = $contactName;
-                    } else {
-                        $contactsErr[] = $contactName;
+            $contactNames = $service->getDataValue('contacts');
+            if ($contactNames) {
+                foreach ($contactNames as $contactId => $contactName) {
+                    $contactFound = $contact->loadFromMySQL($contactName);
+                    if ($contactId != $contact->getId()) {
+                        if ($service->delMember('contacts', $contactId, $contactName) && $service->addMember('contacts', $contact->getId(), $contactName)) {
+                            $contactsOK[] = $contactName;
+                        } else {
+                            $contactsErr[] = $contactName;
+                        }
                     }
                 }
             }
@@ -100,6 +104,33 @@ class IEDbFixer extends EaseHtmlUlTag
                 if ($service->saveToMySQL()) {
                     $this->addItemSmart(sprintf(_('<strong>%s</strong> : %s'), $service->getName(), implode(',', $contactsOK)), array('class' => 'list-group-item'));
                     $this->addStatusMessage(sprintf(_('%s : %s'), $service->getName(), implode(',', $contactsOK)), 'success');
+                    $contactsOK = array();
+                }
+            }
+        }
+
+        $host = new IEHost;
+        $hosts = $host->getColumnsFromMySQL(array($host->myKeyColumn));
+        foreach ($hosts as $hostInfo) {
+            $hostId = intval(current($hostInfo));
+            $host->loadFromMySQL($hostId);
+            $contactNames = $host->getDataValue('contacts');
+            if ($contactNames) {
+                foreach ($contactNames as $contactId => $contactName) {
+                    $contactFound = $contact->loadFromMySQL($contactName);
+                    if ($contactId != $contact->getId()) {
+                        if ($host->delMember('contacts', $contactId, $contactName) && $host->addMember('contacts', $contact->getId(), $contactName)) {
+                            $contactsOK[] = $contactName;
+                        } else {
+                            $contactsErr[] = $contactName;
+                        }
+                    }
+                }
+            }
+            if (count($contactsOK)) {
+                if ($host->saveToMySQL()) {
+                    $this->addItemSmart(sprintf(_('<strong>%s</strong> : %s'), $host->getName(), implode(',', $contactsOK)), array('class' => 'list-group-item'));
+                    $this->addStatusMessage(sprintf(_('%s : %s'), $host->getName(), implode(',', $contactsOK)), 'success');
                     $contactsOK = array();
                 }
             }

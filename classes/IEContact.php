@@ -306,6 +306,16 @@ class IEContact extends IECfg
             }
         }
 
+        $childs = $this->getChilds();
+        if ($childs) {
+            $parent = $id;
+            foreach ($childs as $child_id => $child) {
+                $this->delete($child_id);
+            }
+            $this->loadFromMySQL($parent);
+            $id = $parent;
+        }
+
         $contactgroup = new IEContactGroup();
         $contactgroups = $this->myDbLink->queryTo2DArray('SELECT ' . $contactgroup->getmyKeyColumn() . ' FROM ' . $contactgroup->myTable . ' WHERE members LIKE \'%' . $this->getName() . '%\'');
         if (count($contactgroups)) {
@@ -313,8 +323,10 @@ class IEContact extends IECfg
                 $contactgroup->loadFromMySQL((int) $contactgroupID);
                 if ($contactgroup->delMember('members', null, $this->getName())) {
                     if ($contactgroup->saveToMySQL()) {
-                        $this->addStatusMessage(sprintf(_('Kontakt %s byl odebrán ze skupiny %s'), $this->getName(), $contactgroup->getName()));
+                        $this->addStatusMessage(sprintf(_('Kontakt <strong>%s</strong> byl odebrán ze skupiny <strong>%s</strong>'), $this->getName(), $contactgroup->getName()), 'success');
                     }
+                } else {
+                    $this->addStatusMessage(sprintf(_('Kontakt <strong>%s</strong> nebyl odebrán ze skupiny <strong>%s</strong>'), $this->getName(), $contactgroup->getName()), 'warning');
                 }
             }
         }
@@ -328,8 +340,26 @@ class IEContact extends IECfg
                 $service->loadFromMySQL((int) $serviceID);
                 if ($service->delMember('contacts', $id)) {
                     if ($service->saveToMySQL()) {
-                        $this->addStatusMessage(sprintf(_('Kontakt %s byl odebrán ze služby %s'), $this->getName(), $service->getName()));
+                        $this->addStatusMessage(sprintf(_('Kontakt <strong>%s</strong> byl odebrán ze služby <strong>%s</strong>'), $this->getName(), $service->getName()), 'success');
                     }
+                } else {
+                    $this->addStatusMessage(sprintf(_('Kontakt <strong>%s</strong> nebyl odebrán ze služby <strong>%s</strong>'), $this->getName(), $service->getName()), 'warning');
+                }
+            }
+        }
+
+        $host = new IEHost();
+
+        $hosts = $this->myDbLink->queryTo2DArray('SELECT ' . $host->getmyKeyColumn() . ' FROM ' . $host->myTable . ' WHERE contacts LIKE \'%' . $this->getName() . '%\'');
+        if (count($hosts)) {
+            foreach ($hosts as $hostID) {
+                $host->loadFromMySQL((int) $hostID);
+                if ($host->delMember('contacts', $id)) {
+                    if ($host->saveToMySQL()) {
+                        $this->addStatusMessage(sprintf(_('Kontakt <strong>%s</strong> byl odebrán z hosta <strong>%s</strong>'), $this->getName(), $host->getName()), 'success');
+                    }
+                } else {
+                    $this->addStatusMessage(sprintf(_('Kontakt <strong>%s</strong> nebyl odebrán z hosta <strong>%s</strong>'), $this->getName(), $host->getName()), 'warning');
                 }
             }
         }
