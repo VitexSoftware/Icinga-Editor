@@ -29,7 +29,7 @@ legend {  border: 1px solid #333333; margin: 2px; padding: 2px; }
 
 #StatusMessages.well {
     overflow-y: scroll;
-    max-height: 50%;
+    max-height: 500px;
 }
 
 #StatusMessages {

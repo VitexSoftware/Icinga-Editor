@@ -258,7 +258,8 @@ class IEMainMenu extends EaseHtmlDivTag
     public function finalize()
     {
         EaseJQueryPart::jQueryze($this);
-        $this->addJavaScript('$("#StatusMessages").click(function () { $("#StatusMessages").fadeTo("slow",0.25).slideUp("slow"); });', 3, true);
+        $this->includeJavaScript('js/slideupmessages.js');
+        $this->addJavaScript('$("#StatusMessages").click(function () { slideUpMessages() });', 3, true);
     }
 
 }
