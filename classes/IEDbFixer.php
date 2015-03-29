@@ -1,15 +1,12 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
- * Description of IEDbFixer
+ * Opravář databáze
  *
- * @author vitex
+ * @package    IcingaEditor
+ * @subpackage Engine
+ * @author     Vitex <vitex@hippy.cz>
+ * @copyright  2015 Vitex@hippy.cz (G)
  */
 class IEDbFixer extends EaseHtmlUlTag
 {
