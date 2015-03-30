@@ -2,8 +2,6 @@
 $(document).ready(function(){
     $('#smdrag').on('mousedown', function(e){
         $("#StatusMessages").slideDown("slow");
-        $('#smdrag').css('background-color','gray');
-        
         
         var $dragable = $('#StatusMessages'),
             startHeight = $dragable.height() - 10,
@@ -20,10 +18,6 @@ $(document).ready(function(){
             });
         });
                 
-    });
-    
-    $('#smdrag').on('mouseout', function(e){
-        $('#smdrag').css('background-color','white');
     });
     
     $("#StatusMessages").click(function () { 

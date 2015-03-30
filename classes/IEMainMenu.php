@@ -233,6 +233,7 @@ class IEMainMenu extends EaseHtmlDivTag
                   'timeperiod.php' => EaseTWBPart::GlyphIcon('plus') . ' ' . _('Nová časová perioda'),
                   'preferences.php' => EaseTWBPart::GlyphIcon('wrench') . ' ' . _('Nastavení icingy'),
                   'regenall.php' => EaseTWBPart::GlyphIcon('ok') . ' ' . _('Přegenerovat všechny konfiguráky'),
+                  'reset.php' => EaseTWBPart::GlyphIcon('cog') . ' ' . _('Reset Objektů'),
                   'dbrecreate.php' => EaseTWBPart::GlyphIcon('wrench') . ' ' . _('Reinicializovat databázi'),
                   'fixer.php' => EaseTWBPart::GlyphIcon('ok-circle') . ' ' . _('Opravit databázi'),
                   'import.php' => EaseTWBPart::GlyphIcon('import') . ' ' . _('Importovat')

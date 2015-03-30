@@ -110,7 +110,7 @@ a img.avatar { height: 30px; width: 30px;}
 
 .inherited { color: #999; }
 
-#smdrag { height: 10px; 
+#smdrag { height: 8px; 
           background-image:  url( ../images/slidehandle.png ); 
           background-color: #ccc; 
           background-repeat: no-repeat; 
@@ -118,3 +118,5 @@ a img.avatar { height: 30px; width: 30px;}
           cursor: ns-resize;
 
 }
+
+#smdrag:hover { background-color: #f5ad66; }
