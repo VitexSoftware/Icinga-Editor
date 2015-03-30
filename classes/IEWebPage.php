@@ -22,12 +22,6 @@ class IEWebPage extends EaseTWBWebPage
 {
 
     /**
-     * Skin JQuery UI stránky
-     * @var string
-     */
-    public $jQueryUISkin = 'eggplant';
-
-    /**
      * Hlavní blok stránky
      * @var EaseHtmlDivTag
      */
@@ -209,7 +203,8 @@ class IEBootstrapMenu extends EaseTWBNavbar
     {
         $statusMessages = $this->webPage->getStatusMessagesAsHtml();
         if ($statusMessages) {
-            $this->addItem(new EaseHtmlDivTag('StatusMessages', $statusMessages, array('class' => 'well', 'title' => _('kliknutím skryjete zprávy'))));
+            $this->addItem(new EaseHtmlDivTag('StatusMessages', $statusMessages, array('class' => 'well', 'title' => _('kliknutím skryjete zprávy'), 'data-state' => 'down')));
+            $this->addItem(new EaseHtmlDiv(null, array('id' => 'smdrag')));
         }
         parent::draw();
     }

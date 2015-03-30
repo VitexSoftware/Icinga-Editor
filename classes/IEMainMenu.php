@@ -259,7 +259,6 @@ class IEMainMenu extends EaseHtmlDivTag
     {
         EaseJQueryPart::jQueryze($this);
         $this->includeJavaScript('js/slideupmessages.js');
-        $this->addJavaScript('$("#StatusMessages").click(function () { slideUpMessages() });', 3, true);
     }
 
 }

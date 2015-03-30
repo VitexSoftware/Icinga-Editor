@@ -580,13 +580,13 @@ CREATE TABLE IF NOT EXISTS `stemplate` (
   `user_id` int(11) DEFAULT NULL COMMENT 'vlastník předlohy',
   `DatSave` datetime DEFAULT NULL,
   `DatCreate` datetime NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT;
+) ENGINE=InnoDB;
 
 
 ALTER TABLE `stemplate`
  ADD PRIMARY KEY (`stemplate_id`);
 ALTER TABLE `stemplate`
-MODIFY `stemplate_id` int(11) NOT NULL AUTO_INCREMENT
+MODIFY `stemplate_id` int(11) NOT NULL AUTO_INCREMENT;
 
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -109,3 +109,12 @@ a img.avatar { height: 30px; width: 30px;}
 }
 
 .inherited { color: #999; }
+
+#smdrag { height: 10px; 
+          background-image:  url( ../images/slidehandle.png ); 
+          background-color: #ccc; 
+          background-repeat: no-repeat; 
+          background-position: top center; 
+          cursor: ns-resize;
+
+}
