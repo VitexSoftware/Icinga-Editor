@@ -14,5 +14,5 @@ debian/sql/install/*    usr/share/dbconfig-common/data/icinga-editor/install
 debian/conf/icinga-editor.conf	etc/apache2/conf-available
 debian/conf/icinga-editor.service etc/avahi/services
 debian/conf/icinga-editor etc/sudoers.d
-debian/scripts/*        usr/lib/nagios/plugins
+debian/plugins/*        usr/lib/nagios/plugins
 
