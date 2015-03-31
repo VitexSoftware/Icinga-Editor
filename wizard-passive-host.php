@@ -31,7 +31,10 @@ if ($hostName) {
           'platform' => $platform,
           'alias' => $hostName,
           'active_checks_enabled' => 0,
-          'passive_checks_enabled' => 1
+          'passive_checks_enabled' => 1,
+          'check_freshness' => 1,
+          'freshness_threshold' => 60,
+          'check_command' => 'return-unknown'
         )
     );
 

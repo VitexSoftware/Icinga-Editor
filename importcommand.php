@@ -9,41 +9,45 @@
  * @copyright  2012 Vitex@hippy.cz (G)
  */
 require_once 'includes/IEInit.php';
-require_once 'IECommand.php';
 
 if ($oPage->isPosted()) {
-    $Importer = new IECommand();
+    $importer = new IECommand();
+    $success = 0;
+    $cfgText = $oPage->getRequestValue('cfgtext');
+    if ($cfgText) {
+        $success += $importer->importText($cfgText, array('command_type' => $oPage->getRequestValue('type')));
+    }
+
+    if (isset($_FILES['cfgfile']['tmp_name']) && strlen(trim($_FILES['cfgfile']['tmp_name']))) {
+        $success += $importer->importFile($_FILES['cfgfile']['tmp_name'], array('command_type' => $oPage->getRequestValue('type')));
+    }
+    if ($success) {
+        $oPage->addStatusMessage(sprintf(_('Příkaz %s byl naimportován'), $importer->getName()), 'success');
+    } else {
+        $oPage->addStatusMessage(_('Příkaz nebyl naimportován'), 'warning');
+    }
 } else {
     $oPage->addStatusMessage(_('Zadejte konfigurační fragment příkazu, nebo zvolte soubor k importu'));
 }
 
-$CfgText = $oPage->getRequestValue('cfgtext');
-if ($CfgText) {
-    $Importer->importText($CfgText, array('command_type' => $oPage->getRequestValue('type')));
-}
-
-if (isset($_FILES['cfgfile']['tmp_name']) && strlen(trim($_FILES['cfgfile']['tmp_name']))) {
-    $Importer->importFile($_FILES['cfgfile']['tmp_name'], array('command_type' => $oPage->getRequestValue('type')));
-}
 
 $oPage->addItem(new IEPageTop(_('Načtení příkazů ze souboru')));
-$oPage->addPageColumns();
 
-$FileForm = new EaseHtmlForm('CfgFileUp', null, 'POST', null, array('class' => 'form-horizontal', 'enctype' => 'multipart/form-data'));
-$FileForm->addItem(new EaseLabeledTextarea('cfgtext', '', _('konfigurační fragment')));
-$FileForm->addItem(new EaseLabeledFileInput('cfgfile', null, _('konfigurační soubor')));
+$fileForm = new EaseTWBForm('CfgFileUp', null, 'POST', null, array('class' => 'form-horizontal', 'enctype' => 'multipart/form-data'));
+$fileForm->addInput(new EaseHtmlTextareaTag('cfgtext', ''), _('konfigurační fragment'));
+$fileForm->addInput(new EaseHtmlInputFileTag('cfgfile', null), _('konfigurační soubor'));
 
-$TypeSelector = new EaseLabeledSelect('type', 'check', _('druh vkládaných příkazů'));
-$TypeSelector->addItems(array('check' => 'check', 'notify' => 'notify', 'handler' => 'handler'));
+$typeSelector = new EaseHtmlSelect('type', 'check');
+$typeSelector->addItems(array('check' => 'check', 'notify' => 'notify', 'handler' => 'handler'));
 
-$FileForm->addItem($TypeSelector);
+$fileForm->addInput($typeSelector, _('druh vkládaných příkazů'));
 
-$FileForm->addItem(new EaseJQuerySubmitButton('Submit', _('importovat'), _('zahájí import příkazů')));
+$fileForm->addItem(new EaseTWSubmitButton(_('importovat'), 'success'));
 
-$oPage->columnII->addItem(new EaseHtmlFieldSet(_('Import konfigurace'), $FileForm));
+$oPage->container->addItem(new EaseTWBPanel(_('Import příkazu do konfigurace'), 'success', $fileForm));
 
 $oPage->addItem(new IEPageBottom());
 
 
 $oPage->draw();
-?>
+

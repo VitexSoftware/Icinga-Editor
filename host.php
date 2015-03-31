@@ -235,8 +235,10 @@ input.ui-button { width: 100%; }
 
         $hostTools->addItem($host->deleteButton());
 
-        $hostTools->addItem(new EaseTWBLinkButton('?action=populate&host_id=' . $host->getID(), _('Oskenovat a sledovat služby'), null, array('onClick' => "$('#preload').css('visibility', 'visible');")));
-        $oPage->addItem(new EaseHtmlDivTag('preload', new IEFXPreloader(), array('class' => 'fuelux')));
+        if ($host->getDataValue('active_checks_enabled') == '1') {
+            $hostTools->addItem(new EaseTWBLinkButton('?action=populate&host_id=' . $host->getID(), _('Oskenovat a sledovat služby'), null, array('onClick' => "$('#preload').css('visibility', 'visible');")));
+            $oPage->addItem(new EaseHtmlDivTag('preload', new IEFXPreloader(), array('class' => 'fuelux')));
+        }
 
         $renameForm = new EaseTWBForm('Rename', '?action=rename&amp;host_id=' . $host->getID());
         $renameForm->addItem(new EaseHtmlInputTextTag('newname'), $host->getName(), array('class' => 'form-control'));

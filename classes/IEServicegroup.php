@@ -34,14 +34,17 @@ class IEServicegroup extends IECfg
     );
     public $keywordsInfo = array(
       'servicegroup_name' => array(
+        'severity' => 'mandatory',
         'title' => 'název skupiny služeb',
         'required' => true
       ),
       'alias' => array(
+        'severity' => 'basic',
         'title' => 'alias skupiny služeb',
         'required' => true
       ),
       'members' => array(
+        'severity' => 'mandatory',
         'title' => 'členské kontakty (zatím nutno definovat ručně)',
         'refdata' => array(
           'table' => 'service',
@@ -50,6 +53,7 @@ class IEServicegroup extends IECfg
           'condition' => array('register' => 1))
       ),
       'servicegroup_members' => array(
+        'severity' => 'optional',
         'title' => 'členské skupiny',
         'refdata' => array(
           'table' => 'servicegroup',
@@ -58,10 +62,13 @@ class IEServicegroup extends IECfg
           'condition' => array('register' => 1))
       ),
       'notes' => array(
+        'severity' => 'optional',
         'title' => 'poznámky'),
       'notes_url' => array(
+        'severity' => 'advanced',
         'title' => 'externí poznámky'),
       'action_url' => array(
+        'severity' => 'advanced',
         'title' => 'externí akce'
       )
     );

@@ -45,7 +45,7 @@ if ($oPage->isPosted()) {
 $oPage->addItem(new IEPageTop(_('Reset objekt')));
 
 $resetForm = new EaseTWBForm('reset');
-$resetForm->addInput(new IEYesNoSwitch('host', FALSE), _('Hosti'), null, _('Smaže hosty'));
+$resetForm->addInput(new IEYesNoSwitch('host', FALSE), _('Hosti'), null, _('Smaže hosty, ale nechá předlohy'));
 $resetForm->addInput(new IEYesNoSwitch('hostgroup', FALSE), _('Skupiny hostů'), null, _('Smaže skupiny hostů'));
 $resetForm->addInput(new IEYesNoSwitch('contact', FALSE), _('Kontakty'), null, _('Smaže kontakty'));
 $resetForm->addInput(new IEYesNoSwitch('contactgroup', FALSE), _('Skupiny kontaktů'), null, _('Smaže skupiny kontaktů'));

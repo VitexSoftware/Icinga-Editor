@@ -23,11 +23,11 @@ if ($oPage->isPosted()) {
     if ($Public) {
         $Params['public'] = true;
     }
-    $Importer = new IEImporter($Params);
+    $importer = new IEImporter($Params);
     if ($oPage->getRequestValue('dbinit') == 'on') {
-        $Importer->dbInit();
+        $importer->dbInit();
     }
-    $Importer->importCfg($oPage->getRequestValue('maincfg'));
+    $importer->importCfg($oPage->getRequestValue('maincfg'));
 }
 
 $oPage->addItem(new IEPageBottom());

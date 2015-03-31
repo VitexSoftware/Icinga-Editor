@@ -37,7 +37,10 @@ if ($serviceName) {
       'generate' => true,
       'display_name' => $serviceName,
       'active_checks_enabled' => 0,
-      'passive_checks_enabled' => 1
+      'passive_checks_enabled' => 1,
+      'check_freshness' => 1,
+//          'freshness_threshold' => ?
+      'check_command' => 'return-unknown'
     );
 
     if (isset($remoteCmd)) {

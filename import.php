@@ -24,15 +24,15 @@ if ($oPage->isPosted()) {
     if ($Public) {
         $Params['generate'] = true;
     }
-    $Importer = new IEImporter($Params);
+    $importer = new IEImporter($Params);
 
-    $CfgText = $oPage->getRequestValue('cfgtext');
-    if ($CfgText) {
-        $Importer->importCfgText($CfgText);
+    $cfgText = $oPage->getRequestValue('cfgtext');
+    if ($cfgText) {
+        $importer->importCfgText($cfgText);
     }
 
     if (isset($_FILES['cfgfile']['tmp_name']) && strlen(trim($_FILES['cfgfile']['tmp_name']))) {
-        $Importer->importCfgFile($_FILES['cfgfile']['tmp_name']);
+        $importer->importCfgFile($_FILES['cfgfile']['tmp_name']);
     }
 } else {
     $oPage->addStatusMessage(_('Zadejte konfigurační fragment příkazu, nebo zvolte soubor k importu'));

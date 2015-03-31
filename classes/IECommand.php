@@ -40,12 +40,24 @@ class IECommand extends IECfg
       'platform' => "PLATFORM"
     );
     public $keywordsInfo = array(
-      'command_name' => array('title' => 'název příkazu', 'required' => true),
-      'command_line' => array('title' => 'příkaz', 'required' => true),
-      'command_type' => array('title' => 'druh příkazu', 'required' => true),
-      'command_local' => array('title' => 'lokální příkaz'),
-      'command_remote' => array('title' => 'vzdálený příkaz NRPE/Nsc++'),
-      'platform' => array('title' => 'Platforma', 'mandatory' => true)
+      'command_name' => array(
+        'severity' => 'mandatory',
+        'title' => 'název příkazu', 'required' => true),
+      'command_line' => array(
+        'severity' => 'mandatory',
+        'title' => 'příkaz', 'required' => true),
+      'command_type' => array(
+        'severity' => 'mandatory',
+        'title' => 'druh příkazu', 'required' => true),
+      'command_local' => array(
+        'severity' => 'basic',
+        'title' => 'lokální příkaz'),
+      'command_remote' => array(
+        'severity' => 'basic',
+        'title' => 'vzdálený příkaz NRPE/Nsc++'),
+      'platform' => array(
+        'severity' => 'basic',
+        'title' => 'Platforma', 'mandatory' => true)
     );
 
     /**

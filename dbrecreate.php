@@ -18,8 +18,8 @@ $oPage->addPageColumns();
 
 
 if ($oPage->getRequestValue('dbinit')) {
-    $Importer = new IEImporter;
-    $Importer->dbInit();
+    $importer = new IEImporter;
+    $importer->dbInit();
     $oPage->columnII->addItem(new EaseTWBLinkButton('wizard.php', _('vytvořit konfiguraci')));
     $oPage->columnIII->addItem(new EaseTWBLinkButton('import.php', _('importovat konfiguraci')));
 } else {

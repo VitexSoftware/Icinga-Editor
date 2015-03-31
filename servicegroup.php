@@ -37,13 +37,13 @@ $oPage->addItem(new IEPageTop(_('Editace skupiny služeb') . ' ' . $serviceGroup
 
 $ServicegroupEdit = new IECfgEditor($serviceGroup);
 
-$form = $oPage->columnII->addItem(new EaseHtmlForm('Servicegroup', 'servicegroup.php', 'POST', $ServicegroupEdit, array('class' => 'form-horizontal')));
+$form = $oPage->container->addItem(new EaseHtmlForm('Servicegroup', 'servicegroup.php', 'POST', $ServicegroupEdit, array('class' => 'form-horizontal')));
 $form->setTagID($form->getTagName());
 if (!is_null($serviceGroup->getMyKey())) {
     $form->addItem(new EaseHtmlInputHiddenTag($serviceGroup->getmyKeyColumn(), $serviceGroup->getMyKey()));
 }
 $form->addItem('<br>');
-$form->addItem(new EaseTWSubmitButton(_('Uložit'),'success'));
+$form->addItem(new EaseTWSubmitButton(_('Uložit'), 'success'));
 
 $oPage->addItem(new IEPageBottom());
 

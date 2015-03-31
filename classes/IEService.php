@@ -88,6 +88,7 @@ class IEService extends IECfg
     );
     public $keywordsInfo = array(
       'host_name' => array(
+        'severity' => 'mandatory',
         'title' => 'hosty služby',
         'required' => true,
         'refdata' => array(
@@ -98,27 +99,39 @@ class IEService extends IECfg
         )
       ),
       'hostgroup_name' => array(
+        'severity' => 'optional',
         'title' => 'skupiny hostů služby',
         'refdata' => array(
           'table' => 'hostgroup',
           'captioncolumn' => 'hostgroup_name',
           'idcolumn' => 'hostgroup_id')
       ),
-      'service_description' => array('title' => 'popisek služby', 'required' => true),
-      'display_name' => array('title' => 'zobrazované jméno'),
-      'tcp_port' => array('title' => 'sledovaný port služby'),
-      'servicegroups' => array('title' => 'skupiny služeb',
+      'service_description' => array(
+        'severity' => 'mandatory',
+        'title' => 'popisek služby', 'required' => true),
+      'display_name' => array(
+        'severity' => 'basic',
+        'title' => 'zobrazované jméno'),
+      'tcp_port' => array(
+        'severity' => 'advanced',
+        'title' => 'sledovaný port služby'),
+      'servicegroups' => array(
+        'severity' => 'optional',
+        'title' => 'skupiny služeb',
         'refdata' => array(
           'table' => 'servicegroup',
           'captioncolumn' => 'servicegroup_name',
           'idcolumn' => 'servicegroup_id')
       ),
-      'is_volatile' => array('title' => 'volatile',
+      'is_volatile' => array(
+        'severity' => 'advanced',
+        'title' => 'volatile',
         '0' => 'service is not volatile',
         '1' => 'service is volatile',
         '2' => 'service is volatile but will respect the re-notification interval for notifications'
       ),
       'check_command' => array(
+        'severity' => 'mandatory',
         'title' => 'příkaz testu',
         'required' => true,
         'refdata' => array(
@@ -128,33 +141,59 @@ class IEService extends IECfg
           'condition' => array('command_type' => 'check')
         )
       ),
-      'check_command-remote' => array('title' => 'vzdálený příkaz'),
-      'check_command-params' => array('title' => 'parametry testů'),
+      'check_command-remote' => array(
+        'severity' => 'basic',
+        'title' => 'vzdálený příkaz'),
+      'check_command-params' => array(
+        'severity' => 'basic',
+        'title' => 'parametry testů'),
       'initial_state' => array(
+        'severity' => 'advanced',
         'title' => 'výchozí stav',
         'o' => 'Ok',
         'w' => 'Warning',
         'u' => 'Up',
         'c' => 'Critical'),
       'max_check_attempts' => array(
+        'severity' => 'advanced',
         'title' => 'maximální počet pokusů o test',
         'required' => true
       ),
-      'check_interval' => array('title' => 'interval testu', 'required' => true),
-      'retry_interval' => array('title' => 'interval opakování testu', 'required' => true),
-      'active_checks_enabled' => array('title' => 'Aktivní režim'),
-      'passive_checks_enabled' => array('title' => 'Pasivní režim'),
-      'check_period' => array('title' => 'perioda provádění testu', 'required' => true,
+      'check_interval' => array(
+        'severity' => 'mandatory',
+        'title' => 'interval testu', 'required' => true),
+      'retry_interval' => array(
+        'severity' => 'optional',
+        'title' => 'interval opakování testu', 'required' => true),
+      'active_checks_enabled' => array(
+        'severity' => 'mandatory',
+        'title' => 'Aktivní režim'),
+      'passive_checks_enabled' => array(
+        'severity' => 'mandatory',
+        'title' => 'Pasivní režim'),
+      'check_period' => array(
+        'severity' => 'optional',
+        'title' => 'perioda provádění testu', 'required' => true,
         'refdata' => array(
           'table' => 'timeperiod',
           'captioncolumn' => 'timeperiod_name',
           'idcolumn' => 'timeperiod_id')
       ),
-      'parallelize_check' => array('value' => '1', 'title' => ''),
-      'obsess_over_service' => array('title' => ''),
-      'check_freshness' => array('title' => ''),
-      'freshness_threshold' => array('title' => ''),
-      'event_handler' => array('title' => 'príkaz ošetření události',
+      'parallelize_check' => array(
+        'severity' => 'advanced',
+        'value' => '1', 'title' => 'paraelizovat checky'),
+      'obsess_over_service' => array(
+        'severity' => 'advanced',
+        'title' => 'posedlost službou'),
+      'check_freshness' => array(
+        'severity' => 'advanced',
+        'title' => 'testovat čersvost'),
+      'freshness_threshold' => array(
+        'severity' => 'advanced',
+        'title' => 'práh čerstvosti'),
+      'event_handler' => array(
+        'severity' => 'advanced',
+        'title' => 'príkaz ošetření události',
         'refdata' => array(
           'table' => 'command',
           'captioncolumn' => 'command_name',
@@ -162,24 +201,50 @@ class IEService extends IECfg
           'condition' => array('command_type' => 'handler')
         )
       ),
-      'event_handler_enabled' => array('title' => 'povolit ošetření události'),
-      'low_flap_threshold' => array('title' => ''),
-      'high_flap_threshold' => array('title' => ''),
-      'flap_detection_enabled' => array('title' => ''),
-      'flap_detection_options' => array('title' => ''),
-      'failure_prediction_enabled' => array('title' => ''),
-      'process_perf_data' => array('title' => ''),
-      'retain_status_information' => array('title' => ''),
-      'retain_nonstatus_information' => array('title' => ''),
-      'notification_interval' => array('title' => 'notifikační interval'),
-      'first_notification_delay' => array('title' => ''),
-      'notification_period' => array('title' => 'notifikační perioda',
+      'event_handler_enabled' => array(
+        'severity' => 'advanced',
+        'title' => 'povolit ošetření události'),
+      'low_flap_threshold' => array(
+        'severity' => 'advanced',
+        'title' => 'klapka nízkého prahu'),
+      'high_flap_threshold' => array(
+        'severity' => 'advanced',
+        'title' => 'klapka vysokého prahu'),
+      'flap_detection_enabled' => array(
+        'severity' => 'advanced',
+        'title' => 'detekce klapání'),
+      'flap_detection_options' => array(
+        'severity' => 'advanced',
+        'title' => 'nastavení detekce klapání'),
+      'failure_prediction_enabled' => array(
+        'severity' => 'advanced',
+        'title' => 'předpovídat výpadek'),
+      'process_perf_data' => array(
+        'severity' => 'advanced',
+        'title' => 'zpracovávat výkonostní data'),
+      'retain_status_information' => array(
+        'severity' => 'advanced',
+        'title' => 'uchovávat informace o stavu'),
+      'retain_nonstatus_information' => array(
+        'severity' => 'advanced',
+        'title' => 'uchovávat nestavové informace'),
+      'notification_interval' => array(
+        'severity' => 'optional',
+        'title' => 'notifikační interval'),
+      'first_notification_delay' => array(
+        'severity' => 'advanced',
+        'title' => 'první prodleva notifikace'),
+      'notification_period' => array(
+        'severity' => 'optional',
+        'title' => 'notifikační perioda',
         'refdata' => array(
           'table' => 'timeperiod',
           'captioncolumn' => 'timeperiod_name',
           'idcolumn' => 'timeperiod_id')
       ),
-      'notification_options' => array('title' => 'možnosti oznamování',
+      'notification_options' => array(
+        'severity' => 'advanced',
+        'title' => 'možnosti oznamování',
         'w' => 'send notifications on a WARNING state',
         'u' => 'send notifications on an UNKNOWN state',
         'c' => 'send notifications on a CRITICAL state',
@@ -187,33 +252,53 @@ class IEService extends IECfg
         'f' => 'send notifications when the service starts and stops flapping',
         's' => 'send notifications when scheduled downtime starts and ends',
       ),
-      'notifications_enabled' => array('title' => 'povolit oznamování'),
+      'notifications_enabled' => array(
+        'severity' => 'basic',
+        'title' => 'povolit oznamování'),
       'contacts' => array(
+        'severity' => 'basic',
         'title' => 'kontakty',
         'refdata' => array(
           'table' => 'contact',
           'captioncolumn' => 'contact_name',
           'idcolumn' => 'contact_id')),
       'contact_groups' => array(
+        'severity' => 'optional',
         'title' => 'členské skupiny kontaktů',
         'refdata' => array(
           'table' => 'contactgroup',
           'captioncolumn' => 'contactgroup_name',
           'idcolumn' => 'contactgroup_id')
       ),
-      'stalking_options' => array('title' => '',
+      'stalking_options' => array(
+        'severity' => 'advanced',
+        'title' => 'možnosti stopování',
         'o' => 'stalk on OK states',
         'w' => 'stalk on WARNING states',
         'u' => 'stalk on UNKNOWN states',
         'c' => 'stalk on CRITICAL states'
       ),
-      'notes' => array('title' => 'poznámka'),
-      'notes_url' => array('title' => 'url dodatečných poznámek'),
-      'action_url' => array('title' => 'url dodatečné akce'),
-      'icon_image' => array('title' => 'ikona služby'),
-      'icon_image_alt' => array('title' => 'alternativní ikona služby'),
-      'configurator' => array('title' => 'Plugin pro konfiguraci služby'),
-      'platform' => array('title' => 'Platforma', 'mandatory' => true)
+      'notes' => array(
+        'severity' => 'basic',
+        'title' => 'poznámka'),
+      'notes_url' => array(
+        'severity' => 'advanced',
+        'title' => 'url dodatečných poznámek'),
+      'action_url' => array(
+        'severity' => 'advanced',
+        'title' => 'url dodatečné akce'),
+      'icon_image' => array(
+        'severity' => 'advanced',
+        'title' => 'ikona služby'),
+      'icon_image_alt' => array(
+        'severity' => 'advanced',
+        'title' => 'alternativní ikona služby'),
+      'configurator' => array(
+        'severity' => 'advanced',
+        'title' => 'Plugin pro konfiguraci služby'),
+      'platform' => array(
+        'severity' => 'basic',
+        'title' => 'Platforma', 'mandatory' => true)
     );
 
     /**

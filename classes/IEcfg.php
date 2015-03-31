@@ -27,7 +27,7 @@ class IEcfg extends EaseBrick
 
     /**
      * Klíčové slovo objektu
-     * @var String
+     * @var string
      */
     public $keyword = NULL;
 
@@ -905,67 +905,67 @@ class IEcfg extends EaseBrick
     /**
      * Načte konfiguraci ze souboru
      *
-     * @param array $cfg
+     * @param array $cfgArray
      * @param array $commonValues Hodnoty vkládané ke každému záznamu
      */
-    public function importArray($cfg, $commonValues = null)
+    public function importArray($cfgArray, $commonValues = null)
     {
         $success = 0;
         $buffer = null;
-        if (!count($cfg)) {
-            return null;
-        }
-        foreach ($cfg as $cfgLine) {
-            if (str_replace(' ', '', $cfgLine) == 'define' . $this->keyword . '{') {
-                $buffer = array();
-                continue;
-            }
-            if (is_array($buffer)) {
-                if (preg_match("/^([a-zA-Z_]*)[\s|\t]*(.*)$/", $cfgLine, $matches)) {
-                    if ($matches[2] != '}') {
-                        $buffer[$matches[1]] = $matches[2];
-                    }
+        if (count($cfgArray)) {
+            foreach ($cfgArray as $cfgLine) {
+                $cfgLine = strstr($cfgLine, '#', true);
+                if (str_replace(' ', '', $cfgLine) == 'define' . $this->keyword . '{') {
+                    $buffer = array();
+                    continue;
                 }
-            }
-            if (is_array($buffer) && str_replace(' ', '', $cfgLine) == '}') {
-                if (!is_null($commonValues)) {
-                    if (!$this->allowTemplating) {
-                        unset($commonValues['register']);
-                    }
-                    if (!$this->publicRecords) {
-                        unset($commonValues['public']);
-                    }
-                    $buffer = array_merge($commonValues, $buffer);
-                }
-
-                $this->dataReset();
-
-                $this->takeData($buffer);
-                if ($this->saveToMySQL()) {
-
-                    if ($this->isTemplate()) {
-                        $this->addStatusMessage(_('předloha') . ' ' . $this->keyword . ' <strong>' . $buffer['name'] . '</strong>' . _(' byl naimportován'), 'success');
-                    } else {
-                        if (!is_null($this->webLinkColumn) && !isset($buffer[$this->webLinkColumn])) {
-                            $this->updateToMySQL(
-                                array($this->getmyKeyColumn() => $this->getMyKey(),
-                                  $this->webLinkColumn =>
-                                  (str_replace(basename(EaseWebPage::getUri()), '', EaseWebPage::phpSelf(true))) .
-                                  $this->keyword . '.php?' .
-                                  $this->getmyKeyColumn() . '=' .
-                                  $this->getMyKey()));
+                if (is_array($buffer)) {
+                    if (preg_match("/^([a-zA-Z_]*)[\s|\t]*(.*)$/", $cfgLine, $matches)) {
+                        if ($matches[2] != '}') {
+                            $buffer[$matches[1]] = $matches[2];
                         }
-                        $this->addStatusMessage($this->keyword . ' <strong>' . $buffer[$this->nameColumn] . '</strong>' . _(' byl naimportován'), 'success');
-                    }
-                    $success++;
-                } else {
-                    if ($this->isTemplate()) {
-                        $this->addStatusMessage($this->keyword . ' <strong>' . $buffer['name'] . '</strong>' . _(' nebyl naimportován'), 'error');
-                    } else {
-                        $this->addStatusMessage($this->keyword . ' <strong>' . $buffer[$this->nameColumn] . '</strong>' . _(' nebyl naimportován'), 'error');
                     }
                 }
-                $buffer = null;
+                if (is_array($buffer) && str_replace(' ', '', $cfgLine) == '}') {
+                    if (!is_null($commonValues)) {
+                        if (!$this->allowTemplating) {
+                            unset($commonValues['register']);
+                        }
+                        if (!$this->publicRecords) {
+                            unset($commonValues['public']);
+                        }
+                        $buffer = array_merge($commonValues, $buffer);
+                    }
+
+                    $this->dataReset();
+
+                    $this->takeData($buffer);
+                    if ($this->saveToMySQL()) {
+
+                        if ($this->isTemplate()) {
+                            $this->addStatusMessage(_('předloha') . ' ' . $this->keyword . ' <strong>' . $buffer['name'] . '</strong>' . _(' byl naimportován'), 'success');
+                        } else {
+                            if (!is_null($this->webLinkColumn) && !isset($buffer[$this->webLinkColumn])) {
+                                $this->updateToMySQL(
+                                    array($this->getmyKeyColumn() => $this->getMyKey(),
+                                      $this->webLinkColumn =>
+                                      (str_replace(basename(EaseWebPage::getUri()), '', EaseWebPage::phpSelf(true))) .
+                                      $this->keyword . '.php?' .
+                                      $this->getmyKeyColumn() . '=' .
+                                      $this->getMyKey()));
+                            }
+                            $this->addStatusMessage($this->keyword . ' <strong>' . $buffer[$this->nameColumn] . '</strong>' . _(' byl naimportován'), 'success');
+                        }
+                        $success++;
+                    } else {
+                        if ($this->isTemplate()) {
+                            $this->addStatusMessage($this->keyword . ' <strong>' . $buffer['name'] . '</strong>' . _(' nebyl naimportován'), 'error');
+                        } else {
+                            $this->addStatusMessage($this->keyword . ' <strong>' . $buffer[$this->nameColumn] . '</strong>' . _(' nebyl naimportován'), 'error');
+                        }
+                    }
+                    $buffer = null;
+                }
             }
         }
 

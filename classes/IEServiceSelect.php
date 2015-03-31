@@ -23,17 +23,17 @@ class IEServiceSelect extends EaseHtmlSelect
 
     function loadItems()
     {
-        $MembersFound = array('' => '---');
+        $membersFound = array('' => '---');
         $query = 'SELECT  `service_id`, `icon_image`,`platform`,`service_description` FROM `' . 'service` WHERE (user_id=' . $this->user->getUserID() . ' OR public=1) AND register=1 ORDER BY  service_description ';
 
-        $MembersFoundArray = EaseShared::myDbLink()->queryToArray($query);
-        if (count($MembersFoundArray)) {
-            foreach ($MembersFoundArray as $request) {
-                $MembersFound[$request['service_id']] = $request['service_description'];
+        $membersFoundArray = EaseShared::myDbLink()->queryToArray($query);
+        if (count($membersFoundArray)) {
+            foreach ($membersFoundArray as $request) {
+                $membersFound[$request['service_id']] = $request['service_description'];
                 if (isset($request['icon_image'])) {
                     $icon = $request['icon_image'];
                 } else {
-                    if (isset($request['platform'])) {
+                    if (isset($request['platform']) && isset($this->platforms[$request['platform']])) {
                         $icon = $this->platforms[$request['platform']]['image'];
                     } else {
                         $icon = 'logos/unknown.gif';
@@ -42,7 +42,7 @@ class IEServiceSelect extends EaseHtmlSelect
                 $this->services[$request['service_id']] = array('image' => $icon);
             }
         }
-        return $MembersFound;
+        return $membersFound;
     }
 
     public function finalize()

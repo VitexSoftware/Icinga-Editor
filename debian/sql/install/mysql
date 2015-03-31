@@ -220,7 +220,9 @@ INSERT INTO `command` (`command_id`, `command_name`, `command_line`, `command_ty
 (193, 'check_website_response', '/usr/local/icinga/bin/check_website_response.sh -w 100 -c 200  -u ''$ARG1$'' ', 'check', NULL, NULL, 'generic', 1, 1, 0, '2012-12-13 18:47:40', NULL),
 (194, 'check_dnsbl', '$USER1$/check_dnsbl -H ''$HOSTADDRESS$'' -B bl.spamcop.net', 'check', 1, NULL, 'generic', 1, 1, 0, '2013-02-25 21:50:47', NULL),
 (195, 'check_http_content', '$USER1$/check_http_content -U ''$ARG1$'' -m ''$ARG2$'' -x ''$ARG3$'' -t $ARG4$', 'check', 1, NULL, 'generic', NULL, 1, 0, '2014-01-09 15:04:15', '2014-01-09 15:04:24'),
-(196, 'check_nrpe_sensor', '$USER1$/check_nrpe -H $HOSTADDRESS$ ', 'check', 1, 0, 'generic', 1, 1, 0, '2012-09-03 11:52:49', NULL);
+(196, 'check_nrpe_sensor', '$USER1$/check_nrpe -H $HOSTADDRESS$ ', 'check', 1, 0, 'generic', 1, 1, 0, '2012-09-03 11:52:49', NULL),
+(197, 'host_by_services', '$USER1$/host_by_services.sh', 'check', 1, NULL, 'generic', 1, 1, 0, '2015-03-31 10:56:39', '2015-03-31 11:03:46');
+
 
 ALTER TABLE `command`
  ADD PRIMARY KEY (`command_id`), ADD KEY `user_id` (`user_id`);

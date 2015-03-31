@@ -80,7 +80,7 @@ class IEImporter extends IECfg
      */
     public function importCfgText($cfgText, $commonValues)
     {
-        return $this->importCfg(array_map('trim', preg_split('/\r\n|\n|\r/', $cfgText)));
+        return $this->importCfg(array_map('trim', preg_split('/\r\n|\n|\r/', $cfgText)), $commonValues);
     }
 
     /**
