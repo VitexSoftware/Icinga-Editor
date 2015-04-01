@@ -9,12 +9,6 @@
  * @copyright  2012 Vitex@hippy.cz (G)
  */
 require_once 'includes/IEInit.php';
-require_once 'classes/IEService.php';
-require_once 'classes/IECfgEditor.php';
-require_once 'classes/IEHostOverview.php';
-require_once 'classes/IEServiceTweaker.php';
-require_once 'classes/IEHostSelector.php';
-require_once 'classes/IEContactSelector.php';
 
 $oPage->onlyForLogged();
 
