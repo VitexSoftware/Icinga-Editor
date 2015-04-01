@@ -8,8 +8,6 @@
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2012 Vitex@hippy.cz (G)
  */
-require_once 'IEcfg.php';
-
 class IEServicegroup extends IECfg
 {
 
@@ -19,6 +17,12 @@ class IEServicegroup extends IECfg
     public $keyword = 'servicegroup';
 
     /**
+     * Přidat položky register a use ?
+     * @var boolean
+     */
+    public $allowTemplating = false;
+
+    /**
      * Dát tyto položky k dispozici i ostatním ?
      * @var boolean
      */
@@ -26,7 +30,7 @@ class IEServicegroup extends IECfg
     public $useKeywords = array(
       'servicegroup_name' => 'VARCHAR(64)',
       'alias' => 'VARCHAR(64)',
-      'members' => 'TEXT',
+      'members' => 'IDLIST',
       'servicegroup_members' => 'IDLIST',
       'notes' => 'TEXT',
       'notes_url' => 'VARCHAR(128)',
@@ -45,21 +49,23 @@ class IEServicegroup extends IECfg
       ),
       'members' => array(
         'severity' => 'mandatory',
-        'title' => 'členské kontakty (zatím nutno definovat ručně)',
+        'title' => 'členské služby',
         'refdata' => array(
           'table' => 'service',
           'captioncolumn' => 'service_description',
           'idcolumn' => 'service_id',
-          'condition' => array('register' => 1))
+          'condition' => array('register' => 1)
+        )
       ),
       'servicegroup_members' => array(
         'severity' => 'optional',
-        'title' => 'členské skupiny',
+        'title' => 'členské skupiny služeb',
         'refdata' => array(
           'table' => 'servicegroup',
           'captioncolumn' => 'servicegroup_name',
           'idcolumn' => 'servicegroup_id',
-          'condition' => array('register' => 1))
+        //'condition' => array('register' => 1)
+        )
       ),
       'notes' => array(
         'severity' => 'optional',

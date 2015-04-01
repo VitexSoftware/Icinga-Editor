@@ -92,9 +92,9 @@ class IEMainMenu extends EaseHtmlDivTag
                         }
 
                         if (isset($hInfo) && !is_null($hInfo)) {
-                            $hostGroupMenuItem['host.php?host_id=' . $hInfo['host_id']] = '&nbsp;' . IEHostOverview::icon($hInfo) . ' ' .
+                            $hostGroupMenuItem['host.php?host_id=' . $hInfo['host_id']] = '&nbsp;' . new IEHostIcon($hInfo) . ' ' .
                                 $hInfo['host_name'] . ' ' .
-                                IEHostOverview::platformIcon($hInfo['platform']);
+                                new IEPlatformIcon($hInfo['platform']);
                         }
                     }
                 }
@@ -109,9 +109,9 @@ class IEMainMenu extends EaseHtmlDivTag
         if (count($hostsNotInGroup)) {
 
             foreach ($hostsNotInGroup as $menuHost) {
-                $hostGroupMenuItem['host.php?host_id=' . $menuHost['host_id']] = '&nbsp;' . IEHostOverview::icon($menuHost) . ' ' .
+                $hostGroupMenuItem['host.php?host_id=' . $menuHost['host_id']] = '&nbsp;' . new IEHostIcon($menuHost) . ' ' .
                     $menuHost['host_name'] . ' ' .
-                    IEHostOverview::platformIcon($menuHost['platform']);
+                    new IEPlatformIcon($menuHost['platform']);
             }
         }
 

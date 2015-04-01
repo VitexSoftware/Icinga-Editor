@@ -34,7 +34,7 @@ if ($hostName) {
           'passive_checks_enabled' => 1,
           'check_freshness' => 1,
           'freshness_threshold' => 60,
-          'check_command' => 'return-unknown'
+          'check_command' => 'host_by_services'
         )
     );
 

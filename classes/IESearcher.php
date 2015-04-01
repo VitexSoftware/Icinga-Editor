@@ -8,13 +8,6 @@
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2012 Vitex@hippy.cz (G)
  */
-require_once 'IEcfg.php';
-
-/**
- * Description of IEImporter
- *
- * @author vitex
- */
 class IESearcher extends IECfg
 {
 

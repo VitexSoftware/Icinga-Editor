@@ -1,6 +1,6 @@
 <?php
 
-define('IE_VERSION', '0.114');
+define('IE_VERSION', '0.115');
 
 /**
  * Třídy pro vykreslení stránky
@@ -14,7 +14,6 @@ require_once 'Ease/EaseHtmlForm.php';
 require_once 'Ease/EaseJQueryWidgets.php';
 require_once 'Ease/EaseTWBootstrap.php';
 require_once 'IEHost.php';
-require_once 'IEHostOverview.php';
 require_once 'IEContact.php';
 require_once 'IEMainMenu.php';
 

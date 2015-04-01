@@ -558,7 +558,7 @@ class IEHost extends IECfg
 
     function draw()
     {
-        echo IEHostOverview::icon($this);
+        echo new IEHostIcon($this);
     }
 
     /**
@@ -578,6 +578,23 @@ class IEHost extends IECfg
             }
         }
         return $services;
+    }
+
+    public function getInfoBlock()
+    {
+        $block = parent::getInfoBlock();
+        $block->addDef(_('Alias'), array(new IEHostIcon($this), $this->getDataValue('alias')));
+        $block->addDef(_('Platforma'), new IEPlatformIcon($this->getDataValue('platform')));
+
+        $parents = $this->getDataValue('parents');
+        if ($parents) {
+            foreach ($parents as $pId => $pName) {
+                $parents[$pId] = '<a href="host.php?host_id=' . $pId . '">' . $pName . '</a>';
+            }
+            $block->addDef(_('Rodiče'), implode(',', $parents));
+        }
+
+        return $block;
     }
 
 }

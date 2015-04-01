@@ -9,19 +9,17 @@
  * @copyright  2012 Vitex@hippy.cz (G)
  */
 require_once 'includes/IEInit.php';
-require_once 'classes/IEContactgroup.php';
-require_once 'classes/IECfgEditor.php';
 
 $oPage->onlyForLogged();
 
 $oPage->addItem(new IEPageTop(_('Editace skupiny kontaktu')));
-$oPage->addPageColumns();
 
-$Contactgroup = new IEContactgroup($oPage->getRequestValue('contactgroup_id', 'int'));
+
+$contactgroup = new IEContactgroup($oPage->getRequestValue('contactgroup_id', 'int'));
 
 if ($oPage->isPosted()) {
-    $Contactgroup->takeData($_POST);
-    $ContactgroupID = $Contactgroup->saveToMySQL();
+    $contactgroup->takeData($_POST);
+    $ContactgroupID = $contactgroup->saveToMySQL();
     if (is_null($ContactgroupID)) {
         $oUser->addStatusMessage(_('Skupina kontaktů nebyla uložena'), 'warning');
     } else {
@@ -29,23 +27,35 @@ if ($oPage->isPosted()) {
     }
 }
 
-$Contactgroup->saveMembers();
+$contactgroup->saveMembers();
 
 $delete = $oPage->getGetValue('delete', 'bool');
 if ($delete == 'true') {
-    $Contactgroup->delete();
+    $contactgroup->delete();
 }
 
-$ContactgroupEdit = new IECfgEditor($Contactgroup);
+$contactgroupEdit = new IECfgEditor($contactgroup);
 
-$form = $oPage->columnII->addItem(new EaseHtmlForm('Contactgroup', 'contactgroup.php', 'POST', $ContactgroupEdit, array('class' => 'form-horizontal')));
+$form = new EaseTWBForm('Contactgroup', 'contactgroup.php', 'POST', $contactgroupEdit, array('class' => 'form-horizontal'));
 $form->setTagID($form->getTagName());
-if (!is_null($Contactgroup->getMyKey())) {
-    $form->addItem(new EaseHtmlInputHiddenTag($Contactgroup->getmyKeyColumn(), $Contactgroup->getMyKey()));
+if (!is_null($contactgroup->getMyKey())) {
+    $form->addItem(new EaseHtmlInputHiddenTag($contactgroup->getmyKeyColumn(), $contactgroup->getMyKey()));
 }
 $form->addItem('<br>');
 $form->addItem(new EaseTWSubmitButton(_('Uložit'), 'success'));
 
 $oPage->addItem(new IEPageBottom());
+
+$infopanel = new IEInfoBox($contactgroup);
+$tools = new EaseTWBPanel(_('Nástroje'), 'warning');
+if ($contactgroup->getId()) {
+    $tools->addItem($contactgroup->deleteButton());
+}
+$pageRow = new EaseTWBRow;
+$pageRow->addColumn(2, $infopanel);
+$pageRow->addColumn(6, new EaseTWBPanel(_('Skupina kontaktů') . ' <strong>' . $contactgroup->getName() . '</strong>', 'default', $form));
+$pageRow->addColumn(4, $tools);
+
+$oPage->container->addItem($pageRow);
 
 $oPage->draw();

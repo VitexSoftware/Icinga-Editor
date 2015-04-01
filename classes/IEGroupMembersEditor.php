@@ -39,8 +39,8 @@ class IEGroupMembersEditor extends EaseContainer
         $initialContent = new EaseTWBPanel($fieldCaption);
         $initialContent->setTagCss(array('width' => '100%'));
 
-//        $AddNewItem = new EaseHtmlInputSearchTag($FieldName, '', array('class' => 'search-input', 'title' => _('přidání člena')));
-//        $AddNewItem->setDataSource('jsondata.php?source[' . key($DataSource) . ']=' . current($DataSource));
+
+
 
         if (is_null($dataSource->getMyKey())) {
             $initialContent->addItem(_('Nejprve je potřeba uložit záznam'));
@@ -74,10 +74,11 @@ class IEGroupMembersEditor extends EaseContainer
 
             if (count($membersAviableArray)) {
                 foreach ($membersAviableArray as $memberID => $memberName) {
+                    $reftable = $dataSource->keywordsInfo[$fieldName]['refdata']['table'];
                     $initialContent->addItem(
                         new EaseTWBButtonDropdown(
                         $memberName[$nameColumn], 'inverse', 'xs', array(
-                      new EaseHtmlATag($dataSource->keywordsInfo[$fieldName]['refdata']['table'] . '.php?host_id=' . $memberID, EaseTWBPart::GlyphIcon('wrench') . ' ' . _('Editace')),
+                      new EaseHtmlATag($reftable . '.php?' . $reftable . '_id=' . $memberID, EaseTWBPart::GlyphIcon('wrench') . ' ' . _('Editace')),
                       new EaseHtmlATag(null, EaseTWBPart::GlyphIcon('plus-sign') . ' ' . $addText, array(
                         'onClick' => "addGroupMember('" . get_class($dataSource) . "','" . $dataSource->getId() . "','" . $fieldName . "','" . $memberName[$nameColumn] . "','" . $memberID . "')"
                         , 'class' => 'handle', 'data-addtext' => $addText, 'data-deltext' => $delText))
@@ -88,10 +89,11 @@ class IEGroupMembersEditor extends EaseContainer
             if ($members && count($members)) {
                 $initialContent->addItem('</br>');
                 foreach ($members as $memberID => $memberName) {
+                    $reftable = $dataSource->keywordsInfo[$fieldName]['refdata']['table'];
                     $initialContent->addItem(
                         new EaseTWBButtonDropdown(
                         $memberName, 'success', 'xs', array(
-                      new EaseHtmlATag($dataSource->keywordsInfo[$fieldName]['refdata']['table'] . '.php?host_id=' . $memberID, EaseTWBPart::GlyphIcon('wrench') . ' ' . _('Editace')),
+                      new EaseHtmlATag($reftable . '.php?' . $reftable . '_id=' . $memberID, EaseTWBPart::GlyphIcon('wrench') . ' ' . _('Editace')),
                       new EaseHtmlATag(null, EaseTWBPart::GlyphIcon('remove') . ' ' . _('Odebrat'), array(
                         'onClick' => "delGroupMember('" . get_class($dataSource) . "','" . $dataSource->getId() . "','" . $fieldName . "','" . $memberName . "','" . $memberID . "')"
                         , 'class' => 'handle', 'data-addtext' => $addText, 'data-deltext' => $delText))

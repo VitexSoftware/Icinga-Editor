@@ -8,8 +8,6 @@
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2012 Vitex@hippy.cz (G)
  */
-require_once 'IEcfg.php';
-
 class IEContactgroup extends IECfg
 {
 
@@ -24,36 +22,41 @@ class IEContactgroup extends IECfg
      */
     public $publicRecords = false;
     public $useKeywords = array(
-        'contactgroup_name' => 'VARCHAR(64)',
-        'alias' => 'VARCHAR(64)',
-        'members' => 'IDLIST',
-        'contactgroup_members' => 'IDLIST'
+      'contactgroup_name' => 'VARCHAR(64)',
+      'alias' => 'VARCHAR(64)',
+      'members' => 'IDLIST',
+      'contactgroup_members' => 'IDLIST'
     );
     public $keywordsInfo = array(
-        'contactgroup_name' => array(
-            'title' => 'název skupiny kontaktů',
-            'required' => true
-        ),
-        'alias' => array(
-            'title' => 'alias skupiny kontaktů',
-            'required' => true
-        ),
-        'members' => array(
-            'title' => 'členské kontakty',
-            'required' => true,
-            'refdata' => array(
-                'table' => 'contact',
-                'captioncolumn' => 'contact_name',
-                'idcolumn' => 'contact_id')
-        ),
-        'contactgroup_members' => array(
-            'title' => 'členské skupiny',
-            'refdata' => array(
-                'table' => 'contactgroup',
-                'captioncolumn' => 'contactgroup_name',
-                'idcolumn' => 'contactgroup_id')
-        )
+      'contactgroup_name' => array(
+        'severity' => 'mandatory',
+        'title' => 'název skupiny kontaktů',
+        'required' => true
+      ),
+      'alias' => array(
+        'severity' => 'basic',
+        'title' => 'alias skupiny kontaktů',
+        'required' => true
+      ),
+      'members' => array(
+        'title' => 'členské kontakty',
+        'severity' => 'mandatory',
+        'required' => true,
+        'refdata' => array(
+          'table' => 'contact',
+          'captioncolumn' => 'contact_name',
+          'idcolumn' => 'contact_id')
+      ),
+      'contactgroup_members' => array(
+        'severity' => 'optional',
+        'title' => 'členské skupiny',
+        'refdata' => array(
+          'table' => 'contactgroup',
+          'captioncolumn' => 'contactgroup_name',
+          'idcolumn' => 'contactgroup_id')
+      )
     );
+
     /**
      * URL dokumentace objektu
      * @var string

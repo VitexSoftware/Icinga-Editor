@@ -7,7 +7,8 @@
  * @subpackage Engine
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2012 Vitex@hippy.cz (G)
- */class IEStemplate extends IEcfg
+ */
+class IEStemplate extends IEcfg
 {
 
     public $myTable = 'stemplate';

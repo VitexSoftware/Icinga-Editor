@@ -9,8 +9,6 @@
  * @copyright  2012 Vitex@hippy.cz (G)
  */
 require_once 'includes/IEInit.php';
-require_once 'classes/IEServicegroup.php';
-require_once 'classes/IECfgEditor.php';
 
 $oPage->onlyForLogged();
 
@@ -35,9 +33,9 @@ if ($delete == 'true') {
 
 $oPage->addItem(new IEPageTop(_('Editace skupiny služeb') . ' ' . $serviceGroup->getName()));
 
-$ServicegroupEdit = new IECfgEditor($serviceGroup);
+$servicegroupEdit = new IECfgEditor($serviceGroup);
 
-$form = $oPage->container->addItem(new EaseHtmlForm('Servicegroup', 'servicegroup.php', 'POST', $ServicegroupEdit, array('class' => 'form-horizontal')));
+$form = new EaseHtmlForm('Servicegroup', 'servicegroup.php', 'POST', $servicegroupEdit, array('class' => 'form-horizontal'));
 $form->setTagID($form->getTagName());
 if (!is_null($serviceGroup->getMyKey())) {
     $form->addItem(new EaseHtmlInputHiddenTag($serviceGroup->getmyKeyColumn(), $serviceGroup->getMyKey()));
@@ -46,5 +44,20 @@ $form->addItem('<br>');
 $form->addItem(new EaseTWSubmitButton(_('Uložit'), 'success'));
 
 $oPage->addItem(new IEPageBottom());
+
+$infopanel = new IEInfoBox($serviceGroup);
+$tools = new EaseTWBPanel(_('Nástroje'), 'warning');
+if ($serviceGroup->getId()) {
+    $tools->addItem($serviceGroup->deleteButton());
+    $tools->addItem(new EaseTWBPanel(_('Transfer'), 'warning', $serviceGroup->transferForm()));
+}
+$pageRow = new EaseTWBRow;
+$pageRow->addColumn(2, $infopanel);
+$pageRow->addColumn(6, new EaseTWBPanel(_('Příkaz') . ' <strong>' . $serviceGroup->getName() . '</strong>', 'default', $form));
+$pageRow->addColumn(4, $tools);
+$oPage->container->addItem($pageRow);
+
+
+
 
 $oPage->draw();

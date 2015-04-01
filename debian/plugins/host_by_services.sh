@@ -8,10 +8,10 @@
 
 set -e
 
-if [ $ICINGA_TOTALSERVICESOK = 0 ] ; then
+if [ $ICINGA_TOTALHOSTSERVICESOK = '0' ] ; then
     echo "CRITICAL - no fresh service checks results reported"
     exit 3
 fi
 
-echo "OK - host up ( $ICINGA_TOTALSERVICESOK services OK)"
+echo "OK - host up ( $ICINGA_TOTALHOSTSERVICESOK services OK)"
 exit 0

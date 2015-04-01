@@ -1,17 +1,12 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-require_once 'classes/IEServiceSelect.php';
-
 /**
- * Description of IEServiceDeleteForm
+ * Formulář výměny jedné služby za druhou
  *
- * @author vitex
+ * @package    IcingaEditor
+ * @subpackage Engine
+ * @author     Vitex <vitex@hippy.cz>
+ * @copyright  2012 Vitex@hippy.cz (G)
  */
 class IEServiceSwapForm extends EaseTWBForm
 {
@@ -22,6 +17,11 @@ class IEServiceSwapForm extends EaseTWBForm
      */
     public $service = null;
 
+    /**
+     * Formulář výměny jedné služby za jinou
+     *
+     * @param IEService $service
+     */
     function __construct($service)
     {
         parent::__construct('swapService', null, 'GET');

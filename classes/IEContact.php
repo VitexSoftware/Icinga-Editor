@@ -1,18 +1,12 @@
 <?php
 
 /**
- * Konfigurace Kontaktů
+ * Třída kontaktu
  *
  * @package    IcingaEditor
  * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2012 Vitex@hippy.cz (G)
- */
-require_once 'IEcfg.php';
-require_once 'IEContactgroup.php';
-
-/**
- * Spráce kontaktů
  */
 class IEContact extends IECfg
 {

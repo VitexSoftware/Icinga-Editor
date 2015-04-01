@@ -17,7 +17,6 @@ $oPage->onlyForLogged();
 $hostgroup = new IEHostgroup($oPage->getRequestValue('hostgroup_id', 'int'));
 
 
-
 switch ($oPage->getRequestValue('action')) {
     case 'contactAsign':
         $contact = new IEContact($oPage->getRequestValue('contact_id', 'int'));
@@ -67,40 +66,42 @@ switch ($oPage->getRequestValue('action')) {
 $oPage->addItem(new IEPageTop(_('Editace skupiny hostů') . ' ' . $hostgroup->getName()));
 
 
-$hostgroupPanel = $oPage->container->addItem(new EaseTWBPanel(new EaseHtmlH1Tag($hostgroup->getDataValue('alias') . ' <small>' . $hostgroup->getName() . '</small>')));
 
-$commonRow = $hostgroupPanel->addItem(new EaseTWBRow);
-$hostgroupParams = $commonRow->addColumn(8);
-$hostgroupTools = $commonRow->addColumn(4, new EaseHtmlH3Tag(_('Nástroje')));
 
 
 
 $hostgroupEdit = new IECfgEditor($hostgroup);
 
-$form = $hostgroupParams->addItem(new EaseHtmlForm('Hostgroup', 'hostgroup.php', 'POST', $hostgroupEdit, array('class' => 'form-horizontal')));
+$form = new EaseTWBForm('Hostgroup', 'hostgroup.php', 'POST', $hostgroupEdit, array('class' => 'form-horizontal'));
 $form->setTagID($form->getTagName());
 if (!is_null($hostgroup->getMyKey())) {
     $form->addItem(new EaseHtmlInputHiddenTag($hostgroup->getmyKeyColumn(), $hostgroup->getMyKey()));
 }
-$form->addItem('<br>');
 $form->addItem(new EaseTWSubmitButton(_('Uložit'), 'success'));
 
-$oPage->AddCss('
-input.ui-button { width: 100%; }
-');
+$oPage->addItem(new IEPageBottom());
 
-$hostgroupTools->addItem($hostgroup->deleteButton());
 
+
+$infopanel = new IEInfoBox($hostgroup);
+$tools = new EaseTWBPanel(_('Nástroje'), 'warning');
 if ($hostgroup->getId()) {
-    $hostgroupTools->addItem($hostgroup->ownerLinkButton());
+    $tools->addItem($hostgroup->deleteButton());
+    $tools->addItem(new EaseTWBPanel(_('Transfer'), 'warning', $hostgroup->transferForm()));
 }
+$pageRow = new EaseTWBRow;
+$pageRow->addColumn(2, $infopanel);
+$pageRow->addColumn(6, new EaseTWBPanel(new EaseHtmlH1Tag($hostgroup->getDataValue('alias') . ' <small>' . $hostgroup->getName() . '</small>')
+    , 'default', $form));
+$pageRow->addColumn(4, $tools);
+$oPage->container->addItem($pageRow);
 
 
-$operations = $hostgroupTools->addItem(new EaseTWBPanel(_('Hromadné operace')), 'success');
+$operations = $tools->addItem(new EaseTWBPanel(_('Hromadné operace')), 'success');
 $operations->addItem(new IEContactAsignForm);
 
-$hostgroupTools->addItem(new EaseTWBLinkButton('wizard-host.php?hostgroup_id=' . $hostgroup->getId(), EaseTWBPart::GlyphIcon('plus') . _('nový host ve skupině'), 'success'));
+$tools->addItem(new EaseTWBLinkButton('wizard-host.php?hostgroup_id=' . $hostgroup->getId(), EaseTWBPart::GlyphIcon('plus') . _('nový host ve skupině'), 'success'));
 
-$oPage->addItem(new IEPageBottom());
+
 
 $oPage->draw();

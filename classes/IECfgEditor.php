@@ -315,13 +315,13 @@ class IECfgEditor extends EaseContainer
 
             $value = $this->objectEdited->getDataValue($fieldName);
 
-            if (is_null($value)) {
-                if (!EaseShared::webPage()->isPosted()) {
-                    $value = '';
-                } else {
-                    continue;
-                }
-            }
+//            if (is_null($value)) {
+//                if (!EaseShared::webPage()->isPosted()) {
+//                    $value = '';
+//                } else {
+//                    continue;
+//                }
+//            }
             if ($value === 'NULL') {
                 $value = null;
             }

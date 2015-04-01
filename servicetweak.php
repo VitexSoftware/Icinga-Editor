@@ -84,7 +84,7 @@ if ($addcnt) {
 $oPage->addItem(new IEPageTop(_('Editace služby') . ' ' . $service->getName()));
 $oPage->addPageColumns();
 
-$oPage->columnII->addItem(new EaseHtmlH3Tag(array(IEHostOverview::platformIcon($service->getDataValue('platform')), $service->getName())));
+$oPage->columnII->addItem(new EaseHtmlH3Tag(array(new IEPlatformIcon($service->getDataValue('platform')), $service->getName())));
 
 $oPage->columnII->addItem(new IEServiceTweaker($service, $host));
 

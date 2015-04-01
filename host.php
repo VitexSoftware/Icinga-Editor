@@ -9,13 +9,6 @@
  * @copyright  2012 Vitex@hippy.cz (G)
  */
 require_once 'includes/IEInit.php';
-require_once 'classes/IEHost.php';
-require_once 'classes/IECfgEditor.php';
-require_once 'classes/IEUsedServiceSelector.php';
-require_once 'classes/IEIconSelector.php';
-require_once 'classes/IEHostOverview.php';
-require_once 'classes/IEFXPreloader.php';
-require_once 'classes/IEContactSelector.php';
 
 $oPage->onlyForLogged();
 
@@ -187,43 +180,40 @@ if ($addcnt) {
 
 $oPage->addItem(new IEPageTop(_('Editace hosta') . ' ' . $host->getName()));
 
+$infopanel = new IEInfoBox($host);
+$tools = new EaseTWBPanel(_('Nástroje'), 'warning');
 
-$hostPanel = $oPage->container->addItem(new EaseTWBPanel(new EaseHtmlH1Tag($host->getDataValue('alias') . ' <small>' . $host->getName() . '</small>')));
+$pageRow = new EaseTWBRow;
+$pageRow->addColumn(2, $infopanel);
+$mainPanel = $pageRow->addColumn(6);
+$pageRow->addColumn(4, $tools);
+$oPage->container->addItem($pageRow);
 
-$hostTabs = new EaseTWBTabs('hostTabs');
 
+$hostPanel = $mainPanel->addItem(new EaseTWBPanel(new EaseHtmlH1Tag($host->getDataValue('alias') . ' <small>' . $host->getName() . '</small>')));
+
+$hostTabs = $hostPanel->addItem(new EaseTWBTabs('hostTabs'));
 $commonTab = $hostTabs->addTab(_('Obecné'));
-$commonRow = $commonTab->addItem(new EaseTWBRow);
-$hostCommon = $commonRow->addColumn(8);
-$hostTools = $commonRow->addColumn(4, new EaseHtmlH3Tag(_('Nástroje')));
-
 $hostParams = $hostTabs->addTab(_('Konfigurace'));
 
 switch ($oPage->getRequestValue('action')) {
     case 'parent':
         require_once 'classes/IEParentSelector.php';
-        $hostCommon->addItem(new IEParentSelector($host));
+        $commonTab->addItem(new IEParentSelector($host));
         break;
     case 'icon':
-        $hostCommon->addItem(new IEIconSelector($host));
+        $commonTab->addItem(new IEIconSelector($host));
         break;
-}
-
-$hostCommon->addItem(new IEHostOverview($host));
-
-
-
-switch ($oPage->getRequestValue('action')) {
     case 'delete':
         $confirmator = $oPage->columnII->addItem(new EaseTWBPanel(_('Opravdu smazat ?')), 'danger');
         $confirmator->addItem(new EaseTWBLinkButton('?' . $host->myKeyColumn . '=' . $host->getID(), _('Ne') . ' ' . EaseTWBPart::glyphIcon('ok'), 'success'));
         $confirmator->addItem(new EaseTWBLinkButton('?delete=true&' . $host->myKeyColumn . '=' . $host->getID(), _('Ano') . ' ' . EaseTWBPart::glyphIcon('remove'), 'danger'));
 
-        $oPage->columnI->addItem($host->ownerLinkButton());
-
+        $infopanel->addItem($host->ownerLinkButton());
 
         break;
     default :
+
         $hostEdit = new IECfgEditor($host);
         $form = $hostParams->addItem(new EaseHtmlForm('Host', 'host.php', 'POST', $hostEdit, array('class' => 'form-horizontal')));
         $form->setTagID($form->getTagName());
@@ -233,10 +223,10 @@ switch ($oPage->getRequestValue('action')) {
 input.ui-button { width: 100%; }
 ');
 
-        $hostTools->addItem($host->deleteButton());
+        $tools->addItem($host->deleteButton());
 
         if ($host->getDataValue('active_checks_enabled') == '1') {
-            $hostTools->addItem(new EaseTWBLinkButton('?action=populate&host_id=' . $host->getID(), _('Oskenovat a sledovat služby'), null, array('onClick' => "$('#preload').css('visibility', 'visible');")));
+            $tools->addItem(new EaseTWBLinkButton('?action=populate&host_id=' . $host->getID(), _('Oskenovat a sledovat služby'), null, array('onClick' => "$('#preload').css('visibility', 'visible');")));
             $oPage->addItem(new EaseHtmlDivTag('preload', new IEFXPreloader(), array('class' => 'fuelux')));
         }
 
@@ -244,24 +234,19 @@ input.ui-button { width: 100%; }
         $renameForm->addItem(new EaseHtmlInputTextTag('newname'), $host->getName(), array('class' => 'form-control'));
         $renameForm->addItem(new EaseTWSubmitButton(_('Přejmenovat'), 'success'));
 
-        $hostTools->addItem(new EaseTWBPanel(_('Přejmenování'), 'info', $renameForm));
-        $hostTools->addItem(new EaseTWBLinkButton('?action=parent&host_id=' . $host->getId(), _('Přiřadit rodiče'), 'success'));
-        $hostTools->addItem(new EaseTWBLinkButton('?action=icon&host_id=' . $host->getId(), _('Změnit ikonu'), 'success'));
+        $tools->addItem(new EaseTWBPanel(_('Přejmenování'), 'info', $renameForm));
+        $tools->addItem(new EaseTWBLinkButton('?action=parent&host_id=' . $host->getId(), _('Přiřadit rodiče'), 'success'));
+        $tools->addItem(new EaseTWBLinkButton('?action=icon&host_id=' . $host->getId(), _('Změnit ikonu'), 'success'));
 
         if ($host->getDataValue('platform') != 'generic') {
-            $hostTools->addItem(new EaseTWBLinkButton('sensor.php?host_id=' . $host->getId(), _('Nasadit senzor'), 'info'));
+            $tools->addItem(new EaseTWBLinkButton('sensor.php?host_id=' . $host->getId(), _('Nasadit senzor'), 'info'));
         }
 
-        $hostCommon->addItem(new IEUsedServiceSelector($host));
-        $hostCommon->addItem(new IEContactSelector($host));
+        $commonTab->addItem(new IEUsedServiceSelector($host));
+        $commonTab->addItem(new IEContactSelector($host));
+
         break;
 }
-
-
-
-//$OPage->column3->addItem(new EaseHtmlH4Tag('Rozšířené info'));
-
-$hostPanel->addItem($hostTabs);
 
 $oPage->addItem(new IEPageBottom());
 

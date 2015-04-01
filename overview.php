@@ -44,8 +44,8 @@ if ($pocContact) {
     }
 }
 
-$Contactgroup = new IEContactgroup();
-$pocContactgroup = $Contactgroup->getMyRecordsCount();
+$contactgroup = new IEContactgroup();
+$pocContactgroup = $contactgroup->getMyRecordsCount();
 if ($pocContactgroup) {
     $success = $oPage->columnII->addItem(new EaseHtmlDivTag('Contactgroup', new EaseTWBLinkButton('contactgroups.php', _('<i class="icon-list"></i>') . ' ' . sprintf(_('Definováno %s skupin kontaktů'), $pocContactgroup)), array('class' => 'alert alert-success')));
 } else {

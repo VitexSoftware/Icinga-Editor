@@ -9,7 +9,6 @@
  * @copyright  2012 Vitex@hippy.cz (G)
  */
 require_once 'Ease/EaseBrick.php';
-require_once 'classes/EaseTWBSwitch.php';
 
 /**
  * Description of IEHosts
@@ -179,6 +178,18 @@ class IEcfg extends EaseBrick
           'severity' => 'advanced',
           'mandatory' => true
         );
+
+        if (isset($this->userColumn)) {
+            $this->useKeywords[$this->userColumn] = 'USER';
+            $this->keywordsInfo[$this->userColumn] = array(
+              'severity' => 'advanced',
+              'title' => _('vlastník'),
+              'refdata' => array(
+                'table' => 'user',
+                'captioncolumn' => 'login',
+                'idcolumn' => 'user_id')
+            );
+        }
     }
 
     /**
@@ -818,18 +829,44 @@ class IEcfg extends EaseBrick
 
     /**
      * Zobrazí tlačítko s ikonou a odkazem na stránku s informacemi o vlastníku
+     *
+     * @param int $ownerID alternativní ID uživatele
      * @return \EaseTWBLinkButton
      */
-    public function ownerLinkButton()
+    public function ownerLinkButton($ownerID = null)
     {
-        $ownerID = $this->getOwnerID();
+        $ownerLink = null;
+        if (is_null($ownerID)) {
+            $ownerID = $this->getOwnerID();
+        }
         if ($ownerID) {
             $owner = new EaseUser($ownerID);
-
-            return new EaseTWBLinkButton('userinfo.php?user_id=' . $ownerID, array($owner, '&nbsp;' . $owner->getUserLogin()));
+            $ownerLink = new EaseTWBLinkButton('userinfo.php?user_id=' . $ownerID, array($owner, '&nbsp;' . $owner->getUserLogin()));
         } else {
-            return new EaseTWBLinkButton('overview.php', array('<img class="avatar" src="img/vsmonitoring.png">', '&nbsp;' . _('Bez vlastníka')));
+            $ownerLink = new EaseTWBLinkButton('overview.php', array('<img class="avatar" src="img/vsmonitoring.png">', '&nbsp;' . _('Bez vlastníka')));
         }
+        return $ownerLink;
+    }
+
+    /**
+     * Odkaz na stránku s informacemi o vlastníku
+     *
+     * @param int $ownerID alternativní ID uživatele
+     * @return \EaseTWBLinkButton
+     */
+    public function ownerLink($ownerID = null)
+    {
+        $ownerLink = null;
+        if (is_null($ownerID)) {
+            $ownerID = $this->getOwnerID();
+        }
+        if ($ownerID) {
+            $owner = new EaseUser($ownerID);
+            $ownerLink = new EaseHtmlATag('userinfo.php?user_id=' . $ownerID, $owner->getUserLogin());
+        } else {
+            $ownerLink = new EaseHtmlATag('overview.php', _('Bez vlastníka'));
+        }
+        return $ownerLink;
     }
 
     /**
@@ -1064,7 +1101,7 @@ class IEcfg extends EaseBrick
     }
 
     /**
-     * Odebere notifikační příkaz skupiny
+     * Odebere položku skupiny
      *
      * @param  string  $column     název sloupečku
      * @param  int     $memberID
@@ -1386,6 +1423,9 @@ class IEcfg extends EaseBrick
                             $row[$key] = $value;
                         }
                         break;
+                    case 'USER':
+                        $row[$key] = (string) $this->ownerLink((int) $row[$key]);
+                        break;
                     default :
                         if (isset($this->keywordsInfo[$key]['refdata']) && strlen(trim($value))) {
                             $table = $this->keywordsInfo[$key]['refdata']['table'];
@@ -1549,6 +1589,70 @@ class IEcfg extends EaseBrick
             $columnType = $this->useKeywords[$columnName];
         }
         return $columnType;
+    }
+
+    /**
+     * Vrací informace o objektu
+     *
+     * @return EaseHtmlDlTag Vrací seznam vlastností a jejich hodnot z objektu
+     */
+    public function getInfoBlock()
+    {
+        $infoBlock = new EaseHtmlDlTag;
+
+        if (isset($this->nameColumn)) {
+            $infoBlock->addDef(_('Jméno'), $this->getName());
+        }
+
+        if (isset($this->myLastModifiedColumn)) {
+            $lastModify = $this->getDataValue($this->myLastModifiedColumn);
+            if (!$lastModify) {
+                $lastModify = _('Zatím nezměněno');
+            } else {
+                $lastModify = self::sqlDateTimeToLocaleDateTime($lastModify);
+            }
+            $infoBlock->addDef(_('Poslední změna'), $lastModify);
+        }
+
+        if (isset($this->myCreateColumn)) {
+            $infoBlock->addDef(_('Vytvořeno'), self::sqlDateTimeToLocaleDateTime($this->getDataValue($this->myCreateColumn)));
+        }
+
+        if (isset($this->userColumn)) {
+            $infoBlock->addDef(_('Vlastník'), $this->ownerLinkButton());
+        }
+
+        return $infoBlock;
+    }
+
+    /**
+     * Převede sql datum do národního formátu
+     *
+     * @param string $sqldate SQL datum
+     * @param string $format  formát výstupu
+     *
+     * @return string         převedené datum
+     */
+    static function sqlDateToLocaleDate($sqldate, $format = 'm/d/Y')
+    {
+        if ($sqldate) {
+            return DateTime::createFromFormat('Y-m-d', $sqldate)->format($format);
+        }
+    }
+
+    /**
+     * Převede sql datum a čas do národního formátu
+     *
+     * @param string $sqldate SQL datum a čas
+     * @param string $format  formát výstupu
+     *
+     * @return string         převedené datum a čas
+     */
+    static function sqlDateTimeToLocaleDateTime($sqldate, $format = 'm/d/Y h:i:s')
+    {
+        if ($sqldate) {
+            return DateTime::createFromFormat('Y-m-d H:i:s', $sqldate)->format($format);
+        }
     }
 
 }

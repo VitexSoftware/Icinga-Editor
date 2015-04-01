@@ -148,15 +148,18 @@ class IEUserGroup extends IEcfg
      * @param int $memberID
      * @return boolean
      */
-    public function delMember($column, $memberID, $memberName = null)
+    public function delMember($column, $memberID = null, $memberName = null)
     {
-        $this->myDbLink->exeQuery('DELETE FROM user_to_group WHERE user_id=' . $memberID . ' AND group_id=' . $this->getMyKey());
-        $removed = $this->myDbLink->numRows;
-        if ($removed) {
-            $this->loadMembers();
-            return $removed;
-        } else {
-            return false;
+        if ($memberID) {
+            $this->myDbLink->exeQuery('DELETE FROM user_to_group WHERE user_id=' . $memberID . ' AND group_id=' . $this->getMyKey());
+            $removed = $this->myDbLink->numRows;
+
+            if ($removed) {
+                $this->loadMembers();
+                return $removed;
+            } else {
+                return false;
+            }
         }
     }
 
