@@ -490,6 +490,9 @@ class IEcfg extends EaseBrick
         foreach ($allData as $cfgID => $columns) {
             if (intval($columns['generate'])) {
                 unset($columns['generate']);
+                if (isset($this->userColumn)) {
+                    unset($columns[$this->userColumn]);
+                }
                 if (isset($columns['register']) && (int) $columns['register']) {
                     unset($columns['register']);
                 }
