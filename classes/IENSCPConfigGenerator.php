@@ -191,6 +191,15 @@ echo "file name=${log-path}/nsclient.log" >> $INI
         $this->addCfg('/settings/NSCA/client/targets/default', 'port', '5667');
         $this->addCfg('/settings/NSCA/client/targets/default', 'timeout', '30');
         $this->addCfg('/settings/NSCA/client/targets/default', 'interval', '60s');
+
+        $host_check_interval = $this->host->getCfgValue('check_interval');
+        if (is_null($host_check_interval)) {
+            $host_check_interval = 5;
+        }
+
+        $this->addCfg('/settings/external scripts/alias', 'host_check', 'check_ok message=Host\ UP');
+        $this->addCfg('/settings/scheduler/schedules/host_check', 'command', 'host_check');
+        $this->addCfg('/settings/scheduler/schedules/host_check', 'interval', $host_check_interval . 'm');
     }
 
     /**

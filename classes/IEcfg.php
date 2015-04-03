@@ -530,6 +530,46 @@ class IEcfg extends EaseBrick
     }
 
     /**
+     * Vrací efektivní konfigurační hodnotu
+     *
+     * @param string $keyword
+     */
+    public function getCfgValue($keyword)
+    {
+        $value = $this->getDataValue($keyword);
+        if (is_null($value)) {
+            $parent_name = $this->getDataValue('use');
+            while (is_null($value) && $parent_name) {
+                if ($parent_name) {
+                    if (!isset($parent)) {
+                        $parent = clone $this;
+                    }
+                    $parent->dataReset();
+                    $parent->setmyKeyColumn('name');
+                    $parent->nameColumn = 'name';
+                    if (strstr($parent_name, ',')) {
+                        $parents = explode(',', $parent_name);
+                        foreach ($parents as $parent_name) {
+                            $parentValue = $parent->getColumnsFromMySQL(array($keyword, 'use'), array('name' => $parent_name));
+                            if (is_null($parent->getDataValue($keyword))) {
+                                $parent->setDataValue($keyword, $parentValue[0][$keyword]);
+                                $parent->setDataValue('use', $parentValue[0]['use']);
+                            }
+                        }
+                    } else {
+                        $parentValue = $parent->getColumnsFromMySQL(array($keyword, 'use'), array('name' => $parent_name));
+                        $parent->setDataValue($keyword, $parentValue[0][$keyword]);
+                        $parent->setDataValue('use', $parentValue[0]['use']);
+                    }
+                    $parent_name = $parent->getDataValue('use');
+                    $value = $parent->getDataValue($keyword);
+                }
+            }
+        }
+        return $value;
+    }
+
+    /**
      * Zkontroluje všechny záznamy a přeskočí cizí záznamy
      *
      * @param  array $allData všechna vstupní data
@@ -796,7 +836,7 @@ class IEcfg extends EaseBrick
                 }
                 $used = $this->getColumnsFromMySQL($columnsList, array('use' => $this->getDataValue('name')), $this->nameColumn, $this->getmyKeyColumn());
                 if (count($used)) {
-                    $usedFrame = new EaseHtmlFieldSet(_('je předlohou pro'));
+                    $usedFrame = new EaseTWBPanel(_('je předlohou pro'), 'info', null, _('není proto možné smazat'));
                     foreach ($used as $usId => $usInfo) {
                         if ($this->publicRecords && ($usInfo['public'] != true) && ($usInfo[$this->userColumn] != EaseShared::user()->getUserID() )) {
                             $usedFrame->addItem(new EaseHtmlSpanTag(null, $usInfo[$this->nameColumn], array('class' => 'jellybean gray')));

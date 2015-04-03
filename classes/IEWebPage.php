@@ -1,6 +1,6 @@
 <?php
 
-define('IE_VERSION', '0.116');
+define('IE_VERSION', '0.117');
 
 /**
  * Třídy pro vykreslení stránky
