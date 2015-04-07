@@ -21,7 +21,6 @@ class IEYesNoSwitch extends IETWBSwitch
     function __construct($name, $checked = false, $value = null, $properties = null)
     {
         parent::__construct($name, $checked, 'on', $properties);
-        $this->setProperties(array('onText' => _('ANO'), 'offText' => _('NE')));
     }
 
     function finalize()

@@ -602,7 +602,61 @@ class IEHost extends IECfg
             $block->addDef(_('Rodiče'), implode(',', $parents));
         }
 
+        $block->addDef(_('Konfigurace senzoru'), $this->sensorStatusLabel());
+
         return $block;
+    }
+
+    /**
+     * Vrací label se statusem registrace statusu
+     *
+     * @param int $status_code Kód nasazení senzoru 2: aktuální 1: zastaralý 0:nenasazeno
+     * @return \EaseTWBLabel
+     */
+    function sensorStatusLabel($status_code = null)
+    {
+
+        $status = null;
+        if (is_null($status_code)) {
+            $status_code = $this->getSensorStatus();
+        }
+
+        switch ($status_code) {
+            case 2:
+                $status = new EaseTWBLabel('success', _('Aktuální'));
+                break;
+            case 1:
+                $status = new EaseTWBLabel('warning', _('Zastaralá'));
+                break;
+            case 0:
+            default :
+                $status = new EaseTWBLabel('danger', _('Nenasazeno'));
+                break;
+        }
+        return $status;
+    }
+
+    /**
+     * Vrací status nasazení senzoru
+     *
+     * @return int 2: aktuální 1: zastaralý 0:nenasazeno
+     */
+    function getSensorStatus()
+    {
+        $status = null;
+        $hash = $this->getDataValue('config_hash');
+        if ($hash) {
+            if ($this->getConfigHash() == $hash) {
+                $status = 2;
+            } else {
+                //Zastaralá konfigurace
+                $status = 1;
+            }
+        } else {
+            //senzor neregistrován
+            $status = 0;
+        }
+        return $status;
     }
 
     /**

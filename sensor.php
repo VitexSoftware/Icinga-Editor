@@ -23,11 +23,34 @@ if ($hostId == 0) {
 
 $host = new IEHost($hostId);
 
+$operation = $oPage->getRequestValue('operation');
+switch ($operation) {
+    case 'confirm':
+        $state = $oPage->getRequestValue('confirm');
+        if ($state == 'on') {
+            $host->setDataValue('config_hash', $host->getConfigHash());
+        } else {
+            $host->setDataValue('config_hash', null);
+        }
+        if ($host->saveToMySQL()) {
+            $host->addStatusMessage(_('Stav nasazení senzoru byl nastaven  ručně.'));
+        }
+
+        break;
+
+    default:
+        break;
+}
+
+
 $oPage->addItem(new IEPageTop(_('Sensor')));
 $oPage->addPageColumns();
 
 $oPage->columnII->addItem(new EaseHtmlH1Tag($host->getName()));
 $oPage->columnII->addItem($host);
+$oPage->columnII->addItem($host->sensorStatusLabel());
+
+$oPage->columnII->addItem(new IESensorConfirmForm($host));
 
 switch ($host->getDataValue('platform')) {
     case 'windows':
@@ -42,6 +65,7 @@ switch ($host->getDataValue('platform')) {
             $oPage->columnI->addItem(new EaseHtmlH1Tag('<img src="' . $pltIco . '">' . _('pasivní NSCA pro NSC++')));
         }
         $oPage->columnI->addItem(new EaseTWBLinkButton('nscpcfggen.php?host_id=' . $hostId, $host->getName() . '_nscp.bat ' . EaseTWBPart::GlyphIcon('download'), 'success'));
+
         break;
     case 'linux':
         $pltIco = 'logos/base/linux40.gif';

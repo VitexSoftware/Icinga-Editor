@@ -18,6 +18,12 @@ class IETWBSwitch extends EaseHtmlCheckboxTag
 
     public $properties = array();
 
+    public function __construct($name, $checked = false, $value = null, $properties = null)
+    {
+        parent::__construct($name, $checked, $value, $properties);
+        $this->setProperties(array('onText' => _('ANO'), 'offText' => _('NE')));
+    }
+
     function setProperties($properties)
     {
         $this->properties = array_merge($this->properties, $properties);
