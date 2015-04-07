@@ -1,15 +1,12 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
- * Description of IEConfigurationsOvervier
+ * Přehled hostů bez potvrzeného senzoru, nebo se zastaralou konf. senzoru.
  *
- * @author vitex
+ * @package    IcingaEditor
+ * @subpackage WebUI
+ * @author     Vitex <vitex@hippy.cz>
+ * @copyright  2012 Vitex@hippy.cz (G)
  */
 class IEConfigurationsOverview extends EaseTWBPanel
 {
@@ -32,11 +29,13 @@ class IEConfigurationsOverview extends EaseTWBPanel
                     continue;
                 } else {
                     //Zastaralá konfigurace
-                    $hosts_table->addRowColumns(array(new EaseHtmlATag('host.php?host_id=' . $host_id, $host_info['host_name']), new EaseTWBLinkButton('sensor.php?host_id=' . $host_id, _('aktualizovat senzor'))), array('class' => 'warning'));
+                    $row = $hosts_table->addRowColumns(array(new EaseHtmlATag('host.php?host_id=' . $host_id, $host_info['host_name']), new EaseTWBLinkButton('sensor.php?host_id=' . $host_id, _('aktualizovat senzor'))));
+                    $row->setTagClass('warning');
                 }
             } else {
                 //senzor neregistrován
-                $hosts_table->addRowColumns(array(new EaseHtmlATag('host.php?host_id=' . $host_id, $host_info['host_name']), new EaseTWBLinkButton('sensor.php?host_id=' . $host_id, _('nasadit senzor'))), array('class' => 'danger'));
+                $row = $hosts_table->addRowColumns(array(new EaseHtmlATag('host.php?host_id=' . $host_id, $host_info['host_name']), new EaseTWBLinkButton('sensor.php?host_id=' . $host_id, _('nasadit senzor'))));
+                $row->setTagClass('danger');
             }
         }
         parent::__construct(_('Hosty s neaktuální konfigurací'), 'info', $hosts_table, sprintf(_('Celkem %s hostů bez aktuální konfigurace. (%s aktuální)'), count($hosts), $ok));

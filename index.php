@@ -10,6 +10,11 @@
  */
 require_once 'includes/IEInit.php';
 
+if ($oUser->getUserId()) {
+    $oPage->redirect('main.php');
+    exit;
+}
+
 $oPage->addItem(new IEPageTop(_('Icinga Editor')));
 $oPage->addPageColumns();
 
