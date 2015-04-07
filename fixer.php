@@ -12,7 +12,7 @@ require_once 'classes/IEDbFixer.php';
 
 
 $oPage->addItem(new IEPageTop(_('Oprava databaze')));
-$oPage->addPageColumns();
+$oPage->onlyForLogged();
 
 $loginFace = new EaseHtmlDivTag('LoginFace');
 

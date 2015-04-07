@@ -433,13 +433,21 @@ class IEHost extends IECfg
         $renameAll = true;
         $service = new IEService();
         $servicesAssigned = $service->myDbLink->queryToArray('SELECT ' . $service->myKeyColumn . ',' . $service->nameColumn . ' FROM ' . $service->myTable . ' WHERE ' . 'host_name' . ' LIKE \'%"' . $oldname . '"%\'', $service->myKeyColumn);
-        foreach ($servicesAssigned as $ServiceID => $ServiceInfo) {
-            $service->loadFromMySQL($ServiceID);
+        foreach ($servicesAssigned as $serviceID => $serviceInfo) {
+            $service->loadFromMySQL($serviceID);
             $service->renameHostName($this->getId(), $newname);
             if (!$service->saveToMySQL()) {
                 $this->addStatusMessage(sprintf(_('Nepodařilo se přejmenovat %s ve službě %s'), $this->getName(), $service->getName()), $Type);
                 $renameAll = false;
             }
+        }
+
+        $childsAssigned = $this->myDbLink->queryToArray('SELECT ' . $this->myKeyColumn . ',' . $this->nameColumn . ' FROM ' . $this->myTable . ' WHERE ' . 'parents' . ' LIKE \'%"' . $oldname . '"%\'', $this->myKeyColumn);
+        foreach ($childsAssigned as $chid_id => $child_info) {
+            $child = new IEHost($chid_id);
+            $child->delMember('parents', $this->getId(), $oldname);
+            $child->addMember('parents', $this->getId(), $newname);
+            $child->updateToMySQL();
         }
 
         if ($this->save() && $renameAll) {

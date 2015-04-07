@@ -1,6 +1,6 @@
 <?php
 
-define('IE_VERSION', '0.120');
+define('IE_VERSION', '0.121');
 
 /**
  * Třídy pro vykreslení stránky
@@ -65,12 +65,15 @@ class IEWebPage extends EaseTWBWebPage
 //        $this->head->addItem('<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://twitter.github.com/bootstrap/assets/ico/apple-touch-icon-144-precomposed.png">');
 //        $this->head->addItem('<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://twitter.github.com/bootstrap/assets/ico/apple-touch-icon-114-precomposed.png">');
 //        $this->head->addItem('<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://twitter.github.com/bootstrap/assets/ico/apple-touch-icon-72-precomposed.png">');
-//        $this->head->addItem('<link rel="apple-touch-icon-precomposed" href="http://twitter.github.com/bootstrap/assets/ico/apple-touch-icon-57-precomposed.png">');
-//        $this->head->addItem('<link rel="shortcut icon" href="favicon.ico">');
+        $this->head->addItem('<link rel="apple-touch-icon-precomposed" href="img/vsmonitoring.png">');
+        $this->head->addItem('<link rel="shortcut icon"  type="image/png" href="img/vsmonitoring.png">');
         $this->addItem('<br>');
         $this->container = $this->addItem(new EaseHtmlDivTag(null, null, array('class' => 'container')));
     }
 
+    /**
+     * Rozdělí stránku do třísloupcového layoutu
+     */
     function addPageColumns()
     {
         $row = $this->container->addItem(new EaseHtmlDivTag(null, null, array('class' => 'row')));

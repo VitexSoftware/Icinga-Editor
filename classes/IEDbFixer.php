@@ -71,9 +71,33 @@ class IEDbFixer extends EaseHtmlUlTag
                 }
             }
         }
+
+        $childsAssigned = $host->myDbLink->queryToArray('SELECT ' . $host->myKeyColumn . ',' . $host->nameColumn . ' FROM ' . $host->myTable . ' WHERE '
+            . 'parents' . ' IS NOT NULL && parents !=\'a:0:{}\'', $host->myKeyColumn);
+        foreach ($childsAssigned as $chid_id => $child_info) {
+            $child = new IEHost($chid_id);
+            $parents = $child->getDataValue('parents');
+            foreach ($parents as $parent_id => $parent_name) {
+                $parent = new IEHost($parent_name);
+                if ($parent->getId()) {
+                    //Ok Host toho jména existuje
+                    if ($parent->getId() != $parent_id) { //Ale nesedí ID
+                        $child->delMember('parents', $parent_id, $parent_name);
+                        $child->addMember('parents', $parent->getId(), $parent_name);
+                        $child->saveToMySQL();
+                        $this->addItemSmart(sprintf(_('Rodič <strong>%s</strong> hosta %s má špatné ID'), $parent_name, $child_info[$host->nameColumn]), array('class' => 'list-group-item'));
+                    }
+                } else {
+                    //Host tohoto jména neexistuje, nemůže být tedy PARENT
+                    $this->addItemSmart(sprintf(_('Rodič <strong>%s</strong> hosta %s neexistuje'), $parent_name, $child_info[$host->nameColumn]), array('class' => 'list-group-item'));
+                    $child->delMember('parents', $parent->getId(), $parent_name);
+                    $child->saveToMySQL();
+                }
+            }
+        }
     }
 
-    public function fixContactIDs()
+    function fixContactIDs()
     {
         $contactsOK = array();
         $contactsErr = array();

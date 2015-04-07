@@ -11,6 +11,11 @@
 class IEConfigurationsOverview extends EaseTWBPanel
 {
 
+    /**
+     * Přehled hostů bez potvrzeného senzoru, nebo se zastaralou konf. senzoru.
+     *
+     * @param array $hosts
+     */
     public function __construct($hosts)
     {
         $ok = 0;
