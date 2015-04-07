@@ -353,6 +353,7 @@ CREATE TABLE IF NOT EXISTS `host` (
   `DatCreate` datetime DEFAULT NULL,
   `DatSave` datetime DEFAULT NULL,
   `platform` varchar(20) COLLATE utf8_czech_ci NOT NULL COMMENT 'Platforma',
+  `config_hash` VARCHAR(255) NULL COMMENT 'Hash aplikované konfigurace',
   PRIMARY KEY (`host_id`),
   KEY `user_id` (`user_id`),
   KEY `platform` (`platform`)

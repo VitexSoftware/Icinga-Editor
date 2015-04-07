@@ -597,4 +597,14 @@ class IEHost extends IECfg
         return $block;
     }
 
+    /**
+     * Vrací hash vypočítaný z aktuální konfigurace hosta
+     */
+    function getConfigHash()
+    {
+        $service = new IEService;
+        $servicesAssigned = $service->myDbLink->queryToArray('SELECT `' . $service->getmyKeyColumn() . '`,`' . $service->myCreateColumn . '`,`' . $service->myLastModifiedColumn . '` FROM ' . $service->myTable . ' WHERE host_name LIKE \'%"' . $this->getName() . '"%\'', $service->myKeyColumn);
+        return hash('md5', $this->getName() . serialize($servicesAssigned));
+    }
+
 }

@@ -328,10 +328,29 @@ echo "file name=${log-path}/nsclient.log" >> $INI
      */
     public function cfgEnding()
     {
-        $this->nscBatArray[] = '
+        echo '';
+
+        switch ($this->platform) {
+            case 'windows':
+                $this->nscBatArray[] = "\n" . '
+start "" "' . $this->getCfgConfirmUrl() . '"
 ' . $this->nscvar . ' test
 ' . $this->nscvar . ' service --start
 ';
+                break;
+            case 'linux':
+                $this->nscBatArray[] = "\n" . '
+curl "' . $this->getCfgConfirmUrl() . '"
+' . $this->nscvar . ' test
+service nscp start
+';
+                break;
+            default:
+                $this->nscBatArray[] = $this->nscBatArray[] = "\n" . '
+' . $this->nscvar . ' test
+';
+                break;
+        }
     }
 
     /**
@@ -369,6 +388,30 @@ echo "file name=${log-path}/nsclient.log" >> $INI
         } else {
             return $nscbat;
         }
+    }
+
+    /**
+     * Vrací URL konfiguračního rozhraní
+     *
+     * @return string
+     */
+    function getBaseURL()
+    {
+        if (isset($_SERVER['REQUEST_SCHEME'])) {
+            $scheme = $_SERVER['REQUEST_SCHEME'];
+        } else {
+            $scheme = 'http';
+        }
+
+        $enterPoint = $scheme . '://' . $_SERVER['SERVER_NAME'] . dirname($_SERVER['REQUEST_URI']) . '/';
+
+//        $enterPoint = str_replace('\\', '', $enterPoint); //Win Hack
+        return $enterPoint;
+    }
+
+    function getCfgConfirmUrl()
+    {
+        return $this->getBaseURL() . 'cfgconfirm.php?hash=' . $this->host->getConfigHash() . '&host_id=' . $this->host->getId();
     }
 
 }

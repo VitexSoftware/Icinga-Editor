@@ -1,0 +1,1 @@
+ALTER TABLE `host` ADD `config_hash` VARCHAR(255) NULL COMMENT 'Hash aplikované konfigurace' ;
