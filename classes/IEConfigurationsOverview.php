@@ -36,7 +36,7 @@ class IEConfigurationsOverview extends EaseTWBPanel
                 }
             } else {
                 //senzor neregistrován
-                $hosts_table->addRowColumns(array(new EaseHtmlATag('host.php?host_id=' . $host_id, $host_info['host_name']), new EaseTWBLinkButton('sensor.php?host_id=' . $host_id, _('nasadit senzor'))), array('class' => 'warning'));
+                $hosts_table->addRowColumns(array(new EaseHtmlATag('host.php?host_id=' . $host_id, $host_info['host_name']), new EaseTWBLinkButton('sensor.php?host_id=' . $host_id, _('nasadit senzor'))), array('class' => 'danger'));
             }
         }
         parent::__construct(_('Hosty s neaktuální konfigurací'), 'info', $hosts_table, sprintf(_('Celkem %s hostů bez aktuální konfigurace. (%s aktuální)'), count($hosts), $ok));
