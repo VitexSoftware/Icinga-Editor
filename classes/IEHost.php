@@ -345,6 +345,24 @@ class IEHost extends IECfg
                 $delAll = false;
             }
         }
+
+        $childsOfMe = $this->myDbLink->queryToArray('SELECT ' . $this->myKeyColumn . ',' . $this->nameColumn . ' FROM ' . $this->myTable . ' WHERE parents ' .
+            ' LIKE \'%' . $this->getName() . '%\'', $this->myKeyColumn);
+
+        foreach ($childsOfMe as $chid_id => $child_info) {
+            $child = new IEHost($chid_id);
+
+            if ($child->delMember('parents', $this->getId(), $this->getName()) && $child->saveToMySQL()) {
+                $this->addStatusMessage(sprintf(_('%s již není rodičem %s'), $this->getName(), $child->getName()), 'success');
+            } else {
+                $this->addStatusMessage(sprintf(_('%s je stále rodičem %s'), $this->getName(), $child->getName()), 'warning');
+            }
+        }
+
+
+
+
+
         if ($delAll) {
             return parent::delete();
         }
@@ -649,11 +667,11 @@ class IEHost extends IECfg
             if ($this->getConfigHash() == $hash) {
                 $status = 2;
             } else {
-                //Zastaralá konfigurace
+//Zastaralá konfigurace
                 $status = 1;
             }
         } else {
-            //senzor neregistrován
+//senzor neregistrován
             $status = 0;
         }
         return $status;

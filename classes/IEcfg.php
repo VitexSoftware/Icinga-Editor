@@ -1698,4 +1698,20 @@ class IEcfg extends EaseBrick
         }
     }
 
+    /**
+     * Vrací ID objektu dle jména
+     *
+     * @param string $name
+     * @return int
+     */
+    function getIdByName($name)
+    {
+
+        $id = $this->myDbLink->queryToValue('SELECT ' . $this->getmyKeyColumn() . ' FROM ' . $this->getMyTable() . ' WHERE ' . $this->nameColumn . ' LIKE \'' . $this->myDbLink->addSlashes($name) . ' \'');
+        if (is_numeric($id)) {
+            $id = intval($id);
+        }
+        return $id;
+    }
+
 }
