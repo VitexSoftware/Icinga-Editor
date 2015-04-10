@@ -164,6 +164,12 @@ echo "file name=${log-path}/nsclient.log" >> $INI
     function cfgGeneralSet()
     {
         $this->addCfg('/settings/external scripts', 'timeout', '3600');
+
+        switch ($this->platform) {
+            case 'windows':
+                $this->addCfg('/settings/external scripts/wrappings', 'vbs', 'cscript.exe //T:3600 //NoLogo scripts\\lib\\wrapper.vbs %SCRIPT% %ARGS%');
+                break;
+        }
     }
 
     /**
