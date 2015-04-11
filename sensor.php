@@ -44,27 +44,45 @@ switch ($operation) {
 
 
 $oPage->addItem(new IEPageTop(_('Sensor')));
-$oPage->addPageColumns();
 
-$oPage->columnII->addItem(new EaseHtmlH1Tag($host->getName()));
-$oPage->columnII->addItem($host);
-$oPage->columnII->addItem($host->sensorStatusLabel());
+$commonWell = new EaseTWBWell();
 
-$oPage->columnII->addItem(new IESensorConfirmForm($host));
+$commonRow = new EaseTWBRow;
+$hostColumn = $commonRow->addColumn(4, new EaseHtmlH1Tag($host->getName()));
+$hostColumn->addItem($host);
+$hostColumn->addItem($host->sensorStatusLabel());
+
+$commonWell->addItem($commonRow);
+
+$commonRow->addColumn(4, new EaseTWBPanel(_('Ruční nastavení stavu senzoru'), 'info', new IESensorConfirmForm($host)));
+
+$oPage->container->addItem($commonWell);
+
+
+$sensorTabs = new EaseTWBTabs('sensorTabs');
+
+
 
 switch ($host->getDataValue('platform')) {
     case 'windows':
         $pltIco = 'logos/base/win40.gif';
-        $oPage->columnIII->addItem(new EaseTWBLinkButton('http://www.nsclient.org/download/', ' NSC++ ' . EaseTWBPart::GlyphIcon('download'), 'success', array('style' => "background-image:url('img/nscpp.png'); width: 212px; height: 60px; ", 'title' => 'Download')));
+        $cfgGenerator = new IENSCPConfigGenerator($host);
 
-        if ($host->getDataValue('active_checks_enabled')) {
-            $oPage->columnI->addItem(new EaseHtmlH1Tag('<img src="' . $pltIco . '">' . _('aktivní NRPE pro NSC++')));
-            $oPage->columnII->addItem(new EaseTWBLinkButton('host.php?action=populate&host_id=' . $host->getID(), _('Oskenovat a sledovat služby'), null, array('onClick' => "$('#preload').css('visibility', 'visible');")));
+        if ($host->getCfgValue('active_checks_enabled')) {
+            $windowsActiveTab = $sensorTabs->addTab(_('Windows NRPE'));
+            $windowsActiveTab->addItem(new EaseHtmlH1Tag('<img src="' . $pltIco . '">' . _('aktivní NRPE pro NSC++')));
+            $windowsActiveTab->addItem(new EaseTWBLinkButton('http://www.nsclient.org/download/', ' NSC++ ' . EaseTWBPart::GlyphIcon('download'), 'success', array('style' => "background-image:url('img/nscpp.png'); width: 212px; height: 60px; ", 'title' => 'Download')));
+            $windowsActiveTab->addItem(new EaseTWBLinkButton('host.php?action=populate&host_id=' . $host->getID(), _('Oskenovat a sledovat služby'), null, array('onClick' => "$('#preload').css('visibility', 'visible');")));
+            $windowsActiveTab->addItem(new EaseTWBLinkButton('nscpcfggen.php?host_id=' . $hostId, $host->getName() . '_nscp.bat ' . EaseTWBPart::GlyphIcon('download'), 'success'));
+            $windowsActiveTab->addItem(new EaseTWBContainer('<pre>' . $cfgGenerator->getCfg(false) . '</pre>', array('font-face' => 'fixed')));
         }
-        if ($host->getDataValue('passive_checks_enabled')) {
-            $oPage->columnI->addItem(new EaseHtmlH1Tag('<img src="' . $pltIco . '">' . _('pasivní NSCA pro NSC++')));
+        if ($host->getCfgValue('passive_checks_enabled')) {
+            $windowsPassiveTab = $sensorTabs->addTab(_('Windows NSCA'));
+            $windowsPassiveTab->addItem(new EaseHtmlH1Tag('<img src="' . $pltIco . '">' . _('pasivní NSCA pro NSC++')));
+            $windowsPassiveTab->addItem(new EaseTWBLinkButton('http://www.nsclient.org/download/', ' NSC++ ' . EaseTWBPart::GlyphIcon('download'), 'success', array('style' => "background-image:url('img/nscpp.png'); width: 212px; height: 60px; ", 'title' => 'Download')));
+            $windowsPassiveTab->addItem(new EaseTWBLinkButton('nscpcfggen.php?host_id=' . $hostId, $host->getName() . '_nscp.bat ' . EaseTWBPart::GlyphIcon('download'), 'success'));
+            $windowsPassiveTab->addItem(new EaseTWBContainer('<pre>' . $cfgGenerator->getCfg(false) . '</pre>', array('font-face' => 'fixed')));
         }
-        $oPage->columnI->addItem(new EaseTWBLinkButton('nscpcfggen.php?host_id=' . $hostId, $host->getName() . '_nscp.bat ' . EaseTWBPart::GlyphIcon('download'), 'success'));
 
         break;
     case 'linux':
@@ -73,33 +91,42 @@ switch ($host->getDataValue('platform')) {
         $preferences = new IEPreferences;
         $prefs = $preferences->getPrefs();
 
-        if ($host->getDataValue('active_checks_enabled')) {
-            $oPage->columnIII->addItem(new EaseHtmlDivTag(null, 'sudo aptitude -y install nagios-nrpe-server'));
-            $oPage->columnIII->addItem(new EaseHtmlDivTag(null, 'sudo echo "allowed_hosts=' . $prefs['serverip'] . '" >> /etc/nagios/nrpe_local.cfg'));
-            $oPage->columnIII->addItem(new EaseHtmlDivTag(null, 'sudo echo "dont_blame_nrpe=1" >> /etc/nagios/nrpe_local.cfg'));
-            $oPage->columnIII->addItem(new EaseHtmlDivTag(null, 'sudo service nagios-nrpe-server reload'));
+        if ($host->getCfgValue('active_checks_enabled')) {
+            $linuxActiveTab = $sensorTabs->addTab(_('Linux NRPE'));
+            $linuxActiveTab->addItem(new EaseHtmlH1Tag('<img src="' . $pltIco . '">' . _('aktivní NRPE pro NRPE Server')));
+            $linuxActiveTab->addItem(new EaseHtmlDivTag(null, 'sudo aptitude -y install nagios-nrpe-server'));
+            $linuxActiveTab->addItem(new EaseHtmlDivTag(null, 'sudo echo "allowed_hosts=' . $prefs['serverip'] . '" >> /etc/nagios/nrpe_local.cfg'));
+            $linuxActiveTab->addItem(new EaseHtmlDivTag(null, 'sudo echo "dont_blame_nrpe=1" >> /etc/nagios/nrpe_local.cfg'));
+            $linuxActiveTab->addItem(new EaseHtmlDivTag(null, 'sudo service nagios-nrpe-server reload'));
 
-            $oPage->columnI->addItem(new EaseHtmlH1Tag('<img src="' . $pltIco . '">' . _('aktivní NRPE pro NRPE Server')));
-            $oPage->columnII->addItem(new EaseTWBLinkButton('host.php?action=populate&host_id=' . $host->getID(), _('Oskenovat a sledovat služby'), null, array('onClick' => "$('#preload').css('visibility', 'visible');")));
+            $linuxActiveTab->addItem(new EaseTWBLinkButton('host.php?action=populate&host_id=' . $host->getID(), _('Oskenovat a sledovat služby'), null, array('onClick' => "$('#preload').css('visibility', 'visible');")));
         }
-        if ($host->getDataValue('passive_checks_enabled')) {
-            $oPage->columnI->addItem(new EaseHtmlH1Tag('<img src="' . $pltIco . '">' . _('pasivní NSCA pro NRPE Server')));
+        if ($host->getCfgValue('passive_checks_enabled')) {
+            $linuxPassiveTab = $sensorTabs->addTab(_('Linux NSCA'));
+            $linuxPassiveTab->addItem(new EaseHtmlH1Tag('<img src="' . $pltIco . '">' . _('pasivní NSCA pro NSCP Senzor')));
+            $linuxPassiveTab->addItem(new EaseTWBLinkButton('nscpcfggen.php?host_id=' . $hostId, $host->getName() . '_nscp.sh ' . EaseTWBPart::GlyphIcon('download'), 'success'));
+
+            $cfgGenerator = new IENSCPConfigGenerator($host);
+            $linuxPassiveTab->addItem(new EaseTWBContainer('<pre>' . $cfgGenerator->getCfg(false) . '</pre>', array('font-face' => 'fixed')));
         }
-        $oPage->columnI->addItem(new EaseTWBLinkButton('nscpcfggen.php?host_id=' . $hostId, $host->getName() . '_nscp.sh ' . EaseTWBPart::GlyphIcon('download'), 'success'));
         break;
     default:
         $pltIco = 'logos/unknown.gif';
-        if ($host->getDataValue('active_checks_enabled')) {
-            $oPage->columnII->addItem(new EaseTWBLinkButton('host.php?action=populate&host_id=' . $host->getID(), _('Oskenovat a sledovat služby'), null, array('onClick' => "$('#preload').css('visibility', 'visible');")));
+        if ($host->getCfgValue('active_checks_enabled')) {
+            $genericActiveTab = $sensorTabs->addTab(_('Generic Active'));
+            $genericActiveTab->addItem(new EaseTWBLinkButton('host.php?action=populate&host_id=' . $host->getID(), _('Oskenovat a sledovat služby'), null, array('onClick' => "$('#preload').css('visibility', 'visible');")));
         }
-        if ($host->getDataValue('passive_checks_enabled')) {
-
+        if ($host->getCfgValue('passive_checks_enabled')) {
+            $genericPassiveTab = $sensorTabs->addTab(_('Generic Passive'));
         }
         break;
 }
 
-$cfgGenerator = new IENSCPConfigGenerator($host);
-$oPage->addItem(new EaseTWBContainer('<pre>' . $cfgGenerator->getCfg(false) . '</pre>', array('font-face' => 'fixed')));
+
+
+
+$oPage->container->addItem($sensorTabs);
+
 
 $oPage->addItem(new IEPageBottom());
 
