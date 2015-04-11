@@ -449,7 +449,8 @@ class IEService extends IECfg
 
                 if (is_null($allData[$adKey]['host_name']) || !count($allData[$adKey]['host_name'])) {
                     if ($ad[$this->userColumn] == $userID) {
-                        $this->addStatusMessage(sprintf(_('Služba %s není použita. Negeneruji do konfigurace'), $ad[$this->nameColumn]), 'info');
+                        $service_link = 'service.php?' . $this->myKeyColumn . '=' . $ad[$this->myKeyColumn];
+                        $this->addStatusMessage(sprintf(_('Služba <a href="%s">%s</a> není použita. Negeneruji do konfigurace'), $service_link, $ad[$this->nameColumn]), 'info');
                     }
                     unset($allData[$adKey]);
                     continue;
