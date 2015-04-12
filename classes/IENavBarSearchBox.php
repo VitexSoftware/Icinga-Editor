@@ -1,5 +1,7 @@
 <?php
 
+require_once 'Ease/EaseTWBootstrap.php';
+
 /**
  * Description of IENavBarSearchBox
  *

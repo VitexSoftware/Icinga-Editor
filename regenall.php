@@ -14,8 +14,7 @@ require_once 'classes/IEImporter.php';
 
 $oPage->onlyForAdmin();
 
-$oPage->addItem(new IEPageTop(_('Přegenerování veškeré konfigurace')));
-$oPage->addPageColumns();
+$oPage->container->addItem(new IEPageTop(_('Přegenerování veškeré konfigurace')));
 
 system('rm ' . constant('CFG_GENERATED') . '/*');
 
@@ -50,14 +49,16 @@ $oUser->setSettingValue('admin', TRUE);
 $testing = popen("sudo /usr/sbin/icinga -v /etc/icinga/icinga.cfg", 'r');
 if ($testing) {
     $errorCount = 0;
-    $LineNo = 0;
+    $line_num = 0;
     $WarningCount = null;
     while (!feof($testing)) {
         $line = fgets($testing);
-        $LineNo++;
+        $line = preg_replace("/\'([a-zA-Z0-9\.]*)\'/", '<a href="search.php?search=$1">$1</a>', $line);
 
-        if (($line === false) && ($LineNo == 1)) {
-            $errorLine = $oPage->addItem(new EaseHtmlDivTag(null, '<span class="label label-important">' . _('Chyba:') . '</span>', array('class' => 'alert alert-danger')));
+        $line_num++;
+
+        if (($line === false) && ($line_num == 1)) {
+            $errorLine = $oPage->container->addItem(new EaseHtmlDivTag(null, '<span class="label label-important">' . _('Chyba:') . '</span>', array('class' => 'alert alert-danger')));
             $oUser->addStatusMessage(_('Kontrola konfigurace nevrátila výsledek.'), 'error');
             $errorLine->addItem(_('Zkontroluj prosím zdlali nechybí potřebný fragment v /etc/sudoers:'));
             $errorLine->addItem(new EaseHtmlDivTag(null, 'User_Alias APACHE = www-data'));
@@ -68,7 +69,7 @@ if ($testing) {
 
         if (strstr($line, 'Error:')) {
             $line = str_replace('Error:', '', $line);
-            $errorLine = $oPage->addItem(new EaseHtmlDivTag(null, '<span class="label label-important">' . _('Chyba:') . '</span>', array('class' => 'alert alert-danger')));
+            $errorLine = $oPage->container->addItem(new EaseHtmlDivTag(null, '<span class="label label-important">' . _('Chyba:') . '</span>', array('class' => 'alert alert-danger')));
 
             $keywords = preg_split("/['(.*)']+/", $line);
             switch (trim($keywords[0])) {
@@ -110,7 +111,7 @@ if ($testing) {
 
         if (strstr($line, 'Error in configuration file')) {
             $keywords = preg_split("/'|\(|\)| - Line /", $line);
-            $errorLine = $oPage->addItem(new EaseHtmlDivTag(null, '<span class="label label-error">' . _('Chyba v konfiguračním souboru'), array('class' => 'alert alert-danger')));
+            $errorLine = $oPage->container->addItem(new EaseHtmlDivTag(null, '<span class="label label-error">' . _('Chyba v konfiguračním souboru'), array('class' => 'alert alert-danger')));
             $errorLine->addItem(new EaseHtmlATag('cfgfile.php?file=' . $keywords[1] . '&line=' . $keywords[3], $keywords[1]));
             $errorLine->addItem($keywords[4]);
             $errorCount++;
@@ -130,7 +131,7 @@ if ($testing) {
             }
 
             //Duplicate definition found for command 'check_ping' (config file '/etc/icinga/generated/command_check_ping_vitex.cfg', starting on line 1)
-            $oPage->addItem(new EaseHtmlDivTag(null, $line, array('class' => 'alert alert-warning')));
+            $oPage->container->addItem(new EaseHtmlDivTag(null, $line, array('class' => 'alert alert-warning')));
         }
 
         if (strstr($line, 'Total Warnings')) {
@@ -157,6 +158,6 @@ if ($testing) {
     }
 }
 
-$oPage->addItem(new IEPageBottom());
+$oPage->container->addItem(new IEPageBottom());
 
 $oPage->draw();

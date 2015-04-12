@@ -19,7 +19,10 @@ class IEConfigurationsOverview extends EaseTWBPanel
     public function __construct($hosts)
     {
         $ok = 0;
-        $hosts_table = new EaseHtmlTableTag(null, array('class' => 'table'));
+
+        $noSensor = array();
+        $oldSensor = array();
+
         foreach ($hosts as $host_id => $host_info) {
             if (is_null($host_info['host_name']) || !strlen($host_info['host_name'])) {
                 unset($hosts[$host_id]);
@@ -34,16 +37,34 @@ class IEConfigurationsOverview extends EaseTWBPanel
                     continue;
                 } else {
                     //Zastaralá konfigurace
-                    $row = $hosts_table->addRowColumns(array(new EaseHtmlATag('host.php?host_id=' . $host_id, $host_info['host_name']), new EaseTWBLinkButton('sensor.php?host_id=' . $host_id, _('aktualizovat senzor'))));
-                    $row->setTagClass('warning');
+                    $oldSensor[$host_id] = $host_info;
                 }
             } else {
+                $noSensor[$host_id] = $host_info;
                 //senzor neregistrován
-                $row = $hosts_table->addRowColumns(array(new EaseHtmlATag('host.php?host_id=' . $host_id, $host_info['host_name']), new EaseTWBLinkButton('sensor.php?host_id=' . $host_id, _('nasadit senzor'))));
-                $row->setTagClass('danger');
             }
         }
-        parent::__construct(_('Hosty s neaktuální konfigurací'), 'info', $hosts_table, sprintf(_('Celkem %s hostů bez aktuální konfigurace. (%s aktuální)'), count($hosts), $ok));
+
+        $hostsTabs = new EaseTWBTabs('hostsTabs');
+        if (count($oldSensor)) {
+            $oldHostsTable = new EaseHtmlTableTag(null, array('class' => 'table'));
+            foreach ($oldSensor as $host_id => $host_info) {
+                $row = $oldHostsTable->addRowColumns(array(new EaseHtmlATag('host.php?host_id=' . $host_id, $host_info['host_name']), new EaseTWBLinkButton('sensor.php?host_id=' . $host_id, _('aktualizovat senzor'))));
+                $row->setTagClass('warning');
+            }
+            $hostsTabs->addTab(sprintf(_('Neaktuální <span class="badge">%s</span>'), count($oldSensor)), $oldHostsTable);
+        }
+
+        if (count($noSensor)) {
+            $noHostsTable = new EaseHtmlTableTag(null, array('class' => 'table'));
+            foreach ($hosts as $host_id => $host_info) {
+                $row = $noHostsTable->addRowColumns(array(new EaseHtmlATag('host.php?host_id=' . $host_id, $host_info['host_name']), new EaseTWBLinkButton('sensor.php?host_id=' . $host_id, _('nasadit senzor'))));
+                $row->setTagClass('danger');
+            }
+            $hostsTabs->addTab(sprintf(_('Bez senzoru <span class="badge">%s</span>'), count($noSensor)), $noHostsTable);
+        }
+
+        parent::__construct(_('Hosty dle stavu konfigurace'), 'info', $hostsTabs, sprintf(_('Celkem %s hostů bez aktuální konfigurace. (%s aktuální)'), count($hosts), $ok));
     }
 
 }
