@@ -39,6 +39,10 @@ if ($oPage->isPosted()) {
         EaseShared::db()->exeQuery('TRUNCATE TABLE `servicegroup`');
         $oPage->addStatusMessage(_('Skupiny služeb byly odstraněny'), 'success');
     }
+    if ($oPage->getRequestValue('passiveup')) {
+        EaseShared::db()->exeQuery('UPDATE `host` SET DatSave = NOW() WHERE passive_checks_enabled=1 AND config_hash IS NOT NULL');
+        $oPage->addStatusMessage(_('Stavy senzorů byly rozhasheny'), 'success');
+    }
 }
 
 
@@ -54,8 +58,15 @@ $resetForm->addInput(new IEYesNoSwitch('servicegroup', FALSE), _('Skupiny služe
 
 $resetForm->addItem(new EaseTWSubmitButton(_('Vymazat všechna data'), 'danger'));
 
-$container = $oPage->addItem(new EaseTWBContainer);
-$container->addItem(new EaseTWBPanel(_('Pročištění databáze'), 'danger', new EaseTWBWell($resetForm)));
+$toolRow = new EaseTWBRow;
+$toolRow->addColumn(6, new EaseTWBWell($resetForm));
+
+$resyncForm = new EaseTWBForm('resync');
+$resyncForm->addInput(new IEYesNoSwitch('passiveup', FALSE), _('Pasivní Hash'), null, _('Všechny pasivní hosty s nasazeným senzorem budou hlásat zastaralou konfiguraci'));
+$resyncForm->addItem(new EaseTWSubmitButton(_('Provést operaci'), 'warning'));
+$toolRow->addColumn(6, new EaseTWBWell($resyncForm));
+
+$oPage->container->addItem(new EaseTWBPanel(_('Pročištění databáze'), 'danger', $toolRow));
 
 $oPage->addItem(new IEPageBottom());
 

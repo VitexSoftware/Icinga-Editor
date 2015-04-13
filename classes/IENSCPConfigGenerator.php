@@ -167,7 +167,7 @@ echo "file name=${log-path}/nsclient.log" >> $INI
 
         switch ($this->platform) {
             case 'windows':
-                $this->addCfg('/settings/external scripts/wrappings', 'vbs', 'cscript.exe //T:3600 //NoLogo scripts\\lib\\wrapper.vbs %SCRIPT% %ARGS%');
+                $this->addCfg('/settings/external scripts/wrappings', 'vbs', 'cscript.exe //T:3600 //NoLogo scripts\\lib\\wrapper.vbs %%SCRIPT%% %%ARGS%%');
                 break;
         }
     }
