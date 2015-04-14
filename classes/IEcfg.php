@@ -536,9 +536,11 @@ class IEcfg extends EaseBrick
      * Vrací efektivní konfigurační hodnotu
      *
      * @param string $keyword
+     * @return  array array( 'nastavujici rodic' => hodnota )
      */
-    public function getCfgValue($keyword)
+    public function getCfg($keyword)
     {
+        $parent_used = 0;
         $value = $this->getDataValue($keyword);
         if (is_null($value)) {
             $parent_name = $this->getDataValue('use');
@@ -557,19 +559,35 @@ class IEcfg extends EaseBrick
                             if (is_null($parent->getDataValue($keyword))) {
                                 $parent->setDataValue($keyword, $parentValue[0][$keyword]);
                                 $parent->setDataValue('use', $parentValue[0]['use']);
+                                $parent_used = $parent_name;
                             }
                         }
                     } else {
                         $parentValue = $parent->getColumnsFromMySQL(array($keyword, 'use'), array('name' => $parent_name));
                         $parent->setDataValue($keyword, $parentValue[0][$keyword]);
                         $parent->setDataValue('use', $parentValue[0]['use']);
+                        $parent_used = $parent_name;
                     }
                     $parent_name = $parent->getDataValue('use');
                     $value = $parent->getDataValue($keyword);
                 }
             }
         }
-        return $value;
+        return array($parent_used => $value);
+    }
+
+    /**
+     * Vrací efektivní konfigurační hodnotu
+     *
+     * @param string $keyword
+     */
+    public function getCfgValue($keyword)
+    {
+        $cfg = $this->getCfg($keyword);
+        if (!is_null($cfg) && is_array($cfg) && count($cfg)) {
+            $cfg = current($cfg);
+        }
+        return $cfg;
     }
 
     /**
@@ -1356,6 +1374,11 @@ class IEcfg extends EaseBrick
         return $data;
     }
 
+    /**
+     * Vrací všechny záznamy jako html
+     * @param array $data
+     * @return array
+     */
     public function htmlizeData($data)
     {
         if (is_array($data) && count($data)) {
@@ -1406,6 +1429,12 @@ class IEcfg extends EaseBrick
         return $data;
     }
 
+    /**
+     * Vrací řádek dat v HTML interpretaci
+     *
+     * @param array $row
+     * @return array
+     */
     public function htmlizeRow($row)
     {
         if (is_array($row) && count($row)) {
@@ -1552,6 +1581,11 @@ class IEcfg extends EaseBrick
         return $exportForm;
     }
 
+    /**
+     * Naimportuje celou tabulku dat
+     *
+     * @param array $data
+     */
     public function importData($data)
     {
         foreach ($data as $rowId => $dataRow) {
@@ -1559,6 +1593,12 @@ class IEcfg extends EaseBrick
         }
     }
 
+    /**
+     * Importuje řádek konfigurace
+     *
+     * @param array $dataRow
+     * @return int počet přijatých řádek
+     */
     public function importDataRow($dataRow)
     {
         foreach ($dataRow as $column => $value) {

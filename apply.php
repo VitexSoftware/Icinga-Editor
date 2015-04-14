@@ -127,7 +127,7 @@ if ($testing) {
         }
 
         if (strstr($line, 'Total Warnings')) {
-            list($Msg, $WarningCount) = explode(':', $line);
+            list($msg, $WarningCount) = explode(':', $line);
             if (intval(trim($WarningCount))) {
                 $oUser->addStatusMessage(sprintf(_('celkem %s varování'), $WarningCount), 'warning');
             } else {
@@ -135,7 +135,7 @@ if ($testing) {
             }
         }
         if (strstr($line, 'Total Errors')) {
-            list($Msg, $errorCount) = explode(':', $line);
+            list($msg, $errorCount) = explode(':', $line);
             if (intval(trim($errorCount))) {
                 $oUser->addStatusMessage(sprintf(_('celkem %s chyb'), $errorCount), 'warning');
             } else {

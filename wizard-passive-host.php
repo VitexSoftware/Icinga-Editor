@@ -33,7 +33,7 @@ if ($hostName) {
           'active_checks_enabled' => 0,
           'passive_checks_enabled' => 1,
           'check_freshness' => 1,
-          'freshness_threshold' => 60,
+          'freshness_threshold' => 900, // 15m.
           'flap_detection_enabled' => 0,
           'check_command' => 'return-unknown'
         )

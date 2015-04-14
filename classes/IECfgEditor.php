@@ -69,6 +69,34 @@ class IECfgEditor extends EaseContainer
      */
     public function insertWidget($fieldBlock, $fieldName, $value)
     {
+        $disabled = false;
+        if ($this->objectEdited->allowTemplating) {
+            $effective = $this->objectEdited->getCfg($fieldName);
+            $templateName = key($effective);
+            $templateValue = current($effective);
+            if ($templateName && !is_null($templateValue)) {
+                $fieldBlock->addItem(new EaseHtmlCheckboxTag(null, true, 1, array('id' => 'useTpl' . $fieldName)));
+                EaseShared::webPage()->addJavaScript("$(\"#useTpl$fieldName\").change(function(){
+    if( this.checked ){
+        $(\"[name='$fieldName']\").prop('disabled', true);
+    } else {
+        $(\"[name='$fieldName']\").prop('disabled', false);
+    }
+    $(\"input[name='$fieldName']\").bootstrapSwitch('toggleDisabled', true);
+
+});", null, true);
+
+                $fieldBlock->addItem(' ' . _('Hodnota z předlohy') . ':');
+                $fieldBlock->addItem(new EaseHtmlATag('search.php?search=' . key($effective), key($effective)));
+                $fieldBlock->addItem(': ' . current($effective));
+                $disabled = true;
+            }
+        }
+
+        if ($disabled) {
+            EaseShared::webPage()->addJavaScript("$(\"[name='$fieldName']\").prop('disabled', true);", null, true);
+        }
+
         $keywordInfo = $this->objectEdited->keywordsInfo[$fieldName];
         $fieldType = $this->objectEdited->useKeywords[$fieldName];
         $required = (isset($keywordInfo['requeired']) && ($keywordInfo['requeired'] === true));
@@ -359,7 +387,7 @@ class IECfgEditor extends EaseContainer
             }
 
 
-            $fieldLabel = $mainFieldBlock->addItem(new EaseHtmlDivTag(null, '<a name="' . $fieldName . '">' . $fieldName . '</a>&nbsp;', array('class' => 'FieldLabel', 'onClick' => "$('#" . $fieldName . "-controls').toggle('slow');")));
+            $fieldLabel = $mainFieldBlock->addItem(new EaseHtmlDivTag(null, '<a>' . $fieldName . '</a>&nbsp;', array('class' => 'FieldLabel', 'onClick' => "$('#" . $fieldName . "-controls').toggle('slow');")));
             /**
 
               if (!$required || !(int) $this->objectEdited->getDataValue('register')) {
@@ -370,6 +398,7 @@ class IECfgEditor extends EaseContainer
               }
              */
             $fieldBlock = $mainFieldBlock->addItem(new EaseHtmlDivTag($fieldName . '-controls'));
+
 
             if (!$this->objectEdited->isOwnedBy() && !EaseShared::user()->getSettingValue('admin')) { //Editovat může pouze vlastník
                 if ($this->objectEdited->getId()) {
