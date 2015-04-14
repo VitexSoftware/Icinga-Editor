@@ -9,15 +9,6 @@
  * @copyright  2012 Vitex@hippy.cz (G)
  */
 require_once 'includes/IEInit.php';
-require_once 'classes/IEContact.php';
-require_once 'classes/IEContactgroup.php';
-require_once 'classes/IEHost.php';
-require_once 'classes/IEHostgroup.php';
-require_once 'classes/IETimeperiod.php';
-require_once 'classes/IECommand.php';
-require_once 'classes/IEServicegroup.php';
-require_once 'classes/IEPortScanner.php';
-require_once 'classes/IEFXPreloader.php';
 
 $oPage->onlyForLogged();
 
@@ -27,6 +18,7 @@ $oPage->addPageColumns();
 $hostName = trim($oPage->getRequestValue('host_name'));
 $address = trim($oPage->getRequestValue('address'));
 $addressSix = trim($oPage->getRequestValue('address6'));
+$host_group = $oPage->getRequestValue('host_group', 'int');
 
 function gethostbyname6($host, $tryA = false)
 {
@@ -50,7 +42,10 @@ function gethostbynamel6($host, $tryA = false)
     // results are returned in an array of ips found matching type
     // otherwise returns false
 
-    $dnsSix = dns_get_record($host, DNS_AAAA);
+    $dnsSix = @dns_get_record($host, DNS_AAAA);
+    if ($dnsSix === FALSE) {
+        return FALSE;
+    }
     if ($tryA == true) {
         $dnsFour = dns_get_record($host, DNS_A);
         $dns = array_merge($dnsFour, $dnsSix);
@@ -136,6 +131,12 @@ if ($hostName || $address || $addressSix) {
         )
     );
 
+    if ($host_group) {
+        $hostgroup = new IEHostgroup($host_group);
+        $host->addMember('hostgroups', $hostgroup->getId(), $hostgroup->getName());
+    }
+
+
     if ($host->saveToMysql()) {
 
         $service = new IEService('PING');
@@ -169,6 +170,7 @@ if ($pocHostu) {
 }
 
 $firstHost = $oPage->columnII->addItem(new EaseTWBForm('firsthost'));
+$firstHost->addItem(new EaseHtmlInputHiddenTag('host_group', $oPage->getRequestValue('host_group')));
 $firstHost->setTagProperties(array('onSubmit' => "$('#preload').css('visibility', 'visible');"));
 
 $firstHost->addItem(new EaseTWBFormGroup(_('Hostname serveru'), new EaseHtmlInputTextTag('host_name', $hostName), null, _('Název hostu, tedy to co následuje po http:// ve webové adrese až k prvnímu lomítku, nebo otazníku.')));

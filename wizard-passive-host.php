@@ -15,10 +15,11 @@ $oPage->onlyForLogged();
 
 $hostName = trim($oPage->getRequestValue('host_name'));
 $platform = trim($oPage->getRequestValue('platform'));
+$host_group = $oPage->getRequestValue('host_group', 'int');
 $host = new IEHost();
 $host->owner = &$oUser;
 
-if ($hostName) {
+if ($hostName && $platform) {
 
     $host->setData(
         array(
@@ -38,6 +39,11 @@ if ($hostName) {
           'check_command' => 'return-unknown'
         )
     );
+
+    if ($host_group) {
+        $hostgroup = new IEHostgroup($host_group);
+        $host->addMember('hostgroups', $hostgroup->getId(), $hostgroup->getName());
+    }
 
     if ($host->saveToMysql()) {
 
@@ -61,18 +67,8 @@ if ($hostName) {
 
 
 $oPage->addItem(new IEPageTop(_('Průvodce založením hosta')));
-$oPage->addPageColumns();
 
-//$oPage->columnI->addItem(
-//    new EaseTWBPanel(_('Volba druhu hosta'), 'success', _('Aktivni '))
-//);
-//$oPage->columnIII->addItem(
-//    new EaseTWBPanel(_('Volba druhu hosta'), 'info', _('Pasivní '))
-//);
-
-
-
-$oPage->columnII->addItem(new IEPassiveCheckedHostForm('passive'));
+$oPage->container->addItem(new EaseTWBPanel(_('Nový pasivně sledovaný host'), 'info', new IEPassiveCheckedHostForm('passive')));
 
 $oPage->addItem(new IEPageBottom());
 

@@ -12,44 +12,39 @@ require_once 'includes/IEInit.php';
 
 $oPage->onlyForLogged();
 
+$host_name = $oPage->getRequestValue('host_name');
+$host_group = $oPage->getRequestValue('host_group', 'int');
+$check_method = $oPage->getRequestValue('check_method', 'int');
+
+$host = new IEHost($host_name);
+
+if ($host->getId()) {
+    $host->addStatusMessage(_('Host tohoto jména již existuje'), 'warning');
+} else {
+    if ($oPage->isPosted()) {
+        if ($host_name) {
+            if ($check_method) {
+                $oPage->redirect('wizard-active-host.php?host_name=' . urlencode($host_name) . '&host_group=' . $host_group);
+            } else {
+                $oPage->redirect('wizard-passive-host.php?host_name=' . urlencode($host_name) . '&host_group=' . $host_group);
+            }
+        } else {
+            $host->addStatusMessage(_('Není zadáno jméno hosta'), 'warning');
+        }
+    }
+}
 $oPage->addItem(new IEPageTop(_('Průvodce založením hosta')));
-$oPage->addPageColumns();
 
-$oPage->addCss('
-.btn-xlarge{
-  position: relative;
-  vertical-align: center;
-  margin: 30px;
-  font-size: 30px;
-  color: white;
-  text-align: center;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
-  border: 0;
-  border-bottom: 3px solid;
-  cursor: pointer;
-  -webkit-box-shadow: inset 0 -3px;
-  box-shadow: inset 0 -3px;
-}
-.btn-xlarge:active {
-  top: 2px;
-  outline: none;
-  -webkit-box-shadow: none;
-  box-shadow: none;
-}
-.btn-xlarge:hover {
 
-}
-    ');
 
-$oPage->columnI->addItem(
-    new EaseTWBPanel(_('Aktivní'), 'success', _('Aktivni testy vyžadují aby byla icinga schopná dosáhnout na testovaný stroj.'))
-);
-$oPage->columnIII->addItem(
-    new EaseTWBPanel(_('Pasivní'), 'info', _('Pasivní host zasílá sám na server kde běží icinga výsledky testů'))
-);
+$newHostForm = new EaseTWBForm('newhost');
+$newHostForm->addInput(new EaseHtmlInputTextTag('host_name', $host_name), _('Název'), _('Název sledovaného hostu'), _('Jedinečný identifikátor'));
+$newHostForm->addInput(new IETWBSwitch('check_method', $check_method, true, array('handleWidth' => '200px', 'onText' => _('Aktivní'), 'offText' => _('Pasivní'))), _('Metoda sledování'), _('Metoda sledování hostu'), _('<strong>Aktivně</strong> sledované hosty vyžadují aby byla icinga schopná dosáhnout na testovaný stroj. <br><strong>Pasivně</strong> sledovaný host zasílá sám na server kde běží icinga výsledky testů '));
+$newHostForm->addInput(new IEHostgroupSelect('host_group', null, $host_group), _('Skupina'), _('Výchozí skupina sledovanéh hostu'), _('Tato volba není povinná'));
 
-$oPage->columnII->addItem(new EaseTWBLinkButton('wizard-active-host.php', _('Aktivní'), 'success', array('class' => 'btn-xlarge')));
-$oPage->columnII->addItem(new EaseTWBLinkButton('wizard-passive-host.php', _('Pasivní'), 'info', array('class' => 'btn-xlarge')));
+$newHostForm->addItem(new EaseTWSubmitButton(_('Založit'), 'success'));
+
+$oPage->container->addItem(new EaseTWBPanel(_('Nový host'), 'default', $newHostForm));
 
 $oPage->addItem(new IEPageBottom());
 

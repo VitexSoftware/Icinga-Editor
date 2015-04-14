@@ -23,13 +23,13 @@ class IEHostSelect extends EaseHtmlSelect
 
     function loadItems()
     {
-        $MembersFound = array('' => '---');
+        $membersFound = array('' => '---');
         $query = 'SELECT  `host_id`, `icon_image`,`platform`,`host_name` FROM `' . 'hosts` WHERE (user_id=' . $this->user->getUserID() . ' OR public=1) AND register=1 ORDER BY  host_name ';
 
-        $MembersFoundArray = EaseShared::myDbLink()->queryToArray($query);
-        if (count($MembersFoundArray)) {
-            foreach ($MembersFoundArray as $request) {
-                $MembersFound[$request['host_id']] = $request['host_description'];
+        $membersFoundArray = EaseShared::myDbLink()->queryToArray($query);
+        if (count($membersFoundArray)) {
+            foreach ($membersFoundArray as $request) {
+                $membersFound[$request['host_id']] = $request['host_description'];
                 if (isset($request['icon_image'])) {
                     $icon = $request['icon_image'];
                 } else {
@@ -42,7 +42,7 @@ class IEHostSelect extends EaseHtmlSelect
                 $this->hosts[$request['host_id']] = array('image' => $icon);
             }
         }
-        return $MembersFound;
+        return $membersFound;
     }
 
     public function finalize()

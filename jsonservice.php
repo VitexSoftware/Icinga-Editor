@@ -18,7 +18,7 @@ header('Content-type: application/json');
 
 $request = $oPage->getRequestValue('term');
 $platform = $oPage->getRequestValue('platform');
-$Source = $oPage->getRequestValue('source', 'array');
+$source = $oPage->getRequestValue('source', 'array');
 $limit = $oPage->getRequestValue('maxRows', 'int');
 if ($limit) {
     $limit = 'LIMIT ' . $limit;
@@ -26,7 +26,7 @@ if ($limit) {
     $limit = '';
 }
 
-$MembersFound = array();
+$membersFound = array();
 
 if ($request) {
 
@@ -38,12 +38,12 @@ if ($request) {
 
     $query = 'SELECT `service_description` FROM `service` WHERE (user_id=' . $oUser->getUserID() . ' OR public=1) AND service_description LIKE \'%' . EaseShared::myDbLink()->AddSlashes($request) . '%\' ' . $sqlConds . ' ORDER BY  service_description ' . $limit;
 
-    $MembersFoundArray = EaseShared::myDbLink()->queryToArray($query);
-    if (count($MembersFoundArray)) {
-        foreach ($MembersFoundArray as $request) {
-            $MembersFound[] = $request['service_description'];
+    $membersFoundArray = EaseShared::myDbLink()->queryToArray($query);
+    if (count($membersFoundArray)) {
+        foreach ($membersFoundArray as $request) {
+            $membersFound[] = $request['service_description'];
         }
     }
 }
 
-echo json_encode($MembersFound);
+echo json_encode($membersFound);

@@ -18,7 +18,7 @@ header('Content-type: application/json');
 
 $request = $oPage->getRequestValue('term');
 $platform = $oPage->getRequestValue('platform');
-$Source = $oPage->getRequestValue('source', 'array');
+$source = $oPage->getRequestValue('source', 'array');
 $limit = $oPage->getRequestValue('maxRows', 'int');
 if ($limit) {
     $limit = 'LIMIT ' . $limit;
@@ -26,7 +26,7 @@ if ($limit) {
     $limit = '';
 }
 
-$MembersFound = array();
+$membersFound = array();
 
 if ($request) {
 
@@ -38,12 +38,12 @@ if ($request) {
 
     $query = 'SELECT `command_name` FROM `command` WHERE command_type=\'check\' AND (user_id=' . $oUser->getUserID() . ' OR public=1) AND command_name LIKE \'%' . EaseShared::myDbLink()->AddSlashes($request) . '%\' ' . $sqlConds . ' ORDER BY command_name ' . $limit;
 
-    $MembersFoundArray = EaseShared::myDbLink()->queryToArray($query);
-    if (count($MembersFoundArray)) {
-        foreach ($MembersFoundArray as $request) {
-            $MembersFound[] = $request['command_name'];
+    $membersFoundArray = EaseShared::myDbLink()->queryToArray($query);
+    if (count($membersFoundArray)) {
+        foreach ($membersFoundArray as $request) {
+            $membersFound[] = $request['command_name'];
         }
     }
 }
 
-echo json_encode($MembersFound);
+echo json_encode($membersFound);

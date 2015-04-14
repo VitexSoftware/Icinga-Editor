@@ -18,10 +18,25 @@ class IETWBSwitch extends EaseHtmlCheckboxTag
 
     public $properties = array();
 
+    /**
+     * Zobrazuje HTML Checkbox
+     *
+     * @param string $name       jméno tagu
+     * @param bool   $checked    stav checkboxu
+     * @param string $value      vracená hodnota checkboxu
+     * @param array  $properties parametry tagu
+     */
     public function __construct($name, $checked = false, $value = null, $properties = null)
     {
         parent::__construct($name, $checked, $value, $properties);
-        $this->setProperties(array('onText' => _('ANO'), 'offText' => _('NE')));
+        if (!isset($properties['onText'])) {
+            $properties['onText'] = _('Ano');
+        }
+        if (!isset($properties['offText'])) {
+            $properties['offText'] = _('Ne');
+        }
+
+        $this->setProperties($properties);
     }
 
     function setProperties($properties)

@@ -17,7 +17,7 @@ header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
 header('Content-type: application/json');
 
 $request = $oPage->getRequestValue('term');
-$Source = $oPage->getRequestValue('source', 'array');
+$source = $oPage->getRequestValue('source', 'array');
 $limit = $oPage->getRequestValue('maxRows', 'int');
 if ($limit) {
     $limit = 'LIMIT ' . $limit;
@@ -25,15 +25,15 @@ if ($limit) {
     $limit = '';
 }
 
-$MembersFound = array();
+$membersFound = array();
 
 if ($request) {
-    $MembersFoundArray = EaseShared::myDbLink()->queryToArray('SELECT ' . current($Source) . ' FROM `' . key($Source) . '` WHERE user_id=' . $oUser->getUserID() . ' AND ' . current($Source) . ' LIKE \'%' . EaseShared::myDbLink()->AddSlashes($request) . '%\' ORDER BY contact_name ' . $limit);
-    if (count($MembersFoundArray)) {
-        foreach ($MembersFoundArray as $request) {
-            $MembersFound[] = $request[current($Source)];
+    $membersFoundArray = EaseShared::myDbLink()->queryToArray('SELECT ' . current($source) . ' FROM `' . key($source) . '` WHERE user_id=' . $oUser->getUserID() . ' AND ' . current($source) . ' LIKE \'%' . EaseShared::myDbLink()->AddSlashes($request) . '%\' ORDER BY contact_name ' . $limit);
+    if (count($membersFoundArray)) {
+        foreach ($membersFoundArray as $request) {
+            $membersFound[] = $request[current($source)];
         }
     }
 }
 
-echo json_encode($MembersFound);
+echo json_encode($membersFound);
