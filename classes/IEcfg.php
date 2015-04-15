@@ -451,7 +451,6 @@ class IEcfg extends EaseBrick
                     }
                     break;
                 default:
-                    $data[$fieldName] = $this->myDbLink->addSlashes($data[$fieldName]);
                     break;
             }
         }
@@ -683,6 +682,9 @@ class IEcfg extends EaseBrick
 
             return null;
         } else {
+            foreach ($data as $fieldName => $value) {
+                $data[$fieldName] = $this->myDbLink->addSlashes($value);
+            }
             $result = parent::saveToMySQL($data, $searchForID);
             if (!is_null($result) && (get_class($this->user) == 'IEUser')) {
                 $this->user->setSettingValue('unsaved', true);
