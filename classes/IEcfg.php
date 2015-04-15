@@ -451,6 +451,7 @@ class IEcfg extends EaseBrick
                     }
                     break;
                 default:
+                    $data[$fieldName] = $this->myDbLink->addSlashes($data[$fieldName]);
                     break;
             }
         }

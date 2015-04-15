@@ -14,11 +14,6 @@ $oPage->onlyForLogged();
 
 $hostId = $oPage->getRequestValue('host_id', 'int');
 
-if ($hostId == 0) {
-    $oPage->redirect('hosts.php');
-    exit();
-}
-
 $host = new IEHost($hostId);
 
 switch ($oPage->getRequestValue('action')) {

@@ -1,6 +1,6 @@
 <?php
 
-define('IE_VERSION', '0.135');
+define('IE_VERSION', '0.136');
 
 /**
  * Třídy pro vykreslení stránky
@@ -95,6 +95,16 @@ class IEWebPage extends EaseTWBWebPage
             $this->redirect($loginPage);
             exit;
         }
+    }
+
+    /**
+     * Nepřihlášeného uživatele přesměruje na přihlašovací stránku
+     *
+     * @param string $loginPage adresa přihlašovací stránky
+     */
+    function onlyForLogged($loginPage = 'login.php')
+    {
+        return parent::onlyForLogged($loginPage . '?backurl=' . urlencode($_SERVER['REQUEST_URI']));
     }
 
 }

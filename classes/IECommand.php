@@ -134,7 +134,6 @@ class IECommand extends IECfg
                 $data['command_type'] = 'check';
             }
         }
-
         return parent::takeData($data, $dataPrefix);
     }
 

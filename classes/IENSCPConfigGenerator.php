@@ -134,7 +134,7 @@ class IENSCPConfigGenerator extends EaseAtom
                 $this->nscBatArray = array('
 set NSCLIENT="%ProgramFiles%\NSClient++\nscp.exe"
 ' . $this->nscvar . ' service --stop
-del "%ProgramFiles%\NSClient++\nsclient.ini"
+rename "%ProgramFiles%\NSClient++\nsclient.ini" "%ProgramFiles%\NSClient++\nsclient.old"
 ');
                 break;
             case 'linux':

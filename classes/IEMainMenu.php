@@ -171,7 +171,7 @@ class IEMainMenu extends EaseHtmlDivTag
 //            $nav->addDropDownMenu(_('Hosti'), $hostGroupHostsMenuItem);
             if (EaseShared::user()->getSettingValue('admin')) {
                 $nav->addDropDownMenu(_('Služby'), array(
-                  'wizard-service.php' => EaseTWBPart::GlyphIcon('forward') . ' ' . _('Průvodcze založením služby'),
+                  'wizard-service.php' => EaseTWBPart::GlyphIcon('forward') . ' ' . _('Průvodce založením služby'),
                   'service.php' => EaseTWBPart::GlyphIcon('plus') . ' ' . _('Nová služba'),
                   'services.php' => EaseTWBPart::GlyphIcon('list') . ' ' . _('Přehled služeb'),
                   'servicegroup.php' => EaseTWBPart::GlyphIcon('plus') . ' ' . _('Nová skupina služeb'),

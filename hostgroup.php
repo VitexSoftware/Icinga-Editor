@@ -9,8 +9,6 @@
  * @copyright  2012 Vitex@hippy.cz (G)
  */
 require_once 'includes/IEInit.php';
-require_once 'classes/IEHostgroup.php';
-require_once 'classes/IECfgEditor.php';
 
 $oPage->onlyForLogged();
 

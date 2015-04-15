@@ -24,14 +24,20 @@ if ($login) {
             $oUser->setSettingValue('admin', TRUE);
         }
         $oUser->setSettingValue('plaintext', $_POST[$oUser->passwordColumn]);
-        $oPage->redirect('main.php');
+
+        $backurl = $oPage->getRequestValue('backurl');
+        if ($backurl) {
+            $oPage->redirect($backurl);
+        } else {
+            $oPage->redirect('main.php');
+        }
         exit;
     }
 } else {
 
-    $ForceID = $oPage->getRequestValue('force_id', 'int');
-    if (!is_null($ForceID)) {
-        EaseShared::user(new IEUser($ForceID));
+    $forceID = $oPage->getRequestValue('force_id', 'int');
+    if (!is_null($forceID)) {
+        EaseShared::user(new IEUser($forceID));
         EaseShared::user()->SettingsColumn = 'settings';
         $oUser->setSettingValue('admin', TRUE);
         $oUser->addStatusMessage(_('Přihlášen jako: ') . $oUser->getUserLogin(), 'success');
