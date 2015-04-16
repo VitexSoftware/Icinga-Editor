@@ -111,6 +111,8 @@ class IEImporter extends IECfg
         }
         if ($doneCount) {
             $this->addStatusMessage(sprintf(_('Bylo naimportováno %s konfigurací'), $doneCount), 'success');
+        } else {
+            $this->addStatusMessage(_('Nic se nenaimportovalo'), 'warning');
         }
 
         return $doneCount;

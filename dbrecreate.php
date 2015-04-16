@@ -23,12 +23,12 @@ if ($oPage->getRequestValue('dbinit')) {
     $oPage->columnII->addItem(new EaseTWBLinkButton('wizard.php', _('vytvořit konfiguraci')));
     $oPage->columnIII->addItem(new EaseTWBLinkButton('import.php', _('importovat konfiguraci')));
 } else {
-    $ImportForm = new EaseHtmlForm('ImportForm');
+    $importForm = new EaseHtmlForm('ImportForm');
     $oUser->addStatusMessage(_('Tato akce nevratně smaže veškerou konfiguraci. Opravdu to chcete udělat ?'));
-    $ImportForm->addItem(new EaseLabeledCheckbox('dbinit', null, _('Vím co dělám')));
-    $ImportForm->addItem(new EaseJQuerySubmitButton('submit', _('Budiž!')));
+    $importForm->addItem(new EaseLabeledCheckbox('dbinit', null, _('Vím co dělám')));
+    $importForm->addItem(new EaseJQuerySubmitButton('submit', _('Budiž!')));
 
-    $oPage->columnII->addItem(new EaseHtmlFieldSet(_('Znovu vytvořit strukturu databáze'), $ImportForm));
+    $oPage->columnII->addItem(new EaseHtmlFieldSet(_('Znovu vytvořit strukturu databáze'), $importForm));
 }
 
 $oPage->addItem(new IEPageBottom());

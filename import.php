@@ -1,12 +1,12 @@
 <?php
 
 /**
- * Import ze souboru
+ * Import konfigurace ze souboru
  *
  * @package    IcingaEditor
  * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
- * @copyright  2012 Vitex@hippy.cz (G)
+ * @copyright  2012-2015 Vitex@hippy.cz (G)
  */
 require_once 'includes/IEInit.php';
 require_once 'classes/IEImporter.php';
@@ -15,20 +15,20 @@ $oPage->onlyForLogged();
 
 if ($oPage->isPosted()) {
 
-    $Params = array();
-    $Public = $oPage->getRequestValue('public');
-    if ($Public) {
-        $Params['public'] = true;
+    $params = array();
+    $public = $oPage->getRequestValue('public');
+    if ($public) {
+        $params['public'] = true;
     }
-    $Generate = $oPage->getRequestValue('generate');
-    if ($Public) {
-        $Params['generate'] = true;
+    $generate = $oPage->getRequestValue('generate');
+    if ($public) {
+        $params['generate'] = true;
     }
-    $importer = new IEImporter($Params);
+    $importer = new IEImporter($params);
 
     $cfgText = $oPage->getRequestValue('cfgtext');
     if ($cfgText) {
-        $importer->importCfgText($cfgText);
+        $importer->importCfgText($cfgText, $params);
     }
 
     if (isset($_FILES['cfgfile']['tmp_name']) && strlen(trim($_FILES['cfgfile']['tmp_name']))) {
@@ -39,25 +39,15 @@ if ($oPage->isPosted()) {
 }
 
 $oPage->addItem(new IEPageTop(_('Import konfigurace')));
-$oPage->addPageColumns();
 
-$ImportForm = new EaseHtmlForm('CfgFileUp', null, 'POST', null, array('class' => 'form-horizontal', 'enctype' => 'multipart/form-data'));
-$ImportForm->addItem(new EaseLabeledTextarea('cfgtext', '', _('konfigurační fragment')));
-$ImportForm->addItem(new EaseLabeledFileInput('cfgfile', null, _('konfigurační soubor')));
+$importForm = new EaseTWBForm('CfgFileUp', null, 'POST', null, array('class' => 'form-horizontal', 'enctype' => 'multipart/form-data'));
+$importForm->addInput(new EaseHtmlTextareaTag('cfgtext', ''), _('konfigurační fragment'));
+$importForm->addInput(new EaseHtmlInputFileTag('cfgfile'), _('konfigurační soubor'));
+$importForm->addInput(new IETWBSwitch('public'), _('Importovat data jako veřejná'));
+$importForm->addInput(new IETWBSwitch('generate'), _('Generovat do konfigurace'));
+$importForm->addItem(new EaseTWSubmitButton(_('importovat'), 'success', array('title' => _('zahájí import konfigurace'))));
 
-$ImportForm->addItem(new EaseLabeledCheckbox('public', null, _('Importovat data jako veřejná')));
-$ImportForm->addItem('<br clear="all">');
-$ImportForm->addItem(new EaseLabeledCheckbox('generate', null, _('Generovat do konfigurace')));
-$ImportForm->addItem('<br clear="all">');
-$ImportForm->addItem(new EaseJQuerySubmitButton('Submit', _('importovat'), _('zahájí import konfigurace')));
-
-$oPage->AddCss('
-input.ui-button { width: 100%; }
-');
-
-$oPage->columnII->addItem(new EaseHtmlFieldSet(_('Import konfigurace'), $ImportForm));
-
-$oPage->columnI->addItem('<div class="well">' . _('Vložte konfigurační fragment nagiosu / icingy') . '</div>');
+$oPage->container->addItem(new EaseTWBPanel(_('Import konfigurace'), 'warning', $importForm));
 
 $oPage->addItem(new IEPageBottom());
 

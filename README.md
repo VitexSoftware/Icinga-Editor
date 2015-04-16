@@ -1,7 +1,7 @@
 icinga_config_editor
 ====================
 
-Gui for generating Icinga configuration files 
+Gui for generating Icinga configuration files and much more...
 
 Instalation:
 
@@ -11,5 +11,5 @@ Instalation:
     aptitude install icinga-editor
 
 Note: Current version works only with MySQL.
-
+Sorry: Current Default localization is CZECH. English translation is on 40%
 

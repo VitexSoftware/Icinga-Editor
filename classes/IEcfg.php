@@ -1015,7 +1015,9 @@ class IEcfg extends EaseBrick
         $buffer = null;
         if (count($cfgArray)) {
             foreach ($cfgArray as $cfgLine) {
-                $cfgLine = strstr($cfgLine, '#', true);
+                if (strstr($cfgLine, '#')) {
+                    $cfgLine = strstr($cfgLine, '#', true);
+                }
                 if (str_replace(' ', '', $cfgLine) == 'define' . $this->keyword . '{') {
                     $buffer = array();
                     continue;
