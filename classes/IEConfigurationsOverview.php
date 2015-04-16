@@ -75,7 +75,7 @@ class IEConfigurationsOverview extends EaseTWBPanel
 
         if (count($noSensor)) {
             $noSensorTable = new EaseHtmlTableTag(null, array('class' => 'table'));
-            foreach ($hosts as $host_id => $host_info) {
+            foreach ($noSensor as $host_id => $host_info) {
                 $row = $noSensorTable->addRowColumns(array(new EaseHtmlATag('host.php?host_id=' . $host_id, $host_info['host_name']), new EaseTWBLinkButton('sensor.php?host_id=' . $host_id, _('nasadit senzor'))));
                 $row->setTagClass('danger');
             }
@@ -84,7 +84,7 @@ class IEConfigurationsOverview extends EaseTWBPanel
 
         if (count($noParents)) {
             $noParentsTable = new EaseHtmlTableTag(null, array('class' => 'table'));
-            foreach ($hosts as $host_id => $host_info) {
+            foreach ($noParents as $host_id => $host_info) {
                 $row = $noParentsTable->addRowColumns(array(new EaseHtmlATag('host.php?host_id=' . $host_id, $host_info['host_name']), new EaseTWBLinkButton('host.php?action=parent&host_id=' . $host_id, _('přiřadit rodiče'))));
                 $row->setTagClass('info');
             }
@@ -93,7 +93,7 @@ class IEConfigurationsOverview extends EaseTWBPanel
 
         if (count($noIcon)) {
             $noIconTable = new EaseHtmlTableTag(null, array('class' => 'table'));
-            foreach ($hosts as $host_id => $host_info) {
+            foreach ($noIcon as $host_id => $host_info) {
                 $row = $noIconTable->addRowColumns(array(new EaseHtmlATag('host.php?host_id=' . $host_id, $host_info['host_name']), new EaseTWBLinkButton('host.php?action=icon&host_id=' . $host_id, _('přiřadit ikonu'))));
                 $row->setTagClass('default');
             }
@@ -102,11 +102,11 @@ class IEConfigurationsOverview extends EaseTWBPanel
 
         if (count($noContacts)) {
             $noContactsTable = new EaseHtmlTableTag(null, array('class' => 'table'));
-            foreach ($hosts as $host_id => $host_info) {
+            foreach ($noContacts as $host_id => $host_info) {
                 $row = $noContactsTable->addRowColumns(array(new EaseHtmlATag('host.php?host_id=' . $host_id, $host_info['host_name']), new EaseTWBLinkButton('host.php?host_id=' . $host_id, _('přiřadit kontakty'))));
                 $row->setTagClass('default');
             }
-            $hostsTabs->addTab(sprintf(_('Bez kontaktů <span class="badge">%s</span>'), count($noIcon)), $noContactsTable);
+            $hostsTabs->addTab(sprintf(_('Bez kontaktů <span class="badge">%s</span>'), count($noContacts)), $noContactsTable);
         }
 
         parent::__construct(_('Hosty dle stavu konfigurace'), 'info', $hostsTabs, sprintf(_('Celkem %s hostů bez aktuální konfigurace. (%s aktuální)'), count($hosts), $ok));
