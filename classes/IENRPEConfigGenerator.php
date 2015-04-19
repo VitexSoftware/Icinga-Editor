@@ -151,6 +151,9 @@ class IENRPEConfigGenerator extends EaseAtom
             $this->nscCfgArray[] = "\n# #" . $service['service_id'] . ' ' . $serviceName;
 
             if (isset($commandsCache[$serviceCmd])) {
+                if (isset($commandsCache[$serviceCmd]['deploy'])) {
+                    $this->nscCfgArray[] = $commandsCache[$serviceCmd]['deploy'];
+                }
                 $cmdline = $commandsCache[$serviceCmd]['command_line'];
             } else {
                 $cmdline = $serviceCmd;

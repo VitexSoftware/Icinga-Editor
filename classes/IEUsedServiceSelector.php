@@ -41,8 +41,8 @@ class IEUsedServiceSelector extends EaseContainer
             $hostName = $host->getName();
             $service = new IEService();
             $parentServUsed = array();
-            $host_active = (boolean) $host->getDataValue('active_checks_enabled');
-            $host_passive = (boolean) $host->getDataValue('passive_checks_enabled');
+            $host_active = (boolean) $host->getCfgValue('active_checks_enabled');
+            $host_passive = (boolean) $host->getCfgValue('passive_checks_enabled');
 
             $servicesAssigned = $service->myDbLink->queryToArray('SELECT ' . $service->myKeyColumn . ',' . $service->nameColumn . ' FROM ' . $service->myTable . ' WHERE ' . $fieldName . ' LIKE \'%"' . $host->getName() . '"%\'', $service->myKeyColumn);
 
