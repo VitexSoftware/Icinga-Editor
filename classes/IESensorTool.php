@@ -55,7 +55,7 @@ class IESensorTool extends EaseContainer
                     $windowsPassiveTab->addItem(new EaseHtmlH1Tag('<img src="' . $pltIco . '">' . _('pasivní NSCA pro NSC++')));
                     $windowsPassiveTab->addItem(new EaseTWBLinkButton('http://www.nsclient.org/download/', ' NSC++ ' . EaseTWBPart::GlyphIcon('download'), 'success', array('style' => "background-image:url('img/nscpp.png'); width: 212px; height: 60px; ", 'title' => 'Download')));
                     $windowsPassiveTab->addItem(new EaseTWBLinkButton('nscpcfggen.php?host_id=' . $host->getId(), $host->getName() . '_nscp.bat ' . EaseTWBPart::GlyphIcon('download'), 'success'));
-                    $windowsPassiveTab->addItem(new EaseTWBContainer('<pre>' . $cfgGenerator->getCfg(false) . '</pre>', array('font-face' => 'fixed')));
+                    $windowsPassiveTab->addItem(new EaseTWBContainer('<pre>' . htmlentities($cfgGenerator->getCfg(false)) . '</pre>', array('font-face' => 'fixed')));
                 }
 
                 break;
@@ -69,7 +69,6 @@ class IESensorTool extends EaseContainer
 
                     $nrpe_cfgGenerator = new IENRPEConfigGenerator($host);
 
-
                     $linuxActiveTab = $sensorTabs->addTab(_('Linux NRPE'));
                     $linuxActiveTab->addItem(new EaseHtmlH1Tag('<img src="' . $pltIco . '">' . _('aktivní NRPE pro NRPE Server')));
                     $linuxActiveTab->addItem(new EaseHtmlPTag(_('Nainstalujte nejprve senzor tímto příkazem') . ':'));
@@ -77,7 +76,7 @@ class IESensorTool extends EaseContainer
 
                     $linuxActiveTab->addItem(new EaseTWBLinkButton('nrpecfggen.php?host_id=' . $host->getId(), $host->getName() . '_nrpe.sh ' . EaseTWBPart::GlyphIcon('download'), 'success'));
 
-                    $linuxActiveTab->addItem(new EaseTWBContainer('<pre>' . $nrpe_cfgGenerator->getCfg(false) . '</pre>', array('font-face' => 'fixed')));
+                    $linuxActiveTab->addItem(new EaseTWBContainer('<pre>' . htmlentities($nrpe_cfgGenerator->getCfg(false)) . '</pre>', array('font-face' => 'fixed')));
 
                     $linuxActiveTab->addItem(new EaseTWBLinkButton('host.php?action=populate&host_id=' . $host->getID(), _('Oskenovat a sledovat služby'), null, array('onClick' => "$('#preload').css('visibility', 'visible');")));
                 }

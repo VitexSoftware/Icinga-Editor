@@ -66,8 +66,9 @@ class IENRPEConfigGenerator extends EaseAtom
     {
         $this->nscCfgArray = array(
           '#!/bin/sh',
-          'sudo service nagios-nrpe-server stop',
-          'sudo mv ' . $this->cfgFile . ' ' . $this->cfgFile . '.old');
+          'sudo -s -- <<EOF',
+          'service nagios-nrpe-server stop',
+          'mv ' . $this->cfgFile . ' ' . $this->cfgFile . '.old');
         $this->addCfg('dont_blame_nrpe', 1);
     }
 
@@ -79,6 +80,9 @@ class IENRPEConfigGenerator extends EaseAtom
         $this->addCfg('allowed_hosts', $this->prefs['serverip']);
     }
 
+    /**
+     * Konfigurace sluzeb
+     */
     function cfgServices()
     {
         $service = new IEService();
@@ -162,7 +166,9 @@ class IENRPEConfigGenerator extends EaseAtom
     public function cfgEnding()
     {
         $this->nscCfgArray[] = "\n" . 'curl "' . $this->getCfgConfirmUrl() . '"';
-        $this->nscCfgArray[] = 'sudo service nagios-nrpe-server start';
+        $this->nscCfgArray[] = 'service nagios-nrpe-server start';
+        $this->nscCfgArray[] = 'EOF';
+        $this->nscCfgArray[] = '';
     }
 
     /**
@@ -212,7 +218,7 @@ class IENRPEConfigGenerator extends EaseAtom
 
     public function addCfg($key, $value)
     {
-        $this->nscCfgArray[] = "sudo echo \"$key=$value\" >> " . $this->cfgFile;
+        $this->nscCfgArray[] = "echo \"$key=$value\" >> " . $this->cfgFile;
     }
 
 }

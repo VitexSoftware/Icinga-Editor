@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS `command` (
   `command_type` enum('check','notify','handler') COLLATE utf8_czech_ci DEFAULT NULL,
   `command_local` tinyint(1) DEFAULT NULL COMMENT 'lokální příkaz',
   `command_remote` tinyint(1) DEFAULT NULL COMMENT 'vzdálený příkaz',
+  `deploy` text COLLATE utf8_czech_ci NOT NULL COMMENT 'Tělo skriptu',
   `platform` varchar(32) COLLATE utf8_czech_ci NOT NULL DEFAULT 'generic' COMMENT 'Platforma příkazu',
   `public` tinyint(1) DEFAULT NULL,
   `generate` tinyint(1) DEFAULT NULL,

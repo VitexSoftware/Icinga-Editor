@@ -37,8 +37,14 @@ class IECommand extends IECfg
       'command_type' => "ENUM('check','notify','handler')",
       'command_local' => 'BOOL',
       'command_remote' => 'BOOL',
+      'deploy' => 'TEXT',
       'platform' => "PLATFORM"
     );
+
+    /**
+     * Info
+     * @var array
+     */
     public $keywordsInfo = array(
       'command_name' => array(
         'severity' => 'mandatory',
@@ -55,6 +61,9 @@ class IECommand extends IECfg
       'command_remote' => array(
         'severity' => 'basic',
         'title' => 'vzdálený příkaz NRPE/Nsc++'),
+      'deploy' => array(
+        'severity' => 'basic',
+        'title' => 'Instalace'),
       'platform' => array(
         'severity' => 'basic',
         'title' => 'Platforma', 'mandatory' => true)
@@ -81,6 +90,7 @@ class IECommand extends IECfg
     {
         $AllData = parent::getAllUserData();
         foreach ($AllData as $ADkey => $AD) {
+            unset($AllData[$ADkey]['deploy']);
             unset($AllData[$ADkey]['command_type']);
             unset($AllData[$ADkey]['command_local']);
             unset($AllData[$ADkey]['command_remote']);
@@ -98,6 +108,7 @@ class IECommand extends IECfg
     {
         $AllData = parent::getAllData();
         foreach ($AllData as $ADkey => $AD) {
+            unset($AllData[$ADkey]['deploy']);
             unset($AllData[$ADkey]['command_local']);
             unset($AllData[$ADkey]['command_remote']);
             unset($AllData[$ADkey]['command_type']);

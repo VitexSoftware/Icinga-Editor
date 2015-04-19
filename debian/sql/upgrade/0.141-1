@@ -1,0 +1,1 @@
+ALTER TABLE `command` ADD `deploy` TEXT NOT NULL COMMENT 'Tělo skriptu' AFTER `platform`;
