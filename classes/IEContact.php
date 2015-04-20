@@ -6,7 +6,7 @@
  * @package    IcingaEditor
  * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
- * @copyright  2012 Vitex@hippy.cz (G)
+ * @copyright  2012-2015 Vitex@hippy.cz (G)
  */
 class IEContact extends IECfg
 {
@@ -53,21 +53,29 @@ class IEContact extends IECfg
       'retain_nonstatus_information' => 'BOOL'
     );
     public $keywordsInfo = array(
-      'contact_name' => array('title' => 'název kontaktu', 'required' => true),
+      'contact_name' => array(
+        'title' => 'název kontaktu',
+        'severity' => 'mandatory',
+        'required' => true),
       'alias' => array(
-        'title' => 'alias'
+        'title' => 'alias',
+        'severity' => 'mandatory'
       ),
       'contactgroups' => array(
+        'severity' => 'optional',
         'title' => 'kontaktní skupiny',
         'hidden' => true
       ),
       'host_notifications_enabled' => array(
+        'severity' => 'basic',
         'title' => 'oznamovat zprávy hostů',
       ),
       'service_notifications_enabled' => array(
+        'severity' => 'basic',
         'title' => 'oznamovat zprávy služeb',
       ),
       'host_notification_period' => array(
+        'severity' => 'optional',
         'title' => 'notifikační perioda hostů',
         'required' => true,
         'refdata' => array(
@@ -77,6 +85,7 @@ class IEContact extends IECfg
           'idcolumn' => 'timeperiod_id')
       ),
       'service_notification_period' => array(
+        'severity' => 'optional',
         'title' => 'notifikační perioda služeb',
         'required' => true,
         'refdata' => array(
@@ -86,6 +95,7 @@ class IEContact extends IECfg
           'idcolumn' => 'timeperiod_id')
       ),
       'host_notification_options' => array(
+        'severity' => 'advanced',
         'title' => 'možnosti oznamování hostů',
         'required' => true,
         'd' => 'notify on DOWN host states',
@@ -96,6 +106,7 @@ class IEContact extends IECfg
         'n' => 'nic neoznamovat'
       ),
       'service_notification_options' => array(
+        'severity' => 'advanced',
         'title' => 'možnosti oznamování služeb',
         'required' => true,
         'w' => 'notify on WARNING service states',
@@ -107,6 +118,7 @@ class IEContact extends IECfg
         'n' => 'nic neoznamovat'
       ),
       'host_notification_commands' => array(
+        'severity' => 'advanced',
         'title' => 'způsob oznamování událostí hosta',
         'required' => true,
         'refdata' => array(
@@ -118,6 +130,7 @@ class IEContact extends IECfg
         )
       ),
       'service_notification_commands' => array(
+        'severity' => 'advanced',
         'title' => 'způsob oznamování událostí služby',
         'required' => true,
         'refdata' => array(
@@ -129,29 +142,36 @@ class IEContact extends IECfg
         )
       ),
       'email' => array(
+        'severity' => 'optional',
         'title' => 'mailová adresa',
         'mandatory' => true
       ),
       'pager' => array(
+        'severity' => 'optional',
         'title' => 'číslo pro příjem SMS',
         'mandatory' => true
       ),
       'address1' => array(
+        'severity' => 'optional',
         'title' => 'jabberová adresa',
         'mandatory' => true
       ),
       'address2' => array(
+        'severity' => 'optional',
         'title' => '@Twitter',
         'mandatory' => true
       ),
       'can_submit_commands' => array(
-        'title' => 'Smí tento přihlášený kontakt zasílat externí příkazy ?'
+        'severity' => 'advanced',
+        'title' => 'právo zasílat externí příkazy ?'
       ),
       'retain_status_information' => array(
-        'title' => ''
+        'severity' => 'advanced',
+        'title' => 'uchovávat stavové informace'
       ),
       'retain_nonstatus_information' => array(
-        'title' => ''
+        'severity' => 'advanced',
+        'title' => 'uchovávat nestavové informace'
       )
     );
 
@@ -310,7 +330,7 @@ class IEContact extends IECfg
             $id = $parent;
         }
 
-        $contactgroup = new IEContactGroup();
+        $contactgroup = new IEContactgroup();
         $contactgroups = $this->myDbLink->queryTo2DArray('SELECT ' . $contactgroup->getmyKeyColumn() . ' FROM ' . $contactgroup->myTable . ' WHERE members LIKE \'%' . $this->getName() . '%\'');
         if (count($contactgroups)) {
             foreach ($contactgroups as $contactgroupID) {

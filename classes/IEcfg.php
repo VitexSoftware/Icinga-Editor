@@ -1482,7 +1482,14 @@ class IEcfg extends EaseBrick
                         break;
                     case 'IDLIST':
                         if (strlen($value)) {
-                            $values = unserialize($value);
+                            if (strstr($value, ':{')) {
+                                $values = unserialize($value);
+                            } else {
+                                $values = array('0' => $value);
+                            }
+                            if (!is_array($values)) {
+                                $this->addStatusMessage(sprintf(_('Chyba unserializace %s #%s '), $value, $key));
+                            }
                             if (isset($this->keywordsInfo[$key]['refdata'])) {
                                 $idcolumn = $this->keywordsInfo[$key]['refdata']['idcolumn'];
                                 $table = $this->keywordsInfo[$key]['refdata']['table'];
