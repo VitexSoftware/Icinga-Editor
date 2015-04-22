@@ -26,6 +26,8 @@ class IEConfigurationsOverview extends EaseTWBPanel
         $noIcon = array();
         $noContacts = array();
 
+        EaseShared::webPage()->addItem(new EaseHtmlDivTag('preload', new IEFXPreloader(), array('class' => 'fuelux')));
+
         foreach ($hosts as $host_id => $host_info) {
             if (is_null($host_info['host_name']) || !strlen($host_info['host_name'])) {
                 unset($hosts[$host_id]);
@@ -85,7 +87,21 @@ class IEConfigurationsOverview extends EaseTWBPanel
         if (count($noParents)) {
             $noParentsTable = new EaseHtmlTableTag(null, array('class' => 'table'));
             foreach ($noParents as $host_id => $host_info) {
-                $row = $noParentsTable->addRowColumns(array(new EaseHtmlATag('host.php?host_id=' . $host_id, $host_info['host_name']), new EaseTWBLinkButton('host.php?action=parent&host_id=' . $host_id, _('přiřadit rodiče'))));
+                if ($host_info['address']) {
+                    $route = new EaseTWBLinkButton('watchroute.php?action=parent&host_id=' . $host_id, _('sledovat celou cestu'), 'warning', array('onClick' => "$('#preload').css('visibility', 'visible');"));
+                } else {
+                    $route = null;
+                }
+
+                $row = $noParentsTable->addRowColumns(
+                    array(
+                      new EaseHtmlATag('host.php?host_id=' . $host_id, $host_info['host_name']),
+                      new EaseTWBLinkButton('host.php?action=parent&host_id=' . $host_id, _('přiřadit rodiče')),
+                      $route
+                    )
+                );
+
+
                 $row->setTagClass('info');
             }
             $hostsTabs->addTab(sprintf(_('Bez rodičů <span class="badge">%s</span>'), count($noParents)), $noParentsTable);

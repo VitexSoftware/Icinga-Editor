@@ -219,10 +219,10 @@ input.ui-button { width: 100%; }
 ');
 
         $tools->addItem($host->deleteButton());
+        $oPage->addItem(new EaseHtmlDivTag('preload', new IEFXPreloader(), array('class' => 'fuelux')));
 
         if ($host->getDataValue('active_checks_enabled') == '1') {
             $tools->addItem(new EaseTWBLinkButton('?action=populate&host_id=' . $host->getID(), _('Oskenovat a sledovat služby'), null, array('onClick' => "$('#preload').css('visibility', 'visible');")));
-            $oPage->addItem(new EaseHtmlDivTag('preload', new IEFXPreloader(), array('class' => 'fuelux')));
         }
 
         $renameForm = new EaseTWBForm('Rename', '?action=rename&amp;host_id=' . $host->getID());
@@ -232,6 +232,9 @@ input.ui-button { width: 100%; }
         $tools->addItem(new EaseTWBPanel(_('Přejmenování'), 'info', $renameForm));
         $tools->addItem(new EaseTWBLinkButton('?action=parent&host_id=' . $host->getId(), _('Přiřadit rodiče'), 'success'));
         $tools->addItem(new EaseTWBLinkButton('?action=icon&host_id=' . $host->getId(), _('Změnit ikonu'), 'success'));
+        if ($host->getDataValue('address')) {
+            $tools->addItem(new EaseTWBLinkButton('watchroute.php?host_id=' . $host->getId(), _('Sledovat cestu'), 'success', array('onClick' => "$('#preload').css('visibility', 'visible');")));
+        }
 
         if ($host->getDataValue('platform') != 'generic') {
             $tools->addItem(new EaseTWBLinkButton('sensor.php?host_id=' . $host->getId(), _('Nasadit senzor'), 'info'));

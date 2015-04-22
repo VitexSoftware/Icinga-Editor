@@ -24,22 +24,22 @@ class IEHostSelect extends EaseHtmlSelect
     function loadItems()
     {
         $membersFound = array('' => '---');
-        $query = 'SELECT  `host_id`, `icon_image`,`platform`,`host_name` FROM `' . 'hosts` WHERE (user_id=' . $this->user->getUserID() . ' OR public=1) AND register=1 ORDER BY  host_name ';
+        $query = 'SELECT  `host_id`, `icon_image`,`platform`,`host_name` FROM `' . 'host` WHERE (user_id=' . $this->user->getUserID() . ' OR public=1) AND register=1 ORDER BY  host_name ';
 
         $membersFoundArray = EaseShared::myDbLink()->queryToArray($query);
         if (count($membersFoundArray)) {
             foreach ($membersFoundArray as $request) {
-                $membersFound[$request['host_id']] = $request['host_description'];
                 if (isset($request['icon_image'])) {
                     $icon = $request['icon_image'];
                 } else {
-                    if (isset($request['platform'])) {
+                    if (isset($request['platform']) && isset($this->platforms[$request['platform']]['image'])) {
                         $icon = $this->platforms[$request['platform']]['image'];
                     } else {
                         $icon = 'logos/unknown.gif';
                     }
                 }
                 $this->hosts[$request['host_id']] = array('image' => $icon);
+                $membersFound[$request['host_id']] = $request['host_name'];
             }
         }
         return $membersFound;
@@ -48,6 +48,7 @@ class IEHostSelect extends EaseHtmlSelect
     public function finalize()
     {
         parent::finalize();
+        $this->setTagID();
         reset($this->hosts);
         foreach ($this->pageParts as $optionName => $option) {
             $platform = current($this->hosts);

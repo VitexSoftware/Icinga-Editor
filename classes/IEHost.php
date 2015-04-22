@@ -687,4 +687,22 @@ class IEHost extends IECfg
         return hash('md5', $this->getName() . serialize($servicesAssigned));
     }
 
+    /**
+     * Přidá hosta služby
+     *
+     * @param string $column     název sloupce
+     * @param int    $memberID
+     * @param string $memberName
+     */
+    function addMember($column, $memberID, $memberName)
+    {
+        if ($column == 'parents') {
+            if ($memberName == $this->getName()) {
+                $this->addStatusMessage(_('Host nemůže být rodičem sebe sama'), 'warning');
+                return null;
+            }
+        }
+        return parent::addMember($column, $memberID, $memberName);
+    }
+
 }

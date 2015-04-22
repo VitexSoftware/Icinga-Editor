@@ -89,6 +89,7 @@ class IEUser extends EaseUser
     public function passwordChange($newPassword, $userID = null)
     {
         if (parent::passwordChange($newPassword, $userID)) {
+
             system('sudo htpasswd -b /etc/icinga/htpasswd.users ' . $this->getUserLogin() . ' ' . $newPassword);
 
             return true;

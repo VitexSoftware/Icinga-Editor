@@ -15,7 +15,7 @@ $oPage->onlyForLogged();
 $oPage->addItem(new IEPageTop(_('Monitoring')));
 
 $host = new IEHost();
-$hosts = $host->getListing(null, false, array('config_hash', 'parents', 'icon_image', 'contacts', 'contact_groups', $host->myCreateColumn, $host->myLastModifiedColumn));
+$hosts = $host->getListing(null, false, array('config_hash', 'address', 'parents', 'icon_image', 'contacts', 'contact_groups', $host->myCreateColumn, $host->myLastModifiedColumn));
 
 if (count($hosts)) {
     $oPage->container->addItem(new IEConfigurationsOverview($hosts));

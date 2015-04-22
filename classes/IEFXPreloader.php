@@ -1,11 +1,5 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
  * Description of IEFXPreloader
  *
@@ -14,16 +8,28 @@
 class IEFXPreloader extends EaseHtmlDivTag
 {
 
-    public function __construct($name = null)
+    public function __construct($id = null)
     {
-        $properties['class'] = 'fuelux preloader';
-        parent::__construct($name, '<i></i><i></i><i></i><i></i>', $properties);
+        parent::__construct($id, null, array('class' => 'loader', 'data-initialize' => 'loader'));
     }
 
     public function finalize()
     {
         EaseShared::webPage()->includeCss('twitter-bootstrap/css/fuelux.css', true);
-        EaseShared::webPage()->includeCss('twitter-bootstrap/css/fuelux-responsive.css', true);
+        EaseShared::webPage()->includeJavascript("/javascript/twitter-bootstrap/fuelux.js");
+        EaseShared::webPage()->addJavascript("$('#" . $this->getTagID() . "').loader();");
+        EaseShared::webPage()->addCSS('
+#' . $this->getTagID() . '{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -50px;
+    margin-left: -50px;
+    width: 100px;
+    height: 100px;
+    visibility: hidden;
+}​
+            ');
     }
 
 }

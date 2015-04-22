@@ -683,7 +683,9 @@ class IEcfg extends EaseBrick
             return null;
         } else {
             foreach ($data as $fieldName => $value) {
-                $data[$fieldName] = $this->myDbLink->addSlashes($value);
+                if (!is_null($value)) {
+                    $data[$fieldName] = $this->myDbLink->addSlashes($value);
+                }
             }
             $result = parent::saveToMySQL($data, $searchForID);
             if (!is_null($result) && (get_class($this->user) == 'IEUser')) {
@@ -1764,6 +1766,23 @@ class IEcfg extends EaseBrick
             $id = intval($id);
         }
         return $id;
+    }
+
+    /**
+     * Přiřadí objektu odkaz na objekt uživatele
+     *
+     * @param object|EaseUser $user         pointer to user object
+     * @param object          $targetObject objekt kterému je uživatel
+     *                                      přiřazován.
+     *
+     * @return boolean
+     */
+    function setUpUser(&$user, &$targetObject = null)
+    {
+        if (isset($this->userColumn)) {
+            $this->setDataValue($this->userColumn, $user->getMyKey());
+        }
+        return parent::setUpUser($user, $targetObject);
     }
 
 }
