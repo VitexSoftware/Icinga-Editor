@@ -682,9 +682,26 @@ class IEHost extends IECfg
      */
     function getConfigHash()
     {
+        $configuration = array();
         $service = new IEService;
-        $servicesAssigned = $service->myDbLink->queryToArray('SELECT `' . $service->getmyKeyColumn() . '`,`' . $service->myCreateColumn . '`,`' . $service->myLastModifiedColumn . '` FROM ' . $service->myTable . ' WHERE host_name LIKE \'%"' . $this->getName() . '"%\'', $service->myKeyColumn);
-        return hash('md5', $this->getName() . serialize($servicesAssigned));
+        $servicesAssigned = $service->myDbLink->queryToArray('SELECT `' . $service->getmyKeyColumn() . '` FROM ' . $service->myTable . ' WHERE host_name LIKE \'%"' . $this->getName() . '"%\'', $service->myKeyColumn);
+        foreach ($servicesAssigned as $serviceAssigned) {
+            $service->loadFromSQL((int) $serviceAssigned[$service->myKeyColumn]);
+            $service->unsetDataValue('display_name'); //Položky které se mohou měnit bez nutnosti aktualizovat senzor
+            $service->unsetDataValue('service_description');
+            $service->unsetDataValue('host_name');
+            $service->unsetDataValue('hostgroup_name');
+            $service->unsetDataValue('notes');
+            $service->unsetDataValue('notes_url');
+            $service->unsetDataValue('action_url');
+            $service->unsetDataValue('icon_image');
+            $service->unsetDataValue('icon_image_alt');
+            $service->unsetDataValue('public');
+            $service->unsetDataValue('user_id');
+            $service->unsetDataValue($service->myLastModifiedColumn);
+            $configuration[] = $service->getEffectiveCfg();
+        }
+        return hash('md5', $this->getName() . serialize($configuration));
     }
 
     /**

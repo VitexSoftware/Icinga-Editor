@@ -185,7 +185,7 @@ $pageRow->addColumn(4, $tools);
 $oPage->container->addItem($pageRow);
 
 
-$hostPanel = $mainPanel->addItem(new EaseTWBPanel(new EaseHtmlH1Tag($host->getDataValue('alias') . ' <small>' . $host->getName() . '</small>')));
+$hostPanel = $mainPanel->addItem(new EaseTWBPanel(new EaseHtmlH1Tag($host->getDataValue('alias') . ' <small>' . $host->getName() . '</small>'), 'info', null, nl2br(trim($host->getDataValue('notes')))));
 
 $hostTabs = $hostPanel->addItem(new EaseTWBTabs('hostTabs'));
 $commonTab = $hostTabs->addTab(_('Obecné'));

@@ -10,7 +10,22 @@ require_once 'Ease/EaseDataGrid.php';
 class IEDataGrid extends EaseDataGrid
 {
 
+    /**
+     * Extra filtr výsledků
+     * @var string
+     */
+    public $select;
+
+    /**
+     * Výchozí nastavení sloupečků
+     * @var array
+     */
     public $defaultColProp = array('sortable' => true);
+
+    /**
+     * Nastavení
+     * @var array
+     */
     public $options = array(
       'method' => 'GET',
       'dataType' => 'json',
@@ -79,7 +94,7 @@ class IEDataGrid extends EaseDataGrid
                     $this->addStatusMessage(_('Chybi titulek') . ' ' . $this->dataSource->keyword . ': ' . $keyword, 'warning');
                     $this->dataSource->keywordsInfo[$keyword]['title'] = $keyword;
                 }
-                if (strstr($type, 'VARCHAR') || strstr($type, 'TEXT') || strstr($type, 'SELECT') || strstr($type, 'PLATFORM') || strstr($type, 'IDLIST')) {
+                if (strstr($type, 'VARCHAR') || strstr($type, 'STRING') || strstr($type, 'TEXT') || strstr($type, 'SELECT') || strstr($type, 'PLATFORM') || strstr($type, 'IDLIST') || strstr($type, 'BOOL') || strstr($type, 'DATE')) {
                     $this->setColumn($keyword, $this->dataSource->keywordsInfo[$keyword]['title'], true);
                 } else {
                     $this->setColumn($keyword, $this->dataSource->keywordsInfo[$keyword]['title'], false);
@@ -120,6 +135,22 @@ class IEDataGrid extends EaseDataGrid
               $(location).attr(\'href\',\'' . $this->dataSource->keyword . '.php\');
             }
         ', null, true);
+    }
+
+    /**
+     * Vloží editační tlačítko
+     *
+     * @param type $title
+     * @param type $target
+     */
+    function addSelectAllButton($title, $target = null)
+    {
+        $this->addButton($title, 'selectAll', 'selectAll');
+        $this->addJavaScript('function selectAll(com, grid) {
+                $(\'tr\', grid).each(function() {
+                    $(this).click();
+                });
+}');
     }
 
     /**
@@ -252,8 +283,65 @@ class IEDataGrid extends EaseDataGrid
      */
     function finalize()
     {
+        $grid_id = $this->getTagID();
+        if ($this->getTagProperty('columnsAutoSize')) {
+            $this->options['onSuccess'] = 'function() { addGrid($("#' . $grid_id . '"), this)}';
+            //Patch Grid Responisive
+            $grid_js = '
+        var grids=[];
+            $(window).resize(function() {
+                //Resize all the grids on the page
+                //Only resize the ones whoes size has actually changed...
+                for(var i in grids) {
+                    if(grids[i].width!=grids[i].$grid.width()) {
+                        sizeGrid(grids[i]);
+                    }
+                }
+            });';
+            $grid_js .='
+            //Keep track of all grid elements and current sizes
+            function addGrid($table, grid) {
+                var $grid = $table.closest(\'.flexigrid\');
+                var data = {$table:$table, $grid:$grid, grid:grid, width:$grid.width()};
+                grids.push(data);
+                sizeGrid(data);
+            }';
+            $grid_js .='
+            //Make all cols with auto size fill remaining width..
+            function sizeGrid(data) {
+                //Auto size the middle col.
+                var totalWidth = data.$grid.outerWidth()-15; //15 padding - not found where this is set
+
+                var fixedWidth = 0;
+                var fluidCols = [];
+                for(var i=0; i<data.grid.colModel.length; i++ ) {
+                    if( !isNaN(data.grid.colModel[i].width) ) {
+                        fixedWidth+=data.$table.find(\'tr:eq(\'+i+\') td:eq(\'+i+\'):visible\').outerWidth(true);
+                    } else {
+                        fluidCols.push(i);
+                    }
+                }
+
+                var newWidth = (totalWidth-fixedWidth)/fluidCols.length;
+                for(var i in fluidCols) {
+                    data.grid.g.colresize = { n:fluidCols[i], nw:newWidth };
+                    data.grid.g.dragEnd( );
+                }
+
+                data.width = data.$grid.width();
+            }';
+        } else {
+            $grid_js = '';
+        }
+
+        if ($this->select) {
+            $this->options['query'] = current($this->select);
+            $this->options['qtype'] = key($this->select);
+        }
+
+        $this->options['getGridClass'] = 'function(g) { this.g=g; return g; }';
         EaseShared::webPage()->addJavaScript("\n"
-            . '$(\'#' . $this->getTagID() . '\').flexigrid({ ' . EaseJQueryPart::partPropertiesToString($this->options) . ' });', null, true);
+            . '$(\'#' . $grid_id . '\').flexigrid({ ' . EaseJQueryPart::partPropertiesToString($this->options) . ' }); ' . $grid_js, null, true);
     }
 
 }

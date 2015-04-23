@@ -39,9 +39,20 @@ if ($oPage->isPosted()) {
         EaseShared::db()->exeQuery('TRUNCATE TABLE `servicegroup`');
         $oPage->addStatusMessage(_('Skupiny služeb byly odstraněny'), 'success');
     }
-    if ($oPage->getRequestValue('passiveup')) {
-        EaseShared::db()->exeQuery('UPDATE `host` SET DatSave = NOW() WHERE passive_checks_enabled=1 AND config_hash IS NOT NULL');
+    if ($oPage->getRequestValue('desync')) {
+        EaseShared::db()->exeQuery('UPDATE `host` SET config_hash = 0');
         $oPage->addStatusMessage(_('Stavy senzorů byly rozhasheny'), 'success');
+    }
+    if ($oPage->getRequestValue('sync')) {
+        $host = new IEHost;
+        $allHosts = $host->getListing();
+        foreach ($allHosts as $hostId => $hostInfo) {
+            $host->dataReset();
+            $host->loadFromMySQL((int) $hostId);
+            $host->setDataValue('config_hash', $host->getConfigHash());
+            $host->saveToMySQL();
+        }
+        $oPage->addStatusMessage(sprintf(_('Stavy %s senzorů byly nastaveny'), count($allHosts)), 'success');
     }
 }
 
@@ -62,11 +73,13 @@ $toolRow = new EaseTWBRow;
 $toolRow->addColumn(6, new EaseTWBWell($resetForm));
 
 $resyncForm = new EaseTWBForm('resync');
-$resyncForm->addInput(new IEYesNoSwitch('passiveup', FALSE), _('Pasivní Hash'), null, _('Všechny pasivní hosty s nasazeným senzorem budou hlásat zastaralou konfiguraci'));
-$resyncForm->addItem(new EaseTWSubmitButton(_('Provést operaci'), 'warning'));
+$resyncForm->addInput(new IEYesNoSwitch('desync', FALSE), _('Rozhodit Hash'), null, _('Všechny hosty s nasazeným senzorem budou hlásat zastaralou konfiguraci'));
+$resyncForm->addInput(new IEYesNoSwitch('sync', FALSE), _('Nastavit Hash'), null, _('Všechny hosty s nasazeným senzorem budou hlásat aktuální konfiguraci'));
+$resyncForm->addItem(new EaseTWSubmitButton(_('Provést operaci'), 'warning', array('onClick' => "$('#preload').css('visibility', 'visible');")));
 $toolRow->addColumn(6, new EaseTWBWell($resyncForm));
 
 $oPage->container->addItem(new EaseTWBPanel(_('Pročištění databáze'), 'danger', $toolRow));
+EaseShared::webPage()->addItem(new EaseHtmlDivTag('preload', new IEFXPreloader(), array('class' => 'fuelux')));
 
 $oPage->addItem(new IEPageBottom());
 

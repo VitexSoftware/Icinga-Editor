@@ -70,6 +70,14 @@ class IEUser extends EaseUser
     }
 
     /**
+     * Vrací výchozí kontakt uživatele
+     */
+    public function getDefaultContact()
+    {
+        return new IEContact($this->getDataValue($this->loginColumn) . ' email');
+    }
+
+    /**
      * Vrací ID aktuálního záznamu
      * @return int
      */

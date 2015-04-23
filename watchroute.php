@@ -16,19 +16,40 @@ $oPage->addItem(new IEPageTop(_('Vygeneruje sledování cesty k hostu')));
 
 $hostId = $oPage->getRequestValue('host_id', 'int');
 
-if (is_null($hostId)) {
+/**
+ * Formulář cíle cesty pro hosta
+ * @param IEHost $host
+ * @return \EaseTWBPanel
+ */
+function endRouteForm($host)
+{
     $form = new EaseTWBForm('traceto');
-    $form->addInput(new EaseHtmlInputTextTag('ip'), _('IP Adresa'));
-    $form->addInput(new IEHostSelect('host_id'));
-    $form->addItem(new EaseTWSubmitButton(_('Sledovat cestu')));
+    $form->addInput(new IEHostSelect('dest_host_id'), _('Gateway'), null, _('Zvolte již definovanou gateway, nabo zadejte konkrétní adresu.'));
+    $form->addInput(new EaseHtmlInputTextTag('ip'), _('IP Adresa'), null, _('První pingnutelná veřejá adresa po cestě z hostu na monitorovací server'));
+    $form->addItem(new EaseTWSubmitButton(_('Sledovat cestu'), 'success', array('onClick' => "$('#preload').css('visibility', 'visible');")));
+    EaseShared::webPage()->addItem(new EaseHtmlDivTag('preload', new IEFXPreloader(), array('class' => 'fuelux')));
+    return new EaseTWBPanel(_('Volba cíle sledování') . ': ' . $host->getName(), 'default', $form, _('Vyberte hosta nebo zadejte IP adresu'));
+}
 
-    $oPage->container->addItem(new EaseTWBPanel(_('Volba cíle sledování'), 'default', $form, _('Vyberte hosta nebo zadejte IP adresu')));
+$host = new IEHost($hostId);
+$ip = $host->getDataValue('address');
+if (!$ip) {
+    $ip = $oPage->getRequestValue('ip');
+    if (!$ip) {
+        $destHost = new IEHost($oPage->getRequestValue('dest_host_id', 'int'));
+        $ip = $destHost->getDataValue('address');
+    }
+    $forceIP = true;
+} else {
+    $forceIP = false;
+}
+
+if (is_null($hostId) || !$ip) {
+    $oPage->container->addItem(endRouteForm($host));
 } else {
 
-    $host = new IEHost($hostId);
-    $ip = $host->getDataValue('address');
-
-    $ping = new IEService('PING');
+    $defaultContactId = $oUser->getDefaultContact()->getId();
+    $defaultContactName = $oUser->getDefaultContact()->getName();
 
     $hgName = sprintf(_('Cesta k %s'), $host->getName());
     $hostGroup = new IEHostgroup($hgName);
@@ -62,6 +83,7 @@ if (is_null($hostId)) {
     $trace[] = $ip;
 
     $parents = array();
+    $newHost = FALSE;
 
     foreach ($trace as $pos => $hop) {
         $host->dataReset();
@@ -76,9 +98,11 @@ if (is_null($hostId)) {
 
         if ($host->getId()) {
             //Ok Známe
+            $newHost = FALSE;
             $parents[$hop] = $host->getData();
         } else {
             //Nový host
+            $newHost = true;
             $host->setUpUser($oUser);
             $newHostName = gethostbyaddr($hop);
             if (!$newHostName) {
@@ -98,22 +122,26 @@ if (is_null($hostId)) {
             $parentIP = $trace[$pos - 1];
             $host->addMember('parents', $parents[$parentIP][$host->myKeyColumn], $parents[$parentIP][$host->nameColumn]);
         }
+        $host->addMember('contacts', $defaultContactId, $defaultContactName);
+        $host->setDataValue('config_hash', $host->getConfigHash());
+        $host->setDataValue('check_command', 'check-host-alive');
+        $host->setDataValue('active_checks_enabled', 1);
+        $host->setDataValue('passive_checks_enabled', 0);
+        $oldNotes = $host->getDataValue('notes');
+        if (!$oldNotes || !strstr($hostGroup->getName(), $oldNotes)) {
+            $host->setDataValue('notes', $oldNotes . "\n" . $hostGroup->getName());
+        }
         $host->saveToMySQL();
         $hostGroup->addMember('members', $host->getId(), $host->getName());
-        $ping->addMember('host_name', $host->getId(), $host->getName());
+
         $listing->addItemSmart(new EaseHtmlATag('host.php?host_id=' . $host->getId(), $host->getName()));
     }
-
-    $ping->saveToMySQL();
 
     if ($hostGroup->saveToMySQL()) {
         $hostGroup->addStatusMessage(sprintf(_('Hostgrupa %s naplněna'), $hostGroup->getName()), 'success');
     } else {
         $hostGroup->addStatusMessage(sprintf(_('Hostgrupa %s nebyla naplněna'), $hostGroup->getName()), 'warning');
     }
-
-
-//    $oPage->addItem(new EaseHtmlPreTag(var_dump($trace), 1));
 }
 
 

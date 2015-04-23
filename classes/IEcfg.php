@@ -103,12 +103,22 @@ class IEcfg extends EaseBrick
     public $owner = null;
 
     /**
+     * Cache pro rekurzivní konfigurace
+     * @var array
+     */
+    public $parentCache = null;
+
+    /**
      * Objekt konfigurace
      *
      * @param int|null $itemID
      */
     public function __construct($itemID = null)
     {
+        if (!isset($_SESSION['parentCache'])) { //Todo: Zaktualizovat po editaci šablon
+            $_SESSION['parentCache'] = array();
+        }
+        $this->parentCache = &$_SESSION['parentCache'];
         parent::__construct();
         $this->user = EaseShared::user();
 //       foreach ($this->useKeywords as $KeyWord => $ColumnType) {
@@ -555,7 +565,12 @@ class IEcfg extends EaseBrick
                     if (strstr($parent_name, ',')) {
                         $parents = explode(',', $parent_name);
                         foreach ($parents as $parent_name) {
-                            $parentValue = $parent->getColumnsFromMySQL(array($keyword, 'use'), array('name' => $parent_name));
+                            if (isset($this->parentCache[$parent_name][$keyword])) {
+                                $parentValue = $this->parentCache[$parent_name][$keyword];
+                            } else {
+                                $parentValue = $parent->getColumnsFromMySQL(array($keyword, 'use'), array('name' => $parent_name));
+                                $this->parentCache[$parent_name][$keyword] = $parentValue;
+                            }
                             if (is_null($parent->getDataValue($keyword))) {
                                 $parent->setDataValue($keyword, $parentValue[0][$keyword]);
                                 $parent->setDataValue('use', $parentValue[0]['use']);
@@ -563,7 +578,12 @@ class IEcfg extends EaseBrick
                             }
                         }
                     } else {
-                        $parentValue = $parent->getColumnsFromMySQL(array($keyword, 'use'), array('name' => $parent_name));
+                        if (isset($this->parentCache[$parent_name][$keyword])) {
+                            $parentValue = $this->parentCache[$parent_name][$keyword];
+                        } else {
+                            $parentValue = $parent->getColumnsFromMySQL(array($keyword, 'use'), array('name' => $parent_name));
+                            $this->parentCache[$parent_name][$keyword] = $parentValue;
+                        }
                         $parent->setDataValue($keyword, $parentValue[0][$keyword]);
                         $parent->setDataValue('use', $parentValue[0]['use']);
                         $parent_used = $parent_name;
@@ -586,6 +606,20 @@ class IEcfg extends EaseBrick
         $cfg = $this->getCfg($keyword);
         if (!is_null($cfg) && is_array($cfg) && count($cfg)) {
             $cfg = current($cfg);
+        }
+        return $cfg;
+    }
+
+    /**
+     * Vrací efektivní hodnoty všech načtených položek konfigurace
+     *
+     * @return array
+     */
+    function getEffectiveCfg()
+    {
+        $cfg = array();
+        foreach (array_keys($this->getData()) as $column) {
+            $cfg[$column] = $this->getCfgValue($column);
         }
         return $cfg;
     }

@@ -5,6 +5,11 @@
     Description: main css
 */
 
+@media (min-width: 1200px) {
+  .container {
+    width: auto;
+  }
+}
 
 .navbar {
     opacity: 0.9;

@@ -61,7 +61,7 @@ class IEMainMenu extends EaseHtmlDivTag
         $topItems = array(
           'wizard-host.php' => EaseTWBPart::GlyphIcon('forward') . ' ' . _('Průvodce založením hostu'),
         );
-        $topItems['host.php'] = EaseTWBPart::GlyphIcon('edit') . ' ' . _('Nový Host');
+        $topItems['wizard-active-host.php'] = EaseTWBPart::GlyphIcon('star') . ' ' . _('Nový aktivní Host');
 
         $hostgroup = new IEHostgroup();
         $topItems['hostgroup.php'] = EaseTWBPart::GlyphIcon('plus') . ' ' . _('Nová skupina hostů'); /* ,
