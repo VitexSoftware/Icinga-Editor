@@ -277,7 +277,7 @@ class IECfgEditor extends EaseContainer
         }
 
         if ($this->objectEdited->allowTemplating) {
-            if (!(int) $this->objectEdited->getDataValue('register')) {
+            if (!$this->objectEdited->getCfgValue('register')) {
                 $this->addStatusMessage('toto je pouze předloha');
                 foreach ($this->objectEdited->keywordsInfo as $Kw => $Props) {
                     unset($this->objectEdited->keywordsInfo[$Kw]['required']);

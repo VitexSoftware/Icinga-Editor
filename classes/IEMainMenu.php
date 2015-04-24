@@ -120,6 +120,8 @@ class IEMainMenu extends EaseHtmlDivTag
 
         $topItems['hosts.php'] = EaseTWBPart::GlyphIcon('list') . ' ' . _('Detailní přehled hostů');
 
+        $topItems['map.php'] = EaseTWBPart::GlyphIcon('globe') . ' ' . _('Topologie');
+
         $nav->addDropDownMenu(_('Hosti'), array_merge($topItems, array('' => ''), $hostGroupMenuItem));
     }
 
