@@ -35,6 +35,7 @@ class IEHostMap extends Image_GraphViz
      */
     public function __construct($directed = true, $attributes = array(), $name = 'G', $strict = true, $returnError = false)
     {
+        $attributes['overlap'] = 'prism';
         parent::__construct($directed, $attributes, $name, $strict, $returnError);
         $this->fillUp();
     }
