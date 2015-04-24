@@ -69,7 +69,7 @@ $oPage->addJavascript("$('#netmap').height(function(index, height) {
     return window.innerWidth - $(this).offset().left - 50;
 } );", null, true);
 
-$oPage->container->addItem(new EaseHtmlScriptTag('
+$dynamicScript = (new EaseHtmlScriptTag('
 var d3cola = cola.d3adaptor().convergenceThreshold(0.1);
 
         var width = 800, height = 600;
@@ -130,8 +130,6 @@ var d3cola = cola.d3adaptor().convergenceThreshold(0.1);
                 .nodes(nodes)
                 .links(edges)
                 .jaccardLinkLengths(150);
-
-            var distMatrix = floydWarshall(nodes, links, function(d) { return d.name });
 
             var link = vis.selectAll(".link")
                 .data(edges)
@@ -209,7 +207,7 @@ var d3cola = cola.d3adaptor().convergenceThreshold(0.1);
 
     '));
 
-
+$oPage->container->addItem($dynamicScript);
 
 $oPage->addItem(new IEPageBottom());
 
