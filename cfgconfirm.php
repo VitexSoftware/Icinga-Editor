@@ -14,8 +14,7 @@ $host_id = $oPage->getRequestValue('host_id', 'int');
 $hash = $oPage->getRequestValue('hash');
 
 if ($host_id && $hash) {
-    $host = new IEHost();
-    $host->setMyKey($host_id);
+    $host = new IEHost($host_id);
     $host->setDataValue('config_hash', $hash);
     if ($host->updateToMySQL()) {
         echo sprintf(_('Konfigurace %s potvrzena'), $host->getName());
