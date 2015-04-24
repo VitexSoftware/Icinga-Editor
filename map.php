@@ -72,7 +72,7 @@ $oPage->addJavascript("$('#netmap').height(function(index, height) {
 $oPage->container->addItem(new EaseHtmlScriptTag('
 var d3cola = cola.d3adaptor().convergenceThreshold(0.1);
 
-        var width = 1280, height = 1024;
+        var width = 800, height = 600;
 
         var outer = d3.select("body").append("svg")
 //            .attr("width", width)
@@ -88,7 +88,7 @@ var d3cola = cola.d3adaptor().convergenceThreshold(0.1);
 
         var vis = outer
             .append(\'g\')
-            .attr(\'transform\', \'translate(250,250) scale(0.3)\');
+            .attr(\'transform\', \'translate(250,250) scale(0.6)\');
 
         function redraw() {
             vis.attr("transform", "translate(" + d3.event.translate + ")" + " scale(" + d3.event.scale + ")");
@@ -131,6 +131,8 @@ var d3cola = cola.d3adaptor().convergenceThreshold(0.1);
                 .links(edges)
                 .jaccardLinkLengths(150);
 
+            var distMatrix = floydWarshall(nodes, links, function(d) { return d.name });
+
             var link = vis.selectAll(".link")
                 .data(edges)
                 .enter().append("path")
@@ -171,23 +173,13 @@ var d3cola = cola.d3adaptor().convergenceThreshold(0.1);
             var lineFunction = d3.svg.line()
                 .x(function (d) { return d.x; })
                 .y(function (d) { return d.y; })
-                .interpolate("linear");
+                .interpolate("basis");
 
             var routeEdges = function () {
                 d3cola.prepareEdgeRouting(margin/3);
                 link.attr("d", function (d) {
-                    return lineFunction(d3cola.routeEdge(d)
-                    // // show visibility graph
-                    //, function (g) {
-                    //    if (d.source.id === 10 && d.target.id === 11) {
-                    //        g.E.forEach(function (e) {
-                    //            vis.append("line").attr("x1", e.source.p.x).attr("y1", e.source.p.y)
-                    //                .attr("x2", e.target.p.x).attr("y2", e.target.p.y)
-                    //                .attr("stroke", "green");
-                    //        });
-                    //    }
-                    // }));
-                )});
+                    return lineFunction(d3cola.routeEdge(d))
+                    });
                 if (isIE()) link.each(function (d) { this.parentNode.insertBefore(this, this) });
             }
             d3cola.start(10, 30, 100).on("tick", function () {
