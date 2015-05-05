@@ -100,15 +100,21 @@ class IEUser extends EaseUser
 
             system('sudo htpasswd -b /etc/icinga/htpasswd.users ' . $this->getUserLogin() . ' ' . $newPassword);
 
+            $mysqli = new mysqli(DB_SERVER, DB_IW_SERVER_USERNAME, DB_IW_SERVER_PASSWORD, DB_IW_DATABASE);
+            if ($mysqli->connect_errno) {
+                echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
+            }
+
             $salt = hash("sha256", uniqid($this->getUserLogin() . '_', mt_rand()));
             $pwhash = hash_hmac("sha256", $newPassword, $salt);
             $pwchquery = "UPDATE nsm_user SET user_password='" . $this->myDbLink->addSlashes($pwhash) . "', user_salt = '" . $this->myDbLink->addSlashes($salt) . "', user_modified = NOW() WHERE user_name = '" . $this->getUserLogin() . "';";
-            if ($this->myDbLink->exeQuery($pwchquery)) {
+
+            if ($mysqli->query($pwchquery)) {
                 $this->addStatusMessage(_('Heslo bylo nastaveno i pro Icinga Web'), 'success');
             } else {
                 $this->addStatusMessage(_('Heslo bylo nastaveno i pro Icinga Web'), 'warning');
             }
-
+            $mysqli->close();
 
             return true;
         }
