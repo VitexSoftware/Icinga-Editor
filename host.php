@@ -113,6 +113,8 @@ switch ($oPage->getRequestValue('action')) {
                 . 'OR `address6` = \'' . addSlashes($np) . '\' ');
             if (!$newParent) {
                 $oUser->addStatusMessage(_('Rodič nebyl nalezen'), 'warning');
+                $oPage->redirect('watchroute.php?action=parent&host_id=' . $host->getId() . '&ip=' . $np);
+                exit;
             } else {
                 $currentParents = $host->getDataValue('parents');
                 $currentParents[] = $newParent;

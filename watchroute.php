@@ -127,8 +127,8 @@ if (is_null($hostId) || !$ip) {
         $host->setDataValue('check_command', 'check-host-alive');
         $host->setDataValue('active_checks_enabled', 1);
         $host->setDataValue('passive_checks_enabled', 0);
-        $oldNotes = $host->getDataValue('notes');
-        if (!$oldNotes || !strstr($hostGroup->getName(), $oldNotes)) {
+        $oldNotes = strval($host->getDataValue('notes'));
+        if (strstr($hostGroup->getName(), $oldNotes) == false) {
             $host->setDataValue('notes', $oldNotes . "\n" . $hostGroup->getName());
         }
         $host->saveToMySQL();

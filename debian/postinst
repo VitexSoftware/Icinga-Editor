@@ -54,6 +54,17 @@ if [ ! -f $IECFG ] ; then
     echo "define('LOG_DIRECTORY', '/var/tmp/');" >> $IECFG 
     echo "define('CFG_GENERATED', '/etc/icinga/generated/');" >> $IECFG 
 
+    IWCFG="/etc/dbconfig-common/icinga-web.conf"
+    IW_SERVER_USERNAME=`cat $IWCFG | grep dbc_dbuser= | awk -F\' '{print $2}'`
+    IW_SERVER_PASSWORD=`cat $IWCFG | grep dbc_dbpass= | awk -F\' '{print $2}'`
+    IW_DATABASE=`cat $IWCFG | grep dbc_dbname= | awk -F\' '{print $2}'`
+
+    echo "define('DB_IW_SERVER_USERNAME', '$IW_SERVER_USERNAME');" >> $IECFG 
+    echo "define('DB_IW_SERVER_PASSWORD', '$IW_SERVER_PASSWORD');" >> $IECFG 
+    echo "define('DB_IW_DATABASE', '$IW_DATABASE');" >> $IECFG 
+
+
+
     #rm -f /etc/icinga-editor/config-db.sh
     ln -s   /usr/share/icinga/htdocs/images/logos /usr/share/icinga-editor/logos
     
