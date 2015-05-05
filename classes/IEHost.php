@@ -722,4 +722,22 @@ class IEHost extends IECfg
         return parent::addMember($column, $memberID, $memberName);
     }
 
+    /**
+     * Vytvoří nového hosta patřícího rovnou do výchozí skupiny uživatele
+     *
+     * @param array $data asiciativní pole dat
+     *
+     * @return int|null id nově vloženého řádku nebo null, pokud se data
+     * nepovede vložit
+     */
+    public function insertToMySQL($data = null)
+    {
+        if (!is_null($data)) {
+            $this->takeData($data);
+        }
+        $hostgroup = new IEHostgroup($this->user->getUserLogin());
+        $this->addMember('hostgroups', $hostgroup->getId(), $hostgroup->getName());
+        return parent::insertToMSSQL(null);
+    }
+
 }

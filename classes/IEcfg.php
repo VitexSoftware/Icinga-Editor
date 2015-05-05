@@ -861,6 +861,20 @@ class IEcfg extends EaseBrick
     }
 
     /**
+     * Nastaví jméno položky
+     *
+     * @param string $name
+     * @return boolean
+     */
+    function setName($name)
+    {
+        if (isset($this->nameColumn)) {
+            return $this->setDataValue($this->nameColumn, $name);
+        }
+        return false;
+    }
+
+    /**
      * Vrací ID aktuálního záznamu
      * @return int
      */

@@ -11,6 +11,10 @@ require_once 'classes/IEContact.php';
 require_once 'classes/IEContactgroup.php';
 
 $process = false;
+
+$firstname = $oPage->getRequestValue('firstname');
+$lastname = $oPage->getRequestValue('lastname');
+
 if ($oPage->isPosted()) {
     $process = true;
 
@@ -69,7 +73,9 @@ if ($oPage->isPosted()) {
             array(
               'email' => $emailAddress,
               'parent' => (int) $customerParent,
-              'login' => $login
+              'login' => $login,
+              'firstname' => $firstname,
+              'lastname' => $lastname
             )
         );
 
@@ -150,6 +156,10 @@ if ($oPage->isPosted()) {
                 $oUser->addStatusMessage(_('Prvotní kontaktní skupina nebyla založena'), 'warning');
             }
 
+            $hostGroup = new IEHostgroup;
+            $hostGroup->setName($newOUser->getUserLogin());
+            $hostGroup->saveToMySQL();
+
             $oPage->redirect('wizard.php');
             exit;
         } else {
@@ -160,8 +170,6 @@ if ($oPage->isPosted()) {
         }
     }
 }
-
-$oPage->addCss('input.ui-button { width: 220px; }');
 
 $oPage->addItem(new IEPageTop(_('Registrace')));
 $oPage->addPageColumns();
@@ -179,22 +187,25 @@ $oPage->columnI->addItem(
 
 $regFace = $oPage->columnII->addItem(new EaseHtmlDivTag('RegFace'));
 
-$RegForm = $regFace->addItem(new EaseHtmlForm('create_account', 'createaccount.php', 'POST', null, array('class' => 'form-horizontal')));
+$regForm = $regFace->addItem(new EaseTWBForm('create_account', 'createaccount.php', 'POST', null, array('class' => 'form-horizontal')));
 if ($oUser->getUserID()) {
-    $RegForm->addItem(new EaseHtmlInputHiddenTag('u_parent', $oUser->GetUserID()));
+    $regForm->addItem(new EaseHtmlInputHiddenTag('u_parent', $oUser->GetUserID()));
 }
 
-$Account = new EaseHtmlH3Tag(_('Účet'));
-$Account->addItem(new EaseLabeledTextInput('login', NULL, _('přihlašovací jméno') . ' *'));
-$Account->addItem(new EaseLabeledPasswordStrongInput('password', NULL, _('heslo') . ' *'));
-$Account->addItem(new EaseLabeledPasswordControlInput('confirmation', NULL, _('potvrzení hesla') . ' *', array('id' => 'confirmation')));
-$Account->addItem(new EaseLabeledTextInput('email_address', NULL, _('emailová adresa') . ' *' . _(' (pouze malými písmeny)')));
+$regForm->addInput(new EaseHtmlInputTextTag('firstname', $firstname), _('Jméno'));
+$regForm->addInput(new EaseHtmlInputTextTag('lastname', $lastname), _('Příjmení'));
 
-$RegForm->addItem(new EaseHtmlDivTag('Account', $Account));
-$RegForm->addItem(new EaseHtmlDivTag('Submit', new EaseHtmlInputSubmitTag('Register', _('Registrovat'), array('title' => _('dokončit registraci'), 'class' => 'btn btn-success'))));
+$account = new EaseHtmlH3Tag(_('Účet'));
+$account->addItem(new EaseLabeledTextInput('login', NULL, _('přihlašovací jméno') . ' *'));
+$account->addItem(new EaseLabeledPasswordStrongInput('password', NULL, _('heslo') . ' *'));
+$account->addItem(new EaseLabeledPasswordControlInput('confirmation', NULL, _('potvrzení hesla') . ' *', array('id' => 'confirmation')));
+$account->addItem(new EaseLabeledTextInput('email_address', NULL, _('emailová adresa') . ' *' . _(' (pouze malými písmeny)')));
+
+$regForm->addItem(new EaseHtmlDivTag('Account', $account));
+$regForm->addItem(new EaseHtmlDivTag('Submit', new EaseHtmlInputSubmitTag('Register', _('Registrovat'), array('title' => _('dokončit registraci'), 'class' => 'btn btn-success'))));
 
 if (isset($_POST)) {
-    $RegForm->fillUp($_POST);
+    $regForm->fillUp($_POST);
 }
 
 $oPage->addItem(new IEPageBottom());

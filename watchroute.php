@@ -57,7 +57,7 @@ if (is_null($hostId) || !$ip) {
 
     } else {
         $hostGroup->setUpUser($oUser);
-        $hostGroup->setDataValue($hostGroup->nameColumn, $hgName);
+        $hostGroup->setName($hgName);
     }
 
     $listing = new EaseHtmlOlTag();

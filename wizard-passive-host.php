@@ -45,6 +45,7 @@ if ($hostName && $platform) {
         $host->addMember('hostgroups', $hostgroup->getId(), $hostgroup->getName());
     }
 
+
     if ($host->saveToMysql()) {
 
         $hostGroup = new IEHostgroup;
