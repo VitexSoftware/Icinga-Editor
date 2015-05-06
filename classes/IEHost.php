@@ -737,7 +737,7 @@ class IEHost extends IECfg
         }
         $hostgroup = new IEHostgroup($this->user->getUserLogin());
         $this->addMember('hostgroups', $hostgroup->getId(), $hostgroup->getName());
-        return parent::insertToMSSQL(null);
+        return parent::insertToMySQL();
     }
 
 }

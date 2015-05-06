@@ -158,9 +158,12 @@ if ($oPage->isPosted()) {
 
             $hostGroup = new IEHostgroup;
             $hostGroup->setName($newOUser->getUserLogin());
-            $hostGroup->saveToMySQL();
+            $hostGroup->setDataValue('alias', _('Výchozí skupina') . ' ' . $newOUser->getUserLogin());
+            $hostGroup->setDataValue('generate', true);
+            $hostGroup->setUpUser($newOUser);
+            $hostGroup->insertToMySQL();
 
-            $oPage->redirect('wizard.php');
+            $oPage->redirect('wizard-host.php');
             exit;
         } else {
             $oUser->addStatusMessage(_('Zápis do databáze se nezdařil!'), 'error');

@@ -20,7 +20,7 @@ $hosts = $host->getListing(null, false, array('config_hash', 'address', 'parents
 if (count($hosts)) {
     $oPage->container->addItem(new IEConfigurationsOverview($hosts));
 } else {
-    $oPage->container->addItem(new EaseTWBLinkButton('wizard.php', _('Založte si první sledovaný host'), 'success'));
+    $oPage->container->addItem(new EaseTWBLinkButton('wizard-host.php', _('Založte si první sledovaný host'), 'success'));
     $oUser->addStatusMessage(_('Zatím není zaregistrovaný žádný sledovaný host'), 'warning');
 }
 

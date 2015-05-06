@@ -207,7 +207,7 @@ class IEUser extends EaseUser
         $result = $mysqli->query("SELECT n.target_id AS n__target_id FROM nsm_target n WHERE (n.target_name = '$target_name') LIMIT 1");
         if ($result) {
             $row = $result->fetch_object();
-            if (is_array($row)) {
+            if ($row) {
                 $target_id = current($row);
             }
         }
@@ -220,7 +220,7 @@ class IEUser extends EaseUser
         $result = $mysqli->query("SELECT n.principal_id AS n__principal_id FROM nsm_principal n WHERE (n.principal_user_id = '$user_id')");
         if ($result) {
             $row = $result->fetch_object();
-            if (is_array($row)) {
+            if ($row) {
                 $target_id = current($row);
             }
         }

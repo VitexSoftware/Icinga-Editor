@@ -1212,7 +1212,13 @@ class IEcfg extends EaseBrick
      */
     public function addMember($column, $memberID, $memberName)
     {
-        $this->data[$column][$memberID] = $memberName;
+        if (isset($this->data[$column]) && is_string($this->data[$column])) {
+            $field = unserialize(stripslashes($this->data[$column]));
+            $field[$memberID] = $memberName;
+            $this->data[$column] = addslashes(serialize($field));
+        } else {
+            $this->data[$column][$memberID] = $memberName;
+        }
         return true;
     }
 
