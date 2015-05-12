@@ -30,7 +30,8 @@ class IEHostgroup extends IECfg
       'hostgroup_members' => 'IDLIST',
       'notes' => 'TEXT',
       'notes_url' => 'VARCHAR(255)',
-      'action_url' => 'VARCHAR(255)'
+      'action_url' => 'VARCHAR(255)',
+      'bgimages' => 'IDLIST'
     );
     public $keywordsInfo = array(
       'hostgroup_name' => array(
@@ -121,6 +122,12 @@ class IEHostgroup extends IECfg
         return false;
     }
 
+    /**
+     * Přejmenuje hosta
+     *
+     * @param string $oldname
+     * @param string $newname
+     */
     public function renameHost($oldname, $newname)
     {
         $memberOf = EaseShared::myDbLink()->queryToArray('SELECT ' . $this->getmyKeyColumn() . ',' . $this->nameColumn . ' FROM ' . $this->myTable . ' WHERE members LIKE \'%"' . $oldname . '"%\' ', $this->getmyKeyColumn());
@@ -140,9 +147,32 @@ class IEHostgroup extends IECfg
         }
     }
 
+    /**
+     * Vrací pole členů skupiny
+     *
+     * @return array
+     */
     public function getMembers()
     {
         return $this->getDataValue('members');
+    }
+
+    /**
+     * Vloží obrázek pozadí vrstvy hostgrupy do databáze
+     *
+     * @param string $tmpfilename
+     * @param int    $level
+     */
+    public function saveBackground($tmpfilename, $level)
+    {
+        $finfo = new finfo(FILEINFO_MIME);
+        list($type, $encoding) = explode(';', $finfo->file($tmpfilename));
+        $bgs = $this->getDataValue('bgimages');
+        if (!is_array($bgs)) {
+            $bgs = array();
+        }
+        $bgs[$level] = 'data:' . $type . ';base64,' . base64_encode(file_get_contents($tmpfilename));
+        return $this->setDataValue('bgimages', $bgs);
     }
 
 }

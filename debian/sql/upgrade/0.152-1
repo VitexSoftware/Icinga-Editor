@@ -1,0 +1,1 @@
+ALTER TABLE `hostgroup` ADD `bgimages` LONGTEXT NOT NULL COMMENT 'serizalizovane pole osaZ/level/podlazi=>obrazek' ;

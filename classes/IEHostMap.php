@@ -33,7 +33,7 @@ class IEHostMap extends Image_GraphViz
      *
      * @access public
      */
-    public function __construct($directed = true, $attributes = array(), $name = 'G', $strict = true, $returnError = false)
+    public function __construct($directed = false, $attributes = array(), $name = 'G', $strict = true, $returnError = false)
     {
         $attributes['overlap'] = 'prism';
         parent::__construct($directed, $attributes, $name, $strict, $returnError);
@@ -69,7 +69,8 @@ class IEHostMap extends Image_GraphViz
 
 
 
-            $this->addNode($name, array('URL' => 'host.php?host_id=' . $host_info['host_id'],
+            $this->addNode($name, array(
+              'URL' => 'host.php?host_id=' . $host_info['host_id'],
               'fontsize' => '10',
               'color' => $color,
               'height' => '0.2',
@@ -88,6 +89,37 @@ class IEHostMap extends Image_GraphViz
                 }
             }
         }
+    }
+
+    function draw()
+    {
+        error_reporting(E_ALL ^ E_STRICT);
+
+        $tmpfile = $this->saveParsedGraph();
+        if (!$tmpfile || $this->PEAR->isError($tmpfile)) {
+            return $tmpfile;
+        }
+
+        $outputfile = $tmpfile . '.' . 'svg';
+
+        $rendered = $this->renderDotFile($tmpfile, $outputfile, 'svg', 'twopi');
+        if ($rendered !== true) {
+            return $rendered;
+        }
+
+        $return = true;
+        if (readfile($outputfile) === false) {
+            $return = false;
+        }
+        @unlink($outputfile);
+        @unlink($tmpfile);
+
+        return $return;
+    }
+
+    public function getObjectName()
+    {
+        return 'svg';
     }
 
 }

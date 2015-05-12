@@ -99,12 +99,12 @@ if ($oPage->isPosted()) {
 
             $email = $oPage->addItem(new EaseMail($newOUser->getDataValue('email'), _('Potvrzení registrace')));
             $email->setMailHeaders(array('From' => EMAIL_FROM));
-            $email->addItem(new EaseHtmlDivTag(null, "Právě jste byl/a zaregistrován/a do Aplikace VSMonitoring s těmito přihlašovacími údaji:\n"));
+            $email->addItem(new EaseHtmlDivTag(null, "Právě jste byl/a zaregistrován/a do Aplikace Monitoring s těmito přihlašovacími údaji:\n"));
             $email->addItem(new EaseHtmlDivTag(null, ' Login: ' . $newOUser->GetUserLogin() . "\n"));
             $email->addItem(new EaseHtmlDivTag(null, ' Heslo: ' . $_POST['password'] . "\n"));
             $email->send();
 
-            $email = $oPage->addItem(new EaseMail(SEND_INFO_TO, sprintf(_('Nová registrace do VSmonitoringu: %s'), $newOUser->GetUserLogin())));
+            $email = $oPage->addItem(new EaseMail(SEND_INFO_TO, sprintf(_('Nová registrace do Monitoringu: %s'), $newOUser->GetUserLogin())));
             $email->setMailHeaders(array('From' => EMAIL_FROM));
             $email->addItem(new EaseHtmlDivTag(null, _("Právě byl zaregistrován nový uživatel:\n")));
             $email->addItem(new EaseHtmlDivTag('login', ' Login: ' . $newOUser->GetUserLogin() . "\n"));
