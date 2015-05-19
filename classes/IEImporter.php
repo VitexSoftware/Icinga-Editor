@@ -6,18 +6,21 @@
  * @package    IcingaEditor
  * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
- * @copyright  2012 Vitex@hippy.cz (G)
- */
-require_once 'IEcfg.php';
-
-/**
- * Description of IEImporter
- *
- * @author vitex
+ * @copyright  2012-2015 Vitex@hippy.cz (G)
  */
 class IEImporter extends IECfg
 {
 
+    /**
+     * Pole zpracovaných souboru
+     * @var array
+     */
+    public $files = null;
+
+    /**
+     * Pole parsovacích tříd
+     * @var array
+     */
     public $IEClasses = array();
 
     /**
@@ -41,6 +44,11 @@ class IEImporter extends IECfg
         }
     }
 
+    /**
+     * Zaregistruje třídu pro parsování konfiguráků
+     *
+     * @param strung $className
+     */
     public function registerClass($className)
     {
         if (file_exists('classes/' . $className . '.php')) {
@@ -68,7 +76,7 @@ class IEImporter extends IECfg
      */
     public function importCfgFile($cfgFile)
     {
-        return $this->importCfg(IECfg::readRawConfigFile($cfgFile));
+        return $this->importCfg(IECfg::readRawConfigFile($cfgFile, $this));
     }
 
     /**
@@ -96,6 +104,7 @@ class IEImporter extends IECfg
             $this->addStatusMessage(sprintf(_('Načteno %s řádek konfigurace'), count($cfg)), 'success');
         } else {
             $this->addStatusMessage(sprintf(_('konfigurace nebyla načtena'), count($cfg)), 'warning');
+            return 0;
         }
 
         if ($this->userColumn) {

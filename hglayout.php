@@ -13,6 +13,9 @@ $oPage->onlyForLogged();
 
 $hostgroupID = $oPage->getRequestValue('hostgroup_id', 'int');
 $level = $oPage->getRequestValue('level', 'int');
+if (!$level) {
+    $level = 1;
+}
 
 if (is_null($hostgroupID)) {
     $oPage->addStatusMessage(_('Chybné volání mapy skupiny'), 'warning');
@@ -48,18 +51,17 @@ if ($oPage->isPosted()) {
     }
 }
 
-$oPage->addItem(new IEPageTop(_('Mapa skupiny hostů')));
-
+$oPage->addItem(new IEPageTop(_('Mapa skupiny hostů') . ' ' . $hostgroup->getName()));
 
 $oPage->addCss('
 
 #netmap { border: 1px solid gray; margin-left: auto; margin-right: auto;}
-
-     .node {
-        stroke: black;
-        stroke-width: 1.5px;
-        fill: white;
-    }
+.node {
+  cursor: move;
+  fill: #ccc;
+  stroke: #000;
+  stroke-width: 1.5px;
+}
 
     .link {
         fill: none;
@@ -70,9 +72,9 @@ $oPage->addCss('
     }
 
     .label {
-        fill: black;
+//        fill: black;
         font-family: Verdana;
-        font-size: 25px;
+        font-size: 15px;
         text-anchor: middle;
         cursor: pointer;
     }
@@ -84,6 +86,10 @@ $oPage->addCss('
     .active {
         fill: green;
     }
+
+.node.fixed {
+  fill: #f00;
+}
 
     ');
 
@@ -124,7 +130,8 @@ var d3cola = cola.d3adaptor().convergenceThreshold(0.1);
 //            .attr("width", width)
 //            .attr("height", height)
             .attr("id","netmap")
-            .attr("class","levelbg2")
+            .attr("class","levelbg' . $level . '")
+            .attr("style","background-position: center;background-repeat:no-repeat;")
             .attr("pointer-events", "all");
 
         outer.append(\'rect\')
@@ -150,7 +157,7 @@ var d3cola = cola.d3adaptor().convergenceThreshold(0.1);
             .attr(\'markerHeight\', 6)
             .attr(\'orient\', \'auto\')
           .append(\'svg:path\')
-            .attr(\'d\', \'M0,-5L10,0L0,5L2,0\')
+//            .attr(\'d\', \'M0,-5L10,0L0,5L2,0\')
             .attr(\'stroke-width\', \'0px\')
             .attr(\'fill\', \'#000\');
 
@@ -174,9 +181,11 @@ var d3cola = cola.d3adaptor().convergenceThreshold(0.1);
             d3cola
                 .avoidOverlaps(true)
                 .flowLayout(\'x\', 150)
-//                .size([width, height])
+//              .size([width, height])
                 .nodes(nodes)
                 .links(edges)
+                .symmetricDiffLinkLengths(5)
+                .linkDistance(50)
                 .jaccardLinkLengths(150);
 
             var link = vis.selectAll(".link")
@@ -184,12 +193,15 @@ var d3cola = cola.d3adaptor().convergenceThreshold(0.1);
                 .enter().append("path")
                 .attr("class", "link");
 
-            var margin = 10, pad = 12;
+            var margin = 10, pad = 10;
             var node = vis.selectAll(".node")
                 .data(nodes)
-                .enter().append("rect")
+                .enter().append("circle")
                 .attr("class", "node")
-                .attr("rx", 5).attr("ry", 5)
+                //.attr("cx", 5).attr("cy", 5)
+                .attr("r","10")
+                .on("dblclick",  dblclick )
+                .on("dragstart", dragstart)
                 .call(d3cola.drag);
 
             var label = vis.selectAll(".label")
@@ -207,11 +219,12 @@ var d3cola = cola.d3adaptor().convergenceThreshold(0.1);
                     )
                 .text(function (d) { return d.name; })
                 .attr("data-url", function (d) { return d.value.URL; } )
-                .on("dblclick", function(e) { window.location.href=e.value.URL; }  )
+                .on("dblclick",  dblclick )
+                .on("dragstart", dragstart)
                 .call(d3cola.drag)
                 .each(function (d) {
                     var b = this.getBBox();
-                    var extra = 2 * margin + 2 * pad;
+                    var extra = margin + pad;
                     d.width = b.width + extra;
                     d.height = b.height + extra;
                 });
@@ -228,10 +241,18 @@ var d3cola = cola.d3adaptor().convergenceThreshold(0.1);
                     });
                 if (isIE()) link.each(function (d) { this.parentNode.insertBefore(this, this) });
             }
+
+function dblclick(d) {
+  d3.select(this).classed("fixed", d.fixed = false);
+}
+function dragstart(d) {
+  d3.select(this).classed("fixed", d.fixed = true);
+}
+
             d3cola.start(10, 30, 100).on("tick", function () {
-                node.each(function (d) { d.innerBounds = d.bounds.inflate(-margin); })
-                    .attr("x", function (d) { return d.innerBounds.x; })
-                    .attr("y", function (d) { return d.innerBounds.y; })
+                node.each(function (d) { d.innerBounds = d.bounds.inflate(-margin);  })
+                    .attr("cx", function (d) { return d.innerBounds.x })
+                    .attr("cy", function (d) { return d.innerBounds.y })
                     .attr("width", function (d) { return d.innerBounds.width(); })
                     .attr("height", function (d) { return d.innerBounds.height(); });
 
@@ -247,6 +268,7 @@ var d3cola = cola.d3adaptor().convergenceThreshold(0.1);
                     .attr("y", function (d) { return d.y + (margin + pad) / 2 });
 
             }).on("end", routeEdges);
+
         });
         function isIE() { return ((navigator.appName == \'Microsoft Internet Explorer\') || ((navigator.appName == \'Netscape\') && (new RegExp("Trident/.*rv:([0-9]{1,}[\.0-9]{0,})").exec(navigator.userAgent) != null))); }
 
@@ -262,7 +284,7 @@ $levelTabs = new EaseTWBTabs('leveltabs', null);
 $bgimages = $hostgroup->getDataValue('bgimages');
 $levels = array_keys($bgimages);
 if (!is_array($levels) || !count($levels)) {
-    $levels = array('0' => '0');
+    $levels = array('1' => '0');
 }
 
 foreach ($levels as $currentLevel) {

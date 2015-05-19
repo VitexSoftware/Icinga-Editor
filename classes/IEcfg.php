@@ -1130,9 +1130,10 @@ class IEcfg extends EaseBrick
      * Načte konfigurační soubor do pole
      *
      * @param  type $cfgFile
+     * @param IEImporter $importer Objekt importeru
      * @return type
      */
-    public static function readRawConfigFile($cfgFile)
+    public static function readRawConfigFile($cfgFile, $importer = null)
     {
         if (!is_file($cfgFile)) {
             EaseShared::user()->addStatusMessage(_('Očekávám název souboru'), 'warning');
@@ -1140,6 +1141,9 @@ class IEcfg extends EaseBrick
             return null;
         }
         $rawCfg = file($cfgFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        if (count($rawCfg) && is_object($importer)) {
+            $importer->files[] = $cfgFile;
+        }
         $cfg = array();
         foreach ($rawCfg as $rawCfgLine) {
             $rawCfgLine = trim($rawCfgLine);
@@ -1148,11 +1152,11 @@ class IEcfg extends EaseBrick
             }
             if ($rawCfgLine[0] != '#') {
                 if (preg_match('@(cfg_file=)(.*)@', $rawCfgLine, $regs)) {
-                    foreach (self::readRawConfigFile($regs[2]) as $line) {
+                    foreach (self::readRawConfigFile($regs[2], $importer) as $line) {
                         $cfg[] = $line;
                     }
                 } elseif (preg_match('@(cfg_dir=)(.*)@', $rawCfgLine, $regs)) {
-                    foreach (self::readRawConfigDir($regs[2]) as $line) {
+                    foreach (self::readRawConfigDir($regs[2], $importer) as $line) {
                         $cfg[] = $line;
                     }
                 } else {
@@ -1171,17 +1175,18 @@ class IEcfg extends EaseBrick
      * Načte všechny konfiguráky v adresáři
      *
      * @param  string $dirName
+     * @param IEImporter $importer Objekt importeru
      * @return array  pole řádků načtené konfigurace
      */
-    public static function readRawConfigDir($dirName)
+    public static function readRawConfigDir($dirName, $importer = null)
     {
         $cfg = array();
         if (is_dir($dirName)) {
             $d = dir($dirName);
             while (false !== ($entry = $d->read())) {
                 if (substr($entry, -4) == '.cfg') {
-                    foreach (self::readRawConfigFile($dirName . '/' . $entry) as $Line) {
-                        $cfg[] = $Line;
+                    foreach (self::readRawConfigFile($dirName . '/' . $entry, $importer) as $line) {
+                        $cfg[] = $line;
                     }
                 }
             }

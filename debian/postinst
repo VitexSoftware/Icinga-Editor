@@ -50,7 +50,7 @@ if [ ! -f $IECFG ] ; then
     echo "define('DB_SERVER_USERNAME', '$dbuser');" >> $IECFG 
     echo "define('DB_SERVER_PASSWORD', '$dbpass');" >> $IECFG 
     echo "define('DB_DATABASE', '$dbname');" >> $IECFG 
-    echo "define('DB_PREFIX', 'iciedit_');" >> $IECFG 
+    echo "define('DB_PREFIX', '');" >> $IECFG 
     echo "define('LOG_DIRECTORY', '/var/tmp/');" >> $IECFG 
     echo "define('CFG_GENERATED', '/etc/icinga/generated/');" >> $IECFG 
 
@@ -101,6 +101,7 @@ if [ ! -f $IECFG ] ; then
                 fi
             fi
 
+            iecfgimporter.php
     fi
 
 fi
