@@ -12,16 +12,21 @@ require_once 'includes/IEInit.php';
 
 $hostgroupID = $oPage->getRequestValue('hostgroup_id', 'int');
 
+$format = $oPage->getRequestValue('format');
+if (!$format) {
+    $format = 'dot';
+}
+
 
 $oPage->onlyForLogged();
 
-if (is_null($hostgroupID)) {
+if (is_null($hostgroupID) || ($hostgroupID == 'null')) {
     $gv = new IEHostMap;
 } else {
     $gv = new IEHostgroupMap($hostgroupID);
 }
 error_reporting(E_ALL ^ E_STRICT);
 
-$gv->image('dot');
+$gv->image($format);
 
 

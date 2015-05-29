@@ -55,6 +55,12 @@ class IEDataGrid extends EaseDataGrid
     public $dataSource = null;
 
     /**
+     * Klik na řádku vede na editor záznamu
+     * @var type
+     */
+    public $dblclk2edit = true;
+
+    /**
      * Zdroj dat pro flexigrid
      *
      * @param string $name ID elementu
@@ -339,6 +345,14 @@ class IEDataGrid extends EaseDataGrid
             $this->options['qtype'] = key($this->select);
         }
 
+        if ($this->dblclk2edit) {
+            $this->options['onDoubleClick'] = 'function(g) {
+                    var id = $(g).attr(\'id\');
+                    id = id.substring(id.lastIndexOf(\'row\')+3);
+                    $(location).attr(\'href\',\'' . $this->dataSource->keyword . '.php?' . $this->dataSource->getMyKeyColumn() . '=\' +id);
+
+            }';
+        }
         $this->options['getGridClass'] = 'function(g) { this.g=g; return g; }';
         EaseShared::webPage()->addJavaScript("\n"
             . '$(\'#' . $grid_id . '\').flexigrid({ ' . EaseJQueryPart::partPropertiesToString($this->options) . ' }); ' . $grid_js, null, true);

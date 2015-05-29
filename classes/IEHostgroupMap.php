@@ -27,11 +27,22 @@ class IEHostgroupMap extends IEHostMap
         $members = $this->hostgroup->getDataValue('members');
         $host = new IEHost();
         $hosts = $host->getColumnsFromMySQL(
-            array('alias', 'address', 'parents', 'notifications_enabled', 'active_checks_enabled', 'passive_checks_enabled', $host->myCreateColumn, $host->myLastModifiedColumn, $host->nameColumn, $host->myKeyColumn), 'host_id IN ( ' . implode(',', array_keys($members)) . ' )'
+            array('alias', 'address', 'parents', 'notifications_enabled', 'active_checks_enabled', 'passive_checks_enabled', '3d_coords', $host->myCreateColumn, $host->myLastModifiedColumn, $host->nameColumn, $host->myKeyColumn), 'host_id IN ( ' . implode(',', array_keys($members)) . ' )'
         );
 
 
         foreach ($hosts as $hostNo => $host_info) {
+
+            if (strstr($host_info['3d_coords'], ',')) {
+                list($x, $y, $z) = explode(',', $host_info['3d_coords']);
+                if (!$z) {
+                    $z = 1;
+                }
+            } else {
+                $x = $y = 0;
+                $z = 1;
+            }
+
             if (strlen(trim($host_info['parents']))) {
                 $host_info['parents'] = unserialize($host_info['parents']);
             }
@@ -51,17 +62,16 @@ class IEHostgroupMap extends IEHostMap
 
 
             $this->addNode($name, array(
-//              'URL' => 'services.php?' . $host_info['host_id'],
               'id' => 'host_' . $host_info[$host->myKeyColumn],
-//              'fontsize' => '10',
-//              'fillcolor' => $color,
+              'node_id' => $host_info[$host->myKeyColumn],
               'color' => $color,
-//              'height' => '0.2',
-//              'width' => '2.1',
-//              'fixedsize' => false,
+              'x' => $x,
+              'y' => $y,
+              'z' => $z,
+              'fixed' => boolval($x + $y),
               'shape' => 'point',
               'style' => 'filled',
-              'tooltip' => $name,
+              'tooltip' => $alias,
               'label' => $name)
             );
 

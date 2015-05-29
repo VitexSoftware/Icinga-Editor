@@ -66,7 +66,11 @@ class IEHostgroup extends IECfg
         'title' => 'URL externích poznámek'),
       'action_url' => array(
         'severity' => 'advanced',
-        'title' => 'adresa doplnujících akcí')
+        'title' => 'adresa doplnujících akcí'),
+      'bgimages' => array(
+        'severity' => 'hidden',
+        'title' => 'obrázky pozadí mapy sítě',
+        'refdata' => null)
     );
 
     /**
@@ -173,6 +177,21 @@ class IEHostgroup extends IECfg
         }
         $bgs[$level] = 'data:' . $type . ';base64,' . base64_encode(file_get_contents($tmpfilename));
         return $this->setDataValue('bgimages', $bgs);
+    }
+
+    /**
+     * Vrací počet levelů mapy pro danou hostgrupu
+     * 
+     * @return array
+     */
+    public function getLevels()
+    {
+        $bgimages = $this->getDataValue('bgimages');
+        $levels = array_keys($bgimages);
+        if (!is_array($levels) || !count($levels)) {
+            $levels = array('1' => '0');
+        }
+        return $levels;
     }
 
 }
