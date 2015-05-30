@@ -7,7 +7,7 @@ Priority: optional
 Homepage: http://vitexsoftware.cz/monitoring.php
 
 Package: icinga-editor
-Depends: ${misc:Depends},libjs-twitter-bootstrap, ease-framework, dbconfig-common , php-mail, php5-curl, icinga, mtr-tiny, php-image-graphviz
+Depends: ${misc:Depends},libjs-twitter-bootstrap, ease-framework, dbconfig-common , php-mail, php5-curl, icinga, mtr-tiny, php-image-graphviz, libjs-d3js
 Recommends: mysql-server,icinga-web, icinga-web-config-icinga, graphicsmagick-imagemagick-compat, pnp4icinga
 Architecture: all
 Section: web

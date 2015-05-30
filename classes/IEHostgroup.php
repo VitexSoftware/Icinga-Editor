@@ -31,7 +31,7 @@ class IEHostgroup extends IECfg
       'notes' => 'TEXT',
       'notes_url' => 'VARCHAR(255)',
       'action_url' => 'VARCHAR(255)',
-      'bgimages' => 'IDLIST'
+      'bgimages' => 'ARRAY'
     );
     public $keywordsInfo = array(
       'hostgroup_name' => array(
@@ -181,7 +181,7 @@ class IEHostgroup extends IECfg
 
     /**
      * Vrací počet levelů mapy pro danou hostgrupu
-     * 
+     *
      * @return array
      */
     public function getLevels()

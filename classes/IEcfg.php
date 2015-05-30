@@ -684,6 +684,7 @@ class IEcfg extends EaseBrick
 //                $data[$keyWord] = null;
 //            }
             switch ($columnType) {
+                case 'ARRAY':
                 case 'IDLIST':
                     if (isset($data[$keyWord]) && is_array($data[$keyWord])) {
                         $data[$keyWord] = serialize($data[$keyWord]);
@@ -750,6 +751,7 @@ class IEcfg extends EaseBrick
         foreach ($data as $recordID => $record) {
             foreach ($this->useKeywords as $keyWord => $columnType) {
                 switch ($columnType) {
+                    case 'ARRAY':
                     case 'IDLIST':
                         if (isset($data[$recordID][$keyWord]) && (substr($data[$recordID][$keyWord], 0, 2) == 'a:')) {
                             $data[$recordID][$keyWord] = unserialize($data[$recordID][$keyWord]);
