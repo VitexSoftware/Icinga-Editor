@@ -13,9 +13,6 @@ $oPage->onlyForLogged();
 
 $hostgroupID = $oPage->getRequestValue('hostgroup_id', 'int');
 $level = $oPage->getRequestValue('level', 'int');
-if (!$level) {
-    $level = 1;
-}
 
 if (is_null($hostgroupID)) {
     $oPage->addStatusMessage(_('Chybné volání mapy skupiny'), 'warning');
@@ -48,6 +45,22 @@ if ($oPage->isPosted()) {
             }
             $oPage->addStatusMessage(_('toto není obrázek požadovaného typu'), 'warning');
         }
+    }
+} else {
+
+    switch ($oPage->getRequestValue('action')) {
+        case 'delete':
+            $backs = $hostgroup->getDataValue('bgimages');
+            unset($backs[$level]);
+            $hostgroup->setDataValue('bgimages', $backs);
+            if ($hostgroup->saveToMySQL()) {
+                $hostgroup->addStatusMessage(_('Vrstva byla odstraněna'), 'success');
+            }
+            $level = 0;
+            break;
+
+        default:
+            break;
     }
 }
 
@@ -89,13 +102,8 @@ $oPage->addCss('
 }
     ');
 
-$oPage->addCss('
-    ');
 
-
-
-$oPage->includeJavascript('js/d3.v3.js');
-$oPage->includeJavaScript('');
+$oPage->includeJavascript('/javascript/d3.js');
 
 $oPage->addJavascript("$('#netmap').height(function(index, height) {
     return window.innerHeight - $(this).offset().top - 25;
@@ -107,6 +115,7 @@ $oPage->addJavascript("$('#netmap').height(function(index, height) {
 
 
 $levelTabs = new EaseTWBTabs('leveltabs', null);
+$levelTabs->addTab('*', _('Zobrazit všechny vrstvy / patra'), (0 == $level));
 
 //$('#" . $levelTabs->partName . " li:eq(" . $level - 1 . ") a').tab('show')
 
@@ -115,7 +124,6 @@ $oPage->addJavaScript("
 $('#" . $levelTabs->partName . " a').click(function (e) {
     e.preventDefault();
     var level = $(this).html();
-    $('#netmal').attr( 'class', 'levelbg' + level );
     $(this).tab('show');
     showLevelNodes( level );
 });
@@ -136,6 +144,8 @@ foreach ($levels as $currentLevel) {
     $bgImgUplForm->addItem(new EaseHtmlInputHiddenTag('level', $currentLevel));
     $bgImgUplForm->addItem(new EaseHtmlInputHiddenTag('hostgroup_id', $hostgroupID));
     $bgImgUplForm->addItem(new EaseTWSubmitButton(_('Uložit'), 'success'));
+
+    $bgImgUplForm->addItem(new EaseTWBLinkButton('?hostgroup_id=' . $hostgroupID . '&level=' . $currentLevel . '&action=delete', _('Smazat'), 'danger'));
 
     $levelTab->addItem(new EaseTWBPanel(sprintf(_('Obrázek pozadí pro úroveň %s'), $currentLevel), 'info', $bgImgUplForm));
     if (isset($bgimages[$currentLevel])) {

@@ -29,7 +29,7 @@ var svg = d3.select("body").append("svg")
         .attr("id", "netmap")
         .attr("height", height)
         .attr("class", "levelbg" + level)
-        .attr("style", "background-position: center;background-repeat:no-repeat;")
+        .attr("style", "background-position: center;background-repeat:no-repeat; background-size:100%;")
 
 
 var link = svg.selectAll(".link"),
@@ -154,4 +154,5 @@ function switchNodeLevel( input ){
 function showLevelNodes( level ) {
     $(".node" ).css('visibility','hidden');
     $("[data-level='" + level +"']" ).css('visibility','visible');
+    $("#netmap").attr("class", "levelbg" + level);
 }

@@ -287,7 +287,7 @@ class IEcfg extends EaseBrick
                         $columnValue = join(',', str_split(str_replace(',', '', $columnValue)));
                     }
 
-                    if (!strlen(trim($columnValue))) {
+                    if (is_array($columnValue) || !strlen(trim($columnValue))) {
                         continue;
                     }
 
