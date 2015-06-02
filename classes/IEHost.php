@@ -360,9 +360,6 @@ class IEHost extends IECfg
         }
 
 
-
-
-
         if ($delAll) {
             return parent::delete();
         }

@@ -8,6 +8,28 @@ if (!level) {
     level = 1;
 }
 
+function maximizeDiv(div) {
+    $(div).height(function (index, height) {
+        return window.innerHeight - $(this).offset().top - 25;
+    }).width(function (index, width) {
+        return window.innerWidth - $(this).offset().left - 20;
+    }).css('background-size',
+            function () {
+                return $(div).width() + "px " + $(div).height() + "px";
+            }
+    );
+}
+
+function xpromile() {
+    xsize = $('#netmap').width();
+    return xsize / 1000;
+}
+
+function ypromile() {
+    ysize = $('#netmap').height();
+    return ysize / 1000;
+}
+
 var margin = 20, pad = 20;
 
 var width = 960,
@@ -29,7 +51,7 @@ var svg = d3.select("body").append("svg")
         .attr("id", "netmap")
         .attr("height", height)
         .attr("class", "levelbg" + level)
-        .attr("style", "background-position: center;background-repeat:no-repeat; background-size:100%;")
+        .attr("style", "background-position: center;background-repeat:no-repeat;");
 
 
 var link = svg.selectAll(".link"),
@@ -37,6 +59,14 @@ var link = svg.selectAll(".link"),
         label = svg.selectAll(".label");
 
 d3.json("mapsource.php?format=json&hostgroup_id=" + hostgroup_id, function (error, graph) {
+    var widthpercent = xpromile();
+    var heihtpercent = ypromile();
+
+    $.each(graph.nodes, function (index, nodeinfo) {
+        graph.nodes[index].x = nodeinfo.x * widthpercent;
+        graph.nodes[index].y = nodeinfo.y * heihtpercent;
+    });
+
     force
             .nodes(graph.nodes)
             .links(graph.links)
@@ -55,13 +85,17 @@ d3.json("mapsource.php?format=json&hostgroup_id=" + hostgroup_id, function (erro
             .on("dblclick", dblclick)
             .call(drag);
 
-//    label = label.data(graph.nodes)
-//            .enter()
-//            .append("text")
-//            .attr("class", 'label')
-//            .text(function (d) {
-//                return d.label;
-//            });
+    resize();
+    d3.select(window).on("resize", resize);
+
+
+    label = label.data(graph.nodes)
+            .enter()
+            .append("text")
+            .attr("class", 'label')
+            .text(function (d) {
+                return d.label;
+            });
 
 });
 
@@ -99,15 +133,19 @@ function tick() {
                 }
             });
 
-//    label
-//            .attr("x", function (d) {
-//                return d.x;
-//            })
-//            .attr("y", function (d) {
-//                return d.y + (margin + pad) / 2
-//            });
+    label
+            .attr("x", function (d) {
+                return d.x;
+            })
+            .attr("y", function (d) {
+                return d.y + (margin + pad) / 2
+            });
 
-
+    function resize() {
+        width = window.innerWidth, height = window.innerHeight;
+        svg.attr("width", width).attr("height", height);
+        force.size([width, height]).resume();
+    }
 }
 
 function dblclick(d) {
@@ -124,35 +162,37 @@ function dragstart(d) {
 }
 
 function dragend(d) {
-    $.post("nodeproperties.php", {host_id: d.id, x: d.x, y: d.y});
+    xpos = d.x / xpromile();
+    ypos = d.y / ypromile();
+    $.post("nodeproperties.php", {host_id: d.id, x: xpos, y: ypos});
 }
 
 function mouseover(d) {
     var nodepos = $("[data-id='" + d.node_id + "']").position();
-    $('#nodeinfo').html( '' );
+    $('#nodeinfo').html('');
     $('#nodeinfo').load("nodeproperties.php?hostgroup_id=" + hostgroup_id + "&host_id=" + d.id).css({
-        "margin-left":"10px",
-        "margin-top":"10px",
+        "margin-left": "10px",
+        "margin-top": "10px",
         "padding": "3px",
         "border-radius": "10px",
-        "background":"lightgray",
-        "border":"1px solid #112244",
-        "position":"absolute",
-        "z-index":"10",
+        "background": "lightgray",
+        "border": "1px solid #112244",
+        "position": "absolute",
+        "z-index": "10",
         "top": nodepos.top,
         "left": nodepos.left
     }).show();
 }
 
 
-function switchNodeLevel( input ){
+function switchNodeLevel(input) {
     var level = $(input).attr('data-level');
     var host_id = $(input).attr('data-host_id');
-    $.post("nodeproperties.php", {host_id: host_id, z: level });
+    $.post("nodeproperties.php", {host_id: host_id, z: level});
 }
 
-function showLevelNodes( level ) {
-    $(".node" ).css('visibility','hidden');
-    $("[data-level='" + level +"']" ).css('visibility','visible');
+function showLevelNodes(level) {
+    $(".node").css('visibility', 'hidden');
+    $("[data-level='" + level + "']").css('visibility', 'visible');
     $("#netmap").attr("class", "levelbg" + level);
 }

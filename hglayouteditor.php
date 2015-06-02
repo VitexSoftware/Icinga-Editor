@@ -49,6 +49,25 @@ if ($oPage->isPosted()) {
 } else {
 
     switch ($oPage->getRequestValue('action')) {
+        case 'arrange':
+            $members = $hostgroup->getMembers();
+            if ($members) {
+                $x = 50;
+                $y = 50;
+                $node = new IEHost;
+                foreach ($members as $member_id => $member) {
+                    $node->updateToMySQL(array($node->myKeyColumn => $member_id, '3d_coords' => "$x,$y,0"));
+                    $y = $y + 50;
+                    if ($y > 100) {
+                        $y = 50;
+                        $x = $x + 50;
+                    }
+                }
+                $hostgroup->addStatusMessage(sprintf(_('%s Nodů rozprostřeno'), count($members)), 'success');
+                $oPage->redirect('?hostgroup_id=' . $hostgroupID);
+                exit();
+            }
+            break;
         case 'delete':
             $backs = $hostgroup->getDataValue('bgimages');
             unset($backs[$level]);
@@ -57,6 +76,8 @@ if ($oPage->isPosted()) {
                 $hostgroup->addStatusMessage(_('Vrstva byla odstraněna'), 'success');
             }
             $level = 0;
+            $oPage->redirect('?hostgroup_id=' . $hostgroupID);
+            exit();
             break;
 
         default:
@@ -105,17 +126,18 @@ $oPage->addCss('
 
 $oPage->includeJavascript('/javascript/d3.js');
 
-$oPage->addJavascript("$('#netmap').height(function(index, height) {
-    return window.innerHeight - $(this).offset().top - 25;
-}).width( function(index, width) {
-    return window.innerWidth - $(this).offset().left - 20;
-} );", null, true);
+$oPage->addJavascript("maximizeDiv('#netmap');
+$( window ).resize(function() {
+    maximizeDiv('#netmap');
+});
+", null, true);
 
 
 
 
 $levelTabs = new EaseTWBTabs('leveltabs', null);
-$levelTabs->addTab('*', _('Zobrazit všechny vrstvy / patra'), (0 == $level));
+$zeroLevel = array(_('Zobrazit všechny vrstvy / patra'), new EaseTWBLinkButton('?hostgroup_id=' . $hostgroupID . '&action=arrange', _('Rozprostřít'), 'warning btn-xs'));
+$levelTabs->addTab('*', $zeroLevel, (0 == $level));
 
 //$('#" . $levelTabs->partName . " li:eq(" . $level - 1 . ") a').tab('show')
 
