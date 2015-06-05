@@ -13,6 +13,7 @@ $oPage->onlyForLogged();
 
 $hostgroupID = $oPage->getRequestValue('hostgroup_id', 'int');
 $level = $oPage->getRequestValue('level', 'int');
+$name = $oPage->getRequestValue('name');
 
 if (is_null($hostgroupID)) {
     $oPage->addStatusMessage(_('Chybné volání mapy skupiny'), 'warning');
@@ -33,9 +34,9 @@ if ($oPage->isPosted()) {
         }
     }
 
-    if (isset($tmpfilename) || ($_FILES['bgimage']['error'] = 0)) {
+    if ((isset($tmpfilename) && strlen($tmpfilename)) || ($_FILES['bgimage']['error'] = 0)) {
         if ($tmpfilename && IEIconSelector::imageTypeOK($tmpfilename)) {
-            $newbackground = $hostgroup->saveBackground($tmpfilename, $level);
+            $newbackground = $hostgroup->saveBackground($tmpfilename, $level, $name);
             if ($newbackground) {
                 $hostgroup->saveToMySQL();
             }
@@ -45,10 +46,18 @@ if ($oPage->isPosted()) {
             }
             $oPage->addStatusMessage(_('toto není obrázek požadovaného typu'), 'warning');
         }
+    } else {
+        if ($name && $level) {
+            $hostgroup->renameBackground($level, $name);
+        }
     }
 } else {
 
     switch ($oPage->getRequestValue('action')) {
+        case 'clean':
+            $hostgroup->cleanBackgrounds();
+            $oPage->redirect('?hostgroup_id=' . $hostgroupID);
+            break;
         case 'arrange':
             $members = $hostgroup->getMembers();
             if ($members) {
@@ -69,13 +78,7 @@ if ($oPage->isPosted()) {
             }
             break;
         case 'delete':
-            $backs = $hostgroup->getDataValue('bgimages');
-            unset($backs[$level]);
-            $hostgroup->setDataValue('bgimages', $backs);
-            if ($hostgroup->saveToMySQL()) {
-                $hostgroup->addStatusMessage(_('Vrstva byla odstraněna'), 'success');
-            }
-            $level = 0;
+            $hostgroup->deleteBackground($level);
             $oPage->redirect('?hostgroup_id=' . $hostgroupID);
             exit();
             break;
@@ -133,35 +136,50 @@ $( window ).resize(function() {
 ", null, true);
 
 
+$levels = $hostgroup->getLevels();
+$bgimages = $hostgroup->getBackgrounds();
+foreach ($bgimages as $lvl => $bgimage) {
+    if ($lvl) {
+        $oPage->addCss('.levelbg' . $lvl . ' { background-image: url("' . $bgimage . '"); } ');
+    }
+}
 
 
 $levelTabs = new EaseTWBTabs('leveltabs', null);
-$zeroLevel = array(_('Zobrazit všechny vrstvy / patra'), new EaseTWBLinkButton('?hostgroup_id=' . $hostgroupID . '&action=arrange', _('Rozprostřít'), 'warning btn-xs'));
-$levelTabs->addTab('*', $zeroLevel, (0 == $level));
+$zeroLevel = array(
+  new EaseTWBLinkButton('?hostgroup_id=' . $hostgroupID . '&action=arrange', _('Rozprostřít'), 'warning btn-xs')
+);
+
+
+if (count($levels) - 1) {
+    $zeroLevel[] = new EaseTWBLinkButton('?hostgroup_id=' . $hostgroupID . '&action=clean', _('Odstranit pozadí'), 'danger btn-xs');
+}
+
+$levelTabs->addTab(_('Vše'), $zeroLevel, (0 == $level));
 
 //$('#" . $levelTabs->partName . " li:eq(" . $level - 1 . ") a').tab('show')
 
 $oPage->addJavaScript("
 
+$.each($('#" . $levelTabs->partName . " a'), function( index, a ) { $(a).attr('data-id', index); }  );
+
 $('#" . $levelTabs->partName . " a').click(function (e) {
     e.preventDefault();
-    var level = $(this).html();
+    var level = $(this).attr('data-id');
     $(this).tab('show');
-    showLevelNodes( level );
+    showLevel( level );
 });
 
 ", null, true);
 
-
-
-
-$bgimages = $hostgroup->getDataValue('bgimages');
-$levels = $hostgroup->getLevels();
-
-foreach ($levels as $currentLevel) {
-    $levelTab = $levelTabs->addTab($currentLevel, null, ($currentLevel == $level));
+foreach ($levels as $currentLevel => $levelName) {
+    if (!$currentLevel) {
+        continue;
+    }
+    $levelTab = $levelTabs->addTab($levelName, null, ($currentLevel == $level));
 
     $bgImgUplForm = new EaseTWBForm('bgImgUplForm' . $currentLevel, null, 'POST', null, array('enctype' => 'multipart/form-data', 'class' => 'form-inline'));
+    $bgImgUplForm->addInput(new EaseHtmlInputTextTag('name', $levelName), _('Jméno vrstvy'));
     $bgImgUplForm->addInput(new EaseHtmlInputFileTag('bgimage'), _('Obrázek'));
     $bgImgUplForm->addItem(new EaseHtmlInputHiddenTag('level', $currentLevel));
     $bgImgUplForm->addItem(new EaseHtmlInputHiddenTag('hostgroup_id', $hostgroupID));
@@ -169,18 +187,16 @@ foreach ($levels as $currentLevel) {
 
     $bgImgUplForm->addItem(new EaseTWBLinkButton('?hostgroup_id=' . $hostgroupID . '&level=' . $currentLevel . '&action=delete', _('Smazat'), 'danger'));
 
-    $levelTab->addItem(new EaseTWBPanel(sprintf(_('Obrázek pozadí pro úroveň %s'), $currentLevel), 'info', $bgImgUplForm));
-    if (isset($bgimages[$currentLevel])) {
-        $oPage->addCss('.levelbg' . $currentLevel . ' { background-image: url("' . $bgimages[$currentLevel] . '"); } ');
-    }
+    $levelTab->addItem(new EaseTWBPanel(sprintf(_('Obrázek pozadí pro úroveň %s'), $levelName), 'info', $bgImgUplForm));
 }
 
-$levelTab = $levelTabs->addTab( ++$currentLevel);
+$levelTab = $levelTabs->addTab(++$currentLevel . EaseTWBPart::GlyphIcon('plus'));
 $bgImgUplForm = new EaseTWBForm('bgImgUplForm' . $currentLevel, null, 'POST', null, array('enctype' => 'multipart/form-data', 'class' => 'form-inline'));
+$bgImgUplForm->addInput(new EaseHtmlInputTextTag('name', $currentLevel), _('Jméno vrstvy'));
 $bgImgUplForm->addInput(new EaseHtmlInputFileTag('bgimage'), _('Obrázek'));
 $bgImgUplForm->addItem(new EaseHtmlInputHiddenTag('level', $currentLevel));
 $bgImgUplForm->addItem(new EaseHtmlInputHiddenTag('hostgroup_id', $hostgroupID));
-$bgImgUplForm->addItem(new EaseTWSubmitButton(_('Uložit'), 'success'));
+$bgImgUplForm->addItem(new EaseTWSubmitButton(_('Přidat'), 'success'));
 
 $levelTab->addItem(new EaseTWBPanel(sprintf(_('Obrázek pozadí pro úroveň %s'), $currentLevel), 'info', $bgImgUplForm));
 

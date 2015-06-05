@@ -325,6 +325,48 @@ ALTER TABLE `stemplate`
 MODIFY `stemplate_id` int(11) NOT NULL AUTO_INCREMENT;
 
 
+CREATE TABLE IF NOT EXISTS `coordinate` (
+  `coordinate_id` int(10) unsigned NOT NULL,
+  `host_id` int(10) unsigned NOT NULL,
+  `hostgroup_id` int(10) unsigned DEFAULT NULL,
+  `x` int(11) DEFAULT NULL,
+  `y` int(11) DEFAULT NULL,
+  `z` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `hgbgimage` (
+`hgbgimage_id` int(10) unsigned NOT NULL,
+  `hostgroup_id` int(10) unsigned NOT NULL,
+  `level` int(11) NOT NULL,
+  `name` varchar(128) CHARACTER SET utf8 COLLATE utf8_czech_ci NOT NULL,
+  `image` longtext NOT NULL COMMENT 'obrázek',
+  `DatCreate` datetime NOT NULL,
+  `DatSave` datetime NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `script` (
+`script_id` int(11) NOT NULL,
+  `filename` varchar(255) NOT NULL,
+  `body` text NOT NULL,
+  `platform` varchar(64) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='skripty pro deploy';
+
+ALTER TABLE `coordinate`
+ ADD PRIMARY KEY (`coordinate_id`), ADD KEY `host_id` (`host_id`), ADD KEY `hostgroup_id` (`hostgroup_id`);
+
+ALTER TABLE `hgbgimage`
+ ADD PRIMARY KEY (`hgbgimage_id`);
+
+ALTER TABLE `script`
+ ADD PRIMARY KEY (`script_id`);
+
+ALTER TABLE `hgbgimage`
+MODIFY `hgbgimage_id` int(10) unsigned NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `script`
+MODIFY `script_id` int(11) NOT NULL AUTO_INCREMENT;
+
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

@@ -167,16 +167,33 @@ class IEHostgroup extends IECfg
      * @param string $tmpfilename
      * @param int    $level
      */
-    public function saveBackground($tmpfilename, $level)
+    public function saveBackground($tmpfilename, $level, $name = null)
     {
+        if (is_null($name)) {
+            $name = $level;
+        }
+        $hgbgimage = new IEHGBgImage;
+        $hgbgimage->setDataValue('level', $level);
+        $hgbgimage->setDataValue('name', $name);
+        $hgbgimage->setDataValue('hostgroup_id', $this->getId());
+        $exist = $hgbgimage->getColumnsFromMySQL($hgbgimage->getMyKeyColumn(), $hgbgimage->getData());
+        if (isset($exist[$hgbgimage->getMyKeyColumn()])) {
+            $hgbgimage->setMyKey($exist[$hgbgimage->getMyKeyColumn()]);
+        }
+
         $finfo = new finfo(FILEINFO_MIME);
         list($type, $encoding) = explode(';', $finfo->file($tmpfilename));
-        $bgs = $this->getDataValue('bgimages');
-        if (!is_array($bgs)) {
-            $bgs = array();
+
+        $bgdata = 'data:' . $type . ';base64,' . base64_encode(file_get_contents($tmpfilename));
+
+        if ($hgbgimage->getId()) {
+            $result = $hgbgimage->updateToMySQL(array('image' => $bgdata));
+        } else {
+            $hgbgimage->setDataValue('image', $bgdata);
+            $result = $hgbgimage->insertToMySQL();
         }
-        $bgs[$level] = 'data:' . $type . ';base64,' . base64_encode(file_get_contents($tmpfilename));
-        return $this->setDataValue('bgimages', $bgs);
+
+        return $result;
     }
 
     /**
@@ -186,12 +203,88 @@ class IEHostgroup extends IECfg
      */
     public function getLevels()
     {
-        $bgimages = $this->getDataValue('bgimages');
-        $levels = array_keys($bgimages);
-        if (!is_array($levels) || !count($levels)) {
-            $levels = array('1' => '0');
+        $hgbgimage = new IEHGBgImage;
+
+        $levels = array(0 => _('Vše'));
+
+        $lnames = $hgbgimage->getColumnsFromMySQL(array($hgbgimage->nameColumn), array('hostgroup_id' => $this->getId()));
+        if ($lnames) {
+            foreach ($lnames as $lname) {
+                $levels[] = $lname[$hgbgimage->nameColumn];
+            }
         }
+
         return $levels;
+    }
+
+    /**
+     * Odstraní obrázky pozadí hostgrupy
+     *
+     * @return boolean
+     */
+    public function cleanBackgrounds()
+    {
+        $hgbgimage = new IEHGBgImage;
+        $hgbgimage->setDataValue('hostgroup_id', $this->getId());
+        $deleted = $hgbgimage->deleteFromMySQL();
+        if ($deleted) {
+            $this->addStatusMessage(('pozadí odstraněna'), 'success');
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Smaže vrstvu pozadí
+     *
+     * @param int $level
+     * @return boolean
+     */
+    public function deleteBackground($level)
+    {
+        $hgbgimage = new IEHGBgImage;
+        $hgbgimage->setDataValue('hostgroup_id', $this->getId());
+        $hgbgimage->setDataValue('level', $level);
+        if ($hgbgimage->deleteFromMySQL()) {
+            $this->addStatusMessage(sprintf(_('pozadí bylo odstraněno')), 'success');
+            return TRUE;
+        }
+        return false;
+    }
+
+    public function getBackgrounds()
+    {
+        $hgbgimage = new IEHGBgImage;
+
+        $levels = array(0 => null);
+
+        $lnames = $hgbgimage->getColumnsFromMySQL(array('image'), array('hostgroup_id' => $this->getId()));
+        if ($lnames) {
+            foreach ($lnames as $lname) {
+                $levels[] = $lname['image'];
+            }
+        }
+
+        return $levels;
+    }
+
+    /**
+     * Přejmenuje vrstvu pozadí hostgrupy
+     *
+     * @param int $level
+     * @param string $name
+     * @return int
+     */
+    public function renameBackground($level, $name)
+    {
+        $hgbgimage = new IEHGBgImage;
+        $id = $hgbgimage->myDbLink->queryToValue('SELECT ' . $hgbgimage->myKeyColumn . ' FROM ' . $hgbgimage->myTable . ' WHERE ' . $this->myKeyColumn . ' = ' . $this->getId() . ' AND level=' . $level);
+        if (!is_null($id)) {
+            $hgbgimage->setMyKey($id);
+            $hgbgimage->setDataValue('name', $name);
+            return $hgbgimage->updateToMySQL();
+        }
     }
 
 }

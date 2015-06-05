@@ -85,8 +85,8 @@ d3.json("mapsource.php?format=json&hostgroup_id=" + hostgroup_id, function (erro
             .on("dblclick", dblclick)
             .call(drag);
 
-    resize();
-    d3.select(window).on("resize", resize);
+//    resize();
+//    d3.select(window).on("resize", resize);
 
 
     label = label.data(graph.nodes)
@@ -191,7 +191,7 @@ function switchNodeLevel(input) {
     $.post("nodeproperties.php", {host_id: host_id, z: level});
 }
 
-function showLevelNodes(level) {
+function showLevel(level) {
     $(".node").css('visibility', 'hidden');
     $("[data-level='" + level + "']").css('visibility', 'visible');
     $("#netmap").attr("class", "levelbg" + level);
