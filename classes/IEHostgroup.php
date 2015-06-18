@@ -85,18 +85,18 @@ class IEHostgroup extends IECfg
      */
     public function deleteHost($hostname)
     {
-        $MemberOf = EaseShared::myDbLink()->queryToArray('SELECT ' . $this->getmyKeyColumn() . ',' . $this->nameColumn . ' FROM ' . $this->myTable . ' WHERE members LIKE \'%"' . $hostname . '"%\' ', $this->getmyKeyColumn());
-        foreach ($MemberOf as $GroupID => $Group) {
-            $Found = false;
-            $this->loadFromMySQL($GroupID);
-            foreach ($this->data['members'] as $ID => $Member) {
-                if ($Member == $hostname) {
-                    $Found = true;
+        $memberOf = EaseShared::myDbLink()->queryToArray('SELECT ' . $this->getmyKeyColumn() . ',' . $this->nameColumn . ' FROM ' . $this->myTable . ' WHERE members LIKE \'%"' . $hostname . '"%\' ', $this->getmyKeyColumn());
+        foreach ($memberOf as $groupID => $group) {
+            $found = false;
+            $this->loadFromMySQL($groupID);
+            foreach ($this->data['members'] as $ID => $member) {
+                if ($member == $hostname) {
+                    $found = true;
                     unset($this->data['members'][$ID]);
-                    $this->addStatusMessage(sprintf(_(' %s byl odstraněn ze skupiny %s '), $hostname, $Group[$this->nameColumn]));
+                    $this->addStatusMessage(sprintf(_(' %s byl odstraněn ze skupiny %s '), $hostname, $group[$this->nameColumn]));
                 }
             }
-            if ($Found) {
+            if ($found) {
                 $this->saveToMySQL();
             }
         }
@@ -167,14 +167,9 @@ class IEHostgroup extends IECfg
      * @param string $tmpfilename
      * @param int    $level
      */
-    public function saveBackground($tmpfilename, $level, $name = null)
+    public function saveBackground($tmpfilename)
     {
-        if (is_null($name)) {
-            $name = $level;
-        }
         $hgbgimage = new IEHGBgImage;
-        $hgbgimage->setDataValue('level', $level);
-        $hgbgimage->setDataValue('name', $name);
         $hgbgimage->setDataValue('hostgroup_id', $this->getId());
         $exist = $hgbgimage->getColumnsFromMySQL($hgbgimage->getMyKeyColumn(), $hgbgimage->getData());
         if (isset($exist[$hgbgimage->getMyKeyColumn()])) {
@@ -194,27 +189,6 @@ class IEHostgroup extends IECfg
         }
 
         return $result;
-    }
-
-    /**
-     * Vrací počet levelů mapy pro danou hostgrupu
-     *
-     * @return array
-     */
-    public function getLevels()
-    {
-        $hgbgimage = new IEHGBgImage;
-
-        $levels = array(0 => _('Vše'));
-
-        $lnames = $hgbgimage->getColumnsFromMySQL(array($hgbgimage->nameColumn), array('hostgroup_id' => $this->getId()));
-        if ($lnames) {
-            foreach ($lnames as $lname) {
-                $levels[] = $lname[$hgbgimage->nameColumn];
-            }
-        }
-
-        return $levels;
     }
 
     /**
@@ -245,7 +219,6 @@ class IEHostgroup extends IECfg
     {
         $hgbgimage = new IEHGBgImage;
         $hgbgimage->setDataValue('hostgroup_id', $this->getId());
-        $hgbgimage->setDataValue('level', $level);
         if ($hgbgimage->deleteFromMySQL()) {
             $this->addStatusMessage(sprintf(_('pozadí bylo odstraněno')), 'success');
             return TRUE;
@@ -253,38 +226,18 @@ class IEHostgroup extends IECfg
         return false;
     }
 
-    public function getBackgrounds()
-    {
-        $hgbgimage = new IEHGBgImage;
-
-        $levels = array(0 => null);
-
-        $lnames = $hgbgimage->getColumnsFromMySQL(array('image'), array('hostgroup_id' => $this->getId()));
-        if ($lnames) {
-            foreach ($lnames as $lname) {
-                $levels[] = $lname['image'];
-            }
-        }
-
-        return $levels;
-    }
-
     /**
-     * Přejmenuje vrstvu pozadí hostgrupy
+     * Vrací obrázek pozadí hostgrupy
      *
-     * @param int $level
-     * @param string $name
-     * @return int
+     * @param int $hostgroup_id
+     * @return text
      */
-    public function renameBackground($level, $name)
+    public function getBackgroundImage($hostgroup_id = null)
     {
-        $hgbgimage = new IEHGBgImage;
-        $id = $hgbgimage->myDbLink->queryToValue('SELECT ' . $hgbgimage->myKeyColumn . ' FROM ' . $hgbgimage->myTable . ' WHERE ' . $this->myKeyColumn . ' = ' . $this->getId() . ' AND level=' . $level);
-        if (!is_null($id)) {
-            $hgbgimage->setMyKey($id);
-            $hgbgimage->setDataValue('name', $name);
-            return $hgbgimage->updateToMySQL();
+        if (is_null($hostgroup_id)) {
+            $hostgroup_id = $this->getID();
         }
+        return $this->myDbLink->queryToValue('SELECT image FROM hgbgimage WHERE hostgroup_id =' . $hostgroup_id);
     }
 
 }

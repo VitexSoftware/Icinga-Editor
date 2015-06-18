@@ -10,8 +10,6 @@ CREATE TABLE IF NOT EXISTS `coordinate` (
 CREATE TABLE IF NOT EXISTS `hgbgimage` (
 `hgbgimage_id` int(10) unsigned NOT NULL,
   `hostgroup_id` int(10) unsigned NOT NULL,
-  `level` int(11) NOT NULL,
-  `name` varchar(128) CHARACTER SET utf8 COLLATE utf8_czech_ci NOT NULL,
   `image` longtext NOT NULL COMMENT 'obrázek',
   `DatCreate` datetime NOT NULL,
   `DatSave` datetime NOT NULL

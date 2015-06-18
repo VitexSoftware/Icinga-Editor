@@ -155,6 +155,8 @@ if ($testing) {
 
     if (!intval($errorCount) && !is_null($WarningCount)) {
         $oPage->container->addItem(new EaseTWBLinkButton('reload.php', _('Reload icingy') . ' <i class="icon-refresh"></i>'));
+    } else {
+        
     }
 }
 

@@ -3,10 +3,6 @@ function getURLParameter(name) {
 }
 
 var hostgroup_id = getURLParameter('hostgroup_id');
-var level = getURLParameter('level');
-if (!level) {
-    level = 1;
-}
 
 function maximizeDiv(div) {
     $(div).height(function (index, height) {
@@ -50,7 +46,7 @@ var svg = d3.select("body").append("svg")
         .attr("width", width)
         .attr("id", "netmap")
         .attr("height", height)
-        .attr("class", "levelbg" + level)
+        .attr("class", "levelbg")
         .attr("style", "background-position: center;background-repeat:no-repeat;");
 
 
@@ -191,8 +187,3 @@ function switchNodeLevel(input) {
     $.post("nodeproperties.php", {host_id: host_id, z: level});
 }
 
-function showLevel(level) {
-    $(".node").css('visibility', 'hidden');
-    $("[data-level='" + level + "']").css('visibility', 'visible');
-    $("#netmap").attr("class", "levelbg" + level);
-}

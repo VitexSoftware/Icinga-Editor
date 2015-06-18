@@ -36,7 +36,7 @@ if ($oPage->isPosted()) {
 
     if ((isset($tmpfilename) && strlen($tmpfilename)) || ($_FILES['bgimage']['error'] = 0)) {
         if ($tmpfilename && IEIconSelector::imageTypeOK($tmpfilename)) {
-            $newbackground = $hostgroup->saveBackground($tmpfilename, $level, $name);
+            $newbackground = $hostgroup->saveBackground($tmpfilename);
             if ($newbackground) {
                 $hostgroup->saveToMySQL();
             }
@@ -45,10 +45,6 @@ if ($oPage->isPosted()) {
                 unlink($tmpfilename);
             }
             $oPage->addStatusMessage(_('toto není obrázek požadovaného typu'), 'warning');
-        }
-    } else {
-        if ($name && $level) {
-            $hostgroup->renameBackground($level, $name);
         }
     }
 } else {
@@ -59,17 +55,18 @@ if ($oPage->isPosted()) {
             $oPage->redirect('?hostgroup_id=' . $hostgroupID);
             break;
         case 'arrange':
+            $step = 100;
             $members = $hostgroup->getMembers();
             if ($members) {
-                $x = 50;
-                $y = 50;
+                $x = $step;
+                $y = $step;
                 $node = new IEHost;
                 foreach ($members as $member_id => $member) {
                     $node->updateToMySQL(array($node->myKeyColumn => $member_id, '3d_coords' => "$x,$y,0"));
-                    $y = $y + 50;
-                    if ($y > 100) {
-                        $y = 50;
-                        $x = $x + 50;
+                    $y = $y + $step;
+                    if ($y > 2 * $step) {
+                        $y = $step;
+                        $x = $x + $step;
                     }
                 }
                 $hostgroup->addStatusMessage(sprintf(_('%s Nodů rozprostřeno'), count($members)), 'success');
@@ -136,14 +133,7 @@ $( window ).resize(function() {
 ", null, true);
 
 
-$levels = $hostgroup->getLevels();
-$bgimages = $hostgroup->getBackgrounds();
-foreach ($bgimages as $lvl => $bgimage) {
-    if ($lvl) {
-        $oPage->addCss('.levelbg' . $lvl . ' { background-image: url("' . $bgimage . '"); } ');
-    }
-}
-
+$oPage->addCss('.levelbg { background-image: url("' . $hostgroup->getBackgroundImage() . '"); } ');
 
 $levelTabs = new EaseTWBTabs('leveltabs', null);
 $zeroLevel = array(
@@ -151,54 +141,21 @@ $zeroLevel = array(
 );
 
 
-if (count($levels) - 1) {
-    $zeroLevel[] = new EaseTWBLinkButton('?hostgroup_id=' . $hostgroupID . '&action=clean', _('Odstranit pozadí'), 'danger btn-xs');
-}
+$zeroLevel[] = new EaseTWBLinkButton('?hostgroup_id=' . $hostgroupID . '&action=clean', _('Odstranit pozadí'), 'danger btn-xs');
 
-$levelTabs->addTab(_('Vše'), $zeroLevel, (0 == $level));
+$levelTabs->addTab(_('Nody'), $zeroLevel, (0 == $level));
 
-//$('#" . $levelTabs->partName . " li:eq(" . $level - 1 . ") a').tab('show')
+$levelTab = $levelTabs->addTab(_('Pozadí'));
 
-$oPage->addJavaScript("
+$bgImgUplForm = new EaseTWBForm('bgImgUplForm', null, 'POST', null, array('enctype' => 'multipart/form-data', 'class' => 'form-inline'));
 
-$.each($('#" . $levelTabs->partName . " a'), function( index, a ) { $(a).attr('data-id', index); }  );
-
-$('#" . $levelTabs->partName . " a').click(function (e) {
-    e.preventDefault();
-    var level = $(this).attr('data-id');
-    $(this).tab('show');
-    showLevel( level );
-});
-
-", null, true);
-
-foreach ($levels as $currentLevel => $levelName) {
-    if (!$currentLevel) {
-        continue;
-    }
-    $levelTab = $levelTabs->addTab($levelName, null, ($currentLevel == $level));
-
-    $bgImgUplForm = new EaseTWBForm('bgImgUplForm' . $currentLevel, null, 'POST', null, array('enctype' => 'multipart/form-data', 'class' => 'form-inline'));
-    $bgImgUplForm->addInput(new EaseHtmlInputTextTag('name', $levelName), _('Jméno vrstvy'));
-    $bgImgUplForm->addInput(new EaseHtmlInputFileTag('bgimage'), _('Obrázek'));
-    $bgImgUplForm->addItem(new EaseHtmlInputHiddenTag('level', $currentLevel));
-    $bgImgUplForm->addItem(new EaseHtmlInputHiddenTag('hostgroup_id', $hostgroupID));
-    $bgImgUplForm->addItem(new EaseTWSubmitButton(_('Uložit'), 'success'));
-
-    $bgImgUplForm->addItem(new EaseTWBLinkButton('?hostgroup_id=' . $hostgroupID . '&level=' . $currentLevel . '&action=delete', _('Smazat'), 'danger'));
-
-    $levelTab->addItem(new EaseTWBPanel(sprintf(_('Obrázek pozadí pro úroveň %s'), $levelName), 'info', $bgImgUplForm));
-}
-
-$levelTab = $levelTabs->addTab(++$currentLevel . EaseTWBPart::GlyphIcon('plus'));
-$bgImgUplForm = new EaseTWBForm('bgImgUplForm' . $currentLevel, null, 'POST', null, array('enctype' => 'multipart/form-data', 'class' => 'form-inline'));
-$bgImgUplForm->addInput(new EaseHtmlInputTextTag('name', $currentLevel), _('Jméno vrstvy'));
 $bgImgUplForm->addInput(new EaseHtmlInputFileTag('bgimage'), _('Obrázek'));
-$bgImgUplForm->addItem(new EaseHtmlInputHiddenTag('level', $currentLevel));
 $bgImgUplForm->addItem(new EaseHtmlInputHiddenTag('hostgroup_id', $hostgroupID));
-$bgImgUplForm->addItem(new EaseTWSubmitButton(_('Přidat'), 'success'));
+$bgImgUplForm->addItem(new EaseTWSubmitButton(_('Uložit'), 'success'));
 
-$levelTab->addItem(new EaseTWBPanel(sprintf(_('Obrázek pozadí pro úroveň %s'), $currentLevel), 'info', $bgImgUplForm));
+$bgImgUplForm->addItem(new EaseTWBLinkButton('?hostgroup_id=' . $hostgroupID . '&action=delete', _('Smazat'), 'danger'));
+
+$levelTab->addItem(new EaseTWBPanel(_('Obrázek pozadí pro úroveň'), 'info', $bgImgUplForm));
 
 $oPage->container->addItem(new EaseHtmlDiv(NULL, array('id' => 'nodeinfo')));
 

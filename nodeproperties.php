@@ -59,25 +59,8 @@ if ($oPage->isPosted()) {
     $posForm->addItem(new EaseHtmlDiv('<strong>' . $host->getName() . '</strong>'));
 
     if (!is_null($hostgroupID)) {
-        $hostgroup = new IEHostgroup($hostgroupID);
-        $levels = $hostgroup->getLevels();
-
-        $radios = $posForm->addItem(new EaseHtmlRadiobuttonGroup('level', $levels));
-        $radios->checked = $z - 1;
-        $radios->finalize();
-
-
-        foreach ($radios->pageParts as $radioID => $radio) {
-
-            if (is_object($radio) && ($radio->getTagType() == 'input')) {
-                $radios->pageParts[$radioID]->setTagProperties(array(
-                  'onClick' => "switchNodeLevel(this)",
-                  'data-level' => str_replace('level', '', $radio->getTagID()),
-                  'data-host_id' => $hostID,
-                  'data-hostgroup_id' => $hostgroupID
-                ));
-            }
-        }
+        $services = new EaseHtmlCheckboxGroup('Services', $items);
+        $posForm->addItem($services);
     }
 
 
