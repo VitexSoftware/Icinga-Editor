@@ -37,7 +37,7 @@ class IECommand extends IECfg
       'command_type' => "ENUM('check','notify','handler')",
       'command_local' => 'BOOL',
       'command_remote' => 'BOOL',
-      'deploy' => 'TEXT',
+      'script_id' => 'SELECTID',
       'platform' => "PLATFORM"
     );
 
@@ -61,9 +61,16 @@ class IECommand extends IECfg
       'command_remote' => array(
         'severity' => 'basic',
         'title' => 'vzdálený příkaz NRPE/Nsc++'),
-      'deploy' => array(
+      'script_id' => array(
         'severity' => 'basic',
-        'title' => 'Instalace'),
+        'title' => 'Instalace',
+        'refdata' => array(
+          'table' => 'script',
+          'captioncolumn' => 'filename',
+          'idcolumn' => 'script_id',
+          'public' => true
+        )
+      ),
       'platform' => array(
         'severity' => 'basic',
         'title' => 'Platforma', 'mandatory' => true)

@@ -95,7 +95,7 @@ class IEUsedServiceSelector extends EaseContainer
 
             if (count($servicesAssigned)) {
                 $saveAsTemplateButton = new EaseTWBLinkButton('stemplate.php?action=copyhost&host_id=' . $host->getId(), _('Uložit jako předlohu'), 'success');
-                $initialContent->footer->addItem($saveAsTemplateButton);
+                $initialContent->footer($saveAsTemplateButton);
 
                 $initialContent->addItem('</br>');
                 foreach ($servicesAssigned as $serviceID => $serviceInfo) {
@@ -116,7 +116,7 @@ class IEUsedServiceSelector extends EaseContainer
                 $presetSelForm->addItem(new IEStemplateSelect('stemplate_id'));
                 $presetSelForm->addItem(new EaseTWSubmitButton(_('Aplikovat předlohu'), 'success'));
                 $presetSelForm->setTagClass('form-inline');
-                $initialContent->footer->addItem($presetSelForm);
+                $initialContent->footer($presetSelForm);
             }
         }
         $this->addItem($initialContent);

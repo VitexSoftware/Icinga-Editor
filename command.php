@@ -97,12 +97,12 @@ if ($command->getId()) {
     }
 
     $contact = new IEContact;
-    $hostNotify = $contact->getColumnsFromMySQL(array($contact->getMyKeyColumn(), $contact->nameColumn), array('host_notification_commands' => '%' . $contact->getName() . '%'), $contact->nameColumn, $contact->getMyKeyColumn());
-    $serviceNotify = $contact->getColumnsFromMySQL(array($contact->getMyKeyColumn(), $contact->nameColumn), array('service_notification_commands' => '%' . $contact->getName() . '%'), $contact->nameColumn, $contact->getMyKeyColumn());
+    $hostNotify = $contact->getColumnsFromMySQL(array($contact->getMyKeyColumn(), $contact->nameColumn), array('host_notification_commands' => '%' . $command->getName() . '%'), $contact->nameColumn, $contact->getMyKeyColumn());
+    $serviceNotify = $contact->getColumnsFromMySQL(array($contact->getMyKeyColumn(), $contact->nameColumn), array('service_notification_commands' => '%' . $command->getName() . '%'), $contact->nameColumn, $contact->getMyKeyColumn());
     $usages = array_merge($hostNotify, $serviceNotify);
     if (count($usages)) {
-        $usedBy = new EaseTWBPanel(_('Používající služby'));
-        $listing = $usedBy->addItem(new EaseHtmlUlTag(null, array('class' => 'list-group')));
+        $usedBy = new EaseTWBPanel(_('Používající kontakty'));
+        $listing = new EaseHtmlUlTag(null, array('class' => 'list-group'));
         foreach ($usages as $usage) {
 
             if (!isset($usage[$contact->nameColumn])) {
@@ -115,6 +115,7 @@ if ($command->getId()) {
                 , array('class' => 'list-group-item'))
             );
         }
+        EaseContainer::addItemCustom($listing, $usedBy);
         $infopanel->addItem($usedBy);
     }
 }

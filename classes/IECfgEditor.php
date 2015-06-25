@@ -151,8 +151,7 @@ class IECfgEditor extends EaseContainer
                 $sliderField->setTagCss(array('width' => '100%'));
                 break;
             case 'TEXT':
-                $FB = $fieldBlock->addItem(new EaseLabeledTextarea($fieldName, $value, $keywordInfo['title']));
-                $FB->enclosedElement->setTagCss(array('width' => '100%'));
+                $fieldBlock->addItem(new EaseTWBFormGroup($keywordInfo['title'], new EaseTWBTextarea($fieldName, $value, array('style' => 'width:100%'))));
                 break;
             case 'ENUM':
                 $flags = explode(',', str_replace(array($fType, "'", '(', ')'), '', $fieldType));
@@ -176,6 +175,7 @@ class IECfgEditor extends EaseContainer
                     $FB->setTagCss(array('width' => '100%'));
                 }
                 break;
+
             case 'SELECT':
                 $IDColumn = $keywordInfo['refdata']['idcolumn'];
                 $nameColumn = $keywordInfo['refdata']['captioncolumn'];
@@ -203,6 +203,38 @@ class IECfgEditor extends EaseContainer
                     $selector->addItems(array_combine($membersAviableArray, $membersAviableArray));
                 }
                 break;
+
+            case 'SELECTID':
+                $IDColumn = $keywordInfo['refdata']['idcolumn'];
+                $nameColumn = $keywordInfo['refdata']['captioncolumn'];
+                $sTable = $keywordInfo['refdata']['table'];
+                if (isset($keywordInfo['refdata']['condition'])) {
+                    $conditions = $keywordInfo['refdata']['condition'];
+                } else {
+                    $conditions = array();
+                }
+
+                $sqlConds = " ( " . $this->objectEdited->myDbLink->prepSelect(array_merge($conditions, array($this->objectEdited->userColumn => EaseShared::user()->getUserID()))) . " ) OR ( " . $this->objectEdited->myDbLink->prepSelect(array_merge($conditions, array('public' => 1))) . ")  ";
+
+                $membersAviableArray = EaseShared::myDbLink()->queryToArray(
+                    'SELECT ' . $nameColumn . ',' . $IDColumn . ' ' .
+                    'FROM `' . $sTable . '` ' .
+                    'WHERE ' . $sqlConds . ' ' .
+                    'ORDER BY ' . $nameColumn, $IDColumn);
+
+                $selector = $fieldBlock->addItem(new EaseLabeledSelect($fieldName, $value, $keywordInfo['title']));
+                $selector->enclosedElement->setTagClass('form-control');
+                if (!$required) {
+                    $selector->addItems(array('NULL' => _('Výchozí')));
+                }
+                if (count($membersAviableArray)) {
+                    foreach ($membersAviableArray as $option) {
+                        $options[$option[$IDColumn]] = $option[$nameColumn];
+                    }
+                    $selector->addItems($options);
+                }
+                break;
+
 
             case 'SELECT+PARAMS':
                 $IDColumn = $keywordInfo['refdata']['idcolumn'];
@@ -289,7 +321,7 @@ class IECfgEditor extends EaseContainer
                 $this->objectEdited->keywordsInfo['register']['required'] = false;
             }
         }
-        if (!(int) $this->objectEdited->getDataValue('generate') && isset($this->objectEdited->useKeywords['generate'])) {
+        if (isset($this->objectEdited->useKeywords['generate']) && !(int) $this->objectEdited->getDataValue('generate')) {
             $this->addStatusMessage(_('tento záznam se nebude generovat do konfigurace'));
         }
         if ($this->objectEdited->publicRecords) {

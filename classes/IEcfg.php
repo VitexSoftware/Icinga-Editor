@@ -276,6 +276,12 @@ class IEcfg extends EaseBrick
             fputs($cfg, "define " . $this->keyword . " { #" . $columns[$this->myKeyColumn] . "@" . $this->myTable . " \n");
             foreach ($columns as $columnName => $columnValue) {
 
+                if (is_array($columnValue) && (current($columnValue) == 'vitex')) {
+                    $origValue = $columnValue;
+                }
+
+
+
                 if (array_key_exists($columnName, $this->useKeywords)) {
                     if ($this->useKeywords[$columnName] === 'IDLIST') {
                         if (is_array($columnValue)) {
@@ -290,6 +296,11 @@ class IEcfg extends EaseBrick
                     if (is_array($columnValue) || !strlen(trim($columnValue))) {
                         continue;
                     }
+
+                    if ($columnValue == 'Array') {
+                        echo "";
+                    }
+
 
                     fputs($cfg, "\t$columnName" . str_repeat(' ', ($cmdlen - strlen($columnName) + 1)) . str_replace("\n", '\n', $columnValue) . "\n");
                 }

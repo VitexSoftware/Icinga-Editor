@@ -36,3 +36,7 @@ MODIFY `hgbgimage_id` int(10) unsigned NOT NULL AUTO_INCREMENT;
 
 ALTER TABLE `script`
 MODIFY `script_id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `script` ADD `user_id` INT NOT NULL COMMENT 'vlastník' , ADD `public` BOOLEAN NOT NULL COMMENT 'viditelnost' , ADD INDEX (`user_id`, `public`) ;
+ALTER TABLE `command` ADD `script_id` INT UNSIGNED NULL COMMENT 'přidružený skript' AFTER `command_remote`, ADD INDEX (`script_id`) ;
+ALTER TABLE `script` ADD `DatCreate` DATETIME NOT NULL , ADD `DatSave` DATETIME NOT NULL ;

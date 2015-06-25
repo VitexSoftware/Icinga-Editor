@@ -116,8 +116,6 @@ class IEMainMenu extends EaseHtmlDivTag
         }
 
 
-
-
         $topItems['hosts.php'] = EaseTWBPart::GlyphIcon('list') . ' ' . _('Detailní přehled hostů');
 
         $topItems['map.php'] = EaseTWBPart::GlyphIcon('globe') . ' ' . _('Topologie');
@@ -226,9 +224,12 @@ class IEMainMenu extends EaseHtmlDivTag
 
             if ($user->getSettingValue('admin')) {
                 $nav->addDropDownMenu(_('Příkaz'), array(
-                  'commands.php' => EaseTWBPart::GlyphIcon('list-alt') . ' ' . _('Přehled příkazů'),
                   'command.php' => EaseTWBPart::GlyphIcon('edit') . ' ' . _('Nový příkaz'),
-                  'importcommand.php' => EaseTWBPart::GlyphIcon('import') . ' ' . _('Importovat'))
+                  'commands.php' => EaseTWBPart::GlyphIcon('list-alt') . ' ' . _('Přehled příkazů'),
+                  'importcommand.php' => EaseTWBPart::GlyphIcon('import') . ' ' . _('Importovat'),
+                  '',
+                  'script.php' => EaseTWBPart::GlyphIcon('edit') . ' ' . _('Nový skript'),
+                  'scripts.php' => EaseTWBPart::GlyphIcon('list-alt') . ' ' . _('Přehled skriptů'))
                 );
                 $nav->addDropDownMenu(_('Rozšířené'), array(
                   'timeperiods.php' => EaseTWBPart::GlyphIcon('list') . ' ' . _('Přehled časových period'),

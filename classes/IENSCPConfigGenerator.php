@@ -54,6 +54,12 @@ class IENSCPConfigGenerator extends EaseAtom
     private $nscvar = '';
 
     /**
+     * Pole skriptů pro deploy
+     * @var array
+     */
+    private $scriptsToDeploy = array();
+
+    /**
      * Generátor konfigurace NSC++
      *
      * @param IEHost $host
@@ -133,6 +139,7 @@ class IENSCPConfigGenerator extends EaseAtom
             case 'windows':
                 $this->nscBatArray = array('
 set NSCLIENT="%ProgramFiles%\NSClient++\nscp.exe"
+set ICINGA_SERVER="' . $this->prefs['serverip'] . '"
 ' . $this->nscvar . ' service --stop
 rename "%ProgramFiles%\NSClient++\nsclient.ini" "%ProgramFiles%\NSClient++\nsclient.old"
 ');
@@ -140,6 +147,7 @@ rename "%ProgramFiles%\NSClient++\nsclient.ini" "%ProgramFiles%\NSClient++\nscli
             case 'linux':
                 $this->nscBatArray = array('
 export NSCLIENT=`which nscp`
+export ICINGA_SERVER="' . $this->prefs['serverip'] . '"
 ' . $this->nscvar . ' service --stop
 export INI="/etc/nsclient/nsclient.ini"
 rm "$INI"
@@ -262,6 +270,10 @@ echo "file name=${log-path}/nsclient.log" >> $INI
                 $remote = $service['check_command-remote'];
                 if (!isset($commandsCache[$remote])) {
                     $command = new IECommand($remote);
+                    $script_id = $command->getDataValue('script_id');
+                    if ($script_id) {
+                        $this->scriptsToDeploy[$command->getName()] = $script_id;
+                    }
                     $commandsCache[$remote] = $command->getData();
                 }
             }
@@ -334,8 +346,9 @@ echo "file name=${log-path}/nsclient.log" >> $INI
      */
     public function cfgEnding()
     {
-        echo '';
-
+        if (count($this->scriptsToDeploy)) {
+            $this->deployScripts();
+        }
         switch ($this->platform) {
             case 'windows':
                 $this->nscBatArray[] = "\n" . '
@@ -418,6 +431,31 @@ service nscp start
     function getCfgConfirmUrl()
     {
         return $this->getBaseURL() . 'cfgconfirm.php?hash=' . $this->host->getConfigHash() . '&host_id=' . $this->host->getId();
+    }
+
+    public function deployScripts()
+    {
+        foreach ($this->scriptsToDeploy as $script_name => $script_id) {
+            switch ($this->platform) {
+                case 'windows':
+                    $this->nscBatArray[] = "\n" . '
+REM ' . $script_name . '
+start "" "' . $this->getBaseURL() . 'scriptget.php?script_id=' . $script_id . '"
+';
+                    break;
+                case 'linux':
+                    $this->nscBatArray[] = "\n" . '
+# ' . $script_name . '
+curl "' . $this->getBaseURL() . 'scriptget.php?script_id=' . $script_id . '"
+';
+                    break;
+                default:
+                    $this->nscBatArray[] = $this->nscBatArray[] = "\n" . '
+' . $this->nscvar . ' test
+';
+                    break;
+            }
+        }
     }
 
 }

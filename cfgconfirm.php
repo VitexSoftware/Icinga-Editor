@@ -33,7 +33,7 @@ if ($host_id && $hash) {
     $enterPoint = str_replace('\\', '', $enterPoint); //Win Hack
     $confirmUrl = $enterPoint . 'watchroute.php?action=parent&host_id=' . $host_id . '&ip=' . $_SERVER['REMOTE_ADDR'];
 
-    echo '<a href="' . $confirmUrl . '">' . $confirmUrl . '</a>';
+    echo '<a href="' . $confirmUrl . '"> ' . $confirmUrl . ' </a>';
 } else {
     die(_('Chybné volání'));
 }

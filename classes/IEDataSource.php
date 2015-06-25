@@ -169,7 +169,7 @@ class IEDataSource extends EaseBrick
         return $this->handledObejct->myDbLink->queryToValue($queryRaw);
     }
 
-    function getWhere()
+    function getListingQueryWhere()
     {
         $where = '';
         $query = isset($_REQUEST['query']) ? $_REQUEST['query'] : false;
@@ -524,6 +524,16 @@ class IEDataSource extends EaseBrick
         } else {
             return false;
         }
+    }
+
+    /**
+     * Vrací obecnou podmínku
+     * 
+     * @return string
+     */
+    public function getWhere()
+    {
+        return '';
     }
 
 }
