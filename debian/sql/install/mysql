@@ -1,4 +1,4 @@
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -15,21 +15,24 @@ CREATE TABLE IF NOT EXISTS `command` (
   `command_type` enum('check','notify','handler') COLLATE utf8_czech_ci DEFAULT NULL,
   `command_local` tinyint(1) DEFAULT NULL COMMENT 'lokální příkaz',
   `command_remote` tinyint(1) DEFAULT NULL COMMENT 'vzdálený příkaz',
-  `deploy` text COLLATE utf8_czech_ci NOT NULL COMMENT 'Tělo skriptu',
+  `script_id` int(10) unsigned DEFAULT NULL COMMENT 'přidružený skript',
   `platform` varchar(32) COLLATE utf8_czech_ci NOT NULL DEFAULT 'generic' COMMENT 'Platforma příkazu',
   `public` tinyint(1) DEFAULT NULL,
   `generate` tinyint(1) DEFAULT NULL,
   `user_id` int(10) unsigned DEFAULT NULL,
   `DatCreate` datetime DEFAULT NULL,
   `DatSave` datetime DEFAULT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=197 DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 
-ALTER TABLE `command`
- ADD PRIMARY KEY (`command_id`), ADD KEY `user_id` (`user_id`);
+-- --------------------------------------------------------
+
+--
+-- Struktura tabulky `contact`
+--
 
 DROP TABLE IF EXISTS `contact`;
 CREATE TABLE IF NOT EXISTS `contact` (
-  `contact_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+`contact_id` int(10) unsigned NOT NULL,
   `parent_id` int(11) unsigned DEFAULT NULL COMMENT 'Id nadřazeného kontaktu',
   `contact_name` varchar(128) COLLATE utf8_czech_ci DEFAULT NULL,
   `alias` varchar(255) COLLATE utf8_czech_ci DEFAULT NULL,
@@ -56,15 +59,18 @@ CREATE TABLE IF NOT EXISTS `contact` (
   `user_id` int(10) unsigned DEFAULT NULL,
   `public` tinyint(1) NOT NULL,
   `DatCreate` datetime DEFAULT NULL,
-  `DatSave` datetime DEFAULT NULL,
-  PRIMARY KEY (`contact_id`),
-  KEY `user_id` (`user_id`),
-  KEY `parent_id` (`parent_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci ;
+  `DatSave` datetime DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabulky `contactgroup`
+--
 
 DROP TABLE IF EXISTS `contactgroup`;
 CREATE TABLE IF NOT EXISTS `contactgroup` (
-  `contactgroup_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+`contactgroup_id` int(10) unsigned NOT NULL,
   `contactgroup_name` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
   `alias` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
   `members` varchar(255) COLLATE utf8_czech_ci DEFAULT NULL,
@@ -72,34 +78,51 @@ CREATE TABLE IF NOT EXISTS `contactgroup` (
   `generate` tinyint(1) DEFAULT NULL,
   `user_id` int(10) unsigned DEFAULT NULL,
   `DatCreate` datetime DEFAULT NULL,
-  `DatSave` datetime DEFAULT NULL,
-  PRIMARY KEY (`contactgroup_id`),
-  KEY `user_id` (`user_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
-DROP TABLE IF EXISTS `hostgroup`;
+  `DatSave` datetime DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 
-CREATE TABLE IF NOT EXISTS `hostgroup` (
-  `hostgroup_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `hostgroup_name` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
-  `alias` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
-  `members` varchar(600) COLLATE utf8_czech_ci DEFAULT NULL,
-  `hostgroup_members` varchar(255) COLLATE utf8_czech_ci DEFAULT NULL,
-  `notes` text COLLATE utf8_czech_ci,
-  `notes_url` varchar(255) COLLATE utf8_czech_ci DEFAULT NULL,
-  `action_url` varchar(255) COLLATE utf8_czech_ci DEFAULT NULL,
-  `generate` tinyint(1) DEFAULT NULL,
-  `user_id` int(10) unsigned DEFAULT NULL,
-  `DatCreate` datetime DEFAULT NULL,
-  `DatSave` datetime DEFAULT NULL,
-  `bgimages` LONGTEXT NOT NULL COMMENT 'serizalizovane pole osaZ/level/podlazi=>obrazek',
-  PRIMARY KEY (`hostgroup_id`),
-  KEY `user_id` (`user_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
+-- --------------------------------------------------------
 
+--
+-- Struktura tabulky `coordinate`
+--
+
+DROP TABLE IF EXISTS `coordinate`;
+CREATE TABLE IF NOT EXISTS `coordinate` (
+  `coordinate_id` int(10) unsigned NOT NULL,
+  `host_id` int(10) unsigned NOT NULL,
+  `hostgroup_id` int(10) unsigned DEFAULT NULL,
+  `x` int(11) DEFAULT NULL,
+  `y` int(11) DEFAULT NULL,
+  `z` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabulky `hgbgimage`
+--
+
+DROP TABLE IF EXISTS `hgbgimage`;
+CREATE TABLE IF NOT EXISTS `hgbgimage` (
+`hgbgimage_id` int(10) unsigned NOT NULL,
+  `hostgroup_id` int(10) unsigned NOT NULL,
+  `level` int(11) NOT NULL,
+  `name` varchar(128) CHARACTER SET utf8 COLLATE utf8_czech_ci NOT NULL,
+  `image` blob NOT NULL COMMENT 'obrázek',
+  `DatCreate` datetime NOT NULL,
+  `DatSave` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabulky `host`
+--
 
 DROP TABLE IF EXISTS `host`;
 CREATE TABLE IF NOT EXISTS `host` (
-  `host_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+`host_id` int(10) unsigned NOT NULL,
   `host_name` varchar(255) COLLATE utf8_czech_ci DEFAULT NULL,
   `alias` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
   `display_name` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
@@ -154,30 +177,67 @@ CREATE TABLE IF NOT EXISTS `host` (
   `DatCreate` datetime DEFAULT NULL,
   `DatSave` datetime DEFAULT NULL,
   `platform` varchar(20) COLLATE utf8_czech_ci NOT NULL COMMENT 'Platforma',
-  `config_hash` VARCHAR(255) NULL COMMENT 'Hash aplikované konfigurace',
-  PRIMARY KEY (`host_id`),
-  KEY `user_id` (`user_id`),
-  KEY `platform` (`platform`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
+  `config_hash` varchar(255) COLLATE utf8_czech_ci DEFAULT NULL COMMENT 'Hash aplikované konfigurace'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 
-DROP TABLE IF EXISTS `servicegroup`;
-CREATE TABLE IF NOT EXISTS `servicegroup` (
-  `servicegroup_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `servicegroup_name` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
+-- --------------------------------------------------------
+
+--
+-- Struktura tabulky `hostgroup`
+--
+
+DROP TABLE IF EXISTS `hostgroup`;
+CREATE TABLE IF NOT EXISTS `hostgroup` (
+`hostgroup_id` int(10) unsigned NOT NULL,
+  `hostgroup_name` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
   `alias` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
-  `members` text COLLATE utf8_czech_ci,
-  `servicegroup_members` varchar(255) COLLATE utf8_czech_ci DEFAULT NULL,
+  `members` varchar(600) COLLATE utf8_czech_ci DEFAULT NULL,
+  `hostgroup_members` varchar(255) COLLATE utf8_czech_ci DEFAULT NULL,
   `notes` text COLLATE utf8_czech_ci,
-  `notes_url` varchar(128) COLLATE utf8_czech_ci DEFAULT NULL,
-  `action_url` varchar(128) COLLATE utf8_czech_ci DEFAULT NULL,
+  `notes_url` varchar(255) COLLATE utf8_czech_ci DEFAULT NULL,
+  `action_url` varchar(255) COLLATE utf8_czech_ci DEFAULT NULL,
   `generate` tinyint(1) DEFAULT NULL,
   `user_id` int(10) unsigned DEFAULT NULL,
   `DatCreate` datetime DEFAULT NULL,
   `DatSave` datetime DEFAULT NULL,
-  PRIMARY KEY (`servicegroup_id`),
-  KEY `user_id` (`user_id`)
+  `bgimages` longtext COLLATE utf8_czech_ci NOT NULL COMMENT 'serizalizovane pole osaZ/level/podlazi=>obrazek'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 
+-- --------------------------------------------------------
+
+--
+-- Struktura tabulky `preferences`
+--
+
+DROP TABLE IF EXISTS `preferences`;
+CREATE TABLE IF NOT EXISTS `preferences` (
+  `key` varchar(64) NOT NULL,
+  `value` varchar(256) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='app prefs';
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabulky `script`
+--
+
+DROP TABLE IF EXISTS `script`;
+CREATE TABLE IF NOT EXISTS `script` (
+`script_id` int(11) NOT NULL,
+  `filename` varchar(255) NOT NULL,
+  `body` text NOT NULL,
+  `platform` varchar(64) NOT NULL,
+  `user_id` int(11) NOT NULL COMMENT 'vlastník',
+  `public` tinyint(1) NOT NULL COMMENT 'viditelnost',
+  `DatCreate` datetime NOT NULL,
+  `DatSave` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='skripty pro deploy';
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabulky `service`
+--
 
 DROP TABLE IF EXISTS `service`;
 CREATE TABLE IF NOT EXISTS `service` (
@@ -194,8 +254,8 @@ CREATE TABLE IF NOT EXISTS `service` (
   `tcp_port` int(9) unsigned DEFAULT NULL COMMENT 'sledovaná služba běží na portu',
   `initial_state` varchar(4) COLLATE utf8_czech_ci DEFAULT NULL,
   `max_check_attempts` tinyint(3) DEFAULT NULL,
-  `check_interval` mediumint(5) unsigned DEFAULT NULL,
-  `retry_interval` int(4) unsigned DEFAULT NULL,
+  `check_interval` mediumint(4) unsigned DEFAULT NULL,
+  `retry_interval` tinyint(3) DEFAULT NULL,
   `active_checks_enabled` tinyint(1) DEFAULT NULL,
   `passive_checks_enabled` tinyint(1) DEFAULT NULL,
   `check_period` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
@@ -241,13 +301,70 @@ CREATE TABLE IF NOT EXISTS `service` (
   `price` int(2) NOT NULL DEFAULT '0' COMMENT 'Měsíční cena za použití služby'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 
+-- --------------------------------------------------------
 
-ALTER TABLE `service`
- ADD PRIMARY KEY (`service_id`), ADD KEY `user_id` (`user_id`), ADD KEY `tcp_port` (`tcp_port`), ADD KEY `platform` (`platform`);
+--
+-- Struktura tabulky `servicegroup`
+--
+
+DROP TABLE IF EXISTS `servicegroup`;
+CREATE TABLE IF NOT EXISTS `servicegroup` (
+`servicegroup_id` int(10) unsigned NOT NULL,
+  `servicegroup_name` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
+  `alias` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
+  `members` text COLLATE utf8_czech_ci,
+  `servicegroup_members` varchar(255) COLLATE utf8_czech_ci DEFAULT NULL,
+  `notes` text COLLATE utf8_czech_ci,
+  `notes_url` varchar(128) COLLATE utf8_czech_ci DEFAULT NULL,
+  `action_url` varchar(128) COLLATE utf8_czech_ci DEFAULT NULL,
+  `generate` tinyint(1) DEFAULT NULL,
+  `user_id` int(10) unsigned DEFAULT NULL,
+  `DatCreate` datetime DEFAULT NULL,
+  `DatSave` datetime DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabulky `sms`
+--
+
+DROP TABLE IF EXISTS `sms`;
+CREATE TABLE IF NOT EXISTS `sms` (
+`id` int(10) unsigned NOT NULL COMMENT 'pořadí',
+  `sender` varchar(32) COLLATE utf8_czech_ci NOT NULL COMMENT 'odesílatel',
+  `reciver` varchar(32) COLLATE utf8_czech_ci NOT NULL COMMENT 'příjemce',
+  `message` varchar(255) COLLATE utf8_czech_ci NOT NULL COMMENT 'zpráva',
+  `date` datetime NOT NULL COMMENT 'čas'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabulky `stemplate`
+--
+
+DROP TABLE IF EXISTS `stemplate`;
+CREATE TABLE IF NOT EXISTS `stemplate` (
+`stemplate_id` int(11) NOT NULL,
+  `stemplate_name` varchar(64) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT 'název předlohy',
+  `contacts` text CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT 'kontakty v předloze',
+  `services` text CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT 'služby v předloze',
+  `notes` mediumtext CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `user_id` int(11) DEFAULT NULL COMMENT 'vlastník předlohy',
+  `DatSave` datetime DEFAULT NULL,
+  `DatCreate` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabulky `timeperiod`
+--
 
 DROP TABLE IF EXISTS `timeperiod`;
 CREATE TABLE IF NOT EXISTS `timeperiod` (
-  `timeperiod_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+`timeperiod_id` int(10) unsigned NOT NULL,
   `timeperiod_name` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
   `alias` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
   `periods` text COLLATE utf8_czech_ci,
@@ -255,14 +372,18 @@ CREATE TABLE IF NOT EXISTS `timeperiod` (
   `generate` tinyint(1) DEFAULT NULL,
   `user_id` int(10) unsigned DEFAULT NULL,
   `DatCreate` datetime DEFAULT NULL,
-  `DatSave` datetime DEFAULT NULL,
-  PRIMARY KEY (`timeperiod_id`),
-  KEY `user_id` (`user_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci ;
+  `DatSave` datetime DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabulky `user`
+--
 
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE IF NOT EXISTS `user` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+`id` int(11) NOT NULL,
   `twitter_id` int(9) unsigned DEFAULT NULL,
   `settings` longtext COLLATE utf8_czech_ci COMMENT 'Serializovana uzivatelska nastaveni',
   `email` varchar(128) COLLATE utf8_czech_ci NOT NULL COMMENT 'Email',
@@ -274,99 +395,213 @@ CREATE TABLE IF NOT EXISTS `user` (
   `partner` varchar(32) COLLATE utf8_czech_ci DEFAULT NULL COMMENT 'Kód partnera: ats apod.',
   `DatCreate` datetime NOT NULL COMMENT 'Vytvření uživatele',
   `DatSave` datetime DEFAULT NULL COMMENT 'poslední modifikace uživatele',
-  `last_modifier_id` int(10) unsigned DEFAULT NULL COMMENT 'id toho kdo záznam naposledy modifikoval',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `customers_username` (`login`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
+  `last_modifier_id` int(10) unsigned DEFAULT NULL COMMENT 'id toho kdo záznam naposledy modifikoval'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 
-DROP TABLE IF EXISTS `preferences`;
-CREATE TABLE IF NOT EXISTS `preferences` (
-  `key` varchar(64) NOT NULL,
-  `value` varchar(256) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='app prefs';
-ALTER TABLE `preferences`
- ADD PRIMARY KEY (`key`);
+-- --------------------------------------------------------
+
+--
+-- Struktura tabulky `user_group`
+--
 
 DROP TABLE IF EXISTS `user_group`;
 CREATE TABLE IF NOT EXISTS `user_group` (
 `usergroup_id` int(11) NOT NULL,
   `usergroup_name` varchar(64) NOT NULL,
   `usergroup_boss` int(11) NOT NULL,
-  `DatCreate` datetime NOT NULL COMMENT 'Vytvření skupiny',
-  `DatSave` datetime DEFAULT NULL COMMENT 'poslední modifikace skupiny'
+  `DatCreate` datetime NOT NULL,
+  `DatSave` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-ALTER TABLE `user_group`
- ADD PRIMARY KEY (`usergroup_id`);
-ALTER TABLE `user_group`
-MODIFY `usergroup_id` int(11) NOT NULL AUTO_INCREMENT;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabulky `user_to_group`
+--
 
 DROP TABLE IF EXISTS `user_to_group`;
 CREATE TABLE IF NOT EXISTS `user_to_group` (
   `user_id` int(9) unsigned NOT NULL,
-  `group_id` int(9) unsigned NOT NULL,
-  UNIQUE KEY `uniq` (`user_id`,`group_id`)
+  `group_id` int(9) unsigned NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='přiřazení uživatelů do skupin';
 
-CREATE TABLE IF NOT EXISTS `stemplate` (
-`stemplate_id` int(11) NOT NULL,
-  `stemplate_name` varchar(64) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT 'název předlohy',
-  `contacts` text CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT 'kontakty v předloze',
-  `services` text CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT 'služby v předloze',
-  `notes` mediumtext CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
-  `user_id` int(11) DEFAULT NULL COMMENT 'vlastník předlohy',
-  `DatSave` datetime DEFAULT NULL,
-  `DatCreate` datetime NOT NULL
-) ENGINE=InnoDB;
+--
+-- Klíče pro exportované tabulky
+--
 
+--
+-- Klíče pro tabulku `command`
+--
+ALTER TABLE `command`
+ ADD PRIMARY KEY (`command_id`), ADD KEY `user_id` (`user_id`), ADD KEY `script_id` (`script_id`);
 
-ALTER TABLE `stemplate`
- ADD PRIMARY KEY (`stemplate_id`);
-ALTER TABLE `stemplate`
-MODIFY `stemplate_id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- Klíče pro tabulku `contact`
+--
+ALTER TABLE `contact`
+ ADD PRIMARY KEY (`contact_id`), ADD KEY `user_id` (`user_id`), ADD KEY `parent_id` (`parent_id`);
 
+--
+-- Klíče pro tabulku `contactgroup`
+--
+ALTER TABLE `contactgroup`
+ ADD PRIMARY KEY (`contactgroup_id`), ADD KEY `user_id` (`user_id`);
 
-CREATE TABLE IF NOT EXISTS `coordinate` (
-  `coordinate_id` int(10) unsigned NOT NULL,
-  `host_id` int(10) unsigned NOT NULL,
-  `hostgroup_id` int(10) unsigned DEFAULT NULL,
-  `x` int(11) DEFAULT NULL,
-  `y` int(11) DEFAULT NULL,
-  `z` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE IF NOT EXISTS `hgbgimage` (
-`hgbgimage_id` int(10) unsigned NOT NULL,
-  `hostgroup_id` int(10) unsigned NOT NULL,
-  `level` int(11) NOT NULL,
-  `name` varchar(128) CHARACTER SET utf8 COLLATE utf8_czech_ci NOT NULL,
-  `image` longtext NOT NULL COMMENT 'obrázek',
-  `DatCreate` datetime NOT NULL,
-  `DatSave` datetime NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-
-CREATE TABLE IF NOT EXISTS `script` (
-`script_id` int(11) NOT NULL,
-  `filename` varchar(255) NOT NULL,
-  `body` text NOT NULL,
-  `platform` varchar(64) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='skripty pro deploy';
-
+--
+-- Klíče pro tabulku `coordinate`
+--
 ALTER TABLE `coordinate`
  ADD PRIMARY KEY (`coordinate_id`), ADD KEY `host_id` (`host_id`), ADD KEY `hostgroup_id` (`hostgroup_id`);
 
+--
+-- Klíče pro tabulku `hgbgimage`
+--
 ALTER TABLE `hgbgimage`
  ADD PRIMARY KEY (`hgbgimage_id`);
 
-ALTER TABLE `script`
- ADD PRIMARY KEY (`script_id`);
+--
+-- Klíče pro tabulku `host`
+--
+ALTER TABLE `host`
+ ADD PRIMARY KEY (`host_id`), ADD KEY `user_id` (`user_id`), ADD KEY `platform` (`platform`);
 
+--
+-- Klíče pro tabulku `hostgroup`
+--
+ALTER TABLE `hostgroup`
+ ADD PRIMARY KEY (`hostgroup_id`), ADD KEY `user_id` (`user_id`);
+
+--
+-- Klíče pro tabulku `preferences`
+--
+ALTER TABLE `preferences`
+ ADD PRIMARY KEY (`key`);
+
+--
+-- Klíče pro tabulku `script`
+--
+ALTER TABLE `script`
+ ADD PRIMARY KEY (`script_id`), ADD KEY `user_id` (`user_id`,`public`);
+
+--
+-- Klíče pro tabulku `service`
+--
+ALTER TABLE `service`
+ ADD PRIMARY KEY (`service_id`), ADD KEY `user_id` (`user_id`), ADD KEY `tcp_port` (`tcp_port`), ADD KEY `platform` (`platform`);
+
+--
+-- Klíče pro tabulku `servicegroup`
+--
+ALTER TABLE `servicegroup`
+ ADD PRIMARY KEY (`servicegroup_id`), ADD KEY `user_id` (`user_id`);
+
+--
+-- Klíče pro tabulku `sms`
+--
+ALTER TABLE `sms`
+ ADD PRIMARY KEY (`id`), ADD KEY `sender` (`sender`,`reciver`);
+
+--
+-- Klíče pro tabulku `stemplate`
+--
+ALTER TABLE `stemplate`
+ ADD PRIMARY KEY (`stemplate_id`);
+
+--
+-- Klíče pro tabulku `timeperiod`
+--
+ALTER TABLE `timeperiod`
+ ADD PRIMARY KEY (`timeperiod_id`), ADD KEY `user_id` (`user_id`);
+
+--
+-- Klíče pro tabulku `user`
+--
+ALTER TABLE `user`
+ ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `customers_username` (`login`);
+
+--
+-- Klíče pro tabulku `user_group`
+--
+ALTER TABLE `user_group`
+ ADD PRIMARY KEY (`usergroup_id`);
+
+--
+-- Klíče pro tabulku `user_to_group`
+--
+ALTER TABLE `user_to_group`
+ ADD UNIQUE KEY `uniq` (`user_id`,`group_id`);
+
+--
+-- AUTO_INCREMENT pro tabulky
+--
+
+--
+-- AUTO_INCREMENT pro tabulku `command`
+--
+ALTER TABLE `command`
+MODIFY `command_id` int(10) unsigned NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT pro tabulku `contact`
+--
+ALTER TABLE `contact`
+MODIFY `contact_id` int(10) unsigned NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT pro tabulku `contactgroup`
+--
+ALTER TABLE `contactgroup`
+MODIFY `contactgroup_id` int(10) unsigned NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT pro tabulku `hgbgimage`
+--
 ALTER TABLE `hgbgimage`
 MODIFY `hgbgimage_id` int(10) unsigned NOT NULL AUTO_INCREMENT;
-
+--
+-- AUTO_INCREMENT pro tabulku `host`
+--
+ALTER TABLE `host`
+MODIFY `host_id` int(10) unsigned NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT pro tabulku `hostgroup`
+--
+ALTER TABLE `hostgroup`
+MODIFY `hostgroup_id` int(10) unsigned NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT pro tabulku `script`
+--
 ALTER TABLE `script`
 MODIFY `script_id` int(11) NOT NULL AUTO_INCREMENT;
-
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+--
+-- AUTO_INCREMENT pro tabulku `service`
+--
+ALTER TABLE `service`
+MODIFY `service_id` int(10) unsigned NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT pro tabulku `servicegroup`
+--
+ALTER TABLE `servicegroup`
+MODIFY `servicegroup_id` int(10) unsigned NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT pro tabulku `sms`
+--
+ALTER TABLE `sms`
+MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'pořadí';
+--
+-- AUTO_INCREMENT pro tabulku `stemplate`
+--
+ALTER TABLE `stemplate`
+MODIFY `stemplate_id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT pro tabulku `timeperiod`
+--
+ALTER TABLE `timeperiod`
+MODIFY `timeperiod_id` int(10) unsigned NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT pro tabulku `user`
+--
+ALTER TABLE `user`
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT pro tabulku `user_group`
+--
+ALTER TABLE `user_group`
+MODIFY `usergroup_id` int(11) NOT NULL AUTO_INCREMENT;

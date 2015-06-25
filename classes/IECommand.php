@@ -119,6 +119,7 @@ class IECommand extends IECfg
             unset($AllData[$ADkey]['command_local']);
             unset($AllData[$ADkey]['command_remote']);
             unset($AllData[$ADkey]['command_type']);
+            unset($AllData[$ADkey]['script_id']);
         }
 
         return $AllData;
