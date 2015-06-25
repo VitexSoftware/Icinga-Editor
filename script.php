@@ -50,6 +50,8 @@ switch ($oPage->getRequestValue('action')) {
         $form->addItem(new EaseHtmlH2Tag($script->getName()));
 
         $confirmator = $form->addItem(new EaseTWBPanel(_('Opravdu smazat ?')), 'danger');
+
+        $confirmator->addItem(new EaseTWBWell(nl2br($script->getDataValue('body'))));
         $confirmator->addItem(new EaseTWBLinkButton('?' . $script->myKeyColumn . '=' . $script->getID(), _('Ne') . ' ' . EaseTWBPart::glyphIcon('ok'), 'success'));
         $confirmator->addItem(new EaseTWBLinkButton('?delete=true&' . $script->myKeyColumn . '=' . $script->getID(), _('Ano') . ' ' . EaseTWBPart::glyphIcon('remove'), 'danger'));
 
