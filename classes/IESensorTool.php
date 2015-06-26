@@ -24,7 +24,7 @@ class IESensorTool extends EaseContainer
         $commonWell = new EaseTWBWell();
 
         $commonRow = new EaseTWBRow;
-        $hostColumn = $commonRow->addColumn(6, new EaseHtmlH1Tag($host->getName()));
+        $hostColumn = $commonRow->addColumn(6, new EaseHtmlATag('host.php?host_id=' . $host->getId(), new EaseHtmlH1Tag($host->getName())));
         $hostColumn->addItem($host);
         $hostColumn->addItem($host->sensorStatusLabel());
 

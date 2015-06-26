@@ -16,6 +16,21 @@ $service = new IEService($oPage->getRequestValue('service_id', 'int'));
 $host = new IEHost($oPage->getRequestValue('host_id', 'int'));
 
 switch ($oPage->getRequestValue('action')) {
+
+    case 'clone':
+        $service->setDataValue('parent_id', $service->getId());
+        $service->unsetDataValue($service->getmyKeyColumn());
+        $service->setDataValue('hostname', array($host->getId() => $host->getName()));
+        $service->setDataValue('hostgroup_name', array());
+        $service->setDataValue('user_id', $oUser->getID());
+        $service->setDataValue($service->nameColumn, _('Klon') . ' ' . $service->getName());
+        if ($service->saveToMySQL()) {
+            $oUser->addStatusMessage(_('Služba byla naklonována'), 'success');
+            $oPage->redirect('servicetweak.php?service_id=' . $service->getId() . '&host_id=' . $host->getId());
+        } else {
+            $oUser->addStatusMessage(_('Sužba nebyla naklonována'), 'warning');
+        }
+        break;
     case 'rename':
         $newname = $oPage->getRequestValue('newname');
         if (strlen($newname)) {
@@ -93,6 +108,9 @@ $renameForm->addItem(new EaseHtmlInputTextTag('newname'), $service->getName(), a
 $renameForm->addItem(new EaseTWSubmitButton(_('Přejmenovat'), 'success'));
 
 $oPage->columnIII->addItem(new EaseTWBPanel(_('Přejmenování'), 'info', $renameForm));
+
+$oPage->columnIII->addItem($service->cloneButton());
+
 
 $oPage->columnI->addItem(new IEHostSelector($service));
 $oPage->columnI->addItem(new IEContactSelector($service));

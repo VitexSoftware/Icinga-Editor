@@ -232,14 +232,45 @@ input.ui-button { width: 100%; }
         $renameForm->addItem(new EaseTWSubmitButton(_('Přejmenovat'), 'success'));
 
         $tools->addItem(new EaseTWBPanel(_('Přejmenování'), 'info', $renameForm));
-        $tools->addItem(new EaseTWBLinkButton('?action=parent&host_id=' . $host->getId(), _('Přiřadit rodiče'), 'success'));
-        $tools->addItem(new EaseTWBLinkButton('?action=icon&host_id=' . $host->getId(), _('Změnit ikonu'), 'success'));
+
+        if (count($host->getDataValue('parents'))) {
+            $tools->addItem(new EaseTWBLinkButton('?action=parent&host_id=' . $host->getId(), _('Přiřadit rodiče'), 'default'));
+        } else {
+            $tools->addItem(new EaseTWBLinkButton('?action=parent&host_id=' . $host->getId(), _('Přiřadit rodiče'), 'success'));
+        }
+
+        if ($host->getDataValue('icon_image')) {
+            $tools->addItem(new EaseTWBLinkButton('?action=icon&host_id=' . $host->getId(), _('Změnit ikonu'), 'default'));
+        } else {
+            $tools->addItem(new EaseTWBLinkButton('?action=icon&host_id=' . $host->getId(), _('Nastavit ikonu'), 'success'));
+        }
+
         if ($host->getDataValue('address')) {
             $tools->addItem(new EaseTWBLinkButton('watchroute.php?host_id=' . $host->getId(), _('Sledovat cestu'), 'success', array('onClick' => "$('#preload').css('visibility', 'visible');")));
         }
 
+
+
+
         if ($host->getDataValue('platform') != 'generic') {
-            $tools->addItem(new EaseTWBLinkButton('sensor.php?host_id=' . $host->getId(), _('Nasadit senzor'), 'info'));
+            $status = null;
+            $status_code = $host->getSensorStatus();
+            switch ($status_code) {
+                case 2:
+                    $status = _('Senzor OK');
+                    $type = 'default';
+                    break;
+                case 1:
+                    $status = _('Aktualizovat Senzor');
+                    $type = 'success';
+                    break;
+                case 0:
+                default :
+                    $status = _('Nasadit senzor');
+                    $type = 'warning';
+                    break;
+            }
+            $tools->addItem(new EaseTWBLinkButton('sensor.php?host_id=' . $host->getId(), $status, $type));
         }
 
         $commonTab->addItem(new IEUsedServiceSelector($host));
