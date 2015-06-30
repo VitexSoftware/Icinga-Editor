@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Data smluv ke kontrole
+ * Posílá vyžádaná data do gridu
  *
- * @package    SystemDBFinance
+ * @package    IcingaEditor
  * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2014 Vitex@hippy.cz (C)

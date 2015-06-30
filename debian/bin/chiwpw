@@ -1,0 +1,60 @@
+#!/bin/bash
+
+set -e
+
+login="$1"
+password="$2"
+
+# load database connection info
+if [ ! -f /etc/dbconfig-common/icinga-web.conf ]; then
+    return
+fi
+source /etc/dbconfig-common/icinga-web.conf
+source /usr/share/dbconfig-common/internal/mysql
+
+# gen new salt
+salt=$(php5 -r 'echo hash("sha256", uniqid("$login_", mt_rand()));')
+
+# gen new pw hash
+export SALT="$salt"
+export PW="$password"
+pwhash=$(php5 -r 'echo hash_hmac("sha256", getenv("PW"), getenv("SALT"));')
+
+salt_e=${salt/\'/\\\'}
+pwhash_e=${pwhash/\'/\\\'}
+
+if [ "$dbc_dbtype" = "mysql" ]; then
+    # query the database to update
+    query="UPDATE nsm_user SET user_password='""$pwhash_e""', user_salt = '""$salt_e""', user_modified = NOW() WHERE user_name = '"$login"';"
+
+    # use app user and password for the command
+    dbc_dbadmin="$dbc_dbuser"
+    dbc_dbadmpass="$dbc_dbpass"
+
+    if dbc_mysql_exec_command "$query"; then
+        echo "root password updates successfully!"
+        db_fset icinga-web/rootpassword changed false || true
+        db_go || true
+    else
+        echo "setting root password failed: $dbc_error" >&2
+    fi
+elif [ "$dbc_dbtype" = "pgsql" ]; then
+    # query the database to update
+    query="UPDATE nsm_user SET user_password='""$pwhash_e""', user_salt = '""$salt_e""', user_modified = NOW() WHERE user_name = 'root';"
+
+    # use the app user
+    _dbc_asuser=1
+
+    if _dbc_pgsql_exec_command "$query"; then
+        echo "root password updates successfully!"
+        db_fset icinga-web/rootpassword changed false || true
+        db_go || true
+    else
+        echo "setting root password failed: $dbc_error" >&2
+    fi
+else
+    echo "db type '$dbc_dbtype' not implemented for setting root password!" >&2
+fi
+
+echo $query
+

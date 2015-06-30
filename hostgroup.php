@@ -100,7 +100,7 @@ $operations->addItem(new IEContactAsignForm);
 
 $tools->addItem(new EaseTWBLinkButton('wizard-host.php?hostgroup_id=' . $hostgroup->getId(), EaseTWBPart::GlyphIcon('plus') . _('nový host ve skupině'), 'success'));
 
-$tools->addItem(new EaseTWBLinkButton('hglayouteditor.php?hostgroup_id=' . $hostgroup->getId(), EaseTWBPart::GlyphIcon('globe') . _('Rozvržení topologie'), 'info'));
+//$tools->addItem(new EaseTWBLinkButton('hglayouteditor.php?hostgroup_id=' . $hostgroup->getId(), EaseTWBPart::GlyphIcon('globe') . _('Rozvržení topologie'), 'info'));
 
 
 $oPage->draw();
