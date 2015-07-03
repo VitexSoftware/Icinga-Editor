@@ -31,7 +31,6 @@ class IEHostgroup extends IECfg
       'notes' => 'TEXT',
       'notes_url' => 'VARCHAR(255)',
       'action_url' => 'VARCHAR(255)',
-      'bgimages' => 'ARRAY'
     );
     public $keywordsInfo = array(
       'hostgroup_name' => array(
@@ -67,10 +66,6 @@ class IEHostgroup extends IECfg
       'action_url' => array(
         'severity' => 'advanced',
         'title' => 'adresa doplnujících akcí'),
-      'bgimages' => array(
-        'severity' => 'hidden',
-        'title' => 'obrázky pozadí mapy sítě',
-        'refdata' => null)
     );
 
     /**
@@ -159,85 +154,6 @@ class IEHostgroup extends IECfg
     public function getMembers()
     {
         return $this->getDataValue('members');
-    }
-
-    /**
-     * Vloží obrázek pozadí vrstvy hostgrupy do databáze
-     *
-     * @param string $tmpfilename
-     * @param int    $level
-     */
-    public function saveBackground($tmpfilename)
-    {
-        $hgbgimage = new IEHGBgImage;
-        $hgbgimage->setDataValue('hostgroup_id', $this->getId());
-        $exist = $hgbgimage->getColumnsFromMySQL($hgbgimage->getMyKeyColumn(), $hgbgimage->getData());
-        if (isset($exist[$hgbgimage->getMyKeyColumn()])) {
-            $hgbgimage->setMyKey($exist[$hgbgimage->getMyKeyColumn()]);
-        }
-
-        $finfo = new finfo(FILEINFO_MIME);
-        list($type, $encoding) = explode(';', $finfo->file($tmpfilename));
-
-        $bgdata = 'data:' . $type . ';base64,' . base64_encode(file_get_contents($tmpfilename));
-
-        if ($hgbgimage->getId()) {
-            $result = $hgbgimage->updateToMySQL(array('image' => $bgdata));
-        } else {
-            $hgbgimage->setDataValue('image', $bgdata);
-            $result = $hgbgimage->insertToMySQL();
-        }
-
-        return $result;
-    }
-
-    /**
-     * Odstraní obrázky pozadí hostgrupy
-     *
-     * @return boolean
-     */
-    public function cleanBackgrounds()
-    {
-        $hgbgimage = new IEHGBgImage;
-        $hgbgimage->setDataValue('hostgroup_id', $this->getId());
-        $deleted = $hgbgimage->deleteFromMySQL();
-        if ($deleted) {
-            $this->addStatusMessage(('pozadí odstraněna'), 'success');
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * Smaže vrstvu pozadí
-     *
-     * @param int $level
-     * @return boolean
-     */
-    public function deleteBackground($level)
-    {
-        $hgbgimage = new IEHGBgImage;
-        $hgbgimage->setDataValue('hostgroup_id', $this->getId());
-        if ($hgbgimage->deleteFromMySQL()) {
-            $this->addStatusMessage(sprintf(_('pozadí bylo odstraněno')), 'success');
-            return TRUE;
-        }
-        return false;
-    }
-
-    /**
-     * Vrací obrázek pozadí hostgrupy
-     *
-     * @param int $hostgroup_id
-     * @return text
-     */
-    public function getBackgroundImage($hostgroup_id = null)
-    {
-        if (is_null($hostgroup_id)) {
-            $hostgroup_id = $this->getID();
-        }
-        return $this->myDbLink->queryToValue('SELECT image FROM hgbgimage WHERE hostgroup_id =' . $hostgroup_id);
     }
 
 }

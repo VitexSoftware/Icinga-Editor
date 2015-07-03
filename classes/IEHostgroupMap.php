@@ -8,8 +8,22 @@
 class IEHostgroupMap extends IEHostMap
 {
 
+    /**
+     * Skupina hostů
+     * @var IEHostgroup
+     */
     public $hostgroup = null;
 
+    /**
+     * Mapa skupiny hostů
+     *
+     * @param int $hostgroup_id
+     * @param type $directed
+     * @param array $attributes
+     * @param type $name
+     * @param type $strict
+     * @param type $returnError
+     */
     public function __construct($hostgroup_id, $directed = false, $attributes = array(), $name = 'G', $strict = true, $returnError = false)
     {
         $this->hostgroup = new IEHostgroup($hostgroup_id);
@@ -35,12 +49,8 @@ class IEHostgroupMap extends IEHostMap
 
             if (strstr($host_info['3d_coords'], ',')) {
                 list($x, $y, $z) = explode(',', $host_info['3d_coords']);
-                if (!$z) {
-                    $z = 1;
-                }
             } else {
                 $x = $y = 0;
-                $z = 1;
             }
 
             if (strlen(trim($host_info['parents']))) {
@@ -67,7 +77,6 @@ class IEHostgroupMap extends IEHostMap
               'color' => $color,
               'x' => $x,
               'y' => $y,
-              'z' => $z,
               'fixed' => boolval($x + $y),
               'shape' => 'point',
               'style' => 'filled',

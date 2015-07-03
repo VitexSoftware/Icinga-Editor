@@ -16,6 +16,7 @@ class IEDbFixer extends EaseHtmlUlTag
         parent::__construct();
         $this->fixContactIDs();
         $this->fixHostNameIDs();
+        $this->fixHostHostgroupID();
         $this->setTagClass('list-group');
     }
 
@@ -153,6 +154,39 @@ class IEDbFixer extends EaseHtmlUlTag
                     $this->addItemSmart(sprintf(_('<strong>%s</strong> : %s'), $host->getName(), implode(',', $contactsOK)), array('class' => 'list-group-item'));
                     $this->addStatusMessage(sprintf(_('%s : %s'), $host->getName(), implode(',', $contactsOK)), 'success');
                     $contactsOK = array();
+                }
+            }
+        }
+    }
+
+    function fixHostHostgroupID()
+    {
+        $hostgroupsOK = array();
+        $hostgroupsErr = array();
+        $host = new IEHost;
+        $hostgroup = new IEHostgroup;
+        $hosts = $host->getColumnsFromMySQL(array($host->myKeyColumn));
+        foreach ($hosts as $hostInfo) {
+            $hostId = intval(current($hostInfo));
+            $host->loadFromMySQL($hostId);
+            $hostgroupNames = $host->getDataValue('hostgroups');
+            if ($hostgroupNames) {
+                foreach ($hostgroupNames as $hostgroupId => $hostgroupName) {
+                    $hostgroupFound = $hostgroup->loadFromMySQL($hostgroupName);
+                    if ($hostgroupId != $hostgroup->getId()) {
+                        if ($host->delMember('hostgroups', $hostgroupId, $hostgroupName) && $host->addMember('hostgroups', $hostgroup->getId(), $hostgroupName)) {
+                            $hostgroupsOK[] = $hostgroupName;
+                        } else {
+                            $hostgroupsErr[] = $hostgroupName;
+                        }
+                    }
+                }
+            }
+            if (count($hostgroupsOK)) {
+                if ($host->saveToMySQL()) {
+                    $this->addItemSmart(sprintf(_('<strong>%s</strong> : %s'), $host->getName(), implode(',', $hostgroupsOK)), array('class' => 'list-group-item'));
+                    $this->addStatusMessage(sprintf(_('%s : %s'), $host->getName(), implode(',', $hostgroupsOK)), 'success');
+                    $hostgroupsOK = array();
                 }
             }
         }

@@ -33,7 +33,11 @@ class IEServiceConfigurator extends EaseHtmlDivTag
      */
     public $commandParams = null;
 
-    public $commonFields = array('check_period');
+    /**
+     * Položky vždy určené k tweakování
+     * @var array
+     */
+    public $commonFields = array('check_period', '');
 
     /**
      * Obecný modul pro konfiguraci služby
@@ -49,7 +53,6 @@ class IEServiceConfigurator extends EaseHtmlDivTag
                 EaseShared::webPage()->addStatusMessage(_('Prosím potvrďte nastavení služby'));
             }
         }
-
     }
 
     /**
@@ -78,9 +81,9 @@ class IEServiceConfigurator extends EaseHtmlDivTag
         foreach ($this->commonFields as $cf) {
             $value = EaseShared::webPage()->getRequestValue($cf);
             if ($value == 'NULL') {
-                $this->tweaker->service->setDataValue($cf,null);
+                $this->tweaker->service->setDataValue($cf, null);
             } else {
-                $this->tweaker->service->setDataValue($cf,$value);
+                $this->tweaker->service->setDataValue($cf, $value);
             }
         }
 
@@ -92,7 +95,7 @@ class IEServiceConfigurator extends EaseHtmlDivTag
      */
     public function afterAdd()
     {
-        if (EaseShared::webPage()->isPosted() && (EaseShared::webPage()->getRequestValue('action') == 'tweak') ) {
+        if (EaseShared::webPage()->isPosted() && (EaseShared::webPage()->getRequestValue('action') == 'tweak')) {
             if ($this->configure()) {
                 $serviceID = $this->tweaker->service->saveToMySQL();
                 if (is_null($serviceID)) {
@@ -112,11 +115,11 @@ class IEServiceConfigurator extends EaseHtmlDivTag
         $this->form();
 
         foreach ($this->commonFields as $cf) {
-            $this->form->addItem(new IECfgEditor($this->tweaker->service,$cf));
+            $this->form->addItem(new IECfgEditor($this->tweaker->service, $cf));
         }
         $this->form->addItem(new EaseHtmlInputHiddenTag($this->tweaker->service->getMyKeyColumn(), $this->tweaker->service->getMyKey()));
         $this->form->addItem(new EaseHtmlInputHiddenTag($this->tweaker->host->getMyKeyColumn(), $this->tweaker->host->getMyKey()));
-        $this->form->addItem(new EaseHtmlInputHiddenTag('action','tweak'));
+        $this->form->addItem(new EaseHtmlInputHiddenTag('action', 'tweak'));
         $this->form->addItem('<br/>');
         $this->form->addItem(new EaseTWSubmitButton(_('Uložit'), 'success'));
     }

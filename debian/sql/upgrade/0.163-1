@@ -1,0 +1,11 @@
+ALTER TABLE `coordinate` ADD `service_id` INT UNSIGNED NULL AFTER `host_id`, ADD INDEX (`service_id`) ;
+ALTER TABLE `coordinate` DROP `z`;
+ALTER TABLE `coordinate` CHANGE `x` `x` FLOAT(11) NULL DEFAULT NULL, CHANGE `y` `y` FLOAT(11) NULL DEFAULT NULL;
+ALTER TABLE `coordinate` ADD `name` VARCHAR(128) NULL AFTER `hostgroup_id`;
+ALTER TABLE `coordinate` ADD `DatCreate` DATETIME NULL , ADD `DatSave` DATETIME NULL , ADD INDEX (`DatCreate`, `DatSave`) ;
+ALTER TABLE `coordinate` CHANGE `coordinate_id` `coordinate_id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+ALTER TABLE `coordinate` ADD INDEX(`name`);
+ALTER TABLE `hostgroup` DROP `bgimages`;
+ALTER TABLE `hgbgimage` DROP `level`;
+ALTER TABLE `hgbgimage` CHANGE `image` `image` MEDIUMBLOB NOT NULL COMMENT 'obrázek';
+ALTER TABLE `hgbgimage` DROP `name`;
