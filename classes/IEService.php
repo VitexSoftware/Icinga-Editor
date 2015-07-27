@@ -348,6 +348,9 @@ class IEService extends IECfg
             }
 
             if (!$this->isTemplate($allData[$adKey])) {
+                if (!strlen($allData[$adKey]['display_name'])) {
+                    $allData[$adKey]['display_name'] = $allData[$adKey][$this->nameColumn];
+                }
                 $allData[$adKey][$this->nameColumn] = $allData[$adKey][$this->nameColumn] . '-' .
                     EaseShared::user()->getUserLogin(); //Přejmenovat službu podle uživatele
                 if (!count($allData[$adKey]['host_name'])) { //Negenerovat nepoužité služby
