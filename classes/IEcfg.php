@@ -1857,4 +1857,15 @@ class IEcfg extends EaseBrick
         return parent::setUpUser($user, $targetObject);
     }
 
+    /**
+     * Přepne vlastníka záznamů
+     *
+     * @param int $currentID ID stávajícího vlastníka
+     * @param int $newID     ID nového vlastníka
+     */
+    function switchOwners($currentID, $newID)
+    {
+        $this->myDbLink->exeQuery('UPDATE ' . $this->myTable . " SET " . $this->userColumn . " = '$newID' WHERE  " . $this->userColumn . " = $currentID");
+    }
+
 }
