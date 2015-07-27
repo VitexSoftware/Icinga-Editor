@@ -156,4 +156,68 @@ class IEHostgroup extends IECfg
         return $this->getDataValue('members');
     }
 
+    /**
+     * Smaže hostgrupu i její použití v hostech
+     *
+     * @param int $id
+     * @return boolean
+     */
+    function delete($id = null)
+    {
+        if (isset($id) && ($this->getId() != $id )) {
+            $this->loadFromSQL($id);
+        } else {
+            $id = $this->getId();
+        }
+        $host = new IEHost;
+        $hosts = $host->getColumnsFromMySQL(
+            array($host->myKeyColumn), array(
+          'hostgroups' => '%' . $this->getName() . '%'
+            )
+        );
+        foreach ($hosts as $hostInfo) {
+            $hostId = intval(current($hostInfo));
+            $host->loadFromMySQL($hostId);
+            $hostgroupNames = $host->getDataValue('hostgroups');
+            if ($hostgroupNames) {
+                foreach ($hostgroupNames as $hostgroupId => $hostgroupName) {
+                    if ($hostgroupId == $this->getId()) {
+                        if ($host->delMember('hostgroups', $hostgroupId, $hostgroupName)) {
+                            $this->addStatusMessage(sprintf(_('host %s byl odstraněn ze skupiny %s'), $host->getName(), $hostgroupName), 'success');
+                        } else {
+                            $this->addStatusMessage(sprintf(_('host %s byl odstraněn ze skupiny %s'), $host->getName(), $hostgroupName), 'error');
+                        }
+                    }
+                }
+            }
+        }
+
+
+        $subgroup = new IEHostgroup;
+        $subgroups = $subgroup->getColumnsFromMySQL(
+            array($subgroup->myKeyColumn), array(
+          'hostgroup_members' => '%' . $this->getName() . '%'
+            )
+        );
+        foreach ($subgroups as $subgroupInfo) {
+            $subgroupId = intval(current($subgroupInfo));
+            $subgroup->loadFromMySQL($subgroupId);
+            $subgroupgroupNames = $subgroup->getDataValue('hostgroup_members');
+            if ($subgroupgroupNames) {
+                foreach ($subgroupgroupNames as $subgroupgroupId => $subgroupgroupName) {
+                    if ($subgroupgroupId == $this->getId()) {
+                        if ($subgroup->delMember('hostgroup_members', $subgroupgroupId, $subgroupgroupName)) {
+                            $this->addStatusMessage(sprintf(_('subgroup %s byl odstraněn ze skupiny %s'), $subgroup->getName(), $subgroupgroupName), 'success');
+                        } else {
+                            $this->addStatusMessage(sprintf(_('subgroup %s byl odstraněn ze skupiny %s'), $subgroup->getName(), $subgroupgroupName), 'error');
+                        }
+                    }
+                }
+            }
+        }
+
+
+        return parent::delete($id);
+    }
+
 }
