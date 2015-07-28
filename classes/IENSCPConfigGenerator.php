@@ -138,10 +138,11 @@ class IENSCPConfigGenerator extends EaseAtom
         switch ($this->platform) {
             case 'windows':
                 $this->nscBatArray = array('
+@ECHO OFF
 set NSCLIENT="%ProgramFiles%\NSClient++\nscp.exe"
 set ICINGA_SERVER="' . $this->prefs['serverip'] . '"
 ' . $this->nscvar . ' service --stop
-rename "%ProgramFiles%\NSClient++\nsclient.ini" "%ProgramFiles%\NSClient++\nsclient.old"
+rename "%ProgramFiles%\NSClient++\nsclient.ini" nsclient.old
 ');
                 break;
             case 'linux':
@@ -353,20 +354,17 @@ echo "file name=${log-path}/nsclient.log" >> $INI
             case 'windows':
                 $this->nscBatArray[] = "\n" . '
 start "" "' . $this->getCfgConfirmUrl() . '"
-' . $this->nscvar . ' test
 ' . $this->nscvar . ' service --start
 ';
                 break;
             case 'linux':
                 $this->nscBatArray[] = "\n" . '
 curl "' . $this->getCfgConfirmUrl() . '"
-' . $this->nscvar . ' test
 service nscp start
 ';
                 break;
             default:
                 $this->nscBatArray[] = $this->nscBatArray[] = "\n" . '
-' . $this->nscvar . ' test
 ';
                 break;
         }
