@@ -37,7 +37,7 @@ class IEServiceConfigurator extends EaseHtmlDivTag
      * Položky vždy určené k tweakování
      * @var array
      */
-    public $commonFields = array('check_period', '');
+    public $commonFields = array();
 
     /**
      * Obecný modul pro konfiguraci služby

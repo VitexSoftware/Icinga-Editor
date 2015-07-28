@@ -20,7 +20,7 @@ switch ($oPage->getRequestValue('action')) {
     case 'clone':
         $service->setDataValue('parent_id', $service->getId());
         $service->unsetDataValue($service->getmyKeyColumn());
-        $service->setDataValue('hostname', array($host->getId() => $host->getName()));
+        $service->setDataValue('host_name', array($host->getId() => $host->getName()));
         $service->setDataValue('hostgroup_name', array());
         $service->setDataValue('user_id', $oUser->getID());
         $service->setDataValue($service->nameColumn, _('Klon') . ' ' . $service->getName());

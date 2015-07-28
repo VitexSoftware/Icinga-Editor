@@ -15,7 +15,7 @@ class IEPageBottom extends EaseTWBContainer
      */
     public function finalize()
     {
-        if (defined('HIDEFOOTER')) {
+        if (!defined('HIDEFOOTER')) {
             $this->SetTagID('footer');
             $this->addItem('<hr>');
             $star = '<iframe src="https://ghbtns.com/github-btn.html?user=Vitexus&repo=icinga_configurator&type=star&count=true" frameborder="0" scrolling="0" width="170px" height="20px"></iframe>';
@@ -25,6 +25,8 @@ class IEPageBottom extends EaseTWBContainer
             $footrow->addColumn(4, '<a href="http://www.spoje.net"><img style="position: relative; top: -7px; left: -10px;" align="right" style="border:0" src="img/spojenet_small_white.gif" alt="SPOJE.NET" title="Housing zajišťují SPOJE.NET s.r.o." /></a>');
             $this->addItem($footrow);
 //        $Foot->addItem('<a href="https://twitter.com/VSMonitoring" class="twitter-follow-button" data-show-count="true" data-lang="cs">Sledovat @VSMonitoring</a>');
+        } else {
+            $this->addItem('<hr>Icinga Editor v.: ' . constant('IE_VERSION'));
         }
     }
 
