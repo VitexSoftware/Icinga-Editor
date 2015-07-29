@@ -1,5 +1,5 @@
-icinga-editor (0.166-1) UNRELEASED; urgency=medium
+icinga-editor (0.169-1) UNRELEASED; urgency=medium
 
   * Initial release. (Closes: #XXXXXX)
 
- -- dvorak <dvorak@linuxadmin.austro-bohemia.local>  Mon, 27 Jul 2015 15:39:21 +0200
+ -- dvorak <dvorak@linuxadmin.austro-bohemia.local>  Tue, 28 Jul 2015 11:28:02 +0200

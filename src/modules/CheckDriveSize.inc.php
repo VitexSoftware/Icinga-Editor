@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Formulář testu IMCP odezvy
+ * Formulář pro test Disku windows
  *
  * @package    IcingaEditor
  * @subpackage plugins
@@ -102,7 +102,7 @@ class CheckDriveSize extends IEServiceConfigurator
                     } else {
                         $config[] = 'Drive=' . $value . ':';
                         $this->tweaker->service->setDataValue($this->tweaker->service->nameColumn, _('Disk') . ' ' . strtoupper($value) . ':');
-                        $this->tweaker->service->setDataValue('service_description', sprintf(_('Volné místo disku %s: '), strtoupper($value)));
+                        $this->tweaker->service->setDataValue('display_name', sprintf(_('Volné místo disku %s: '), strtoupper($value)));
                     }
                     break;
                 case 'ShowAll':
