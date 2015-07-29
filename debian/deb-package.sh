@@ -8,7 +8,7 @@ cd ..
 rm -f ./debian/changelog
 EDITOR=echo dch --create --newversion $VERSION-1 --package icinga-editor
 
-sed -i "/define/c\define('IE_VERSION', '$VERSION');" classes/IEWebPage.php
+sed -i "/define/c\define('IE_VERSION', '$VERSION');" src/classes/IEWebPage.php
 
 debuild -i -d -us -uc -b
 rm -fr ./debian/icinga-editor/
