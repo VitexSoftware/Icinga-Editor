@@ -15,5 +15,8 @@
             <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/createaccount.php</file>
             <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/includes/IEInit.php</file>
         </group>
+        <group name="Monitoring">
+            <file>file:/home/vitex/Projects/VitexSoftware/iciedit/src/includes/Configure.php</file>
+        </group>
     </open-files>
 </project-private>
