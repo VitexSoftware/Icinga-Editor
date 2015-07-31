@@ -1868,4 +1868,23 @@ class IEcfg extends EaseBrick
         $this->myDbLink->exeQuery('UPDATE ' . $this->myTable . " SET " . $this->userColumn . " = '$newID' WHERE  " . $this->userColumn . " = $currentID");
     }
 
+    /**
+     * Vrací URL konfiguračního rozhraní
+     *
+     * @return string
+     */
+    static function getBaseURL()
+    {
+        if (isset($_SERVER['REQUEST_SCHEME'])) {
+            $scheme = $_SERVER['REQUEST_SCHEME'];
+        } else {
+            $scheme = 'http';
+        }
+
+        $enterPoint = $scheme . '://' . $_SERVER['SERVER_NAME'] . dirname($_SERVER['REQUEST_URI']) . '/';
+
+//        $enterPoint = str_replace('\\', '', $enterPoint); //Win Hack
+        return $enterPoint;
+    }
+
 }
