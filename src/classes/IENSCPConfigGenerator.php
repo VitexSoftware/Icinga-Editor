@@ -149,7 +149,7 @@ rename "%NSCDIR%\nsclient.ini" nsclient.old
 
                 $this->nscBatArray[] = "\n" . 'SET ICIEDIT_HTML="%NSCDIR%/icinga-editor.htm"';
                 $this->nscBatArray[] = "\n" . 'echo ^<html^> > %ICIEDIT_HTML%';
-                $this->nscBatArray[] = "\n" . '^<head^>^<^meta charset="UTF-8"^>^</head^>';
+                $this->nscBatArray[] = "\n" . 'echo ^<head^>^<meta charset="UTF-8"^>^</head^> >> %ICIEDIT_HTML%';
                 $this->nscBatArray[] = "\n" . 'echo ^<body^> >> %ICIEDIT_HTML%
 ';
 
@@ -361,7 +361,8 @@ echo "file name=${log-path}/nsclient.log" >> $INI
         }
         switch ($this->platform) {
             case 'windows':
-                $this->nscBatArray[] = "\n" . 'echo ^<br^>^<a href="' . IECfg::getBaseURL() . 'nscpcfggen.php?host_id=' . $this->host->getId() . '"^>' . _('Znovu stahnout') . '^</a^> >> %ICIEDIT_HTML%';
+                $this->nscBatArray[] = "\n" . 'echo ^<br^>^<a href="' . IECfg::getBaseURL() . 'host.php?host_id=' . $this->host->getId() . '"^>' . _('Konfigurace hosta') . ' ' . $this->host->getName() . '^</a^> >> %ICIEDIT_HTML%';
+                $this->nscBatArray[] = "\n" . 'echo ^<br^>^<a href="' . IECfg::getBaseURL() . 'nscpcfggen.php?host_id=' . $this->host->getId() . '"^>' . _('Znovu stahnout') . ' ' . $this->host->getName() . '_nscp.bat' . '^</a^> >> %ICIEDIT_HTML%';
                 $this->nscBatArray[] = "\n" . 'echo ^<br^>^<a href="' . $this->getCfgConfirmUrl() . '"^>' . _('Potvrzení konfigurace') . '^</a^> >> %ICIEDIT_HTML%';
                 $this->nscBatArray[] = "\n" . 'echo ^</body^> >> %ICIEDIT_HTML%';
                 $this->nscBatArray[] = "\n" . 'echo ^</html^> >> %ICIEDIT_HTML%
