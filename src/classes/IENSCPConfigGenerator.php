@@ -149,6 +149,7 @@ rename "%NSCDIR%\nsclient.ini" nsclient.old
 
                 $this->nscBatArray[] = "\n" . 'SET ICIEDIT_HTML="%NSCDIR%/icinga-editor.htm"';
                 $this->nscBatArray[] = "\n" . 'echo ^<html^> > %ICIEDIT_HTML%';
+                $this->nscBatArray[] = "\n" . '^<head^>^<^meta charset="UTF-8"^>^</head^>';
                 $this->nscBatArray[] = "\n" . 'echo ^<body^> >> %ICIEDIT_HTML%
 ';
 
@@ -438,7 +439,7 @@ service nscp start
         foreach ($this->scriptsToDeploy as $script_name => $script_id) {
             switch ($this->platform) {
                 case 'windows':
-                    $this->nscBatArray[] = "\n" . 'echo ^<br^>^<a href="' . IECfg::getBaseURL() . 'scriptget.php?script_id=' . $script_id . '"^>' . $script_name . '^</a^> >> "%ICIEDIT_HTML%"
+                    $this->nscBatArray[] = "\n" . 'echo ^<br^>^<a href="' . IECfg::getBaseURL() . 'scriptget.php?script_id=' . $script_id . '"^>' . $script_name . '^</a^> >> %ICIEDIT_HTML%
 ';
                     break;
                 case 'linux':
