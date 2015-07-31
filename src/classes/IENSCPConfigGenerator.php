@@ -139,17 +139,17 @@ class IENSCPConfigGenerator extends EaseAtom
             case 'windows':
                 $this->nscBatArray = array('
 @ECHO OFF
-set NSCDIR="%ProgramFiles%\NSClient++\"
-set NSCLIENT="%NSCDIR%\nscp.exe"
+set NSCDIR=%ProgramFiles%\NSClient++\
+set NSCLIENT=%NSCDIR%\nscp.exe
 set ICINGA_SERVER="' . $this->prefs['serverip'] . '"
 ' . $this->nscvar . ' service --stop
 rm  "%ProgramFiles%\NSClient++\nsclient.old"
 rename "%ProgramFiles%\NSClient++\nsclient.ini" nsclient.old
 ');
 
-                $this->nscBatArray[] = "\n" . 'SET ICIEDIT_HTML="%NSCDIR%/icinga-editor.htm"';
-                $this->nscBatArray[] = "\n" . 'echo "<html>" > "%ICIEDIT_HTML%"';
-                $this->nscBatArray[] = "\n" . 'echo "<body>" >> "%ICIEDIT_HTML%"
+                $this->nscBatArray[] = "\n" . 'SET ICIEDIT_HTML=%NSCDIR%/icinga-editor.htm';
+                $this->nscBatArray[] = "\n" . 'echo <html> > "%ICIEDIT_HTML%"';
+                $this->nscBatArray[] = "\n" . 'echo <body> >> "%ICIEDIT_HTML%"
 ';
 
                 break;
@@ -360,10 +360,10 @@ echo "file name=${log-path}/nsclient.log" >> $INI
         }
         switch ($this->platform) {
             case 'windows':
-                $this->nscBatArray[] = "\n" . 'echo "<br><a href=' . IECfg::getBaseURL() . 'nscpcfggen.php?host_id=' . $this->host->getId() . '>' . _('Znovu stahnout') . '</a>" >> "%ICIEDIT_HTML%"';
-                $this->nscBatArray[] = "\n" . 'echo "<br><a href=' . $this->getCfgConfirmUrl() . '>' . _('Potvrzení konfigurace') . '</a>" >> "%ICIEDIT_HTML%"';
-                $this->nscBatArray[] = "\n" . 'echo "</body>" >> "%ICIEDIT_HTML%"';
-                $this->nscBatArray[] = "\n" . 'echo "</html>" >> "%ICIEDIT_HTML%"
+                $this->nscBatArray[] = "\n" . 'echo <br><a href=' . IECfg::getBaseURL() . 'nscpcfggen.php?host_id=' . $this->host->getId() . '>' . _('Znovu stahnout') . '</a> >> "%ICIEDIT_HTML%"';
+                $this->nscBatArray[] = "\n" . 'echo <br><a href=' . $this->getCfgConfirmUrl() . '>' . _('Potvrzení konfigurace') . '</a> >> "%ICIEDIT_HTML%"';
+                $this->nscBatArray[] = "\n" . 'echo </body> >> "%ICIEDIT_HTML%"';
+                $this->nscBatArray[] = "\n" . 'echo </html> >> "%ICIEDIT_HTML%"
 ';
 
                 $this->nscBatArray[] = "\n" . '
@@ -438,7 +438,7 @@ service nscp start
         foreach ($this->scriptsToDeploy as $script_name => $script_id) {
             switch ($this->platform) {
                 case 'windows':
-                    $this->nscBatArray[] = "\n" . 'echo "<br><a href=' . IECfg::getBaseURL() . 'scriptget.php?script_id=' . $script_id . '>' . $script_name . '</a>" >> "%ICIEDIT_HTML%"
+                    $this->nscBatArray[] = "\n" . 'echo <br><a href=' . IECfg::getBaseURL() . 'scriptget.php?script_id=' . $script_id . '>' . $script_name . '</a> >> "%ICIEDIT_HTML%"
 ';
 
                     break;
