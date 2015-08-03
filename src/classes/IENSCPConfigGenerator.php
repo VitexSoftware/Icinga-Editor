@@ -186,6 +186,8 @@ echo "file name=${log-path}/nsclient.log" >> $INI
         switch ($this->platform) {
             case 'windows':
                 $this->addCfg('/settings/external scripts/wrappings', 'vbs', 'cscript.exe //T:3600 //NoLogo scripts\\lib\\wrapper.vbs %%SCRIPT%% %%ARGS%%');
+                $this->addCfg('/settings/external scripts/wrappings', 'wsf', 'cscript.exe //T:3600 //NoLogo scripts\\lib\\wrapper.vbs %%SCRIPT%% %%ARGS%%');
+//                $this->addCfg('/settings/external scripts/wrappings', 'ps1', 'ps1=cmd /c echo scripts\\\\%SCRIPT% %ARGS%; exit($lastexitcode) | powershell.exe -command -');
                 break;
         }
     }
@@ -338,7 +340,7 @@ echo "file name=${log-path}/nsclient.log" >> $INI
                 $cmdline = $serviceCmd;
             }
 
-            if (preg_match("/\.(vbs|bat)/", $cmdline)) {
+            if (preg_match("/\.(vbs|bat|ps1|wsf)/", $cmdline)) {
                 $this->addCfg('/settings/external scripts/wrapped scripts', str_replace(' ', '_', $serviceName), $cmdline . ' ' . $serviceParams);
             } else {
                 $this->addCfg('/settings/external scripts/alias', str_replace(' ', '_', $serviceName), $cmdline . ' ' . $serviceParams);
