@@ -187,7 +187,7 @@ echo "file name=${log-path}/nsclient.log" >> $INI
             case 'windows':
                 $this->addCfg('/settings/external scripts/wrappings', 'vbs', 'cscript.exe //T:3600 //NoLogo scripts\\lib\\wrapper.vbs %%SCRIPT%% %%ARGS%%');
                 $this->addCfg('/settings/external scripts/wrappings', 'wsf', 'cscript.exe //T:3600 //NoLogo scripts\\lib\\wrapper.vbs %%SCRIPT%% %%ARGS%%');
-//                $this->addCfg('/settings/external scripts/wrappings', 'ps1', 'ps1=cmd /c echo scripts\\\\%SCRIPT% %ARGS%; exit($lastexitcode) | powershell.exe -command -');
+                $this->addCfg('/settings/external scripts/wrappings', 'ps1', 'ps1=cmd /c echo %SCRIPT% %ARGS%; exit($lastexitcode) | powershell.exe -command -');
                 break;
         }
     }

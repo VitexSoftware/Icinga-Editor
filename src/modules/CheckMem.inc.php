@@ -31,6 +31,7 @@ class CheckDriveSize extends IEServiceConfigurator
           'MinCrit' => NULL,
           'warn' => NULL,
           'crit' => NULL,
+          'type' => NULL
         );
         foreach (explode(' ', $this->commandParams[0]) as $cfg) {
             if (strstr($cfg, '=')) {
@@ -44,6 +45,11 @@ class CheckDriveSize extends IEServiceConfigurator
                 }
             }
         }
+
+
+        $types = array('physical' => _('Physical memory (RAM)'), 'committed' => _('total memory (RAM+PAGE)'));
+
+        $this->form->addInput(new EaseHtmlSelect('type', $types, str_replace(':', '', $config['type'])), _('Typ'), '', _('Typ sledované paměti'));
 
         $this->form->addItem(new EaseTWBFormGroup(_('MaxWarn'), new EaseHtmlInputTextTag('MaxWarn', $config['MaxWarn']), '80%', _('Maximum value before a warning is returned.')));
         $this->form->addItem(new EaseTWBFormGroup(_('MaxCrit'), new EaseHtmlInputTextTag('MaxCrit', $config['MaxCrit']), '95%', _('Maximum value before a critical is returned.')));
