@@ -15,7 +15,7 @@ require_once 'classes/IEServiceConfigurator.php';
  *
  * @author vitex
  */
-class CheckDriveSize extends IEServiceConfigurator
+class CheckMem extends IEServiceConfigurator
 {
 
     /**
