@@ -88,6 +88,7 @@ class CheckMem extends IEServiceConfigurator
                 case 'MinCrit':
                 case 'warn':
                 case 'crit':
+                case 'type':
                     if ($value) {
                         $config[] = $key . '=' . $value;
                     }
