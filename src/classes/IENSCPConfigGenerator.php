@@ -358,7 +358,7 @@ echo "file name=${log-path}/nsclient.log" >> $INI
 
     function stripServiceName($serviceName)
     {
-        return EaseBrick::lettersOnly($serviceName);
+        return preg_replace('/[^(\sa-zA-Z0-9)]*/', '', $serviceName);
     }
 
     /**
