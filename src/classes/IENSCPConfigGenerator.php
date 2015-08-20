@@ -344,21 +344,16 @@ echo "file name=${log-path}/nsclient.log" >> $INI
             $serviceParams = str_replace('\\', '\\\\', $serviceParams);
 
             if (preg_match("/\.(vbs|bat|ps1|wsf)/", $cmdline)) {
-                $this->addCfg('/settings/external scripts/wrapped scripts', $this->stripServiceName($serviceName), $cmdline . ' ' . $serviceParams);
+                $this->addCfg('/settings/external scripts/wrapped scripts', str_replace(' ', '_', $serviceName), $cmdline . ' ' . $serviceParams);
             } else {
-                $this->addCfg('/settings/external scripts/alias', $this->stripServiceName($serviceName), $cmdline . ' ' . $serviceParams);
+                $this->addCfg('/settings/external scripts/alias', str_replace(' ', '_', $serviceName), $cmdline . ' ' . $serviceParams);
             }
 
             if ($this->hostPassiveMode) {
-                $this->addCfg('/settings/scheduler/schedules/' . $this->stripServiceName($serviceName) . '-' . EaseShared::user()->getUserLogin(), 'command', $this->stripServiceName($serviceName));
-                $this->addCfg('/settings/scheduler/schedules/' . $this->stripServiceName($serviceName) . '-' . EaseShared::user()->getUserLogin(), 'interval', $service['check_interval'] . 'm');
+                $this->addCfg('/settings/scheduler/schedules/' . str_replace(' ', '_', $serviceName) . '-' . EaseShared::user()->getUserLogin(), 'command', str_replace(' ', '_', $serviceName));
+                $this->addCfg('/settings/scheduler/schedules/' . str_replace(' ', '_', $serviceName) . '-' . EaseShared::user()->getUserLogin(), 'interval', $service['check_interval'] . 'm');
             }
         }
-    }
-
-    function stripServiceName($serviceName)
-    {
-        return preg_replace('/[^(\sa-zA-Z0-9)]*/', '', $serviceName);
     }
 
     /**
