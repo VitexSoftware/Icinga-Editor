@@ -109,6 +109,7 @@ class IEServiceConfigurator extends EaseHtmlDivTag
         }
 
         $this->commandParams = explode('!', $this->tweaker->service->getDataValue('check_command-params'));
+        $this->addItem(new EaseHtmlDivTag(null, _('Služba') . ': <strong>' . $this->tweaker->service->getName() . '</strong>'));
         $this->addItem(new EaseHtmlDivTag(null, _('Uloženo') . ': ' . $this->tweaker->service->getDataValue('DatSave')));
         $this->addItem(new EaseHtmlDivTag(null, _('Založeno') . ': ' . $this->tweaker->service->getDataValue('DatCreate')));
         $this->form = $this->addItem(new EaseTWBForm('servconf'));
