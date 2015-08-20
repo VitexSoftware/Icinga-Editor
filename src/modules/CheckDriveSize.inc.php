@@ -114,7 +114,7 @@ class CheckDriveSize extends IEServiceConfigurator
                         if (strlen(trim($value)) && ($value != '\\\\')) {
                             if (strstr($value, '\\\\')) {
                                 $config['Drive'] = 'Drive=' . $value;
-                                $this->tweaker->service->setDataValue($this->tweaker->service->nameColumn, _('Síťová jednotka') . ' ' . $value . ':');
+                                $this->tweaker->service->setDataValue($this->tweaker->service->nameColumn, IENRPEConfigGenerator::stripServiceName(_('NetDisk') . ' ' . $value));
                                 $this->tweaker->service->setDataValue('display_name', sprintf(_('Volné místo síťové jednotky %s: '), $value));
                             } else {
                                 $config['Drive'] = 'Drive=' . $value . ':';

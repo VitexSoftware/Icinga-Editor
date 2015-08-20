@@ -340,20 +340,26 @@ echo "file name=${log-path}/nsclient.log" >> $INI
                 $cmdline = $serviceCmd;
             }
 
-            $cmdline = str_replace('\\', '\\\\', $cmdline);
-            $serviceParams = str_replace('\\', '\\\\', $serviceParams);
+
+            $checkCommand = str_replace('\\', '\\\\', $cmdline . ' ' . $serviceParams);
+
 
             if (preg_match("/\.(vbs|bat|ps1|wsf)/", $cmdline)) {
-                $this->addCfg('/settings/external scripts/wrapped scripts', str_replace(' ', '_', $serviceName), $cmdline . ' ' . $serviceParams);
+                $this->addCfg('/settings/external scripts/wrapped scripts', $this->stripServiceName($serviceName), $checkCommand);
             } else {
-                $this->addCfg('/settings/external scripts/alias', str_replace(' ', '_', $serviceName), $cmdline . ' ' . $serviceParams);
+                $this->addCfg('/settings/external scripts/alias', $this->stripServiceName($serviceName), $checkCommand);
             }
 
             if ($this->hostPassiveMode) {
-                $this->addCfg('/settings/scheduler/schedules/' . str_replace(' ', '_', $serviceName) . '-' . EaseShared::user()->getUserLogin(), 'command', str_replace(' ', '_', $serviceName));
-                $this->addCfg('/settings/scheduler/schedules/' . str_replace(' ', '_', $serviceName) . '-' . EaseShared::user()->getUserLogin(), 'interval', $service['check_interval'] . 'm');
+                $this->addCfg('/settings/scheduler/schedules/' . $this->stripServiceName($serviceName) . '-' . EaseShared::user()->getUserLogin(), 'command', $this->stripServiceName($serviceName));
+                $this->addCfg('/settings/scheduler/schedules/' . $this->stripServiceName($serviceName) . '-' . EaseShared::user()->getUserLogin(), 'interval', $service['check_interval'] . 'm');
             }
         }
+    }
+
+    static function stripServiceName($serviceName)
+    {
+        return str_replace(' ', '_', preg_replace('/[^(\sa-zA-Z0-9)]*/', '', EaseSand::rip($serviceName)));
     }
 
     /**
