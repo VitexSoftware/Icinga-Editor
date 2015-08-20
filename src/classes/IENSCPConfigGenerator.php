@@ -341,16 +341,21 @@ echo "file name=${log-path}/nsclient.log" >> $INI
             }
 
             if (preg_match("/\.(vbs|bat|ps1|wsf)/", $cmdline)) {
-                $this->addCfg('/settings/external scripts/wrapped scripts', str_replace(' ', '_', $serviceName), $cmdline . ' ' . $serviceParams);
+                $this->addCfg('/settings/external scripts/wrapped scripts', $this->stripServiceName($serviceName), $cmdline . ' ' . $serviceParams);
             } else {
-                $this->addCfg('/settings/external scripts/alias', str_replace(' ', '_', $serviceName), $cmdline . ' ' . $serviceParams);
+                $this->addCfg('/settings/external scripts/alias', $this->stripServiceName($serviceName), $cmdline . ' ' . $serviceParams);
             }
 
             if ($this->hostPassiveMode) {
-                $this->addCfg('/settings/scheduler/schedules/' . str_replace(' ', '_', $serviceName) . '-' . EaseShared::user()->getUserLogin(), 'command', str_replace(' ', '_', $serviceName));
-                $this->addCfg('/settings/scheduler/schedules/' . str_replace(' ', '_', $serviceName) . '-' . EaseShared::user()->getUserLogin(), 'interval', $service['check_interval'] . 'm');
+                $this->addCfg('/settings/scheduler/schedules/' . $this->stripServiceName($serviceName) . '-' . EaseShared::user()->getUserLogin(), 'command', $this->stripServiceName($serviceName));
+                $this->addCfg('/settings/scheduler/schedules/' . $this->stripServiceName($serviceName) . '-' . EaseShared::user()->getUserLogin(), 'interval', $service['check_interval'] . 'm');
             }
         }
+    }
+
+    function stripServiceName($serviceName)
+    {
+        return EaseBrick::lettersOnly($serviceName);
     }
 
     /**
@@ -363,7 +368,8 @@ echo "file name=${log-path}/nsclient.log" >> $INI
         }
         switch ($this->platform) {
             case 'windows':
-                $this->nscBatArray[] = "\n" . 'echo ^<br^>^<a data-role="editor" href="' . IECfg::getBaseURL() . 'host.php?host_id=' . $this->host->getId() . '"^>' . _('Konfigurace hosta') . ' ' . $this->host->getName() . '^</a^> >> %ICIEDIT_HTML%';
+                $this->nscBatArray[] = "\n" . 'echo ^<h1^>' . _('Konfigurace hosta') . ' ' . $this->host->getName() . '^</h1^> >> %ICIEDIT_HTML%';
+                $this->nscBatArray[] = "\n" . 'echo ^<br^>^<a data-role="editor" href="' . IECfg::getBaseURL() . 'host.php?host_id=' . $this->host->getId() . '"^>' . _('Konfigurace hosta') . '^</a^> >> %ICIEDIT_HTML%';
                 $this->nscBatArray[] = "\n" . 'echo ^<br^>^<a data-role="bat" href="' . IECfg::getBaseURL() . 'nscpcfggen.php?host_id=' . $this->host->getId() . '"^>' . _('Znovu stahnout') . ' ' . $this->host->getName() . '_nscp.bat' . '^</a^> >> %ICIEDIT_HTML%';
                 $this->nscBatArray[] = "\n" . 'echo ^<br^>^<a data-role="confirm" href="' . $this->getCfgConfirmUrl() . '"^>' . _('Potvrzení konfigurace') . '^</a^> >> %ICIEDIT_HTML%';
                 $this->nscBatArray[] = "\n" . 'echo ^</body^> >> %ICIEDIT_HTML%';
@@ -450,7 +456,7 @@ service nscp start
             foreach ($this->scriptsToDeploy as $script_name => $script_id) {
                 switch ($this->platform) {
                     case 'windows':
-                        $this->nscBatArray[] = "\n" . 'echo ^<br^>^<a data-role="script" href="' . IECfg::getBaseURL() . 'scriptget.php?script_id=' . $script_id . '"^>' . $script_name . '^</a^> >> %ICIEDIT_HTML%
+                        $this->nscBatArray[] = "\n" . 'echo ^<a data-role="script" href="' . IECfg::getBaseURL() . 'scriptget.php?script_id=' . $script_id . '"^>' . $script_name . '^</a^>^<br^> >> %ICIEDIT_HTML%
 ';
                         break;
                     case 'linux':
