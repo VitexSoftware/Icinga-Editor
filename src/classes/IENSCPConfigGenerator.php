@@ -185,9 +185,10 @@ echo "file name=${log-path}/nsclient.log" >> $INI
 
         switch ($this->platform) {
             case 'windows':
+                $this->addCfg('/settings/external scripts/wrappings', 'bat', '%%SCRIPT%% %%ARGS%%');
                 $this->addCfg('/settings/external scripts/wrappings', 'vbs', 'cscript.exe //T:3600 //NoLogo scripts\\lib\\wrapper.vbs %%SCRIPT%% %%ARGS%%');
                 $this->addCfg('/settings/external scripts/wrappings', 'wsf', 'cscript.exe //T:3600 //NoLogo scripts\\lib\\wrapper.vbs %%SCRIPT%% %%ARGS%%');
-                $this->addCfg('/settings/external scripts/wrappings', 'ps1', 'ps1=cmd /c echo %SCRIPT% %ARGS%; exit($lastexitcode) | powershell.exe -command -');
+                $this->addCfg('/settings/external scripts/wrappings', 'ps1', 'cmd /c echo %%SCRIPT%% %%ARGS%%; exit($lastexitcode) | powershell.exe -command -');
                 break;
         }
     }
@@ -359,7 +360,7 @@ echo "file name=${log-path}/nsclient.log" >> $INI
 
     static function stripServiceName($serviceName)
     {
-        return str_replace(' ', '_', preg_replace('/[^(\sa-zA-Z0-9)]*/', '', EaseSand::rip($serviceName)));
+        return str_replace(' ', '_', preg_replace('/[^(\s_a-zA-Z0-9)]*/', '', EaseSand::rip($serviceName)));
     }
 
     /**

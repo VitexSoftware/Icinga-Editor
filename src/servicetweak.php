@@ -95,13 +95,17 @@ $oPage->addPageColumns();
 
 $serviceTweak = new IEServiceTweaker($service, $host);
 
-$oPage->columnII->addItem(new EaseHtmlH3Tag(array(new IEPlatformIcon($service->getDataValue('platform')), $service->getName())));
+$serviceName = $service->getDataValue('display_name');
+if (!$serviceName) {
+    $serviceName = $service->getName();
+}
+$oPage->columnII->addItem(new EaseHtmlH3Tag(array(new IEPlatformIcon($service->getDataValue('platform')), $serviceName)));
 
 $oPage->columnII->addItem($serviceTweak);
 
 $oPage->columnIII->addItem($service->deleteButton($service->getName(), 'host_id=' . $host->getId()));
 
-$oPage->columnIII->addItem(new EaseTWBLinkButton('service.php?service_id=' . $service->getID(), _('Editace služby') . ' ' . $service->getName()));
+$oPage->columnIII->addItem(new EaseTWBLinkButton('service.php?service_id=' . $service->getID(), _('Editace služby') . ' ' . $serviceName));
 
 $renameForm = new EaseTWBForm('Rename', '?action=rename&amp;host_id=' . $host->getID() . '&service_id=' . $service->getId());
 $renameForm->addItem(new EaseHtmlInputTextTag('newname'), $service->getName(), array('class' => 'form-control'));
