@@ -363,9 +363,9 @@ echo "file name=${log-path}/nsclient.log" >> $INI
         }
         switch ($this->platform) {
             case 'windows':
-                $this->nscBatArray[] = "\n" . 'echo ^<br^>^<a href="' . IECfg::getBaseURL() . 'host.php?host_id=' . $this->host->getId() . '"^>' . _('Konfigurace hosta') . ' ' . $this->host->getName() . '^</a^> >> %ICIEDIT_HTML%';
-                $this->nscBatArray[] = "\n" . 'echo ^<br^>^<a href="' . IECfg::getBaseURL() . 'nscpcfggen.php?host_id=' . $this->host->getId() . '"^>' . _('Znovu stahnout') . ' ' . $this->host->getName() . '_nscp.bat' . '^</a^> >> %ICIEDIT_HTML%';
-                $this->nscBatArray[] = "\n" . 'echo ^<br^>^<a href="' . $this->getCfgConfirmUrl() . '"^>' . _('Potvrzení konfigurace') . '^</a^> >> %ICIEDIT_HTML%';
+                $this->nscBatArray[] = "\n" . 'echo ^<br^>^<a data-role="editor" href="' . IECfg::getBaseURL() . 'host.php?host_id=' . $this->host->getId() . '"^>' . _('Konfigurace hosta') . ' ' . $this->host->getName() . '^</a^> >> %ICIEDIT_HTML%';
+                $this->nscBatArray[] = "\n" . 'echo ^<br^>^<a data-role="bat" href="' . IECfg::getBaseURL() . 'nscpcfggen.php?host_id=' . $this->host->getId() . '"^>' . _('Znovu stahnout') . ' ' . $this->host->getName() . '_nscp.bat' . '^</a^> >> %ICIEDIT_HTML%';
+                $this->nscBatArray[] = "\n" . 'echo ^<br^>^<a data-role="confirm" href="' . $this->getCfgConfirmUrl() . '"^>' . _('Potvrzení konfigurace') . '^</a^> >> %ICIEDIT_HTML%';
                 $this->nscBatArray[] = "\n" . 'echo ^</body^> >> %ICIEDIT_HTML%';
                 $this->nscBatArray[] = "\n" . 'echo ^</html^> >> %ICIEDIT_HTML%
 ';
@@ -438,24 +438,33 @@ service nscp start
      */
     public function deployScripts()
     {
-
-        foreach ($this->scriptsToDeploy as $script_name => $script_id) {
+        if (count($this->scriptsToDeploy)) {
             switch ($this->platform) {
                 case 'windows':
-                    $this->nscBatArray[] = "\n" . 'echo ^<br^>^<a href="' . IECfg::getBaseURL() . 'scriptget.php?script_id=' . $script_id . '"^>' . $script_name . '^</a^> >> %ICIEDIT_HTML%
+                    $this->nscBatArray[] = "\n" . 'echo ^<h2^>' . _('Skripty') . '^</h2^> >> %ICIEDIT_HTML%
 ';
                     break;
-                case 'linux':
-                    $this->nscBatArray[] = "\n" . '
+            }
+
+
+            foreach ($this->scriptsToDeploy as $script_name => $script_id) {
+                switch ($this->platform) {
+                    case 'windows':
+                        $this->nscBatArray[] = "\n" . 'echo ^<br^>^<a data-role="script" href="' . IECfg::getBaseURL() . 'scriptget.php?script_id=' . $script_id . '"^>' . $script_name . '^</a^> >> %ICIEDIT_HTML%
+';
+                        break;
+                    case 'linux':
+                        $this->nscBatArray[] = "\n" . '
 # ' . $script_name . '
 curl "' . IECfg::getBaseURL() . 'scriptget.php?script_id=' . $script_id . '"
 ';
-                    break;
-                default:
-                    $this->nscBatArray[] = $this->nscBatArray[] = "\n" . '
+                        break;
+                    default:
+                        $this->nscBatArray[] = $this->nscBatArray[] = "\n" . '
 ' . $this->nscvar . ' test
 ';
-                    break;
+                        break;
+                }
             }
         }
     }
