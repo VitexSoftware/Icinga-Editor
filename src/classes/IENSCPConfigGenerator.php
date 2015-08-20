@@ -340,6 +340,9 @@ echo "file name=${log-path}/nsclient.log" >> $INI
                 $cmdline = $serviceCmd;
             }
 
+            $cmdline = str_replace('\\', '\\\\', $cmdline);
+            $serviceParams = str_replace('\\', '\\\\', $serviceParams);
+
             if (preg_match("/\.(vbs|bat|ps1|wsf)/", $cmdline)) {
                 $this->addCfg('/settings/external scripts/wrapped scripts', $this->stripServiceName($serviceName), $cmdline . ' ' . $serviceParams);
             } else {
