@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Formulář testu IMCP odezvy
+ * Formulář pro test Disku windows
  *
  * @package    IcingaEditor
  * @subpackage plugins
@@ -53,7 +53,7 @@ class CheckDriveSize extends IEServiceConfigurator
         }
 
 
-        $drives = array_merge(array('CheckAll' => _('Všechny disky')), array_combine(range('a', 'z'), range('A', 'Z')));
+        $drives = array_merge(array('CheckAll' => _('Všechny disky')), array_combine(range('a', 'z'), range('A', 'Z')), array('\\\\' => _('Cesta v síti')));
         unset($drives[1]);
         foreach ($drives as $did => $dname) {
             if ($did != 'CheckAll') {
@@ -61,7 +61,17 @@ class CheckDriveSize extends IEServiceConfigurator
             }
         }
 
-        $this->form->addInput(new EaseHtmlSelect('Drive', $drives, str_replace(':', '', $config['Drive'])), _('Disk'), 'X:', _('Volba písmene sledované diskové jednotky'));
+        if (strstr($config['Drive'], '\\\\')) {
+            $this->form->addInput(new EaseHtmlSelect('Drive', $drives, '\\\\'), _('Disk'), 'X:', _('Volba písmene sledované diskové jednotky'));
+        } else {
+            $this->form->addInput(new EaseHtmlSelect('Drive', $drives, str_replace(':', '', $config['Drive'])), _('Disk'), 'X:', _('Volba písmene sledované diskové jednotky'));
+        }
+
+        if (!strstr($config['Drive'], '\\\\')) {
+            $config['Drive'] = '';
+        }
+        $this->form->addItem(new EaseTWBFormGroup(_('NetDrive'), new EaseHtmlInputTextTag('NetDrive', $config['Drive']), '\\\\server\\path\\', _('Cesta síťové jednotky')));
+
 
         $this->form->addItem(new EaseTWBFormGroup(_('MaxWarn'), new EaseHtmlInputTextTag('MaxWarn', $config['MaxWarn']), '80%', _('Maximum value before a warning is returned.')));
         $this->form->addItem(new EaseTWBFormGroup(_('MaxCrit'), new EaseHtmlInputTextTag('MaxCrit', $config['MaxCrit']), '95%', _('Maximum value before a critical is returned.')));
@@ -95,13 +105,23 @@ class CheckDriveSize extends IEServiceConfigurator
 
         foreach ($page->getRequestValues() as $key => $value) {
             switch ($key) {
+                case 'NetDrive':
                 case 'Drive':
                     if ($value == 'CheckAll') {
-                        $config[] = 'CheckAll';
+                        $config['Drive'] = 'CheckAll';
                         $this->tweaker->service->setDataValue($this->tweaker->service->nameColumn, _('Všechny jednotky'));
                     } else {
-                        $config[] = 'Drive=' . $value . ':';
-                        $this->tweaker->service->setDataValue($this->tweaker->service->nameColumn, _('Disk') . ' ' . strtoupper($value) . ':');
+                        if (strlen(trim($value)) && ($value != '\\\\')) {
+                            if (strstr($value, '\\\\')) {
+                                $config['Drive'] = 'Drive=' . $value;
+                                $this->tweaker->service->setDataValue($this->tweaker->service->nameColumn, IENSCPConfigGenerator::stripServiceName(_('NetDisk') . ' ' . $value));
+                                $this->tweaker->service->setDataValue('display_name', sprintf(_('Volné místo síťové jednotky %s: '), $value));
+                            } else {
+                                $config['Drive'] = 'Drive=' . $value . ':';
+                                $this->tweaker->service->setDataValue($this->tweaker->service->nameColumn, _('Disk') . ' ' . strtoupper($value) . ':');
+                                $this->tweaker->service->setDataValue('display_name', sprintf(_('Volné místo disku %s: '), strtoupper($value)));
+                            }
+                        }
                     }
                     break;
                 case 'ShowAll':

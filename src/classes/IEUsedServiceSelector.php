@@ -44,11 +44,11 @@ class IEUsedServiceSelector extends EaseContainer
             $host_active = (boolean) $host->getCfgValue('active_checks_enabled');
             $host_passive = (boolean) $host->getCfgValue('passive_checks_enabled');
 
-            $servicesAssigned = $service->myDbLink->queryToArray('SELECT ' . $service->myKeyColumn . ',' . $service->nameColumn . ' FROM ' . $service->myTable . ' WHERE ' . $fieldName . ' LIKE \'%"' . $host->getName() . '"%\'', $service->myKeyColumn);
+            $servicesAssigned = $service->myDbLink->queryToArray('SELECT ' . $service->myKeyColumn . ',display_name,' . $service->nameColumn . ' FROM ' . $service->myTable . ' WHERE ' . $fieldName . ' LIKE \'%"' . $host->getName() . '"%\'', $service->myKeyColumn);
 
             $allServices = $service->getListing(
                 null, true, array(
-              'platform', 'parent_id', 'passive_checks_enabled', 'active_checks_enabled'
+              'platform', 'parent_id', 'passive_checks_enabled', 'active_checks_enabled', 'display_name'
                 )
             );
             foreach ($allServices as $serviceID => $serviceInfo) {
@@ -88,8 +88,15 @@ class IEUsedServiceSelector extends EaseContainer
                     }
                     $unchMenu [] = new EaseHtmlATag('?addservice=' . $serviceInfo[$service->nameColumn] . '&amp;service_id=' . $serviceID . '&amp;' . $host->getmyKeyColumn() . '=' . $host->getMyKey() . '&amp;' . $host->nameColumn . '=' . $host->getName(), EaseTWBPart::GlyphIcon('plus') . ' ' . _('Začít sledovat'));
 
+
+                    if (strlen($serviceInfo['display_name'])) {
+                        $serviceName = $serviceInfo['display_name'];
+                    } else {
+                        $serviceName = $serviceInfo[$service->nameColumn];
+                    }
+
                     $initialContent->addItem(
-                        new EaseTWBButtonDropdown($serviceInfo[$service->nameColumn], 'inverse', 'xs', $unchMenu));
+                        new EaseTWBButtonDropdown($serviceName, 'inverse', 'xs', $unchMenu));
                 }
             }
 
@@ -99,9 +106,14 @@ class IEUsedServiceSelector extends EaseContainer
 
                 $initialContent->addItem('</br>');
                 foreach ($servicesAssigned as $serviceID => $serviceInfo) {
+                    if (strlen($serviceInfo['display_name'])) {
+                        $serviceName = $serviceInfo['display_name'];
+                    } else {
+                        $serviceName = $serviceInfo[$service->nameColumn];
+                    }
 
                     $initialContent->addItem(
-                        new EaseTWBButtonDropdown($serviceInfo[$service->nameColumn], 'success', 'xs', array(
+                        new EaseTWBButtonDropdown($serviceName, 'success', 'xs', array(
                       new EaseHtmlATag(
                           '?delservice=' . $serviceInfo[$service->nameColumn] . '&amp;service_id=' . $serviceID . '&amp;' . $host->getmyKeyColumn() . '=' . $host->getMyKey() . '&amp;' . $host->nameColumn . '=' . $host->getName(), EaseTWBPart::GlyphIcon('remove') . ' ' . _('Přestat sledovat'))
                       , new EaseHtmlATag('servicetweak.php?service_id=' . $serviceID . '&amp;host_id=' . $host->getId(), EaseTWBPart::GlyphIcon('wrench') . ' ' . _('Editace'))

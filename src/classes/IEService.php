@@ -451,10 +451,10 @@ class IEService extends IECfg
                 }
 
                 if (is_null($allData[$adKey]['host_name']) || !count($allData[$adKey]['host_name'])) {
-                    if ($ad[$this->userColumn] == $userID) {
-                        $service_link = 'service.php?' . $this->myKeyColumn . '=' . $ad[$this->myKeyColumn];
-                        //$this->addStatusMessage(sprintf(_('Služba <a href="%s">%s</a> není použita. Negeneruji do konfigurace'), $service_link, $ad[$this->nameColumn]), 'info');
-                    }
+//                    if ($ad[$this->userColumn] == $userID) {
+//                        //$service_link = 'service.php?' . $this->myKeyColumn . '=' . $ad[$this->myKeyColumn];
+//                        //$this->addStatusMessage(sprintf(_('Služba <a href="%s">%s</a> není použita. Negeneruji do konfigurace'), $service_link, $ad[$this->nameColumn]), 'info');
+//                    }
                     unset($allData[$adKey]);
                     continue;
                 }
@@ -562,6 +562,11 @@ class IEService extends IECfg
         return $this->saveToMySQL();
     }
 
+    /**
+     * Přehodí
+     * @param type $swapToID
+     * @return boolean
+     */
     public function swapTo($swapToID)
     {
         $newService = new IEService($swapToID);

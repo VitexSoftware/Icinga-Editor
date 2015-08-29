@@ -77,6 +77,9 @@ class IEServiceTweaker extends EaseHtmlDivTag
         }
     }
 
+    /**
+     * Pokus o zjistenu parametru prikazu
+     */
     public function discoveryParams()
     {
         $cmdline = $this->command->getDataValue('command_line');

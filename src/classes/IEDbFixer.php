@@ -28,10 +28,15 @@ class IEDbFixer extends EaseHtmlUlTag
         $host = new IEHost;
 
         $service = new IEService;
-        $services = $service->getListing(0);
+        $services = $service->getColumnsFromMySQL(array($service->myKeyColumn, $service->nameColumn, 'host_name'), null, null, $service->myKeyColumn);
         foreach ($services as $serviceId => $serviceInfo) {
             $service->loadFromMySQL($serviceId);
+
             foreach ($service->getDataValue('host_name') as $hostId => $hostName) {
+                if (!strlen($hostName)) {
+                    unset($service->data['host_name'][$hostId]);
+                    $hostsOK[] = '(undefined)';
+                }
                 $hostFound = $host->loadFromMySQL($hostName);
                 if ($hostId != $host->getId()) {
                     if ($service->delMember('host_name', $hostId, $hostName) && $service->addMember('host_name', $host->getId(), $hostName)) {

@@ -138,11 +138,21 @@ class IENSCPConfigGenerator extends EaseAtom
         switch ($this->platform) {
             case 'windows':
                 $this->nscBatArray = array('
-set NSCLIENT="%ProgramFiles%\NSClient++\nscp.exe"
+@ECHO OFF
+set NSCDIR=%ProgramFiles%\NSClient++\
+set NSCLIENT="%NSCDIR%\nscp.exe"
 set ICINGA_SERVER="' . $this->prefs['serverip'] . '"
 ' . $this->nscvar . ' service --stop
-rename "%ProgramFiles%\NSClient++\nsclient.ini" "%ProgramFiles%\NSClient++\nsclient.old"
+del  "%NSCDIR%\nsclient.old"
+rename "%NSCDIR%\nsclient.ini" nsclient.old
 ');
+
+                $this->nscBatArray[] = "\n" . 'SET ICIEDIT_HTML="%NSCDIR%/icinga-editor.htm"';
+                $this->nscBatArray[] = "\n" . 'echo ^<html^> > %ICIEDIT_HTML%';
+                $this->nscBatArray[] = "\n" . 'echo ^<head^>^<meta charset="UTF-8"^>^</head^> >> %ICIEDIT_HTML%';
+                $this->nscBatArray[] = "\n" . 'echo ^<body^> >> %ICIEDIT_HTML%
+';
+
                 break;
             case 'linux':
                 $this->nscBatArray = array('
@@ -175,7 +185,10 @@ echo "file name=${log-path}/nsclient.log" >> $INI
 
         switch ($this->platform) {
             case 'windows':
+                $this->addCfg('/settings/external scripts/wrappings', 'bat', '%%SCRIPT%% %%ARGS%%');
                 $this->addCfg('/settings/external scripts/wrappings', 'vbs', 'cscript.exe //T:3600 //NoLogo scripts\\lib\\wrapper.vbs %%SCRIPT%% %%ARGS%%');
+                $this->addCfg('/settings/external scripts/wrappings', 'wsf', 'cscript.exe //T:3600 //NoLogo scripts\\lib\\wrapper.vbs %%SCRIPT%% %%ARGS%%');
+                $this->addCfg('/settings/external scripts/wrappings', 'ps1', 'cmd /c echo %%SCRIPT%% %%ARGS%%; exit($lastexitcode) | powershell.exe -command -');
                 break;
         }
     }
@@ -328,17 +341,26 @@ echo "file name=${log-path}/nsclient.log" >> $INI
                 $cmdline = $serviceCmd;
             }
 
-            if (preg_match("/\.(vbs|bat)/", $cmdline)) {
-                $this->addCfg('/settings/external scripts/wrapped scripts', str_replace(' ', '_', $serviceName), $cmdline . ' ' . $serviceParams);
+
+            $checkCommand = str_replace('\\', '\\\\', $cmdline . ' ' . $serviceParams);
+
+
+            if (preg_match("/\.(vbs|bat|ps1|wsf)/", $cmdline)) {
+                $this->addCfg('/settings/external scripts/wrapped scripts', $this->stripServiceName($serviceName), $checkCommand);
             } else {
-                $this->addCfg('/settings/external scripts/alias', str_replace(' ', '_', $serviceName), $cmdline . ' ' . $serviceParams);
+                $this->addCfg('/settings/external scripts/alias', $this->stripServiceName($serviceName), $checkCommand);
             }
 
             if ($this->hostPassiveMode) {
-                $this->addCfg('/settings/scheduler/schedules/' . str_replace(' ', '_', $serviceName) . '-' . EaseShared::user()->getUserLogin(), 'command', str_replace(' ', '_', $serviceName));
-                $this->addCfg('/settings/scheduler/schedules/' . str_replace(' ', '_', $serviceName) . '-' . EaseShared::user()->getUserLogin(), 'interval', $service['check_interval'] . 'm');
+                $this->addCfg('/settings/scheduler/schedules/' . $this->stripServiceName($serviceName) . '-' . EaseShared::user()->getUserLogin(), 'command', $this->stripServiceName($serviceName));
+                $this->addCfg('/settings/scheduler/schedules/' . $this->stripServiceName($serviceName) . '-' . EaseShared::user()->getUserLogin(), 'interval', $service['check_interval'] . 'm');
             }
         }
+    }
+
+    static function stripServiceName($serviceName)
+    {
+        return str_replace(' ', '_', preg_replace('/[^(\s:_a-zA-Z0-9)]*/', '', EaseSand::rip($serviceName)));
     }
 
     /**
@@ -351,22 +373,27 @@ echo "file name=${log-path}/nsclient.log" >> $INI
         }
         switch ($this->platform) {
             case 'windows':
+                $this->nscBatArray[] = "\n" . 'echo ^<h1^>' . _('Konfigurace hosta') . ' ' . $this->host->getName() . '^</h1^> >> %ICIEDIT_HTML%';
+                $this->nscBatArray[] = "\n" . 'echo ^<br^>^<a data-role="editor" href="' . IECfg::getBaseURL() . 'host.php?host_id=' . $this->host->getId() . '"^>' . _('Konfigurace hosta') . '^</a^> >> %ICIEDIT_HTML%';
+                $this->nscBatArray[] = "\n" . 'echo ^<br^>^<a data-role="bat" href="' . IECfg::getBaseURL() . 'nscpcfggen.php?host_id=' . $this->host->getId() . '"^>' . _('Znovu stahnout') . ' ' . $this->host->getName() . '_nscp.bat' . '^</a^> >> %ICIEDIT_HTML%';
+                $this->nscBatArray[] = "\n" . 'echo ^<br^>^<a data-role="confirm" href="' . $this->getCfgConfirmUrl() . '"^>' . _('Potvrzení konfigurace') . '^</a^> >> %ICIEDIT_HTML%';
+                $this->nscBatArray[] = "\n" . 'echo ^</body^> >> %ICIEDIT_HTML%';
+                $this->nscBatArray[] = "\n" . 'echo ^</html^> >> %ICIEDIT_HTML%
+';
+
                 $this->nscBatArray[] = "\n" . '
-start "" "' . $this->getCfgConfirmUrl() . '"
-' . $this->nscvar . ' test
 ' . $this->nscvar . ' service --start
+start "" %ICIEDIT_HTML%
 ';
                 break;
             case 'linux':
                 $this->nscBatArray[] = "\n" . '
 curl "' . $this->getCfgConfirmUrl() . '"
-' . $this->nscvar . ' test
 service nscp start
 ';
                 break;
             default:
                 $this->nscBatArray[] = $this->nscBatArray[] = "\n" . '
-' . $this->nscvar . ' test
 ';
                 break;
         }
@@ -374,6 +401,9 @@ service nscp start
 
     /**
      * vrací vyrendrovaný konfigurační skript
+     *
+     * @param boolean $send Přidat HTTP hlavičku pro odeslání souboru
+     * @return string BAT soubor
      */
     public function getCfg($send = TRUE)
     {
@@ -409,51 +439,43 @@ service nscp start
         }
     }
 
-    /**
-     * Vrací URL konfiguračního rozhraní
-     *
-     * @return string
-     */
-    function getBaseURL()
-    {
-        if (isset($_SERVER['REQUEST_SCHEME'])) {
-            $scheme = $_SERVER['REQUEST_SCHEME'];
-        } else {
-            $scheme = 'http';
-        }
-
-        $enterPoint = $scheme . '://' . $_SERVER['SERVER_NAME'] . dirname($_SERVER['REQUEST_URI']) . '/';
-
-//        $enterPoint = str_replace('\\', '', $enterPoint); //Win Hack
-        return $enterPoint;
-    }
-
     function getCfgConfirmUrl()
     {
-        return $this->getBaseURL() . 'cfgconfirm.php?hash=' . $this->host->getConfigHash() . '&host_id=' . $this->host->getId();
+        return IECfg::getBaseURL() . 'cfgconfirm.php?hash=' . $this->host->getConfigHash() . '&host_id=' . $this->host->getId();
     }
 
+    /**
+     * Nasazení externích skriptů
+     */
     public function deployScripts()
     {
-        foreach ($this->scriptsToDeploy as $script_name => $script_id) {
+        if (count($this->scriptsToDeploy)) {
             switch ($this->platform) {
                 case 'windows':
-                    $this->nscBatArray[] = "\n" . '
-REM ' . $script_name . '
-start "" "' . $this->getBaseURL() . 'scriptget.php?script_id=' . $script_id . '"
+                    $this->nscBatArray[] = "\n" . 'echo ^<h2^>' . _('Skripty') . '^</h2^> >> %ICIEDIT_HTML%
 ';
                     break;
-                case 'linux':
-                    $this->nscBatArray[] = "\n" . '
+            }
+
+
+            foreach ($this->scriptsToDeploy as $script_name => $script_id) {
+                switch ($this->platform) {
+                    case 'windows':
+                        $this->nscBatArray[] = "\n" . 'echo ^<a data-role="script" href="' . IECfg::getBaseURL() . 'scriptget.php?script_id=' . $script_id . '"^>' . $script_name . '^</a^>^<br^> >> %ICIEDIT_HTML%
+';
+                        break;
+                    case 'linux':
+                        $this->nscBatArray[] = "\n" . '
 # ' . $script_name . '
-curl "' . $this->getBaseURL() . 'scriptget.php?script_id=' . $script_id . '"
+curl "' . IECfg::getBaseURL() . 'scriptget.php?script_id=' . $script_id . '"
 ';
-                    break;
-                default:
-                    $this->nscBatArray[] = $this->nscBatArray[] = "\n" . '
+                        break;
+                    default:
+                        $this->nscBatArray[] = $this->nscBatArray[] = "\n" . '
 ' . $this->nscvar . ' test
 ';
-                    break;
+                        break;
+                }
             }
         }
     }
