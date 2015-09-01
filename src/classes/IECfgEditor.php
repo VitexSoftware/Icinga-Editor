@@ -81,15 +81,29 @@ class IECfgEditor extends EaseContainer
             $templateName = key($effective);
             $templateValue = current($effective);
 
-            EaseShared::webPage()->addJavaScript("$(\"#useTpl$fieldName\").change(function(){
+            if ($fType == 'BOOL') {
+                EaseShared::webPage()->addJavaScript("$(\"#useTpl$fieldName\").change(function(){
+    if( this.checked ){
+        $(\"[name='$fieldName']\").prop('disabled', true);
+        $(\"input[name='$fieldName']\").bootstrapSwitch('toggleDisabled', true);
+
+    } else {
+        $(\"[name='$fieldName']\").prop('disabled', false);
+        $(\"input[name='$fieldName']\").bootstrapSwitch('toggleDisabled', false);
+    }
+
+});", null, true);
+            } else {
+
+                EaseShared::webPage()->addJavaScript("$(\"#useTpl$fieldName\").change(function(){
     if( this.checked ){
         $(\"[name='$fieldName']\").prop('disabled', true);
     } else {
         $(\"[name='$fieldName']\").prop('disabled', false);
     }
-    //$(\"input[name='$fieldName']\").bootstrapSwitch('toggleDisabled', true);
 
 });", null, true);
+            }
 
             if ($templateName && !is_null($templateValue)) {
                 $fieldBlock->addItem(new EaseHtmlCheckboxTag(null, true, 1, array('id' => 'useTpl' . $fieldName)));
