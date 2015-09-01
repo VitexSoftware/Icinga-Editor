@@ -37,7 +37,7 @@ class ping extends IEServiceConfigurator
      * 
      * @return boolean
      */
-    public function configure()
+    public function reconfigureService()
     {
         $page = EaseShared::webPage();
         $wt = $page->getRequestValue('wt', 'float');
@@ -51,7 +51,7 @@ class ping extends IEServiceConfigurator
 
             $this->tweaker->service->setDataValue('check_command-params', $command);
 
-            return parent::configure();
+            return parent::reconfigureService();
         }
 
         return FALSE;

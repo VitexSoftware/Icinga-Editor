@@ -557,12 +557,17 @@ class IEcfg extends EaseBrick
      * Vrací efektivní konfigurační hodnotu
      *
      * @param string $keyword
+     * @param boolean $templateValue Vracet hodnotu předlohy i když není použta
      * @return  array array( 'nastavujici rodic' => hodnota )
      */
-    public function getCfg($keyword)
+    public function getCfg($keyword, $templateValue = false)
     {
         $parent_used = 0;
-        $value = $this->getDataValue($keyword);
+        if ($templateValue) {
+            $value = null;
+        } else {
+            $value = $this->getDataValue($keyword);
+        }
         if (is_null($value)) {
             $parent_name = $this->getDataValue('use');
             while (is_null($value) && $parent_name) {
