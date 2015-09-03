@@ -135,6 +135,8 @@ if ($hostName || $address || $addressSix) {
     if ($host_group) {
         $hostgroup = new IEHostgroup($host_group);
         $host->addMember('hostgroups', $hostgroup->getId(), $hostgroup->getName());
+        $hostgroup->addMember('members', $host->getId(), $host->getName());
+        $hostgroup->saveToMySQL();
     }
 
 
@@ -151,6 +153,8 @@ if ($hostName || $address || $addressSix) {
             $hostGroup->setDataValue($hostGroup->nameColumn, EaseShared::user()->getUserLogin());
             $hostGroup->addMember('members', $host->getId(), $host->getName());
             $hostGroup->saveToMySQL();
+            $host->addMember('hostgroups', $hostGroup->getId(), $hostGroup->getName());
+            $host->saveToMysql();
         }
 
         $oPage->redirect('host.php?host_id=' . $host->getId());

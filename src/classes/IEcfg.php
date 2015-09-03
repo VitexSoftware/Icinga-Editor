@@ -468,7 +468,9 @@ class IEcfg extends EaseBrick
                     break;
                 case 'IDLIST':
                     if (isset($data[$fieldName]) && !is_array($data[$fieldName])) {
-                        $data[$fieldName] = serialize(explode(',', $data[$fieldName]));
+                        if (substr($data[$fieldName], 0, 2) != 'a:') {
+                            $data[$fieldName] = serialize(explode(',', $data[$fieldName]));
+                        }
                     }
                     break;
                 default:
@@ -703,7 +705,7 @@ class IEcfg extends EaseBrick
                 case 'ARRAY':
                 case 'IDLIST':
                     if (isset($data[$keyWord]) && is_array($data[$keyWord])) {
-                        $data[$keyWord] = serialize($data[$keyWord]);
+                        $data[$keyWord] = addslashes(serialize($data[$keyWord]));
                     }
                     break;
                 default:
@@ -770,7 +772,7 @@ class IEcfg extends EaseBrick
                     case 'ARRAY':
                     case 'IDLIST':
                         if (isset($data[$recordID][$keyWord]) && (substr($data[$recordID][$keyWord], 0, 2) == 'a:')) {
-                            $data[$recordID][$keyWord] = unserialize($data[$recordID][$keyWord]);
+                            $data[$recordID][$keyWord] = unserialize(stripslashes($data[$recordID][$keyWord]));
                         } else {
                             $data[$recordID][$keyWord] = array();
                         }
@@ -1562,7 +1564,7 @@ class IEcfg extends EaseBrick
                     case 'IDLIST':
                         if (!is_array($value) && strlen($value)) {
                             if (strstr($value, ':{')) {
-                                $values = unserialize($value);
+                                $values = unserialize(stripslashes($value));
                             } else {
                                 $values = array('0' => $value);
                             }
