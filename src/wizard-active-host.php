@@ -19,6 +19,7 @@ $hostName = trim($oPage->getRequestValue('host_name'));
 $address = trim($oPage->getRequestValue('address'));
 $addressSix = trim($oPage->getRequestValue('address6'));
 $host_group = $oPage->getRequestValue('host_group', 'int');
+$platform = $oPage->getRequestValue('platform');
 
 function gethostbyname6($host, $tryA = false)
 {
@@ -122,7 +123,7 @@ if ($hostName || $address || $addressSix) {
           'address' => $address,
           'address6' => $addressSix,
           'use' => 'generic-host',
-          'platform' => 'generic',
+          'platform' => $platform,
           'register' => true,
           'generate' => TRUE,
           'alias' => $hostName,

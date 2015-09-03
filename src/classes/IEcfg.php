@@ -1560,7 +1560,7 @@ class IEcfg extends EaseBrick
                         }
                         break;
                     case 'IDLIST':
-                        if (strlen($value)) {
+                        if (!is_array($value) && strlen($value)) {
                             if (strstr($value, ':{')) {
                                 $values = unserialize($value);
                             } else {
@@ -1794,6 +1794,16 @@ class IEcfg extends EaseBrick
 
         if (isset($this->userColumn)) {
             $infoBlock->addDef(_('Vlastník'), $this->ownerLinkButton());
+        }
+
+        if (isset($this->useKeywords['generate']) && !(int) $this->getDataValue('generate')) {
+            $infoBlock->addItem(new EaseTWBLabel('warning', _('tento záznam se nebude generovat')));
+        }
+
+        if ($this->publicRecords) {
+            if ((int) $this->getDataValue('public')) {
+                $infoBlock->addItem(new EaseTWBLabel('info', _('tento záznam je veřejný')));
+            }
         }
 
         return $infoBlock;

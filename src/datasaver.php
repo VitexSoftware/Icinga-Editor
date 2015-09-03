@@ -14,6 +14,9 @@ if (!$oUser->GetUserID()) {
 }
 
 $saverClass = $oPage->GetRequestValue('SaverClass');
+if ($saverClass == 'undefined') {
+    exit;
+}
 if (!$saverClass) {
     $saverClass = 'LBSaver';
 }
