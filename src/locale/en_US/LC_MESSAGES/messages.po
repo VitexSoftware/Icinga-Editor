@@ -23,7 +23,7 @@ msgstr "Contact"
 
 #: classes/IEContact.php:225
 msgid "Toto není platná jabberová adresa"
-msgstr "Not valid jabber address"
+msgstr "Not a valid XMPP address"
 
 #: classes/IEContact.php:232
 msgid "Toto není platná mailová adresa"
@@ -36,7 +36,7 @@ msgstr "Not a valid phone number"
 #: classes/IEContact.php:313
 #, php-format
 msgid "Kontakt %s byl odebrán ze služby %s"
-msgstr ""
+msgstr "Contact %s removed from service %s"
 
 #: classes/IEContact.php:355
 msgid "Kontakt nelze přejmenovat"
@@ -44,7 +44,7 @@ msgstr "Contact can not be renamed"
 
 #: classes/IEHost.php:236
 msgid "Hosta"
-msgstr "of the ost"
+msgstr "of the host"
 
 #: classes/IEHost.php:258
 #, php-format
@@ -67,7 +67,7 @@ msgstr "Hosts affected by service"
 
 #: classes/IEHostSelector.php:30 classes/IEGroupMembersEditor.php:47
 msgid "Nejprve je potřeba uložit záznam"
-msgstr "Save record first, please"
+msgstr "Save the record first"
 
 #: classes/IEHostSelector.php:66 classes/IEHostSelector.php:81
 msgid "Editace"
@@ -75,31 +75,31 @@ msgstr "Edit"
 
 #: classes/IEHostSelector.php:67
 msgid "Začít sledovat"
-msgstr "Start watching"
+msgstr "Start monitoring"
 
 #: classes/IEHostSelector.php:80
 msgid "Přestat sledovat"
-msgstr "Stop watching"
+msgstr "Stop monitoring"
 
 #: classes/IEHostSelector.php:105
 #, php-format
 msgid "položka %s byla přidána"
-msgstr "item %s was added"
+msgstr "item %s added"
 
 #: classes/IEHostSelector.php:107
 #, php-format
 msgid "položka %s nebyla přidána"
-msgstr "item %s has not been added"
+msgstr "item %s not added"
 
 #: classes/IEHostSelector.php:113
 #, php-format
 msgid "položka %s byla odebrána"
-msgstr "item %s has been removed"
+msgstr "item %s removed"
 
 #: classes/IEHostSelector.php:115
 #, php-format
 msgid "položka %s nebyla odebrána"
-msgstr "ite %s has not been removed"
+msgstr "ite %s removed"
 
 #: classes/IECfgEditor.php:90
 msgid "Chybi definice"
@@ -141,7 +141,7 @@ msgstr "column without a label"
 #: classes/IECfgEditor.php:305 classes/IECfgEditor.php:310
 #: classes/IECfgEditor.php:454 classes/IECfgEditor.php:459
 msgid "Není vyplněna povinná položka"
-msgstr "Is missing a required item"
+msgstr "Required item is missing"
 
 #: classes/IECfgEditor.php:364
 msgid "Jedno povinné políčko zůstalo nevyplněné"
@@ -154,12 +154,12 @@ msgstr "Fields issing ' + errors + ' fields. They have been highlighted"
 #: classes/IEPortScanner.php:86
 #, php-format
 msgid "Přidána sledovaná služba: %s"
-msgstr "Monitored service has been added"
+msgstr "Monitored service added"
 
 #: classes/IEPortScanner.php:89
 #, php-format
 msgid "Přidání sledované služby: %s se nezdařilo"
-msgstr "Addition of monitored service %s has failed"
+msgstr "Addition of monitored service %s failed"
 
 #: classes/IEServiceTweaker.php:67
 #, php-format
@@ -178,7 +178,7 @@ msgstr "Contact detail %s %s added"
 #: classes/IEContactTweaker.php:70
 #, php-format
 msgid "Kontaktní údaj %s %s nebyl přidán"
-msgstr "Contact detail %s %s has not been added"
+msgstr "Contact detail %s %s not added"
 
 #: classes/IEContactTweaker.php:85
 msgid "Vlastnosti"
@@ -190,7 +190,7 @@ msgstr "delete"
 
 #: classes/IEContactTweaker.php:105
 msgid "telefonní číslo, email či jabberová adresa dle druhu kontaktu"
-msgstr "Phone number, e-mail, xmpp uid (depends on type of contact)"
+msgstr "Phone number, e-mail, XMPP uid (depends on type of contact)"
 
 #: classes/IEContactTweaker.php:108
 msgid "Uložit"
@@ -206,7 +206,7 @@ msgstr "Not possible to add more details"
 
 #: classes/IEcfg.php:137
 msgid "Uložit jako předlohu pod jménem"
-msgstr "Save as template under the name"
+msgstr "Save as template named"
 
 #: classes/IEcfg.php:142
 msgid "Není předloha"
@@ -215,32 +215,32 @@ msgstr "Not a template"
 #: classes/IEcfg.php:206
 #, php-format
 msgid "předloha %s nebyla načtena"
-msgstr "Template %s was not loaded"
+msgstr "Template %s not loaded"
 
 #: classes/IEcfg.php:212
 #, php-format
 msgid "předloha %s byla načtena"
-msgstr "template %s was loaded"
+msgstr "template %s loaded"
 
 #: classes/IEcfg.php:432
 #, php-format
 msgid "Tabulka %s byla smazána"
-msgstr "Table %s was deleted"
+msgstr "Table %s deleted"
 
 #: classes/IEcfg.php:435
 #, php-format
 msgid "Tabulka %s byla vytvořena"
-msgstr "Table %s was created"
+msgstr "Table %s created"
 
 #: classes/IEcfg.php:437
 #, php-format
 msgid "Tabulka %s nebyla vytvořena"
-msgstr "Table %s was not created"
+msgstr "Table %s not created"
 
 #: classes/IEcfg.php:476
 #, php-format
 msgid "Předloha %s není pojmenována"
-msgstr "Template %s is not named"
+msgstr "Template %s not named"
 
 #: classes/IEcfg.php:482
 #, php-format
@@ -268,7 +268,7 @@ msgstr "Delete"
 #: classes/IEcfg.php:775
 #, php-format
 msgid " %s %s byl smazán "
-msgstr "%s %s was deleted"
+msgstr "%s %s deleted"
 
 #: classes/IEcfg.php:781
 #, php-format
@@ -294,12 +294,12 @@ msgstr "Expect filename"
 #: classes/IEcfg.php:1036
 #, php-format
 msgid "položka %s nebyla přidána do %s/%s/%s"
-msgstr "item %s was not added to %s/%s/%s"
+msgstr "item %s not added to %s/%s/%s"
 
 #: classes/IEcfg.php:1038
 #, php-format
 msgid "položka %s byla přidána do %s/%s/%s"
-msgstr "item %s was added to %s/%s/%s"
+msgstr "item %s added to %s/%s/%s"
 
 #: classes/IEcfg.php:1046
 #, php-format
@@ -326,11 +326,11 @@ msgstr "hostgroup"
 
 #: classes/IETimeperiod.php:192
 msgid "Časovou periodu"
-msgstr " Timeperiod"
+msgstr "Timeperiod"
 
 #: classes/IETwitter.php:61
 msgid "přihlásit přez Twitter"
-msgstr "Sign in with twitter"
+msgstr "Sign in with Twitter"
 
 #: classes/IETwitter.php:63
 msgid "odhlasit twitter"
@@ -370,7 +370,7 @@ msgstr "Settings"
 
 #: classes/IEWebPage.php:190
 msgid "Přehled konfigurací"
-msgstr "configuration Overview"
+msgstr "Configuration overview"
 
 #: classes/IEWebPage.php:194
 msgid "Uživatelská podpora"
@@ -414,7 +414,7 @@ msgstr "New Hostgroup"
 
 #: classes/IEWebPage.php:306
 msgid "Přehled skupin hostů"
-msgstr "New Hostgroup"
+msgstr "Hostgroup overview"
 
 #: classes/IEWebPage.php:319 classes/IEWebPage.php:322
 msgid "Uplatnit změny"
@@ -506,7 +506,7 @@ msgstr "Reinitialize the database"
 
 #: classes/IEWebPage.php:392
 msgid "Výsledky testů"
-msgstr "test Results"
+msgstr "Test results"
 
 #: classes/IEWebPage.php:393
 msgid "PC Lin/Win/Mac"
@@ -530,15 +530,15 @@ msgstr "Confirm the service settings"
 
 #: classes/IEServiceConfigurator.php:100
 msgid "Služba nebyla uložena"
-msgstr "Service was not saved"
+msgstr "Service not saved"
 
 #: classes/IEServiceConfigurator.php:102
 msgid "Služba byla uložena"
-msgstr "Service was saved"
+msgstr "Service saved"
 
 #: classes/IEServiceConfigurator.php:105
 msgid "Formulář nebyl uložen"
-msgstr "Form was not saved"
+msgstr "Form not saved"
 
 #: classes/IEServiceConfigurator.php:110 classes/IEHostOverview.php:24
 msgid "Uloženo"
@@ -547,7 +547,7 @@ msgstr "Saved"
 #: classes/IEService.php:335
 #, php-format
 msgid "Předloha služby %s není použita. Negeneruji do konfigurace"
-msgstr "Template of service %s is not in use, not generating config"
+msgstr "Template of service %s not in use, not generating config"
 
 #: classes/IEService.php:362
 #, php-format
@@ -642,16 +642,16 @@ msgstr "%s rows of configuration was read"
 #: classes/IEImporter.php:98
 #, php-format
 msgid "konfigurace nebyla načtena"
-msgstr "configuration was not loaded"
+msgstr "configuration not loaded"
 
 #: classes/IEImporter.php:113
 #, php-format
 msgid "Bylo naimportováno %s konfigurací"
-msgstr "%s configurations were imported"
+msgstr "%s configurations imported"
 
 #: classes/IEImporter.php:128
 msgid "konfigurace byla vygenerována"
-msgstr "configuration was generated"
+msgstr "configuration generated"
 
 #: classes/IEImporter.php:130
 msgid "konfigurace nebyla vygenerována"
@@ -797,7 +797,7 @@ msgstr "Contactgroup was saved"
 
 #: servicegroups.php:34
 msgid "Nemáte definovou skupinu služeb"
-msgstr "You do not have to define a servicegroup"
+msgstr "no servicegroup defined"
 
 #: servicegroups.php:37
 msgid "Založit skupinu služeb"
@@ -805,7 +805,7 @@ msgstr "Create new servicegroup"
 
 #: timeperiods.php:42
 msgid "Nemáte definované časové periody"
-msgstr "You have no timeperiods defined"
+msgstr "No timeperiods defined"
 
 #: timeperiods.php:45
 msgid "Založit časovou periodu "
@@ -813,7 +813,7 @@ msgstr "Create timeperiod"
 
 #: createaccount.php:36
 msgid "mailová adresa je příliš krátká"
-msgstr "too short email address"
+msgstr "email address too short"
 
 #: createaccount.php:40
 msgid "chyba v mailové adrese"
@@ -862,19 +862,19 @@ msgstr "New user account has just been registered:\n"
 
 #: createaccount.php:126
 msgid "Výchozí kontakt byl založen"
-msgstr "Default contact was created"
+msgstr "Default contact created"
 
 #: createaccount.php:128
 msgid "Výchozí kontakt nebyl založen"
-msgstr "Default contact was not created"
+msgstr "Default contact not created"
 
 #: createaccount.php:134
 msgid "Mailový kontakt byl založen"
-msgstr "Mail contact was created"
+msgstr "Mail contact created"
 
 #: createaccount.php:136
 msgid "Mailový kontakt nebyl založen"
-msgstr "Mail contact was not created"
+msgstr "Mail contact not created"
 
 #: createaccount.php:140
 msgid "Skupina"
@@ -882,11 +882,11 @@ msgstr "Group"
 
 #: createaccount.php:146
 msgid "Prvotní kontaktní skupina byla založena"
-msgstr "Default contactgroup was saved"
+msgstr "Default contactgroup saved"
 
 #: createaccount.php:148
 msgid "Prvotní kontaktní skupina nebyla založena"
-msgstr "Default contactgroup was not saved"
+msgstr "Default contactgroup not saved"
 
 #: createaccount.php:154
 msgid "Zápis do databáze se nezdařil!"
@@ -922,7 +922,7 @@ msgstr "Account"
 
 #: createaccount.php:185
 msgid "přihlašovací jméno"
-msgstr "login"
+msgstr "login name"
 
 #: createaccount.php:186
 msgid "heslo"
@@ -930,7 +930,7 @@ msgstr "Password"
 
 #: createaccount.php:187 changepassword.php:77
 msgid "potvrzení hesla"
-msgstr "password confirm"
+msgstr "password confirmation"
 
 #: createaccount.php:188
 msgid "emailová adresa"
@@ -974,11 +974,11 @@ msgstr "init parameters"
 
 #: contact.php:24
 msgid "Kontakt nebyl uložen"
-msgstr "Contact was not saved"
+msgstr "Contact not saved"
 
 #: contact.php:26
 msgid "Kontakt byl uložen"
-msgstr "Contact was saved"
+msgstr "Contact saved"
 
 #: contact.php:40
 msgid "Editace kontaktu"
@@ -995,27 +995,27 @@ msgstr "Download of %s not successful"
 
 #: host.php:60
 msgid "Nebyl vybrán soubor s ikonou hosta"
-msgstr "Host icon was not selected"
+msgstr "Host icon not selected"
 
 #: host.php:69
 msgid "toto není obrázek požadovaného typu"
-msgstr "this picture is not of the desired type"
+msgstr "this format is not supported"
 
 #: host.php:81
 msgid "Ikona byla přiřazena"
-msgstr "The icon was assigned"
+msgstr "Icon assigned"
 
 #: host.php:83
 msgid "Ikona nebyla přiřazena"
-msgstr "The icon was not assigned"
+msgstr "Icon not assigned"
 
 #: host.php:91 service.php:25
 msgid "Host byl přejmenován"
-msgstr "Host was renamed"
+msgstr "Host renamed"
 
 #: host.php:93 service.php:27
 msgid "Host nebyl přejmenován"
-msgstr "Host was not renamed"
+msgstr "Host not renamed"
 
 #: host.php:106
 msgid "Rodič nebyl nalezen"
@@ -1055,7 +1055,7 @@ msgstr "Renaming"
 
 #: host.php:205
 msgid "Přiřadit rodiče"
-msgstr "assign parents"
+msgstr "Assign parents"
 
 #: host.php:206
 msgid "Změnit ikonu"
@@ -1071,7 +1071,7 @@ msgstr "User password change"
 
 #: changepassword.php:61
 msgid "Heslo bylo změněno"
-msgstr "Password was changed"
+msgstr "Password changed"
 
 #: changepassword.php:63
 msgid "Změněné heslo pro Monitoring"
@@ -1079,7 +1079,7 @@ msgstr "Change monitoring password"
 
 #: changepassword.php:64
 msgid "Vážený zákazníku vaše přihlašovací údaje byly změněny"
-msgstr "Your login details were changed"
+msgstr "Login details changed"
 
 #: changepassword.php:74
 msgid "Stávající heslo"
@@ -1107,7 +1107,7 @@ msgstr "Other commands"
 
 #: commands.php:92
 msgid "Nemáte definovaný příkaz"
-msgstr "You do not have defined command"
+msgstr "Command not defined"
 
 #: commands.php:95
 msgid "Založit příkaz"
@@ -1119,7 +1119,7 @@ msgstr "Commands import"
 
 #: service.php:33
 msgid "Cloned"
-msgstr "Cloned"
+msgstr "Clonned"
 
 #: service.php:35 service.php:61
 msgid "Služba byla zklonovana"
@@ -1127,7 +1127,7 @@ msgstr "Service clonned"
 
 #: service.php:37
 msgid "Služba nebyla zklonovana"
-msgstr "Service was not clonned"
+msgstr "Service not clonned"
 
 #: service.php:49
 #, php-format
@@ -1164,11 +1164,11 @@ msgstr "configuration file"
 
 #: importcommand.php:35
 msgid "druh vkládaných příkazů"
-msgstr "kind of entered orders"
+msgstr "Command types"
 
 #: importcommand.php:40
 msgid "zahájí import příkazů"
-msgstr "initiate import commands"
+msgstr "initiate command import"
 
 #: importcommand.php:42
 msgid "Import konfigurace"
@@ -1199,7 +1199,7 @@ msgstr "%s contacts defined"
 
 #: overview.php:45
 msgid "Nemáte definovaný kontakt"
-msgstr "Do not have a defined contact"
+msgstr "No command defined"
 
 #: overview.php:46
 msgid "Založit první kontakt "
@@ -1216,7 +1216,7 @@ msgstr "%s contactgroups defined"
 
 #: overview.php:58
 msgid "Nemáte definovanou skupinu kontaktů"
-msgstr "Do not have a defined contactgroup"
+msgstr "No contactgroup defined"
 
 #: overview.php:59
 msgid "Založit první skupinu kontaktů "
@@ -1229,7 +1229,7 @@ msgstr "%s hosts defined"
 
 #: overview.php:69
 msgid "Nemáte definovaný žádný host"
-msgstr "You have not defined any host"
+msgstr "No hosts defined"
 
 #: overview.php:70
 msgid "Založit první host"
@@ -1259,7 +1259,7 @@ msgstr "%s commands defined"
 
 #: overview.php:92
 msgid "Nemáte definovaný žádné příkazy"
-msgstr "You do not have any defined commands"
+msgstr "No commands defined"
 
 #: overview.php:101
 #, php-format
@@ -1268,7 +1268,7 @@ msgstr "%s services defined"
 
 #: overview.php:105
 msgid "Nemáte definovaný žádné služby"
-msgstr "Do not have a defined contactgroup"
+msgstr "No services defined"
 
 #: overview.php:106
 msgid "Založit první službu"
@@ -1276,7 +1276,7 @@ msgstr "Define first service"
 
 #: overview.php:108
 msgid "Služby vyžadují časovou periodu .."
-msgstr "Services required timperiod ..."
+msgstr "Services require timperiod ..."
 
 #: overview.php:111
 msgid "Služby vyžadují příkazy .."
@@ -1289,7 +1289,7 @@ msgstr "%s service groups defined"
 
 #: overview.php:120
 msgid "Nemáte definovaný žádné skupiny služeb"
-msgstr "Nemáte definovaný žádné skupiny služeb"
+msgstr "No service groups defined"
 
 #: overview.php:121
 msgid "Založit první skupinu služeb"
@@ -1297,15 +1297,15 @@ msgstr "Create default servicegroup"
 
 #: servicegroup.php:23
 msgid "Skupina služeb nebyla uložena"
-msgstr "Servicegroup was not saved"
+msgstr "Servicegroup not saved"
 
 #: servicegroup.php:25
 msgid "Skupina služeb byla uložena"
-msgstr "Sercvice group was created"
+msgstr "Sercvice group created"
 
 #: servicegroup.php:37
 msgid "Editace skupiny služeb"
-msgstr "Servicegroup Edit"
+msgstr "Edit servicegroup"
 
 #: dbrecreate.php:16
 msgid "Icinga Editor - znovuvytvoření struktury databáze"
@@ -1352,7 +1352,7 @@ msgstr "ERROR:"
 
 #: apply.php:51
 msgid "Kontrola konfigurace nevrátila výsledek."
-msgstr "Check the configuration returned result."
+msgstr "Configuration check did not return any result."
 
 #: apply.php:52
 msgid "Zkontroluj prosím zdlali nechybí potřebný fragment v /etc/sudoers:"
@@ -1381,7 +1381,7 @@ msgstr "%s warnings"
 
 #: apply.php:131
 msgid "test proběhl bez varování"
-msgstr "test pass without errors"
+msgstr "test passed without errors"
 
 #: apply.php:137
 #, php-format
@@ -1390,7 +1390,7 @@ msgstr "overall %s errors"
 
 #: apply.php:139
 msgid "test proběhl bez chyb"
-msgstr "test pass without errors"
+msgstr "test passed without errors"
 
 #: apply.php:147
 msgid "Všechny vaše konfigurační soubory byly přegenerovány"
@@ -1422,19 +1422,19 @@ msgstr "Drop admin permission"
 
 #: timeperiod.php:24
 msgid "časová perioda nebyl uložena"
-msgstr "timperiod was not saved"
+msgstr "timeperiod not saved"
 
 #: timeperiod.php:26
 msgid "časová byla uložena"
-msgstr ""
+msgstr "timeperiod was saved"
 
 #: timeperiod.php:36
 msgid "položka nebyla odebrána"
-msgstr "item was not removed"
+msgstr "item not removed"
 
 #: timeperiod.php:38
 msgid "položka byla odebrána"
-msgstr "item was removed"
+msgstr "item removed"
 
 #: timeperiod.php:49
 msgid "Editace časové periody"
@@ -1450,7 +1450,7 @@ msgstr "interval(s)"
 
 #: services.php:27
 msgid "Předlohy služeb"
-msgstr "Services preferencies"
+msgstr "Services templates"
 
 #: services.php:35 hosts.php:54
 msgid "Odvodit <i class=\"icon-edit\"></i>"
@@ -1466,7 +1466,7 @@ msgstr "Start a service <i class=\"icon-edit\"></i>"
 
 #: newcontact.php:42
 msgid "Kontakt nebyl založen"
-msgstr "Contact was not created"
+msgstr "Contact not created"
 
 #: newcontact.php:44
 msgid "Kontakt byl založen"
@@ -1474,7 +1474,7 @@ msgstr "Contact was saved"
 
 #: newcontact.php:57
 msgid "Založení kontaktu"
-msgstr "Creating new contact"
+msgstr "Create new contact"
 
 #: newcontact.php:60
 msgid "Jméno"
@@ -1490,7 +1490,7 @@ msgstr "Host monitoring"
 
 #: index.php:21
 msgid "Sledování služeb"
-msgstr ""
+msgstr "Service monitoring"
 
 #: index.php:22
 msgid "Notifikace mail/jabber/sms/twitter"
@@ -1498,11 +1498,11 @@ msgstr "Notification mail/XMPP/sms/twitter"
 
 #: servicetweak.php:29
 msgid "Služba byla přejmenována"
-msgstr "Service was renamed"
+msgstr "Service renamed"
 
 #: servicetweak.php:31
 msgid "Sužba nebyla přejmenována"
-msgstr "Service was not renamed"
+msgstr "Service not renamed"
 
 #: servicetweak.php:46
 msgid "Služba byla odvozena"
@@ -1518,11 +1518,11 @@ msgstr "Create user"
 
 #: contacttweak.php:31
 msgid "Kontakt byl přejmenován"
-msgstr "Contact was renamed"
+msgstr "Contact renamed"
 
 #: contacttweak.php:33
 msgid "Kontakt nebyl přejmenován"
-msgstr "Contact was not renamed"
+msgstr "Contact not renamed"
 
 #: main.php:22
 msgid "Monitoring"
@@ -1534,11 +1534,11 @@ msgstr "Create first monitored host"
 
 #: main.php:29
 msgid "Zatím není zaregistrovaný žádný sledovaný host"
-msgstr "Not yet registered no monitored host"
+msgstr "No monitord hosts registered"
 
 #: logout.php:23
 msgid "Děkujeme za vaši přízeň a těšíme se na další návštěvu"
-msgstr "Thank you for your patronage and look forward to another visit"
+msgstr "Thanks for selecting icinga configuratror"
 
 #: login.php:15
 msgid "Cookies jsou vyžadovány"
@@ -1582,15 +1582,15 @@ msgstr "Templates"
 
 #: hostgroup.php:28
 msgid "Skupina hostů nebyla uložena"
-msgstr "Hostgroup was not saved"
+msgstr "Hostgroup not saved"
 
 #: hostgroup.php:30
 msgid "Skupina hostů byla uložena"
-msgstr "Hostgroup was saved"
+msgstr "Hostgroup saved"
 
 #: hostgroup.php:43
 msgid "Editace skupiny hostů"
-msgstr "hostgroup Edit"
+msgstr "Edit hostgroup"
 
 #: contactgroups.php:34
 msgid "Nemáte definovou skupinu kontaktů"
@@ -1622,7 +1622,7 @@ msgstr "Log-in as user <i class=\"icon-refresh\"></i>"
 
 #: wizard.php:162
 msgid "Založit výchozí kontakt"
-msgstr "Create default contacts"
+msgstr "Create default contact"
 
 #: wizard.php:174
 msgid "Hostname serveru"
@@ -1632,9 +1632,7 @@ msgstr "Server Hostname"
 msgid ""
 "Název hostu, tedy to co následuje po http:// ve webové adrese až k prvnímu "
 "lomítku, nebo otazníku."
-msgstr ""
-"Host name, (after http:// in the web address till the first slash) "
-"or question mark."
+msgstr "Host name"
 
 #: wizard.php:175
 msgid "IPv4 Adresa"
@@ -1642,7 +1640,7 @@ msgstr "IPv4 Address"
 
 #: wizard.php:175
 msgid "čtyři číslice od 0 do 255 oddělené tečkou"
-msgstr "four digits from 0 to 255 separated by a dot"
+msgstr "four digits from 0 to 255 separated by dots"
 
 #: wizard.php:176
 msgid "IPv6 Adresa"
@@ -1662,19 +1660,20 @@ msgid ""
 "a provede sken na některé základní služby.<br>Pokud budou tyto nalezeny "
 "aktivují se jejich testy. Informace o stavu bude odesílána na první zadaný "
 "kontakt"
-msgstr ""
+msgstr "After filling at least one initial detail, the wizard will scan the rest<br>"
+"and scan for some basic services"
 
 #: twauth.php:49
 msgid "Účet twitteru, bayl přiřazen"
-msgstr ""
+msgstr "Twitter account was linked"
 
 #: import.php:50
 msgid "Importovat data jako veřejná"
-msgstr ""
+msgstr "Import data as public"
 
 #: import.php:52
 msgid "Generovat do konfigurace"
-msgstr ""
+msgstr "Generate into config"
 
 #: import.php:54
 msgid "zahájí import konfigurace"
@@ -1682,15 +1681,15 @@ msgstr "begin import of configuration"
 
 #: contacts.php:70
 msgid "Nemáte definovaný žádný contact"
-msgstr ""
+msgstr "No contact defined"
 
 #: contacts.php:71
 msgid "Založit výchozí kontakt <i class=\"icon-edit\"></i>"
-msgstr ""
+msgstr "Define default contact <i class=\"icon-edit\"></i>"
 
 #: contacts.php:74
 msgid "Založit kontakt <i class=\"icon-edit\"></i>"
-msgstr ""
+msgstr "Define contact <i class=\"icon-edit\"></i>"
 
 #: modules/ping.inc.php:28
 msgid "prodleva varování"
@@ -1699,51 +1698,50 @@ msgstr "warning timeout"
 #: modules/ping.inc.php:28
 msgid ""
 "Čas v milisekundách, po jehož překročení při testu bude hlášeno varování"
-msgstr ""
+msgstr "RTT treshold till warning (miliseconds)"
 
 #: modules/ping.inc.php:29
 msgid "ztráta varování"
-msgstr ""
+msgstr "warning lost"
 
 #: modules/ping.inc.php:29
 msgid ""
 "Procento ztracených paketů, po jehož překročení při testu bude hlášeno "
 "varování"
-msgstr ""
+msgstr "Packetloss treshold till warning (percent)"
 
 #: modules/ping.inc.php:31
 msgid "prodleva kritické chyby"
-msgstr ""
+msgstr "delay of critical"
 
 #: modules/ping.inc.php:31
 msgid ""
 "Čas v milisekundách, po jehož překročení při testu bude hlášena kritická "
 "chyba"
-msgstr ""
+msgstr "Time treshold till critical (miliseconds)"
 
 #: modules/ping.inc.php:32
 msgid "ztráta kritické chyby"
-msgstr ""
+msgstr "Loss of critical"
 
 #: modules/ping.inc.php:32
 msgid ""
 "Procento ztracených paketů, po jehož překročení při testu bude hlášena "
 "kritická chyba"
 msgstr ""
-"The percentage of lost packets, beyond which the test will be reported "
-"critical error"
+"Packetloss treshold till critical (percent)"
 
 #: modules/web_content.inc.php:24
 msgid "Vše v pořádku"
-msgstr ""
+msgstr "OK"
 
 #: modules/web_content.inc.php:42
 msgid "Sledované url"
-msgstr ""
+msgstr "Monitored URLs"
 
 #: modules/web_content.inc.php:42
 msgid "Adresa sledované stránky"
-msgstr "URL Address of watched page"
+msgstr "URL of monitored page"
 
 #: modules/web_content.inc.php:43
 msgid "Očekávaný obsah"
@@ -1751,7 +1749,7 @@ msgstr "Expected content"
 
 #: modules/web_content.inc.php:43
 msgid "Text očekávaný na stránce v rámci bezchybného obsahu"
-msgstr ""
+msgstr "Text expected on page"
 
 #: modules/web_content.inc.php:44
 msgid "Nechtěný obsah"
@@ -1759,7 +1757,7 @@ msgstr "Unwanted content"
 
 #: modules/web_content.inc.php:44
 msgid "Neočekávaný text, např. \"Error\" nebo jiný fragment chybového hlášení"
-msgstr ""
+msgstr "Text not expected (e.g. \"error\" or other error statement"
 
 #: modules/web_content.inc.php:73
 msgid "Neplatné url"
