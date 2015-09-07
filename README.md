@@ -9,6 +9,8 @@ Instalation:
     echo deb http://v.s.cz/ stable main > /etc/apt/sources.list.d/ease.list
     aptitude update
     aptitude install icinga-editor
+    and then copy locales from this fork:) (until merge)
+    
 
 Note: Current version works only with MySQL.
 Sorry: Current Default localization is CZECH. English translation is just finished. Please test and start issues in case you have found one.
