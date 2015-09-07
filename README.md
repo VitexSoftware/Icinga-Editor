@@ -11,5 +11,5 @@ Instalation:
     aptitude install icinga-editor
 
 Note: Current version works only with MySQL.
-Sorry: Current Default localization is CZECH. English translation is on 40%
+Sorry: Current Default localization is CZECH. English translation is on 70%
 
