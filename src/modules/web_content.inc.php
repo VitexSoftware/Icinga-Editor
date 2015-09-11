@@ -49,7 +49,7 @@ class web_content extends IEServiceConfigurator
      * 
      * @return boolean
      */
-    public function configure()
+    public function reconfigureService()
     {
         $page = EaseShared::webPage();
         $testUrl = $page->getRequestValue('testUrl');
@@ -81,7 +81,7 @@ class web_content extends IEServiceConfigurator
 
             $this->tweaker->service->setDataValue('check_command-params', $command);
 
-            return parent::configure();
+            return parent::reconfigureService();
         }
 
         return FALSE;

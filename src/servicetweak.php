@@ -20,7 +20,10 @@ switch ($oPage->getRequestValue('action')) {
     case 'clone':
         $service->setDataValue('parent_id', $service->getId());
         $service->unsetDataValue($service->getmyKeyColumn());
-        $service->setDataValue('host_name', array($host->getId() => $host->getName()));
+        $service->addMember(
+            'host_name', $host->getId(), $host->getName()
+        );
+
         $service->setDataValue('hostgroup_name', array());
         $service->setDataValue('user_id', $oUser->getID());
         $service->setDataValue($service->nameColumn, _('Klon') . ' ' . $service->getName());
@@ -41,6 +44,9 @@ switch ($oPage->getRequestValue('action')) {
             }
         }
         break;
+    default :
+//        $service->addStatusMessage(_('Případné změny budou uloženy do odvozené služby'));
+        break;
 }
 
 $delete = $oPage->getGetValue('delete', 'bool');
@@ -52,7 +58,7 @@ if ($delete == 'true') {
 
 if ($service->getOwnerID() != $oUser->getMyKey()) {
     if ($service->fork($host)) {
-        $oUser->addStatusMessage(_('Služba byla odvozena'), 'success');
+        $oUser->addStatusMessage(_('Služba jiného vlastníka byla odvozena jako vlastní'), 'success');
     } else {
         $oUser->addStatusMessage(_('Služba nebyla odvozena'), 'error');
     }

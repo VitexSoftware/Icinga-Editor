@@ -202,7 +202,8 @@ switch ($oPage->getRequestValue('action')) {
         $commonTab->addItem(new IEIconSelector($host));
         break;
     case 'delete':
-        $confirmator = $oPage->columnII->addItem(new EaseTWBPanel(_('Opravdu smazat ?')), 'danger');
+        $confirmator = $mainPanel->addItem(new EaseTWBPanel(_('Opravdu smazat ?')), 'danger');
+        $confirmator->addItem(new IERecordShow($host));
         $confirmator->addItem(new EaseTWBLinkButton('?' . $host->myKeyColumn . '=' . $host->getID(), _('Ne') . ' ' . EaseTWBPart::glyphIcon('ok'), 'success'));
         $confirmator->addItem(new EaseTWBLinkButton('?delete=true&' . $host->myKeyColumn . '=' . $host->getID(), _('Ano') . ' ' . EaseTWBPart::glyphIcon('remove'), 'danger'));
 

@@ -360,7 +360,7 @@ echo "file name=${log-path}/nsclient.log" >> $INI
 
     static function stripServiceName($serviceName)
     {
-        return str_replace(' ', '_', preg_replace('/[^(\s:_a-zA-Z0-9)]*/', '', EaseSand::rip($serviceName)));
+        return str_replace(' ', '_', preg_replace('/[^(\s:_\.a-zA-Z0-9)]*/', '', EaseSand::rip($serviceName)));
     }
 
     /**

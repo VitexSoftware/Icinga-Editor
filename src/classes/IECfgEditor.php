@@ -70,46 +70,72 @@ class IECfgEditor extends EaseContainer
     public function insertWidget($fieldBlock, $fieldName, $value)
     {
         $disabled = false;
+        $hint = '';
+        $keywordInfo = $this->objectEdited->keywordsInfo[$fieldName];
+        $fieldType = $this->objectEdited->useKeywords[$fieldName];
+        $fType = preg_replace('/\(.*\)/', '', $fieldType);
+        $required = (isset($keywordInfo['requeired']) && ($keywordInfo['requeired'] === true));
+
         if ($this->objectEdited->allowTemplating) {
-            $effective = $this->objectEdited->getCfg($fieldName);
+            $effective = $this->objectEdited->getCfg($fieldName, true);
             $templateName = key($effective);
             $templateValue = current($effective);
-            if ($templateName && !is_null($templateValue)) {
-                $fieldBlock->addItem(new EaseHtmlCheckboxTag(null, true, 1, array('id' => 'useTpl' . $fieldName)));
+
+            if ($fType == 'BOOL') {
+                EaseShared::webPage()->addJavaScript("$(\"#useTpl$fieldName\").change(function(){
+    if( this.checked ){
+        $(\"[name='$fieldName']\").prop('disabled', true);
+        $(\"input[name='$fieldName']\").bootstrapSwitch('toggleDisabled', true);
+
+    } else {
+        $(\"[name='$fieldName']\").prop('disabled', false);
+        $(\"input[name='$fieldName']\").bootstrapSwitch('toggleDisabled', false);
+    }
+
+});", null, true);
+            } else {
+
                 EaseShared::webPage()->addJavaScript("$(\"#useTpl$fieldName\").change(function(){
     if( this.checked ){
         $(\"[name='$fieldName']\").prop('disabled', true);
     } else {
         $(\"[name='$fieldName']\").prop('disabled', false);
     }
-    $(\"input[name='$fieldName']\").bootstrapSwitch('toggleDisabled', true);
 
 });", null, true);
-
-                $fieldBlock->addItem(' ' . _('Hodnota z předlohy') . ':');
-                $fieldBlock->addItem(new EaseHtmlATag('search.php?search=' . key($effective), key($effective)));
-                $fieldBlock->addItem(': ' . current($effective));
-                $disabled = true;
             }
+
+            if ($templateName && !is_null($templateValue)) {
+                $fieldBlock->addItem(new EaseHtmlCheckboxTag(null, true, 1, array('id' => 'useTpl' . $fieldName)));
+                $hint = current($effective);
+                $disabled = true;
+            } else {
+                $fieldBlock->addItem(new EaseHtmlCheckboxTag(null, false, 1, array('id' => 'useTpl' . $fieldName)));
+                $hint = $value;
+            }
+            $fieldBlock->addItem(' ' . _('Hodnota z předlohy') . ':');
+            $fieldBlock->addItem(new EaseHtmlATag('search.php?search=' . key($effective), key($effective)));
+            $fieldBlock->addItem(': ' . current($effective));
         }
 
         if ($disabled) {
             EaseShared::webPage()->addJavaScript("$(\"[name='$fieldName']\").prop('disabled', true);", null, true);
         }
 
-        $keywordInfo = $this->objectEdited->keywordsInfo[$fieldName];
-        $fieldType = $this->objectEdited->useKeywords[$fieldName];
-        $required = (isset($keywordInfo['requeired']) && ($keywordInfo['requeired'] === true));
-        $fType = preg_replace('/\(.*\)/', '', $fieldType);
 
         switch ($fType) {
             case 'INT':
             case 'STRING':
             case 'VARCHAR':
+//$fieldBlock->addItem($this->optionEnabler($fieldName));
+
+
                 if ($required) {
-                    $fieldBlock->addItem(new EaseHtmlDivTag(null, new EaseLabeledTextInput($fieldName, $value, $keywordInfo['title'], array('class' => 'required form-control', 'title' => $fieldName))));
+                    $fieldBlock->addItem(new EaseTWBFormGroup($fieldName, new EaseHtmlInputTextTag($fieldName, $value, array('class' => 'required form-control', 'title' => $fieldName)), $hint, $keywordInfo['title']));
+//                    $fieldBlock->addItem(new EaseHtmlDivTag(null, new EaseLabeledTextInput($fieldName, $value, $keywordInfo['title'], array('class' => 'required form-control', 'title' => $fieldName))));
                 } else {
-                    $fieldBlock->addItem(new EaseLabeledTextInput($fieldName, $value, $keywordInfo['title'], array('title' => $fieldName, 'class' => 'form-control')));
+                    $fieldBlock->addItem(new EaseTWBFormGroup($fieldName, new EaseHtmlInputTextTag($fieldName, $value, array('title' => $fieldName, 'class' => 'form-control')), $hint, $keywordInfo['title']));
+//                    $fieldBlock->addItem(new EaseLabeledTextInput($fieldName, $value, $keywordInfo['title'], array('title' => $fieldName, 'class' => 'form-control')));
                 }
                 break;
             case 'TINYINT':
@@ -322,7 +348,7 @@ class IECfgEditor extends EaseContainer
             }
         }
         if (isset($this->objectEdited->useKeywords['generate']) && !(int) $this->objectEdited->getDataValue('generate')) {
-            $this->addStatusMessage(_('tento záznam se nebude generovat do konfigurace'));
+            $this->addStatusMessage(_('tento záznam se nebude generovat do konfigurace'), 'warning');
         }
         if ($this->objectEdited->publicRecords) {
             if ((int) $this->objectEdited->getDataValue('public')) {
@@ -448,7 +474,7 @@ class IECfgEditor extends EaseContainer
             if (isset($template)) {
                 $tempValue = $template->getDataValue($fieldName);
                 if (!is_null($tempValue) && ($fieldName != $this->objectEdited->nameColumn) && !$required) { //Skrýt nedůležité položky
-                    // EaseShared::webPage()->addJavaScript("$('#" . $fieldName . "-controls').hide();", null, true);
+// EaseShared::webPage()->addJavaScript("$('#" . $fieldName . "-controls').hide();", null, true);
                 }
             }
 
@@ -485,7 +511,7 @@ class IECfgEditor extends EaseContainer
             }
             $Rules.= implode(',', $fRules) . "\n}});\n";
 
-            //$Rules = ' $("#' . $this->parentObject->getTagProperty('name') . '").validate();';
+//$Rules = ' $("#' . $this->parentObject->getTagProperty('name') . '").validate();';
 
             EaseShared::webPage()->addJavaScript($Rules, NULL, true);
         }
@@ -602,6 +628,17 @@ class IECfgEditor extends EaseContainer
             }
             $this->insertWidget($fieldBlock, $fieldName, $value);
         }
+    }
+
+    /**
+     * Zaškrtávací políčko pro NULL
+     *
+     * @param string $name
+     * @return \EaseHtmlCheckboxTag
+     */
+    public function optionEnabler($name)
+    {
+        return new EaseHtmlCheckboxTag(null, false, 1, array('id' => 'useTpl' . $name));
     }
 
 }

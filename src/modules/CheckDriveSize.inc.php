@@ -98,7 +98,7 @@ class CheckDriveSize extends IEServiceConfigurator
      *
      * @return boolean
      */
-    public function configure()
+    public function reconfigureService()
     {
         $config = array();
         $page = EaseShared::webPage();
@@ -157,7 +157,7 @@ class CheckDriveSize extends IEServiceConfigurator
 
             $this->tweaker->service->setDataValue('check_command-params', implode(' ', $config));
 
-            return parent::configure();
+            return parent::reconfigureService();
         }
 
         return FALSE;

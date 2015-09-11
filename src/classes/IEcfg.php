@@ -468,7 +468,9 @@ class IEcfg extends EaseBrick
                     break;
                 case 'IDLIST':
                     if (isset($data[$fieldName]) && !is_array($data[$fieldName])) {
-                        $data[$fieldName] = serialize(explode(',', $data[$fieldName]));
+                        if (substr($data[$fieldName], 0, 2) != 'a:') {
+                            $data[$fieldName] = serialize(explode(',', $data[$fieldName]));
+                        }
                     }
                     break;
                 default:
@@ -557,12 +559,17 @@ class IEcfg extends EaseBrick
      * Vrací efektivní konfigurační hodnotu
      *
      * @param string $keyword
+     * @param boolean $templateValue Vracet hodnotu předlohy i když není použta
      * @return  array array( 'nastavujici rodic' => hodnota )
      */
-    public function getCfg($keyword)
+    public function getCfg($keyword, $templateValue = false)
     {
         $parent_used = 0;
-        $value = $this->getDataValue($keyword);
+        if ($templateValue) {
+            $value = null;
+        } else {
+            $value = $this->getDataValue($keyword);
+        }
         if (is_null($value)) {
             $parent_name = $this->getDataValue('use');
             while (is_null($value) && $parent_name) {
@@ -698,7 +705,7 @@ class IEcfg extends EaseBrick
                 case 'ARRAY':
                 case 'IDLIST':
                     if (isset($data[$keyWord]) && is_array($data[$keyWord])) {
-                        $data[$keyWord] = serialize($data[$keyWord]);
+                        $data[$keyWord] = addslashes(serialize($data[$keyWord]));
                     }
                     break;
                 default:
@@ -765,7 +772,7 @@ class IEcfg extends EaseBrick
                     case 'ARRAY':
                     case 'IDLIST':
                         if (isset($data[$recordID][$keyWord]) && (substr($data[$recordID][$keyWord], 0, 2) == 'a:')) {
-                            $data[$recordID][$keyWord] = unserialize($data[$recordID][$keyWord]);
+                            $data[$recordID][$keyWord] = unserialize(stripslashes($data[$recordID][$keyWord]));
                         } else {
                             $data[$recordID][$keyWord] = array();
                         }
@@ -1555,9 +1562,9 @@ class IEcfg extends EaseBrick
                         }
                         break;
                     case 'IDLIST':
-                        if (strlen($value)) {
+                        if (!is_array($value) && strlen($value)) {
                             if (strstr($value, ':{')) {
-                                $values = unserialize($value);
+                                $values = unserialize(stripslashes($value));
                             } else {
                                 $values = array('0' => $value);
                             }
@@ -1789,6 +1796,16 @@ class IEcfg extends EaseBrick
 
         if (isset($this->userColumn)) {
             $infoBlock->addDef(_('Vlastník'), $this->ownerLinkButton());
+        }
+
+        if (isset($this->useKeywords['generate']) && !(int) $this->getDataValue('generate')) {
+            $infoBlock->addItem(new EaseTWBLabel('warning', _('tento záznam se nebude generovat')));
+        }
+
+        if ($this->publicRecords) {
+            if ((int) $this->getDataValue('public')) {
+                $infoBlock->addItem(new EaseTWBLabel('info', _('tento záznam je veřejný')));
+            }
         }
 
         return $infoBlock;
