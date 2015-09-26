@@ -705,7 +705,7 @@ class IEcfg extends EaseBrick
                 case 'ARRAY':
                 case 'IDLIST':
                     if (isset($data[$keyWord]) && is_array($data[$keyWord])) {
-                        $data[$keyWord] = addslashes(serialize($data[$keyWord]));
+                        $data[$keyWord] = serialize($data[$keyWord]);
                     }
                     break;
                 default:
@@ -1342,12 +1342,22 @@ class IEcfg extends EaseBrick
                 $allData[$keyWord] = self::unserializeArrays($keyData);
             } else {
                 if (strlen($keyData) && (substr($keyData, 0, 2) == 'a:')) {
-                    $allData[$keyWord] = unserialize($keyData);
+                    if (self::isSerialized($keyData)) {
+                        $allData[$keyWord] = unserialize(stripslashes($keyData));
+                    } else {
+                        EaseShared::webPage()->addStatusMessage(_('Chyba deserializace') . ':' . $keyData, 'error');
+                    }
                 }
             }
         }
 
         return $allData;
+    }
+
+    static function isSerialized($str)
+    {
+        $str = stripslashes($str);
+        return ($str == serialize(false) || @unserialize($str) !== false);
     }
 
     /**

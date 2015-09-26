@@ -78,7 +78,7 @@ class IEMainMenu extends EaseHtmlDivTag
 
             foreach ($hostgroups as $cID => $hgInfo) {
                 $hostGroupMenuItem['hostgroup.php?hostgroup_id=' . $hgInfo['hostgroup_id']] = EaseTWBPart::GlyphIcon('cloud') . ' ' . $hgInfo['hostgroup_name'];
-                if (count($hgInfo['members'])) {
+                if (is_array($hgInfo['members'])) {
                     foreach ($hgInfo['members'] as $hgMember) {
                         if ($hgMember == '*') {
                             $image = null;
