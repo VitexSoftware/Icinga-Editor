@@ -140,7 +140,7 @@ class IEcfg extends EaseBrick
                 $this->loadFromMySQL($itemID);
             }
         } else {
-            // $this->setDataValue($this->userColumn, $this->user->getID());
+// $this->setDataValue($this->userColumn, $this->user->getID());
         }
 
         if ($this->allowTemplating) {
@@ -1912,6 +1912,46 @@ class IEcfg extends EaseBrick
 
 //        $enterPoint = str_replace('\\', '', $enterPoint); //Win Hack
         return $enterPoint;
+    }
+
+    function csvizeRow()
+    {
+
+    }
+
+    function getListingQuerySelect()
+    {
+
+    }
+
+    function getListingQueryWhere()
+    {
+
+    }
+
+    function operationsMenu()
+    {
+
+    }
+
+    function handleUpload()
+    {
+
+    }
+
+    function unsetUnknownColumns()
+    {
+
+    }
+
+    function sqlColumnsToSelect()
+    {
+
+    }
+
+    function getWhere()
+    {
+        
     }
 
 }

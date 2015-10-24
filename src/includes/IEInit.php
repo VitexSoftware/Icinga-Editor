@@ -6,17 +6,17 @@
  * @author    Vitex <vitex@hippy.cz>
  * @copyright Vitex@hippy.cz (G) 2010
  */
-require_once 'includes/Configure.php';
-
-function __autoload($class_name)
-{
-    $class_file = 'classes/' . $class_name . '.php';
-    if (file_exists($class_file)) {
-        include $class_file;
-        return TRUE;
-    }
-    return FALSE;
+if (file_exists('includes/Configure.php')) {
+    require_once 'includes/Configure.php';
 }
+
+spl_autoload_register(
+    function($class) {
+    $filepath = "classes/{$class}.php";
+    is_file($filepath) && include $filepath;
+}, false, false
+);
+
 
 $language = "cs_CZ";
 $codeset = "cs_CZ.UTF-8";
@@ -28,12 +28,11 @@ setlocale(LC_ALL, $codeset);
 bindtextdomain($domain, realpath("./locale"));
 textdomain($domain);
 
-require_once 'classes/IEUser.php';
-require_once 'classes/IEPreferences.php';
-
 session_start();
 
+require_once 'Ease/EaseShared.php';
 if (!isset($_SESSION['User']) || !is_object($_SESSION['User'])) {
+    require_once 'Ease/EaseAnonym.php';
     EaseShared::user(new EaseAnonym());
 }
 
@@ -44,7 +43,6 @@ if (!isset($_SESSION['User']) || !is_object($_SESSION['User'])) {
 $oUser = & EaseShared::user();
 $oUser->SettingsColumn = 'settings';
 
-require_once 'classes/IEWebPage.php';
 
 /* @var $oPage IEWebPage */
 $oPage = new IEWebPage();

@@ -5,6 +5,7 @@
  */
 class IEcfgTest extends PHPUnit_Framework_TestCase
 {
+
     /**
      * Data Určená k testům.
      *
@@ -82,6 +83,7 @@ class IEcfgTest extends PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
+
     }
 
     /**
@@ -319,4 +321,5 @@ class IEcfgTest extends PHPUnit_Framework_TestCase
     {
         $this->assertEmpty($this->object->getWhere());
     }
+
 }

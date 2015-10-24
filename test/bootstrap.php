@@ -8,24 +8,22 @@
  */
 include_once 'Token.php';
 include_once 'Token/Stream.php';
-require_once 'Ease/EaseShared.php';
 
 
-ini_set(
-    'include_path', ini_get('include_path') . PATH_SEPARATOR .
-    dirname(__FILE__) . '/../src/'
+
+spl_autoload_register(
+    function($class) {
+    $filepath = "../src/classes/{$class}.php";
+    is_file($filepath) && include $filepath;
+}, false, false
+);
+spl_autoload_register(
+    function($class) {
+    $filepath = "src/classes/{$class}.php";
+    is_file($filepath) && include $filepath;
+}, false, false
 );
 
-function __autoload($class_name)
-{
-    $class_file = dirname(__FILE__) . '/../src/classes/' . $class_name . '.php';
-    if (file_exists($class_file)) {
-        include $class_file;
-
-        return true;
-    }
-
-    return false;
-}
+echo ini_get('include_path');
 
 require_once '../src/includes/IEInit.php';
