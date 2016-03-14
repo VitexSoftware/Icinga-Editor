@@ -1,4 +1,5 @@
 <?php
+namespace Icinga\Editor;
 
 /**
  * Import konfigurace ze souboru
@@ -38,17 +39,17 @@ if ($oPage->isPosted()) {
     $oPage->addStatusMessage(_('Zadejte konfigurační fragment příkazu, nebo zvolte soubor k importu'));
 }
 
-$oPage->addItem(new IEPageTop(_('Import konfigurace')));
+$oPage->addItem(new UI\PageTop(_('Import konfigurace')));
 
-$importForm = new EaseTWBForm('CfgFileUp', null, 'POST', null, array('class' => 'form-horizontal', 'enctype' => 'multipart/form-data'));
-$importForm->addInput(new EaseHtmlTextareaTag('cfgtext', ''), _('konfigurační fragment'));
-$importForm->addInput(new EaseHtmlInputFileTag('cfgfile'), _('konfigurační soubor'));
+$importForm = new \Ease\TWB\Form('CfgFileUp', null, 'POST', null, array('class' => 'form-horizontal', 'enctype' => 'multipart/form-data'));
+$importForm->addInput(new \Ease\Html\TextareaTag('cfgtext', ''), _('konfigurační fragment'));
+$importForm->addInput(new \Ease\Html\InputFileTag('cfgfile'), _('konfigurační soubor'));
 $importForm->addInput(new IETWBSwitch('public'), _('Importovat data jako veřejná'));
 $importForm->addInput(new IETWBSwitch('generate'), _('Generovat do konfigurace'));
-$importForm->addItem(new EaseTWSubmitButton(_('importovat'), 'success', array('title' => _('zahájí import konfigurace'))));
+$importForm->addItem(new \Ease\TWB\SubmitButton(_('importovat'), 'success', array('title' => _('zahájí import konfigurace'))));
 
-$oPage->container->addItem(new EaseTWBPanel(_('Import konfigurace'), 'warning', $importForm));
+$oPage->container->addItem(new \Ease\TWB\Panel(_('Import konfigurace'), 'warning', $importForm));
 
-$oPage->addItem(new IEPageBottom());
+$oPage->addItem(new UI\PageBottom());
 
 $oPage->draw();

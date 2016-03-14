@@ -8,6 +8,18 @@
         }
     ],
     "require": {
-
+        "php": ">= 5.5.9",
+        "vitexsoftware/ease-framework": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "Icinga\\Editor\\Engine\\": "src/classes/",
+            "Icinga\\Editor\\UI\\": "src/classes/UI"
+        }
+    },
+    "require-dev": {
+        "phpunit/php-token-stream": "~1.2",
+        "robmorgan/phinx": "dev-master"
     }
+
 }

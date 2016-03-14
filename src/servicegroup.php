@@ -1,4 +1,5 @@
 <?php
+namespace Icinga\Editor;
 
 /**
  * Icinga Editor - skupina služeb
@@ -31,29 +32,29 @@ if ($delete == 'true') {
     $serviceGroup->delete();
 }
 
-$oPage->addItem(new IEPageTop(_('Editace skupiny služeb') . ' ' . $serviceGroup->getName()));
+$oPage->addItem(new UI\PageTop(_('Editace skupiny služeb') . ' ' . $serviceGroup->getName()));
 
 $servicegroupEdit = new IECfgEditor($serviceGroup);
 
-$form = new EaseHtmlForm('Servicegroup', 'servicegroup.php', 'POST', $servicegroupEdit, array('class' => 'form-horizontal'));
+$form = new \Ease\Html\Form('Servicegroup', 'servicegroup.php', 'POST', $servicegroupEdit, array('class' => 'form-horizontal'));
 $form->setTagID($form->getTagName());
 if (!is_null($serviceGroup->getMyKey())) {
-    $form->addItem(new EaseHtmlInputHiddenTag($serviceGroup->getmyKeyColumn(), $serviceGroup->getMyKey()));
+    $form->addItem(new \Ease\Html\InputHiddenTag($serviceGroup->getmyKeyColumn(), $serviceGroup->getMyKey()));
 }
 $form->addItem('<br>');
-$form->addItem(new EaseTWSubmitButton(_('Uložit'), 'success'));
+$form->addItem(new \Ease\TWB\SubmitButton(_('Uložit'), 'success'));
 
-$oPage->addItem(new IEPageBottom());
+$oPage->addItem(new UI\PageBottom());
 
 $infopanel = new IEInfoBox($serviceGroup);
-$tools = new EaseTWBPanel(_('Nástroje'), 'warning');
+$tools = new \Ease\TWB\Panel(_('Nástroje'), 'warning');
 if ($serviceGroup->getId()) {
     $tools->addItem($serviceGroup->deleteButton());
-    $tools->addItem(new EaseTWBPanel(_('Transfer'), 'warning', $serviceGroup->transferForm()));
+    $tools->addItem(new \Ease\TWB\Panel(_('Transfer'), 'warning', $serviceGroup->transferForm()));
 }
-$pageRow = new EaseTWBRow;
+$pageRow = new \Ease\TWB\Row;
 $pageRow->addColumn(2, $infopanel);
-$pageRow->addColumn(6, new EaseTWBPanel(_('Příkaz') . ' <strong>' . $serviceGroup->getName() . '</strong>', 'default', $form));
+$pageRow->addColumn(6, new \Ease\TWB\Panel(_('Příkaz') . ' <strong>' . $serviceGroup->getName() . '</strong>', 'default', $form));
 $pageRow->addColumn(4, $tools);
 $oPage->container->addItem($pageRow);
 

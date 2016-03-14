@@ -1,5 +1,7 @@
 <?php
 
+namespace Icinga\Editor;
+
 /**
  * Přihlašovací stránka
  *
@@ -8,8 +10,6 @@
  * @package IcingaEditor
  */
 require_once 'includes/IEInit.php';
-require_once 'Ease/EaseJQueryWidgets.php';
-require_once 'classes/IETwitter.php';
 
 if (!is_object($oUser)) {
     die(_('Cookies jsou vyžadovány'));
@@ -17,8 +17,8 @@ if (!is_object($oUser)) {
 
 $login = $oPage->getRequestValue('login');
 if ($login) {
-    EaseShared::user(new IEUser());
-    EaseShared::user()->SettingsColumn = 'settings';
+    \Ease\Shared::user(new User());
+    \Ease\Shared::user()->SettingsColumn = 'settings';
     if ($oUser->tryToLogin($_POST)) {
         if ($oUser->getUserID() == 1) {
             $oUser->setSettingValue('admin', TRUE);
@@ -37,11 +37,12 @@ if ($login) {
 
     $forceID = $oPage->getRequestValue('force_id', 'int');
     if (!is_null($forceID)) {
-        EaseShared::user(new IEUser($forceID));
-        EaseShared::user()->SettingsColumn = 'settings';
+        \Ease\Shared::user(new User($forceID));
+        \Ease\Shared::user()->SettingsColumn = 'settings';
         $oUser->setSettingValue('admin', TRUE);
-        $oUser->addStatusMessage(_('Přihlášen jako: ') . $oUser->getUserLogin(), 'success');
-        EaseShared::user()->loginSuccess();
+        $oUser->addStatusMessage(_('Přihlášen jako: ').$oUser->getUserLogin(),
+            'success');
+        \Ease\Shared::user()->loginSuccess();
         $oPage->redirect('main.php');
         exit;
     } else {
@@ -49,24 +50,27 @@ if ($login) {
     }
 }
 
-$oPage->addItem(new IEPageTop(_('Přihlaš se')));
+$oPage->addItem(new UI\PageTop(_('Přihlaš se')));
 $oPage->addPageColumns();
 
-$loginFace = new EaseHtmlDivTag('LoginFace');
+$loginFace = new \Ease\Html\Div();
 
-$oPage->columnI->addItem(new EaseHtmlDivTag('WelcomeHint', _('Zadejte, prosím, Vaše přihlašovací údaje:')));
+$oPage->columnI->addItem(new \Ease\Html\Div(_('Zadejte, prosím, Vaše přihlašovací údaje:')));
 
-$loginForm = $loginFace->addItem(new EaseTWBForm('Login'));
-$loginForm->addItem(new EaseTWBFormGroup(_('Uživatelské jméno'), new EaseHtmlInputTextTag('login', $login)));
-$loginForm->addItem(new EaseTWBFormGroup(_('Heslo'), new EaseHtmlInputPasswordTag('password')));
-$loginForm->addItem(new EaseTWSubmitButton('LogIn', _('Přihlášení')));
+$loginForm = $loginFace->addItem(new \Ease\TWB\Form('Login'));
+$loginForm->addItem(new \Ease\TWB\FormGroup(_('Uživatelské jméno'),
+    new \Ease\Html\InputTextTag('login', $login)));
+$loginForm->addItem(new \Ease\TWB\FormGroup(_('Heslo'),
+    new \Ease\Html\InputPasswordTag('password')));
+$loginForm->addItem(new \Ease\TWB\SubmitButton('LogIn', _('Přihlášení')));
 
 $oPage->columnII->addItem($loginFace);
 
-$oPage->columnI->addItem(new EaseTWBLinkButton('passwordrecovery.php', _('Obnova hesla')));
+$oPage->columnI->addItem(new \Ease\TWB\LinkButton('passwordrecovery.php',
+    _('Obnova hesla')));
 
 /*
-  $oPage->columnII->addItem(new EaseHtmlDivTag('TwitterAuth', IETwitter::AuthButton('twauth.php')));
+  $oPage->columnII->addItem(new \Ease\Html\DivTag('TwitterAuth', IETwitter::AuthButton('twauth.php')));
 
   $oPage->columnIII->addItem( '
   <a class="twitter-timeline"  href="https://twitter.com/VSMonitoring" data-widget-id="255378607919210497">Tweets by @VSMonitoring</a>
@@ -74,6 +78,6 @@ $oPage->columnI->addItem(new EaseTWBLinkButton('passwordrecovery.php', _('Obnova
   ' );
  */
 
-$oPage->addItem(new IEPageBottom());
+$oPage->addItem(new UI\PageBottom());
 
 $oPage->draw();

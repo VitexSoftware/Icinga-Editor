@@ -1,4 +1,5 @@
 <?php
+namespace Icinga\Editor;
 
 /**
  * prohlížeč databáze
@@ -20,7 +21,7 @@ $searcher = new IESearcher;
 header('ContentType: text/json');
 
 if (strlen($query) > 1) {
-    $results = $searcher->searchAll(EaseShared::db()->EaseAddslashes($query));
+    $results = $searcher->searchAll(\Ease\Shared::db()->EaseAddslashes($query));
 
     foreach ($results as $rectype => $records) {
         foreach ($records as $recid => $record) {

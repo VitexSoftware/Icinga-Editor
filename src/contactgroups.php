@@ -1,4 +1,5 @@
 <?php
+namespace Icinga\Editor;
 
 /**
  * Icinga Editor - přehled kontaktů
@@ -13,10 +14,10 @@ require_once 'classes/IEContactgroup.php';
 
 $oPage->onlyForLogged();
 
-$oPage->addItem(new IEPageTop(_('Kontaktní skupiny')));
+$oPage->addItem(new UI\PageTop(_('Kontaktní skupiny')));
 
 $oPage->container->addItem(new IEDataGrid(_('Kontaktní skupiny'), new IEContactgroup));
 
-$oPage->addItem(new IEPageBottom());
+$oPage->addItem(new UI\PageBottom());
 
 $oPage->draw();

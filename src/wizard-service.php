@@ -1,4 +1,5 @@
 <?php
+namespace Icinga\Editor;
 
 /**
  * Icinga Editor - titulní strana
@@ -12,7 +13,7 @@ require_once 'includes/IEInit.php';
 
 $oPage->onlyForLogged();
 
-$oPage->addItem(new IEPageTop(_('Průvodce založením hosta')));
+$oPage->addItem(new UI\PageTop(_('Průvodce založením hosta')));
 $oPage->addPageColumns();
 
 $oPage->addCss('
@@ -42,15 +43,15 @@ $oPage->addCss('
     ');
 
 $oPage->columnI->addItem(
-    new EaseTWBPanel(_('Aktivní'), 'success', _('Aktivni testy vyžadují aby byla icinga schopná dosáhnout na testovaný stroj.'))
+    new \Ease\TWB\Panel(_('Aktivní'), 'success', _('Aktivni testy vyžadují aby byla icinga schopná dosáhnout na testovaný stroj.'))
 );
 $oPage->columnIII->addItem(
-    new EaseTWBPanel(_('Pasivní'), 'info', _('Pasivní služba zasílá sama na server kde běží icinga své výsledky testů pomocí protokolu nsca'))
+    new \Ease\TWB\Panel(_('Pasivní'), 'info', _('Pasivní služba zasílá sama na server kde běží icinga své výsledky testů pomocí protokolu nsca'))
 );
 
-$oPage->columnII->addItem(new EaseTWBLinkButton('wizard-active-service.php', _('Aktivní'), 'success', array('class' => 'btn-xlarge')));
-$oPage->columnII->addItem(new EaseTWBLinkButton('wizard-passive-service.php', _('Pasivní'), 'info', array('class' => 'btn-xlarge')));
+$oPage->columnII->addItem(new \Ease\TWB\LinkButton('wizard-active-service.php', _('Aktivní'), 'success', array('class' => 'btn-xlarge')));
+$oPage->columnII->addItem(new \Ease\TWB\LinkButton('wizard-passive-service.php', _('Pasivní'), 'info', array('class' => 'btn-xlarge')));
 
-$oPage->addItem(new IEPageBottom());
+$oPage->addItem(new UI\PageBottom());
 
 $oPage->draw();

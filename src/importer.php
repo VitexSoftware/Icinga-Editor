@@ -1,4 +1,5 @@
 <?php
+namespace Icinga\Editor;
 
 /**
  * Import ze souboru
@@ -9,7 +10,6 @@
  * @copyright  2012 Vitex@hippy.cz (G)
  */
 require_once 'includes/IEInit.php';
-require_once 'classes/IEImporter.php';
 
 $class = $oPage->getRequestValue('class');
 if ($oPage->isPosted() && $class) {

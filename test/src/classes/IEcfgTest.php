@@ -249,7 +249,7 @@ class IEcfgTest extends PHPUnit_Framework_TestCase
     public function testOperationsMenu()
     {
         $this->assertInstanceOf(
-            'EaseTWBButtonDropdown', $this->object->operationsMenu()
+            '\Ease\TWB\ButtonDropdown', $this->object->operationsMenu()
         );
     }
 

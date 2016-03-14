@@ -58,14 +58,14 @@ class EaseOAuth extends EaseAtom
     /**
      *
      * @param  type              $Base
-     * @return EaseTWBLinkButton
+     * @return \Ease\TWB\LinkButton
      */
     public static function AuthButton($Base = '')
     {
         if (!self::IsAuthenticated()) {
-            return new EaseTWBLinkButton($Base.'?authenticate=1', _('přihlásit přez Twitter'));
+            return new \Ease\TWB\LinkButton($Base.'?authenticate=1', _('přihlásit přez Twitter'));
         } else {
-            return new EaseTWBLinkButton($Base.'?wipe=1', _('odhlasit twitter'));
+            return new \Ease\TWB\LinkButton($Base.'?wipe=1', _('odhlasit twitter'));
         }
     }
 

@@ -1,4 +1,5 @@
 <?php
+namespace Icinga\Editor;
 
 /**
  * Icinga Editor - titulní strana
@@ -12,7 +13,7 @@ require_once 'includes/IEInit.php';
 
 $oPage->onlyForLogged();
 
-$oPage->addItem(new IEPageTop(_('Monitoring')));
+$oPage->addItem(new UI\PageTop(_('Monitoring')));
 
 $host = new IEHost();
 $hosts = $host->getListing(null, false, array('config_hash', 'address', 'parents', 'icon_image', 'contacts', 'contact_groups', $host->myCreateColumn, $host->myLastModifiedColumn));
@@ -20,10 +21,10 @@ $hosts = $host->getListing(null, false, array('config_hash', 'address', 'parents
 if (count($hosts)) {
     $oPage->container->addItem(new IEConfigurationsOverview($hosts));
 } else {
-    $oPage->container->addItem(new EaseTWBLinkButton('wizard-host.php', _('Založte si první sledovaný host'), 'success'));
+    $oPage->container->addItem(new \Ease\TWB\LinkButton('wizard-host.php', _('Založte si první sledovaný host'), 'success'));
     $oUser->addStatusMessage(_('Zatím není zaregistrovaný žádný sledovaný host'), 'warning');
 }
 
-$oPage->addItem(new IEPageBottom());
+$oPage->addItem(new UI\PageBottom());
 
 $oPage->draw();

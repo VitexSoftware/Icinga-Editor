@@ -1,4 +1,5 @@
 <?php
+namespace Icinga\Editor;
 
 /**
  * prohlížeč databáze
@@ -23,7 +24,7 @@ if (strlen($query) < 2) {
     $oPage->addStatusMessage(_('Vyheldávaný řetězec je příliš krátký'), 'warning');
 } else {
 
-    $results = $searcher->searchAll(EaseShared::db()->EaseAddslashes($query));
+    $results = $searcher->searchAll(\Ease\Shared::db()->EaseAddslashes($query));
 
     foreach ($results as $rectype => $records) {
         foreach ($records as $recid => $record) {
@@ -38,24 +39,24 @@ if (strlen($query) < 2) {
         exit;
     }
 }
-$oPage->addItem(new IEPageTop(_('Výsledky hledání')));
+$oPage->addItem(new UI\PageTop(_('Výsledky hledání')));
 
-$listing = new EaseHtmlUlTag(null, array('class' => 'list-group'));
+$listing = new \Ease\Html\UlTag(null, array('class' => 'list-group'));
 
 foreach ($found as $foundItem) {
     $listing->addItem(
-        new EaseHtmlLiTag(
-        new EaseHtmlATag(
+        new \Ease\Html\LiTag(
+        new \Ease\Html\ATag(
         $foundItem['url'], $foundItem['type'] . '&nbsp;<h4>' . $foundItem['name'] . '</h4>&nbsp;' . str_replace($query, '<strong>' . $query . '</strong>', $foundItem['what'])
         )
         , array('class' => 'list-group-item'))
     );
 }
 
-$oPage->addItem(new EaseTWBContainer($listing));
+$oPage->addItem(new \Ease\TWB\Container($listing));
 
 
-$oPage->addItem(new IEPageBottom());
+$oPage->addItem(new UI\PageBottom());
 
 $oPage->draw();
 

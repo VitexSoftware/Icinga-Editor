@@ -1,4 +1,5 @@
 <?php
+namespace Icinga\Editor;
 
 /**
  * Icinga Editor - titulní strana
@@ -9,8 +10,6 @@
  * @copyright  2012 Vitex@hippy.cz (G)
  */
 require_once 'includes/IEInit.php';
-require_once 'classes/IEHost.php';
-require_once 'classes/IENSCPConfigGenerator.php';
 
 $oPage->onlyForLogged();
 

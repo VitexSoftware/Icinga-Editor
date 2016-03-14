@@ -120,7 +120,7 @@ class IEcfg extends EaseBrick
         }
         $this->parentCache = &$_SESSION['parentCache'];
         parent::__construct();
-        $this->user = EaseShared::user();
+        $this->user = \Ease\Shared::user();
 //       foreach ($this->useKeywords as $KeyWord => $ColumnType) {
 //            switch ($ColumnType) {
 //                case 'IDLIST':
@@ -479,7 +479,7 @@ class IEcfg extends EaseBrick
         }
 
 //        if (isset($this->userColumn) && !isset($data[$this->userColumn]) || !strlen($data[$this->userColumn])) {
-//            $data[$this->userColumn] = EaseShared::user()->getUserID();
+//            $data[$this->userColumn] = \Ease\Shared::user()->getUserID();
 //        }
 
         return parent::takeData($data, $dataPrefix);
@@ -651,7 +651,7 @@ class IEcfg extends EaseBrick
     public function controlAllData($allData)
     {
         $allDataOK = array();
-        $userID = EaseShared::user()->getUserID();
+        $userID = \Ease\Shared::user()->getUserID();
         foreach ($allData as $adKey => $data) {
             if ($data[$this->userColumn] == $userID) {
                 $allDataOK[$adKey] = $data;
@@ -668,7 +668,7 @@ class IEcfg extends EaseBrick
      */
     public function getAllUserData()
     {
-        return $this->controlAllData(self::unserializeArrays($this->getColumnsFromMySQL('*', array($this->userColumn => EaseShared::user()->getUserID()))));
+        return $this->controlAllData(self::unserializeArrays($this->getColumnsFromMySQL('*', array($this->userColumn => \Ease\Shared::user()->getUserID()))));
     }
 
     /**
@@ -797,7 +797,7 @@ class IEcfg extends EaseBrick
     public function getOwned($thisID = null, $extraColumns = null)
     {
         if (is_null($thisID)) {
-            $thisID = EaseShared::user()->getUserID();
+            $thisID = \Ease\Shared::user()->getUserID();
         }
         $columnsToGet = array($this->getmyKeyColumn(), $this->nameColumn, 'generate', $this->myLastModifiedColumn, $this->userColumn);
 
@@ -822,7 +822,7 @@ class IEcfg extends EaseBrick
     public function getListing($thisID = null, $withShared = true, $extraColumns = null)
     {
         if (is_null($thisID)) {
-            $thisID = EaseShared::user()->getUserID();
+            $thisID = \Ease\Shared::user()->getUserID();
         }
         $columnsToGet = array($this->getmyKeyColumn(), $this->nameColumn, 'generate', $this->myLastModifiedColumn, $this->userColumn);
         if ($this->allowTemplating) {
@@ -848,7 +848,7 @@ class IEcfg extends EaseBrick
     public function ownershipCondition($thisID)
     {
         if (is_null($thisID)) {
-            $thisID = EaseShared::user()->getUserID();
+            $thisID = \Ease\Shared::user()->getUserID();
         }
 
         return $this->userColumn . '=' . $thisID . ' OR ' . $this->userColumn . ' IN (SELECT DISTINCT user_id FROM user_to_group WHERE group_id IN (SELECT group_id FROM user_to_group WHERE user_id = ' . $thisID . '))';
@@ -921,7 +921,7 @@ class IEcfg extends EaseBrick
      */
     public function deleteButton($name = null, $urlAdd = '')
     {
-        if (($this->getOwnerID() == EaseShared::user()->getUserID()) || EaseShared::user()->getSettingValue('admin')) {
+        if (($this->getOwnerID() == \Ease\Shared::user()->getUserID()) || \Ease\Shared::user()->getSettingValue('admin')) {
 
             if ($this->allowTemplating && $this->isTemplate()) {
                 $columnsList = array($this->getmyKeyColumn(), $this->nameColumn, $this->userColumn);
@@ -930,12 +930,12 @@ class IEcfg extends EaseBrick
                 }
                 $used = $this->getColumnsFromMySQL($columnsList, array('use' => $this->getDataValue('name')), $this->nameColumn, $this->getmyKeyColumn());
                 if (count($used)) {
-                    $usedFrame = new EaseTWBPanel(_('je předlohou pro'), 'info', null, _('není proto možné smazat'));
+                    $usedFrame = new \Ease\TWB\Panel(_('je předlohou pro'), 'info', null, _('není proto možné smazat'));
                     foreach ($used as $usId => $usInfo) {
-                        if ($this->publicRecords && ($usInfo['public'] != true) && ($usInfo[$this->userColumn] != EaseShared::user()->getUserID() )) {
-                            $usedFrame->addItem(new EaseHtmlSpanTag(null, $usInfo[$this->nameColumn], array('class' => 'jellybean gray')));
+                        if ($this->publicRecords && ($usInfo['public'] != true) && ($usInfo[$this->userColumn] != \Ease\Shared::user()->getUserID() )) {
+                            $usedFrame->addItem(new \Ease\Html\SpanTag(null, $usInfo[$this->nameColumn], array('class' => 'jellybean gray')));
                         } else {
-                            $usedFrame->addItem(new EaseHtmlSpanTag(null, new EaseHtmlATag('?' . $this->getmyKeyColumn() . '=' . $usId . '&' . $urlAdd, $usInfo[$this->nameColumn]), array('class' => 'jellybean')));
+                            $usedFrame->addItem(new \Ease\Html\SpanTag(null, new \Ease\Html\ATag('?' . $this->getmyKeyColumn() . '=' . $usId . '&' . $urlAdd, $usInfo[$this->nameColumn]), array('class' => 'jellybean')));
                         }
                     }
 
@@ -943,9 +943,9 @@ class IEcfg extends EaseBrick
                 }
             }
 
-            EaseShared::webPage()->addItem(new IEConfirmationDialog('delete' . $this->getId(), '?' . $this->getmyKeyColumn() . '=' . $this->getID() . '&delete=true' . '&' . $urlAdd, _('Smazat') . ' ' . $name, sprintf(_('Opravdu smazat %s ?'), '<strong>' . $this->getName() . '</strong>')));
-            return new EaseHtmlButtonTag(
-                array(EaseTWBPart::GlyphIcon('remove'), _('Smazat') . ' ' . $this->keyword . ' ' . $this->getName()), array('style' => 'cursor: default', 'class' => 'btn btn-danger', 'id' => 'triggerdelete' . $this->getId(), 'data-id' => $this->getId()
+            \Ease\Shared::webPage()->addItem(new IEConfirmationDialog('delete' . $this->getId(), '?' . $this->getmyKeyColumn() . '=' . $this->getID() . '&delete=true' . '&' . $urlAdd, _('Smazat') . ' ' . $name, sprintf(_('Opravdu smazat %s ?'), '<strong>' . $this->getName() . '</strong>')));
+            return new \Ease\Html\ButtonTag(
+                array(\Ease\TWB\Part::GlyphIcon('remove'), _('Smazat') . ' ' . $this->keyword . ' ' . $this->getName()), array('style' => 'cursor: default', 'class' => 'btn btn-danger', 'id' => 'triggerdelete' . $this->getId(), 'data-id' => $this->getId()
             ));
         } else {
             return '';
@@ -965,7 +965,7 @@ class IEcfg extends EaseBrick
      * Zobrazí tlačítko s ikonou a odkazem na stránku s informacemi o vlastníku
      *
      * @param int $ownerID alternativní ID uživatele
-     * @return \EaseTWBLinkButton
+     * @return \\Ease\TWB\LinkButton
      */
     public function ownerLinkButton($ownerID = null)
     {
@@ -975,9 +975,9 @@ class IEcfg extends EaseBrick
         }
         if ($ownerID) {
             $owner = new EaseUser($ownerID);
-            $ownerLink = new EaseTWBLinkButton('userinfo.php?user_id=' . $ownerID, array($owner, '&nbsp;' . $owner->getUserLogin()));
+            $ownerLink = new \Ease\TWB\LinkButton('userinfo.php?user_id=' . $ownerID, array($owner, '&nbsp;' . $owner->getUserLogin()));
         } else {
-            $ownerLink = new EaseTWBLinkButton('overview.php', array('<img class="avatar" src="img/vsmonitoring.png">', '&nbsp;' . _('Bez vlastníka')));
+            $ownerLink = new \Ease\TWB\LinkButton('overview.php', array('<img class="avatar" src="img/vsmonitoring.png">', '&nbsp;' . _('Bez vlastníka')));
         }
         return $ownerLink;
     }
@@ -986,7 +986,7 @@ class IEcfg extends EaseBrick
      * Odkaz na stránku s informacemi o vlastníku
      *
      * @param int $ownerID alternativní ID uživatele
-     * @return \EaseTWBLinkButton
+     * @return \\Ease\TWB\LinkButton
      */
     public function ownerLink($ownerID = null)
     {
@@ -996,9 +996,9 @@ class IEcfg extends EaseBrick
         }
         if ($ownerID) {
             $owner = new EaseUser($ownerID);
-            $ownerLink = new EaseHtmlATag('userinfo.php?user_id=' . $ownerID, $owner->getUserLogin());
+            $ownerLink = new \Ease\Html\ATag('userinfo.php?user_id=' . $ownerID, $owner->getUserLogin());
         } else {
-            $ownerLink = new EaseHtmlATag('overview.php', _('Bez vlastníka'));
+            $ownerLink = new \Ease\Html\ATag('overview.php', _('Bez vlastníka'));
         }
         return $ownerLink;
     }
@@ -1026,7 +1026,7 @@ class IEcfg extends EaseBrick
         if ($this->deleteFromMySQL($id)) {
             $this->addStatusMessage(sprintf(_(' %s %s byl smazán '), $this->keyword, $this->getName()), 'success');
             $this->dataReset();
-            EaseShared::user()->setSettingValue('unsaved', true);
+            \Ease\Shared::user()->setSettingValue('unsaved', true);
 
             return true;
         } else {
@@ -1045,7 +1045,7 @@ class IEcfg extends EaseBrick
     public function isOwnedBy($thisID = null)
     {
         if (is_null($thisID)) {
-            $thisID = EaseShared::user()->getUserID();
+            $thisID = \Ease\Shared::user()->getUserID();
         }
 
         return ($this->getOwnerID() == $thisID);
@@ -1156,7 +1156,7 @@ class IEcfg extends EaseBrick
     public static function readRawConfigFile($cfgFile, $importer = null)
     {
         if (!is_file($cfgFile)) {
-            EaseShared::user()->addStatusMessage(_('Očekávám název souboru'), 'warning');
+            \Ease\Shared::user()->addStatusMessage(_('Očekávám název souboru'), 'warning');
 
             return null;
         }
@@ -1302,7 +1302,7 @@ class IEcfg extends EaseBrick
      */
     public function saveMembers()
     {
-        $webPage = EaseShared::webPage();
+        $webPage = \Ease\Shared::webPage();
         $addColumn = $webPage->getGetValue('add');
         $name = $webPage->getGetValue('name');
         if ($addColumn) {
@@ -1345,7 +1345,7 @@ class IEcfg extends EaseBrick
                     if (self::isSerialized($keyData)) {
                         $allData[$keyWord] = unserialize(stripslashes($keyData));
                     } else {
-                        EaseShared::webPage()->addStatusMessage(_('Chyba deserializace') . ':' . $keyData, 'error');
+                        \Ease\Shared::webPage()->addStatusMessage(_('Chyba deserializace') . ':' . $keyData, 'error');
                     }
                 }
             }
@@ -1369,7 +1369,7 @@ class IEcfg extends EaseBrick
         if ($testing) {
             while (!feof($testing)) {
                 $line = fgets($testing);
-                EaseShared::user()->addStatusMessage('Reload: ' . $line);
+                \Ease\Shared::user()->addStatusMessage('Reload: ' . $line);
             }
             fclose($testing);
         }
@@ -1379,7 +1379,7 @@ class IEcfg extends EaseBrick
 
     public function cloneButton()
     {
-        return new \EaseTWBLinkButton('?action=clone&' . $this->getmyKeyColumn() . '=' . $this->getId(), _('Klonovat'));
+        return new \\Ease\TWB\LinkButton('?action=clone&' . $this->getmyKeyColumn() . '=' . $this->getId(), _('Klonovat'));
     }
 
     public function draw()
@@ -1405,7 +1405,7 @@ class IEcfg extends EaseBrick
             }
         }
 
-        $res = EaseShared::db()->queryToArray("SELECT " . implode(',', $columns) . "," . $this->nameColumn . " FROM " . $this->myTable . " WHERE " . implode(' OR ', $conds) . ' ORDER BY ' . $this->nameColumn, $this->myKeyColumn);
+        $res = \Ease\Shared::db()->queryToArray("SELECT " . implode(',', $columns) . "," . $this->nameColumn . " FROM " . $this->myTable . " WHERE " . implode(' OR ', $conds) . ' ORDER BY ' . $this->nameColumn, $this->myKeyColumn);
         foreach ($res as $result) {
             $occurences = '';
             foreach ($result as $key => $value) {
@@ -1431,7 +1431,7 @@ class IEcfg extends EaseBrick
      */
     public function output($queryRaw)
     {
-        switch (EaseShared::webPage()->getRequestValue('export')) {
+        switch (\Ease\Shared::webPage()->getRequestValue('export')) {
             case 'csv':
                 $this->getCsv($queryRaw);
                 break;
@@ -1563,10 +1563,10 @@ class IEcfg extends EaseBrick
                             $row[$key] = '<em>NULL</em>';
                         } else {
                             if ($value === '0') {
-                                $row[$key] = EaseTWBPart::glyphIcon('unchecked')->__toString();
+                                $row[$key] = \Ease\TWB\Part::glyphIcon('unchecked')->__toString();
                             } else {
                                 if ($value === '1') {
-                                    $row[$key] = EaseTWBPart::glyphIcon('check')->__toString();
+                                    $row[$key] = \Ease\TWB\Part::glyphIcon('check')->__toString();
                                 }
                             }
                         }
@@ -1590,7 +1590,7 @@ class IEcfg extends EaseBrick
                                     if ($id) {
                                         $values[$id] = '<a title="' . $table . '" href="' . $target . '?' . $idcolumn . '=' . $id . '">' . $name . '</a>';
                                     } else {
-                                        $values[$id] = '<a title="' . $table . '" href="search.php?search=' . $name . '&table=' . $table . '&column=' . $searchColumn . '">' . $name . '</a> ' . EaseTWBPart::glyphIcon('search');
+                                        $values[$id] = '<a title="' . $table . '" href="search.php?search=' . $name . '&table=' . $table . '&column=' . $searchColumn . '">' . $name . '</a> ' . \Ease\TWB\Part::glyphIcon('search');
                                     }
                                 }
                             }
@@ -1605,7 +1605,7 @@ class IEcfg extends EaseBrick
                         if (isset($this->keywordsInfo[$key]['refdata']) && strlen(trim($value))) {
                             $table = $this->keywordsInfo[$key]['refdata']['table'];
                             $searchColumn = $this->keywordsInfo[$key]['refdata']['captioncolumn'];
-                            $row[$key] = '<a title="' . $table . '" href="search.php?search=' . $value . '&table=' . $table . '&column=' . $searchColumn . '">' . $value . '</a> ' . EaseTWBPart::glyphIcon('search');
+                            $row[$key] = '<a title="' . $table . '" href="search.php?search=' . $value . '&table=' . $table . '&column=' . $searchColumn . '">' . $value . '</a> ' . \Ease\TWB\Part::glyphIcon('search');
                         }
                         if (strstr($key, 'image') && strlen(trim($value))) {
                             $row[$key] = '<img title="' . $value . '" src="logos/' . $value . '" class="gridimg">';
@@ -1663,24 +1663,24 @@ class IEcfg extends EaseBrick
     /**
      * Formulář pro přenos konfigurace
      *
-     * @return \EaseTWBForm
+     * @return \\Ease\TWB\Form
      */
     public function &transferForm()
     {
-        $exportForm = new EaseTWBForm('Export', $this->keyword . '.php');
-        $exportForm->addItem(new EaseHtmlInputHiddenTag('action', 'export'));
-        $exportForm->addItem(new EaseHtmlInputHiddenTag($this->myKeyColumn, $this->getId()));
-        $exportForm->addInput(new EaseHtmlInputTextTag('destination', $this->user->getSettingValue('exporturl')), _('Cíl exportu'));
+        $exportForm = new \Ease\TWB\Form('Export', $this->keyword . '.php');
+        $exportForm->addItem(new \Ease\Html\InputHiddenTag('action', 'export'));
+        $exportForm->addItem(new \Ease\Html\InputHiddenTag($this->myKeyColumn, $this->getId()));
+        $exportForm->addInput(new \Ease\Html\InputTextTag('destination', $this->user->getSettingValue('exporturl')), _('Cíl exportu'));
 
-        $exportForm->addItem(new EaseHtmlH4Tag(_('Rekurzivní import')));
+        $exportForm->addItem(new \Ease\Html\H4Tag(_('Rekurzivní import')));
 
         foreach ($this->keywordsInfo as $columnName => $columnInfo) {
             if (isset($columnInfo['refdata']['table'])) {
-                $exportForm->addInput(new EaseTWBSwitch('rels[' . $columnName . ']'), $columnInfo['title']);
+                $exportForm->addInput(new \Ease\TWB\Switch('rels[' . $columnName . ']'), $columnInfo['title']);
             }
         }
 
-        $exportForm->addInput(new EaseTWSubmitButton(_('Exportovat'), 'warning'));
+        $exportForm->addInput(new \Ease\TWB\SubmitButton(_('Exportovat'), 'warning'));
         return $exportForm;
     }
 
@@ -1780,11 +1780,11 @@ class IEcfg extends EaseBrick
     /**
      * Vrací informace o objektu
      *
-     * @return EaseHtmlDlTag Vrací seznam vlastností a jejich hodnot z objektu
+     * @return \Ease\Html\DlTag Vrací seznam vlastností a jejich hodnot z objektu
      */
     public function getInfoBlock()
     {
-        $infoBlock = new EaseHtmlDlTag;
+        $infoBlock = new \Ease\Html\DlTag;
 
         if (isset($this->nameColumn)) {
             $infoBlock->addDef(_('Jméno'), $this->getName());
@@ -1809,12 +1809,12 @@ class IEcfg extends EaseBrick
         }
 
         if (isset($this->useKeywords['generate']) && !(int) $this->getDataValue('generate')) {
-            $infoBlock->addItem(new EaseTWBLabel('warning', _('tento záznam se nebude generovat')));
+            $infoBlock->addItem(new \Ease\TWB\Label('warning', _('tento záznam se nebude generovat')));
         }
 
         if ($this->publicRecords) {
             if ((int) $this->getDataValue('public')) {
-                $infoBlock->addItem(new EaseTWBLabel('info', _('tento záznam je veřejný')));
+                $infoBlock->addItem(new \Ease\TWB\Label('info', _('tento záznam je veřejný')));
             }
         }
 

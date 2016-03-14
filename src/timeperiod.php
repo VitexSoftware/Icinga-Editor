@@ -1,4 +1,5 @@
 <?php
+namespace Icinga\Editor;
 
 /**
  * Icinga Editor Timeprioda
@@ -9,8 +10,6 @@
  * @copyright  2012 Vitex@hippy.cz (G)
  */
 require_once 'includes/IEInit.php';
-require_once 'classes/IETimeperiod.php';
-require_once 'classes/IECfgEditor.php';
 
 $oPage->onlyForLogged();
 
@@ -43,28 +42,28 @@ if ($delete == 'true') {
     $Timeperiod->delete();
 }
 
-$oPage->addItem(new IEPageTop(_('Editace časové periody') . ' ' . $Timeperiod->getName()));
+$oPage->addItem(new UI\PageTop(_('Editace časové periody') . ' ' . $Timeperiod->getName()));
 $oPage->addPageColumns();
 
 $TimepriodEdit = new IECfgEditor($Timeperiod);
 
-$form = $oPage->columnII->addItem(new EaseHtmlForm('Perioda', 'timeperiod.php', 'POST', $TimepriodEdit, array('class' => 'form-horizontal')));
+$form = $oPage->columnII->addItem(new \Ease\Html\Form('Perioda', 'timeperiod.php', 'POST', $TimepriodEdit, array('class' => 'form-horizontal')));
 $form->setTagID($form->getTagName());
 if (!is_null($Timeperiod->getMyKey())) {
-    $form->addItem(new EaseHtmlInputHiddenTag($Timeperiod->getmyKeyColumn(), $Timeperiod->getMyKey()));
+    $form->addItem(new \Ease\Html\InputHiddenTag($Timeperiod->getmyKeyColumn(), $Timeperiod->getMyKey()));
 }
-$TimesTable = new EaseHtmlTableTag();
+$TimesTable = new \Ease\Html\TableTag();
 
 $TimesTable->addRowHeaderColumns(array(new EaseLabeledTextInput('NewKey', null, _('Označení')),
   new EaseLabeledTextInput('NewTimes', null, _('Interval(y)')), ''));
 
 foreach ($Timeperiod->timeperiods as $TimeName => $TimeIntervals) {
-    $TimesTable->addRowColumns(array($TimeName, $TimeIntervals, new EaseHtmlATag('?del=' . $TimeName . '&amp;' . $Timeperiod->getmyKeyColumn() . '=' . $Timeperiod->getMyKey(), '<i class="icon-remove"></i>')));
+    $TimesTable->addRowColumns(array($TimeName, $TimeIntervals, new \Ease\Html\ATag('?del=' . $TimeName . '&amp;' . $Timeperiod->getmyKeyColumn() . '=' . $Timeperiod->getMyKey(), '<i class="icon-remove"></i>')));
 }
 
 $form->addItem($TimesTable);
 
-$form->addItem(new EaseTWSubmitButton(_('Uložit'), 'success'));
+$form->addItem(new \Ease\TWB\SubmitButton(_('Uložit'), 'success'));
 $oPage->AddCss('
 input.ui-button { width: 100%; }
 ');
@@ -75,6 +74,6 @@ if ($Timeperiod->getId()) {
     $oPage->columnI->addItem($Timeperiod->ownerLinkButton());
 }
 
-$oPage->addItem(new IEPageBottom());
+$oPage->addItem(new UI\PageBottom());
 
 $oPage->draw();

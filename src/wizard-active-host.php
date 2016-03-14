@@ -1,4 +1,5 @@
 <?php
+namespace Icinga\Editor;
 
 /**
  * Icinga Editor - titulní strana
@@ -12,7 +13,7 @@ require_once 'includes/IEInit.php';
 
 $oPage->onlyForLogged();
 
-$oPage->addItem(new IEPageTop(_('Icinga Editor')));
+$oPage->addItem(new UI\PageTop(_('Icinga Editor')));
 $oPage->addPageColumns();
 
 $hostName = trim($oPage->getRequestValue('host_name'));
@@ -150,7 +151,7 @@ if ($hostName || $address || $addressSix) {
 
         $hostGroup = new IEHostgroup;
         if ($hostGroup->loadDefault()) {
-            $hostGroup->setDataValue($hostGroup->nameColumn, EaseShared::user()->getUserLogin());
+            $hostGroup->setDataValue($hostGroup->nameColumn, \Ease\Shared::user()->getUserLogin());
             $hostGroup->addMember('members', $host->getId(), $host->getName());
             $hostGroup->saveToMySQL();
             $host->addMember('hostgroups', $hostGroup->getId(), $hostGroup->getName());
@@ -165,38 +166,38 @@ if ($hostName || $address || $addressSix) {
 $contact = new IEContact();
 $pocContact = $contact->getMyRecordsCount();
 if (!$pocContact) {
-    $warning = $oPage->columnIII->addItem(new EaseHtmlDivTag('Contact', _('Nemáte definovaný kontakt'), array('class' => 'alert alert-info')));
-    $warning->addItem(new EaseTWBLinkButton('contact.php?autocreate=default', _('Založit výchozí kontakt') . ' ' . EaseTWBPart::GlyphIcon('edit')));
+    $warning = $oPage->columnIII->addItem(new \Ease\Html\DivTag('Contact', _('Nemáte definovaný kontakt'), array('class' => 'alert alert-info')));
+    $warning->addItem(new \Ease\TWB\LinkButton('contact.php?autocreate=default', _('Založit výchozí kontakt') . ' ' . \Ease\TWB\Part::GlyphIcon('edit')));
 }
 
 $pocHostu = $host->getMyRecordsCount();
 if ($pocHostu) {
-    $success = $oPage->columnIII->addItem(new EaseHtmlDivTag('Host', new EaseTWBLinkButton('hosts.php', _('<i class="icon-list"></i>') . ' ' . sprintf(_('Definováno %s hostů'), $pocHostu)), array('class' => 'alert alert-success')));
+    $success = $oPage->columnIII->addItem(new \Ease\Html\DivTag('Host', new \Ease\TWB\LinkButton('hosts.php', _('<i class="icon-list"></i>') . ' ' . sprintf(_('Definováno %s hostů'), $pocHostu)), array('class' => 'alert alert-success')));
 }
 
-$firstHost = $oPage->columnII->addItem(new EaseTWBForm('firsthost'));
-$firstHost->addItem(new EaseHtmlInputHiddenTag('host_group', $oPage->getRequestValue('host_group')));
+$firstHost = $oPage->columnII->addItem(new \Ease\TWB\Form('firsthost'));
+$firstHost->addItem(new \Ease\Html\InputHiddenTag('host_group', $oPage->getRequestValue('host_group')));
 $firstHost->setTagProperties(array('onSubmit' => "$('#preload').css('visibility', 'visible');"));
 
-$firstHost->addItem(new EaseTWBFormGroup(_('Hostname serveru'), new EaseHtmlInputTextTag('host_name', $hostName), null, _('Název hostu, tedy to co následuje po http:// ve webové adrese až k prvnímu lomítku, nebo otazníku.')));
-$firstHost->addItem(new EaseTWBFormGroup(_('IPv4 Adresa'), new EaseHtmlInputTextTag('address', $address), null, _('čtyři číslice od 0 do 255 oddělené tečkou')));
-$firstHost->addItem(new EaseTWBFormGroup(_('IPv6 Adresa'), new EaseHtmlInputTextTag('address6', $addressSix), null, _('nejvíce osm skupin čtyř hexadecimálních číslic oddělených dvojtečkou')));
+$firstHost->addItem(new \Ease\TWB\FormGroup(_('Hostname serveru'), new \Ease\Html\InputTextTag('host_name', $hostName), null, _('Název hostu, tedy to co následuje po http:// ve webové adrese až k prvnímu lomítku, nebo otazníku.')));
+$firstHost->addItem(new \Ease\TWB\FormGroup(_('IPv4 Adresa'), new \Ease\Html\InputTextTag('address', $address), null, _('čtyři číslice od 0 do 255 oddělené tečkou')));
+$firstHost->addItem(new \Ease\TWB\FormGroup(_('IPv6 Adresa'), new \Ease\Html\InputTextTag('address6', $addressSix), null, _('nejvíce osm skupin čtyř hexadecimálních číslic oddělených dvojtečkou')));
 
-$firstHost->addItem(new EaseTWSubmitButton(EaseTWBPart::GlyphIcon('plus') . ' ' . _('Přidej host'), 'success'));
+$firstHost->addItem(new \Ease\TWB\SubmitButton(\Ease\TWB\Part::GlyphIcon('plus') . ' ' . _('Přidej host'), 'success'));
 
-$oPage->columnI->addItem(new EaseHtmlDivTag(null, _('Po zadání alespoň jednoho vstupního údaje si tento '
+$oPage->columnI->addItem(new \Ease\Html\Div( _('Po zadání alespoň jednoho vstupního údaje si tento '
         . 'průvodce dohledá ostatní a provede sken na některé základní služby.'
         . '<br>Pokud budou tyto nalezeny aktivují se jejich testy. Informace o stavu bude odesílána na první zadaný kontakt'), array('class' => 'well')));
 
-$oPage->columnI->addItem(new EaseHtmlDivTag(null, _('Pro instalaci nového vzdáleného senzoru prosím nejprve na sledovaném počítači nainstalujte balík'
+$oPage->columnI->addItem(new \Ease\Html\Div( _('Pro instalaci nového vzdáleného senzoru prosím nejprve na sledovaném počítači nainstalujte balík'
         . ' a poté '
         . '<code>wget -O - http://v.s.cz/info@vitexsoftware.cz.gpg.key | sudo apt-key add -</code>
 <code>echo deb http://v.s.cz/ stable main | sudo tee /etc/apt/sources.list.d/vitexsoftware.list</code>
 <code>sudo aptitude update</code>
 <code>aptitude install nagios-nrpe-server nagios-check-clamscan</code>'), array('class' => 'well')));
 
-$oPage->addItem(new EaseHtmlDivTag('preload', new IEFXPreloader(), array('class' => 'fuelux')));
+$oPage->addItem(new \Ease\Html\DivTag('preload', new IEFXPreloader(), array('class' => 'fuelux')));
 
-$oPage->addItem(new IEPageBottom());
+$oPage->addItem(new UI\PageBottom());
 
 $oPage->draw();

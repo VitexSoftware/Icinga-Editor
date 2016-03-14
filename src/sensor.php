@@ -1,4 +1,5 @@
 <?php
+namespace Icinga\Editor;
 
 /**
  * Icinga Editor - titulní strana
@@ -43,10 +44,10 @@ switch ($operation) {
 }
 
 
-$oPage->addItem(new IEPageTop(_('Sensor')));
+$oPage->addItem(new UI\PageTop(_('Sensor')));
 
 $oPage->container->addItem(new IESensorTool($host));
 
-$oPage->addItem(new IEPageBottom());
+$oPage->addItem(new UI\PageBottom());
 
 $oPage->draw();

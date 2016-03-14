@@ -1,4 +1,5 @@
 <?php
+namespace Icinga\Editor;
 
 /**
  * Icinga Editor - přehled kontactů
@@ -13,13 +14,13 @@ require_once 'classes/IEContact.php';
 
 $oPage->onlyForLogged();
 
-$oPage->addItem(new IEPageTop(_('Přehled kontaktů')));
+$oPage->addItem(new UI\PageTop(_('Přehled kontaktů')));
 
 
 //    $oUser->addStatusMessage(_('Nemáte definovaný žádný contact'), 'warning');
-//    $oPage->columnIII->addItem(new EaseTWBLinkButton('contact.php?autocreate=default', _('Založit výchozí kontakt <i class="icon-edit"></i>')));
-$oPage->addItem(new EaseTWBContainer(new IEDataGrid(_('Kontakty'), new IEContact)));
+//    $oPage->columnIII->addItem(new \Ease\TWB\LinkButton('contact.php?autocreate=default', _('Založit výchozí kontakt <i class="icon-edit"></i>')));
+$oPage->addItem(new \Ease\TWB\Container(new IEDataGrid(_('Kontakty'), new IEContact)));
 
-$oPage->addItem(new IEPageBottom());
+$oPage->addItem(new UI\PageBottom());
 
 $oPage->draw();

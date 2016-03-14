@@ -75,7 +75,7 @@ class IEDataSource extends EaseBrick
         $this->handledObejct = $handledObejct;
         parent::__construct();
         $this->setBackUrl($fallBackUrl);
-        $this->webPage = EaseShared::webPage();
+        $this->webPage = \Ease\Shared::webPage();
         $this->title = $this->webPage->getRequestValue('title');
         if ($this->title) {
             $this->filename = preg_replace("/[^0-9^a-z^A-Z^_^.]/", "", str_replace(' ', '_', $this->title));
@@ -360,7 +360,7 @@ class IEDataSource extends EaseBrick
         if (is_null($queryRaw)) {
             $queryRaw = 'SELECT * FROM `' . $this->handledObejct->getMyTable() . '`';
         }
-        switch (EaseShared::webPage()->getRequestValue('export')) {
+        switch (\Ease\Shared::webPage()->getRequestValue('export')) {
             case 'csv':
                 $this->getCsv($queryRaw);
                 break;
@@ -391,7 +391,7 @@ class IEDataSource extends EaseBrick
 
 // set document information
         $this->pdf->SetCreator(PDF_CREATOR);
-        $this->pdf->SetAuthor(EaseShared::user()->getUsername());
+        $this->pdf->SetAuthor(\Ease\Shared::user()->getUsername());
         $this->pdf->SetTitle($title);
         $this->pdf->SetSubject('');
         $this->pdf->SetKeywords($title);
@@ -492,7 +492,7 @@ class IEDataSource extends EaseBrick
      */
     public function controlDeleteColumns()
     {
-        $id = EaseShared::webPage()->getRequestValue('id');
+        $id = \Ease\Shared::webPage()->getRequestValue('id');
         if ($id) {
             $this->setMyKey($id);
             return true;

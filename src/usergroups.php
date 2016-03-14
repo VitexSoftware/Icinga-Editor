@@ -1,4 +1,5 @@
 <?php
+namespace Icinga\Editor;
 
 /**
  * Icinga Editor - přehled userů
@@ -14,10 +15,10 @@ require_once 'classes/IEUserGroup.php';
 
 $oPage->onlyForLogged();
 
-$oPage->addItem(new IEPageTop(_('Přehled uživatelských skupin')));
+$oPage->addItem(new UI\PageTop(_('Přehled uživatelských skupin')));
 
-$oPage->addItem(new EaseTWBContainer(new IEDataGrid(_('Uživatelské skupiny'), new IEUserGroup)));
+$oPage->addItem(new \Ease\TWB\Container(new IEDataGrid(_('Uživatelské skupiny'), new IEUserGroup)));
 
-$oPage->addItem(new IEPageBottom());
+$oPage->addItem(new UI\PageBottom());
 
 $oPage->draw();

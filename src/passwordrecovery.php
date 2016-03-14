@@ -1,4 +1,5 @@
 <?php
+namespace Icinga\Editor;
 
 /**
  * Reset hesla
@@ -9,8 +10,6 @@
  * @copyright  2012-14 info@vitexsoftware.cz (G)
  */
 require_once 'includes/IEInit.php';
-require_once 'Ease/EaseMail.php';
-require_once 'Ease/EaseHtmlForm.php';
 $success = false;
 
 $emailTo = $oPage->getPostValue('Email');
@@ -54,7 +53,7 @@ if ($emailTo) {
     $oUser->addStatusMessage(_('Zadejte prosím váš eMail.'));
 }
 
-$oPage->addItem(new IEPageTop(_('Obnova zapomenutého hesla')));
+$oPage->addItem(new UI\PageTop(_('Obnova zapomenutého hesla')));
 $oPage->addPageColumns();
 
 if (!$success) {
@@ -62,17 +61,17 @@ if (!$success) {
 
     $oPage->columnIII->addItem(_('Zapoměl jste heslo? Vložte svou e-mailovou adresu, kterou jste zadal při registraci a my Vám pošleme nové.'));
 
-    $EmailForm = $oPage->columnII->addItem(new EaseHtmlForm('PassworRecovery'));
+    $EmailForm = $oPage->columnII->addItem(new \Ease\Html\Form('PassworRecovery'));
     $EmailForm->addItem(new EaseLabeledTextInput('Email', null, _('Email'), array('size' => '40')));
-    $EmailForm->addItem(new EaseJQuerySubmitButton('ok', _('Zaslat nové heslo')));
+    $EmailForm->addItem(new \Ease\JQuery\SubmitButton('ok', _('Zaslat nové heslo')));
 
     if (isset($_POST)) {
         $EmailForm->fillUp($_POST);
     }
 } else {
-    $oPage->columnII->addItem(new EaseTWBLinkButton('login.php', _('Pokračovat')));
+    $oPage->columnII->addItem(new \Ease\TWB\LinkButton('login.php', _('Pokračovat')));
 }
 
-$oPage->addItem(new IEPageBottom());
+$oPage->addItem(new UI\PageBottom());
 
 $oPage->draw();

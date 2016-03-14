@@ -1,4 +1,5 @@
 <?php
+namespace Icinga\Editor;
 
 /**
  * Icinga Editor - nastavení uživatele
@@ -30,7 +31,7 @@ switch ($oPage->getRequestValue('action')) {
         break;
 }
 
-$oPage->addItem(new IEPageTop(_('Profil uživatele') . ' ' . $oUser->GetUserLogin()));
+$oPage->addItem(new UI\PageTop(_('Profil uživatele') . ' ' . $oUser->GetUserLogin()));
 $oPage->addPageColumns();
 
 
@@ -50,11 +51,11 @@ $(\'#UserMail\').change( function () {
 );
 ', NULL, TRUE);
 
-$settingsFrame = new EaseTWBPanel(_('nastavení'));
-$settingsFrame->addItem(new EaseHtmlATag('https://secure.gravatar.com/', $oUser, array('title' => 'klikni pro změnu ikony')));
+$settingsFrame = new \Ease\TWB\Panel(_('nastavení'));
+$settingsFrame->addItem(new \Ease\Html\ATag('https://secure.gravatar.com/', $oUser, array('title' => 'klikni pro změnu ikony')));
 
 $settingsFrame->addItem(new IETextInputSaver('login', $oUser->getUserLogin(), _('přihlašovací jméno')));
-$settingsFrame->addItem(new EaseTWBLinkButton('changepassword.php', _('změna hesla')));
+$settingsFrame->addItem(new \Ease\TWB\LinkButton('changepassword.php', _('změna hesla')));
 
 $settingsFrame->addItem(new IETextInputSaver('email', $oUser->getUserEmail(), _('emailová adresa'), array('id' => 'UserMail')));
 
@@ -63,15 +64,15 @@ $settingsFrame->addItem('<br>');
 $oPage->columnII->addItem($settingsFrame);
 
 if ((bool) $oUser->getSettingValue('admin')) {
-    $oPage->columnIII->addItem(new EaseTWBLinkButton('?user=normal', _('Zahodit adminská oprávnění'), 'danger'));
+    $oPage->columnIII->addItem(new \Ease\TWB\LinkButton('?user=normal', _('Zahodit adminská oprávnění'), 'danger'));
 }
 //
 //if (!intval($oUser->getDataValue('twitter_id'))) {
-//    $oPage->columnIII->addItem(new EaseTWBLinkButton('twauth.php?authenticate=1', _('Propojit s twitterem')));
+//    $oPage->columnIII->addItem(new \Ease\TWB\LinkButton('twauth.php?authenticate=1', _('Propojit s twitterem')));
 //} else {
-//    $oPage->columnIII->addItem(new EaseTWBLinkButton('?action=untwittering', _('Odpojit od twiteru')));
+//    $oPage->columnIII->addItem(new \Ease\TWB\LinkButton('?action=untwittering', _('Odpojit od twiteru')));
 //}
 //
-$oPage->addItem(new IEPageBottom());
+$oPage->addItem(new UI\PageBottom());
 
 $oPage->draw();

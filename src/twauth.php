@@ -1,4 +1,5 @@
 <?php
+namespace Icinga\Editor;
 
 /**
  * Přihlašovací stránka
@@ -8,8 +9,6 @@
  * @package IcingaEditor
  */
 require_once 'includes/IEInit.php';
-require_once 'Ease/EaseJQueryWidgets.php';
-require_once 'classes/IETwitter.php';
 
 require 'classes/tmhOAuth.php';
 require 'classes/tmhUtilities.php';
@@ -41,7 +40,7 @@ if (isset($_REQUEST['wipe'])) {
     if ($code == 200) {
         $resp = json_decode($tmhOAuth->response['response']);
 
-        $CurrentUser = EaseShared::user();
+        $CurrentUser = \Ease\Shared::user();
 
         if ($CurrentUser->getUserID()) {
             $CurrentUser->addStatusMessage(_('Účet twitteru, bayl přiřazen'), 'success');
@@ -53,10 +52,10 @@ if (isset($_REQUEST['wipe'])) {
 
             $CurrentUser->save();
         } else {
-            EaseShared::user(new IETwitterUser($resp));
+            \Ease\Shared::user(new IETwitterUser($resp));
         }
-        EaseShared::user()->loginSuccess();
-        EaseShared::webPage()->redirect('index.php');
+        \Ease\Shared::user()->loginSuccess();
+        \Ease\Shared::webPage()->redirect('index.php');
         exit();
     } else {
         outputError($tmhOAuth);

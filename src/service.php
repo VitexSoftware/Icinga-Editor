@@ -1,4 +1,5 @@
 <?php
+namespace Icinga\Editor;
 
 /**
  * Icinga Editor služby
@@ -87,11 +88,11 @@ if ($delete == 'true') {
     $service->delete();
 }
 
-$oPage->addItem(new IEPageTop(_('Editace služby') . ' ' . $service->getName()));
+$oPage->addItem(new UI\PageTop(_('Editace služby') . ' ' . $service->getName()));
 
 $infopanel = new IEInfoBox($service);
-$tools = new EaseTWBPanel(_('Nástroje'), 'warning');
-$pageRow = new EaseTWBRow;
+$tools = new \Ease\TWB\Panel(_('Nástroje'), 'warning');
+$pageRow = new \Ease\TWB\Row;
 $pageRow->addColumn(2, $infopanel);
 $mainPanel = $pageRow->addColumn(6);
 $pageRow->addColumn(4, $tools);
@@ -99,10 +100,10 @@ $oPage->container->addItem($pageRow);
 
 switch ($oPage->getRequestValue('action')) {
     case 'delete':
-        $confirmator = $mainPanel->addItem(new EaseTWBPanel(_('Opravdu smazat ?')), 'danger');
-        $confirmator->addItem(new EaseTWBLinkButton('?' . $service->myKeyColumn . '=' . $service->getID(), _('Ne') . ' ' . EaseTWBPart::glyphIcon('ok'), 'success'));
-        $confirmator->addItem(new EaseTWBLinkButton('?delete=true&' . $service->myKeyColumn . '=' . $service->getID(), _('Ano') . ' ' . EaseTWBPart::glyphIcon('remove'), 'danger'));
-        $tools->addItem(new EaseTWBPanel(_('Výměna služby'), 'info', new IEServiceSwapForm($service)));
+        $confirmator = $mainPanel->addItem(new \Ease\TWB\Panel(_('Opravdu smazat ?')), 'danger');
+        $confirmator->addItem(new \Ease\TWB\LinkButton('?' . $service->myKeyColumn . '=' . $service->getID(), _('Ne') . ' ' . \Ease\TWB\Part::glyphIcon('ok'), 'success'));
+        $confirmator->addItem(new \Ease\TWB\LinkButton('?delete=true&' . $service->myKeyColumn . '=' . $service->getID(), _('Ano') . ' ' . \Ease\TWB\Part::glyphIcon('remove'), 'danger'));
+        $tools->addItem(new \Ease\TWB\Panel(_('Výměna služby'), 'info', new IEServiceSwapForm($service)));
         $infopanel->addItem($service->ownerLinkButton());
         $tools->addItem(new IEHostSelector($service));
 
@@ -111,44 +112,44 @@ switch ($oPage->getRequestValue('action')) {
 
         $serviceEdit = new IECfgEditor($service);
 
-        $form = new EaseTWBForm('Service', 'service.php', 'POST', $serviceEdit, array('class' => 'form-horizontal'));
+        $form = new \Ease\TWB\Form('Service', 'service.php', 'POST', $serviceEdit, array('class' => 'form-horizontal'));
         $form->setTagID($form->getTagName());
         if (!is_null($service->getMyKey())) {
-            $form->addItem(new EaseHtmlInputHiddenTag($service->getMyKeyColumn(), $service->getMyKey()));
+            $form->addItem(new \Ease\Html\InputHiddenTag($service->getMyKeyColumn(), $service->getMyKey()));
         }
         $form->addItem('<br>');
-        $form->addItem(new EaseTWSubmitButton(_('Uložit'), 'success'));
+        $form->addItem(new \Ease\TWB\SubmitButton(_('Uložit'), 'success'));
         $oPage->AddCss('
 input.ui-button { width: 100%; }
 ');
 
         if ($service->getID()) {
             $tools->addItem($service->deleteButton());
-            $tools->addItem(new EaseTWBPanel(_('Transfer'), 'warning', $service->transferForm()));
+            $tools->addItem(new \Ease\TWB\Panel(_('Transfer'), 'warning', $service->transferForm()));
             $tools->addItem($service->cloneButton());
 
 
-            $renameForm = new EaseTWBForm('Rename', '?action=rename&service_id=' . $service->getId());
-            $renameForm->addItem(new EaseHtmlInputTextTag('newname'), $service->getName(), array('class' => 'form-control'));
-            $renameForm->addItem(new EaseTWSubmitButton(_('Přejmenovat'), 'success'));
+            $renameForm = new \Ease\TWB\Form('Rename', '?action=rename&service_id=' . $service->getId());
+            $renameForm->addItem(new \Ease\Html\InputTextTag('newname'), $service->getName(), array('class' => 'form-control'));
+            $renameForm->addItem(new \Ease\TWB\SubmitButton(_('Přejmenovat'), 'success'));
 
-            $tools->addItem(new EaseTWBPanel(_('Přejmenování'), 'info', $renameForm));
+            $tools->addItem(new \Ease\TWB\Panel(_('Přejmenování'), 'info', $renameForm));
             $tools->addItem(new IEHostSelector($service));
 
             if ($oUser->getSettingValue('admin')) {
-                $tools->addItem(new EaseTWBLinkButton('?action=system&service_id=' . $service->getId(), _('Systémová služba')));
+                $tools->addItem(new \Ease\TWB\LinkButton('?action=system&service_id=' . $service->getId(), _('Systémová služba')));
             }
 
-            $tools->addItem(new EaseTWBPanel(_('Výměna služby'), 'info', new IEServiceSwapForm($service)));
-            $tools->addItem(new EaseTWBPanel(_('Transfer'), 'warning', $service->transferForm()));
+            $tools->addItem(new \Ease\TWB\Panel(_('Výměna služby'), 'info', new IEServiceSwapForm($service)));
+            $tools->addItem(new \Ease\TWB\Panel(_('Transfer'), 'warning', $service->transferForm()));
         }
 
-        $mainPanel->addItem(new EaseTWBPanel(new EaseHtmlH3Tag(array(new IEPlatformIcon($service->getDataValue('platform')), $service->getName())), 'default', $form));
+        $mainPanel->addItem(new \Ease\TWB\Panel(new \Ease\Html\H3Tag(array(new IEPlatformIcon($service->getDataValue('platform')), $service->getName())), 'default', $form));
 
         break;
 }
 
 
 
-$oPage->addItem(new IEPageBottom());
+$oPage->addItem(new UI\PageBottom());
 $oPage->draw();

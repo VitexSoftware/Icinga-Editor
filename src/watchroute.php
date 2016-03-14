@@ -1,4 +1,5 @@
 <?php
+namespace Icinga\Editor;
 
 /**
  * Icinga Editor - titulní strana
@@ -12,23 +13,23 @@ require_once 'includes/IEInit.php';
 
 $oPage->onlyForLogged();
 
-$oPage->addItem(new IEPageTop(_('Vygeneruje sledování cesty k hostu')));
+$oPage->addItem(new UI\PageTop(_('Vygeneruje sledování cesty k hostu')));
 
 $hostId = $oPage->getRequestValue('host_id', 'int');
 
 /**
  * Formulář cíle cesty pro hosta
  * @param IEHost $host
- * @return \EaseTWBPanel
+ * @return \\Ease\TWB\Panel
  */
 function endRouteForm($host)
 {
-    $form = new EaseTWBForm('traceto');
+    $form = new \Ease\TWB\Form('traceto');
     $form->addInput(new IEHostSelect('dest_host_id'), _('Gateway'), null, _('Zvolte již definovanou gateway, nabo zadejte konkrétní adresu.'));
-    $form->addInput(new EaseHtmlInputTextTag('ip'), _('IP Adresa'), null, _('První pingnutelná veřejá adresa po cestě z hostu na monitorovací server'));
-    $form->addItem(new EaseTWSubmitButton(_('Sledovat cestu'), 'success', array('onClick' => "$('#preload').css('visibility', 'visible');")));
-    EaseShared::webPage()->addItem(new EaseHtmlDivTag('preload', new IEFXPreloader(), array('class' => 'fuelux')));
-    return new EaseTWBPanel(_('Volba cíle sledování') . ': ' . $host->getName(), 'default', $form, _('Vyberte hosta nebo zadejte IP adresu'));
+    $form->addInput(new \Ease\Html\InputTextTag('ip'), _('IP Adresa'), null, _('První pingnutelná veřejá adresa po cestě z hostu na monitorovací server'));
+    $form->addItem(new \Ease\TWB\SubmitButton(_('Sledovat cestu'), 'success', array('onClick' => "$('#preload').css('visibility', 'visible');")));
+    \Ease\Shared::webPage()->addItem(new \Ease\Html\DivTag('preload', new IEFXPreloader(), array('class' => 'fuelux')));
+    return new \Ease\TWB\Panel(_('Volba cíle sledování') . ': ' . $host->getName(), 'default', $form, _('Vyberte hosta nebo zadejte IP adresu'));
 }
 
 $host = new IEHost($hostId);
@@ -60,9 +61,9 @@ if (is_null($hostId) || !$ip) {
         $hostGroup->setName($hgName);
     }
 
-    $listing = new EaseHtmlOlTag();
+    $listing = new \Ease\Html\OlTag();
 
-    $infopanel = $oPage->container->addItem(new EaseTWBPanel($hostGroup->getName(), 'info', $listing));
+    $infopanel = $oPage->container->addItem(new \Ease\TWB\Panel($hostGroup->getName(), 'info', $listing));
 
 
     $trace = array();
@@ -134,7 +135,7 @@ if (is_null($hostId) || !$ip) {
         $host->saveToMySQL();
         $hostGroup->addMember('members', $host->getId(), $host->getName());
 
-        $listing->addItemSmart(new EaseHtmlATag('host.php?host_id=' . $host->getId(), $host->getName()));
+        $listing->addItemSmart(new \Ease\Html\ATag('host.php?host_id=' . $host->getId(), $host->getName()));
     }
 
     if ($hostGroup->saveToMySQL()) {
@@ -145,6 +146,6 @@ if (is_null($hostId) || !$ip) {
 }
 
 
-$oPage->addItem(new IEPageBottom());
+$oPage->addItem(new UI\PageBottom());
 
 $oPage->draw();

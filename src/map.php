@@ -1,4 +1,5 @@
 <?php
+namespace Icinga\Editor;
 
 /**
  * Icinga Editor - titulní strana
@@ -12,7 +13,7 @@ require_once 'includes/IEInit.php';
 
 
 $oPage->onlyForLogged();
-$oPage->addItem(new IEPageTop(_('Mapa sítě')));
+$oPage->addItem(new UI\PageTop(_('Mapa sítě')));
 
 $oPage->addCss('
 
@@ -69,7 +70,7 @@ $oPage->addJavascript("$('#netmap').height(function(index, height) {
     return window.innerWidth - $(this).offset().left - 50;
 } );", null, true);
 
-$dynamicScript = (new EaseHtmlScriptTag('
+$dynamicScript = (new \Ease\Html\ScriptTag('
 var d3cola = cola.d3adaptor().convergenceThreshold(0.1);
 
         var width = 800, height = 600;
@@ -209,7 +210,7 @@ var d3cola = cola.d3adaptor().convergenceThreshold(0.1);
 
 $oPage->container->addItem($dynamicScript);
 
-$oPage->addItem(new IEPageBottom());
+$oPage->addItem(new UI\PageBottom());
 
 $oPage->draw();
 

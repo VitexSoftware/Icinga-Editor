@@ -49,20 +49,20 @@ class CheckMem extends IEServiceConfigurator
 
         $types = array('physical' => _('Physical memory (RAM)'), 'committed' => _('total memory (RAM+PAGE)'));
 
-        $this->form->addInput(new EaseHtmlSelect('type', $types, str_replace(':', '', $config['type'])), _('Typ'), '', _('Typ sledované paměti'));
+        $this->form->addInput(new \Ease\Html\Select('type', $types, str_replace(':', '', $config['type'])), _('Typ'), '', _('Typ sledované paměti'));
 
-        $this->form->addItem(new EaseTWBFormGroup(_('MaxWarn'), new EaseHtmlInputTextTag('MaxWarn', $config['MaxWarn']), '80%', _('Maximum value before a warning is returned.')));
-        $this->form->addItem(new EaseTWBFormGroup(_('MaxCrit'), new EaseHtmlInputTextTag('MaxCrit', $config['MaxCrit']), '95%', _('Maximum value before a critical is returned.')));
-        $this->form->addItem(new EaseTWBFormGroup(_('MinWarn'), new EaseHtmlInputTextTag('MinWarn', $config['MinWarn']), '10%', _('Minimum value before a warning is returned.')));
-        $this->form->addItem(new EaseTWBFormGroup(_('MinCrit'), new EaseHtmlInputTextTag('MinCrit', $config['MinCrit']), '5%', _('Minimum value before a critical is returned.')));
+        $this->form->addItem(new \Ease\TWB\FormGroup(_('MaxWarn'), new \Ease\Html\InputTextTag('MaxWarn', $config['MaxWarn']), '80%', _('Maximum value before a warning is returned.')));
+        $this->form->addItem(new \Ease\TWB\FormGroup(_('MaxCrit'), new \Ease\Html\InputTextTag('MaxCrit', $config['MaxCrit']), '95%', _('Maximum value before a critical is returned.')));
+        $this->form->addItem(new \Ease\TWB\FormGroup(_('MinWarn'), new \Ease\Html\InputTextTag('MinWarn', $config['MinWarn']), '10%', _('Minimum value before a warning is returned.')));
+        $this->form->addItem(new \Ease\TWB\FormGroup(_('MinCrit'), new \Ease\Html\InputTextTag('MinCrit', $config['MinCrit']), '5%', _('Minimum value before a critical is returned.')));
 
-        $this->form->addItem(new EaseTWBFormGroup(_('warn'), new EaseHtmlInputTextTag('warn', $config['warn']), '5%', _('Maximum value before a warning is returned.')));
-        $this->form->addItem(new EaseTWBFormGroup(_('crit'), new EaseHtmlInputTextTag('crit', $config['crit']), '5%', _('Maximum value before a critcal is returned.')));
+        $this->form->addItem(new \Ease\TWB\FormGroup(_('warn'), new \Ease\Html\InputTextTag('warn', $config['warn']), '5%', _('Maximum value before a warning is returned.')));
+        $this->form->addItem(new \Ease\TWB\FormGroup(_('crit'), new \Ease\Html\InputTextTag('crit', $config['crit']), '5%', _('Maximum value before a critcal is returned.')));
 
 
-        $this->form->addInput(new EaseTWBSwitch('ShowAll', $config['ShowAll']), _('Zobrazit vše'), null, _('Configures display format (if set shows all items not only failures, if set to long shows all cores).'));
+        $this->form->addInput(new \Ease\TWB\Switch('ShowAll', $config['ShowAll']), _('Zobrazit vše'), null, _('Configures display format (if set shows all items not only failures, if set to long shows all cores).'));
 
-        //    $this->form->addInput(new EaseHtmlInputTextTag('orig', $this->commandParams[0], array('disabled')));
+        //    $this->form->addInput(new \Ease\Html\InputTextTag('orig', $this->commandParams[0], array('disabled')));
     }
 
     /**
@@ -73,7 +73,7 @@ class CheckMem extends IEServiceConfigurator
     public function reconfigureService()
     {
         $config = array();
-        $page = EaseShared::webPage();
+        $page = \Ease\Shared::webPage();
 
         foreach ($page->getRequestValues() as $key => $value) {
             switch ($key) {

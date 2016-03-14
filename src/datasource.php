@@ -1,4 +1,5 @@
 <?php
+namespace Icinga\Editor;
 
 /**
  * Posílá vyžádaná data do gridu
@@ -9,7 +10,6 @@
  * @copyright  2014 Vitex@hippy.cz (C)
  */
 require_once 'includes/IEInit.php';
-require_once 'classes/IEDataSource.php';
 
 $oPage->onlyForLogged();
 

@@ -1,4 +1,5 @@
 <?php
+namespace Icinga\Editor;
 
 /**
  * Import ze souboru
@@ -31,22 +32,22 @@ if ($oPage->isPosted()) {
 }
 
 
-$oPage->addItem(new IEPageTop(_('Načtení příkazů ze souboru')));
+$oPage->addItem(new UI\PageTop(_('Načtení příkazů ze souboru')));
 
-$fileForm = new EaseTWBForm('CfgFileUp', null, 'POST', null, array('class' => 'form-horizontal', 'enctype' => 'multipart/form-data'));
-$fileForm->addInput(new EaseHtmlTextareaTag('cfgtext', ''), _('konfigurační fragment'));
-$fileForm->addInput(new EaseHtmlInputFileTag('cfgfile', null), _('konfigurační soubor'));
+$fileForm = new \Ease\TWB\Form('CfgFileUp', null, 'POST', null, array('class' => 'form-horizontal', 'enctype' => 'multipart/form-data'));
+$fileForm->addInput(new \Ease\Html\TextareaTag('cfgtext', ''), _('konfigurační fragment'));
+$fileForm->addInput(new \Ease\Html\InputFileTag('cfgfile', null), _('konfigurační soubor'));
 
-$typeSelector = new EaseHtmlSelect('type', 'check');
+$typeSelector = new \Ease\Html\Select('type', 'check');
 $typeSelector->addItems(array('check' => 'check', 'notify' => 'notify', 'handler' => 'handler'));
 
 $fileForm->addInput($typeSelector, _('druh vkládaných příkazů'));
 
-$fileForm->addItem(new EaseTWSubmitButton(_('importovat'), 'success'));
+$fileForm->addItem(new \Ease\TWB\SubmitButton(_('importovat'), 'success'));
 
-$oPage->container->addItem(new EaseTWBPanel(_('Import příkazu do konfigurace'), 'success', $fileForm));
+$oPage->container->addItem(new \Ease\TWB\Panel(_('Import příkazu do konfigurace'), 'success', $fileForm));
 
-$oPage->addItem(new IEPageBottom());
+$oPage->addItem(new UI\PageBottom());
 
 
 $oPage->draw();

@@ -1,4 +1,5 @@
 <?php
+namespace Icinga\Editor;
 
 /**
  * Vrací jSon
@@ -28,7 +29,7 @@ if ($limit) {
 $membersFound = array();
 
 if ($request) {
-    $membersFoundArray = EaseShared::myDbLink()->queryToArray('SELECT ' . current($source) . ' FROM `' . key($source) . '` WHERE user_id=' . $oUser->getUserID() . ' AND ' . current($source) . ' LIKE \'%' . EaseShared::myDbLink()->AddSlashes($request) . '%\' ORDER BY contact_name ' . $limit);
+    $membersFoundArray = \Ease\Shared::myDbLink()->queryToArray('SELECT ' . current($source) . ' FROM `' . key($source) . '` WHERE user_id=' . $oUser->getUserID() . ' AND ' . current($source) . ' LIKE \'%' . \Ease\Shared::myDbLink()->AddSlashes($request) . '%\' ORDER BY contact_name ' . $limit);
     if (count($membersFoundArray)) {
         foreach ($membersFoundArray as $request) {
             $membersFound[] = $request[current($source)];

@@ -1,4 +1,5 @@
 <?php
+namespace Icinga\Editor;
 
 /**
  * Icinga Editor - nový kontakt
@@ -52,18 +53,18 @@ if ($autoCreate == 'default') {
     $contactID = $contact->saveToMySQL();
 }
 
-$oPage->addItem(new IEPageTop(_('Založení kontaktu') . ' ' . $contact->getName()));
+$oPage->addItem(new UI\PageTop(_('Založení kontaktu') . ' ' . $contact->getName()));
 $oPage->addPageColumns();
 
-$form = $oPage->columnII->addItem(new EaseTWBForm('Contact', 'newcontact.php'));
-$form->addItem(new EaseTWBFormGroup(_('Jméno'), new EaseHtmlInputTextTag('name', $name)));
+$form = $oPage->columnII->addItem(new \Ease\TWB\Form('Contact', 'newcontact.php'));
+$form->addItem(new \Ease\TWB\FormGroup(_('Jméno'), new \Ease\Html\InputTextTag('name', $name)));
 $form->setTagID($form->getTagName());
 if (!is_null($contact->getMyKey())) {
-    $form->addItem(new EaseHtmlInputHiddenTag($contact->getmyKeyColumn(), $contact->getMyKey()));
+    $form->addItem(new \Ease\Html\InputHiddenTag($contact->getmyKeyColumn(), $contact->getMyKey()));
 }
 $form->addItem('<br>');
-$form->addItem(new EaseTWSubmitButton(_('Uložit'), 'success'));
+$form->addItem(new \Ease\TWB\SubmitButton(_('Uložit'), 'success'));
 
-$oPage->addItem(new IEPageBottom());
+$oPage->addItem(new UI\PageBottom());
 
 $oPage->draw();

@@ -1,4 +1,5 @@
 <?php
+namespace Icinga\Editor;
 
 /**
  * Icinga Editor služby
@@ -15,16 +16,16 @@ require_once 'classes/IEService.php';
 $service = new IEService($oPage->getRequestValue('service_id', 'int'));
 
 
-$oPage->addItem(new IEPageTop(_('Migrace služby') . ' ' . $service->getName()));
+$oPage->addItem(new UI\PageTop(_('Migrace služby') . ' ' . $service->getName()));
 $oPage->addPageColumns();
 
-$oPage->columnII->addItem(new EaseHtmlH3Tag(array(new IEPlatformIcon($service->getDataValue('platform')), $service->getName())));
+$oPage->columnII->addItem(new \Ease\Html\H3Tag(array(new IEPlatformIcon($service->getDataValue('platform')), $service->getName())));
 
 
-$form = $oPage->columnII->addItem(new EaseTWBForm('Service', 'importer.php?class=service', 'POST'));
+$form = $oPage->columnII->addItem(new \Ease\TWB\Form('Service', 'importer.php?class=service', 'POST'));
 $form->setTagID($form->getTagName());
 if (!is_null($service->getMyKey())) {
-    $form->addItem(new EaseHtmlInputHiddenTag($service->getMyKeyColumn(), $service->getMyKey()));
+    $form->addItem(new \Ease\Html\InputHiddenTag($service->getMyKeyColumn(), $service->getMyKey()));
 }
 $form->addItem('<br>');
 
@@ -33,18 +34,18 @@ foreach ($service->data as $key => $value) {
         continue;
     }
     if (is_array($value)) {
-        $form->addItem(new EaseHtmlTextareaTag($key, serialize($value)));
+        $form->addItem(new \Ease\Html\TextareaTag($key, serialize($value)));
     } else {
-        $form->addItem(new EaseHtmlInputTextTag($key, $value));
+        $form->addItem(new \Ease\Html\InputTextTag($key, $value));
     }
 }
 
-$form->addItem(new EaseTWSubmitButton(_('Uložit'), 'success'));
+$form->addItem(new \Ease\TWB\SubmitButton(_('Uložit'), 'success'));
 $oPage->AddCss('
 input.ui-button { width: 100%; }
 ');
 
 
-$oPage->addItem(new IEPageBottom());
+$oPage->addItem(new UI\PageBottom());
 
 $oPage->draw();

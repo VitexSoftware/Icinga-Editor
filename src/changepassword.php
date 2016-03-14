@@ -1,4 +1,5 @@
 <?php
+namespace Icinga\Editor;
 
 /**
  * Změna hesla uživatele
@@ -8,9 +9,6 @@
  * @subpackage WEBUI
  */
 require_once 'includes/IEInit.php';
-require_once 'Ease/EaseMail.php';
-require_once 'Ease/EaseHtmlForm.php';
-require_once 'Ease/EaseJQueryWidgets.php';
 
 $oPage->onlyForLogged(); //Pouze pro přihlášené
 $formOK = true;
@@ -49,7 +47,7 @@ if (!isset($_POST['CurrentPassword'])) {
     }
 }
 
-$oPage->addItem(new IEPageTop(_('Změna hesla uživatele')));
+$oPage->addItem(new UI\PageTop(_('Změna hesla uživatele')));
 $oPage->addPageColumns();
 
 if ($formOK && $oPage->isPosted()) {
@@ -68,20 +66,20 @@ if ($formOK && $oPage->isPosted()) {
         $email->send();
     }
 } else {
-    $loginForm = new EaseHtmlForm(NULL);
+    $loginForm = new \Ease\Html\Form(NULL);
 
     $loginForm->addItem(new EaseLabeledPasswordInput('CurrentPassword', NULL, _('Stávající heslo')));
 
     $loginForm->addItem(new EaseLabeledPasswordStrongInput('password', NULL, _('Nové heslo') . ' *'));
     $loginForm->addItem(new EaseLabeledPasswordControlInput('passwordConfirm', NULL, _('potvrzení hesla') . ' *', array('id' => 'confirmation')));
 
-    $loginForm->addItem(new EaseJQuerySubmitButton('Ok', 'Změnit heslo'));
+    $loginForm->addItem(new \Ease\JQuery\SubmitButton('Ok', 'Změnit heslo'));
 
     $loginForm->fillUp($_POST);
 
-    $oPage->columnII->addItem(new EaseTWBPanel(_('změna hesla'), 'default', $loginForm));
+    $oPage->columnII->addItem(new \Ease\TWB\Panel(_('změna hesla'), 'default', $loginForm));
 }
 
-$oPage->addItem(new IEPageBottom());
+$oPage->addItem(new UI\PageBottom());
 
 $oPage->draw();

@@ -1,4 +1,5 @@
 <?php
+namespace Icinga\Editor;
 
 /**
  * Přihlašovací stránka
@@ -11,13 +12,13 @@ require_once 'includes/IEInit.php';
 require_once 'classes/IEDbFixer.php';
 
 
-$oPage->addItem(new IEPageTop(_('Oprava databaze')));
+$oPage->addItem(new UI\PageTop(_('Oprava databaze')));
 $oPage->onlyForLogged();
 
-$loginFace = new EaseHtmlDivTag('LoginFace');
+$loginFace = new \Ease\Html\DivTag('LoginFace');
 
-$oPage->addItem(new EaseTWBContainer(new EaseTWBPanel(_('Oprava databáze'), 'warning', new IEDbFixer)));
+$oPage->addItem(new \Ease\TWB\Container(new \Ease\TWB\Panel(_('Oprava databáze'), 'warning', new IEDbFixer)));
 
-$oPage->addItem(new IEPageBottom());
+$oPage->addItem(new UI\PageBottom());
 
 $oPage->draw();

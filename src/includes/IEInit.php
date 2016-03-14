@@ -1,48 +1,51 @@
 <?php
-
 /**
  * Init aplikace
  *
  * @author    Vitex <vitex@hippy.cz>
  * @copyright Vitex@hippy.cz (G) 2010
  */
-if (file_exists('includes/Configure.php')) {
-    require_once 'includes/Configure.php';
+
+namespace Icinga\Editor;
+
+require_once 'includes/Configure.php';
+require_once '../vendor/autoload.php';
+
+//Initialise Gettext
+$langs = [
+    'en_US' => ['en', 'English (International)'],
+    'cs_CZ' => ['cs', 'Česky (Čeština)'],
+];
+$locale = 'en_US';
+if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
+    $locale = \locale_accept_from_http($_SERVER['HTTP_ACCEPT_LANGUAGE']);
 }
-
-spl_autoload_register(
-    function($class) {
-    $filepath = "classes/{$class}.php";
-    is_file($filepath) && include $filepath;
-}, false, false
-);
-
-
-$language = "cs_CZ";
-$codeset = "cs_CZ.UTF-8";
-$domain = "messages";
-putenv("LANGUAGE=" . $language);
-putenv("LANG=" . $language);
-bind_textdomain_codeset($domain, "UTF8");
-setlocale(LC_ALL, $codeset);
-bindtextdomain($domain, realpath("./locale"));
-textdomain($domain);
+if (isset($_GET['locale'])) {
+    $locale = preg_replace('/[^a-zA-Z_]/', '', substr($_GET['locale'], 0, 10));
+}
+foreach ($langs as $code => $lang) {
+    if ($locale == $lang[0]) {
+        $locale = $code;
+    }
+}
+setlocale(LC_ALL, $locale);
+bind_textdomain_codeset('skelicz', 'UTF-8');
+putenv("LC_ALL=$locale");
+if (file_exists('../locale')) {
+    bindtextdomain('messages', '../locale');
+}
+textdomain('messages');
 
 session_start();
 
-require_once 'Ease/EaseShared.php';
-if (!isset($_SESSION['User']) || !is_object($_SESSION['User'])) {
-    require_once 'Ease/EaseAnonym.php';
-    EaseShared::user(new EaseAnonym());
-}
-
-/**
+/*
  * Objekt uživatele VSUser nebo VSAnonym
- * @global EaseUser|IEUser
+ * @global EaseUser
  */
-$oUser = & EaseShared::user();
-$oUser->SettingsColumn = 'settings';
+$oUser = \Ease\Shared::user();
+$oUser->settingsColumn = 'settings';
 
-
-/* @var $oPage IEWebPage */
-$oPage = new IEWebPage();
+if (!\Ease\Shared::isCli()) {
+    /* @var $oPage \Sys\WebPage */
+    $oPage = new UI\WebPage();
+}

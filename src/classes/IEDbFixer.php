@@ -8,7 +8,7 @@
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2015 Vitex@hippy.cz (G)
  */
-class IEDbFixer extends EaseHtmlUlTag
+class IEDbFixer extends \Ease\Html\UlTag
 {
 
     public function __construct()

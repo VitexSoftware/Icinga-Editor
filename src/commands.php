@@ -1,4 +1,5 @@
 <?php
+namespace Icinga\Editor;
 
 /**
  * Icinga Editor - přehled příkazů
@@ -14,10 +15,10 @@ require_once 'classes/IEDataGrid.php';
 
 $oPage->onlyForLogged();
 
-$oPage->addItem(new IEPageTop(_('Přehled příkazů')));
+$oPage->addItem(new UI\PageTop(_('Přehled příkazů')));
 
-$oPage->addItem(new EaseTWBContainer(new IEDataGrid(_('Příkazy'), new IECommand)));
+$oPage->addItem(new \Ease\TWB\Container(new IEDataGrid(_('Příkazy'), new IECommand)));
 
-$oPage->addItem(new IEPageBottom());
+$oPage->addItem(new UI\PageBottom());
 
 $oPage->draw();

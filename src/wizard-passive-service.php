@@ -1,4 +1,5 @@
 <?php
+namespace Icinga\Editor;
 
 /**
  * Icinga Editor - titulní strana
@@ -57,7 +58,7 @@ if ($serviceName) {
         /*
           $serviceGroup = new IEServiceGroup;
           if ($serviceGroup->loadDefault()) {
-          $serviceGroup->setDataValue($serviceGroup->nameColumn, EaseShared::user()->getUserLogin());
+          $serviceGroup->setDataValue($serviceGroup->nameColumn, \Ease\Shared::user()->getUserLogin());
           $serviceGroup->addMember('members', $service->getId(), $service->getName());
           $serviceGroup->saveToMySQL();
           }
@@ -77,20 +78,20 @@ if ($serviceName) {
 }
 
 
-$oPage->addItem(new IEPageTop(_('Průvodce založením pasivně sledované služby')));
+$oPage->addItem(new UI\PageTop(_('Průvodce založením pasivně sledované služby')));
 $oPage->addPageColumns();
 
 $oPage->columnI->addItem(
-    new EaseTWBPanel(_('Pasivní checky'), 'info', _('senzor (nrpe/nscp.exe) běží na vzdáleném hostu, který je z monitorovacího serveru nedostupný (např. za NATem) ale má přístup do internetu a tak výsledky nadefinovaných testů zasílá protokolem NSCA na monitorovací server, který je přímá a zpracovává jako by se jednalo o výsledky aktivních testů.'))
+    new \Ease\TWB\Panel(_('Pasivní checky'), 'info', _('senzor (nrpe/nscp.exe) běží na vzdáleném hostu, který je z monitorovacího serveru nedostupný (např. za NATem) ale má přístup do internetu a tak výsledky nadefinovaných testů zasílá protokolem NSCA na monitorovací server, který je přímá a zpracovává jako by se jednalo o výsledky aktivních testů.'))
 );
 $oPage->columnIII->addItem(
-    new EaseTWBPanel(_('Pasivně sledovaná služba'), 'info', _('Nabízené příkazy jsou definovány jako vzdálené a odpovídající zvolené platformě. Parametry záleží na konkrétně zvoleném příkazu testu.'))
+    new \Ease\TWB\Panel(_('Pasivně sledovaná služba'), 'info', _('Nabízené příkazy jsou definovány jako vzdálené a odpovídající zvolené platformě. Parametry záleží na konkrétně zvoleném příkazu testu.'))
 );
 
 
 
 $oPage->columnII->addItem(new IEServiceWizardForm($service));
 
-$oPage->addItem(new IEPageBottom());
+$oPage->addItem(new UI\PageBottom());
 
 $oPage->draw();

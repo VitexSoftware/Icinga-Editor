@@ -1,4 +1,5 @@
 <?php
+namespace Icinga\Editor;
 
 /**
  * Icinga Editor - titulní strana
@@ -35,28 +36,28 @@ if ($delete == 'true') {
     exit();
 }
 
-$oPage->addItem(new IEPageTop(_('Editace kontaktu') . ' ' . $contact->getName()));
+$oPage->addItem(new UI\PageTop(_('Editace kontaktu') . ' ' . $contact->getName()));
 
 switch ($oPage->getRequestValue('action')) {
     case 'delete':
         $form = new EaseContainer;
-        $form->addItem(new EaseHtmlH2Tag($contact->getName()));
-        $confirmator = $form->addItem(new EaseTWBPanel(_('Opravdu smazat ?')), 'danger');
-        $confirmator->addItem(new EaseTWBLinkButton('?' . $contact->myKeyColumn . '=' . $contact->getID(), _('Ne') . ' ' . EaseTWBPart::glyphIcon('ok'), 'success'));
-        $confirmator->addItem(new EaseTWBLinkButton('?delete=true&' . $contact->myKeyColumn . '=' . $contact->getID(), _('Ano') . ' ' . EaseTWBPart::glyphIcon('remove'), 'danger'));
+        $form->addItem(new \Ease\Html\H2Tag($contact->getName()));
+        $confirmator = $form->addItem(new \Ease\TWB\Panel(_('Opravdu smazat ?')), 'danger');
+        $confirmator->addItem(new \Ease\TWB\LinkButton('?' . $contact->myKeyColumn . '=' . $contact->getID(), _('Ne') . ' ' . \Ease\TWB\Part::glyphIcon('ok'), 'success'));
+        $confirmator->addItem(new \Ease\TWB\LinkButton('?delete=true&' . $contact->myKeyColumn . '=' . $contact->getID(), _('Ano') . ' ' . \Ease\TWB\Part::glyphIcon('remove'), 'danger'));
         break;
     default :
 
 
         $contactEdit = new IECfgEditor($contact);
 
-        $form = new EaseHtmlForm('Contact', 'contact.php', 'POST', $contactEdit, array('class' => 'form-horizontal'));
+        $form = new \Ease\Html\Form('Contact', 'contact.php', 'POST', $contactEdit, array('class' => 'form-horizontal'));
         $form->setTagID($form->getTagName());
         if (!is_null($contact->getMyKey())) {
-            $form->addItem(new EaseHtmlInputHiddenTag($contact->getmyKeyColumn(), $contact->getMyKey()));
+            $form->addItem(new \Ease\Html\InputHiddenTag($contact->getmyKeyColumn(), $contact->getMyKey()));
         }
         $form->addItem('<br>');
-        $form->addItem(new EaseTWSubmitButton(_('Uložit'), 'success'));
+        $form->addItem(new \Ease\TWB\SubmitButton(_('Uložit'), 'success'));
         break;
 }
 
@@ -67,23 +68,23 @@ $serviceUsages = $service->getColumnsFromMySQL(array($service->getMyKeyColumn(),
 
 
 
-$oPage->addItem(new IEPageBottom());
+$oPage->addItem(new UI\PageBottom());
 
 $infopanel = new IEInfoBox($contact);
-$tools = new EaseTWBPanel(_('Nástroje'), 'warning');
+$tools = new \Ease\TWB\Panel(_('Nástroje'), 'warning');
 if ($contact->getId()) {
     $tools->addItem($contact->deleteButton());
-    $tools->addItem(new EaseTWBPanel(_('Transfer'), 'warning', $contact->transferForm()));
+    $tools->addItem(new \Ease\TWB\Panel(_('Transfer'), 'warning', $contact->transferForm()));
 
 
 
     if (count($serviceUsages)) {
-        $usedBy = new EaseTWBPanel(_('Používaný službami'));
-        $listing = $usedBy->addItem(new EaseHtmlUlTag(null, array('class' => 'list-group')));
+        $usedBy = new \Ease\TWB\Panel(_('Používaný službami'));
+        $listing = $usedBy->addItem(new \Ease\Html\UlTag(null, array('class' => 'list-group')));
         foreach ($serviceUsages as $usage) {
             $listing->addItem(
-                new EaseHtmlLiTag(
-                new EaseHtmlATag('service.php?service_id=' . $usage['service_id'], $usage[$service->nameColumn])
+                new \Ease\Html\LiTag(
+                new \Ease\Html\ATag('service.php?service_id=' . $usage['service_id'], $usage[$service->nameColumn])
                 , array('class' => 'list-group-item'))
             );
         }
@@ -94,12 +95,12 @@ if ($contact->getId()) {
     $hostUsages = $host->getColumnsFromMySQL(array($host->getMyKeyColumn(), $host->nameColumn), array('contacts' => '%' . $contact->getName() . '%'), $host->nameColumn, $host->getMyKeyColumn());
 
     if (count($hostUsages)) {
-        $usedBy = new EaseTWBPanel(_('Používaný hosty'));
-        $listing = $usedBy->addItem(new EaseHtmlUlTag(null, array('class' => 'list-group')));
+        $usedBy = new \Ease\TWB\Panel(_('Používaný hosty'));
+        $listing = $usedBy->addItem(new \Ease\Html\UlTag(null, array('class' => 'list-group')));
         foreach ($hostUsages as $usage) {
             $listing->addItem(
-                new EaseHtmlLiTag(
-                new EaseHtmlATag('host.php?host_id=' . $usage['host_id'], $usage[$host->nameColumn])
+                new \Ease\Html\LiTag(
+                new \Ease\Html\ATag('host.php?host_id=' . $usage['host_id'], $usage[$host->nameColumn])
                 , array('class' => 'list-group-item'))
             );
         }
@@ -107,9 +108,9 @@ if ($contact->getId()) {
     }
 }
 
-$pageRow = new EaseTWBRow;
+$pageRow = new \Ease\TWB\Row;
 $pageRow->addColumn(2, $infopanel);
-$pageRow->addColumn(6, new EaseTWBPanel(_('Příkaz') . ' <strong>' . $contact->getName() . '</strong>', 'default', $form));
+$pageRow->addColumn(6, new \Ease\TWB\Panel(_('Příkaz') . ' <strong>' . $contact->getName() . '</strong>', 'default', $form));
 $pageRow->addColumn(4, $tools);
 $oPage->container->addItem($pageRow);
 

@@ -1,4 +1,5 @@
 <?php
+namespace Icinga\Editor;
 
 /**
  * Icinga Editor - přehled služeb
@@ -13,10 +14,10 @@ require_once 'classes/IEDataGrid.php';
 
 $oPage->onlyForLogged();
 
-$oPage->addItem(new IEPageTop(_('Přehled služeb')));
+$oPage->addItem(new UI\PageTop(_('Přehled služeb')));
 
-$oPage->addItem(new EaseTWBContainer(new IEDataGrid(_('Služby'), new IEService)));
+$oPage->addItem(new \Ease\TWB\Container(new IEDataGrid(_('Služby'), new IEService)));
 
-$oPage->addItem(new IEPageBottom());
+$oPage->addItem(new UI\PageBottom());
 
 $oPage->draw();

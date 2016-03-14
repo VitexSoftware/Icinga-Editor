@@ -1,4 +1,5 @@
 <?php
+namespace Icinga\Editor;
 
 /**
  * Icinga Editor - titulní strana
@@ -52,7 +53,7 @@ if ($hostName && $platform) {
 
         $hostGroup = new IEHostgroup;
         if ($hostGroup->loadDefault()) {
-            $hostGroup->setDataValue($hostGroup->nameColumn, EaseShared::user()->getUserLogin());
+            $hostGroup->setDataValue($hostGroup->nameColumn, \Ease\Shared::user()->getUserLogin());
             $hostGroup->addMember('members', $host->getId(), $host->getName());
             $hostGroup->saveToMySQL();
             $host->addMember('hostgroups', $hostGroup->getId(), $hostGroup->getName());
@@ -71,10 +72,10 @@ if ($hostName && $platform) {
 
 
 
-$oPage->addItem(new IEPageTop(_('Průvodce založením hosta')));
+$oPage->addItem(new UI\PageTop(_('Průvodce založením hosta')));
 
-$oPage->container->addItem(new EaseTWBPanel(_('Nový pasivně sledovaný host'), 'info', new IEPassiveCheckedHostForm('passive')));
+$oPage->container->addItem(new \Ease\TWB\Panel(_('Nový pasivně sledovaný host'), 'info', new IEPassiveCheckedHostForm('passive')));
 
-$oPage->addItem(new IEPageBottom());
+$oPage->addItem(new UI\PageBottom());
 
 $oPage->draw();

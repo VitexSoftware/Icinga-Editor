@@ -7,16 +7,15 @@
             <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/classes/IEContactSelector.php</file>
             <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/classes/IECfgEditor.php</file>
         </group>
-        <group>
-            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/classes/IEService.php</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/css/default.css</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/classes/IEUser.php</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/apply.php</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/createaccount.php</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/includes/IEInit.php</file>
-        </group>
         <group name="Monitoring">
             <file>file:/home/vitex/Projects/VitexSoftware/iciedit/src/includes/Configure.php</file>
+        </group>
+        <group>
+            <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/src/includes/IEInit.php</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/src/classes/IEBootstrapMenu.php</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/composer.json</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/src/classes/IEMainMenu.php</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/vendor/composer/autoload_psr4.php</file>
         </group>
     </open-files>
 </project-private>

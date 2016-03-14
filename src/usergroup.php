@@ -1,4 +1,5 @@
 <?php
+namespace Icinga\Editor;
 
 /**
  * Icinga Editor - užibatelská skupina
@@ -59,15 +60,15 @@ switch ($oPage->getRequestValue('action')) {
 
 
 
-$oPage->addItem(new IEPageTop(_('Uživatelská skupina')));
+$oPage->addItem(new UI\PageTop(_('Uživatelská skupina')));
 $oPage->addPageColumns();
 
 
 switch ($oPage->getRequestValue('action')) {
     case 'delete':
-        $confirmator = $oPage->columnII->addItem(new EaseTWBPanel(_('Opravdu smazat ?')), 'danger');
-        $confirmator->addItem(new EaseTWBLinkButton('?' . $userGroup->myKeyColumn . '=' . $userGroup->getID(), _('Ne') . ' ' . EaseTWBPart::glyphIcon('ok'), 'success'));
-        $confirmator->addItem(new EaseTWBLinkButton('?delete=true&' . $userGroup->myKeyColumn . '=' . $userGroup->getID(), _('Ano') . ' ' . EaseTWBPart::glyphIcon('remove'), 'danger'));
+        $confirmator = $oPage->columnII->addItem(new \Ease\TWB\Panel(_('Opravdu smazat ?')), 'danger');
+        $confirmator->addItem(new \Ease\TWB\LinkButton('?' . $userGroup->myKeyColumn . '=' . $userGroup->getID(), _('Ne') . ' ' . \Ease\TWB\Part::glyphIcon('ok'), 'success'));
+        $confirmator->addItem(new \Ease\TWB\LinkButton('?delete=true&' . $userGroup->myKeyColumn . '=' . $userGroup->getID(), _('Ano') . ' ' . \Ease\TWB\Part::glyphIcon('remove'), 'danger'));
 
         $oPage->columnI->addItem($userGroup->ownerLinkButton());
 
@@ -78,12 +79,12 @@ switch ($oPage->getRequestValue('action')) {
         if ($userGroup->getMyKey()) {
             $oPage->columnIII->addItem($userGroup->deleteButton());
         }
-        $oPage->columnI->addItem(new EaseTWBPanel(_('Skupina uživatelů'), 'info', _('Všichni členové skupiny mohou zobrazit a editovat konfigurace náležející ostatním uživatelům skupiny.')));
+        $oPage->columnI->addItem(new \Ease\TWB\Panel(_('Skupina uživatelů'), 'info', _('Všichni členové skupiny mohou zobrazit a editovat konfigurace náležející ostatním uživatelům skupiny.')));
 }
 
 
 
 
-$oPage->addItem(new IEPageBottom());
+$oPage->addItem(new UI\PageBottom());
 
 $oPage->draw();

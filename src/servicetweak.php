@@ -1,4 +1,5 @@
 <?php
+namespace Icinga\Editor;
 
 /**
  * Icinga Editor služby
@@ -96,7 +97,7 @@ if ($addcnt) {
     $service->saveToMySql();
 }
 
-$oPage->addItem(new IEPageTop(_('Editace služby') . ' ' . $service->getName()));
+$oPage->addItem(new UI\PageTop(_('Editace služby') . ' ' . $service->getName()));
 $oPage->addPageColumns();
 
 $serviceTweak = new IEServiceTweaker($service, $host);
@@ -105,19 +106,19 @@ $serviceName = $service->getDataValue('display_name');
 if (!$serviceName) {
     $serviceName = $service->getName();
 }
-$oPage->columnII->addItem(new EaseHtmlH3Tag(array(new IEPlatformIcon($service->getDataValue('platform')), $serviceName)));
+$oPage->columnII->addItem(new \Ease\Html\H3Tag(array(new IEPlatformIcon($service->getDataValue('platform')), $serviceName)));
 
 $oPage->columnII->addItem($serviceTweak);
 
 $oPage->columnIII->addItem($service->deleteButton($service->getName(), 'host_id=' . $host->getId()));
 
-$oPage->columnIII->addItem(new EaseTWBLinkButton('service.php?service_id=' . $service->getID(), _('Editace služby') . ' ' . $serviceName));
+$oPage->columnIII->addItem(new \Ease\TWB\LinkButton('service.php?service_id=' . $service->getID(), _('Editace služby') . ' ' . $serviceName));
 
-$renameForm = new EaseTWBForm('Rename', '?action=rename&amp;host_id=' . $host->getID() . '&service_id=' . $service->getId());
-$renameForm->addItem(new EaseHtmlInputTextTag('newname'), $service->getName(), array('class' => 'form-control'));
-$renameForm->addItem(new EaseTWSubmitButton(_('Přejmenovat'), 'success'));
+$renameForm = new \Ease\TWB\Form('Rename', '?action=rename&amp;host_id=' . $host->getID() . '&service_id=' . $service->getId());
+$renameForm->addItem(new \Ease\Html\InputTextTag('newname'), $service->getName(), array('class' => 'form-control'));
+$renameForm->addItem(new \Ease\TWB\SubmitButton(_('Přejmenovat'), 'success'));
 
-$oPage->columnIII->addItem(new EaseTWBPanel(_('Přejmenování'), 'info', $renameForm));
+$oPage->columnIII->addItem(new \Ease\TWB\Panel(_('Přejmenování'), 'info', $renameForm));
 
 $oPage->columnIII->addItem($service->cloneButton());
 
@@ -125,8 +126,8 @@ $oPage->columnIII->addItem($service->cloneButton());
 $oPage->columnI->addItem(new IEHostSelector($service));
 $oPage->columnI->addItem(new IEContactSelector($service));
 
-$oPage->columnIII->addItem(new EaseTWBLinkButton('host.php?host_id=' . $host->getId(), array(_('Zpět na') . ' ', $host, ' ', $host->getName()), 'default'));
+$oPage->columnIII->addItem(new \Ease\TWB\LinkButton('host.php?host_id=' . $host->getId(), array(_('Zpět na') . ' ', $host, ' ', $host->getName()), 'default'));
 
-$oPage->addItem(new IEPageBottom());
+$oPage->addItem(new UI\PageBottom());
 
 $oPage->draw();

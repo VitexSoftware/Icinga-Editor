@@ -1,4 +1,5 @@
 <?php
+namespace Icinga\Editor;
 
 /**
  * Icinga Editor služby
@@ -44,24 +45,24 @@ if ($delsubcont) {
     $delcnt->delete($delsubcont);
 }
 
-$oPage->addItem(new IEPageTop(_('Editace kontaktu') . ' ' . $contact->getName()));
+$oPage->addItem(new UI\PageTop(_('Editace kontaktu') . ' ' . $contact->getName()));
 $oPage->addPageColumns();
 
-$oPage->columnII->addItem(new EaseHtmlH3Tag($contact->getName()));
+$oPage->columnII->addItem(new \Ease\Html\H3Tag($contact->getName()));
 
 $oPage->columnII->addItem(new IEContactTweaker($contact));
 
 if ($contact->getName() != $oUser->getUserLogin()) {
     $oPage->columnIII->addItem($contact->deleteButton($contact->getName(), 'contact_id=' . $contact->getId()));
 }
-$renameForm = new EaseTWBForm('Rename', '?action=rename&amp;contact_id=' . $contact->getID() . '&contact_id=' . $contact->getId());
-$renameForm->addItem(new EaseHtmlInputTextTag('newname'), $contact->getName(), array('class' => 'form-control'));
-$renameForm->addItem(new EaseTWSubmitButton(_('Přejmenovat'), 'success'));
+$renameForm = new \Ease\TWB\Form('Rename', '?action=rename&amp;contact_id=' . $contact->getID() . '&contact_id=' . $contact->getId());
+$renameForm->addItem(new \Ease\Html\InputTextTag('newname'), $contact->getName(), array('class' => 'form-control'));
+$renameForm->addItem(new \Ease\TWB\SubmitButton(_('Přejmenovat'), 'success'));
 
-$oPage->columnIII->addItem(new EaseTWBPanel(_('Přejmenování'), 'default', $renameForm));
+$oPage->columnIII->addItem(new \Ease\TWB\Panel(_('Přejmenování'), 'default', $renameForm));
 
 //$oPage->columnI->addItem(new IEHostSelector($contact));
 
-$oPage->addItem(new IEPageBottom());
+$oPage->addItem(new UI\PageBottom());
 
 $oPage->draw();

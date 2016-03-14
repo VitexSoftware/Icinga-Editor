@@ -352,8 +352,8 @@ echo "file name=${log-path}/nsclient.log" >> $INI
             }
 
             if ($this->hostPassiveMode) {
-                $this->addCfg('/settings/scheduler/schedules/' . $this->stripServiceName($serviceName) . '-' . EaseShared::user()->getUserLogin(), 'command', $this->stripServiceName($serviceName));
-                $this->addCfg('/settings/scheduler/schedules/' . $this->stripServiceName($serviceName) . '-' . EaseShared::user()->getUserLogin(), 'interval', $service['check_interval'] . 'm');
+                $this->addCfg('/settings/scheduler/schedules/' . $this->stripServiceName($serviceName) . '-' . \Ease\Shared::user()->getUserLogin(), 'command', $this->stripServiceName($serviceName));
+                $this->addCfg('/settings/scheduler/schedules/' . $this->stripServiceName($serviceName) . '-' . \Ease\Shared::user()->getUserLogin(), 'interval', $service['check_interval'] . 'm');
             }
         }
     }

@@ -1,4 +1,5 @@
 <?php
+namespace Icinga\Editor;
 
 /**
  * Icinga Editor - přehled skupin služeb
@@ -13,10 +14,10 @@ require_once 'classes/IEServicegroup.php';
 
 $oPage->onlyForLogged();
 
-$oPage->addItem(new IEPageTop(_('Přehled skupin služeb')));
+$oPage->addItem(new UI\PageTop(_('Přehled skupin služeb')));
 
 $oPage->container->addItem(new IEDataGrid(_('Skupiny služeb'), new IEServicegroup));
 
-$oPage->addItem(new IEPageBottom());
+$oPage->addItem(new UI\PageBottom());
 
 $oPage->draw();

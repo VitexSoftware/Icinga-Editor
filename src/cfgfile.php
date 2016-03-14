@@ -1,4 +1,5 @@
 <?php
+namespace Icinga\Editor;
 
 /**
  * Icinga Editor - titulní strana
@@ -9,20 +10,13 @@
  * @copyright  2012 Vitex@hippy.cz (G)
  */
 require_once 'includes/IEInit.php';
-require_once 'classes/IEContact.php';
-require_once 'classes/IEContactgroup.php';
-require_once 'classes/IEHost.php';
-require_once 'classes/IEHostgroup.php';
-require_once 'classes/IETimeperiod.php';
-require_once 'classes/IECommand.php';
-require_once 'classes/IEServicegroup.php';
 
 $oPage->onlyForLogged();
 
 $file = $oPage->getRequestValue('file');
 $line = $oPage->getRequestValue('line');
 
-$oPage->addItem(new IEPageTop(_('Icinga Editor')));
+$oPage->addItem(new UI\PageTop(_('Icinga Editor')));
 $oPage->addPageColumns();
 
 $lines = file($file);
@@ -30,6 +24,6 @@ foreach ($lines as $line) {
     $oPage->addItem($line . '<br>');
 }
 
-$oPage->addItem(new IEPageBottom());
+$oPage->addItem(new UI\PageBottom());
 
 $oPage->draw();

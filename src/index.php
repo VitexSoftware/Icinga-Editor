@@ -1,5 +1,7 @@
 <?php
 
+namespace Icinga\Editor;
+
 /**
  * Icinga Editor - hlavní strana
  *
@@ -15,12 +17,12 @@ if ($oUser->getUserId()) {
     exit;
 }
 
-$oPage->addItem(new IEPageTop(_('Icinga Editor')));
+$oPage->addItem(new UI\PageTop(_('Icinga Editor')));
 $oPage->addPageColumns();
 
-$oPage->heroUnit = $oPage->container->addItem(new EaseHtmlDivTag('heroUnit', null, array('class' => 'jumbotron')));
-$oPage->heroUnit->addItem(new EaseHtmlImgTag('img/vsmonitoring.png'));
-$oPage->heroUnit->addItem(new EaseHtmlATag('http://icinga.org/', new EaseHtmlImgTag('img/icinga_logo4-300x109.png')));
+$oPage->heroUnit = $oPage->container->addItem(new \Ease\Html\Div( null, array('id'=>'heroUnit','class' => 'jumbotron')));
+$oPage->heroUnit->addItem(new \Ease\Html\ImgTag('img/vsmonitoring.png'));
+$oPage->heroUnit->addItem(new \Ease\Html\ATag('http://icinga.org/', new \Ease\Html\ImgTag('img/icinga_logo4-300x109.png')));
 $oPage->heroUnit->addItem(_('Monitoring služeb'));
 $oPage->heroUnit->setTagCss(array('text-align' => 'center'));
 
@@ -28,6 +30,6 @@ $oPage->columnI->addItem(_('Sledování hostů'));
 $oPage->columnII->addItem(_('Sledování služeb'));
 $oPage->columnIII->addItem(_('Notifikace mail/jabber/sms/twitter'));
 
-$oPage->addItem(new IEPageBottom());
+$oPage->addItem(new UI\PageBottom());
 
 $oPage->draw();

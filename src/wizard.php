@@ -1,4 +1,5 @@
 <?php
+namespace Icinga\Editor;
 
 /**
  * Icinga Editor - titulní strana
@@ -12,7 +13,7 @@ require_once 'includes/IEInit.php';
 
 $oPage->onlyForLogged();
 
-$oPage->addItem(new IEPageTop(_('Průvodce založením hosta')));
+$oPage->addItem(new UI\PageTop(_('Průvodce založením hosta')));
 $oPage->addPageColumns();
 
 $oPage->addCss('
@@ -42,15 +43,15 @@ $oPage->addCss('
     ');
 
 $oPage->columnI->addItem(
-    new EaseTWBPanel(_('Hosty'), 'success', _('Hosty jsou počítače nebo zařízení'))
+    new \Ease\TWB\Panel(_('Hosty'), 'success', _('Hosty jsou počítače nebo zařízení'))
 );
 $oPage->columnIII->addItem(
-    new EaseTWBPanel(_('Služby'), 'info', _('Služby jsou definice testů aplikované na hosty nebo jejich skupiny'))
+    new \Ease\TWB\Panel(_('Služby'), 'info', _('Služby jsou definice testů aplikované na hosty nebo jejich skupiny'))
 );
 
-$oPage->columnII->addItem(new EaseTWBLinkButton('wizard-host.php', _('Host'), 'success', array('class' => 'btn-xlarge')));
-$oPage->columnII->addItem(new EaseTWBLinkButton('wizard-service.php', _('Služba'), 'info', array('class' => 'btn-xlarge')));
+$oPage->columnII->addItem(new \Ease\TWB\LinkButton('wizard-host.php', _('Host'), 'success', array('class' => 'btn-xlarge')));
+$oPage->columnII->addItem(new \Ease\TWB\LinkButton('wizard-service.php', _('Služba'), 'info', array('class' => 'btn-xlarge')));
 
-$oPage->addItem(new IEPageBottom());
+$oPage->addItem(new UI\PageBottom());
 
 $oPage->draw();

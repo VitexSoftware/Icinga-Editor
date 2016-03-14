@@ -25,11 +25,11 @@ class ping extends IEServiceConfigurator
         $warningValues = explode(',', $this->commandParams[0]);
         $criticalValues = explode(',', $this->commandParams[1]);
 
-        $this->form->addItem(new EaseTWBFormGroup(_('prodleva varování'), new EaseHtmlInputTextTag('wt', $warningValues[0]), '100.0', _('Čas v milisekundách, po jehož překročení při testu bude hlášeno varování')));
-        $this->form->addItem(new EaseTWBFormGroup(_('ztráta varování'), new EaseHtmlInputTextTag('wp', $warningValues[1]), '20 %', _('Procento ztracených paketů, po jehož překročení při testu bude hlášeno varování')));
+        $this->form->addItem(new \Ease\TWB\FormGroup(_('prodleva varování'), new \Ease\Html\InputTextTag('wt', $warningValues[0]), '100.0', _('Čas v milisekundách, po jehož překročení při testu bude hlášeno varování')));
+        $this->form->addItem(new \Ease\TWB\FormGroup(_('ztráta varování'), new \Ease\Html\InputTextTag('wp', $warningValues[1]), '20 %', _('Procento ztracených paketů, po jehož překročení při testu bude hlášeno varování')));
 
-        $this->form->addItem(new EaseTWBFormGroup(_('prodleva kritické chyby'), new EaseHtmlInputTextTag('ct', $criticalValues[0]), '500.0', _('Čas v milisekundách, po jehož překročení při testu bude hlášena kritická chyba')));
-        $this->form->addItem(new EaseTWBFormGroup(_('ztráta kritické chyby'), new EaseHtmlInputTextTag('cp', $criticalValues[1]), '60 %', _('Procento ztracených paketů, po jehož překročení při testu bude hlášena kritická chyba')));
+        $this->form->addItem(new \Ease\TWB\FormGroup(_('prodleva kritické chyby'), new \Ease\Html\InputTextTag('ct', $criticalValues[0]), '500.0', _('Čas v milisekundách, po jehož překročení při testu bude hlášena kritická chyba')));
+        $this->form->addItem(new \Ease\TWB\FormGroup(_('ztráta kritické chyby'), new \Ease\Html\InputTextTag('cp', $criticalValues[1]), '60 %', _('Procento ztracených paketů, po jehož překročení při testu bude hlášena kritická chyba')));
     }
 
     /**
@@ -39,7 +39,7 @@ class ping extends IEServiceConfigurator
      */
     public function reconfigureService()
     {
-        $page = EaseShared::webPage();
+        $page = \Ease\Shared::webPage();
         $wt = $page->getRequestValue('wt', 'float');
         $ct = $page->getRequestValue('ct', 'float');
         $wp = str_replace('%', '', $page->getRequestValue('wp'));

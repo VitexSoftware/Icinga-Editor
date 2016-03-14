@@ -1,5 +1,6 @@
 
 <?php
+namespace Icinga\Editor;
 
 /**
  * Icinga Editor - proxy pro zobrazení Icingy

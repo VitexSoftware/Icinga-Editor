@@ -1,4 +1,5 @@
 <?php
+namespace Icinga\Editor;
 
 /**
  * Icinga Editor - nastavení uživatele
@@ -25,7 +26,7 @@ if ($oPage->isPosted()) {
     }
 }
 
-$oPage->addItem(new IEPageTop(_('Předvolby')));
+$oPage->addItem(new UI\PageTop(_('Předvolby')));
 $oPage->addPageColumns();
 
 $form = new IEPreferencesForm('prefs');
@@ -33,6 +34,6 @@ $form->fillUp($prefs->getPrefs());
 
 $oPage->columnII->addItem($form);
 
-$oPage->addItem(new IEPageBottom());
+$oPage->addItem(new UI\PageBottom());
 
 $oPage->draw();

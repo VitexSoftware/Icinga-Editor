@@ -39,9 +39,9 @@ class web_content extends IEServiceConfigurator
             $errText = '';
         }
 
-        $this->form->addItem(new EaseTWBFormGroup(_('Sledované url'), new EaseHtmlInputTextTag('testUrl', $testUrl), '', _('Adresa sledované stránky')));
-        $this->form->addItem(new EaseTWBFormGroup(_('Očekávaný obsah'), new EaseHtmlInputTextTag('reqText', $reqText), '', _('Text očekávaný na stránce v rámci bezchybného obsahu')));
-        $this->form->addItem(new EaseTWBFormGroup(_('Nechtěný obsah'), new EaseHtmlInputTextTag('errText', $errText), '', _('Neočekávaný text, např. "Error" nebo jiný fragment chybového hlášení')));
+        $this->form->addItem(new \Ease\TWB\FormGroup(_('Sledované url'), new \Ease\Html\InputTextTag('testUrl', $testUrl), '', _('Adresa sledované stránky')));
+        $this->form->addItem(new \Ease\TWB\FormGroup(_('Očekávaný obsah'), new \Ease\Html\InputTextTag('reqText', $reqText), '', _('Text očekávaný na stránce v rámci bezchybného obsahu')));
+        $this->form->addItem(new \Ease\TWB\FormGroup(_('Nechtěný obsah'), new \Ease\Html\InputTextTag('errText', $errText), '', _('Neočekávaný text, např. "Error" nebo jiný fragment chybového hlášení')));
     }
 
     /**
@@ -51,7 +51,7 @@ class web_content extends IEServiceConfigurator
      */
     public function reconfigureService()
     {
-        $page = EaseShared::webPage();
+        $page = \Ease\Shared::webPage();
         $testUrl = $page->getRequestValue('testUrl');
         $reqText = $page->getRequestValue('reqText');
         $errText = $page->getRequestValue('errText');
