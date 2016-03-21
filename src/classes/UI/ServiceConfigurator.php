@@ -43,7 +43,7 @@ class ServiceConfigurator extends \Ease\Html\Div
         $this->tweaker = &$tweaker;
         if (!$this->tweaker->service->getDataValue('DatSave')) {
             if ($this->init()) {
-                $this->tweaker->service->saveToMySQL();
+                $this->tweaker->service->saveToSQL();
                 \Ease\Shared::webPage()->addStatusMessage(_('Prosím potvrďte nastavení služby'));
             }
         }
@@ -102,7 +102,7 @@ class ServiceConfigurator extends \Ease\Html\Div
                     $oldService->delMember(
                         'host_name', $this->tweaker->host->getId(), $this->tweaker->host->getName()
                     );
-                    if ($oldService->saveToMySQL()) {
+                    if ($oldService->saveToSQL()) {
                         $oldService->addStatusMessage(_('Původní služba byla upravena'));
                     }
 
@@ -116,14 +116,14 @@ class ServiceConfigurator extends \Ease\Html\Div
                     $this->tweaker->service->setDataValue('hostgroup_name', array());
                     $this->tweaker->service->setDataValue('user_id', \Ease\Shared::user()->getID());
                     $this->tweaker->service->setDataValue($this->tweaker->service->nameColumn, _('Klon') . ' ' . $this->tweaker->service->getName());
-                    if ($this->tweaker->service->saveToMySQL()) {
+                    if ($this->tweaker->service->saveToSQL()) {
                         $this->tweaker->service->addStatusMessage(_('Služba byla uložena jako klon'), 'success');
                         $webPage->redirect('servicetweak.php?service_id=' . $this->tweaker->service->getId() . '&host_id=' . $this->tweaker->host->getId());
                     } else {
                         $this->tweaker->service->addStatusMessage(_('Sužba nebyla naklonována'), 'warning');
                     }
                 } else {
-                    $serviceID = $this->tweaker->service->saveToMySQL();
+                    $serviceID = $this->tweaker->service->saveToSQL();
                     if (is_null($serviceID)) {
                         $this->addStatusMessage(_('Služba nebyla uložena'), 'error');
                     } else {

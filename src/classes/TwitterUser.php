@@ -37,7 +37,7 @@ class IETwitterUser extends IEUser
                 $this->restoreObjectIdentity();
                 $this->setDataValue($this->LoginColumn, $twitter->screen_name);
                 $this->setSettingValue('icon', $twitter->profile_image_url);
-                if ($this->saveToMySQL()) {
+                if ($this->saveToSQL()) {
                     $this->addStatusMessage(_(sprintf('Vytvořeno spojení s Twitterem',
                                 $twitter->screen_name), 'success'));
                     $this->loginSuccess();

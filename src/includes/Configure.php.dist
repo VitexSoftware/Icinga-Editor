@@ -29,6 +29,16 @@ define('DB_SERVER_PASSWORD', 'ChibrOvEv6');
  */
 define('DB_DATABASE', 'icinga');
 
+/*
+ * Database Port
+ */
+define('DB_PORT', 3306);
+
+/*
+ * Druh Databaze
+ */
+define('DB_TYPE', 'mysql');
+
 /**
  * Prefix tabulek
  */

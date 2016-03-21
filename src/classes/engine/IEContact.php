@@ -286,7 +286,7 @@ class IEContact extends IECfg
 
         $this->setDataValue($this->nameColumn, $newname);
 
-        return $this->saveToMySQL();
+        return $this->saveToSQL();
     }
 
     /**
@@ -336,7 +336,7 @@ class IEContact extends IECfg
             foreach ($contactgroups as $contactgroupID) {
                 $contactgroup->loadFromMySQL((int) $contactgroupID);
                 if ($contactgroup->delMember('members', null, $this->getName())) {
-                    if ($contactgroup->saveToMySQL()) {
+                    if ($contactgroup->saveToSQL()) {
                         $this->addStatusMessage(sprintf(_('Kontakt <strong>%s</strong> byl odebrán ze skupiny <strong>%s</strong>'), $this->getName(), $contactgroup->getName()), 'success');
                     }
                 } else {
@@ -353,7 +353,7 @@ class IEContact extends IECfg
             foreach ($services as $serviceID) {
                 $service->loadFromMySQL((int) $serviceID);
                 if ($service->delMember('contacts', $id)) {
-                    if ($service->saveToMySQL()) {
+                    if ($service->saveToSQL()) {
                         $this->addStatusMessage(sprintf(_('Kontakt <strong>%s</strong> byl odebrán ze služby <strong>%s</strong>'), $this->getName(), $service->getName()), 'success');
                     }
                 } else {
@@ -369,7 +369,7 @@ class IEContact extends IECfg
             foreach ($hosts as $hostID) {
                 $host->loadFromMySQL((int) $hostID);
                 if ($host->delMember('contacts', $id)) {
-                    if ($host->saveToMySQL()) {
+                    if ($host->saveToSQL()) {
                         $this->addStatusMessage(sprintf(_('Kontakt <strong>%s</strong> byl odebrán z hosta <strong>%s</strong>'), $this->getName(), $host->getName()), 'success');
                     }
                 } else {
@@ -393,7 +393,7 @@ class IEContact extends IECfg
         $oldname = $this->getName();
         $this->setDataValue($this->nameColumn, $newname);
 
-        if ($this->saveToMySQL()) {
+        if ($this->saveToSQL()) {
             $childs = $this->getChilds();
             $subcontact = new IEContact();
             $service = new IEService();
@@ -407,11 +407,11 @@ class IEContact extends IECfg
                         $service->loadFromMySQL((int) $serviceID);
                         if ($service->delMember('contacts', $id)) {
                             $service->addMember('contacts', $id, $newname . ' ' . $type);
-                            $service->saveToMySQL();
+                            $service->saveToSQL();
                         }
                     }
                 }
-                $subcontact->saveToMySQL();
+                $subcontact->saveToSQL();
             }
         } else {
             $this->addStatusMessage(_('Kontakt nelze přejmenovat'), 'warning');

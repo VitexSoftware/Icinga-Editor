@@ -20,7 +20,7 @@ switch ($oPage->getRequestValue('action')) {
         $stemplate->setDataValue($stemplate->nameColumn, _('Nová předloha'));
         $stemplate->insertToSQL();
         $stemplate->setDataValue($stemplate->nameColumn, _('Nová předloha') . ' #' . $stemplate->getId());
-        $stemplate->updateToMySQL();
+        $stemplate->updateToSQL();
 
         break;
     case 'copyhost':
@@ -44,7 +44,7 @@ switch ($oPage->getRequestValue('action')) {
             if (!$stemplate->getName()) {
                 $oUser->addStatusMessage(_('Není zadán název'), 'warning');
             }
-            $stemplateID = $stemplate->saveToMySQL();
+            $stemplateID = $stemplate->saveToSQL();
 
             if (is_null($stemplateID)) {
                 $oUser->addStatusMessage(_('Příkaz nebyl uložen'), 'warning');

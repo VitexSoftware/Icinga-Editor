@@ -21,7 +21,7 @@ class ServiceSelect extends \Ease\Html\Select
         $membersFound = array('' => '---');
         $query        = 'SELECT  `service_id`, `icon_image`,`platform`,`service_description` FROM `'.'service` WHERE (user_id='.$this->user->getUserID().' OR public=1) AND register=1 ORDER BY  service_description ';
 
-        $membersFoundArray = \Ease\Shared::myDbLink()->queryToArray($query);
+        $membersFoundArray = \Ease\Shared::db()->queryToArray($query);
         if (count($membersFoundArray)) {
             foreach ($membersFoundArray as $request) {
                 $membersFound[$request['service_id']] = $request['service_description'];

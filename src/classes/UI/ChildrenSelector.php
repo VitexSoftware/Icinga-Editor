@@ -78,7 +78,7 @@ class ChildrenSelector extends \Ease\Container
                 if (isset($Request['addservice']) || isset($Request['delservice'])) {
                     if (isset($Request['addservice'])) {
                         $Service->addHostName($Request['host_id'], $Request['host_name']);
-                        if ($Service->saveToMySQL()) {
+                        if ($Service->saveToSQL()) {
                             $Service->addStatusMessage(sprintf(_('položka %s byla přidána'), $Request['addservice']), 'success');
                         } else {
                             $Service->addStatusMessage(sprintf(_('položka %s nebyla přidána'), $Request['addservice']), 'warning');
@@ -86,7 +86,7 @@ class ChildrenSelector extends \Ease\Container
                     }
                     if (isset($Request['delservice'])) {
                         $Service->delHostName($Request['host_id'], $Request['host_name']);
-                        if ($Service->saveToMySQL()) {
+                        if ($Service->saveToSQL()) {
                             $Service->addStatusMessage(sprintf(_('položka %s byla odebrána'), $Request['delservice']), 'success');
                         } else {
                             $Service->addStatusMessage(sprintf(_('položka %s nebyla odebrána'), $Request['delservice']), 'warning');

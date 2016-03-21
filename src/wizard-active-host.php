@@ -137,15 +137,15 @@ if ($hostName || $address || $addressSix) {
         $hostgroup = new IEHostgroup($host_group);
         $host->addMember('hostgroups', $hostgroup->getId(), $hostgroup->getName());
         $hostgroup->addMember('members', $host->getId(), $host->getName());
-        $hostgroup->saveToMySQL();
+        $hostgroup->saveToSQL();
     }
 
 
-    if ($host->saveToMysql()) {
+    if ($host->saveToSQL()) {
 
         $service = new IEService('PING');
         $service->addMember('host_name', $host->getId(), $host->getName());
-        $service->saveToMySQL();
+        $service->saveToSQL();
 
         $host->autoPopulateServices();
 
@@ -153,9 +153,9 @@ if ($hostName || $address || $addressSix) {
         if ($hostGroup->loadDefault()) {
             $hostGroup->setDataValue($hostGroup->nameColumn, \Ease\Shared::user()->getUserLogin());
             $hostGroup->addMember('members', $host->getId(), $host->getName());
-            $hostGroup->saveToMySQL();
+            $hostGroup->saveToSQL();
             $host->addMember('hostgroups', $hostGroup->getId(), $hostGroup->getName());
-            $host->saveToMysql();
+            $host->saveToSQL();
         }
 
         $oPage->redirect('host.php?host_id=' . $host->getId());

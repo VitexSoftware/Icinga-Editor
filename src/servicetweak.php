@@ -28,7 +28,7 @@ switch ($oPage->getRequestValue('action')) {
         $service->setDataValue('hostgroup_name', array());
         $service->setDataValue('user_id', $oUser->getID());
         $service->setDataValue($service->nameColumn, _('Klon') . ' ' . $service->getName());
-        if ($service->saveToMySQL()) {
+        if ($service->saveToSQL()) {
             $oUser->addStatusMessage(_('Služba byla naklonována'), 'success');
             $oPage->redirect('servicetweak.php?service_id=' . $service->getId() . '&host_id=' . $host->getId());
         } else {
@@ -70,7 +70,7 @@ if ($delhost) {
     $service->delMember(
         'host_name', $oPage->getGetValue('host_id', 'int'), $delhost
     );
-    $service->saveToMySql();
+    $service->saveToSQL();
 }
 
 $addhost = $oPage->getGetValue('addhost');
@@ -78,7 +78,7 @@ if ($addhost) {
     $service->addMember(
         'host_name', $oPage->getGetValue('host_id', 'int'), $addhost
     );
-    $service->saveToMySql();
+    $service->saveToSQL();
 }
 
 $delcnt = $oPage->getGetValue('delcontact');
@@ -86,7 +86,7 @@ if ($delcnt) {
     $service->delMember(
         'contacts', $oPage->getGetValue('contact_id', 'int'), $delcnt
     );
-    $service->saveToMySql();
+    $service->saveToSQL();
 }
 
 $addcnt = $oPage->getGetValue('addcontact');
@@ -94,7 +94,7 @@ if ($addcnt) {
     $service->addMember(
         'contacts', $oPage->getGetValue('contact_id', 'int'), $addcnt
     );
-    $service->saveToMySql();
+    $service->saveToSQL();
 }
 
 $oPage->addItem(new UI\PageTop(_('Editace služby') . ' ' . $service->getName()));

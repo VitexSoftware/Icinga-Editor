@@ -115,7 +115,7 @@ class HostSelector extends EaseContainer
                     if (isset($request['addhost'])) {
                         $host->addMember('service_name', $request['service_id'],
                             $request['service_name']);
-                        if ($host->saveToMySQL()) {
+                        if ($host->saveToSQL()) {
                             $host->addStatusMessage(sprintf(_('položka %s byla přidána'),
                                     $request['addhost']), 'success');
                         } else {
@@ -126,7 +126,7 @@ class HostSelector extends EaseContainer
                     if (isset($request['delhost'])) {
                         $host->delMember('service_name', $request['service_id'],
                             $request['service_name']);
-                        if ($host->saveToMySQL()) {
+                        if ($host->saveToSQL()) {
                             $host->addStatusMessage(sprintf(_('položka %s byla odebrána'),
                                     $request['delhost']), 'success');
                         } else {

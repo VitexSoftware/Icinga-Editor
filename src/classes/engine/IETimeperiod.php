@@ -99,7 +99,7 @@ class IETimeperiod extends IECfg
      * @param  bool  $searchForID
      * @return int
      */
-    public function saveToMySQL($data = null, $searchForID = false)
+    public function saveToSQL($data = null, $searchForID = false)
     {
         if (is_null($data)) {
             $data = $this->getData();
@@ -109,7 +109,7 @@ class IETimeperiod extends IECfg
         }
         $this->setData($data);
 
-        return parent::saveToMySQL($data, $searchForID);
+        return parent::saveToSQL($data, $searchForID);
     }
 
     /**

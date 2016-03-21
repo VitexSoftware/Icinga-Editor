@@ -19,7 +19,7 @@ $contact = new IEContact($oPage->getRequestValue('contact_id', 'int'));
 
 if ($oPage->isPosted()) {
     $contact->takeData($_POST);
-    $contactID = $contact->saveToMySQL();
+    $contactID = $contact->saveToSQL();
     if (is_null($contactID)) {
         $oUser->addStatusMessage(_('Kontakt nebyl uložen'), 'warning');
     } else {

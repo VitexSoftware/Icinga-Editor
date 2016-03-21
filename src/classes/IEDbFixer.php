@@ -47,7 +47,7 @@ class IEDbFixer extends \Ease\Html\UlTag
                 }
             }
             if (count($hostsOK)) {
-                if ($service->saveToMySQL()) {
+                if ($service->saveToSQL()) {
                     $this->addItemSmart(sprintf(_('<strong>%s</strong> : %s'), $service->getName(), implode(',', $hostsOK)), array('class' => 'list-group-item'));
                     $this->addStatusMessage(sprintf(_('%s : %s'), $service->getName(), implode(',', $hostsOK)), 'success');
                     $hostsOK = array();
@@ -70,7 +70,7 @@ class IEDbFixer extends \Ease\Html\UlTag
                 }
             }
             if (count($hostsOK)) {
-                if ($hostgroup->saveToMySQL()) {
+                if ($hostgroup->saveToSQL()) {
                     $this->addItemSmart(sprintf(_('<strong>%s</strong> : %s'), $hostgroup->getName(), implode(',', $hostsOK)), array('class' => 'list-group-item'));
                     $this->addStatusMessage(sprintf(_('%s : %s'), $hostgroup->getName(), implode(',', $hostsOK)), 'success');
                     $hostsOK = array();
@@ -90,14 +90,14 @@ class IEDbFixer extends \Ease\Html\UlTag
                     if ($parent->getId() != $parent_id) { //Ale nesedí ID
                         $child->delMember('parents', $parent_id, $parent_name);
                         $child->addMember('parents', $parent->getId(), $parent_name);
-                        $child->saveToMySQL();
+                        $child->saveToSQL();
                         $this->addItemSmart(sprintf(_('Rodič <strong>%s</strong> hosta %s má špatné ID'), $parent_name, $child_info[$host->nameColumn]), array('class' => 'list-group-item'));
                     }
                 } else {
                     //Host tohoto jména neexistuje, nemůže být tedy PARENT
                     $this->addItemSmart(sprintf(_('Rodič <strong>%s</strong> hosta %s neexistuje'), $parent_name, $child_info[$host->nameColumn]), array('class' => 'list-group-item'));
                     $child->delMember('parents', $parent->getId(), $parent_name);
-                    $child->saveToMySQL();
+                    $child->saveToSQL();
                 }
             }
         }
@@ -128,7 +128,7 @@ class IEDbFixer extends \Ease\Html\UlTag
                 }
             }
             if (count($contactsOK)) {
-                if ($service->saveToMySQL()) {
+                if ($service->saveToSQL()) {
                     $this->addItemSmart(sprintf(_('<strong>%s</strong> : %s'), $service->getName(), implode(',', $contactsOK)), array('class' => 'list-group-item'));
                     $this->addStatusMessage(sprintf(_('%s : %s'), $service->getName(), implode(',', $contactsOK)), 'success');
                     $contactsOK = array();
@@ -155,7 +155,7 @@ class IEDbFixer extends \Ease\Html\UlTag
                 }
             }
             if (count($contactsOK)) {
-                if ($host->saveToMySQL()) {
+                if ($host->saveToSQL()) {
                     $this->addItemSmart(sprintf(_('<strong>%s</strong> : %s'), $host->getName(), implode(',', $contactsOK)), array('class' => 'list-group-item'));
                     $this->addStatusMessage(sprintf(_('%s : %s'), $host->getName(), implode(',', $contactsOK)), 'success');
                     $contactsOK = array();
@@ -188,7 +188,7 @@ class IEDbFixer extends \Ease\Html\UlTag
                 }
             }
             if (count($hostgroupsOK)) {
-                if ($host->saveToMySQL()) {
+                if ($host->saveToSQL()) {
                     $this->addItemSmart(sprintf(_('<strong>%s</strong> : %s'), $host->getName(), implode(',', $hostgroupsOK)), array('class' => 'list-group-item'));
                     $this->addStatusMessage(sprintf(_('%s : %s'), $host->getName(), implode(',', $hostgroupsOK)), 'success');
                     $hostgroupsOK = array();

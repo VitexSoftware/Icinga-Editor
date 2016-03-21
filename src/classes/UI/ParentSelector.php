@@ -49,7 +49,7 @@ class ParentSelector extends EaseContainer
 
             $parentsAssigned = array();
             foreach ($host->getDataValue('parents') as $parentAssigned) {
-                $parentID                                       = \Ease\Shared::myDbLink()->queryToValue('SELECT `'.$host->myKeyColumn.'` FROM '.$host->myTable.' WHERE `'.$host->nameColumn.'` = \''.addSlashes($parentAssigned).'\'');
+                $parentID                                       = \Ease\Shared::db()->queryToValue('SELECT `'.$host->myKeyColumn.'` FROM '.$host->myTable.' WHERE `'.$host->nameColumn.'` = \''.addSlashes($parentAssigned).'\'');
                 $parentsAssigned[$parentID][$host->nameColumn]  = $parentAssigned;
                 $parentsAssigned[$parentID][$host->myKeyColumn] = $parentID;
                 unset($allParents[$parentID]);

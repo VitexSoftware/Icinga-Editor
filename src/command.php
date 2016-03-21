@@ -25,7 +25,7 @@ switch ($oPage->getRequestValue('action')) {
             if (!$command->getName()) {
                 $oUser->addStatusMessage(_('Není zadán název'), 'warning');
             }
-            $commandID = $command->saveToMySQL();
+            $commandID = $command->saveToSQL();
 
             if (is_null($commandID)) {
                 $oUser->addStatusMessage(_('Příkaz nebyl uložen'), 'warning');

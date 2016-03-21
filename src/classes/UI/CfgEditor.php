@@ -241,7 +241,7 @@ class CfgEditor extends \Ease\Container
                             array($this->objectEdited->userColumn => \Ease\Shared::user()->getUserID())))." ) OR ( ".$this->objectEdited->myDbLink->prepSelect(array_merge($conditions,
                             array('public' => 1))).")  ";
 
-                $membersAviableArray = \Ease\Shared::myDbLink()->queryTo2DArray(
+                $membersAviableArray = \Ease\Shared::db()->queryTo2DArray(
                     'SELECT '.$nameColumn.' '.
                     'FROM `'.$sTable.'` '.
                     'WHERE '.$sqlConds.' '.
@@ -273,7 +273,7 @@ class CfgEditor extends \Ease\Container
                             array($this->objectEdited->userColumn => \Ease\Shared::user()->getUserID())))." ) OR ( ".$this->objectEdited->myDbLink->prepSelect(array_merge($conditions,
                             array('public' => 1))).")  ";
 
-                $membersAviableArray = \Ease\Shared::myDbLink()->queryToArray(
+                $membersAviableArray = \Ease\Shared::db()->queryToArray(
                     'SELECT '.$nameColumn.','.$IDColumn.' '.
                     'FROM `'.$sTable.'` '.
                     'WHERE '.$sqlConds.' '.
@@ -315,7 +315,7 @@ class CfgEditor extends \Ease\Container
                     $sqlConds .= " AND ((`platform` =  '".$platform."') OR (`platform` = 'generic') OR (`platform` IS NULL) OR (`platform`='') ) ";
                 }
 
-                $membersAviableArray = \Ease\Shared::myDbLink()->queryTo2DArray(
+                $membersAviableArray = \Ease\Shared::db()->queryTo2DArray(
                     'SELECT '.$nameColumn.' '.
                     'FROM `'.$sTable.'` '.
                     'WHERE '.$sqlConds.' '.
@@ -336,7 +336,7 @@ class CfgEditor extends \Ease\Container
                             array('command_remote' => true, $this->objectEdited->userColumn => \Ease\Shared::user()->getUserID())))." ) OR ( ".$this->objectEdited->myDbLink->prepSelect($conditions)." AND public=1 )  ";
 //                    $SqlConds = $this->ObjectEdited->myDbLink->prepSelect(array_merge($Conditions, array($this->ObjectEdited->userColumn => \Ease\Shared::user()->getUserID())));
 
-                $membersAviableArray = \Ease\Shared::myDbLink()->queryTo2DArray(
+                $membersAviableArray = \Ease\Shared::db()->queryTo2DArray(
                     'SELECT '.$nameColumn.' '.
                     'FROM `'.$sTable.'` '.
                     'WHERE '.$sqlConds.' '.

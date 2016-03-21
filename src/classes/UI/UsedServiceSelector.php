@@ -163,7 +163,7 @@ class UsedServiceSelector extends EaseContainer
                     if (isset($request['addservice'])) {
                         $service->addMember('host_name', $request['host_id'],
                             $request['host_name']);
-                        if ($service->saveToMySQL()) {
+                        if ($service->saveToSQL()) {
                             $service->addStatusMessage(sprintf(_('položka %s byla přidána'),
                                     $request['addservice']), 'success');
                             if ($service->getDataValue('autocfg') == '1') {
@@ -180,7 +180,7 @@ class UsedServiceSelector extends EaseContainer
                     if (isset($request['delservice'])) {
                         $service->delMember('host_name', $request['host_id'],
                             $request['host_name']);
-                        if ($service->saveToMySQL()) {
+                        if ($service->saveToSQL()) {
                             $service->addStatusMessage(sprintf(_('položka %s byla odebrána'),
                                     $request['delservice']), 'success');
                         } else {

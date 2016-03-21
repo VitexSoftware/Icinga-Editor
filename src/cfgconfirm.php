@@ -17,7 +17,7 @@ $hash = $oPage->getRequestValue('hash');
 if ($host_id && $hash) {
     $host = new IEHost($host_id);
     $host->setDataValue('config_hash', $hash);
-    if ($host->saveToMySQL()) {
+    if ($host->saveToSQL()) {
         echo sprintf(_('Konfigurace %s potvrzena'), $host->getName());
     } else {
         echo sprintf(_('Chyba potvrzení konfigurace'), $host->getName());

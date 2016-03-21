@@ -51,13 +51,13 @@ if ($serviceName) {
 
     $service->setData($data);
 
-    if ($service->saveToMysql()) {
+    if ($service->saveToSQL()) {
         /*
           $serviceGroup = new IEServiceGroup;
           if ($serviceGroup->loadDefault()) {
           $serviceGroup->setDataValue($serviceGroup->nameColumn, \Ease\Shared::user()->getUserLogin());
           $serviceGroup->addMember('members', $service->getId(), $service->getName());
-          $serviceGroup->saveToMySQL();
+          $serviceGroup->saveToSQL();
           }
          */
         if (strlen(trim($service->getDataValue('check_command-remote')))) {

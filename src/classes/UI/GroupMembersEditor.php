@@ -64,7 +64,7 @@ class GroupMembersEditor extends EaseContainer
                 $aviavbleCond = '';
             }
 
-            $membersAviableArray = \Ease\Shared::myDbLink()->queryToArray(
+            $membersAviableArray = \Ease\Shared::db()->queryToArray(
                 'SELECT '.$nameColumn.', '.$iDColumn.' '.
                 'FROM `'.$sTable.'` '.
                 'WHERE ('.$sqlConds.') '.

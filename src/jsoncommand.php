@@ -37,9 +37,9 @@ if ($request) {
         $sqlConds = '';
     }
 
-    $query = 'SELECT `command_name` FROM `command` WHERE command_type=\'check\' AND (user_id=' . $oUser->getUserID() . ' OR public=1) AND command_name LIKE \'%' . \Ease\Shared::myDbLink()->AddSlashes($request) . '%\' ' . $sqlConds . ' ORDER BY command_name ' . $limit;
+    $query = 'SELECT `command_name` FROM `command` WHERE command_type=\'check\' AND (user_id=' . $oUser->getUserID() . ' OR public=1) AND command_name LIKE \'%' . \Ease\Shared::db()->AddSlashes($request) . '%\' ' . $sqlConds . ' ORDER BY command_name ' . $limit;
 
-    $membersFoundArray = \Ease\Shared::myDbLink()->queryToArray($query);
+    $membersFoundArray = \Ease\Shared::db()->queryToArray($query);
     if (count($membersFoundArray)) {
         foreach ($membersFoundArray as $request) {
             $membersFound[] = $request['command_name'];

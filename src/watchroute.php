@@ -113,7 +113,7 @@ if (is_null($hostId) || !$ip) {
             $host->setDataValue('generate', true);
             $host->setDataValue('address', $hop);
             $host->setDataValue($host->nameColumn, $newHostName);
-            $newHostId = (int) $host->insertToMySQL();
+            $newHostId = (int) $host->insertToSQL();
             if ($newHostId) {
                 $host->addStatusMessage(sprintf(_('Nový host %s %s založen'), $hop, $newHostName), 'success');
                 $parents[$hop] = array('host_id' => $newHostId, 'address' => $hop, $host->nameColumn => $newHostName);
@@ -132,13 +132,13 @@ if (is_null($hostId) || !$ip) {
         if (strstr($hostGroup->getName(), $oldNotes) == false) {
             $host->setDataValue('notes', $oldNotes . "\n" . $hostGroup->getName());
         }
-        $host->saveToMySQL();
+        $host->saveToSQL();
         $hostGroup->addMember('members', $host->getId(), $host->getName());
 
         $listing->addItemSmart(new \Ease\Html\ATag('host.php?host_id=' . $host->getId(), $host->getName()));
     }
 
-    if ($hostGroup->saveToMySQL()) {
+    if ($hostGroup->saveToSQL()) {
         $hostGroup->addStatusMessage(sprintf(_('Hostgrupa %s naplněna'), $hostGroup->getName()), 'success');
     } else {
         $hostGroup->addStatusMessage(sprintf(_('Hostgrupa %s nebyla naplněna'), $hostGroup->getName()), 'warning');

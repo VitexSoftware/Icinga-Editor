@@ -18,7 +18,7 @@ $Timeperiod = new IETimeperiod($oPage->getRequestValue('timeperiod_id', 'int'));
 if ($oPage->isPosted()) {
     unset($_POST['Save']);
     $Timeperiod->takeData($_POST);
-    $TimepriodID = $Timeperiod->saveToMySQL();
+    $TimepriodID = $Timeperiod->saveToSQL();
     if (is_null($TimepriodID)) {
         $oUser->addStatusMessage(_('časová perioda nebyl uložena'), 'warning');
     } else {
@@ -29,7 +29,7 @@ if ($oPage->isPosted()) {
 $DelColumn = $oPage->getGetValue('del');
 if (!is_null($DelColumn)) {
     $Del = $Timeperiod->delTime($DelColumn);
-    $TimepriodID = $Timeperiod->saveToMySQL();
+    $TimepriodID = $Timeperiod->saveToSQL();
     if (is_null($TimepriodID) && !$Del) {
         $oUser->addStatusMessage(_('položka nebyla odebrána'), 'warning');
     } else {

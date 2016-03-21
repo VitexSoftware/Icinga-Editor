@@ -535,7 +535,7 @@ class IEService extends IECfg
             $ownerId = \Ease\Shared::user()->getUserID();
         }
         $this->delMember('host_name', $host->getId(), $host->getName());
-        $this->saveToMySQL();
+        $this->saveToSQL();
 
         $this->setDataValue('parent_id', $this->getId());
         $this->unsetDataValue($this->getmyKeyColumn());
@@ -559,7 +559,7 @@ class IEService extends IECfg
         $this->setDataValue('host_name', array());
         $this->addMember('host_name', $host->getId(), $host->getName());
 
-        return $this->saveToMySQL();
+        return $this->saveToSQL();
     }
 
     /**
@@ -595,7 +595,7 @@ class IEService extends IECfg
                 $hostsErr[] = $hostAssigned['host_name'];
             }
         }
-        if ($this->saveToMySQL() && $newService->saveToMySQL() && count($hostsOK)) {
+        if ($this->saveToSQL() && $newService->saveToSQL() && count($hostsOK)) {
             $this->addStatusMessage(sprintf(_('%s byl přesunut z %s/%s do %s'), implode(',', $hostsOK), $this->keyword, $this->getName(), $newService->getName()), 'success');
             return true;
         } else {

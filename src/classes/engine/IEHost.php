@@ -340,7 +340,7 @@ class IEHost extends IECfg
         foreach ($servicesAssigned as $ServiceID => $ServiceInfo) {
             $service->loadFromMySQL($ServiceID);
             $service->delHostName($this->getId(), $this->getName());
-            if (!$service->saveToMySQL()) {
+            if (!$service->saveToSQL()) {
                 $this->addStatusMessage(sprintf(_('Nepodařilo se odregistrovat %s ze služby %s'), $this->getName(), $service->getName()), 'Error');
                 $delAll = false;
             }
@@ -352,7 +352,7 @@ class IEHost extends IECfg
         foreach ($childsOfMe as $chid_id => $child_info) {
             $child = new IEHost($chid_id);
 
-            if ($child->delMember('parents', $this->getId(), $this->getName()) && $child->saveToMySQL()) {
+            if ($child->delMember('parents', $this->getId(), $this->getName()) && $child->saveToSQL()) {
                 $this->addStatusMessage(sprintf(_('%s již není rodičem %s'), $this->getName(), $child->getName()), 'success');
             } else {
                 $this->addStatusMessage(sprintf(_('%s je stále rodičem %s'), $this->getName(), $child->getName()), 'warning');
@@ -451,7 +451,7 @@ class IEHost extends IECfg
         foreach ($servicesAssigned as $serviceID => $serviceInfo) {
             $service->loadFromMySQL($serviceID);
             $service->renameHostName($this->getId(), $newname);
-            if (!$service->saveToMySQL()) {
+            if (!$service->saveToSQL()) {
                 $this->addStatusMessage(sprintf(_('Nepodařilo se přejmenovat %s ve službě %s'), $this->getName(), $service->getName()), $Type);
                 $renameAll = false;
             }
@@ -462,7 +462,7 @@ class IEHost extends IECfg
             $child = new IEHost($chid_id);
             $child->delMember('parents', $this->getId(), $oldname);
             $child->addMember('parents', $this->getId(), $newname);
-            $child->updateToMySQL();
+            $child->updateToSQL();
         }
 
         if ($this->save() && $renameAll) {
@@ -727,14 +727,14 @@ class IEHost extends IECfg
      * @return int|null id nově vloženého řádku nebo null, pokud se data
      * nepovede vložit
      */
-    public function insertToMySQL($data = null)
+    public function insertToSQL($data = null)
     {
         if (!is_null($data)) {
             $this->takeData($data);
         }
         $hostgroup = new IEHostgroup($this->user->getUserLogin());
         $this->addMember('hostgroups', $hostgroup->getId(), $hostgroup->getName());
-        return parent::insertToMySQL();
+        return parent::insertToSQL();
     }
 
 }

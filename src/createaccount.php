@@ -47,7 +47,7 @@ if ($oPage->isPosted()) {
             $error = true;
             $oUser->addStatusMessage(_('chyba v mailové adrese'), 'warning');
         } else {
-            $check_email = \Ease\Shared::myDbLink()->queryToValue("SELECT COUNT(*) AS total FROM user WHERE email = '".$oPage->EaseAddSlashes($emailAddress)."'");
+            $check_email = \Ease\Shared::db()->queryToValue("SELECT COUNT(*) AS total FROM user WHERE email = '".$oPage->EaseAddSlashes($emailAddress)."'");
             if ($check_email > 0) {
                 $error = true;
                 $oUser->addStatusMessage(sprintf(_('Mailová adresa %s je již zaregistrována'),
@@ -64,7 +64,7 @@ if ($oPage->isPosted()) {
         $oUser->addStatusMessage(_('kontrola hesla nesouhlasí'), 'warning');
     }
 
-    $usedLogin = \Ease\Shared::myDbLink()->QueryToValue('SELECT id FROM user WHERE login=\''.$oPage->EaseAddSlashes($login).'\'');
+    $usedLogin = \Ease\Shared::db()->QueryToValue('SELECT id FROM user WHERE login=\''.$oPage->EaseAddSlashes($login).'\'');
     if ($usedLogin) {
         $error = true;
         $oUser->addStatusMessage(sprintf(_('Zadané uživatelské jméno %s je již v databázi použito. Zvolte prosím jiné.'),
@@ -73,7 +73,7 @@ if ($oPage->isPosted()) {
 
     if ($error == false) {
 
-        $newOUser = new IEUser();
+        $newOUser = new User();
         //TODO zde by se měly doplnit defaultní hodnoty z konfiguráku registry.php
         $newOUser->setData(
             array(
@@ -85,7 +85,7 @@ if ($oPage->isPosted()) {
             )
         );
 
-        $userID = $newOUser->insertToMySQL();
+        $userID = $newOUser->insertToSQL();
 
         if (!is_null($userID)) {
             $newOUser->setMyKey($userID);
@@ -95,7 +95,7 @@ if ($oPage->isPosted()) {
                 $newOUser->setSettingValue('admin', TRUE);
                 $oUser->addStatusMessage(_('Administrátirský účet byl vytvořen'),
                     'success');
-                $newOUser->saveToMySQL();
+                $newOUser->saveToSQL();
             } else {
                 $oUser->addStatusMessage(_('Uživatelský účet byl vytvořen'),
                     'success');
@@ -142,7 +142,7 @@ if ($oPage->isPosted()) {
                     'host_notification_commands' => 'notify-host-by-email',
                     'register' => 1)
             );
-            $contactID = $contact->saveToMySQL();
+            $contactID = $contact->saveToSQL();
             if ($contactID) {
                 $oUser->addStatusMessage(_('Výchozí kontakt byl založen'),
                     'success');
@@ -165,7 +165,7 @@ if ($oPage->isPosted()) {
                 'alias' => _('Skupina').'_'.$login, 'generate' => true, $contactGroup->userColumn => $userID));
             $contactGroup->addMember('members', $contactID, $login);
             $contactGroup->addMember('members', $mailID, $contact->getName());
-            $cgID         = $contactGroup->saveToMySQL();
+            $cgID         = $contactGroup->saveToSQL();
 
             if ($cgID) {
                 $oUser->addStatusMessage(_('Prvotní kontaktní skupina byla založena'),
@@ -181,7 +181,7 @@ if ($oPage->isPosted()) {
                 _('Výchozí skupina').' '.$newOUser->getUserLogin());
             $hostGroup->setDataValue('generate', true);
             $hostGroup->setUpUser($newOUser);
-            $hostGroup->insertToMySQL();
+            $hostGroup->insertToSQL();
 
             $oPage->redirect('wizard-host.php');
             exit;

@@ -21,7 +21,7 @@ class HostSelect extends \Ease\Html\Select
         $membersFound = array('' => '---');
         $query        = 'SELECT  `host_id`, `icon_image`,`platform`,`host_name` FROM `'.'host` WHERE (user_id='.$this->user->getUserID().' OR public=1) AND register=1 ORDER BY  host_name ';
 
-        $membersFoundArray = \Ease\Shared::myDbLink()->queryToArray($query);
+        $membersFoundArray = \Ease\Shared::db()->queryToArray($query);
         if (count($membersFoundArray)) {
             foreach ($membersFoundArray as $request) {
                 if (isset($request['icon_image'])) {

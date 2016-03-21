@@ -68,7 +68,7 @@ switch ($saver->getColumnType($field)) {
         break;
 }
 
-if (is_null($saver->saveToMySql())) {
+if (is_null($saver->saveToSQL())) {
     header('HTTP/1.0 501 Not Implemented', 501);
     $oUser->addStatusMessage(_('Chyba ukládání do databáze: ') . ' ' . $saver->myDbLink->ErrorText . ': ' .
         _('Třída') . ': <strong>' . $saverClass . '</strong> ' .

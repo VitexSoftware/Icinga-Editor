@@ -82,7 +82,7 @@ class IEPortScanner extends EaseSand
             $this->service->loadFromMySQL($port);
             $this->service->setmyKeyColumn('service_id');
             $this->service->addMember('host_name', $this->host->getId(), $this->host->getName());
-            if ($this->service->saveToMySQL()) {
+            if ($this->service->saveToSQL()) {
                 $this->addStatusMessage(sprintf(_('Přidána sledovaná služba: %s'), $this->service->getName()), 'success');
                 $success++;
             } else {
@@ -90,7 +90,7 @@ class IEPortScanner extends EaseSand
             }
         }
         if ($hostmod) {
-            $this->host->saveToMySQL();
+            $this->host->saveToSQL();
         }
 
         return $success;

@@ -20,7 +20,7 @@ $contactgroup = new IEContactgroup($oPage->getRequestValue('contactgroup_id', 'i
 
 if ($oPage->isPosted()) {
     $contactgroup->takeData($_POST);
-    $ContactgroupID = $contactgroup->saveToMySQL();
+    $ContactgroupID = $contactgroup->saveToSQL();
     if (is_null($ContactgroupID)) {
         $oUser->addStatusMessage(_('Skupina kontaktů nebyla uložena'), 'warning');
     } else {

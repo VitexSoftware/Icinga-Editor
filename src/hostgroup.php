@@ -25,7 +25,7 @@ switch ($oPage->getRequestValue('action')) {
             foreach ($groupMembers as $gmID => $hostName) {
                 $host->loadFromSQL((int) $gmID);
                 $host->addMember('contacts', $contact->getId(), $contact->getName());
-                if ($host->saveToMySQL()) {
+                if ($host->saveToSQL()) {
                     $host->addStatusMessage(sprintf(_('<strong>%s</strong> byl přidán mezi kontakty <strong>%s</strong>'), $contact->getName(), $host->getName()), 'success');
                 } else {
                     $host->addStatusMessage(sprintf(_('<strong>%s</strong> nebyl přidán mezi kontakty <strong>%s</strong>'), $contact->getName(), $host->getName()), 'warning');
@@ -43,7 +43,7 @@ switch ($oPage->getRequestValue('action')) {
                 $hostgroup->setDataValue('members', array());
             }
 
-            $hostgroupID = $hostgroup->saveToMySQL();
+            $hostgroupID = $hostgroup->saveToSQL();
             if (is_null($hostgroupID)) {
                 $oUser->addStatusMessage(_('Skupina hostů nebyla uložena'), 'warning');
             } else {

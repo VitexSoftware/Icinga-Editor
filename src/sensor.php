@@ -33,7 +33,7 @@ switch ($operation) {
         } else {
             $host->setDataValue('config_hash', null);
         }
-        if ($host->saveToMySQL()) {
+        if ($host->saveToSQL()) {
             $host->addStatusMessage(_('Stav nasazení senzoru byl nastaven  ručně.'));
         }
 

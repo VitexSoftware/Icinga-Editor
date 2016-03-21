@@ -80,7 +80,7 @@ class IEHostgroup extends IECfg
      */
     public function deleteHost($hostname)
     {
-        $memberOf = \Ease\Shared::myDbLink()->queryToArray('SELECT ' . $this->getmyKeyColumn() . ',' . $this->nameColumn . ' FROM ' . $this->myTable . ' WHERE members LIKE \'%"' . $hostname . '"%\' ', $this->getmyKeyColumn());
+        $memberOf = \Ease\Shared::db()->queryToArray('SELECT ' . $this->getmyKeyColumn() . ',' . $this->nameColumn . ' FROM ' . $this->myTable . ' WHERE members LIKE \'%"' . $hostname . '"%\' ', $this->getmyKeyColumn());
         foreach ($memberOf as $groupID => $group) {
             $found = false;
             $this->loadFromMySQL($groupID);
@@ -92,7 +92,7 @@ class IEHostgroup extends IECfg
                 }
             }
             if ($found) {
-                $this->saveToMySQL();
+                $this->saveToSQL();
             }
         }
     }
@@ -111,7 +111,7 @@ class IEHostgroup extends IECfg
 
     public function loadDefault()
     {
-        $groupID = \Ease\Shared::myDbLink()->queryToValue('SELECT ' . $this->getmyKeyColumn() . ' FROM ' . $this->myTable . ' WHERE ' . $this->userColumn . '= ' . \Ease\Shared::user()->getUserID() . ' ORDER BY ' . $this->getmyKeyColumn() . ' DESC LIMIT 1');
+        $groupID = \Ease\Shared::db()->queryToValue('SELECT ' . $this->getmyKeyColumn() . ' FROM ' . $this->myTable . ' WHERE ' . $this->userColumn . '= ' . \Ease\Shared::user()->getUserID() . ' ORDER BY ' . $this->getmyKeyColumn() . ' DESC LIMIT 1');
         if ($groupID) {
             $this->loadFromMySQL((int) $groupID);
 
@@ -129,7 +129,7 @@ class IEHostgroup extends IECfg
      */
     public function renameHost($oldname, $newname)
     {
-        $memberOf = \Ease\Shared::myDbLink()->queryToArray('SELECT ' . $this->getmyKeyColumn() . ',' . $this->nameColumn . ' FROM ' . $this->myTable . ' WHERE members LIKE \'%"' . $oldname . '"%\' ', $this->getmyKeyColumn());
+        $memberOf = \Ease\Shared::db()->queryToArray('SELECT ' . $this->getmyKeyColumn() . ',' . $this->nameColumn . ' FROM ' . $this->myTable . ' WHERE members LIKE \'%"' . $oldname . '"%\' ', $this->getmyKeyColumn());
         foreach ($memberOf as $groupID => $group) {
             $found = false;
             $this->loadFromMySQL($groupID);
@@ -141,7 +141,7 @@ class IEHostgroup extends IECfg
                 }
             }
             if ($found) {
-                $this->saveToMySQL();
+                $this->saveToSQL();
             }
         }
     }

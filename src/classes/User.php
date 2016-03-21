@@ -133,12 +133,12 @@ class User extends \Ease\User
      * @param array $data
      * @return type
      */
-    function insertToMySQL($data = null)
+    function insertToSQL($data = null)
     {
         if (is_null($data)) {
             $data = $this->getData();
         }
-        $result = parent::insertToMySQL($data);
+        $result = parent::insertToSQL($data);
 
         if (defined('DB_IW_SERVER_PASSWORD')) {
             $mysqli = new mysqli(DB_SERVER, DB_IW_SERVER_USERNAME,

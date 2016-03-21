@@ -15,7 +15,7 @@ class HostgroupSelect extends \Ease\Html\Select
         $membersFound = array('' => '---');
         $query        = 'SELECT  `hostgroup_id`, `hostgroup_name` FROM `'.'hostgroup` WHERE (user_id='.$this->user->getUserID().')  ORDER BY  hostgroup_name ';
 
-        $membersFoundArray = \Ease\Shared::myDbLink()->queryToArray($query);
+        $membersFoundArray = \Ease\Shared::db()->queryToArray($query);
         if (count($membersFoundArray)) {
             foreach ($membersFoundArray as $request) {
                 $membersFound[$request['hostgroup_id']] = $request['hostgroup_name'];

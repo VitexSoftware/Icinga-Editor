@@ -17,7 +17,7 @@ $serviceGroup = new IEServicegroup($oPage->getRequestValue('servicegroup_id', 'i
 
 if ($oPage->isPosted()) {
     $serviceGroup->takeData($_POST);
-    $ServicegroupID = $serviceGroup->saveToMySQL();
+    $ServicegroupID = $serviceGroup->saveToSQL();
     if (is_null($ServicegroupID)) {
         $oUser->addStatusMessage(_('Skupina služeb nebyla uložena'), 'warning');
     } else {

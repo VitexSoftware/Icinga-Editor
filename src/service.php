@@ -29,7 +29,7 @@ switch ($oPage->getRequestValue('action')) {
     case 'clone':
         $service->unsetDataValue($service->getmyKeyColumn());
         $service->setDataValue($service->nameColumn, $service->getName() . ' ' . _('Cloned'));
-        if ($service->saveToMySQL()) {
+        if ($service->saveToSQL()) {
             $oUser->addStatusMessage(_('Služba byla zklonovana'), 'success');
         } else {
             $oUser->addStatusMessage(_('Služba nebyla zklonovana'), 'error');
@@ -66,7 +66,7 @@ switch ($oPage->getRequestValue('action')) {
                 } else {
                     $service->takeData($_POST);
                 }
-                $serviceID = $service->saveToMySQL();
+                $serviceID = $service->saveToSQL();
                 if (is_null($serviceID)) {
                     $oUser->addStatusMessage(_('Služba nebyla uložena'), 'warning');
                 } else {

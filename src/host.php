@@ -26,7 +26,7 @@ switch ($oPage->getRequestValue('action')) {
             foreach ($services as $service_id => $service_name) {
                 $service->loadFromMySQL($service_id);
                 $service->addMember('host_name', $host->getId(), $host->getName());
-                $service->saveToMySQL();
+                $service->saveToSQL();
                 $service->dataReset();
             }
         }
@@ -35,7 +35,7 @@ switch ($oPage->getRequestValue('action')) {
             foreach ($contacts as $contact_id => $contact_name) {
                 $host->addMember('contacts', $contact_id, $contact_name);
             }
-            $host->saveToMySQL();
+            $host->saveToSQL();
         }
 
         break;
@@ -87,7 +87,7 @@ switch ($oPage->getRequestValue('action')) {
             $host->setDataValue('icon_image', $newicon);
             $host->setDataValue('statusmap_image', $newicon);
             $host->setDataValue('icon_image_alt', $oPage->getRequestValue('icon_image_alt'));
-            if ($host->saveToMySQL()) {
+            if ($host->saveToSQL()) {
                 $oUser->addStatusMessage(_('Ikona byla přiřazena'), 'success');
             } else {
                 $oUser->addStatusMessage(_('Ikona nebyla přiřazena'), 'warning');
@@ -107,7 +107,7 @@ switch ($oPage->getRequestValue('action')) {
     case 'parent':
         $np = $oPage->getRequestValue('newparent');
         if ($np) {
-            $newParent = \Ease\Shared::myDbLink()->queryToValue('SELECT `' . $host->nameColumn . '` FROM ' . $host->myTable . ' '
+            $newParent = \Ease\Shared::db()->queryToValue('SELECT `' . $host->nameColumn . '` FROM ' . $host->myTable . ' '
                 . 'WHERE `' . $host->nameColumn . '` = \'' . addSlashes($np) . '\' '
                 . 'OR `alias` = \'' . addSlashes($np) . '\' '
                 . 'OR `address` = \'' . addSlashes($np) . '\' '
@@ -120,7 +120,7 @@ switch ($oPage->getRequestValue('action')) {
                 $currentParents = $host->getDataValue('parents');
                 $currentParents[] = $newParent;
                 $host->setDataValue('parents', $currentParents);
-                $hostID = $host->saveToMySQL();
+                $hostID = $host->saveToSQL();
                 if (is_null($hostID)) {
                     $oUser->addStatusMessage(_('Rodič nebyl přidán'), 'warning');
                 } else {
@@ -132,7 +132,7 @@ switch ($oPage->getRequestValue('action')) {
     default:
         if ($oPage->isPosted()) {
             $host->takeData($_POST);
-            $hostID = $host->saveToMySQL();
+            $hostID = $host->saveToSQL();
             if (is_null($hostID)) {
                 $oUser->addStatusMessage(_('Host nebyl uložen'), 'warning');
             } else {
@@ -165,7 +165,7 @@ if ($delcnt) {
     $host->delMember(
         'contacts', $oPage->getGetValue('contact_id', 'int'), $delcnt
     );
-    $host->saveToMySql();
+    $host->saveToSQL();
 }
 
 $addcnt = $oPage->getGetValue('addcontact');
@@ -173,7 +173,7 @@ if ($addcnt) {
     $host->addMember(
         'contacts', $oPage->getGetValue('contact_id', 'int'), $addcnt
     );
-    $host->saveToMySql();
+    $host->saveToSQL();
 }
 
 $oPage->addItem(new UI\PageTop(_('Editace hosta') . ' ' . $host->getName()));

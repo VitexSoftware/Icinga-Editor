@@ -18,7 +18,7 @@ if (!is_object($oUser)) {
 $login = $oPage->getRequestValue('login');
 if ($login) {
     \Ease\Shared::user(new User());
-    \Ease\Shared::user()->SettingsColumn = 'settings';
+
     if ($oUser->tryToLogin($_POST)) {
         if ($oUser->getUserID() == 1) {
             $oUser->setSettingValue('admin', TRUE);

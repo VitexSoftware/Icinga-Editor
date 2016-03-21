@@ -1,4 +1,5 @@
 <?php
+
 namespace Icinga\Editor;
 
 /**
@@ -25,29 +26,30 @@ $oPage->addJavascript('$("#PassworRecovery").validate({
 });', null, true);
 
 if ($emailTo) {
-    $oPage->takemyTable();
-    $userEmail = $oPage->easeAddSlashes($emailTo);
-    $userFound = $oPage->myDbLink->queryToArray('SELECT id,login FROM user WHERE email=\'' . $userEmail . '\'');
+    $userEmail = \Ease\Shared::db()->easeAddSlashes($emailTo);
+    $userFound = \Ease\Shared::db()->queryToArray('SELECT id,login FROM user WHERE email=\''.$userEmail.'\'');
     if (count($userFound)) {
-        $userID = intval($userFound[0]['id']);
-        $userLogin = $userFound[0]['login'];
+        $userID      = intval($userFound[0]['id']);
+        $userLogin   = $userFound[0]['login'];
         $newPassword = $oPage->randomString(8);
 
-        $passChanger = new EaseUser($userID);
+        $passChanger = new User($userID);
         $passChanger->passwordChange($newPassword);
 
-        $email = $oPage->addItem(new EaseMail($userEmail, 'Icinga Editor -' . _('Nové heslo pro') . ' ' . $_SERVER['SERVER_NAME']));
+        $email = $oPage->addItem(new \Ease\Mailer($userEmail,
+            'Icinga Editor -'._('Nové heslo pro').' '.$_SERVER['SERVER_NAME']));
         $email->addItem(_("Tvoje přihlašovací údaje byly změněny:\n"));
 
-        $email->addItem(' Login: ' . $userLogin . "\n");
-        $email->addItem(' Heslo: ' . $newPassword . "\n");
+        $email->addItem(' Login: '.$userLogin."\n");
+        $email->addItem(' Heslo: '.$newPassword."\n");
 
         $email->send();
 
-        $oUser->addStatusMessage('Tvoje nové heslo vám bylo odesláno mailem na zadanou adresu <strong>' . $_REQUEST['Email'] . '</strong>');
+        $oUser->addStatusMessage('Tvoje nové heslo vám bylo odesláno mailem na zadanou adresu <strong>'.$_REQUEST['Email'].'</strong>');
         $success = true;
     } else {
-        $oUser->addStatusMessage('Promiňnte, ale email <strong>' . $_REQUEST['Email'] . '</strong> nebyl v databázi nalezen', 'warning');
+        $oUser->addStatusMessage('Promiňnte, ale email <strong>'.$_REQUEST['Email'].'</strong> nebyl v databázi nalezen',
+            'warning');
     }
 } else {
     $oUser->addStatusMessage(_('Zadejte prosím váš eMail.'));
@@ -61,15 +63,18 @@ if (!$success) {
 
     $oPage->columnIII->addItem(_('Zapoměl jste heslo? Vložte svou e-mailovou adresu, kterou jste zadal při registraci a my Vám pošleme nové.'));
 
-    $EmailForm = $oPage->columnII->addItem(new \Ease\Html\Form('PassworRecovery'));
-    $EmailForm->addItem(new EaseLabeledTextInput('Email', null, _('Email'), array('size' => '40')));
-    $EmailForm->addItem(new \Ease\JQuery\SubmitButton('ok', _('Zaslat nové heslo')));
+    $mailForm = $oPage->columnII->addItem(new \Ease\TWB\Form('PassworRecovery'));
+    $mailForm->addInput(new \Ease\Html\InputTextTag('Email', $emailTo,
+        ['type' => 'email']), _('Email'));
+    $mailForm->addInput(new \Ease\TWB\SubmitButton(_('Zaslat nové heslo'),
+        'success'));
 
     if (isset($_POST)) {
-        $EmailForm->fillUp($_POST);
+        $mailForm->fillUp($_POST);
     }
 } else {
-    $oPage->columnII->addItem(new \Ease\TWB\LinkButton('login.php', _('Pokračovat')));
+    $oPage->columnII->addItem(new \Ease\TWB\LinkButton('login.php',
+        _('Pokračovat')));
 }
 
 $oPage->addItem(new UI\PageBottom());

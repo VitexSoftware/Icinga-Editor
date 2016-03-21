@@ -127,7 +127,7 @@ class IEDataSource extends EaseBrick
                         break;
                     case 'add':
                         if ($this->controlAddColumns()) {
-                            if ($this->insertToMySQL()) {
+                            if ($this->insertToSQL()) {
                                 $this->webPage->addStatusMessage(_('Záznam byl přidán'), 'success');
                             } else {
                                 $this->webPage->addStatusMessage(_('Záznam nebyl přidám'), 'error');
@@ -136,7 +136,7 @@ class IEDataSource extends EaseBrick
                         break;
                     case 'edit':
                         if ($this->controlEditColumns()) {
-                            if ($this->saveToMySQL()) {
+                            if ($this->saveToSQL()) {
                                 $this->webPage->addStatusMessage(_('Záznam byl upraven'), 'success');
                             } else {
                                 $this->webPage->addStatusMessage(_('Záznam nebyl upravn'), 'error');

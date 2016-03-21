@@ -689,7 +689,7 @@ class IEcfg extends EaseBrick
      *
      * @return int ID záznamu nebo null v případě neůspěchu
      */
-    public function saveToMySQL($data = null, $searchForID = false)
+    public function saveToSQL($data = null, $searchForID = false)
     {
         if (is_null($data)) {
             $data = $this->getData();
@@ -740,7 +740,7 @@ class IEcfg extends EaseBrick
                     $data[$fieldName] = $this->myDbLink->addSlashes($value);
                 }
             }
-            $result = parent::saveToMySQL($data, $searchForID);
+            $result = parent::saveToSQL($data, $searchForID);
             if (!is_null($result) && (get_class($this->user) == 'IEUser')) {
                 $this->user->setSettingValue('unsaved', true);
             }
@@ -1113,13 +1113,13 @@ class IEcfg extends EaseBrick
                     $this->dataReset();
 
                     $this->takeData($buffer);
-                    if ($this->saveToMySQL()) {
+                    if ($this->saveToSQL()) {
 
                         if ($this->isTemplate()) {
                             $this->addStatusMessage(_('předloha') . ' ' . $this->keyword . ' <strong>' . $buffer['name'] . '</strong>' . _(' byl naimportován'), 'success');
                         } else {
                             if (!is_null($this->webLinkColumn) && !isset($buffer[$this->webLinkColumn])) {
-                                $this->updateToMySQL(
+                                $this->updateToSQL(
                                     array($this->getmyKeyColumn() => $this->getMyKey(),
                                       $this->webLinkColumn =>
                                       (str_replace(basename(EaseWebPage::getUri()), '', EaseWebPage::phpSelf(true))) .
@@ -1307,7 +1307,7 @@ class IEcfg extends EaseBrick
         $name = $webPage->getGetValue('name');
         if ($addColumn) {
             $this->addMember($addColumn, $webPage->getRequestValue('member', 'int'), $name);
-            $thisID = $this->saveToMySQL();
+            $thisID = $this->saveToSQL();
             if (is_null($thisID)) {
                 $this->addStatusMessage(sprintf(_('položka %s nebyla přidána do %s/%s/%s'), $name, $this->keyword, $this->getName(), $addColumn), 'warning');
             } else {
@@ -1319,7 +1319,7 @@ class IEcfg extends EaseBrick
             $thisID = null;
             $del = $this->delMember($delColumn, $webPage->getRequestValue('member', 'int'), $webPage->getGetValue('name'));
             if ($del) {
-                $thisID = $this->saveToMySQL();
+                $thisID = $this->saveToSQL();
             }
             if (is_null($thisID) && !$del) {
                 $this->addStatusMessage(sprintf(_('položka %s nebyla odebrána z %s/%s/%s'), $name, $this->keyword, $this->getName(), $delColumn), 'warning');

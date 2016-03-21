@@ -25,7 +25,7 @@ switch ($oPage->getRequestValue('action')) {
             if (!$script->getName()) {
                 $oUser->addStatusMessage(_('Není zadán název'), 'warning');
             }
-            $scriptID = $script->saveToMySQL();
+            $scriptID = $script->saveToSQL();
 
             if (is_null($scriptID)) {
                 $oUser->addStatusMessage(_('Příkaz nebyl uložen'), 'warning');

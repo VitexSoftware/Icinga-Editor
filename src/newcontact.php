@@ -37,7 +37,7 @@ if ($oPage->isPosted()) {
           'register' => 1)
     );
 
-    $contactID = $contact->saveToMySQL();
+    $contactID = $contact->saveToSQL();
     if (is_null($contactID)) {
         $oUser->addStatusMessage(_('Kontakt nebyl založen'), 'warning');
     } else {
@@ -50,7 +50,7 @@ if ($oPage->isPosted()) {
 $autoCreate = $oPage->getRequestValue('autocreate');
 if ($autoCreate == 'default') {
     $contact->setData(IEContact::ownContactData());
-    $contactID = $contact->saveToMySQL();
+    $contactID = $contact->saveToSQL();
 }
 
 $oPage->addItem(new UI\PageTop(_('Založení kontaktu') . ' ' . $contact->getName()));

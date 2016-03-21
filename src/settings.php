@@ -22,7 +22,7 @@ if ($oPage->getRequestValue('user') == 'normal') {
 switch ($oPage->getRequestValue('action')) {
     case 'untwittering':
         $oUser->setDataValue('twitter_id', null);
-        $oUser->saveToMySql();
+        $oUser->saveToSQL();
         unset($_SESSION['access_token']); //Twitter OAuth
         $oUser->addStatusMessage(_('Twitter byl odvázán od aktuálního účtu'));
         break;

@@ -10,12 +10,6 @@
         <group name="Monitoring">
             <file>file:/home/vitex/Projects/VitexSoftware/iciedit/src/includes/Configure.php</file>
         </group>
-        <group>
-            <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/src/includes/IEInit.php</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/src/classes/IEBootstrapMenu.php</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/composer.json</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/src/classes/IEMainMenu.php</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/vendor/composer/autoload_psr4.php</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

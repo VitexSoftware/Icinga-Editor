@@ -27,6 +27,17 @@ define('DB_SERVER_PASSWORD', 'LojAstod9');
  */
 define('DB_DATABASE', 'iciedit');
 
+/*
+ * Database Port
+ */
+define('DB_PORT', 3306);
+
+/*
+ * Druh Databaze
+ */
+define('DB_TYPE', 'mysql');
+
+
 /**
  * Adresář pro zápis logů
  */

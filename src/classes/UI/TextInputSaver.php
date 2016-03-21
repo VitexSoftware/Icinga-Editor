@@ -59,15 +59,15 @@ class TextInputSaver extends EaseLabeledTextInput
      * @param  boolean $SearchForID
      * @return int
      */
-    public function saveToMySQL($data = NULL, $SearchForID = false)
+    public function saveToSQL($data = NULL, $SearchForID = false)
     {
         if (is_null($data)) {
             $data = $this->GetData();
         }
-        $SaveResult = parent::SaveToMySQL($data, $SearchForID);
+        $SaveResult = parent::SaveToSQL($data, $SearchForID);
         if (is_null($SaveResult)) {
             if ($this->CreateMissingColumns($data) > 0) {
-                $SaveResult = parent::SaveToMySQL($data, $SearchForID);
+                $SaveResult = parent::SaveToSQL($data, $SearchForID);
             }
         }
 

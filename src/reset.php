@@ -51,7 +51,7 @@ if ($oPage->isPosted()) {
             $host->dataReset();
             $host->loadFromMySQL((int) $hostId);
             $host->setDataValue('config_hash', $host->getConfigHash());
-            $host->saveToMySQL();
+            $host->saveToSQL();
         }
         $oPage->addStatusMessage(sprintf(_('Stavy %s senzorů byly nastaveny'), count($allHosts)), 'success');
     }
