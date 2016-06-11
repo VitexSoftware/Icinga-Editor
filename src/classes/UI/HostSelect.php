@@ -9,17 +9,17 @@ namespace Icinga\Editor\UI;
  */
 class HostSelect extends \Ease\Html\Select
 {
-    public $hosts     = array('' => array('image' => 'logos/icinga.gif'));
-    public $platforms = array(
-        'generic' => array('image' => 'logos/unknown.gif'),
-        'windows' => array('image' => 'logos/base/win40.gif'),
-        'linux' => array('image' => 'logos/base/linux40.gif'),
-    );
+    public $hosts     = ['' => ['image' => 'logos/icinga.gif']];
+    public $platforms = [
+        'generic' => ['image' => 'logos/unknown.gif'],
+        'windows' => ['image' => 'logos/base/win40.gif'],
+        'linux' => ['image' => 'logos/base/linux40.gif'],
+    ];
 
     function loadItems()
     {
-        $membersFound = array('' => '---');
-        $query        = 'SELECT  `host_id`, `icon_image`,`platform`,`host_name` FROM `'.'host` WHERE (user_id='.$this->user->getUserID().' OR public=1) AND register=1 ORDER BY  host_name ';
+        $membersFound = ['' => '---'];
+        $query        = 'SELECT  `host_id`, `icon_image`,`platform`,`host_name` FROM `'.'host` WHERE (user_id='.\Ease\Shared::user()->getUserID().' OR public=1) AND register=1 ORDER BY  host_name ';
 
         $membersFoundArray = \Ease\Shared::db()->queryToArray($query);
         if (count($membersFoundArray)) {
@@ -33,7 +33,7 @@ class HostSelect extends \Ease\Html\Select
                         $icon = 'logos/unknown.gif';
                     }
                 }
-                $this->hosts[$request['host_id']]  = array('image' => $icon);
+                $this->hosts[$request['host_id']]  = ['image' => $icon];
                 $membersFound[$request['host_id']] = $request['host_name'];
             }
         }
@@ -48,7 +48,7 @@ class HostSelect extends \Ease\Html\Select
         foreach ($this->pageParts as $optionName => $option) {
             $platform = current($this->hosts);
             if (isset($platform['image'])) {
-                $this->pageParts[$optionName]->setTagProperties(array('data-image' => $platform['image']));
+                $this->pageParts[$optionName]->setTagProperties(['data-image' => $platform['image']]);
             }
             next($this->hosts);
         }

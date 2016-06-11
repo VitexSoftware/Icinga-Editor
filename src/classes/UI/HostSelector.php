@@ -10,7 +10,7 @@ namespace Icinga\Editor\UI;
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2012 Vitex@hippy.cz (G)
  */
-class HostSelector extends EaseContainer
+class HostSelector extends \Ease\Container
 {
     public $myKeyColumn = 'service_name';
 
@@ -21,26 +21,26 @@ class HostSelector extends EaseContainer
      */
     public function __construct($service)
     {
-        $hostsAssigned  = array();
+        $hostsAssigned  = [];
         parent::__construct();
-        $fieldName      = $this->getmyKeyColumn();
+        $fieldName      = $this->myKeyColumn;
         $initialContent = new \Ease\TWB\Panel(_('Sledované hosty služby'),
             'default');
-        $initialContent->setTagCss(array('width' => '100%'));
+        $initialContent->setTagCss(['width' => '100%']);
 
         if (is_null($service->getMyKey())) {
             $initialContent->addItem(_('Nejprve je potřeba uložit záznam'));
         } else {
             $serviceName = $service->getName();
-            $host        = new IEHost();
+            $host        = new \Icinga\Editor\Engine\IEHost();
 
             if (\Ease\Shared::user()->getSettingValue('admin')) {
-                $allHosts = $host->getAllFromMySQL(NULL,
-                    array($host->myKeyColumn, $host->nameColumn, 'platform', 'register'),
+                $allHosts = $host->getAllFromSQL(NULL,
+                    [$host->myKeyColumn, $host->nameColumn, 'platform', 'register'],
                     null, $host->nameColumn, $host->myKeyColumn);
             } else {
                 $allHosts = $host->getListing(null, true,
-                    array('platform', 'register'));
+                    ['platform', 'register']);
             }
             if ($service->getDataValue('host_name')) {
                 foreach ($service->getDataValue('host_name') as $hostId => $hostName) {
@@ -70,12 +70,12 @@ class HostSelector extends EaseContainer
                     $initialContent->addItem(
                         new \Ease\TWB\ButtonDropdown(
                         $hostInfo[$host->nameColumn], 'inverse', 'xs',
-                        array(
+                        [
                         new \Ease\Html\ATag('host.php?host_id='.$hostID.'&amp;service_id='.$service->getId(),
                             \Ease\TWB\Part::GlyphIcon('wrench').' '._('Editace')),
                         new \Ease\Html\ATag('?addhost='.$hostInfo[$host->nameColumn].'&amp;host_id='.$hostID.'&amp;'.$service->getmyKeyColumn().'='.$service->getMyKey().'&amp;'.$service->nameColumn.'='.$service->getName(),
                             \Ease\TWB\Part::GlyphIcon('plus').' '._('Začít sledovat'))
-                    )));
+                    ]));
                 }
             }
 
@@ -86,13 +86,13 @@ class HostSelector extends EaseContainer
                     $initialContent->addItem(
                         new \Ease\TWB\ButtonDropdown(
                         $hostInfo[$host->nameColumn], 'success', 'xs',
-                        array(
+                        [
                         new \Ease\Html\ATag(
                             '?delhost='.$hostInfo[$host->nameColumn].'&amp;host_id='.$hostID.'&amp;'.$service->getmyKeyColumn().'='.$service->getMyKey().'&amp;'.$service->nameColumn.'='.$service->getName(),
                             \Ease\TWB\Part::GlyphIcon('remove').' '._('Přestat sledovat'))
                         , new \Ease\Html\ATag('host.php?host_id='.$hostID.'&amp;service_id='.$service->getId(),
                             \Ease\TWB\Part::GlyphIcon('wrench').' '._('Editace'))
-                        )
+                        ]
                         )
                     );
                 }
@@ -108,9 +108,9 @@ class HostSelector extends EaseContainer
      */
     public static function saveMembers($request)
     {
-        $host = new IEHost();
+        $host = new Engine\IEHost();
         if (isset($request[$host->myKeyColumn])) {
-            if ($host->loadFromMySQL($request[$host->myKeyColumn])) {
+            if ($host->loadFromSQL($request[$host->myKeyColumn])) {
                 if (isset($request['addhost']) || isset($request['delhost'])) {
                     if (isset($request['addhost'])) {
                         $host->addMember('service_name', $request['service_id'],

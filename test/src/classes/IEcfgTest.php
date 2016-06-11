@@ -43,7 +43,7 @@ class IEcfgTest extends PHPUnit_Framework_TestCase
     );
 
     /**
-     * @var IECfg
+     * @var IEcfg
      */
     protected $object;
 
@@ -53,7 +53,7 @@ class IEcfgTest extends PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->object = new IECfg();
+        $this->object = new Engine\IEcfg();
 
         $this->object->myKeyColumn = 'test_id';
         $this->object->myTable = 'test';
@@ -89,7 +89,7 @@ class IEcfgTest extends PHPUnit_Framework_TestCase
     /**
      * Převzetí dat.
      *
-     * @covers IECfg::takeData
+     * @covers IEcfg::takeData
      */
     public function testTakeData()
     {
@@ -106,7 +106,7 @@ class IEcfgTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers IECfg::doThings
+     * @covers IEcfg::doThings
      *
      * @todo   Implement testDoThings().
      */
@@ -121,7 +121,7 @@ class IEcfgTest extends PHPUnit_Framework_TestCase
     /**
      * Přěvede data do HTML.
      *
-     * @covers IECfg::htmlizeData
+     * @covers IEcfg::htmlizeData
      */
     public function testHtmlizeData()
     {
@@ -136,7 +136,7 @@ class IEcfgTest extends PHPUnit_Framework_TestCase
     /**
      * Převede data do CSV.
      *
-     * @covers IECfg::csvizeData
+     * @covers IEcfg::csvizeData
      */
     public function testCsvizeData()
     {
@@ -151,7 +151,7 @@ class IEcfgTest extends PHPUnit_Framework_TestCase
     /**
      * Převede řádku dat do CSV.
      *
-     * @covers IECfg::csvizeRow
+     * @covers IEcfg::csvizeRow
      */
     public function testCsvizeRow()
     {
@@ -162,7 +162,7 @@ class IEcfgTest extends PHPUnit_Framework_TestCase
     /**
      * Převede řádku dat do HTML.
      *
-     * @covers IECfg::htmlizeRow
+     * @covers IEcfg::htmlizeRow
      */
     public function testHtmlizeRow()
     {
@@ -186,7 +186,7 @@ class IEcfgTest extends PHPUnit_Framework_TestCase
     /**
      * Vrací ID záznamu.
      *
-     * @covers IECfg::getId
+     * @covers IEcfg::getId
      */
     public function testGetId()
     {
@@ -198,7 +198,7 @@ class IEcfgTest extends PHPUnit_Framework_TestCase
     /**
      * Vrací jméno záznamu.
      *
-     * @covers IECfg::getName
+     * @covers IEcfg::getName
      */
     public function testGetName()
     {
@@ -207,7 +207,7 @@ class IEcfgTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers IECfg::delete
+     * @covers IEcfg::delete
      *
      * @todo   Implement testDelete().
      */
@@ -222,7 +222,7 @@ class IEcfgTest extends PHPUnit_Framework_TestCase
     /**
      * Vrací SELECT pro složitější SQL dotazy.
      *
-     * @covers IECfg::getListingQuerySelect
+     * @covers IEcfg::getListingQuerySelect
      */
     public function testGetListingQuerySelect()
     {
@@ -233,7 +233,7 @@ class IEcfgTest extends PHPUnit_Framework_TestCase
     /**
      * Vrací WHERE pro složitější SQL dotazy.
      *
-     * @covers IECfg::getListingQueryWhere
+     * @covers IEcfg::getListingQueryWhere
      */
     public function testGetListingQueryWhere()
     {
@@ -244,7 +244,7 @@ class IEcfgTest extends PHPUnit_Framework_TestCase
     /**
      * Místní nabídka operací se záznamem.
      *
-     * @covers IECfg::operationsMenu
+     * @covers IEcfg::operationsMenu
      */
     public function testOperationsMenu()
     {
@@ -256,7 +256,7 @@ class IEcfgTest extends PHPUnit_Framework_TestCase
     /**
      * Prázdná funkce pro zpracování uploadu.
      *
-     * @covers IECfg::handleUpload
+     * @covers IEcfg::handleUpload
      */
     public function testHandleUpload()
     {
@@ -264,7 +264,7 @@ class IEcfgTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers IECfg::searchString
+     * @covers IEcfg::searchString
      *
      * @todo   Implement testSearchString().
      */
@@ -279,7 +279,7 @@ class IEcfgTest extends PHPUnit_Framework_TestCase
     /**
      * Odstraní z pole "Neznámé" sloupce.
      *
-     * @covers IECfg::unsetUnknownColumns
+     * @covers IEcfg::unsetUnknownColumns
      */
     public function testUnsetUnknownColumns()
     {
@@ -291,11 +291,11 @@ class IEcfgTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers IECfg::getDataFromMySQL
+     * @covers IEcfg::getDataFromSQL
      *
-     * @todo   Implement testGetDataFromMySQL().
+     * @todo   Implement testGetDataFromSQL().
      */
-    public function testGetDataFromMySQL()
+    public function testGetDataFromSQL()
     {
         // Remove the following lines when you implement this test.
         $this->markTestIncomplete(
@@ -304,7 +304,7 @@ class IEcfgTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers IECfg::sqlColumnsToSelect
+     * @covers IEcfg::sqlColumnsToSelect
      */
     public function testSqlColumnsToSelect()
     {
@@ -315,7 +315,7 @@ class IEcfgTest extends PHPUnit_Framework_TestCase
     /**
      * Sql fragment dotazu specifický pro objekt.
      *
-     * @covers IECfg::getWhere
+     * @covers IEcfg::getWhere
      */
     public function testGetWhere()
     {

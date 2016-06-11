@@ -1,4 +1,5 @@
 <?php
+
 namespace Icinga\Editor;
 
 /**
@@ -10,7 +11,6 @@ namespace Icinga\Editor;
  * @copyright  2012 Vitex@hippy.cz (G)
  */
 require_once 'includes/IEInit.php';
-require_once 'classes/IETextInputSaver.php';
 
 $oPage->onlyForLogged();
 
@@ -31,7 +31,7 @@ switch ($oPage->getRequestValue('action')) {
         break;
 }
 
-$oPage->addItem(new UI\PageTop(_('Profil uživatele') . ' ' . $oUser->GetUserLogin()));
+$oPage->addItem(new UI\PageTop(_('Profil uživatele').' '.$oUser->GetUserLogin()));
 $oPage->addPageColumns();
 
 
@@ -52,19 +52,24 @@ $(\'#UserMail\').change( function () {
 ', NULL, TRUE);
 
 $settingsFrame = new \Ease\TWB\Panel(_('nastavení'));
-$settingsFrame->addItem(new \Ease\Html\ATag('https://secure.gravatar.com/', $oUser, array('title' => 'klikni pro změnu ikony')));
+$settingsFrame->addItem(new \Ease\Html\ATag('https://secure.gravatar.com/',
+    $oUser, ['title' => 'klikni pro změnu ikony']));
 
-$settingsFrame->addItem(new IETextInputSaver('login', $oUser->getUserLogin(), _('přihlašovací jméno')));
-$settingsFrame->addItem(new \Ease\TWB\LinkButton('changepassword.php', _('změna hesla')));
+$settingsFrame->addItem(new \Ease\TWB\FormGroup(_('přihlašovací jméno'),
+    new UI\TextInputSaver('login', $oUser->getUserLogin())));
+$settingsFrame->addItem(new \Ease\TWB\LinkButton('changepassword.php',
+    _('změna hesla')));
 
-$settingsFrame->addItem(new IETextInputSaver('email', $oUser->getUserEmail(), _('emailová adresa'), array('id' => 'UserMail')));
+$settingsFrame->addItem(new \Ease\TWB\FormGroup(_('emailová adresa'),
+    new UI\TextInputSaver('email', $oUser->getUserEmail(), ['id' => 'UserMail'])));
 
 $settingsFrame->addItem('<br>');
 
 $oPage->columnII->addItem($settingsFrame);
 
 if ((bool) $oUser->getSettingValue('admin')) {
-    $oPage->columnIII->addItem(new \Ease\TWB\LinkButton('?user=normal', _('Zahodit adminská oprávnění'), 'danger'));
+    $oPage->columnIII->addItem(new \Ease\TWB\LinkButton('?user=normal',
+        _('Zahodit adminská oprávnění'), 'danger'));
 }
 //
 //if (!intval($oUser->getDataValue('twitter_id'))) {

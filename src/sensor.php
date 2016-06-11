@@ -10,8 +10,6 @@ namespace Icinga\Editor;
  * @copyright  2012 Vitex@hippy.cz (G)
  */
 require_once 'includes/IEInit.php';
-require_once 'classes/IEHost.php';
-require_once 'classes/IEFXPreloader.php';
 
 $oPage->onlyForLogged();
 
@@ -22,7 +20,7 @@ if ($hostId == 0) {
     exit();
 }
 
-$host = new IEHost($hostId);
+$host = new Engine\IEHost($hostId);
 
 $operation = $oPage->getRequestValue('operation');
 switch ($operation) {
@@ -46,7 +44,7 @@ switch ($operation) {
 
 $oPage->addItem(new UI\PageTop(_('Sensor')));
 
-$oPage->container->addItem(new IESensorTool($host));
+$oPage->container->addItem(new SensorTool($host));
 
 $oPage->addItem(new UI\PageBottom());
 

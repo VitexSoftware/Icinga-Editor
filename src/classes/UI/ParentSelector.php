@@ -10,7 +10,7 @@ namespace Icinga\Editor\UI;
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2012 Vitex@hippy.cz (G)
  */
-class ParentSelector extends EaseContainer
+class ParentSelector extends \Ease\Container
 {
     public $myKeyColumn = 'host_name';
 
@@ -33,7 +33,7 @@ class ParentSelector extends EaseContainer
         $addparentForm->addItem(new \Ease\TWB\SubmitButton(_('Přidat rodiče'),
             'success'));
 
-        $initialContent->setTagCss(array('width' => '100%'));
+        $initialContent->setTagCss(['width' => '100%']);
 
         if (is_null($host->getMyKey())) {
             $initialContent->addItem(_('Nejprve je potřeba uložit záznam'));
@@ -47,7 +47,7 @@ class ParentSelector extends EaseContainer
                 }
             }
 
-            $parentsAssigned = array();
+            $parentsAssigned = [];
             foreach ($host->getDataValue('parents') as $parentAssigned) {
                 $parentID                                       = \Ease\Shared::db()->queryToValue('SELECT `'.$host->myKeyColumn.'` FROM '.$host->myTable.' WHERE `'.$host->nameColumn.'` = \''.addSlashes($parentAssigned).'\'');
                 $parentsAssigned[$parentID][$host->nameColumn]  = $parentAssigned;
@@ -89,12 +89,12 @@ class ParentSelector extends EaseContainer
         }
         $parentMenu = new \Ease\TWB\ButtonDropdown(
             $pName, $type, 'xs',
-            array(
+            [
             new \Ease\Html\ATag('?'.$operation.'=parents&amp;name='.$parentInfo[$host->nameColumn].'&amp;member='.$parentID.'&amp;'.$host->myKeyColumn.'='.$host->getId(),
                 \Ease\TWB\Part::GlyphIcon($op).' '.$opCaption),
             new \Ease\Html\ATag('host.php?host_id='.$parentID,
                 \Ease\TWB\Part::GlyphIcon('wrench').' '._('Editace'))
-            )
+            ]
         );
 
         return $parentMenu;

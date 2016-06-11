@@ -10,13 +10,12 @@ namespace Icinga\Editor;
  * @copyright  2012 Vitex@hippy.cz (G)
  */
 require_once 'includes/IEInit.php';
-require_once 'classes/IEContactgroup.php';
 
 $oPage->onlyForLogged();
 
 $oPage->addItem(new UI\PageTop(_('Kontaktní skupiny')));
 
-$oPage->container->addItem(new IEDataGrid(_('Kontaktní skupiny'), new IEContactgroup));
+$oPage->container->addItem(new UI\DataGrid(_('Kontaktní skupiny'), new Engine\IEContactgroup));
 
 $oPage->addItem(new UI\PageBottom());
 

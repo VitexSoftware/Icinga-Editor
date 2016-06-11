@@ -10,7 +10,6 @@ namespace Icinga\Editor;
  * @copyright  2012 Vitex@hippy.cz (G)
  */
 require_once 'includes/IEInit.php';
-require_once 'classes/IEUserGroupForm.php';
 
 $oPage->onlyForLogged();
 
@@ -18,7 +17,7 @@ $usergroup_name = $oPage->getRequestValue('usergroup_name');
 $usergroup_id = $oPage->getRequestValue('usergroup_id', 'int');
 $member_id = $oPage->getRequestValue('member_id', 'int');
 
-$userGroup = new IEUserGroup($usergroup_id);
+$userGroup = new Engine\IEUserGroup($usergroup_id);
 
 switch ($oPage->getRequestValue('action')) {
     case 'addmember':
@@ -75,7 +74,7 @@ switch ($oPage->getRequestValue('action')) {
 
         break;
     default :
-        $oPage->columnII->addItem(new IEUserGroupForm($userGroup));
+        $oPage->columnII->addItem(new \Icinga\Editor\UI\UserGroupForm($userGroup));
         if ($userGroup->getMyKey()) {
             $oPage->columnIII->addItem($userGroup->deleteButton());
         }

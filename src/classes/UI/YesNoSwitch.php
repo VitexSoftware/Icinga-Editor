@@ -8,14 +8,14 @@
  * @author     Vitex <dvorak@austro-bohemia.cz>
  * @copyright  2015 Austro-Bohemia s.r.o.
  */
-require_once 'classes/IETWBSwitch.php';
+namespace Icinga\Editor\UI;
 
 /**
  * Description of ABYesNoSwitch
  *
  * @author vitex
  */
-class IEYesNoSwitch extends IETWBSwitch
+class YesNoSwitch extends TWBSwitch
 {
 
     function __construct($name, $checked = false, $value = null, $properties = null)

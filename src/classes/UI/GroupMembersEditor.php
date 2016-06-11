@@ -1,4 +1,5 @@
 <?php
+
 namespace Icinga\Editor\UI;
 
 /**
@@ -9,7 +10,7 @@ namespace Icinga\Editor\UI;
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2012 Vitex@hippy.cz (G)
  */
-class GroupMembersEditor extends EaseContainer
+class GroupMembersEditor extends \Ease\Container
 {
 
     /**
@@ -28,20 +29,20 @@ class GroupMembersEditor extends EaseContainer
         if (isset($dataSource->keywordsInfo[$fieldName]['refdata']['condition'])) {
             $conditions = $dataSource->keywordsInfo[$fieldName]['refdata']['condition'];
         } else {
-            $conditions = array();
+            $conditions = [];
         }
 
         if (isset($dataSource->keywordsInfo[$fieldName]['refdata']['public']) && intval($dataSource->keywordsInfo[$fieldName]['refdata']['public'])) {
-            $sqlConds = " ( ".$dataSource->myDbLink->prepSelect(array_merge($conditions,
-                        array($dataSource->userColumn => \Ease\Shared::user()->getUserID())))." ) OR ( ".$dataSource->myDbLink->prepSelect(array_merge($conditions,
-                        array('public' => 1))).")  ";
+            $sqlConds = " ( ".$dataSource->dblink->prepSelect(array_merge($conditions,
+                        [$dataSource->userColumn => \Ease\Shared::user()->getUserID()]))." ) OR ( ".$dataSource->dblink->prepSelect(array_merge($conditions,
+                        ['public' => 1])).")  ";
         } else {
-            $sqlConds = $dataSource->myDbLink->prepSelect(array_merge($conditions,
-                    array($dataSource->userColumn => \Ease\Shared::user()->getUserID())));
+            $sqlConds = $dataSource->dblink->prepSelect(array_merge($conditions,
+                    [$dataSource->userColumn => \Ease\Shared::user()->getUserID()]));
         }
 
         $initialContent = new \Ease\TWB\Panel($fieldCaption);
-        $initialContent->setTagCss(array('width' => '100%'));
+        $initialContent->setTagCss(['width' => '100%']);
 
 
 
@@ -83,17 +84,17 @@ class GroupMembersEditor extends EaseContainer
                     $initialContent->addItem(
                         new \Ease\TWB\ButtonDropdown(
                         $memberName[$nameColumn], 'inverse', 'xs',
-                        array(
+                        [
                         new \Ease\Html\ATag($reftable.'.php?'.$reftable.'_id='.$memberID,
                             \Ease\TWB\Part::GlyphIcon('wrench').' '._('Editace')),
                         new \Ease\Html\ATag(null,
                             \Ease\TWB\Part::GlyphIcon('plus-sign').' '.$addText,
-                            array(
+                            [
                             'onClick' => "addGroupMember('".get_class($dataSource)."','".$dataSource->getId()."','".$fieldName."','".$memberName[$nameColumn]."','".$memberID."')"
-                            , 'class' => 'handle', 'data-addtext' => $addText, 'data-deltext' => $delText))
-                        ),
-                        array('id' => get_class($dataSource).'_'.$fieldName.'_'.$memberID,
-                        'style' => 'margin: 1px;')));
+                            , 'class' => 'handle', 'data-addtext' => $addText, 'data-deltext' => $delText])
+                        ],
+                        ['id' => get_class($dataSource).'_'.$fieldName.'_'.$memberID,
+                        'style' => 'margin: 1px;']));
                 }
             }
 
@@ -104,17 +105,17 @@ class GroupMembersEditor extends EaseContainer
                     $initialContent->addItem(
                         new \Ease\TWB\ButtonDropdown(
                         $memberName, 'success', 'xs',
-                        array(
+                        [
                         new \Ease\Html\ATag($reftable.'.php?'.$reftable.'_id='.$memberID,
                             \Ease\TWB\Part::GlyphIcon('wrench').' '._('Editace')),
                         new \Ease\Html\ATag(null,
                             \Ease\TWB\Part::GlyphIcon('remove').' '._('Odebrat'),
-                            array(
+                            [
                             'onClick' => "delGroupMember('".get_class($dataSource)."','".$dataSource->getId()."','".$fieldName."','".$memberName."','".$memberID."')"
-                            , 'class' => 'handle', 'data-addtext' => $addText, 'data-deltext' => $delText))
-                        ),
-                        array('id' => get_class($dataSource).'_'.$fieldName.'_'.$memberID,
-                        'style' => 'margin: 1px;'))
+                            , 'class' => 'handle', 'data-addtext' => $addText, 'data-deltext' => $delText])
+                        ],
+                        ['id' => get_class($dataSource).'_'.$fieldName.'_'.$memberID,
+                        'style' => 'margin: 1px;'])
                     );
                 }
             }

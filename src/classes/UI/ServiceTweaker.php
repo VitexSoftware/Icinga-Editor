@@ -46,14 +46,14 @@ class ServiceTweaker extends \Ease\Html\Div
         $this->service = $service;
         $this->host    = $host;
 
-        $this->command = new IECommand();
+        $this->command = new \Icinga\Editor\Engine\IECommand();
         $this->command->setmyKeyColumn($this->command->nameColumn);
 
         $checkLocal = $this->service->getDataValue('check_command');
 //        $checkRemote = $this->service->getDataValue('check_command-remote');
 
         if (isset($checkLocal)) {
-            $this->command->loadFromMySQL($checkLocal);
+            $this->command->loadFromSQL($checkLocal);
         }
 
         $configurator = $this->service->getDataValue('configurator');
@@ -61,6 +61,7 @@ class ServiceTweaker extends \Ease\Html\Div
             $module = 'modules/'.$configurator.'.inc.php';
             if (file_exists($module)) {
                 require_once $module;
+                $configurator       = '\\Icinga\Editor\\modules\\'.$configurator;
                 $this->configurator = $this->addItem(new $configurator($this));
             } else {
                 $this->addStatusMessage(sprintf(_('Modul %s nebyl nalezen'),
@@ -80,7 +81,7 @@ class ServiceTweaker extends \Ease\Html\Div
 
         $this->addItem('<br>'.$cmdline);
 
-        $params = array();
+        $params = [];
 
         $parts    = array_reverse(explode(' ', $cmdline));
         $checkCmd = end($parts);
@@ -98,7 +99,7 @@ class ServiceTweaker extends \Ease\Html\Div
         pclose($handle);
 
         $helplines = explode("\n", $help);
-        $options   = array();
+        $options   = [];
         foreach ($helplines as $hip => $helpline) {
             $helpline = trim($helpline);
             if (strlen($helpline) && ($helpline[0] == '-')) {

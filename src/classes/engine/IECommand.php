@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Konfigurace Kontaktů
  *
@@ -8,18 +7,18 @@
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2012 Vitex@hippy.cz (G)
  */
-require_once 'IEcfg.php';
+
+namespace Icinga\Editor\Engine;
 
 /**
  * Spráce kontaktů
  */
-class IECommand extends IECfg
+class IECommand extends IEcfg
 {
-
-    public $myTable = 'command';
+    public $myTable     = 'command';
     public $myKeyColumn = 'command_id';
-    public $nameColumn = 'command_name';
-    public $keyword = 'command';
+    public $nameColumn  = 'command_name';
+    public $keyword     = 'command';
 
     /**
      * Přidat položky register a use ?
@@ -31,50 +30,50 @@ class IECommand extends IECfg
      * Položky
      * @var array
      */
-    public $useKeywords = array(
-      'command_name' => 'VARCHAR(128)',
-      'command_line' => 'TEXT',
-      'command_type' => "ENUM('check','notify','handler')",
-      'command_local' => 'BOOL',
-      'command_remote' => 'BOOL',
-      'script_id' => 'SELECTID',
-      'platform' => "PLATFORM"
-    );
+    public $useKeywords = [
+        'command_name' => 'VARCHAR(128)',
+        'command_line' => 'TEXT',
+        'command_type' => "ENUM('check','notify','handler')",
+        'command_local' => 'BOOL',
+        'command_remote' => 'BOOL',
+        'script_id' => 'SELECTID',
+        'platform' => "PLATFORM"
+    ];
 
     /**
      * Info
      * @var array
      */
-    public $keywordsInfo = array(
-      'command_name' => array(
-        'severity' => 'mandatory',
-        'title' => 'název příkazu', 'required' => true),
-      'command_line' => array(
-        'severity' => 'mandatory',
-        'title' => 'příkaz', 'required' => true),
-      'command_type' => array(
-        'severity' => 'mandatory',
-        'title' => 'druh příkazu', 'required' => true),
-      'command_local' => array(
-        'severity' => 'basic',
-        'title' => 'lokální příkaz'),
-      'command_remote' => array(
-        'severity' => 'basic',
-        'title' => 'vzdálený příkaz NRPE/Nsc++'),
-      'script_id' => array(
-        'severity' => 'basic',
-        'title' => 'Instalace',
-        'refdata' => array(
-          'table' => 'script',
-          'captioncolumn' => 'filename',
-          'idcolumn' => 'script_id',
-          'public' => true
-        )
-      ),
-      'platform' => array(
-        'severity' => 'basic',
-        'title' => 'Platforma', 'mandatory' => true)
-    );
+    public $keywordsInfo = [
+        'command_name' => [
+            'severity' => 'mandatory',
+            'title' => 'název příkazu', 'required' => true],
+        'command_line' => [
+            'severity' => 'mandatory',
+            'title' => 'příkaz', 'required' => true],
+        'command_type' => [
+            'severity' => 'mandatory',
+            'title' => 'druh příkazu', 'required' => true],
+        'command_local' => [
+            'severity' => 'basic',
+            'title' => 'lokální příkaz'],
+        'command_remote' => [
+            'severity' => 'basic',
+            'title' => 'vzdálený příkaz NRPE/Nsc++'],
+        'script_id' => [
+            'severity' => 'basic',
+            'title' => 'Instalace',
+            'refdata' => [
+                'table' => 'script',
+                'captioncolumn' => 'filename',
+                'idcolumn' => 'script_id',
+                'public' => true
+            ]
+        ],
+        'platform' => [
+            'severity' => 'basic',
+            'title' => 'Platforma', 'mandatory' => true]
+    ];
 
     /**
      * URL dokumentace objektu
@@ -155,5 +154,4 @@ class IECommand extends IECfg
         }
         return parent::takeData($data, $dataPrefix);
     }
-
 }

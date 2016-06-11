@@ -13,7 +13,7 @@ class InfoBox extends \Ease\TWB\Panel
     /**
      * Infopanel objektu
      *
-     * @param IECfg $subject
+     * @param IEcfg $subject
      */
     public function __construct($subject)
     {

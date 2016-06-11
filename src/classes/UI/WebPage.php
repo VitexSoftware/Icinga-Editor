@@ -11,10 +11,8 @@ define('IE_VERSION', '0.196');
  * @author    Vitex <vitex@hippy.cz>
  * @copyright 2009-2011 Vitex@hippy.cz (G)
  */
-
 class WebPage extends \Ease\TWB\WebPage
 {
-
     /**
      * Hlavní blok stránky
      * @var \Ease\Html\Div
@@ -63,7 +61,8 @@ class WebPage extends \Ease\TWB\WebPage
         $this->head->addItem('<link rel="apple-touch-icon-precomposed" href="img/vsmonitoring.png">');
         $this->head->addItem('<link rel="shortcut icon"  type="image/png" href="img/vsmonitoring.png">');
         $this->addItem('<br>');
-        $this->container = $this->addItem(new \Ease\Html\Div( null, array('class' => 'container')));
+        $this->container    = $this->addItem(new \Ease\Html\Div(null,
+            ['class' => 'container']));
     }
 
     /**
@@ -71,11 +70,15 @@ class WebPage extends \Ease\TWB\WebPage
      */
     function addPageColumns()
     {
-        $row = $this->container->addItem(new \Ease\Html\Div( null, array('class' => 'row')));
+        $row = $this->container->addItem(new \Ease\Html\Div(null,
+            ['class' => 'row']));
 
-        $this->columnI = $row->addItem(new \Ease\Html\Div( null, array('class' => 'col-md-4')));
-        $this->columnII = $row->addItem(new \Ease\Html\Div( null, array('class' => 'col-md-4')));
-        $this->columnIII = $row->addItem(new \Ease\Html\Div( null, array('class' => 'col-md-4')));
+        $this->columnI   = $row->addItem(new \Ease\Html\Div(null,
+            ['class' => 'col-md-4']));
+        $this->columnII  = $row->addItem(new \Ease\Html\Div(null,
+            ['class' => 'col-md-4']));
+        $this->columnIII = $row->addItem(new \Ease\Html\Div(null,
+            ['class' => 'col-md-4']));
     }
 
     /**
@@ -85,8 +88,9 @@ class WebPage extends \Ease\TWB\WebPage
      */
     public function onlyForAdmin($loginPage = 'login.php')
     {
-        if (!$this->user->getSettingValue('admin')) {
-            \Ease\Shared::user()->addStatusMessage(_('Nejprve se prosím přihlašte jako admin'), 'warning');
+        if (!\Ease\Shared::user()->getSettingValue('admin')) {
+            \Ease\Shared::user()->addStatusMessage(_('Nejprve se prosím přihlašte jako admin'),
+                'warning');
             $this->redirect($loginPage);
             exit;
         }
@@ -99,7 +103,6 @@ class WebPage extends \Ease\TWB\WebPage
      */
     function onlyForLogged($loginPage = 'login.php')
     {
-        return parent::onlyForLogged($loginPage . '?backurl=' . urlencode($_SERVER['REQUEST_URI']));
+        return parent::onlyForLogged($loginPage.'?backurl='.urlencode($_SERVER['REQUEST_URI']));
     }
-
 }

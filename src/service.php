@@ -1,4 +1,5 @@
 <?php
+
 namespace Icinga\Editor;
 
 /**
@@ -13,7 +14,7 @@ require_once 'includes/IEInit.php';
 
 $oPage->onlyForLogged();
 
-$service = new IEService($oPage->getRequestValue('service_id', 'int'));
+$service = new Engine\IEService($oPage->getRequestValue('service_id', 'int'));
 
 switch ($oPage->getRequestValue('action')) {
     case 'rename':
@@ -28,7 +29,8 @@ switch ($oPage->getRequestValue('action')) {
         break;
     case 'clone':
         $service->unsetDataValue($service->getmyKeyColumn());
-        $service->setDataValue($service->nameColumn, $service->getName() . ' ' . _('Cloned'));
+        $service->setDataValue($service->nameColumn,
+            $service->getName().' '._('Cloned'));
         if ($service->saveToSQL()) {
             $oUser->addStatusMessage(_('Služba byla zklonovana'), 'success');
         } else {
@@ -39,23 +41,25 @@ switch ($oPage->getRequestValue('action')) {
     case 'system':
         $hosts = $service->getDataValue('host_name');
         foreach ($hosts as $host_id => $host_name) {
-            $host = new IEHost($host_id);
-            $newService = new IEService($service->getId());
+            $host       = new Engine\IEHost($host_id);
+            $newService = new Engine\IEService($service->getId());
             $newService->setDataValue($service->userColumn, 0);
             $newService->setDataValue('public', 0);
             if ($newService->fork($host, $host->getDataValue($host->userColumn))) {
-                $oUser->addStatusMessage(sprintf(_('Služba %s byla odvozena'), $newService->getName()), 'success');
+                $oUser->addStatusMessage(sprintf(_('Služba %s byla odvozena'),
+                        $newService->getName()), 'success');
             } else {
                 $oUser->addStatusMessage(_('Služba nebyla odvozena'), 'error');
             }
         }
-        $service->loadFromMySQL($service->getId());
+        $service->loadFromSQL($service->getId());
         break;
     case 'swap':
         $service->swapTo($oPage->getRequestValue('new_service_id', 'int'));
         break;
     case 'export':
-        $service->transferDeps($oPage->getRequestValue('destination'), $oPage->getRequestValue('rels'));
+        $service->transferDeps($oPage->getRequestValue('destination'),
+            $oPage->getRequestValue('rels'));
         break;
     default :
         if ($oPage->isPosted()) {
@@ -68,7 +72,8 @@ switch ($oPage->getRequestValue('action')) {
                 }
                 $serviceID = $service->saveToSQL();
                 if (is_null($serviceID)) {
-                    $oUser->addStatusMessage(_('Služba nebyla uložena'), 'warning');
+                    $oUser->addStatusMessage(_('Služba nebyla uložena'),
+                        'warning');
                 } else {
                     $oUser->addStatusMessage(_('Služba byla uložena'), 'success');
                 }
@@ -88,11 +93,11 @@ if ($delete == 'true') {
     $service->delete();
 }
 
-$oPage->addItem(new UI\PageTop(_('Editace služby') . ' ' . $service->getName()));
+$oPage->addItem(new UI\PageTop(_('Editace služby').' '.$service->getName()));
 
-$infopanel = new IEInfoBox($service);
-$tools = new \Ease\TWB\Panel(_('Nástroje'), 'warning');
-$pageRow = new \Ease\TWB\Row;
+$infopanel = new UI\InfoBox($service);
+$tools     = new \Ease\TWB\Panel(_('Nástroje'), 'warning');
+$pageRow   = new \Ease\TWB\Row;
 $pageRow->addColumn(2, $infopanel);
 $mainPanel = $pageRow->addColumn(6);
 $pageRow->addColumn(4, $tools);
@@ -100,22 +105,28 @@ $oPage->container->addItem($pageRow);
 
 switch ($oPage->getRequestValue('action')) {
     case 'delete':
-        $confirmator = $mainPanel->addItem(new \Ease\TWB\Panel(_('Opravdu smazat ?')), 'danger');
-        $confirmator->addItem(new \Ease\TWB\LinkButton('?' . $service->myKeyColumn . '=' . $service->getID(), _('Ne') . ' ' . \Ease\TWB\Part::glyphIcon('ok'), 'success'));
-        $confirmator->addItem(new \Ease\TWB\LinkButton('?delete=true&' . $service->myKeyColumn . '=' . $service->getID(), _('Ano') . ' ' . \Ease\TWB\Part::glyphIcon('remove'), 'danger'));
-        $tools->addItem(new \Ease\TWB\Panel(_('Výměna služby'), 'info', new IEServiceSwapForm($service)));
+        $confirmator = $mainPanel->addItem(new \Ease\TWB\Panel(_('Opravdu smazat ?')),
+            'danger');
+        $confirmator->addItem(new \Ease\TWB\LinkButton('?'.$service->myKeyColumn.'='.$service->getID(),
+            _('Ne').' '.\Ease\TWB\Part::glyphIcon('ok'), 'success'));
+        $confirmator->addItem(new \Ease\TWB\LinkButton('?delete=true&'.$service->myKeyColumn.'='.$service->getID(),
+            _('Ano').' '.\Ease\TWB\Part::glyphIcon('remove'), 'danger'));
+        $tools->addItem(new \Ease\TWB\Panel(_('Výměna služby'), 'info',
+            new IEServiceSwapForm($service)));
         $infopanel->addItem($service->ownerLinkButton());
         $tools->addItem(new IEHostSelector($service));
 
         break;
     default :
 
-        $serviceEdit = new IECfgEditor($service);
+        $serviceEdit = new UI\CfgEditor($service);
 
-        $form = new \Ease\TWB\Form('Service', 'service.php', 'POST', $serviceEdit, array('class' => 'form-horizontal'));
+        $form = new \Ease\TWB\Form('Service', 'service.php', 'POST',
+            $serviceEdit, ['class' => 'form-horizontal']);
         $form->setTagID($form->getTagName());
         if (!is_null($service->getMyKey())) {
-            $form->addItem(new \Ease\Html\InputHiddenTag($service->getMyKeyColumn(), $service->getMyKey()));
+            $form->addItem(new \Ease\Html\InputHiddenTag($service->getMyKeyColumn(),
+                $service->getMyKey()));
         }
         $form->addItem('<br>');
         $form->addItem(new \Ease\TWB\SubmitButton(_('Uložit'), 'success'));
@@ -125,26 +136,35 @@ input.ui-button { width: 100%; }
 
         if ($service->getID()) {
             $tools->addItem($service->deleteButton());
-            $tools->addItem(new \Ease\TWB\Panel(_('Transfer'), 'warning', $service->transferForm()));
+            $tools->addItem(new \Ease\TWB\Panel(_('Transfer'), 'warning',
+                $service->transferForm()));
             $tools->addItem($service->cloneButton());
 
 
-            $renameForm = new \Ease\TWB\Form('Rename', '?action=rename&service_id=' . $service->getId());
-            $renameForm->addItem(new \Ease\Html\InputTextTag('newname'), $service->getName(), array('class' => 'form-control'));
-            $renameForm->addItem(new \Ease\TWB\SubmitButton(_('Přejmenovat'), 'success'));
+            $renameForm = new \Ease\TWB\Form('Rename',
+                '?action=rename&service_id='.$service->getId());
+            $renameForm->addItem(new \Ease\Html\InputTextTag('newname'),
+                $service->getName(), ['class' => 'form-control']);
+            $renameForm->addItem(new \Ease\TWB\SubmitButton(_('Přejmenovat'),
+                'success'));
 
-            $tools->addItem(new \Ease\TWB\Panel(_('Přejmenování'), 'info', $renameForm));
-            $tools->addItem(new IEHostSelector($service));
+            $tools->addItem(new \Ease\TWB\Panel(_('Přejmenování'), 'info',
+                $renameForm));
+            $tools->addItem(new Engine\IEHostSelector($service));
 
             if ($oUser->getSettingValue('admin')) {
-                $tools->addItem(new \Ease\TWB\LinkButton('?action=system&service_id=' . $service->getId(), _('Systémová služba')));
+                $tools->addItem(new \Ease\TWB\LinkButton('?action=system&service_id='.$service->getId(),
+                    _('Systémová služba')));
             }
 
-            $tools->addItem(new \Ease\TWB\Panel(_('Výměna služby'), 'info', new IEServiceSwapForm($service)));
-            $tools->addItem(new \Ease\TWB\Panel(_('Transfer'), 'warning', $service->transferForm()));
+            $tools->addItem(new \Ease\TWB\Panel(_('Výměna služby'), 'info',
+                new IEServiceSwapForm($service)));
+            $tools->addItem(new \Ease\TWB\Panel(_('Transfer'), 'warning',
+                $service->transferForm()));
         }
 
-        $mainPanel->addItem(new \Ease\TWB\Panel(new \Ease\Html\H3Tag(array(new IEPlatformIcon($service->getDataValue('platform')), $service->getName())), 'default', $form));
+        $mainPanel->addItem(new \Ease\TWB\Panel(new \Ease\Html\H3Tag([new IEPlatformIcon($service->getDataValue('platform')),
+            $service->getName()]), 'default', $form));
 
         break;
 }

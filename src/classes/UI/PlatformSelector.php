@@ -12,15 +12,15 @@ namespace Icinga\Editor\UI;
  */
 class PlatformSelector extends \Ease\Html\Select
 {
-    public $platforms = array(
-        'generic' => array('image' => 'logos/unknown.gif'),
-        'windows' => array('image' => 'logos/base/win40.gif'),
-        'linux' => array('image' => 'logos/base/linux40.gif'),
-    );
+    public $platforms = [
+        'generic' => ['image' => 'logos/unknown.gif'],
+        'windows' => ['image' => 'logos/base/win40.gif'],
+        'linux' => ['image' => 'logos/base/linux40.gif'],
+    ];
 
     function loadItems()
     {
-        return array('generic' => 'generic', 'windows' => 'windows', 'linux' => 'linux');
+        return ['generic' => 'generic', 'windows' => 'windows', 'linux' => 'linux'];
     }
 
     public function finalize()
@@ -30,7 +30,7 @@ class PlatformSelector extends \Ease\Html\Select
         foreach ($this->pageParts as $optionName => $option) {
             $platform = current($this->platforms);
             if (isset($platform['image'])) {
-                $this->pageParts[$optionName]->setTagProperties(array('data-image' => $platform['image']));
+                $this->pageParts[$optionName]->setTagProperties(['data-image' => $platform['image']]);
             }
             next($this->platforms);
         }

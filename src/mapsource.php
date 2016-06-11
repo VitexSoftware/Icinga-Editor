@@ -22,9 +22,9 @@ if (!$format) {
 $oPage->onlyForLogged();
 
 if (is_null($hostgroupID) || ($hostgroupID == 'null')) {
-    $gv = new IEHostMap;
+    $gv = new UI\HostMap();
 } else {
-    $gv = new IEHostgroupMap($hostgroupID);
+    $gv = new UI\HostgroupMap($hostgroupID);
 }
 error_reporting(E_ALL ^ E_STRICT);
 

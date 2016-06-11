@@ -2,7 +2,7 @@
 namespace Icinga\Editor\UI;
 
 /**
- * Description of IESensorConfirmForm
+ * Description of SensorConfirmForm
  *
  * @author vitex
  */

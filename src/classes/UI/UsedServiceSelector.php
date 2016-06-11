@@ -10,10 +10,8 @@ namespace Icinga\Editor\UI;
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2012 Vitex@hippy.cz (G)
  */
-class UsedServiceSelector extends EaseContainer
+class UsedServiceSelector extends \Ease\Container
 {
-    public $myKeyColumn = 'host_name';
-
     /**
      * Editor k přidávání členů skupiny
      *
@@ -22,37 +20,36 @@ class UsedServiceSelector extends EaseContainer
     public function __construct($host)
     {
         parent::__construct();
-        $fieldName = $this->getmyKeyColumn();
 
         if ($host->getDataValue('platform') == 'generic') {
             $note = '<small><span class="label label-info">Tip:</span> '._('Další sledovatelné služby budou nabídnuty po nastavení platformy hosta a vzdáleného senzoru.').'</small>';
         } else {
-            $note = array();
+            $note = [];
         }
 
 
         $initialContent = new \Ease\TWB\Panel(_('Sledované služby'), 'default',
             null, $note);
-        $initialContent->setTagCss(array('width' => '100%'));
+        $initialContent->setTagCss(['width' => '100%']);
 
         if (is_null($host->getMyKey())) {
             $initialContent->addItem(_('Nejprve je potřeba uložit záznam'));
         } else {
             $hostName       = $host->getName();
-            $service        = new IEService();
-            $parentServUsed = array();
+            $service        = new \Icinga\Editor\Engine\IEService();
+            $parentServUsed = [];
             $host_active    = (boolean) $host->getCfgValue('active_checks_enabled');
             $host_passive   = (boolean) $host->getCfgValue('passive_checks_enabled');
 
-            $servicesAssigned = $service->myDbLink->queryToArray('SELECT '.$service->myKeyColumn.',display_name,'.$service->nameColumn.' FROM '.$service->myTable.' WHERE '.$fieldName.' LIKE \'%"'.$host->getName().'"%\'',
+            $servicesAssigned = $service->dblink->queryToArray('SELECT '.$service->myKeyColumn.',display_name,'.$service->nameColumn.' FROM '.$service->myTable.' WHERE `host_name` LIKE \'%"'.$host->getName().'"%\'',
                 $service->myKeyColumn);
 
             $allServices = $service->getListing(
                 null, true,
-                array(
+                [
                 'platform', 'parent_id', 'passive_checks_enabled', 'active_checks_enabled',
                 'display_name'
-                )
+                ]
             );
             foreach ($allServices as $serviceID => $serviceInfo) {
                 $servicePassive = (boolean) $serviceInfo['passive_checks_enabled'];
@@ -85,7 +82,7 @@ class UsedServiceSelector extends EaseContainer
                     if (isset($parentServUsed[$serviceInfo['parent_id']])) {
                         continue;
                     }
-                    $unchMenu = array();
+                    $unchMenu = [];
 
                     if (intval($serviceInfo['parent_id'])) {
                         $unchMenu[] = new \Ease\Html\ATag('servicetweak.php?service_id='.$serviceID,
@@ -123,13 +120,13 @@ class UsedServiceSelector extends EaseContainer
                     $initialContent->addItem(
                         new \Ease\TWB\ButtonDropdown($serviceName, 'success',
                         'xs',
-                        array(
+                        [
                         new \Ease\Html\ATag(
                             '?delservice='.$serviceInfo[$service->nameColumn].'&amp;service_id='.$serviceID.'&amp;'.$host->getmyKeyColumn().'='.$host->getMyKey().'&amp;'.$host->nameColumn.'='.$host->getName(),
                             \Ease\TWB\Part::GlyphIcon('remove').' '._('Přestat sledovat'))
                         , new \Ease\Html\ATag('servicetweak.php?service_id='.$serviceID.'&amp;host_id='.$host->getId(),
                             \Ease\TWB\Part::GlyphIcon('wrench').' '._('Editace'))
-                        )
+                        ]
                         )
                     );
                 }
@@ -139,7 +136,7 @@ class UsedServiceSelector extends EaseContainer
                     $host->getId()));
                 $presetSelForm->addItem(new \Ease\Html\InputHiddenTag('action',
                     'applystemplate'));
-                $presetSelForm->addItem(new IEStemplateSelect('stemplate_id'));
+                $presetSelForm->addItem(new StemplateSelect('stemplate_id'));
                 $presetSelForm->addItem(new \Ease\TWB\SubmitButton(_('Aplikovat předlohu'),
                     'success'));
                 $presetSelForm->setTagClass('form-inline');
@@ -156,9 +153,9 @@ class UsedServiceSelector extends EaseContainer
      */
     public static function saveMembers($request)
     {
-        $service = new IEService();
+        $service = new \Icinga\Editor\Engine\IEService();
         if (isset($request[$service->myKeyColumn])) {
-            if ($service->loadFromMySQL((int) $request[$service->myKeyColumn])) {
+            if ($service->loadFromSQL((int) $request[$service->myKeyColumn])) {
                 if (isset($request['addservice']) || isset($request['delservice'])) {
                     if (isset($request['addservice'])) {
                         $service->addMember('host_name', $request['host_id'],

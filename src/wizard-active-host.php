@@ -1,4 +1,5 @@
 <?php
+
 namespace Icinga\Editor;
 
 /**
@@ -16,11 +17,11 @@ $oPage->onlyForLogged();
 $oPage->addItem(new UI\PageTop(_('Icinga Editor')));
 $oPage->addPageColumns();
 
-$hostName = trim($oPage->getRequestValue('host_name'));
-$address = trim($oPage->getRequestValue('address'));
+$hostName   = trim($oPage->getRequestValue('host_name'));
+$address    = trim($oPage->getRequestValue('address'));
 $addressSix = trim($oPage->getRequestValue('address6'));
 $host_group = $oPage->getRequestValue('host_group', 'int');
-$platform = $oPage->getRequestValue('platform');
+$platform   = $oPage->getRequestValue('platform');
 
 function gethostbyname6($host, $tryA = false)
 {
@@ -50,12 +51,12 @@ function gethostbynamel6($host, $tryA = false)
     }
     if ($tryA == true) {
         $dnsFour = dns_get_record($host, DNS_A);
-        $dns = array_merge($dnsFour, $dnsSix);
+        $dns     = array_merge($dnsFour, $dnsSix);
     } else {
         $dns = $dnsSix;
     }
-    $ipSix = array();
-    $ipFour = array();
+    $ipSix  = [];
+    $ipFour = [];
     foreach ($dns as $record) {
         if ($record["type"] == "A") {
             $ipFour[] = $record["ip"];
@@ -78,8 +79,7 @@ function gethostbynamel6($host, $tryA = false)
         return $ipSix;
     }
 }
-
-$host = new IEHost();
+$host        = new Engine\IEHost();
 $host->owner = &$oUser;
 
 if ($hostName || $address || $addressSix) {
@@ -112,30 +112,31 @@ if ($hostName || $address || $addressSix) {
         $addressSix = gethostbyname6($hostName);
     }
 
-    $oUser->addStatusMessage('HostName: ' . $hostName);
-    $oUser->addStatusMessage('Address: ' . $address);
-    $oUser->addStatusMessage('Address6: ' . $addressSix);
+    $oUser->addStatusMessage('HostName: '.$hostName);
+    $oUser->addStatusMessage('Address: '.$address);
+    $oUser->addStatusMessage('Address6: '.$addressSix);
 
     $host->setData(
-        array(
-          $host->userColumn => $oUser->getUserID(),
+        [
+            $host->userColumn => $oUser->getUserID(),
 //        'check_command'=>'check-host-alive',
-          'host_name' => $hostName,
-          'address' => $address,
-          'address6' => $addressSix,
-          'use' => 'generic-host',
-          'platform' => $platform,
-          'register' => true,
-          'generate' => TRUE,
-          'alias' => $hostName,
-          'active_checks_enabled' => 1,
-          'passive_checks_enabled' => 0
-        )
+            'host_name' => $hostName,
+            'address' => $address,
+            'address6' => $addressSix,
+            'use' => 'generic-host',
+            'platform' => $platform,
+            'register' => true,
+            'generate' => TRUE,
+            'alias' => $hostName,
+            'active_checks_enabled' => 1,
+            'passive_checks_enabled' => 0
+        ]
     );
 
     if ($host_group) {
-        $hostgroup = new IEHostgroup($host_group);
-        $host->addMember('hostgroups', $hostgroup->getId(), $hostgroup->getName());
+        $hostgroup = new Engine\IEHostgroup($host_group);
+        $host->addMember('hostgroups', $hostgroup->getId(),
+            $hostgroup->getName());
         $hostgroup->addMember('members', $host->getId(), $host->getName());
         $hostgroup->saveToSQL();
     }
@@ -143,60 +144,78 @@ if ($hostName || $address || $addressSix) {
 
     if ($host->saveToSQL()) {
 
-        $service = new IEService('PING');
+        $service = new Engine\IEService('PING');
         $service->addMember('host_name', $host->getId(), $host->getName());
         $service->saveToSQL();
 
         $host->autoPopulateServices();
 
-        $hostGroup = new IEHostgroup;
+        $hostGroup = new Engine\IEHostgroup;
         if ($hostGroup->loadDefault()) {
-            $hostGroup->setDataValue($hostGroup->nameColumn, \Ease\Shared::user()->getUserLogin());
+            $hostGroup->setDataValue($hostGroup->nameColumn,
+                \Ease\Shared::user()->getUserLogin());
             $hostGroup->addMember('members', $host->getId(), $host->getName());
             $hostGroup->saveToSQL();
-            $host->addMember('hostgroups', $hostGroup->getId(), $hostGroup->getName());
+            $host->addMember('hostgroups', $hostGroup->getId(),
+                $hostGroup->getName());
             $host->saveToSQL();
         }
 
-        $oPage->redirect('host.php?host_id=' . $host->getId());
+        $oPage->redirect('host.php?host_id='.$host->getId());
         exit();
     }
 }
 
-$contact = new IEContact();
+$contact    = new Engine\IEContact();
 $pocContact = $contact->getMyRecordsCount();
 if (!$pocContact) {
-    $warning = $oPage->columnIII->addItem(new \Ease\Html\DivTag('Contact', _('Nemáte definovaný kontakt'), array('class' => 'alert alert-info')));
-    $warning->addItem(new \Ease\TWB\LinkButton('contact.php?autocreate=default', _('Založit výchozí kontakt') . ' ' . \Ease\TWB\Part::GlyphIcon('edit')));
+    $warning = $oPage->columnIII->addItem(new \Ease\Html\DivTag('Contact',
+        _('Nemáte definovaný kontakt'), ['class' => 'alert alert-info']));
+    $warning->addItem(new \Ease\TWB\LinkButton('contact.php?autocreate=default',
+        _('Založit výchozí kontakt').' '.\Ease\TWB\Part::GlyphIcon('edit')));
 }
 
 $pocHostu = $host->getMyRecordsCount();
 if ($pocHostu) {
-    $success = $oPage->columnIII->addItem(new \Ease\Html\DivTag('Host', new \Ease\TWB\LinkButton('hosts.php', _('<i class="icon-list"></i>') . ' ' . sprintf(_('Definováno %s hostů'), $pocHostu)), array('class' => 'alert alert-success')));
+    $success = $oPage->columnIII->addItem(new \Ease\Html\Div(
+        new \Ease\TWB\LinkButton('hosts.php',
+        _('<i class="icon-list"></i>').' '.sprintf(_('Definováno %s hostů'),
+            $pocHostu)), ['class' => 'alert alert-success', 'id' => 'Host']));
 }
 
 $firstHost = $oPage->columnII->addItem(new \Ease\TWB\Form('firsthost'));
-$firstHost->addItem(new \Ease\Html\InputHiddenTag('host_group', $oPage->getRequestValue('host_group')));
-$firstHost->setTagProperties(array('onSubmit' => "$('#preload').css('visibility', 'visible');"));
+$firstHost->addItem(new \Ease\Html\InputHiddenTag('host_group',
+    $oPage->getRequestValue('host_group')));
+$firstHost->setTagProperties(['onSubmit' => "$('#preload').css('visibility', 'visible');"]);
 
-$firstHost->addItem(new \Ease\TWB\FormGroup(_('Hostname serveru'), new \Ease\Html\InputTextTag('host_name', $hostName), null, _('Název hostu, tedy to co následuje po http:// ve webové adrese až k prvnímu lomítku, nebo otazníku.')));
-$firstHost->addItem(new \Ease\TWB\FormGroup(_('IPv4 Adresa'), new \Ease\Html\InputTextTag('address', $address), null, _('čtyři číslice od 0 do 255 oddělené tečkou')));
-$firstHost->addItem(new \Ease\TWB\FormGroup(_('IPv6 Adresa'), new \Ease\Html\InputTextTag('address6', $addressSix), null, _('nejvíce osm skupin čtyř hexadecimálních číslic oddělených dvojtečkou')));
+$firstHost->addItem(new \Ease\TWB\FormGroup(_('Hostname serveru'),
+    new \Ease\Html\InputTextTag('host_name', $hostName), null,
+    _('Název hostu, tedy to co následuje po http:// ve webové adrese až k prvnímu lomítku, nebo otazníku.')));
+$firstHost->addItem(new \Ease\TWB\FormGroup(_('IPv4 Adresa'),
+    new \Ease\Html\InputTextTag('address', $address), null,
+    _('čtyři číslice od 0 do 255 oddělené tečkou')));
+$firstHost->addItem(new \Ease\TWB\FormGroup(_('IPv6 Adresa'),
+    new \Ease\Html\InputTextTag('address6', $addressSix), null,
+    _('nejvíce osm skupin čtyř hexadecimálních číslic oddělených dvojtečkou')));
 
-$firstHost->addItem(new \Ease\TWB\SubmitButton(\Ease\TWB\Part::GlyphIcon('plus') . ' ' . _('Přidej host'), 'success'));
+$firstHost->addItem(new \Ease\TWB\SubmitButton(\Ease\TWB\Part::GlyphIcon('plus').' '._('Přidej host'),
+    'success'));
 
-$oPage->columnI->addItem(new \Ease\Html\Div( _('Po zadání alespoň jednoho vstupního údaje si tento '
-        . 'průvodce dohledá ostatní a provede sken na některé základní služby.'
-        . '<br>Pokud budou tyto nalezeny aktivují se jejich testy. Informace o stavu bude odesílána na první zadaný kontakt'), array('class' => 'well')));
+$oPage->columnI->addItem(new \Ease\Html\Div(_('Po zadání alespoň jednoho vstupního údaje si tento '
+        .'průvodce dohledá ostatní a provede sken na některé základní služby.'
+        .'<br>Pokud budou tyto nalezeny aktivují se jejich testy. Informace o stavu bude odesílána na první zadaný kontakt'),
+    ['class' => 'well']));
 
-$oPage->columnI->addItem(new \Ease\Html\Div( _('Pro instalaci nového vzdáleného senzoru prosím nejprve na sledovaném počítači nainstalujte balík'
-        . ' a poté '
-        . '<code>wget -O - http://v.s.cz/info@vitexsoftware.cz.gpg.key | sudo apt-key add -</code>
+$oPage->columnI->addItem(new \Ease\Html\Div(_('Pro instalaci nového vzdáleného senzoru prosím nejprve na sledovaném počítači nainstalujte balík'
+        .' a poté '
+        .'<code>wget -O - http://v.s.cz/info@vitexsoftware.cz.gpg.key | sudo apt-key add -</code>
 <code>echo deb http://v.s.cz/ stable main | sudo tee /etc/apt/sources.list.d/vitexsoftware.list</code>
 <code>sudo aptitude update</code>
-<code>aptitude install nagios-nrpe-server nagios-check-clamscan</code>'), array('class' => 'well')));
+<code>aptitude install nagios-nrpe-server nagios-check-clamscan</code>'),
+    ['class' => 'well']));
 
-$oPage->addItem(new \Ease\Html\DivTag('preload', new IEFXPreloader(), array('class' => 'fuelux')));
+$oPage->addItem(new \Ease\Html\Div(new UI\FXPreloader(),
+    ['class' => 'fuelux', 'id' => 'preload']));
 
 $oPage->addItem(new UI\PageBottom());
 

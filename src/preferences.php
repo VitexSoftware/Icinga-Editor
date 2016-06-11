@@ -10,12 +10,11 @@ namespace Icinga\Editor;
  * @copyright  2012 Vitex@hippy.cz (G)
  */
 require_once 'includes/IEInit.php';
-require_once 'classes/IEPreferencesForm.php';
-require_once 'classes/IEPreferences.php';
 
 $oPage->onlyForLogged();
 
-$prefs = new IEPreferences;
+$prefs = new IEPreferences();
+
 
 if ($oPage->isPosted()) {
     //unset($_REQUEST['']);
@@ -29,7 +28,7 @@ if ($oPage->isPosted()) {
 $oPage->addItem(new UI\PageTop(_('Předvolby')));
 $oPage->addPageColumns();
 
-$form = new IEPreferencesForm('prefs');
+$form = new UI\PreferencesForm('prefs');
 $form->fillUp($prefs->getPrefs());
 
 $oPage->columnII->addItem($form);

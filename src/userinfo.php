@@ -1,4 +1,5 @@
 <?php
+
 namespace Icinga\Editor;
 
 /**
@@ -20,12 +21,12 @@ if ($userID) {
     $oPage->onlyForAdmin();
 }
 
-$host = new IEHost();
-$hostgroup = new IEHostgroup();
-$contact = new IETimeperiod();
-$command = new IECommand();
-$service = new IEService();
-$serviceGroup = new IEServicegroup();
+$host         = new Engine\IEHost();
+$hostgroup    = new Engine\IEHostgroup();
+$contact      = new Engine\IETimeperiod();
+$command      = new Engine\IECommand();
+$service      = new Engine\IEService();
+$serviceGroup = new Engine\IEServicegroup();
 
 
 $ownership = $oPage->getRequestValue('ownership');
@@ -40,7 +41,7 @@ if ($ownership) {
     $oPage->addStatusMessage(_('Vlastnictví byla předána'));
 }
 
-$user = new IEUser($userID);
+$user = new User($userID);
 
 $oPage->addItem(new UI\PageTop($user->getUserName()));
 
@@ -54,60 +55,89 @@ if ($oPage->getRequestValue('delete') == 'true') {
 
 $userInfoFrame = $oPage->columnI->addItem(new \Ease\TWB\Panel($user->getUserLogin()));
 $userInfoFrame->addItem($user);
-$userInfoFrame->addItem(new \Ease\Html\UlTag(array($user->getUserName(), new \Ease\Html\ATag('mailto:' . $user->getEmail(), $user->getEmail()))));
+$userInfoFrame->addItem(new \Ease\Html\UlTag([$user->getUserName(), new \Ease\Html\ATag('mailto:'.$user->getEmail(),
+        $user->getEmail())]));
 
 
 $pocTimeperiods = $contact->getMyRecordsCount($userID);
 if ($pocTimeperiods) {
-    $success = $oPage->columnIII->addItem(new \Ease\Html\DivTag('Timeperiod', new \Ease\TWB\LinkButton('timeperiods.php', _('<i class="icon-list"></i>') . ' ' . sprintf(_('Definováno %s časových period'), $pocTimeperiods)), array('class' => 'alert alert-success')));
+    $success = $oPage->columnIII->addItem(new \Ease\Html\Div(
+        new \Ease\TWB\LinkButton('timeperiods.php',
+        _('<i class="icon-list"></i>').' '.sprintf(_('Definováno %s časových period'),
+            $pocTimeperiods)),
+        ['class' => 'alert alert-success', 'id' => 'Timeperiod']));
 }
 
 $pocHostu = $host->getMyRecordsCount($userID);
 if ($pocHostu) {
-    $success = $oPage->columnII->addItem(new \Ease\Html\DivTag('Host', new \Ease\TWB\LinkButton('hosts.php', _('<i class="icon-list"></i>') . ' ' . sprintf(_('Definováno %s hostů'), $pocHostu)), array('class' => 'alert alert-success')));
+    $success = $oPage->columnII->addItem(new \Ease\Html\Div(
+        new \Ease\TWB\LinkButton('hosts.php',
+        _('<i class="icon-list"></i>').' '.sprintf(_('Definováno %s hostů'),
+            $pocHostu)), ['class' => 'alert alert-success', 'id' => 'Host']));
 } else {
     if ($pocTimeperiods) {
-        $warning = $oPage->columnII->addItem(new \Ease\Html\DivTag('Host', _('Nemáte definovaný žádný host'), array('class' => 'alert alert-info')));
-        $warning->addItem(new \Ease\TWB\LinkButton('host.php', _('Založit první host') . ' ' . \Ease\TWB\Part::GlyphIcon('edit')));
+        $warning = $oPage->columnII->addItem(new \Ease\Html\Div(
+            _('Nemáte definovaný žádný host'),
+            ['class' => 'alert alert-info', 'id' => 'Host']));
+        $warning->addItem(new \Ease\TWB\LinkButton('host.php',
+            _('Založit první host').' '.\Ease\TWB\Part::GlyphIcon('edit')));
     }
 }
 
 $pocHostgroups = $hostgroup->getMyRecordsCount($userID);
 if ($pocHostgroups) {
-    $success = $oPage->columnII->addItem(new \Ease\Html\DivTag('Hostgroup', new \Ease\TWB\LinkButton('hostgroups.php', _('<i class="icon-list"></i>') . ' ' . sprintf(_('Definováno %s skupin hostů'), $pocHostgroups)), array('class' => 'alert alert-success')));
+    $success = $oPage->columnII->addItem(new \Ease\Html\Div(
+        new \Ease\TWB\LinkButton('hostgroups.php',
+        _('<i class="icon-list"></i>').' '.sprintf(_('Definováno %s skupin hostů'),
+            $pocHostgroups)),
+        ['class' => 'alert alert-success', 'id' => 'Hostgroup']));
 }
 
 $PocCommands = $command->getMyRecordsCount($userID);
 if ($PocCommands) {
-    $success = $oPage->columnIII->addItem(new \Ease\Html\DivTag('Command', new \Ease\TWB\LinkButton('commands.php', _('<i class="icon-list"></i>') . ' ' . sprintf(_('Definováno %s příkazů'), $PocCommands)), array('class' => 'alert alert-success')));
+    $success = $oPage->columnIII->addItem(new \Ease\Html\Div(
+        new \Ease\TWB\LinkButton('commands.php',
+        _('<i class="icon-list"></i>').' '.sprintf(_('Definováno %s příkazů'),
+            $PocCommands)), ['class' => 'alert alert-success', 'id' => 'Command']));
 }
 
 $pocServices = $service->getMyRecordsCount($userID);
 if ($pocServices) {
-    $success = $oPage->columnIII->addItem(new \Ease\Html\DivTag('Service', new \Ease\TWB\LinkButton('services.php', _('<i class="icon-list"></i>') . ' ' . sprintf(_('Definováno %s služeb'), $pocServices)), array('class' => 'alert alert-success')));
+    $success = $oPage->columnIII->addItem(new \Ease\Html\Div(
+        new \Ease\TWB\LinkButton('services.php',
+        _('<i class="icon-list"></i>').' '.sprintf(_('Definováno %s služeb'),
+            $pocServices)), ['class' => 'alert alert-success', 'id' => 'Service']));
 } else {
     if ($PocCommands) {
         if ($pocTimeperiods) {
-            $warning = $oPage->columnIII->addItem(new \Ease\Html\DivTag('Host', _('Nemáte definovaný žádné služby'), array('class' => 'alert alert-info')));
-            $warning->addItem(new \Ease\TWB\LinkButton('service.php', _('Založit první službu') . ' <i class="icon-edit"></i>'));
+            $warning = $oPage->columnIII->addItem(new \Ease\Html\Div(
+                _('Nemáte definovaný žádné služby'),
+                ['class' => 'alert alert-info', 'id' => 'Host']));
+            $warning->addItem(new \Ease\TWB\LinkButton('service.php',
+                _('Založit první službu').' <i class="icon-edit"></i>'));
         }
     }
 }
 
 $pocServicegroups = $serviceGroup->getMyRecordsCount($userID);
 if ($pocServicegroups) {
-    $success = $oPage->columnIII->addItem(new \Ease\Html\DivTag('Servicegroup', new \Ease\TWB\LinkButton('servicegroups.php', _('<i class="icon-list"></i>') . ' ' . sprintf(_('Definováno %s skupin služeb'), $pocServicegroups)), array('class' => 'alert alert-success')));
+    $success = $oPage->columnIII->addItem(new \Ease\Html\Div(
+        new \Ease\TWB\LinkButton('servicegroups.php',
+        _('<i class="icon-list"></i>').' '.sprintf(_('Definováno %s skupin služeb'),
+            $pocServicegroups)),
+        ['class' => 'alert alert-success', 'id' => 'Servicegroup']));
 }
 
 if ($oUser->getSettingValue('admin')) {
-    $oPage->columnI->addItem(new \Ease\TWB\LinkButton('login.php?force_id=' . $userID, _('Přihlásit se jako uživatel <i class="icon-refresh"></i>')));
+    $oPage->columnI->addItem(new \Ease\TWB\LinkButton('login.php?force_id='.$userID,
+        _('Přihlásit se jako uživatel <i class="icon-refresh"></i>')));
 }
 
 
 if ($oUser->getSettingValue('admin') || ($oUser->getId() == $userID)) {
     $ownershipForm = new \Ease\TWB\Form('ownershipForm', null, 'POST');
     $ownershipForm->addInput(
-        new IEUserSelect('ownership'), _('Nový vlastník')
+        new UI\UserSelect('ownership'), _('Nový vlastník')
     );
     $ownershipForm->addItem(new \Ease\TWB\SubmitButton(_('Předat'), 'warning'));
     $oPage->columnII->addItem(

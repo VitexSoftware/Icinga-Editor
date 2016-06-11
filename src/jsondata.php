@@ -1,4 +1,5 @@
 <?php
+
 namespace Icinga\Editor;
 
 /**
@@ -18,18 +19,18 @@ header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
 header('Content-type: application/json');
 
 $request = $oPage->getRequestValue('term');
-$source = $oPage->getRequestValue('source', 'array');
-$limit = $oPage->getRequestValue('maxRows', 'int');
+$source  = $oPage->getRequestValue('source', 'array');
+$limit   = $oPage->getRequestValue('maxRows', 'int');
 if ($limit) {
-    $limit = 'LIMIT ' . $limit;
+    $limit = 'LIMIT '.$limit;
 } else {
     $limit = '';
 }
 
-$membersFound = array();
+$membersFound = [];
 
 if ($request) {
-    $membersFoundArray = \Ease\Shared::db()->queryToArray('SELECT ' . current($source) . ' FROM `' . key($source) . '` WHERE user_id=' . $oUser->getUserID() . ' AND ' . current($source) . ' LIKE \'%' . \Ease\Shared::db()->AddSlashes($request) . '%\' ORDER BY contact_name ' . $limit);
+    $membersFoundArray = \Ease\Shared::db()->queryToArray('SELECT '.current($source).' FROM `'.key($source).'` WHERE user_id='.$oUser->getUserID().' AND '.current($source).' LIKE \'%'.\Ease\Shared::db()->AddSlashes($request).'%\' ORDER BY contact_name '.$limit);
     if (count($membersFoundArray)) {
         foreach ($membersFoundArray as $request) {
             $membersFound[] = $request[current($source)];

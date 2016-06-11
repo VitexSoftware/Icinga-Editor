@@ -1,38 +1,37 @@
 <?php
 
-require_once 'classes/IEUser.php';
+namespace Icinga\Editor\Engine;
 
 /**
  * Uživatel Icinga Editoru
  */
 class IEUserGroup extends IEcfg
 {
-
-    public $keyword = 'usergroup';
-    public $myTable = 'user_group';
-    public $nameColumn = 'usergroup_name';
+    public $keyword     = 'usergroup';
+    public $myTable     = 'user_group';
+    public $nameColumn  = 'usergroup_name';
     public $myKeyColumn = 'usergroup_id';
-    public $userColumn = 'group_boss';
+    public $userColumn  = 'group_boss';
 
     /**
      * Dát tyto položky k dispozici i ostatním ?
      * @var boolean
      */
     public $publicRecords = false;
-    public $useKeywords = array(
-      'usergroup_name' => 'VARCHAR(64)',
-      'members' => ''
-    );
-    public $keywordsInfo = array(
-      'usergroup_name' => array('title' => 'název skupiny', 'required' => true),
-      'members' => array('title' => 'členové')
-    );
+    public $useKeywords   = [
+        'usergroup_name' => 'VARCHAR(64)',
+        'members' => ''
+    ];
+    public $keywordsInfo  = [
+        'usergroup_name' => ['title' => 'název skupiny', 'required' => true],
+        'members' => ['title' => 'členové']
+    ];
 
     /**
      * členové skupiny
      * @var array
      */
-    public $members = array();
+    public $members = [];
 
     /**
      * Skupina uživatelů
@@ -80,8 +79,9 @@ class IEUserGroup extends IEcfg
         if (is_null($id)) {
             $id = $this->getMyKey();
         }
-        $members = array();
-        $mmbrs = $this->myDbLink->queryToArray('SELECT id,login FROM user WHERE id IN ( SELECT user_id FROM user_to_group WHERE group_id=' . $id . ' )', 'id');
+        $members = [];
+        $mmbrs   = $this->dblink->queryToArray('SELECT id,login FROM user WHERE id IN ( SELECT user_id FROM user_to_group WHERE group_id='.$id.' )',
+            'id');
         foreach ($mmbrs as $mId => $userInfo) {
             $members[$mId] = $userInfo['login'];
         }
@@ -95,10 +95,11 @@ class IEUserGroup extends IEcfg
      */
     public function memberSelector()
     {
-        $users = array();
-        $unassigned = array();
+        $users      = [];
+        $unassigned = [];
         if ($this->getMyKey()) {
-            $ua = $this->myDbLink->queryToArray('SELECT id,login FROM user WHERE id NOT IN ( SELECT user_id FROM user_to_group WHERE group_id=' . $this->getMyKey() . ' )', 'id');
+            $ua = $this->dblink->queryToArray('SELECT id,login FROM user WHERE id NOT IN ( SELECT user_id FROM user_to_group WHERE group_id='.$this->getMyKey().' )',
+                'id');
             foreach ($ua as $id => $userInfo) {
                 $unassigned[$id] = $userInfo['login'];
             }
@@ -106,18 +107,24 @@ class IEUserGroup extends IEcfg
 
         foreach ($this->members as $userId => $login) {
             $users[$userId] = new \Ease\TWB\ButtonDropdown(
-                $login, 'success', 'xs', array(
-              new \Ease\Html\ATag('?action=delmember&usergroup_id=' . $this->getMyKey() . '&member_id=' . $userId, \Ease\TWB\Part::GlyphIcon('minus') . ' ' . _('Odebrat ze skupiny')),
-              new \Ease\Html\ATag('userinfo.php?user_id=' . $userId, \Ease\TWB\Part::GlyphIcon('wrench') . ' ' . _('Editace'))
-            ));
+                $login, 'success', 'xs',
+                [
+                new \Ease\Html\ATag('?action=delmember&usergroup_id='.$this->getMyKey().'&member_id='.$userId,
+                    \Ease\TWB\Part::GlyphIcon('minus').' '._('Odebrat ze skupiny')),
+                new \Ease\Html\ATag('userinfo.php?user_id='.$userId,
+                    \Ease\TWB\Part::GlyphIcon('wrench').' '._('Editace'))
+            ]);
         }
 
         foreach ($unassigned as $userId => $login) {
             $users[$userId] = new \Ease\TWB\ButtonDropdown(
-                $login, 'inverse', 'xs', array(
-              new \Ease\Html\ATag('?action=addmember&usergroup_id=' . $this->getMyKey() . '&member_id=' . $userId, \Ease\TWB\Part::GlyphIcon('plus') . ' ' . _('Přidat do skupiny')),
-              new \Ease\Html\ATag('userinfo.php?user_id=' . $userId, \Ease\TWB\Part::GlyphIcon('wrench') . ' ' . _('Editace'))
-            ));
+                $login, 'inverse', 'xs',
+                [
+                new \Ease\Html\ATag('?action=addmember&usergroup_id='.$this->getMyKey().'&member_id='.$userId,
+                    \Ease\TWB\Part::GlyphIcon('plus').' '._('Přidat do skupiny')),
+                new \Ease\Html\ATag('userinfo.php?user_id='.$userId,
+                    \Ease\TWB\Part::GlyphIcon('wrench').' '._('Editace'))
+            ]);
         }
 
 
@@ -132,8 +139,8 @@ class IEUserGroup extends IEcfg
      */
     public function addMember($column, $memberID, $memberName = null)
     {
-        $this->myDbLink->exeQuery('INSERT INTO user_to_group VALUES(' . $memberID . ',' . $this->getMyKey() . ')');
-        $added = $this->myDbLink->numRows;
+        $this->dblink->exeQuery('INSERT INTO user_to_group VALUES('.$memberID.','.$this->getMyKey().')');
+        $added = $this->dblink->numRows;
         if ($added) {
             $this->loadMembers();
             return $added;
@@ -151,8 +158,8 @@ class IEUserGroup extends IEcfg
     public function delMember($column, $memberID = null, $memberName = null)
     {
         if ($memberID) {
-            $this->myDbLink->exeQuery('DELETE FROM user_to_group WHERE user_id=' . $memberID . ' AND group_id=' . $this->getMyKey());
-            $removed = $this->myDbLink->numRows;
+            $this->dblink->exeQuery('DELETE FROM user_to_group WHERE user_id='.$memberID.' AND group_id='.$this->getMyKey());
+            $removed = $this->dblink->numRows;
 
             if ($removed) {
                 $this->loadMembers();
@@ -169,17 +176,17 @@ class IEUserGroup extends IEcfg
             $id = $this->getId();
         }
         if (parent::delete($id)) {
-            $this->myDbLink->exeQuery('DELETE FROM user_to_group WHERE group_id=' . $id);
+            $this->dblink->exeQuery('DELETE FROM user_to_group WHERE group_id='.$id);
         }
     }
 
     function htmlizeRow($row)
     {
-        $row = parent::htmlizeRow($row);
+        $row   = parent::htmlizeRow($row);
         $mmbrs = $this->getMembers($row['usergroup_id']);
         if (count($mmbrs)) {
             foreach ($mmbrs as $mId => $mLogin) {
-                $mmbrs[$mId] = '<a href="userinfo.php?user_id=' . $mId . '">' . $mLogin . '</a>';
+                $mmbrs[$mId] = '<a href="userinfo.php?user_id='.$mId.'">'.$mLogin.'</a>';
             }
             $row['members'] = implode(',', $mmbrs);
         }
@@ -193,7 +200,6 @@ class IEUserGroup extends IEcfg
      */
     public function delUser($id)
     {
-        $this->myDbLink->exeQuery('DELETE FROM user_to_group WHERE user_id=' . $id);
+        $this->dblink->exeQuery('DELETE FROM user_to_group WHERE user_id='.$id);
     }
-
 }

@@ -40,7 +40,7 @@ class ServiceWizardForm extends \Ease\TWB\Form
 
         $addNewItem = new \Ease\Html\InputSearchTag('check_command-remote',
             $this->service->getDataValue('check_command-remote'),
-            array('class' => 'search-input', 'title' => _('vzdálený test')));
+            ['class' => 'search-input', 'title' => _('vzdálený test')]);
         $addNewItem->setDataSource('jsoncommand.php?maxRows=20&platform='.$platform);
 
         $this->addItem(new \Ease\TWB\FormGroup(_('Vzdálený Příkaz'),
@@ -55,7 +55,7 @@ class ServiceWizardForm extends \Ease\TWB\Form
 
 
         $this->addItem(new \Ease\TWB\FormGroup(_('Platforma'),
-            new IEPlatformSelector('platform', null, $platform),
+            new PlatformSelector('platform', null, $platform),
             _('Platforma sledovaného stroje')));
 
         $this->addItem(new \Ease\TWB\SubmitButton(_('Založit').'&nbsp'.\Ease\TWB\Part::GlyphIcon('forward'),

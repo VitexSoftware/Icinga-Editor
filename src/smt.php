@@ -1,4 +1,5 @@
 <?php
+
 namespace Icinga\Editor;
 
 /**
@@ -10,22 +11,23 @@ namespace Icinga\Editor;
  * @copyright  2012 Vitex@hippy.cz (G)
  */
 require_once 'includes/IEInit.php';
-require_once 'classes/IEService.php';
+
+$service = new Engine\IEService($oPage->getRequestValue('service_id', 'int'));
 
 
-$service = new IEService($oPage->getRequestValue('service_id', 'int'));
-
-
-$oPage->addItem(new UI\PageTop(_('Migrace služby') . ' ' . $service->getName()));
+$oPage->addItem(new UI\PageTop(_('Migrace služby').' '.$service->getName()));
 $oPage->addPageColumns();
 
-$oPage->columnII->addItem(new \Ease\Html\H3Tag(array(new IEPlatformIcon($service->getDataValue('platform')), $service->getName())));
+$oPage->columnII->addItem(new \Ease\Html\H3Tag([new IEPlatformIcon($service->getDataValue('platform')),
+    $service->getName()]));
 
 
-$form = $oPage->columnII->addItem(new \Ease\TWB\Form('Service', 'importer.php?class=service', 'POST'));
+$form = $oPage->columnII->addItem(new \Ease\TWB\Form('Service',
+    'importer.php?class=service', 'POST'));
 $form->setTagID($form->getTagName());
 if (!is_null($service->getMyKey())) {
-    $form->addItem(new \Ease\Html\InputHiddenTag($service->getMyKeyColumn(), $service->getMyKey()));
+    $form->addItem(new \Ease\Html\InputHiddenTag($service->getMyKeyColumn(),
+        $service->getMyKey()));
 }
 $form->addItem('<br>');
 

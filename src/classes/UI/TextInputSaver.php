@@ -14,7 +14,7 @@ namespace Icinga\Editor\UI;
 /**
  * Ukláda data z imputu přímo do databáze
  */
-class TextInputSaver extends EaseLabeledTextInput
+class TextInputSaver extends \Ease\Html\InputTextTag
 {
     /**
      * Pracujeme s tabulkou mains
@@ -47,8 +47,7 @@ class TextInputSaver extends EaseLabeledTextInput
      */
     public function finalize()
     {
-        parent::Finalize();
-        $this->enclosedElement->SetTagProperties(array('OnChange' => '$.post(\'DataSaver.php\', { SaverClass: \''.get_class($this).'\', Field: \''.$this->enclosedElement->GetTagProperty('name').'\', Value: this.value } )'));
+        $this->setTagProperties(['OnChange' => '$.post(\'DataSaver.php\', { SaverClass: \''.get_class($this).'\', Field: \''.$this->GetTagProperty('name').'\', Value: this.value } )']);
 //        $this->enclosedElement->SetTagProperties(array('OnChange' => '$.ajax( { type: \"POST\", url: \"DataSaver.php\", data: \"SaverClass=' . get_class($this) . '&amp;Field=' . $this->enclosedElement->GetTagProperty('name') . '&amp;Value=\" + this.value , async: false, success : function () { alert (this); }, statusCode: { 404: function () { alert(\'page not found\');} } }); '));
     }
 
@@ -88,7 +87,7 @@ class TextInputSaver extends EaseLabeledTextInput
         $KeyName = current(array_keys($data));
 
         return EaseDbMySqli::CreateMissingColumns($this,
-                array($KeyName => str_repeat(' ', 1000)));
+                [$KeyName => str_repeat(' ', 1000)]);
     }
 
     /**

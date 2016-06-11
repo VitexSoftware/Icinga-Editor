@@ -1,4 +1,5 @@
 <?php
+
 namespace Icinga\Editor\UI;
 
 /**
@@ -14,13 +15,13 @@ class StemplateSelect extends \Ease\Html\Select
 
     function loadItems()
     {
-        $tpls = array('' => _('zvol ze seznamu'));
-        $stemplate = new IEStemplate;
-        $templates = $stemplate->getColumnsFromMySQL(array($stemplate->getmyKeyColumn(), $stemplate->nameColumn));
+        $tpls      = ['' => _('zvol ze seznamu')];
+        $stemplate = new \Icinga\Editor\IEStemplate();
+        $templates = $stemplate->getColumnsFromSQL([$stemplate->getmyKeyColumn(),
+            $stemplate->nameColumn]);
         foreach ($templates as $template_id => $template_info) {
             $tpls[$template_info[$stemplate->myKeyColumn]] = $template_info[$stemplate->nameColumn];
         }
         return $tpls;
     }
-
 }

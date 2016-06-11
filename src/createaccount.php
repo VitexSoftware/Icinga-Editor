@@ -76,13 +76,13 @@ if ($oPage->isPosted()) {
         $newOUser = new User();
         //TODO zde by se měly doplnit defaultní hodnoty z konfiguráku registry.php
         $newOUser->setData(
-            array(
+            [
                 'email' => $emailAddress,
                 'parent' => (int) $customerParent,
                 'login' => $login,
                 'firstname' => $firstname,
                 'lastname' => $lastname
-            )
+            ]
         );
 
         $userID = $newOUser->insertToSQL();
@@ -107,7 +107,7 @@ if ($oPage->isPosted()) {
 
             $email = $oPage->addItem(new EaseMail($newOUser->getDataValue('email'),
                 _('Potvrzení registrace')));
-            $email->setMailHeaders(array('From' => EMAIL_FROM));
+            $email->setMailHeaders(['From' => EMAIL_FROM]);
             $email->addItem(new \Ease\Html\Div("Právě jste byl/a zaregistrován/a do Aplikace Monitoring s těmito přihlašovacími údaji:\n"));
             $email->addItem(new \Ease\Html\Div(' Login: '.$newOUser->GetUserLogin()."\n"));
             $email->addItem(new \Ease\Html\Div(' Heslo: '.$_POST['password']."\n"));
@@ -116,7 +116,7 @@ if ($oPage->isPosted()) {
             $email = $oPage->addItem(new EaseMail(SEND_INFO_TO,
                 sprintf(_('Nová registrace do Monitoringu: %s'),
                     $newOUser->GetUserLogin())));
-            $email->setMailHeaders(array('From' => EMAIL_FROM));
+            $email->setMailHeaders(['From' => EMAIL_FROM]);
             $email->addItem(new \Ease\Html\Div(_("Právě byl zaregistrován nový uživatel:\n")));
             $email->addItem(new \Ease\Html\DivTag('login',
                 ' Login: '.$newOUser->GetUserLogin()."\n"));
@@ -125,9 +125,9 @@ if ($oPage->isPosted()) {
 
             \Ease\Shared::user($newOUser)->loginSuccess();
 
-            $contact   = new IEContact();
+            $contact   = new Engine\IEContact();
             $contact->setData(
-                array(
+                [
                     'contact_name' => $login,
                     'use' => 'generic-contact',
                     $contact->userColumn => $userID,
@@ -140,7 +140,7 @@ if ($oPage->isPosted()) {
                     'host_notification_options' => 'd,u,r',
                     'service_notification_commands' => 'notify-service-by-email',
                     'host_notification_commands' => 'notify-host-by-email',
-                    'register' => 1)
+                    'register' => 1]
             );
             $contactID = $contact->saveToSQL();
             if ($contactID) {
@@ -151,7 +151,7 @@ if ($oPage->isPosted()) {
                     'warning');
             }
 
-            $mailID = $contact->fork(array('email' => $emailAddress));
+            $mailID = $contact->fork(['email' => $emailAddress]);
             if ($mailID) {
                 $oUser->addStatusMessage(_('Mailový kontakt byl založen'),
                     'success');
@@ -160,9 +160,9 @@ if ($oPage->isPosted()) {
                     'warning');
             }
 
-            $contactGroup = new IEContactgroup();
-            $contactGroup->setData(array('contactgroup_name' => _('Skupina').'_'.$login,
-                'alias' => _('Skupina').'_'.$login, 'generate' => true, $contactGroup->userColumn => $userID));
+            $contactGroup = new Engine\IEContactgroup();
+            $contactGroup->setData(['contactgroup_name' => _('Skupina').'_'.$login,
+                'alias' => _('Skupina').'_'.$login, 'generate' => true, $contactGroup->userColumn => $userID]);
             $contactGroup->addMember('members', $contactID, $login);
             $contactGroup->addMember('members', $mailID, $contact->getName());
             $cgID         = $contactGroup->saveToSQL();
@@ -175,7 +175,7 @@ if ($oPage->isPosted()) {
                     'warning');
             }
 
-            $hostGroup = new IEHostgroup;
+            $hostGroup = new Engine\IEHostgroup;
             $hostGroup->setName($newOUser->getUserLogin());
             $hostGroup->setDataValue('alias',
                 _('Výchozí skupina').' '.$newOUser->getUserLogin());
@@ -203,18 +203,18 @@ $oPage->addPageColumns();
 $oPage->columnI->addItem(new \Ease\Html\H2Tag(_('Vítejte v registraci')));
 $oPage->columnI->addItem(
     new \Ease\Html\UlTag(
-    array(
+    [
     _('Po zaregistování budete rovnou vyzváni k zadání prvního sledovaného hosta.'),
     _('Veškeré notifikace o výsledcích testů vám budou přicházet na zadaný email.'),
     _('Pro zasílání notifikací pomocí XMPP (jabber) či SMS, zadejte tyto v nastavení vašeho kontaktu.')
-    )
+    ]
     )
 );
 
 $regFace = $oPage->columnII->addItem(new \Ease\Html\Div());
 
 $regForm = $regFace->addItem(new \Ease\TWB\Form('create_account',
-    'createaccount.php', 'POST', null, array('class' => 'form-horizontal')));
+    'createaccount.php', 'POST', null, ['class' => 'form-horizontal']));
 if ($oUser->getUserID()) {
     $regForm->addItem(new \Ease\Html\InputHiddenTag('u_parent',
         $oUser->GetUserID()));
@@ -241,7 +241,7 @@ $regForm->addInput(
 
 $regForm->addItem(new \Ease\Html\Div(
     new \Ease\Html\InputSubmitTag('Register', _('Registrovat'),
-    array('title' => _('dokončit registraci'), 'class' => 'btn btn-success'))));
+    ['title' => _('dokončit registraci'), 'class' => 'btn btn-success'])));
 
 if (isset($_POST)) {
     $regForm->fillUp($_POST);

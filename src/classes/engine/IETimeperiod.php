@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Konfigurace Period
  *
@@ -8,31 +7,31 @@
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2012 Vitex@hippy.cz (G)
  */
-require_once 'IEcfg.php';
 
-class IETimeperiod extends IECfg
+namespace Icinga\Editor\Engine;
+
+class IETimeperiod extends IEcfg
 {
-
-    public $myTable = 'timeperiod';
-    public $myKeyColumn = 'timeperiod_id';
-    public $keyword = 'timeperiod';
-    public $nameColumn = 'timeperiod_name';
-    public $useKeywords = array(
-      'timeperiod_name' => 'VARCHAR(64)',
-      'alias' => 'VARCHAR(64)',
-      'periods' => 'SERIAL'
-    );
-    public $keywordsInfo = array(
-      'timeperiod_name' => array('title' => 'název periody', 'required' => true),
-      'alias' => array('title' => 'alias periody', 'required' => true),
-      'periods' => array('hidden' => true)
-    );
+    public $myTable      = 'timeperiod';
+    public $myKeyColumn  = 'timeperiod_id';
+    public $keyword      = 'timeperiod';
+    public $nameColumn   = 'timeperiod_name';
+    public $useKeywords  = [
+        'timeperiod_name' => 'VARCHAR(64)',
+        'alias' => 'VARCHAR(64)',
+        'periods' => 'SERIAL'
+    ];
+    public $keywordsInfo = [
+        'timeperiod_name' => ['title' => 'název periody', 'required' => true],
+        'alias' => ['title' => 'alias periody', 'required' => true],
+        'periods' => ['hidden' => true]
+    ];
 
     /**
      * Pole časových period
      * @var array
      */
-    public $timeperiods = array();
+    public $timeperiods = [];
 
     /**
      * Dát tyto položky k dispozici i ostatním ?
@@ -55,18 +54,20 @@ class IETimeperiod extends IECfg
      */
     public function takeData($data, $dataPrefix = null)
     {
-        $this->timeperiods = array();
-        if (isset($data['NewKey']) && strlen(trim($data['NewKey'])) && isset($data['NewTimes']) && strlen(trim($data['NewTimes']))) {
+        $this->timeperiods = [];
+        if (isset($data['NewKey']) && strlen(trim($data['NewKey'])) && isset($data['NewTimes'])
+            && strlen(trim($data['NewTimes']))) {
             $this->addTime($data['NewKey'], $data['NewTimes']);
         }
         unset($data['NewKey']);
         unset($data['NewTimes']);
         unset($data['del']);
-        foreach ($data as $Key => $value) {
-            if (($Key == $this->myKeyColumn) || array_key_exists($Key, $this->useKeywords) || $Key == $this->userColumn) {
-                $this->setDataValue($Key, $value);
+        foreach ($data as $key => $value) {
+            if (($key == $this->myKeyColumn) || array_key_exists($key,
+                    $this->useKeywords) || $key == $this->userColumn) {
+                $this->setDataValue($key, $value);
             } else {
-                $this->addTime($Key, $value);
+                $this->addTime($key, $value);
             }
         }
 
@@ -81,9 +82,10 @@ class IETimeperiod extends IECfg
      * @param  bool   $multiplete
      * @return array
      */
-    public function loadFromMySQL($itemID = null, $dataPrefix = null, $multiplete = false)
+    public function loadFromSQL($itemID = null, $dataPrefix = null,
+                                $multiplete = false)
     {
-        $restult = parent::loadFromMySQL($itemID, $dataPrefix, $multiplete);
+        $restult = parent::loadFromSQL($itemID, $dataPrefix, $multiplete);
         $members = $this->getDataValue('periods');
         if (strlen($members)) {
             $this->timeperiods = unserialize($members);
@@ -191,5 +193,4 @@ class IETimeperiod extends IECfg
     {
         return parent::deleteButton(_('Časovou periodu'), $addUrl);
     }
-
 }

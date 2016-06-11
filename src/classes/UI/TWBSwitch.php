@@ -9,7 +9,7 @@ namespace Icinga\Editor\UI;
  */
 class TWBSwitch extends \Ease\Html\CheckboxTag
 {
-    public $properties = array();
+    public $properties = [];
 
     /**
      * Zobrazuje HTML Checkbox

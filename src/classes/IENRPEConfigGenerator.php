@@ -1,7 +1,5 @@
 <?php
-
-require_once 'classes/IECommand.php';
-require_once 'classes/IEPreferences.php';
+namespace Icinga\Editor;
 
 /**
  * Description of NRPEConfigGenerator
@@ -10,7 +8,6 @@ require_once 'classes/IEPreferences.php';
  */
 class IENRPEConfigGenerator extends EaseAtom
 {
-
     /**
      * Objekt hostu
      * @var IEHost
@@ -27,7 +24,7 @@ class IENRPEConfigGenerator extends EaseAtom
      * Pole konfiguračních fragmentů
      * @var array
      */
-    public $nscCfgArray = array();
+    public $nscCfgArray = [];
 
     /**
      * Volání proměnné s nsclient
@@ -50,7 +47,7 @@ class IENRPEConfigGenerator extends EaseAtom
     {
         $this->host = $host;
 
-        $preferences = new IEPreferences;
+        $preferences = new Engine\IEPreferences;
         $this->prefs = $preferences->getPrefs();
         $this->cfgInit();
         $this->cfgGeneralSet();
@@ -64,11 +61,11 @@ class IENRPEConfigGenerator extends EaseAtom
      */
     function cfgInit()
     {
-        $this->nscCfgArray = array(
-          '#!/bin/sh',
-          'sudo -s -- <<EOF',
-          'service nagios-nrpe-server stop',
-          'mv ' . $this->cfgFile . ' ' . $this->cfgFile . '.old');
+        $this->nscCfgArray = [
+            '#!/bin/sh',
+            'sudo -s -- <<EOF',
+            'service nagios-nrpe-server stop',
+            'mv '.$this->cfgFile.' '.$this->cfgFile.'.old'];
         $this->addCfg('dont_blame_nrpe', 1);
     }
 
@@ -85,14 +82,17 @@ class IENRPEConfigGenerator extends EaseAtom
      */
     function cfgServices()
     {
-        $service = new IEService();
+        $service = new Engine\IEService();
 
-        $servicesAssigned = $service->myDbLink->queryToArray('SELECT ' . $service->myKeyColumn . ',' . $service->nameColumn . ',`use` FROM ' . $service->myTable . ' WHERE host_name LIKE \'%"' . $this->host->getName() . '"%\'', $service->myKeyColumn);
+        $servicesAssigned = $service->dblink->queryToArray('SELECT '.$service->myKeyColumn.','.$service->nameColumn.',`use` FROM '.$service->myTable.' WHERE host_name LIKE \'%"'.$this->host->getName().'"%\'',
+            $service->myKeyColumn);
 
         $allServices = $service->getListing(
-            null, true, array(
-          'platform', 'check_command-remote', 'check_command-params', 'passive_checks_enabled', 'active_checks_enabled', 'use', 'check_interval', 'check_command-remote'
-            )
+            null, true,
+            [
+            'platform', 'check_command-remote', 'check_command-params', 'passive_checks_enabled',
+            'active_checks_enabled', 'use', 'check_interval', 'check_command-remote'
+            ]
         );
 
         foreach ($allServices as $serviceID => $serviceInfo) {
@@ -104,13 +104,13 @@ class IENRPEConfigGenerator extends EaseAtom
 
 
         /* Naplní hodnoty z předloh */
-        $usedCache = array();
-        $commandsCache = array();
+        $usedCache     = [];
+        $commandsCache = [];
         foreach ($allServices as $rowId => $service) {
             if (isset($service['use'])) {
                 $remote = $service['check_command-remote'];
                 if (!isset($commandsCache[$remote])) {
-                    $command = new IECommand($remote);
+                    $command                = new Engine\IECommand($remote);
                     $commandsCache[$remote] = $command->getData();
                 }
             }
@@ -119,10 +119,10 @@ class IENRPEConfigGenerator extends EaseAtom
                 $use = $service['use'];
 
                 if (!isset($usedCache[$use])) {
-                    $used = new IEService;
+                    $used             = new Engine\IEService;
                     $used->nameColumn = 'name';
 
-                    if ($used->loadFromMySQL($use)) {
+                    if ($used->loadFromSQL($use)) {
                         $used->resetObjectIdentity();
                         $usedCache[$use] = $used->getData();
                     }
@@ -143,12 +143,12 @@ class IENRPEConfigGenerator extends EaseAtom
         foreach ($allServices as $serviceId => $service) {
 
             $serviceName = $service['service_description'];
-            $serviceCmd = $service['check_command-remote'];
+            $serviceCmd  = $service['check_command-remote'];
             if (is_null($serviceCmd)) {
                 continue;
             }
-            $serviceParams = $service['check_command-params'];
-            $this->nscCfgArray[] = "\n# #" . $service['service_id'] . ' ' . $serviceName;
+            $serviceParams       = $service['check_command-params'];
+            $this->nscCfgArray[] = "\n# #".$service['service_id'].' '.$serviceName;
 
             if (isset($commandsCache[$serviceCmd])) {
                 if (isset($commandsCache[$serviceCmd]['deploy'])) {
@@ -159,7 +159,8 @@ class IENRPEConfigGenerator extends EaseAtom
                 $cmdline = $serviceCmd;
             }
 
-            $this->addCfg('command[' . str_replace(' ', '_', $serviceName) . ']', $cmdline . ' ' . $serviceParams);
+            $this->addCfg('command['.str_replace(' ', '_', $serviceName).']',
+                $cmdline.' '.$serviceParams);
         }
     }
 
@@ -168,7 +169,7 @@ class IENRPEConfigGenerator extends EaseAtom
      */
     public function cfgEnding()
     {
-        $this->nscCfgArray[] = "\n" . 'curl "' . $this->getCfgConfirmUrl() . '"';
+        $this->nscCfgArray[] = "\n".'curl "'.$this->getCfgConfirmUrl().'"';
         $this->nscCfgArray[] = 'service nagios-nrpe-server start';
         $this->nscCfgArray[] = 'EOF';
         $this->nscCfgArray[] = '';
@@ -187,8 +188,8 @@ class IENRPEConfigGenerator extends EaseAtom
             header('Expires: 0');
             header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
             header('Pragma: public');
-            header('Content-Disposition: attachment; filename=' . $this->host->getName() . '_nrpe.sh');
-            header('Content-Length: ' . strlen($nrpesh));
+            header('Content-Disposition: attachment; filename='.$this->host->getName().'_nrpe.sh');
+            header('Content-Length: '.strlen($nrpesh));
             echo $nrpesh;
         } else {
             return $nrpesh;
@@ -208,7 +209,7 @@ class IENRPEConfigGenerator extends EaseAtom
             $scheme = 'http';
         }
 
-        $enterPoint = $scheme . '://' . $_SERVER['SERVER_NAME'] . dirname($_SERVER['REQUEST_URI']) . '/';
+        $enterPoint = $scheme.'://'.$_SERVER['SERVER_NAME'].dirname($_SERVER['REQUEST_URI']).'/';
 
 //        $enterPoint = str_replace('\\', '', $enterPoint); //Win Hack
         return $enterPoint;
@@ -216,12 +217,11 @@ class IENRPEConfigGenerator extends EaseAtom
 
     function getCfgConfirmUrl()
     {
-        return $this->getBaseURL() . 'cfgconfirm.php?hash=' . $this->host->getConfigHash() . '&host_id=' . $this->host->getId();
+        return $this->getBaseURL().'cfgconfirm.php?hash='.$this->host->getConfigHash().'&host_id='.$this->host->getId();
     }
 
     public function addCfg($key, $value)
     {
-        $this->nscCfgArray[] = "echo \"$key=$value\" >> " . $this->cfgFile;
+        $this->nscCfgArray[] = "echo \"$key=$value\" >> ".$this->cfgFile;
     }
-
 }

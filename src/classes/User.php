@@ -57,14 +57,14 @@ class User extends \Ease\User
      */
     public function getFirstContact()
     {
-        $contact = new IEContact();
-        $cn      = $contact->getColumnsFromMySQL(array($contact->nameColumn, $contact->myKeyColumn),
-            array($contact->userColumn => $this->getUserID(), 'parent_id' => 'IS NOT NULL'),
+        $contact = new Engine\IEContact();
+        $cn      = $contact->getColumnsFromSQL([$contact->nameColumn, $contact->myKeyColumn],
+            [$contact->userColumn => $this->getUserID(), 'parent_id' => 'IS NOT NULL'],
             $contact->myKeyColumn, $contact->nameColumn, 1);
         if (count($cn)) {
             $curcnt = current($cn);
 
-            return array($curcnt[$contact->myKeyColumn] => $curcnt[$contact->nameColumn]);
+            return [$curcnt[$contact->myKeyColumn] => $curcnt[$contact->nameColumn]];
         }
 
         return null;
@@ -75,7 +75,7 @@ class User extends \Ease\User
      */
     public function getDefaultContact()
     {
-        return new IEContact($this->getDataValue($this->loginColumn).' email');
+        return new Engine\IEContact($this->getDataValue($this->loginColumn).' email');
     }
 
     /**
@@ -111,7 +111,7 @@ class User extends \Ease\User
                 $salt      = hash("sha256",
                     uniqid($this->getUserLogin().'_', mt_rand()));
                 $pwhash    = hash_hmac("sha256", $newPassword, $salt);
-                $pwchquery = "UPDATE nsm_user SET user_password='".$this->myDbLink->addSlashes($pwhash)."', user_salt = '".$this->myDbLink->addSlashes($salt)."', user_modified = NOW() WHERE user_name = '".$this->getUserLogin()."';";
+                $pwchquery = "UPDATE nsm_user SET user_password='".$this->dblink->addSlashes($pwhash)."', user_salt = '".$this->dblink->addSlashes($salt)."', user_modified = NOW() WHERE user_name = '".$this->getUserLogin()."';";
 
                 if ($mysqli->query($pwchquery)) {
                     $this->addStatusMessage(_('Heslo bylo nastaveno i pro Icinga Web'),
@@ -204,7 +204,7 @@ class User extends \Ease\User
 
     private function _getPrincipals($pt_principal_id, $mysqli)
     {
-        $principals = array();
+        $principals = [];
         $result     = $mysqli->query("SELECT n.pt_id AS n__pt_id, n.pt_target_id AS n__pt_target_id FROM nsm_principal_target n WHERE (n.pt_principal_id IN ('$pt_principal_id'))");
         if ($result) {
             while ($row = $result->fetch_object()) {
@@ -251,16 +251,16 @@ class User extends \Ease\User
     {
 //        return new EaseJQConfirmedLinkButton('?user_id=' . $this->getID() . '&delete=true' . '&' . $urlAdd, _('Smazat ') . ' ' . $this->getUserLogin() . ' ' . \Ease\TWB\Part::GlyphIcon('remove-sign'));
 
-        \Ease\Shared::webPage()->addItem(new IEConfirmationDialog('delete'.$this->getId(),
+        \Ease\Shared::webPage()->addItem(new UI\ConfirmationDialog('delete'.$this->getId(),
             '?user_id='.$this->getID().'&delete=true'.'&'.$urlAdd,
             _('Smazat').' '.$name,
             sprintf(_('Opravdu smazat %s ?'),
                 '<strong>'.$this->getUserName().'</strong>')));
         return new \Ease\Html\ButtonTag(
-            array(\Ease\TWB\Part::GlyphIcon('remove'), _('Smazat').' '.$this->keyword.' '.$this->getUserName()),
-            array('style' => 'cursor: default', 'class' => 'btn btn-danger', 'id' => 'triggerdelete'.$this->getId(),
+            [\Ease\TWB\Part::GlyphIcon('remove'), _('Smazat').' '.$this->keyword.' '.$this->getUserName()],
+            ['style' => 'cursor: default', 'class' => 'btn btn-danger', 'id' => 'triggerdelete'.$this->getId(),
             'data-id' => $this->getId()
-        ));
+        ]);
     }
 
     public function delete($id = null)
@@ -270,85 +270,85 @@ class User extends \Ease\User
         }
 
         if ($id != $this->getId()) {
-            $this->loadFromMySQL($id);
+            $this->loadFromSQL($id);
         }
 
 
-        $userGroup = new IEUserGroup;
+        $userGroup = new Engine\IEUserGroup;
         $userGroup->delUser($id);
 
 
-        $command   = new IECommand;
+        $command   = new Engine\IECommand;
         $myCommand = $command->getOwned($id);
         if ($myCommand) {
             foreach ($myCommand as $command_id => $cmd) {
-                $command->loadFromMySQL((int) $command_id);
+                $command->loadFromSQL((int) $command_id);
                 $command->delete();
             }
         }
 
-        $contact   = new IEContact;
+        $contact   = new Engine\IEContact;
         $myContact = $contact->getOwned($id);
         if ($myContact) {
             foreach ($myContact as $contact_id => $cmd) {
-                if ($contact->loadFromMySQL((int) $contact_id)) {
+                if ($contact->loadFromSQL((int) $contact_id)) {
                     $contact->delete();
                 }
             }
         }
 
 
-        $contactgroup   = new IEContactgroup;
+        $contactgroup   = new Engine\IEContactgroup;
         $myContactgroup = $contactgroup->getOwned($id);
         if ($myContactgroup) {
             foreach ($myContactgroup as $contactgroup_id => $cmd) {
-                $contactgroup->loadFromMySQL((int) $contactgroup_id);
+                $contactgroup->loadFromSQL((int) $contactgroup_id);
                 $contactgroup->delete();
             }
         }
 
 
-        $hostgroup   = new IEHostgroup;
+        $hostgroup   = new Engine\IEHostgroup;
         $myHostgroup = $hostgroup->getOwned($id);
         if ($myHostgroup) {
             foreach ($myHostgroup as $hostgroup_id => $cmd) {
-                $hostgroup->loadFromMySQL((int) $hostgroup_id);
+                $hostgroup->loadFromSQL((int) $hostgroup_id);
                 $hostgroup->delete();
             }
         }
 
-        $host   = new IEHost;
+        $host   = new Engine\IEHost;
         $myHost = $host->getOwned($id);
         if ($myHost) {
             foreach ($myHost as $host_id => $cmd) {
-                $host->loadFromMySQL((int) $host_id);
+                $host->loadFromSQL((int) $host_id);
                 $host->delete();
             }
         }
 
-        $servicegroup   = new IEServicegroup;
+        $servicegroup   = new Engine\IEServicegroup;
         $myServicegroup = $servicegroup->getOwned($id);
         if ($myServicegroup) {
             foreach ($myServicegroup as $servicegroup_id => $cmd) {
-                $servicegroup->loadFromMySQL((int) $servicegroup_id);
+                $servicegroup->loadFromSQL((int) $servicegroup_id);
                 $servicegroup->delete();
             }
         }
 
-        $service   = new IEService;
+        $service   = new Engine\IEService;
         $myService = $service->getOwned($id);
         if ($myService) {
             foreach ($myService as $service_id => $cmd) {
-                $service->loadFromMySQL((int) $service_id);
+                $service->loadFromSQL((int) $service_id);
                 $service->delete();
             }
         }
 
-        $timeperiod   = new IETimeperiod;
+        $timeperiod   = new Engine\IETimeperiod;
         $myTimeperiod = $timeperiod->getOwned($id);
         if ($myTimeperiod) {
             foreach ($myTimeperiod as $timeperiod_id => $cmd) {
-                $timeperiod->loadFromMySQL((int) $timeperiod_id);
+                $timeperiod->loadFromSQL((int) $timeperiod_id);
                 $timeperiod->delete();
             }
         }
@@ -365,7 +365,7 @@ class User extends \Ease\User
             }
         }
 
-        if ($this->deleteFromMySQL()) {
+        if ($this->deleteFromSQL()) {
 
             $this->addStatusMessage(sprintf(_('Uživatel %s byl smazán'),
                     $this->getUserLogin()));
@@ -374,7 +374,7 @@ class User extends \Ease\User
 
             $email = new EaseMail($this->getDataValue('email'),
                 _('Oznámení o zrušení účtu'));
-            $email->setMailHeaders(array('From' => EMAIL_FROM));
+            $email->setMailHeaders(['From' => EMAIL_FROM]);
             $email->addItem(new \Ease\Html\Div("Právě jste byl/a smazán/a z Aplikace VSMonitoring s těmito přihlašovacími údaji:\n"));
             $email->addItem(new \Ease\Html\Div(' Login: '.$this->GetUserLogin()."\n"));
 

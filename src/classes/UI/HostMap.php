@@ -12,7 +12,7 @@ require_once 'Image/GraphViz.php';
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2015 Vitex@hippy.cz (G)
  */
-class HostMap extends Image_GraphViz
+class HostMap extends \Image_GraphViz
 {
 
     /**
@@ -35,7 +35,7 @@ class HostMap extends Image_GraphViz
      *
      * @access public
      */
-    public function __construct($directed = false, $attributes = array(),
+    public function __construct($directed = false, $attributes = [],
                                 $name = 'G', $strict = true,
                                 $returnError = false)
     {
@@ -49,10 +49,10 @@ class HostMap extends Image_GraphViz
      */
     function fillUp()
     {
-        $host  = new IEHost();
+        $host  = new \Icinga\Editor\Engine\IEHost();
         $hosts = $host->getListing(null, false,
-            array('alias', 'address', 'parents', 'notifications_enabled', 'active_checks_enabled',
-            'passive_checks_enabled', $host->myCreateColumn, $host->myLastModifiedColumn));
+            ['alias', 'address', 'parents', 'notifications_enabled', 'active_checks_enabled',
+            'passive_checks_enabled', $host->myCreateColumn, $host->myLastModifiedColumn]);
 
         foreach ($hosts as $host => $host_info) {
             $name = $host_info['host_name'];
@@ -76,7 +76,7 @@ class HostMap extends Image_GraphViz
 
 
             $this->addNode($name,
-                array(
+                [
                 'URL' => 'host.php?host_id='.$host_info['host_id'],
                 'fontsize' => '10',
                 'color' => $color,
@@ -85,13 +85,13 @@ class HostMap extends Image_GraphViz
                 'fixedsize' => false,
                 'style' => 'filled',
                 'tooltip' => $host_info['address'],
-                'label' => $alias));
+                'label' => $alias]);
 
 
             if (isset($host_info['host_name'])) {
                 if (is_array($host_info['parents'])) {
                     foreach ($host_info['parents'] as $parent_name) {
-                        $this->addEdge(array($host_info['host_name'] => $parent_name));
+                        $this->addEdge([$host_info['host_name'] => $parent_name]);
                     }
                 }
             }

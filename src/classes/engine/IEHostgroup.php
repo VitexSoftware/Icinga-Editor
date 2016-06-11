@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Konfigurace Skupin hostů
  *
@@ -8,65 +7,65 @@
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2012 Vitex@hippy.cz (G)
  */
-require_once 'IEcfg.php';
 
-class IEHostgroup extends IECfg
+namespace Icinga\Editor\Engine;
+
+class IEHostgroup extends IEcfg
 {
-
-    public $myTable = 'hostgroup';
+    public $myTable     = 'hostgroup';
     public $myKeyColumn = 'hostgroup_id';
-    public $keyword = 'hostgroup';
-    public $nameColumn = 'hostgroup_name';
+    public $keyword     = 'hostgroup';
+    public $nameColumn  = 'hostgroup_name';
 
     /**
      * Dát tyto položky k dispozici i ostatním ?
      * @var boolean
      */
     public $publicRecords = false;
-    public $useKeywords = array(
-      'hostgroup_name' => 'VARCHAR(64)',
-      'alias' => 'VARCHAR(64)',
-      'members' => 'IDLIST',
-      'hostgroup_members' => 'IDLIST',
-      'notes' => 'TEXT',
-      'notes_url' => 'VARCHAR(255)',
-      'action_url' => 'VARCHAR(255)',
-    );
-    public $keywordsInfo = array(
-      'hostgroup_name' => array(
-        'severity' => 'requied',
-        'title' => 'název skupiny', 'required' => true),
-      'alias' => array(
-        'severity' => 'optional',
-        'title' => 'alias skupiny', 'required' => true),
-      'members' => array(
-        'severity' => 'basic',
-        'title' => 'členské hosty',
-        'mandatory' => true,
-        'refdata' => array(
-          'table' => 'host',
-          'captioncolumn' => 'host_name',
-          'idcolumn' => 'host_id',
-          'condition' => array('register' => 1))
-      ),
-      'hostgroup_members' => array(
-        'severity' => 'optional',
-        'title' => 'členské skupiny hostů',
-        'refdata' => array(
-          'table' => 'hostgroup',
-          'captioncolumn' => 'hostgroup_name',
-          'idcolumn' => 'hostgroup_id')
-      ),
-      'notes' => array(
-        'severity' => 'basic',
-        'title' => 'Poznámka'),
-      'notes_url' => array(
-        'severity' => 'advanced',
-        'title' => 'URL externích poznámek'),
-      'action_url' => array(
-        'severity' => 'advanced',
-        'title' => 'adresa doplnujících akcí'),
-    );
+    public $useKeywords   = [
+        'hostgroup_name' => 'VARCHAR(64)',
+        'alias' => 'VARCHAR(64)',
+        'members' => 'IDLIST',
+        'hostgroup_members' => 'IDLIST',
+        'notes' => 'TEXT',
+        'notes_url' => 'VARCHAR(255)',
+        'action_url' => 'VARCHAR(255)',
+    ];
+    public $keywordsInfo  = [
+        'hostgroup_name' => [
+            'severity' => 'requied',
+            'title' => 'název skupiny', 'required' => true],
+        'alias' => [
+            'severity' => 'optional',
+            'title' => 'alias skupiny', 'required' => true],
+        'members' => [
+            'severity' => 'basic',
+            'title' => 'členské hosty',
+            'mandatory' => true,
+            'refdata' => [
+                'table' => 'host',
+                'captioncolumn' => 'host_name',
+                'idcolumn' => 'host_id',
+                'condition' => ['register' => 1]]
+        ],
+        'hostgroup_members' => [
+            'severity' => 'optional',
+            'title' => 'členské skupiny hostů',
+            'refdata' => [
+                'table' => 'hostgroup',
+                'captioncolumn' => 'hostgroup_name',
+                'idcolumn' => 'hostgroup_id']
+        ],
+        'notes' => [
+            'severity' => 'basic',
+            'title' => 'Poznámka'],
+        'notes_url' => [
+            'severity' => 'advanced',
+            'title' => 'URL externích poznámek'],
+        'action_url' => [
+            'severity' => 'advanced',
+            'title' => 'adresa doplnujících akcí'],
+    ];
 
     /**
      * URL dokumentace objektu
@@ -80,15 +79,17 @@ class IEHostgroup extends IECfg
      */
     public function deleteHost($hostname)
     {
-        $memberOf = \Ease\Shared::db()->queryToArray('SELECT ' . $this->getmyKeyColumn() . ',' . $this->nameColumn . ' FROM ' . $this->myTable . ' WHERE members LIKE \'%"' . $hostname . '"%\' ', $this->getmyKeyColumn());
+        $memberOf = \Ease\Shared::db()->queryToArray('SELECT '.$this->getmyKeyColumn().','.$this->nameColumn.' FROM '.$this->myTable.' WHERE members LIKE \'%"'.$hostname.'"%\' ',
+            $this->getmyKeyColumn());
         foreach ($memberOf as $groupID => $group) {
             $found = false;
-            $this->loadFromMySQL($groupID);
+            $this->loadFromSQL($groupID);
             foreach ($this->data['members'] as $ID => $member) {
                 if ($member == $hostname) {
                     $found = true;
                     unset($this->data['members'][$ID]);
-                    $this->addStatusMessage(sprintf(_(' %s byl odstraněn ze skupiny %s '), $hostname, $group[$this->nameColumn]));
+                    $this->addStatusMessage(sprintf(_(' %s byl odstraněn ze skupiny %s '),
+                            $hostname, $group[$this->nameColumn]));
                 }
             }
             if ($found) {
@@ -111,9 +112,9 @@ class IEHostgroup extends IECfg
 
     public function loadDefault()
     {
-        $groupID = \Ease\Shared::db()->queryToValue('SELECT ' . $this->getmyKeyColumn() . ' FROM ' . $this->myTable . ' WHERE ' . $this->userColumn . '= ' . \Ease\Shared::user()->getUserID() . ' ORDER BY ' . $this->getmyKeyColumn() . ' DESC LIMIT 1');
+        $groupID = \Ease\Shared::db()->queryToValue('SELECT '.$this->getmyKeyColumn().' FROM '.$this->myTable.' WHERE '.$this->userColumn.'= '.\Ease\Shared::user()->getUserID().' ORDER BY '.$this->getmyKeyColumn().' DESC LIMIT 1');
         if ($groupID) {
-            $this->loadFromMySQL((int) $groupID);
+            $this->loadFromSQL((int) $groupID);
 
             return true;
         }
@@ -129,15 +130,17 @@ class IEHostgroup extends IECfg
      */
     public function renameHost($oldname, $newname)
     {
-        $memberOf = \Ease\Shared::db()->queryToArray('SELECT ' . $this->getmyKeyColumn() . ',' . $this->nameColumn . ' FROM ' . $this->myTable . ' WHERE members LIKE \'%"' . $oldname . '"%\' ', $this->getmyKeyColumn());
+        $memberOf = \Ease\Shared::db()->queryToArray('SELECT '.$this->getmyKeyColumn().','.$this->nameColumn.' FROM '.$this->myTable.' WHERE members LIKE \'%"'.$oldname.'"%\' ',
+            $this->getmyKeyColumn());
         foreach ($memberOf as $groupID => $group) {
             $found = false;
-            $this->loadFromMySQL($groupID);
+            $this->loadFromSQL($groupID);
             foreach ($this->data['members'] as $id => $member) {
                 if ($member == $oldname) {
-                    $found = true;
+                    $found                      = true;
                     $this->data['members'][$id] = $newname;
-                    $this->addStatusMessage(sprintf(_(' %s byl přejmenován na %s ve skupině %s '), $oldname, $newname, $group[$this->nameColumn]));
+                    $this->addStatusMessage(sprintf(_(' %s byl přejmenován na %s ve skupině %s '),
+                            $oldname, $newname, $group[$this->nameColumn]));
                 }
             }
             if ($found) {
@@ -169,23 +172,27 @@ class IEHostgroup extends IECfg
         } else {
             $id = $this->getId();
         }
-        $host = new IEHost;
-        $hosts = $host->getColumnsFromMySQL(
-            array($host->myKeyColumn), array(
-          'hostgroups' => '%' . $this->getName() . '%'
-            )
+        $host  = new Engine\IEHost;
+        $hosts = $host->getColumnsFromSQL(
+            [$host->myKeyColumn],
+            [
+            'hostgroups' => '%'.$this->getName().'%'
+            ]
         );
         foreach ($hosts as $hostInfo) {
-            $hostId = intval(current($hostInfo));
-            $host->loadFromMySQL($hostId);
+            $hostId         = intval(current($hostInfo));
+            $host->loadFromSQL($hostId);
             $hostgroupNames = $host->getDataValue('hostgroups');
             if ($hostgroupNames) {
                 foreach ($hostgroupNames as $hostgroupId => $hostgroupName) {
                     if ($hostgroupId == $this->getId()) {
-                        if ($host->delMember('hostgroups', $hostgroupId, $hostgroupName)) {
-                            $this->addStatusMessage(sprintf(_('host %s byl odstraněn ze skupiny %s'), $host->getName(), $hostgroupName), 'success');
+                        if ($host->delMember('hostgroups', $hostgroupId,
+                                $hostgroupName)) {
+                            $this->addStatusMessage(sprintf(_('host %s byl odstraněn ze skupiny %s'),
+                                    $host->getName(), $hostgroupName), 'success');
                         } else {
-                            $this->addStatusMessage(sprintf(_('host %s byl odstraněn ze skupiny %s'), $host->getName(), $hostgroupName), 'error');
+                            $this->addStatusMessage(sprintf(_('host %s byl odstraněn ze skupiny %s'),
+                                    $host->getName(), $hostgroupName), 'error');
                         }
                     }
                 }
@@ -193,23 +200,29 @@ class IEHostgroup extends IECfg
         }
 
 
-        $subgroup = new IEHostgroup;
-        $subgroups = $subgroup->getColumnsFromMySQL(
-            array($subgroup->myKeyColumn), array(
-          'hostgroup_members' => '%' . $this->getName() . '%'
-            )
+        $subgroup  = new Engine\IEHostgroup;
+        $subgroups = $subgroup->getColumnsFromSQL(
+            [$subgroup->myKeyColumn],
+            [
+            'hostgroup_members' => '%'.$this->getName().'%'
+            ]
         );
         foreach ($subgroups as $subgroupInfo) {
-            $subgroupId = intval(current($subgroupInfo));
-            $subgroup->loadFromMySQL($subgroupId);
+            $subgroupId         = intval(current($subgroupInfo));
+            $subgroup->loadFromSQL($subgroupId);
             $subgroupgroupNames = $subgroup->getDataValue('hostgroup_members');
             if ($subgroupgroupNames) {
                 foreach ($subgroupgroupNames as $subgroupgroupId => $subgroupgroupName) {
                     if ($subgroupgroupId == $this->getId()) {
-                        if ($subgroup->delMember('hostgroup_members', $subgroupgroupId, $subgroupgroupName)) {
-                            $this->addStatusMessage(sprintf(_('subgroup %s byl odstraněn ze skupiny %s'), $subgroup->getName(), $subgroupgroupName), 'success');
+                        if ($subgroup->delMember('hostgroup_members',
+                                $subgroupgroupId, $subgroupgroupName)) {
+                            $this->addStatusMessage(sprintf(_('subgroup %s byl odstraněn ze skupiny %s'),
+                                    $subgroup->getName(), $subgroupgroupName),
+                                'success');
                         } else {
-                            $this->addStatusMessage(sprintf(_('subgroup %s byl odstraněn ze skupiny %s'), $subgroup->getName(), $subgroupgroupName), 'error');
+                            $this->addStatusMessage(sprintf(_('subgroup %s byl odstraněn ze skupiny %s'),
+                                    $subgroup->getName(), $subgroupgroupName),
+                                'error');
                         }
                     }
                 }
@@ -219,5 +232,4 @@ class IEHostgroup extends IECfg
 
         return parent::delete($id);
     }
-
 }

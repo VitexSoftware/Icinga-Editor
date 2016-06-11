@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Konfigurace Služeb
  *
@@ -8,18 +7,18 @@
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2012 Vitex@hippy.cz (G)
  */
-require_once 'IEcfg.php';
+
+namespace Icinga\Editor\Engine;
 
 /**
  * Služby
  */
-class IEService extends IECfg
+class IEService extends IEcfg
 {
-
-    public $myTable = 'service';
+    public $myTable     = 'service';
     public $myKeyColumn = 'service_id';
-    public $keyword = 'service';
-    public $nameColumn = 'service_description';
+    public $keyword     = 'service';
+    public $nameColumn  = 'service_description';
 
     /**
      * Weblink
@@ -38,268 +37,268 @@ class IEService extends IECfg
      * @var boolean
      */
     public $publicRecords = true;
-    public $useKeywords = array(
-      'display_name' => 'VARCHAR(64)',
-      'service_description' => 'VARCHAR(255)',
-      'host_name' => 'IDLIST',
-      'hostgroup_name' => 'IDLIST',
-      'servicegroups' => 'IDLIST',
-      'is_volatile' => "RADIO(0,1,2)",
-      'check_command' => 'SELECT+PARAMS',
-      'check_command-remote' => 'VARCHAR(128)',
-      'check_command-params' => 'VARCHAR(128)',
-      'tcp_port' => 'INT',
-      'initial_state' => "FLAGS('o','w','u','c')",
-      'max_check_attempts' => 'SLIDER',
-      'check_interval' => 'INT',
-      'retry_interval' => 'INT',
-      'active_checks_enabled' => 'BOOL',
-      'passive_checks_enabled' => 'BOOL',
-      'check_period' => 'SELECT',
-      'parallelize_check' => 'BOOL',
-      'obsess_over_service' => 'BOOL',
-      'check_freshness' => 'BOOL',
-      'freshness_threshold' => 'INT',
-      'event_handler' => 'SELECT',
-      'event_handler_enabled' => 'BOOL',
-      'low_flap_threshold' => 'INT',
-      'high_flap_threshold' => 'INT',
-      'flap_detection_enabled' => 'BOOL',
-      'flap_detection_options' => "FLAGS('o','w','u','c')",
-      'failure_prediction_enabled' => 'BOOL',
-      'process_perf_data' => 'BOOL',
-      'retain_status_information' => 'BOOL',
-      'retain_nonstatus_information' => 'BOOL',
-      'notification_interval' => 'SLIDER',
-      'first_notification_delay' => 'SLIDER',
-      'notification_period' => 'SELECT',
-      'notification_options' => "FLAGS('w','u','c','r','f','s')",
-      'notifications_enabled' => 'BOOL',
-      'contacts' => 'IDLIST',
-      'contact_groups' => 'IDLIST',
-      'stalking_options' => "FLAGS('o','w','u','c')",
-      'notes' => 'VARCHAR(255)',
-      'notes_url' => 'VARCHAR(64)',
-      'action_url' => 'VARCHAR(64)',
-      'icon_image' => 'VARCHAR(64)',
-      'icon_image_alt' => 'VARCHAR(64)',
-      'configurator' => 'VARCHAR(64)',
-      'platform' => "PLATFORM"
-    );
-    public $keywordsInfo = array(
-      'host_name' => array(
-        'severity' => 'mandatory',
-        'title' => 'hosty služby',
-        'required' => true,
-        'refdata' => array(
-          'table' => 'host',
-          'captioncolumn' => 'host_name',
-          'idcolumn' => 'host_id',
-          'condition' => array('register' => 1)
-        )
-      ),
-      'hostgroup_name' => array(
-        'severity' => 'optional',
-        'title' => 'skupiny hostů služby',
-        'refdata' => array(
-          'table' => 'hostgroup',
-          'captioncolumn' => 'hostgroup_name',
-          'idcolumn' => 'hostgroup_id')
-      ),
-      'service_description' => array(
-        'severity' => 'mandatory',
-        'title' => 'popisek služby', 'required' => true),
-      'display_name' => array(
-        'severity' => 'basic',
-        'title' => 'zobrazované jméno'),
-      'tcp_port' => array(
-        'severity' => 'advanced',
-        'title' => 'sledovaný port služby'),
-      'servicegroups' => array(
-        'severity' => 'optional',
-        'title' => 'skupiny služeb',
-        'refdata' => array(
-          'table' => 'servicegroup',
-          'captioncolumn' => 'servicegroup_name',
-          'idcolumn' => 'servicegroup_id')
-      ),
-      'is_volatile' => array(
-        'severity' => 'advanced',
-        'title' => 'volatile',
-        '0' => 'service is not volatile',
-        '1' => 'service is volatile',
-        '2' => 'service is volatile but will respect the re-notification interval for notifications'
-      ),
-      'check_command' => array(
-        'severity' => 'mandatory',
-        'title' => 'příkaz testu',
-        'required' => true,
-        'refdata' => array(
-          'table' => 'command',
-          'captioncolumn' => 'command_name',
-          'idcolumn' => 'command_id',
-          'condition' => array('command_type' => 'check')
-        )
-      ),
-      'check_command-remote' => array(
-        'severity' => 'basic',
-        'title' => 'vzdálený příkaz'),
-      'check_command-params' => array(
-        'severity' => 'basic',
-        'title' => 'parametry testů'),
-      'initial_state' => array(
-        'severity' => 'advanced',
-        'title' => 'výchozí stav',
-        'o' => 'Ok',
-        'w' => 'Warning',
-        'u' => 'Up',
-        'c' => 'Critical'),
-      'max_check_attempts' => array(
-        'severity' => 'advanced',
-        'title' => 'maximální počet pokusů o test',
-        'required' => true
-      ),
-      'check_interval' => array(
-        'severity' => 'mandatory',
-        'title' => 'interval testu', 'required' => true),
-      'retry_interval' => array(
-        'severity' => 'optional',
-        'title' => 'interval opakování testu', 'required' => true),
-      'active_checks_enabled' => array(
-        'severity' => 'mandatory',
-        'title' => 'Aktivní režim'),
-      'passive_checks_enabled' => array(
-        'severity' => 'mandatory',
-        'title' => 'Pasivní režim'),
-      'check_period' => array(
-        'severity' => 'optional',
-        'title' => 'perioda provádění testu', 'required' => true,
-        'refdata' => array(
-          'table' => 'timeperiod',
-          'captioncolumn' => 'timeperiod_name',
-          'idcolumn' => 'timeperiod_id')
-      ),
-      'parallelize_check' => array(
-        'severity' => 'advanced',
-        'value' => '1', 'title' => 'paraelizovat checky'),
-      'obsess_over_service' => array(
-        'severity' => 'advanced',
-        'title' => 'posedlost službou'),
-      'check_freshness' => array(
-        'severity' => 'advanced',
-        'title' => 'testovat čersvost'),
-      'freshness_threshold' => array(
-        'severity' => 'advanced',
-        'title' => 'práh čerstvosti'),
-      'event_handler' => array(
-        'severity' => 'advanced',
-        'title' => 'príkaz ošetření události',
-        'refdata' => array(
-          'table' => 'command',
-          'captioncolumn' => 'command_name',
-          'idcolumn' => 'command_id',
-          'condition' => array('command_type' => 'handler')
-        )
-      ),
-      'event_handler_enabled' => array(
-        'severity' => 'advanced',
-        'title' => 'povolit ošetření události'),
-      'low_flap_threshold' => array(
-        'severity' => 'advanced',
-        'title' => 'klapka nízkého prahu'),
-      'high_flap_threshold' => array(
-        'severity' => 'advanced',
-        'title' => 'klapka vysokého prahu'),
-      'flap_detection_enabled' => array(
-        'severity' => 'advanced',
-        'title' => 'detekce klapání'),
-      'flap_detection_options' => array(
-        'severity' => 'advanced',
-        'title' => 'nastavení detekce klapání'),
-      'failure_prediction_enabled' => array(
-        'severity' => 'advanced',
-        'title' => 'předpovídat výpadek'),
-      'process_perf_data' => array(
-        'severity' => 'advanced',
-        'title' => 'zpracovávat výkonostní data'),
-      'retain_status_information' => array(
-        'severity' => 'advanced',
-        'title' => 'uchovávat informace o stavu'),
-      'retain_nonstatus_information' => array(
-        'severity' => 'advanced',
-        'title' => 'uchovávat nestavové informace'),
-      'notification_interval' => array(
-        'severity' => 'optional',
-        'title' => 'notifikační interval'),
-      'first_notification_delay' => array(
-        'severity' => 'advanced',
-        'title' => 'první prodleva notifikace'),
-      'notification_period' => array(
-        'severity' => 'optional',
-        'title' => 'notifikační perioda',
-        'refdata' => array(
-          'table' => 'timeperiod',
-          'captioncolumn' => 'timeperiod_name',
-          'idcolumn' => 'timeperiod_id')
-      ),
-      'notification_options' => array(
-        'severity' => 'advanced',
-        'title' => 'možnosti oznamování',
-        'w' => 'send notifications on a WARNING state',
-        'u' => 'send notifications on an UNKNOWN state',
-        'c' => 'send notifications on a CRITICAL state',
-        'r' => 'send notifications on recoveries OK',
-        'f' => 'send notifications when the service starts and stops flapping',
-        's' => 'send notifications when scheduled downtime starts and ends',
-      ),
-      'notifications_enabled' => array(
-        'severity' => 'basic',
-        'title' => 'povolit oznamování'),
-      'contacts' => array(
-        'severity' => 'basic',
-        'title' => 'kontakty',
-        'refdata' => array(
-          'table' => 'contact',
-          'captioncolumn' => 'contact_name',
-          'idcolumn' => 'contact_id')),
-      'contact_groups' => array(
-        'severity' => 'optional',
-        'title' => 'členské skupiny kontaktů',
-        'refdata' => array(
-          'table' => 'contactgroup',
-          'captioncolumn' => 'contactgroup_name',
-          'idcolumn' => 'contactgroup_id')
-      ),
-      'stalking_options' => array(
-        'severity' => 'advanced',
-        'title' => 'možnosti stopování',
-        'o' => 'stalk on OK states',
-        'w' => 'stalk on WARNING states',
-        'u' => 'stalk on UNKNOWN states',
-        'c' => 'stalk on CRITICAL states'
-      ),
-      'notes' => array(
-        'severity' => 'basic',
-        'title' => 'poznámka'),
-      'notes_url' => array(
-        'severity' => 'advanced',
-        'title' => 'url dodatečných poznámek'),
-      'action_url' => array(
-        'severity' => 'advanced',
-        'title' => 'url dodatečné akce'),
-      'icon_image' => array(
-        'severity' => 'advanced',
-        'title' => 'ikona služby'),
-      'icon_image_alt' => array(
-        'severity' => 'advanced',
-        'title' => 'alternativní ikona služby'),
-      'configurator' => array(
-        'severity' => 'advanced',
-        'title' => 'Plugin pro konfiguraci služby'),
-      'platform' => array(
-        'severity' => 'basic',
-        'title' => 'Platforma', 'mandatory' => true)
-    );
+    public $useKeywords   = [
+        'display_name' => 'VARCHAR(64)',
+        'service_description' => 'VARCHAR(255)',
+        'host_name' => 'IDLIST',
+        'hostgroup_name' => 'IDLIST',
+        'servicegroups' => 'IDLIST',
+        'is_volatile' => "RADIO(0,1,2)",
+        'check_command' => 'SELECT+PARAMS',
+        'check_command-remote' => 'VARCHAR(128)',
+        'check_command-params' => 'VARCHAR(128)',
+        'tcp_port' => 'INT',
+        'initial_state' => "FLAGS('o','w','u','c')",
+        'max_check_attempts' => 'SLIDER',
+        'check_interval' => 'INT',
+        'retry_interval' => 'INT',
+        'active_checks_enabled' => 'BOOL',
+        'passive_checks_enabled' => 'BOOL',
+        'check_period' => 'SELECT',
+        'parallelize_check' => 'BOOL',
+        'obsess_over_service' => 'BOOL',
+        'check_freshness' => 'BOOL',
+        'freshness_threshold' => 'INT',
+        'event_handler' => 'SELECT',
+        'event_handler_enabled' => 'BOOL',
+        'low_flap_threshold' => 'INT',
+        'high_flap_threshold' => 'INT',
+        'flap_detection_enabled' => 'BOOL',
+        'flap_detection_options' => "FLAGS('o','w','u','c')",
+        'failure_prediction_enabled' => 'BOOL',
+        'process_perf_data' => 'BOOL',
+        'retain_status_information' => 'BOOL',
+        'retain_nonstatus_information' => 'BOOL',
+        'notification_interval' => 'SLIDER',
+        'first_notification_delay' => 'SLIDER',
+        'notification_period' => 'SELECT',
+        'notification_options' => "FLAGS('w','u','c','r','f','s')",
+        'notifications_enabled' => 'BOOL',
+        'contacts' => 'IDLIST',
+        'contact_groups' => 'IDLIST',
+        'stalking_options' => "FLAGS('o','w','u','c')",
+        'notes' => 'VARCHAR(255)',
+        'notes_url' => 'VARCHAR(64)',
+        'action_url' => 'VARCHAR(64)',
+        'icon_image' => 'VARCHAR(64)',
+        'icon_image_alt' => 'VARCHAR(64)',
+        'configurator' => 'VARCHAR(64)',
+        'platform' => "PLATFORM"
+    ];
+    public $keywordsInfo  = [
+        'host_name' => [
+            'severity' => 'mandatory',
+            'title' => 'hosty služby',
+            'required' => true,
+            'refdata' => [
+                'table' => 'host',
+                'captioncolumn' => 'host_name',
+                'idcolumn' => 'host_id',
+                'condition' => ['register' => 1]
+            ]
+        ],
+        'hostgroup_name' => [
+            'severity' => 'optional',
+            'title' => 'skupiny hostů služby',
+            'refdata' => [
+                'table' => 'hostgroup',
+                'captioncolumn' => 'hostgroup_name',
+                'idcolumn' => 'hostgroup_id']
+        ],
+        'service_description' => [
+            'severity' => 'mandatory',
+            'title' => 'popisek služby', 'required' => true],
+        'display_name' => [
+            'severity' => 'basic',
+            'title' => 'zobrazované jméno'],
+        'tcp_port' => [
+            'severity' => 'advanced',
+            'title' => 'sledovaný port služby'],
+        'servicegroups' => [
+            'severity' => 'optional',
+            'title' => 'skupiny služeb',
+            'refdata' => [
+                'table' => 'servicegroup',
+                'captioncolumn' => 'servicegroup_name',
+                'idcolumn' => 'servicegroup_id']
+        ],
+        'is_volatile' => [
+            'severity' => 'advanced',
+            'title' => 'volatile',
+            '0' => 'service is not volatile',
+            '1' => 'service is volatile',
+            '2' => 'service is volatile but will respect the re-notification interval for notifications'
+        ],
+        'check_command' => [
+            'severity' => 'mandatory',
+            'title' => 'příkaz testu',
+            'required' => true,
+            'refdata' => [
+                'table' => 'command',
+                'captioncolumn' => 'command_name',
+                'idcolumn' => 'command_id',
+                'condition' => ['command_type' => 'check']
+            ]
+        ],
+        'check_command-remote' => [
+            'severity' => 'basic',
+            'title' => 'vzdálený příkaz'],
+        'check_command-params' => [
+            'severity' => 'basic',
+            'title' => 'parametry testů'],
+        'initial_state' => [
+            'severity' => 'advanced',
+            'title' => 'výchozí stav',
+            'o' => 'Ok',
+            'w' => 'Warning',
+            'u' => 'Up',
+            'c' => 'Critical'],
+        'max_check_attempts' => [
+            'severity' => 'advanced',
+            'title' => 'maximální počet pokusů o test',
+            'required' => true
+        ],
+        'check_interval' => [
+            'severity' => 'mandatory',
+            'title' => 'interval testu', 'required' => true],
+        'retry_interval' => [
+            'severity' => 'optional',
+            'title' => 'interval opakování testu', 'required' => true],
+        'active_checks_enabled' => [
+            'severity' => 'mandatory',
+            'title' => 'Aktivní režim'],
+        'passive_checks_enabled' => [
+            'severity' => 'mandatory',
+            'title' => 'Pasivní režim'],
+        'check_period' => [
+            'severity' => 'optional',
+            'title' => 'perioda provádění testu', 'required' => true,
+            'refdata' => [
+                'table' => 'timeperiod',
+                'captioncolumn' => 'timeperiod_name',
+                'idcolumn' => 'timeperiod_id']
+        ],
+        'parallelize_check' => [
+            'severity' => 'advanced',
+            'value' => '1', 'title' => 'paraelizovat checky'],
+        'obsess_over_service' => [
+            'severity' => 'advanced',
+            'title' => 'posedlost službou'],
+        'check_freshness' => [
+            'severity' => 'advanced',
+            'title' => 'testovat čersvost'],
+        'freshness_threshold' => [
+            'severity' => 'advanced',
+            'title' => 'práh čerstvosti'],
+        'event_handler' => [
+            'severity' => 'advanced',
+            'title' => 'príkaz ošetření události',
+            'refdata' => [
+                'table' => 'command',
+                'captioncolumn' => 'command_name',
+                'idcolumn' => 'command_id',
+                'condition' => ['command_type' => 'handler']
+            ]
+        ],
+        'event_handler_enabled' => [
+            'severity' => 'advanced',
+            'title' => 'povolit ošetření události'],
+        'low_flap_threshold' => [
+            'severity' => 'advanced',
+            'title' => 'klapka nízkého prahu'],
+        'high_flap_threshold' => [
+            'severity' => 'advanced',
+            'title' => 'klapka vysokého prahu'],
+        'flap_detection_enabled' => [
+            'severity' => 'advanced',
+            'title' => 'detekce klapání'],
+        'flap_detection_options' => [
+            'severity' => 'advanced',
+            'title' => 'nastavení detekce klapání'],
+        'failure_prediction_enabled' => [
+            'severity' => 'advanced',
+            'title' => 'předpovídat výpadek'],
+        'process_perf_data' => [
+            'severity' => 'advanced',
+            'title' => 'zpracovávat výkonostní data'],
+        'retain_status_information' => [
+            'severity' => 'advanced',
+            'title' => 'uchovávat informace o stavu'],
+        'retain_nonstatus_information' => [
+            'severity' => 'advanced',
+            'title' => 'uchovávat nestavové informace'],
+        'notification_interval' => [
+            'severity' => 'optional',
+            'title' => 'notifikační interval'],
+        'first_notification_delay' => [
+            'severity' => 'advanced',
+            'title' => 'první prodleva notifikace'],
+        'notification_period' => [
+            'severity' => 'optional',
+            'title' => 'notifikační perioda',
+            'refdata' => [
+                'table' => 'timeperiod',
+                'captioncolumn' => 'timeperiod_name',
+                'idcolumn' => 'timeperiod_id']
+        ],
+        'notification_options' => [
+            'severity' => 'advanced',
+            'title' => 'možnosti oznamování',
+            'w' => 'send notifications on a WARNING state',
+            'u' => 'send notifications on an UNKNOWN state',
+            'c' => 'send notifications on a CRITICAL state',
+            'r' => 'send notifications on recoveries OK',
+            'f' => 'send notifications when the service starts and stops flapping',
+            's' => 'send notifications when scheduled downtime starts and ends',
+        ],
+        'notifications_enabled' => [
+            'severity' => 'basic',
+            'title' => 'povolit oznamování'],
+        'contacts' => [
+            'severity' => 'basic',
+            'title' => 'kontakty',
+            'refdata' => [
+                'table' => 'contact',
+                'captioncolumn' => 'contact_name',
+                'idcolumn' => 'contact_id']],
+        'contact_groups' => [
+            'severity' => 'optional',
+            'title' => 'členské skupiny kontaktů',
+            'refdata' => [
+                'table' => 'contactgroup',
+                'captioncolumn' => 'contactgroup_name',
+                'idcolumn' => 'contactgroup_id']
+        ],
+        'stalking_options' => [
+            'severity' => 'advanced',
+            'title' => 'možnosti stopování',
+            'o' => 'stalk on OK states',
+            'w' => 'stalk on WARNING states',
+            'u' => 'stalk on UNKNOWN states',
+            'c' => 'stalk on CRITICAL states'
+        ],
+        'notes' => [
+            'severity' => 'basic',
+            'title' => 'poznámka'],
+        'notes_url' => [
+            'severity' => 'advanced',
+            'title' => 'url dodatečných poznámek'],
+        'action_url' => [
+            'severity' => 'advanced',
+            'title' => 'url dodatečné akce'],
+        'icon_image' => [
+            'severity' => 'advanced',
+            'title' => 'ikona služby'],
+        'icon_image_alt' => [
+            'severity' => 'advanced',
+            'title' => 'alternativní ikona služby'],
+        'configurator' => [
+            'severity' => 'advanced',
+            'title' => 'Plugin pro konfiguraci služby'],
+        'platform' => [
+            'severity' => 'basic',
+            'title' => 'Platforma', 'mandatory' => true]
+    ];
 
     /**
      * URL dokumentace objektu
@@ -314,15 +313,15 @@ class IEService extends IECfg
      */
     public function getAllUserData()
     {
-        $user = \Ease\Shared::user();
-        $userID = $user->getUserID();
+        $user    = \Ease\Shared::user();
+        $userID  = $user->getUserID();
         $allData = parent::getAllUserData();
         foreach ($allData as $adKey => $ad) {
             if ($allData[$adKey]['check_command-remote']) {
-                $params = ' ' . $allData[$adKey]['check_command-remote'] . '!' .
+                $params = ' '.$allData[$adKey]['check_command-remote'].'!'.
                     $allData[$adKey]['check_command-params'];
             } else {
-                $params = ' ' . $allData[$adKey]['check_command-params'];
+                $params = ' '.$allData[$adKey]['check_command-params'];
             }
             unset($allData[$adKey]['check_command-remote']);
             unset($allData[$adKey]['check_command-params']);
@@ -331,7 +330,7 @@ class IEService extends IECfg
 
             if (is_array($ad['contacts']) && count($ad['contacts'])) { //Projít kontakty, vyhodit nevlastněné uživatelem
                 foreach ($ad['contacts'] as $ContactID => $ContactName) {
-                    $contactUserID = $this->myDbLink->QueryToValue('SELECT `user_id` FROM ' . 'contact WHERE contact_id=' . $ContactID);
+                    $contactUserID = $this->dblink->QueryToValue('SELECT `user_id` FROM '.'contact WHERE contact_id='.$ContactID);
                     if ($userID != $contactUserID) {
                         unset($allData[$adKey]['contacts'][$ContactID]);
                     }
@@ -340,7 +339,7 @@ class IEService extends IECfg
 
             if (is_array($ad['host_name']) && count($ad['host_name'])) { //Projít kontakty, vyhodit nevlastněné uživatelem
                 foreach ($ad['host_name'] as $hostID => $HostName) {
-                    $hostUserID = $this->myDbLink->QueryToValue('SELECT `user_id` FROM host WHERE host_id=' . $hostID);
+                    $hostUserID = $this->dblink->QueryToValue('SELECT `user_id` FROM host WHERE host_id='.$hostID);
                     if ($userID != $hostUserID) {
                         unset($allData[$adKey]['host_name'][$hostID]);
                     }
@@ -351,7 +350,7 @@ class IEService extends IECfg
                 if (!strlen($allData[$adKey]['display_name'])) {
                     $allData[$adKey]['display_name'] = $allData[$adKey][$this->nameColumn];
                 }
-                $allData[$adKey][$this->nameColumn] = $allData[$adKey][$this->nameColumn] . '-' .
+                $allData[$adKey][$this->nameColumn] = $allData[$adKey][$this->nameColumn].'-'.
                     \Ease\Shared::user()->getUserLogin(); //Přejmenovat službu podle uživatele
                 if (!count($allData[$adKey]['host_name'])) { //Negenerovat nepoužité služby
                     unset($allData[$adKey]);
@@ -375,13 +374,13 @@ class IEService extends IECfg
 
             if (strlen($allData[$adKey]['check_command-remote'])) {
                 if (!is_null($params)) {
-                    $allData[$adKey]['check_command'].= '!' . $allData[$adKey]['check_command-remote'] . '!' . $params;
+                    $allData[$adKey]['check_command'].= '!'.$allData[$adKey]['check_command-remote'].'!'.$params;
                 } else {
-                    $allData[$adKey]['check_command'].= '!' . $allData[$adKey]['check_command-remote'];
+                    $allData[$adKey]['check_command'].= '!'.$allData[$adKey]['check_command-remote'];
                 }
             } else {
                 if (strlen($params)) {
-                    $allData[$adKey]['check_command'].= '!' . $params;
+                    $allData[$adKey]['check_command'].= '!'.$params;
                 }
             }
             unset($allData[$adKey]['check_command-remote']);
@@ -402,7 +401,7 @@ class IEService extends IECfg
      */
     public function controlAllData($allData)
     {
-        $user = \Ease\Shared::user();
+        $user   = \Ease\Shared::user();
         $userID = $user->getUserID();
         foreach ($allData as $adKey => $ad) {
 
@@ -416,13 +415,13 @@ class IEService extends IECfg
                     unset($allData[$adKey]);
                     continue;
                 }
-                if (!(int) $this->myDbLink->QueryToValue(
-                        'SELECT COUNT(*) FROM ' . $this->myTable .
+                if (!(int) $this->dblink->QueryToValue(
+                        'SELECT COUNT(*) FROM '.$this->myTable.
                         ' WHERE '
-                        . '`use` LIKE \'' . $ad['name'] . ',%\' OR '
-                        . '`use` LIKE \'%,' . $ad['name'] . '\' OR '
-                        . '`use` LIKE \'%,' . $ad['name'] . ',%\' OR '
-                        . '`use` LIKE \'' . $ad['name'] . '\''
+                        .'`use` LIKE \''.$ad['name'].',%\' OR '
+                        .'`use` LIKE \'%,'.$ad['name'].'\' OR '
+                        .'`use` LIKE \'%,'.$ad['name'].',%\' OR '
+                        .'`use` LIKE \''.$ad['name'].'\''
                     )
                 ) {
                     //$this->addStatusMessage(sprintf(_('Předloha služby %s není použita. Negeneruji do konfigurace'), $ad['name']), 'info');
@@ -430,11 +429,12 @@ class IEService extends IECfg
                     continue;
                 }
             } else { //záznam
-                $allData[$adKey][$this->nameColumn] = str_replace(' ', '_', $allData[$adKey][$this->nameColumn]) . '-' . $user->getUserLogin();
+                $allData[$adKey][$this->nameColumn] = str_replace(' ', '_',
+                        $allData[$adKey][$this->nameColumn]).'-'.$user->getUserLogin();
 
                 if (is_array($ad['contacts']) && count($ad['contacts'])) { //Projít kontakty, vyhodit nevlastněné uživatelem
                     foreach ($ad['contacts'] as $ContactID => $ContactName) {
-                        $ContactUserID = $this->myDbLink->QueryToValue('SELECT `user_id` FROM `contact` WHERE contact_id=' . $ContactID);
+                        $ContactUserID = $this->dblink->QueryToValue('SELECT `user_id` FROM `contact` WHERE contact_id='.$ContactID);
                         if ($userID != $ContactUserID) {
                             unset($allData[$adKey]['contacts'][$ContactID]);
                         }
@@ -443,7 +443,7 @@ class IEService extends IECfg
 
                 if (is_array($ad['host_name']) && count($ad['host_name'])) { //Projít kontakty, vyhodit nevlastněné uživatelem
                     foreach ($ad['host_name'] as $HostID => $HostName) {
-                        $hostUserID = (int) $this->myDbLink->QueryToValue('SELECT `user_id` FROM `host` WHERE host_id=' . $HostID);
+                        $hostUserID = (int) $this->dblink->QueryToValue('SELECT `user_id` FROM `host` WHERE host_id='.$HostID);
                         if ($userID != $hostUserID) {
                             unset($allData[$adKey]['host_name'][$HostID]);
                         }
@@ -547,16 +547,16 @@ class IEService extends IECfg
         $this->setDataValue($this->userColumn, $ownerId);
         $this->setDataValue('contacts', $host->owner->getFirstContact());
 
-        $newname = $this->getName() . ' ' . $host->getName();
+        $newname = $this->getName().' '.$host->getName();
 
-        $servcount = $this->myDbLink->queryToCount('SELECT ' . $this->getmyKeyColumn() . ' FROM ' . $this->myTable . ' WHERE ' . $this->nameColumn . ' LIKE \'' . $newname . '%\' ');
+        $servcount = $this->dblink->queryToCount('SELECT '.$this->getmyKeyColumn().' FROM '.$this->myTable.' WHERE '.$this->nameColumn.' LIKE \''.$newname.'%\' ');
 
         if ($servcount) {
-            $newname .= ' ' . ($servcount + 1);
+            $newname .= ' '.($servcount + 1);
         }
 
         $this->setDataValue($this->nameColumn, $newname);
-        $this->setDataValue('host_name', array());
+        $this->setDataValue('host_name', []);
         $this->addMember('host_name', $host->getId(), $host->getName());
 
         return $this->saveToSQL();
@@ -569,17 +569,19 @@ class IEService extends IECfg
      */
     public function swapTo($swapToID)
     {
-        $newService = new IEService($swapToID);
-        $thisName = $this->getName();
-        $hostsOK = array();
-        $hostsErr = array();
-        $hostsAssigned = array();
-        $host = new IEHost();
+        $newService    = new Engine\IEService($swapToID);
+        $thisName      = $this->getName();
+        $hostsOK       = [];
+        $hostsErr      = [];
+        $hostsAssigned = [];
+        $host          = new Engine\IEHost();
 
         if (\Ease\Shared::user()->getSettingValue('admin')) {
-            $allHosts = $host->getAllFromMySQL(NULL, array($host->myKeyColumn, $host->nameColumn, 'platform', 'register'), null, $host->nameColumn, $host->myKeyColumn);
+            $allHosts = $host->getAllFromSQL(NULL,
+                [$host->myKeyColumn, $host->nameColumn, 'platform', 'register'],
+                null, $host->nameColumn, $host->myKeyColumn);
         } else {
-            $allHosts = $host->getListing(null, true, array('platform', 'register'));
+            $allHosts = $host->getListing(null, true, ['platform', 'register']);
         }
         $hosts = $this->getDataValue('host_name');
         foreach ($hosts as $hostId => $hostName) {
@@ -589,19 +591,24 @@ class IEService extends IECfg
         }
 
         foreach ($hostsAssigned as $host_id => $hostAssigned) {
-            if ($this->delMember('host_name', $host_id, $hostAssigned['host_name']) && $newService->addMember('host_name', $host_id, $hostAssigned['host_name'])) {
+            if ($this->delMember('host_name', $host_id,
+                    $hostAssigned['host_name']) && $newService->addMember('host_name',
+                    $host_id, $hostAssigned['host_name'])) {
                 $hostsOK[] = $hostAssigned['host_name'];
             } else {
                 $hostsErr[] = $hostAssigned['host_name'];
             }
         }
         if ($this->saveToSQL() && $newService->saveToSQL() && count($hostsOK)) {
-            $this->addStatusMessage(sprintf(_('%s byl přesunut z %s/%s do %s'), implode(',', $hostsOK), $this->keyword, $this->getName(), $newService->getName()), 'success');
+            $this->addStatusMessage(sprintf(_('%s byl přesunut z %s/%s do %s'),
+                    implode(',', $hostsOK), $this->keyword, $this->getName(),
+                    $newService->getName()), 'success');
             return true;
         } else {
-            $this->addStatusMessage(sprintf(_(' %s nebyl přesunut z %s/%s do %s'), implode(',', $hostsErr), $this->keyword, $this->getName(), $newService->getName()), 'warning');
+            $this->addStatusMessage(sprintf(_(' %s nebyl přesunut z %s/%s do %s'),
+                    implode(',', $hostsErr), $this->keyword, $this->getName(),
+                    $newService->getName()), 'warning');
             return false;
         }
     }
-
 }

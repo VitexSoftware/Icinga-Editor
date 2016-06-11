@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Formulář pro test Disku windows
  *
@@ -8,7 +7,7 @@
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2014 Vitex@hippy.cz (G)
  */
-require_once 'classes/IEServiceConfigurator.php';
+namespace Icinga\Editor\modules;
 
 /**
  * Description of ping
@@ -23,22 +22,22 @@ class CheckDriveSize extends IEServiceConfigurator
      */
     public function form()
     {
-        $config = array(
-          'Drive' => null,
-          'ShowAll' => null,
-          'MaxWarn' => NULL,
-          'MaxCrit' => NULL,
-          'MinWarn' => NULL,
-          'MinCrit' => NULL,
-          'MaxWarnFree' => NULL,
-          'MaxCritFree' => NULL,
-          'MinWarnFree' => NULL,
-          'MinCritFree' => NULL,
-          'MaxWarnUsed' => NULL,
-          'MaxCritUsed' => NULL,
-          'MinWarnUsed' => NULL,
-          'MinCritUsed' => NULL
-        );
+        $config = [
+            'Drive' => null,
+            'ShowAll' => null,
+            'MaxWarn' => NULL,
+            'MaxCrit' => NULL,
+            'MinWarn' => NULL,
+            'MinCrit' => NULL,
+            'MaxWarnFree' => NULL,
+            'MaxCritFree' => NULL,
+            'MinWarnFree' => NULL,
+            'MinCritFree' => NULL,
+            'MaxWarnUsed' => NULL,
+            'MaxCritUsed' => NULL,
+            'MinWarnUsed' => NULL,
+            'MinCritUsed' => NULL
+        ];
         foreach (explode(' ', $this->commandParams[0]) as $cfg) {
             if (strstr($cfg, '=')) {
                 list($key, $value) = explode('=', $cfg);
@@ -53,42 +52,75 @@ class CheckDriveSize extends IEServiceConfigurator
         }
 
 
-        $drives = array_merge(array('CheckAll' => _('Všechny disky')), array_combine(range('a', 'z'), range('A', 'Z')), array('\\\\' => _('Cesta v síti')));
+        $drives = array_merge(['CheckAll' => _('Všechny disky')],
+            array_combine(range('a', 'z'), range('A', 'Z')),
+            ['\\\\' => _('Cesta v síti')]);
         unset($drives[1]);
         foreach ($drives as $did => $dname) {
             if ($did != 'CheckAll') {
-                $drives[$did] = $drives[$did] . ':';
+                $drives[$did] = $drives[$did].':';
             }
         }
 
         if (strstr($config['Drive'], '\\\\')) {
-            $this->form->addInput(new \Ease\Html\Select('Drive', $drives, '\\\\'), _('Disk'), 'X:', _('Volba písmene sledované diskové jednotky'));
+            $this->form->addInput(new \Ease\Html\Select('Drive', $drives, '\\\\'),
+                _('Disk'), 'X:', _('Volba písmene sledované diskové jednotky'));
         } else {
-            $this->form->addInput(new \Ease\Html\Select('Drive', $drives, str_replace(':', '', $config['Drive'])), _('Disk'), 'X:', _('Volba písmene sledované diskové jednotky'));
+            $this->form->addInput(new \Ease\Html\Select('Drive', $drives,
+                str_replace(':', '', $config['Drive'])), _('Disk'), 'X:',
+                _('Volba písmene sledované diskové jednotky'));
         }
 
         if (!strstr($config['Drive'], '\\\\')) {
             $config['Drive'] = '';
         }
-        $this->form->addItem(new \Ease\TWB\FormGroup(_('NetDrive'), new \Ease\Html\InputTextTag('NetDrive', $config['Drive']), '\\\\server\\path\\', _('Cesta síťové jednotky')));
+        $this->form->addItem(new \Ease\TWB\FormGroup(_('NetDrive'),
+            new \Ease\Html\InputTextTag('NetDrive', $config['Drive']),
+            '\\\\server\\path\\', _('Cesta síťové jednotky')));
 
 
-        $this->form->addItem(new \Ease\TWB\FormGroup(_('MaxWarn'), new \Ease\Html\InputTextTag('MaxWarn', $config['MaxWarn']), '80%', _('Maximum value before a warning is returned.')));
-        $this->form->addItem(new \Ease\TWB\FormGroup(_('MaxCrit'), new \Ease\Html\InputTextTag('MaxCrit', $config['MaxCrit']), '95%', _('Maximum value before a critical is returned.')));
-        $this->form->addItem(new \Ease\TWB\FormGroup(_('MinWarn'), new \Ease\Html\InputTextTag('MinWarn', $config['MinWarn']), '10%', _('Minimum value before a warning is returned.')));
-        $this->form->addItem(new \Ease\TWB\FormGroup(_('MinCrit'), new \Ease\Html\InputTextTag('MinCrit', $config['MinCrit']), '5%', _('Minimum value before a critical is returned.')));
+        $this->form->addItem(new \Ease\TWB\FormGroup(_('MaxWarn'),
+            new \Ease\Html\InputTextTag('MaxWarn', $config['MaxWarn']), '80%',
+            _('Maximum value before a warning is returned.')));
+        $this->form->addItem(new \Ease\TWB\FormGroup(_('MaxCrit'),
+            new \Ease\Html\InputTextTag('MaxCrit', $config['MaxCrit']), '95%',
+            _('Maximum value before a critical is returned.')));
+        $this->form->addItem(new \Ease\TWB\FormGroup(_('MinWarn'),
+            new \Ease\Html\InputTextTag('MinWarn', $config['MinWarn']), '10%',
+            _('Minimum value before a warning is returned.')));
+        $this->form->addItem(new \Ease\TWB\FormGroup(_('MinCrit'),
+            new \Ease\Html\InputTextTag('MinCrit', $config['MinCrit']), '5%',
+            _('Minimum value before a critical is returned.')));
 
-        $this->form->addItem(new \Ease\TWB\FormGroup(_('MaxWarnFree'), new \Ease\Html\InputTextTag('MaxWarnFree', $config['MaxWarnFree']), '5%', _('Maximum value before a warning is returned.')));
-        $this->form->addItem(new \Ease\TWB\FormGroup(_('MaxCritFree'), new \Ease\Html\InputTextTag('MaxCritFree', $config['MaxCritFree']), '5%', _('Maximum value before a critcal is returned.')));
-        $this->form->addItem(new \Ease\TWB\FormGroup(_('MinWarnFree'), new \Ease\Html\InputTextTag('MinWarnFree', $config['MinWarnFree']), '5%', _('Minimum value before a warning is returned.')));
-        $this->form->addItem(new \Ease\TWB\FormGroup(_('MinCritFree'), new \Ease\Html\InputTextTag('MinCritFree', $config['MinCritFree']), '5%', _('Minimum value before a critcal is returned.')));
+        $this->form->addItem(new \Ease\TWB\FormGroup(_('MaxWarnFree'),
+            new \Ease\Html\InputTextTag('MaxWarnFree', $config['MaxWarnFree']),
+            '5%', _('Maximum value before a warning is returned.')));
+        $this->form->addItem(new \Ease\TWB\FormGroup(_('MaxCritFree'),
+            new \Ease\Html\InputTextTag('MaxCritFree', $config['MaxCritFree']),
+            '5%', _('Maximum value before a critcal is returned.')));
+        $this->form->addItem(new \Ease\TWB\FormGroup(_('MinWarnFree'),
+            new \Ease\Html\InputTextTag('MinWarnFree', $config['MinWarnFree']),
+            '5%', _('Minimum value before a warning is returned.')));
+        $this->form->addItem(new \Ease\TWB\FormGroup(_('MinCritFree'),
+            new \Ease\Html\InputTextTag('MinCritFree', $config['MinCritFree']),
+            '5%', _('Minimum value before a critcal is returned.')));
 
-        $this->form->addItem(new \Ease\TWB\FormGroup(_('MaxWarnUsed'), new \Ease\Html\InputTextTag('MaxWarnUsed', $config['MaxWarnUsed']), '5%', _('Maximum value before a warning is returned.')));
-        $this->form->addItem(new \Ease\TWB\FormGroup(_('MaxCritUsed'), new \Ease\Html\InputTextTag('MaxCritUsed', $config['MaxCritUsed']), '5%', _('Maximum value before a critcal is returned.')));
-        $this->form->addItem(new \Ease\TWB\FormGroup(_('MinWarnUsed'), new \Ease\Html\InputTextTag('MinWarnUsed', $config['MinWarnUsed']), '5%', _('Minimum value before a warning is returned.')));
-        $this->form->addItem(new \Ease\TWB\FormGroup(_('MinCritUsed'), new \Ease\Html\InputTextTag('MinCritUsed', $config['MinCritUsed']), '5%', _('Minimum value before a critcal is returned.')));
+        $this->form->addItem(new \Ease\TWB\FormGroup(_('MaxWarnUsed'),
+            new \Ease\Html\InputTextTag('MaxWarnUsed', $config['MaxWarnUsed']),
+            '5%', _('Maximum value before a warning is returned.')));
+        $this->form->addItem(new \Ease\TWB\FormGroup(_('MaxCritUsed'),
+            new \Ease\Html\InputTextTag('MaxCritUsed', $config['MaxCritUsed']),
+            '5%', _('Maximum value before a critcal is returned.')));
+        $this->form->addItem(new \Ease\TWB\FormGroup(_('MinWarnUsed'),
+            new \Ease\Html\InputTextTag('MinWarnUsed', $config['MinWarnUsed']),
+            '5%', _('Minimum value before a warning is returned.')));
+        $this->form->addItem(new \Ease\TWB\FormGroup(_('MinCritUsed'),
+            new \Ease\Html\InputTextTag('MinCritUsed', $config['MinCritUsed']),
+            '5%', _('Minimum value before a critcal is returned.')));
 
-        $this->form->addInput(new \Ease\TWB\Switch('ShowAll', $config['ShowAll']), _('Zobrazit vše'), null, _('Configures display format (if set shows all items not only failures, if set to long shows all cores).'));
+        $this->form->addInput(new UI\TWBSwitch('ShowAll', $config['ShowAll']),
+            _('Zobrazit vše'), null,
+            _('Configures display format (if set shows all items not only failures, if set to long shows all cores).'));
 
         //    $this->form->addInput(new \Ease\Html\InputTextTag('orig', $this->commandParams[0], array('disabled')));
     }
@@ -100,8 +132,8 @@ class CheckDriveSize extends IEServiceConfigurator
      */
     public function reconfigureService()
     {
-        $config = array();
-        $page = \Ease\Shared::webPage();
+        $config = [];
+        $page   = \Ease\Shared::webPage();
 
         foreach ($page->getRequestValues() as $key => $value) {
             switch ($key) {
@@ -109,17 +141,24 @@ class CheckDriveSize extends IEServiceConfigurator
                 case 'Drive':
                     if ($value == 'CheckAll') {
                         $config['Drive'] = 'CheckAll';
-                        $this->tweaker->service->setDataValue($this->tweaker->service->nameColumn, _('Všechny jednotky'));
+                        $this->tweaker->service->setDataValue($this->tweaker->service->nameColumn,
+                            _('Všechny jednotky'));
                     } else {
                         if (strlen(trim($value)) && ($value != '\\\\')) {
                             if (strstr($value, '\\\\')) {
-                                $config['Drive'] = 'Drive=' . $value;
-                                $this->tweaker->service->setDataValue($this->tweaker->service->nameColumn, IENSCPConfigGenerator::stripServiceName(_('NetDisk') . ' ' . $value));
-                                $this->tweaker->service->setDataValue('display_name', sprintf(_('Volné místo síťové jednotky %s: '), $value));
+                                $config['Drive'] = 'Drive='.$value;
+                                $this->tweaker->service->setDataValue($this->tweaker->service->nameColumn,
+                                    IENSCPConfigGenerator::stripServiceName(_('NetDisk').' '.$value));
+                                $this->tweaker->service->setDataValue('display_name',
+                                    sprintf(_('Volné místo síťové jednotky %s: '),
+                                        $value));
                             } else {
-                                $config['Drive'] = 'Drive=' . $value . ':';
-                                $this->tweaker->service->setDataValue($this->tweaker->service->nameColumn, _('Disk') . ' ' . strtoupper($value) . ':');
-                                $this->tweaker->service->setDataValue('display_name', sprintf(_('Volné místo disku %s: '), strtoupper($value)));
+                                $config['Drive'] = 'Drive='.$value.':';
+                                $this->tweaker->service->setDataValue($this->tweaker->service->nameColumn,
+                                    _('Disk').' '.strtoupper($value).':');
+                                $this->tweaker->service->setDataValue('display_name',
+                                    sprintf(_('Volné místo disku %s: '),
+                                        strtoupper($value)));
                             }
                         }
                     }
@@ -142,7 +181,7 @@ class CheckDriveSize extends IEServiceConfigurator
                 case 'MinWarnUsed':
                 case 'MinCritUsed':
                     if ($value) {
-                        $config[] = $key . '=' . $value;
+                        $config[] = $key.'='.$value;
                     }
                     break;
 
@@ -155,12 +194,12 @@ class CheckDriveSize extends IEServiceConfigurator
 
         if (count($config)) {
 
-            $this->tweaker->service->setDataValue('check_command-params', implode(' ', $config));
+            $this->tweaker->service->setDataValue('check_command-params',
+                implode(' ', $config));
 
             return parent::reconfigureService();
         }
 
         return FALSE;
     }
-
 }

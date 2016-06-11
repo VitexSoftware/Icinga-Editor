@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Třída pro import konfigurace
  *
@@ -8,9 +7,11 @@
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2012-2015 Vitex@hippy.cz (G)
  */
-class IEImporter extends IECfg
-{
 
+namespace Icinga\Editor\Engine;
+
+class IEImporter extends IEcfg
+{
     /**
      * Pole zpracovaných souboru
      * @var array
@@ -21,7 +22,7 @@ class IEImporter extends IECfg
      * Pole parsovacích tříd
      * @var array
      */
-    public $IEClasses = array();
+    public $IEClasses = [];
 
     /**
      * Třída pro hromadné operace s konfigurací
@@ -31,14 +32,14 @@ class IEImporter extends IECfg
     public function __construct($params = null)
     {
         parent::__construct();
-        $this->registerClass('IETimeperiod');
-        $this->registerClass('IECommand');
-        $this->registerClass('IEService');
-        $this->registerClass('IEServicegroup');
-        $this->registerClass('IEContact');
-        $this->registerClass('IEContactgroup');
-        $this->registerClass('IEHost');
-        $this->registerClass('IEHostgroup');
+        $this->registerClass('\Icinga\Editor\Engine\IETimeperiod');
+        $this->registerClass('\Icinga\Editor\Engine\IECommand');
+        $this->registerClass('\Icinga\Editor\Engine\IEService');
+        $this->registerClass('\Icinga\Editor\Engine\IEServicegroup');
+        $this->registerClass('\Icinga\Editor\Engine\IEContact');
+        $this->registerClass('\Icinga\Editor\Engine\IEContactgroup');
+        $this->registerClass('\Icinga\Editor\Engine\IEHost');
+        $this->registerClass('\Icinga\Editor\Engine\IEHostgroup');
         if (is_array($params)) {
             $this->setData($params);
         }
@@ -51,11 +52,8 @@ class IEImporter extends IECfg
      */
     public function registerClass($className)
     {
-        if (file_exists('classes/' . $className . '.php')) {
-            include_once $className . '.php';
-        }
-        $NewClass = new $className;
-        $this->IEClasses[$NewClass->keyword] = new $className;
+        $newClass                            = new $className;
+        $this->IEClasses[$newClass->keyword] = new $className;
     }
 
     /**
@@ -76,7 +74,7 @@ class IEImporter extends IECfg
      */
     public function importCfgFile($cfgFile)
     {
-        return $this->importCfg(IECfg::readRawConfigFile($cfgFile, $this));
+        return $this->importCfg(IEcfg::readRawConfigFile($cfgFile, $this));
     }
 
     /**
@@ -88,7 +86,8 @@ class IEImporter extends IECfg
      */
     public function importCfgText($cfgText, $commonValues)
     {
-        return $this->importCfg(array_map('trim', preg_split('/\r\n|\n|\r/', $cfgText)), $commonValues);
+        return $this->importCfg(array_map('trim',
+                    preg_split('/\r\n|\n|\r/', $cfgText)), $commonValues);
     }
 
     /**
@@ -101,14 +100,17 @@ class IEImporter extends IECfg
     {
         $doneCount = 0;
         if (count($cfg)) {
-            $this->addStatusMessage(sprintf(_('Načteno %s řádek konfigurace'), count($cfg)), 'success');
+            $this->addStatusMessage(sprintf(_('Načteno %s řádek konfigurace'),
+                    count($cfg)), 'success');
         } else {
-            $this->addStatusMessage(sprintf(_('konfigurace nebyla načtena'), count($cfg)), 'warning');
+            $this->addStatusMessage(sprintf(_('konfigurace nebyla načtena'),
+                    count($cfg)), 'warning');
             return 0;
         }
 
         if ($this->userColumn) {
-            $this->setDataValue($this->userColumn, \Ease\Shared::user()->getUserID());
+            $this->setDataValue($this->userColumn,
+                \Ease\Shared::user()->getUserID());
         }
 
         if (is_null($this->getDataValue('register'))) {
@@ -119,7 +121,8 @@ class IEImporter extends IECfg
             $doneCount += $IEClass->importArray($cfg, $this->getData());
         }
         if ($doneCount) {
-            $this->addStatusMessage(sprintf(_('Bylo naimportováno %s konfigurací'), $doneCount), 'success');
+            $this->addStatusMessage(sprintf(_('Bylo naimportováno %s konfigurací'),
+                    $doneCount), 'success');
         } else {
             $this->addStatusMessage(_('Nic se nenaimportovalo'), 'warning');
         }
@@ -136,11 +139,12 @@ class IEImporter extends IECfg
     {
         foreach ($this->IEClasses as $ieClass) {
             if ($ieClass->writeConfig($fileName)) {
-                $this->addStatusMessage($ieClass->keyword . ': ' . _('konfigurace byla vygenerována'), 'success');
+                $this->addStatusMessage($ieClass->keyword.': '._('konfigurace byla vygenerována'),
+                    'success');
             } else {
-                $this->addStatusMessage($ieClass->keyword . ': ' . _('konfigurace nebyla vygenerována'), 'warning');
+                $this->addStatusMessage($ieClass->keyword.': '._('konfigurace nebyla vygenerována'),
+                    'warning');
             }
         }
     }
-
 }

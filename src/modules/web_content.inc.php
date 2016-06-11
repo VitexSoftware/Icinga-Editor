@@ -8,7 +8,7 @@
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2014 Vitex@hippy.cz (G)
  */
-require_once 'classes/IEServiceConfigurator.php';
+namespace Icinga\Editor\modules;
 
 /**
  * Description of ping

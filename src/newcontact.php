@@ -1,4 +1,5 @@
 <?php
+
 namespace Icinga\Editor;
 
 /**
@@ -10,31 +11,30 @@ namespace Icinga\Editor;
  * @copyright  2012 Vitex@hippy.cz (G)
  */
 require_once 'includes/IEInit.php';
-require_once 'classes/IEContact.php';
 
 $oPage->onlyForLogged();
 
-$contact = new IEContact($oPage->getRequestValue('contact_id', 'int'));
+$contact = new Engine\IEContact($oPage->getRequestValue('contact_id', 'int'));
 
 $name = $oPage->getRequestValue('name');
 
 if ($oPage->isPosted()) {
 
     $contact->setData(
-        array(
-          'contact_name' => $name,
-          'use' => 'generic-contact',
-          $contact->userColumn => $oUser->getUserID(),
-          'generate' => true,
-          'host_notifications_enabled' => true,
-          'service_notifications_enabled' => true,
-          'host_notification_period' => '24x7',
-          'service_notification_period' => '24x7',
-          'service_notification_options' => ' w,u,c,r',
-          'host_notification_options' => 'd,u,r',
-          'service_notification_commands' => 'notify-service-by-email',
-          'host_notification_commands' => 'notify-host-by-email',
-          'register' => 1)
+        [
+            'contact_name' => $name,
+            'use' => 'generic-contact',
+            $contact->userColumn => $oUser->getUserID(),
+            'generate' => true,
+            'host_notifications_enabled' => true,
+            'service_notifications_enabled' => true,
+            'host_notification_period' => '24x7',
+            'service_notification_period' => '24x7',
+            'service_notification_options' => ' w,u,c,r',
+            'host_notification_options' => 'd,u,r',
+            'service_notification_commands' => 'notify-service-by-email',
+            'host_notification_commands' => 'notify-host-by-email',
+            'register' => 1]
     );
 
     $contactID = $contact->saveToSQL();
@@ -42,7 +42,7 @@ if ($oPage->isPosted()) {
         $oUser->addStatusMessage(_('Kontakt nebyl založen'), 'warning');
     } else {
         $oUser->addStatusMessage(_('Kontakt byl založen'), 'success');
-        $oPage->redirect('contacttweak.php?contact_id=' . $contact->getId());
+        $oPage->redirect('contacttweak.php?contact_id='.$contact->getId());
         exit;
     }
 }
@@ -53,14 +53,16 @@ if ($autoCreate == 'default') {
     $contactID = $contact->saveToSQL();
 }
 
-$oPage->addItem(new UI\PageTop(_('Založení kontaktu') . ' ' . $contact->getName()));
+$oPage->addItem(new UI\PageTop(_('Založení kontaktu').' '.$contact->getName()));
 $oPage->addPageColumns();
 
 $form = $oPage->columnII->addItem(new \Ease\TWB\Form('Contact', 'newcontact.php'));
-$form->addItem(new \Ease\TWB\FormGroup(_('Jméno'), new \Ease\Html\InputTextTag('name', $name)));
+$form->addItem(new \Ease\TWB\FormGroup(_('Jméno'),
+    new \Ease\Html\InputTextTag('name', $name)));
 $form->setTagID($form->getTagName());
 if (!is_null($contact->getMyKey())) {
-    $form->addItem(new \Ease\Html\InputHiddenTag($contact->getmyKeyColumn(), $contact->getMyKey()));
+    $form->addItem(new \Ease\Html\InputHiddenTag($contact->getmyKeyColumn(),
+        $contact->getMyKey()));
 }
 $form->addItem('<br>');
 $form->addItem(new \Ease\TWB\SubmitButton(_('Uložit'), 'success'));

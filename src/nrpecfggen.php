@@ -10,13 +10,11 @@ namespace Icinga\Editor;
  * @copyright  2012 Vitex@hippy.cz (G)
  */
 require_once 'includes/IEInit.php';
-require_once 'classes/IEHost.php';
-require_once 'classes/IENRPEConfigGenerator.php';
 
 $oPage->onlyForLogged();
 
 $hostId = $oPage->getRequestValue('host_id', 'int');
-$host = new IEHost($hostId);
+$host = new Engine\IEHost($hostId);
 
 $generator = new IENRPEConfigGenerator($host);
 $generator->getCfg();

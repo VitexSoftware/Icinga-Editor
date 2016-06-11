@@ -1,4 +1,5 @@
 <?php
+
 namespace Icinga\Editor;
 
 /**
@@ -25,20 +26,25 @@ $hostId = $oPage->getRequestValue('host_id', 'int');
 function endRouteForm($host)
 {
     $form = new \Ease\TWB\Form('traceto');
-    $form->addInput(new IEHostSelect('dest_host_id'), _('Gateway'), null, _('Zvolte již definovanou gateway, nabo zadejte konkrétní adresu.'));
-    $form->addInput(new \Ease\Html\InputTextTag('ip'), _('IP Adresa'), null, _('První pingnutelná veřejá adresa po cestě z hostu na monitorovací server'));
-    $form->addItem(new \Ease\TWB\SubmitButton(_('Sledovat cestu'), 'success', array('onClick' => "$('#preload').css('visibility', 'visible');")));
-    \Ease\Shared::webPage()->addItem(new \Ease\Html\DivTag('preload', new IEFXPreloader(), array('class' => 'fuelux')));
-    return new \Ease\TWB\Panel(_('Volba cíle sledování') . ': ' . $host->getName(), 'default', $form, _('Vyberte hosta nebo zadejte IP adresu'));
+    $form->addInput(new IEHostSelect('dest_host_id'), _('Gateway'), null,
+        _('Zvolte již definovanou gateway, nabo zadejte konkrétní adresu.'));
+    $form->addInput(new \Ease\Html\InputTextTag('ip'), _('IP Adresa'), null,
+        _('První pingnutelná veřejá adresa po cestě z hostu na monitorovací server'));
+    $form->addItem(new \Ease\TWB\SubmitButton(_('Sledovat cestu'), 'success',
+        ['onClick' => "$('#preload').css('visibility', 'visible');"]));
+    \Ease\Shared::webPage()->addItem(new \Ease\Html\DivTag('preload',
+        new UI\FXPreloader(), ['class' => 'fuelux']));
+    return new \Ease\TWB\Panel(_('Volba cíle sledování').': '.$host->getName(),
+        'default', $form, _('Vyberte hosta nebo zadejte IP adresu'));
 }
-
-$host = new IEHost($hostId);
-$ip = $host->getDataValue('address');
+$host = new Engine\IEHost($hostId);
+$ip   = $host->getDataValue('address');
 if (!$ip) {
     $ip = $oPage->getRequestValue('ip');
     if (!$ip) {
-        $destHost = new IEHost($oPage->getRequestValue('dest_host_id', 'int'));
-        $ip = $destHost->getDataValue('address');
+        $destHost = new Engine\IEHost($oPage->getRequestValue('dest_host_id',
+                'int'));
+        $ip       = $destHost->getDataValue('address');
     }
     $forceIP = true;
 } else {
@@ -49,11 +55,11 @@ if (is_null($hostId) || !$ip) {
     $oPage->container->addItem(endRouteForm($host));
 } else {
 
-    $defaultContactId = $oUser->getDefaultContact()->getId();
+    $defaultContactId   = $oUser->getDefaultContact()->getId();
     $defaultContactName = $oUser->getDefaultContact()->getName();
 
-    $hgName = sprintf(_('Cesta k %s'), $host->getName());
-    $hostGroup = new IEHostgroup($hgName);
+    $hgName    = sprintf(_('Cesta k %s'), $host->getName());
+    $hostGroup = new Engine\IEHostgroup($hgName);
     if ($hostGroup->getId()) {
 
     } else {
@@ -63,14 +69,15 @@ if (is_null($hostId) || !$ip) {
 
     $listing = new \Ease\Html\OlTag();
 
-    $infopanel = $oPage->container->addItem(new \Ease\TWB\Panel($hostGroup->getName(), 'info', $listing));
+    $infopanel = $oPage->container->addItem(new \Ease\TWB\Panel($hostGroup->getName(),
+        'info', $listing));
 
 
-    $trace = array();
+    $trace = [];
 
 
 //??? $mtr = shell_exec('mtr -4 --no-dns -c 1 -p   ' . $ip);
-    $mtr = shell_exec('traceroute -n -w 1 ' . $ip);
+    $mtr      = shell_exec('traceroute -n -w 1 '.$ip);
     $mtrlines = explode("\n", $mtr);
     foreach ($mtrlines as $mtrline) {
         $linea = explode(' ', trim($mtrline));
@@ -83,27 +90,27 @@ if (is_null($hostId) || !$ip) {
     }
     $trace[] = $ip;
 
-    $parents = array();
+    $parents = [];
     $newHost = FALSE;
 
     foreach ($trace as $pos => $hop) {
         $host->dataReset();
 
         if ($hop == end($trace)) {
-            $host->loadFromMySQL($hostId);
+            $host->loadFromSQL($hostId);
         } else {
             $host->nameColumn = 'address';
-            $host->loadFromMySQL($hop);
+            $host->loadFromSQL($hop);
             $host->nameColumn = 'host_name';
         }
 
         if ($host->getId()) {
             //Ok Známe
-            $newHost = FALSE;
+            $newHost       = FALSE;
             $parents[$hop] = $host->getData();
         } else {
             //Nový host
-            $newHost = true;
+            $newHost     = true;
             $host->setUpUser($oUser);
             $newHostName = gethostbyaddr($hop);
             if (!$newHostName) {
@@ -115,13 +122,15 @@ if (is_null($hostId) || !$ip) {
             $host->setDataValue($host->nameColumn, $newHostName);
             $newHostId = (int) $host->insertToSQL();
             if ($newHostId) {
-                $host->addStatusMessage(sprintf(_('Nový host %s %s založen'), $hop, $newHostName), 'success');
-                $parents[$hop] = array('host_id' => $newHostId, 'address' => $hop, $host->nameColumn => $newHostName);
+                $host->addStatusMessage(sprintf(_('Nový host %s %s založen'),
+                        $hop, $newHostName), 'success');
+                $parents[$hop] = ['host_id' => $newHostId, 'address' => $hop, $host->nameColumn => $newHostName];
             }
         }
         if ($pos) {
             $parentIP = $trace[$pos - 1];
-            $host->addMember('parents', $parents[$parentIP][$host->myKeyColumn], $parents[$parentIP][$host->nameColumn]);
+            $host->addMember('parents', $parents[$parentIP][$host->myKeyColumn],
+                $parents[$parentIP][$host->nameColumn]);
         }
         $host->addMember('contacts', $defaultContactId, $defaultContactName);
         $host->setDataValue('config_hash', $host->getConfigHash());
@@ -130,18 +139,21 @@ if (is_null($hostId) || !$ip) {
         $host->setDataValue('passive_checks_enabled', 0);
         $oldNotes = strval($host->getDataValue('notes'));
         if (strstr($hostGroup->getName(), $oldNotes) == false) {
-            $host->setDataValue('notes', $oldNotes . "\n" . $hostGroup->getName());
+            $host->setDataValue('notes', $oldNotes."\n".$hostGroup->getName());
         }
         $host->saveToSQL();
         $hostGroup->addMember('members', $host->getId(), $host->getName());
 
-        $listing->addItemSmart(new \Ease\Html\ATag('host.php?host_id=' . $host->getId(), $host->getName()));
+        $listing->addItemSmart(new \Ease\Html\ATag('host.php?host_id='.$host->getId(),
+            $host->getName()));
     }
 
     if ($hostGroup->saveToSQL()) {
-        $hostGroup->addStatusMessage(sprintf(_('Hostgrupa %s naplněna'), $hostGroup->getName()), 'success');
+        $hostGroup->addStatusMessage(sprintf(_('Hostgrupa %s naplněna'),
+                $hostGroup->getName()), 'success');
     } else {
-        $hostGroup->addStatusMessage(sprintf(_('Hostgrupa %s nebyla naplněna'), $hostGroup->getName()), 'warning');
+        $hostGroup->addStatusMessage(sprintf(_('Hostgrupa %s nebyla naplněna'),
+                $hostGroup->getName()), 'warning');
     }
 }
 

@@ -1,4 +1,5 @@
 <?php
+
 namespace Icinga\Editor;
 
 /**
@@ -15,14 +16,18 @@ $oPage->onlyForLogged();
 
 $oPage->addItem(new UI\PageTop(_('Monitoring')));
 
-$host = new IEHost();
-$hosts = $host->getListing(null, false, array('config_hash', 'address', 'parents', 'icon_image', 'contacts', 'contact_groups', $host->myCreateColumn, $host->myLastModifiedColumn));
+$host  = new engine\IEHost();
+$hosts = $host->getListing(null, false,
+    ['config_hash', 'address', 'parents', 'icon_image', 'contacts', 'contact_groups',
+    $host->myCreateColumn, $host->myLastModifiedColumn]);
 
 if (count($hosts)) {
-    $oPage->container->addItem(new IEConfigurationsOverview($hosts));
+    $oPage->container->addItem(new UI\ConfigurationsOverview($hosts));
 } else {
-    $oPage->container->addItem(new \Ease\TWB\LinkButton('wizard-host.php', _('Založte si první sledovaný host'), 'success'));
-    $oUser->addStatusMessage(_('Zatím není zaregistrovaný žádný sledovaný host'), 'warning');
+    $oPage->container->addItem(new \Ease\TWB\LinkButton('wizard-host.php',
+        _('Založte si první sledovaný host'), 'success'));
+    $oUser->addStatusMessage(_('Zatím není zaregistrovaný žádný sledovaný host'),
+        'warning');
 }
 
 $oPage->addItem(new UI\PageBottom());

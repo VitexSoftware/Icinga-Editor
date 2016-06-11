@@ -1,4 +1,5 @@
 <?php
+
 namespace Icinga\Editor;
 
 /**
@@ -10,14 +11,13 @@ namespace Icinga\Editor;
  * @copyright  2012 Vitex@hippy.cz (G)
  */
 require_once 'includes/IEInit.php';
-require_once 'classes/IEScript.php';
-require_once 'classes/IEDataGrid.php';
 
 $oPage->onlyForLogged();
 
 $oPage->addItem(new UI\PageTop(_('Přehled skriptů')));
 
-$oPage->addItem(new \Ease\TWB\Container(new IEDataGrid(_('Skripty'), new IEScript)));
+$oPage->addItem(new \Ease\TWB\Container(new UI\DataGrid(_('Skripty'),
+    new IEScript())));
 
 $oPage->addItem(new UI\PageBottom());
 

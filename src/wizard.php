@@ -1,4 +1,5 @@
 <?php
+
 namespace Icinga\Editor;
 
 /**
@@ -43,14 +44,18 @@ $oPage->addCss('
     ');
 
 $oPage->columnI->addItem(
-    new \Ease\TWB\Panel(_('Hosty'), 'success', _('Hosty jsou počítače nebo zařízení'))
+    new \Ease\TWB\Panel(_('Hosty'), 'success',
+    _('Hosty jsou počítače nebo zařízení'))
 );
 $oPage->columnIII->addItem(
-    new \Ease\TWB\Panel(_('Služby'), 'info', _('Služby jsou definice testů aplikované na hosty nebo jejich skupiny'))
+    new \Ease\TWB\Panel(_('Služby'), 'info',
+    _('Služby jsou definice testů aplikované na hosty nebo jejich skupiny'))
 );
 
-$oPage->columnII->addItem(new \Ease\TWB\LinkButton('wizard-host.php', _('Host'), 'success', array('class' => 'btn-xlarge')));
-$oPage->columnII->addItem(new \Ease\TWB\LinkButton('wizard-service.php', _('Služba'), 'info', array('class' => 'btn-xlarge')));
+$oPage->columnII->addItem(new \Ease\TWB\LinkButton('wizard-host.php', _('Host'),
+    'success', ['class' => 'btn-xlarge']));
+$oPage->columnII->addItem(new \Ease\TWB\LinkButton('wizard-service.php',
+    _('Služba'), 'info', ['class' => 'btn-xlarge']));
 
 $oPage->addItem(new UI\PageBottom());
 

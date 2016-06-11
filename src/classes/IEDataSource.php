@@ -1,12 +1,8 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-require_once 'Ease/EaseBrick.php';
-define('K_PATH_IMAGES', dirname(__DIR__) . '/img/');
+namespace Icinga\Editor;
+
+define('K_PATH_IMAGES', dirname(__DIR__).'/img/');
 #require_once 'tcpdf/tcpdf.php';
 
 /**
@@ -14,13 +10,12 @@ define('K_PATH_IMAGES', dirname(__DIR__) . '/img/');
  *
  * @author vitex
  */
-class IEDataSource extends EaseBrick
+class IEDataSource extends \Ease\Brick
 {
-
-    public $charset = 'WINDOWS-1250//TRANSLIT';
+    public $charset   = 'WINDOWS-1250//TRANSLIT';
     public $incharset = 'UTF-8';
-    public $filename = 'export';
-    public $columns = array();
+    public $filename  = 'export';
+    public $columns   = [];
 
     /**
      * PDF wrapper
@@ -50,7 +45,7 @@ class IEDataSource extends EaseBrick
      * Data určena k znovunaplnění formuláře v případě chyby
      * @var array
      */
-    public $fallBackData = array();
+    public $fallBackData = [];
 
     /**
      *
@@ -60,14 +55,14 @@ class IEDataSource extends EaseBrick
 
     /**
      * objekt poskytující data
-     * @var IECfg
+     * @var IEcfg
      */
     public $handledObejct = null;
 
     /**
      * Vrací data pro Grid
      *
-     * @param IECfg $handledObejct objekt poskytující data
+     * @param IEcfg $handledObejct objekt poskytující data
      * @param type $fallBackUrl
      */
     public function __construct($handledObejct, $fallBackUrl = null)
@@ -75,17 +70,18 @@ class IEDataSource extends EaseBrick
         $this->handledObejct = $handledObejct;
         parent::__construct();
         $this->setBackUrl($fallBackUrl);
-        $this->webPage = \Ease\Shared::webPage();
-        $this->title = $this->webPage->getRequestValue('title');
+        $this->webPage       = \Ease\Shared::webPage();
+        $this->title         = $this->webPage->getRequestValue('title');
         if ($this->title) {
-            $this->filename = preg_replace("/[^0-9^a-z^A-Z^_^.]/", "", str_replace(' ', '_', $this->title));
+            $this->filename = preg_replace("/[^0-9^a-z^A-Z^_^.]/", "",
+                str_replace(' ', '_', $this->title));
         }
 
         $cols = $this->webPage->getRequestValue('cols');
         if ($cols) {
-            $col = explode('|', $cols);
-            $names = $this->webPage->getRequestValue('names');
-            $nam = explode('|', urldecode($names));
+            $col           = explode('|', $cols);
+            $names         = $this->webPage->getRequestValue('names');
+            $nam           = explode('|', urldecode($names));
             $this->columns = array_combine($col, $nam);
         }
 
@@ -120,7 +116,7 @@ class IEDataSource extends EaseBrick
                     case 'delete':
                         if ($this->controlDeleteColumns()) {
                             $this->fallBackUrl = false;
-                            if ($this->deleteFromMySQL()) {
+                            if ($this->deleteFromSQL()) {
                                 $this->webPage->addStatusMessage(_('Smazáno'));
                             }
                         }
@@ -128,18 +124,22 @@ class IEDataSource extends EaseBrick
                     case 'add':
                         if ($this->controlAddColumns()) {
                             if ($this->insertToSQL()) {
-                                $this->webPage->addStatusMessage(_('Záznam byl přidán'), 'success');
+                                $this->webPage->addStatusMessage(_('Záznam byl přidán'),
+                                    'success');
                             } else {
-                                $this->webPage->addStatusMessage(_('Záznam nebyl přidám'), 'error');
+                                $this->webPage->addStatusMessage(_('Záznam nebyl přidám'),
+                                    'error');
                             }
                         }
                         break;
                     case 'edit':
                         if ($this->controlEditColumns()) {
                             if ($this->saveToSQL()) {
-                                $this->webPage->addStatusMessage(_('Záznam byl upraven'), 'success');
+                                $this->webPage->addStatusMessage(_('Záznam byl upraven'),
+                                    'success');
                             } else {
-                                $this->webPage->addStatusMessage(_('Záznam nebyl upravn'), 'error');
+                                $this->webPage->addStatusMessage(_('Záznam nebyl upravn'),
+                                    'error');
                             }
                         }
                         break;
@@ -149,7 +149,8 @@ class IEDataSource extends EaseBrick
                 }
             }
             if ($this->fallBackUrl) {
-                $this->webPage->redirect(EasePage::arrayToUrlParams($this->fallBackData, $this->fallBackUrl));
+                $this->webPage->redirect(EasePage::arrayToUrlParams($this->fallBackData,
+                        $this->fallBackUrl));
                 exit();
             }
         }
@@ -163,10 +164,10 @@ class IEDataSource extends EaseBrick
      */
     public function getTotal($queryRaw)
     {
-        $pattern = '/SELECT(.*)FROM(.*)/i';
+        $pattern     = '/SELECT(.*)FROM(.*)/i';
         $replacement = 'SELECT COUNT(*) FROM $2';
-        $queryRaw = preg_replace($pattern, $replacement, $queryRaw);
-        return $this->handledObejct->myDbLink->queryToValue($queryRaw);
+        $queryRaw    = preg_replace($pattern, $replacement, $queryRaw);
+        return $this->handledObejct->dblink->queryToValue($queryRaw);
     }
 
     function getListingQueryWhere()
@@ -175,7 +176,7 @@ class IEDataSource extends EaseBrick
         $query = isset($_REQUEST['query']) ? $_REQUEST['query'] : false;
         $qtype = isset($_REQUEST['qtype']) ? $_REQUEST['qtype'] : false;
         if ($query && $qtype) {
-            $where = ' WHERE `' . $this->handledObejct->myDbLink->EaseAddSlashes($_REQUEST['qtype']) . "` LIKE  '%" . $this->handledObejct->myDbLink->EaseAddSlashes($_REQUEST['query']) . "%'";
+            $where = ' WHERE `'.$this->handledObejct->dblink->EaseAddSlashes($_REQUEST['qtype'])."` LIKE  '%".$this->handledObejct->dblink->EaseAddSlashes($_REQUEST['query'])."%'";
         }
         return $where;
     }
@@ -188,13 +189,13 @@ class IEDataSource extends EaseBrick
      */
     public function getListing($queryRaw, $transform = 'html')
     {
-        $page = isset($_REQUEST['page']) ? $_REQUEST['page'] : 1;
-        $rp = isset($_REQUEST['rp']) ? $_REQUEST['rp'] : 10;
-        $sortname = isset($_REQUEST['sortname']) ? $_REQUEST['sortname'] : $this->handledObejct->getmyKeyColumn();
+        $page      = isset($_REQUEST['page']) ? $_REQUEST['page'] : 1;
+        $rp        = isset($_REQUEST['rp']) ? $_REQUEST['rp'] : 10;
+        $sortname  = isset($_REQUEST['sortname']) ? $_REQUEST['sortname'] : $this->handledObejct->getmyKeyColumn();
         $sortorder = isset($_REQUEST['sortorder']) ? $_REQUEST['sortorder'] : 'desc';
-        $where = $this->getWhere();
-        $sort = " ORDER BY $sortname $sortorder";
-        $start = (($page - 1) * $rp);
+        $where     = $this->getWhere();
+        $sort      = " ORDER BY $sortname $sortorder";
+        $start     = (($page - 1) * $rp);
 
         $limit = " LIMIT $start, $rp";
 
@@ -203,14 +204,14 @@ class IEDataSource extends EaseBrick
 
         switch ($transform) {
             case 'csv':
-                $resultRaw = $this->handledObejct->csvizeData($this->handledObejct->myDbLink->queryToArray($query));
+                $resultRaw = $this->handledObejct->csvizeData($this->handledObejct->dblink->queryToArray($query));
                 break;
             case 'html':
-                $resultRaw = $this->handledObejct->htmlizeData($this->handledObejct->myDbLink->queryToArray($query));
+                $resultRaw = $this->handledObejct->htmlizeData($this->handledObejct->dblink->queryToArray($query));
                 break;
 
             default:
-                $resultRaw = $this->handledObejct->myDbLink->queryToArray($query);
+                $resultRaw = $this->handledObejct->dblink->queryToArray($query);
                 break;
         }
 
@@ -218,7 +219,7 @@ class IEDataSource extends EaseBrick
             return $resultRaw;
         }
 
-        $result = array();
+        $result = [];
         foreach ($resultRaw as $rrid => $resultRow) {
             foreach ($this->columns as $colKey => $colValue) {
                 $result[$rrid][$colKey] = $resultRow[$colKey];
@@ -241,24 +242,25 @@ class IEDataSource extends EaseBrick
                 $rows = substr($rows, 0, -1);
             }
             if ($this->order) {
-                $order = ' ORDER BY ' . $this->order;
+                $order = ' ORDER BY '.$this->order;
             } else {
                 $order = '';
             }
-            $transactions = $this->handledObejct->myDbLink->queryToArray($queryRaw . ' WHERE `' . $this->handledObejct->myKeyColumn . '` IN(' . $rows . ')' . $order, $this->handledObejct->getmyKeyColumn());
-            $total = count(explode(',', $rows));
+            $transactions = $this->handledObejct->dblink->queryToArray($queryRaw.' WHERE `'.$this->handledObejct->myKeyColumn.'` IN('.$rows.')'.$order,
+                $this->handledObejct->getmyKeyColumn());
+            $total        = count(explode(',', $rows));
         } else {
-            $total = $this->getTotal($queryRaw . $this->getWhere());
+            $total        = $this->getTotal($queryRaw.$this->getWhere());
             $transactions = $this->getListing($queryRaw, 'html');
         }
-        $page = isset($_REQUEST['page']) ? $_REQUEST['page'] : 1;
-        $jsonData = array('page' => $page, 'total' => $total, 'rows' => array());
+        $page     = isset($_REQUEST['page']) ? $_REQUEST['page'] : 1;
+        $jsonData = ['page' => $page, 'total' => $total, 'rows' => []];
         if (count($transactions)) {
             foreach ($transactions AS $row) {
-                $entry = array(
-                  'id' => current($row),
-                  'cell' => $row
-                );
+                $entry              = [
+                    'id' => current($row),
+                    'cell' => $row
+                ];
                 $jsonData['rows'][] = $entry;
             }
         }
@@ -303,12 +305,12 @@ class IEDataSource extends EaseBrick
             } else {
                 $row = $array[$i];
             }
-            $row_array = array();
+            $row_array = [];
             foreach ($row as $cell) {
                 $row_array[] = $this->getCSVCell($cell);
 //        $output .= $this->getCSVCell($cell);
             }
-            $output .= join(';', $row_array) . "\n";
+            $output .= join(';', $row_array)."\n";
         }
         if (strtoupper($this->charset) != strtoupper($this->incharset)) {
             $output = iconv($this->incharset, $this->charset, $output);
@@ -324,7 +326,7 @@ class IEDataSource extends EaseBrick
 //header("Content-type: application/csv");
         header("Cache-Control: maxage=3600");
         header("Pragma: public");
-        header("Content-Disposition: attachment; filename = " . $this->filename . ".csv");
+        header("Content-Disposition: attachment; filename = ".$this->filename.".csv");
         echo $this->getCSVFromArray($array, $header);
     }
 
@@ -342,7 +344,7 @@ class IEDataSource extends EaseBrick
         $cell = preg_replace('/\<br(\s*)?\/?\>/i', "\r", $cell);
         $cell = preg_replace('/"/ms', '\"', $cell);
         if (preg_match('/;/ms', $cell)) {
-            $cell = '"' . addslashes($cell) . '"';
+            $cell = '"'.addslashes($cell).'"';
         }
         if (is_numeric($cell)) {
             $cell = str_replace('.', ',', $cell);
@@ -358,7 +360,7 @@ class IEDataSource extends EaseBrick
     public function output($queryRaw = null)
     {
         if (is_null($queryRaw)) {
-            $queryRaw = 'SELECT * FROM `' . $this->handledObejct->getMyTable() . '`';
+            $queryRaw = 'SELECT * FROM `'.$this->handledObejct->getMyTable().'`';
         }
         switch (\Ease\Shared::webPage()->getRequestValue('export')) {
             case 'csv':
@@ -397,11 +399,12 @@ class IEDataSource extends EaseBrick
         $this->pdf->SetKeywords($title);
 
 // set default header data
-        $this->pdf->SetHeaderData('logo.png', 45, $title, "DB Finance s.r.o - nezávislý investiční zprostředkovatel a pojišťovací makléř\n"
-            . "✉ dbfinance@dbfinance.cz ☎ 222 541 990 – 995 ⌨ www.dbfinance.cz ");
+        $this->pdf->SetHeaderData('logo.png', 45, $title,
+            "DB Finance s.r.o - nezávislý investiční zprostředkovatel a pojišťovací makléř\n"
+            ."✉ dbfinance@dbfinance.cz ☎ 222 541 990 – 995 ⌨ www.dbfinance.cz ");
 // set header and footer fonts
-        $this->pdf->setHeaderFont(Array('dejavusans', '', 8));
-        $this->pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+        $this->pdf->setHeaderFont(['dejavusans', '', 8]);
+        $this->pdf->setFooterFont([PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA]);
 
 // set default monospaced font
         $this->pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
@@ -443,14 +446,14 @@ class IEDataSource extends EaseBrick
 
         $tbl .= '<tr>';
         foreach ($header as $h) {
-            $tbl .= '<th style="font-weight: bold;">' . $h . '</th>';
+            $tbl .= '<th style="font-weight: bold;">'.$h.'</th>';
         }
         $tbl .= '</tr>';
 
         foreach ($array as $row) {
             $tbl .= '<tr>';
             foreach ($row as $d) {
-                $tbl .= '<td>' . $d . '</td>';
+                $tbl .= '<td>'.$d.'</td>';
             }
             $tbl .= '</tr>';
         }
@@ -472,7 +475,7 @@ class IEDataSource extends EaseBrick
 //        header("Content-Disposition: attachment; filename = " . $this->filename . ".csv");
         $this->getPDFFromArray($array, $header);
 
-        $this->pdf->Output($this->filename . '.pdf', 'I');
+        $this->pdf->Output($this->filename.'.pdf', 'I');
     }
 
     /**
@@ -528,12 +531,11 @@ class IEDataSource extends EaseBrick
 
     /**
      * Vrací obecnou podmínku
-     * 
+     *
      * @return string
      */
     public function getWhere()
     {
         return '';
     }
-
 }

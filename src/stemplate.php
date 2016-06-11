@@ -1,4 +1,5 @@
 <?php
+
 namespace Icinga\Editor;
 
 /**
@@ -19,19 +20,22 @@ switch ($oPage->getRequestValue('action')) {
     case 'new':
         $stemplate->setDataValue($stemplate->nameColumn, _('Nová předloha'));
         $stemplate->insertToSQL();
-        $stemplate->setDataValue($stemplate->nameColumn, _('Nová předloha') . ' #' . $stemplate->getId());
+        $stemplate->setDataValue($stemplate->nameColumn,
+            _('Nová předloha').' #'.$stemplate->getId());
         $stemplate->updateToSQL();
 
         break;
     case 'copyhost':
-        $host = new IEHost($oPage->getRequestValue('host_id', 'int'));
+        $host = new Engine\IEHost($oPage->getRequestValue('host_id', 'int'));
 
         $stemplate->setDataValue($stemplate->nameColumn, $host->getName());
         $stemplate->setDataValue('services', $host->getServices());
         if ($stemplate->saveToSQL()) {
-            $stemplate->addStatusMessage(sprintf(_('Vytvořena nová předloha sledovaných služeb: %s'), $stemplate->getName()), 'success');
+            $stemplate->addStatusMessage(sprintf(_('Vytvořena nová předloha sledovaných služeb: %s'),
+                    $stemplate->getName()), 'success');
         } else {
-            $stemplate->addStatusMessage(sprintf(_('Nebyla vytvořena nová předloha')), 'warning');
+            $stemplate->addStatusMessage(sprintf(_('Nebyla vytvořena nová předloha')),
+                'warning');
         }
 
         break;
@@ -61,7 +65,7 @@ if ($delete == 'true') {
     $stemplate->delete();
 }
 
-$oPage->addItem(new UI\PageTop(_('Editace předvolby sledovaných služeb') . ' ' . $stemplate->getName()));
+$oPage->addItem(new UI\PageTop(_('Editace předvolby sledovaných služeb').' '.$stemplate->getName()));
 $oPage->addPageColumns();
 
 if ($stemplate->getId()) {
@@ -73,23 +77,29 @@ switch ($oPage->getRequestValue('action')) {
 
         $oPage->columnII->addItem(new \Ease\Html\H2Tag($stemplate->getName()));
 
-        $confirmator = $oPage->columnII->addItem(new \Ease\TWB\Panel(_('Opravdu smazat ?')), 'danger');
-        $confirmator->addItem(new \Ease\TWB\LinkButton('?' . $stemplate->myKeyColumn . '=' . $stemplate->getID(), _('Ne') . ' ' . \Ease\TWB\Part::glyphIcon('ok'), 'success'));
-        $confirmator->addItem(new \Ease\TWB\LinkButton('?delete=true&' . $stemplate->myKeyColumn . '=' . $stemplate->getID(), _('Ano') . ' ' . \Ease\TWB\Part::glyphIcon('remove'), 'danger'));
+        $confirmator = $oPage->columnII->addItem(new \Ease\TWB\Panel(_('Opravdu smazat ?')),
+            'danger');
+        $confirmator->addItem(new \Ease\TWB\LinkButton('?'.$stemplate->myKeyColumn.'='.$stemplate->getID(),
+            _('Ne').' '.\Ease\TWB\Part::glyphIcon('ok'), 'success'));
+        $confirmator->addItem(new \Ease\TWB\LinkButton('?delete=true&'.$stemplate->myKeyColumn.'='.$stemplate->getID(),
+            _('Ano').' '.\Ease\TWB\Part::glyphIcon('remove'), 'danger'));
 
 
         break;
     default :
-        $stemplateEditor = new IECfgEditor($stemplate);
+        $stemplateEditor = new UI\CfgEditor($stemplate);
 
-        $form = $oPage->columnII->addItem(new \Ease\Html\Form('Stemplate', 'stemplate.php', 'POST', $stemplateEditor, array('class' => 'form-horizontal')));
+        $form = $oPage->columnII->addItem(new \Ease\Html\Form('Stemplate',
+            'stemplate.php', 'POST', $stemplateEditor,
+            ['class' => 'form-horizontal']));
 
         if (!$stemplate->getId()) {
             $form->addItem(new \Ease\TWB\SubmitButton(_('Založit'), 'success'));
         } else {
             $form->addItem(new \Ease\TWB\SubmitButton(_('Uložit'), 'success'));
         }
-        $oPage->columnIII->addItem(new \Ease\TWB\Panel(_('Transfer'), 'warning', $stemplate->transferForm()));
+        $oPage->columnIII->addItem(new \Ease\TWB\Panel(_('Transfer'), 'warning',
+            $stemplate->transferForm()));
         break;
 }
 

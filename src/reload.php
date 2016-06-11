@@ -10,13 +10,12 @@ namespace Icinga\Editor;
  * @copyright  2012 Vitex@hippy.cz (G)
  */
 require_once 'includes/IEInit.php';
-require_once 'classes/IEcfg.php';
 
 $oPage->onlyForLogged();
 
 $oPage->addItem(new UI\PageTop(_('Icinga Editor')));
 
-IECfg::reloadIcinga();
+IEcfg::reloadIcinga();
 
 $oPage->addItem(new UI\PageBottom());
 

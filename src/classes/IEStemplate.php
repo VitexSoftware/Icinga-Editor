@@ -1,4 +1,5 @@
 <?php
+namespace Icinga\Editor;
 
 /**
  * Konfigurace Předloh sledovaných služeb
@@ -8,13 +9,12 @@
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2012 Vitex@hippy.cz (G)
  */
-class IEStemplate extends IEcfg
+class IEStemplate extends Engine\IEcfg
 {
-
-    public $myTable = 'stemplate';
+    public $myTable     = 'stemplate';
     public $myKeyColumn = 'stemplate_id';
-    public $nameColumn = 'stemplate_name';
-    public $keyword = 'stemplate';
+    public $nameColumn  = 'stemplate_name';
+    public $keyword     = 'stemplate';
 
     /**
      * Dát tyto položky k dispozici i ostatním ?
@@ -26,45 +26,45 @@ class IEStemplate extends IEcfg
      * Použité sloupce
      * @var array
      */
-    public $useKeywords = array(
-      'stemplate_name' => 'VARCHAR(64)',
-      'services' => 'IDLIST',
-      'contacts' => 'IDLIST',
-      'notes' => 'TEXT'
-    );
+    public $useKeywords = [
+        'stemplate_name' => 'VARCHAR(64)',
+        'services' => 'IDLIST',
+        'contacts' => 'IDLIST',
+        'notes' => 'TEXT'
+    ];
 
     /**
      * Informace o sloupečcích
      * @var array
      */
-    public $keywordsInfo = array(
-      'stemplate_name' => array(
-        'severity' => 'mandatory',
-        'title' => 'název předlohy sledovaných služeb',
-        'required' => true
-      ),
-      'services' => array(
-        'severity' => 'mandatory',
-        'title' => 'členské služby',
-        'refdata' => array(
-          'table' => 'service',
-          'captioncolumn' => 'service_description',
-          'idcolumn' => 'service_id',
-          'condition' => array('register' => 1))
-      ),
-      'contacts' => array(
-        'severity' => 'advanced',
-        'title' => 'členské kontakty',
-        'refdata' => array(
-          'table' => 'contact',
-          'captioncolumn' => 'contact_name',
-          'idcolumn' => 'contact_id',
-          'condition' => array('register' => 1))
-      ),
-      'notes' => array(
-        'severity' => 'optional',
-        'title' => 'poznámky')
-    );
+    public $keywordsInfo = [
+        'stemplate_name' => [
+            'severity' => 'mandatory',
+            'title' => 'název předlohy sledovaných služeb',
+            'required' => true
+        ],
+        'services' => [
+            'severity' => 'mandatory',
+            'title' => 'členské služby',
+            'refdata' => [
+                'table' => 'service',
+                'captioncolumn' => 'service_description',
+                'idcolumn' => 'service_id',
+                'condition' => ['register' => 1]]
+        ],
+        'contacts' => [
+            'severity' => 'advanced',
+            'title' => 'členské kontakty',
+            'refdata' => [
+                'table' => 'contact',
+                'captioncolumn' => 'contact_name',
+                'idcolumn' => 'contact_id',
+                'condition' => ['register' => 1]]
+        ],
+        'notes' => [
+            'severity' => 'optional',
+            'title' => 'poznámky']
+    ];
 
     /**
      * Předloha sledovaných služeb
@@ -88,5 +88,4 @@ class IEStemplate extends IEcfg
     {
         return $allData;
     }
-
 }

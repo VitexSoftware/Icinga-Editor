@@ -26,10 +26,10 @@ class HostgroupMap extends HostMap
      * @param type $returnError
      */
     public function __construct($hostgroup_id, $directed = false,
-                                $attributes = array(), $name = 'G',
-                                $strict = true, $returnError = false)
+                                $attributes = [], $name = 'G', $strict = true,
+                                $returnError = false)
     {
-        $this->hostgroup = new IEHostgroup($hostgroup_id);
+        $this->hostgroup = new Engine\IEHostgroup($hostgroup_id);
 
         $attributes['rankdir'] = 'LR';
 //        $attributes['fontsize'] = '8';
@@ -42,11 +42,11 @@ class HostgroupMap extends HostMap
     function fillUp()
     {
         $members = $this->hostgroup->getDataValue('members');
-        $host    = new IEHost();
-        $hosts   = $host->getColumnsFromMySQL(
-            array('alias', 'address', 'parents', 'notifications_enabled', 'active_checks_enabled',
+        $host    = new Engine\IEHost();
+        $hosts   = $host->getColumnsFromSQL(
+            ['alias', 'address', 'parents', 'notifications_enabled', 'active_checks_enabled',
             'passive_checks_enabled', '3d_coords', $host->myCreateColumn, $host->myLastModifiedColumn,
-            $host->nameColumn, $host->myKeyColumn),
+            $host->nameColumn, $host->myKeyColumn],
             'host_id IN ( '.implode(',', array_keys($members)).' )'
         );
 
@@ -78,7 +78,7 @@ class HostgroupMap extends HostMap
 
 
             $this->addNode($name,
-                array(
+                [
                 'id' => 'host_'.$host_info[$host->myKeyColumn],
                 'node_id' => $host_info[$host->myKeyColumn],
                 'color' => $color,
@@ -88,13 +88,13 @@ class HostgroupMap extends HostMap
                 'shape' => 'point',
                 'style' => 'filled',
                 'tooltip' => $alias,
-                'label' => $name)
+                'label' => $name]
             );
 
             if (isset($host_info[$host->nameColumn])) {
                 if (is_array($host_info['parents'])) {
                     foreach ($host_info['parents'] as $parent_name) {
-                        $this->addEdge(array($host_info[$host->nameColumn] => $parent_name));
+                        $this->addEdge([$host_info[$host->nameColumn] => $parent_name]);
                     }
                 }
             }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Icinga\Editor;
 
 /**
@@ -42,26 +43,30 @@ if ($delete == 'true') {
     $script->delete();
 }
 
-$oPage->addItem(new UI\PageTop(_('Editace skriptu') . ' ' . $script->getName()));
+$oPage->addItem(new UI\PageTop(_('Editace skriptu').' '.$script->getName()));
 
 
 switch ($oPage->getRequestValue('action')) {
     case 'delete':
-        $form = new EaseContainer;
+        $form = new \Ease\Container;
         $form->addItem(new \Ease\Html\H2Tag($script->getName()));
 
-        $confirmator = $form->addItem(new \Ease\TWB\Panel(_('Opravdu smazat ?')), 'danger');
+        $confirmator = $form->addItem(new \Ease\TWB\Panel(_('Opravdu smazat ?')),
+            'danger');
 
         $confirmator->addItem(new \Ease\TWB\Well(nl2br($script->getDataValue('body'))));
-        $confirmator->addItem(new \Ease\TWB\LinkButton('?' . $script->myKeyColumn . '=' . $script->getID(), _('Ne') . ' ' . \Ease\TWB\Part::glyphIcon('ok'), 'success'));
-        $confirmator->addItem(new \Ease\TWB\LinkButton('?delete=true&' . $script->myKeyColumn . '=' . $script->getID(), _('Ano') . ' ' . \Ease\TWB\Part::glyphIcon('remove'), 'danger'));
+        $confirmator->addItem(new \Ease\TWB\LinkButton('?'.$script->myKeyColumn.'='.$script->getID(),
+            _('Ne').' '.\Ease\TWB\Part::glyphIcon('ok'), 'success'));
+        $confirmator->addItem(new \Ease\TWB\LinkButton('?delete=true&'.$script->myKeyColumn.'='.$script->getID(),
+            _('Ano').' '.\Ease\TWB\Part::glyphIcon('remove'), 'danger'));
 
 
         break;
     default :
-        $scriptEditor = new IECfgEditor($script);
+        $scriptEditor = new UI\CfgEditor($script);
 
-        $form = new \Ease\TWB\Form('Script', 'script.php', 'POST', $scriptEditor, array('class' => 'form-horizontal'));
+        $form = new \Ease\TWB\Form('Script', 'script.php', 'POST',
+            $scriptEditor, ['class' => 'form-horizontal']);
 
         if (!$script->getId()) {
             $form->addItem(new \Ease\TWB\SubmitButton(_('Založit'), 'success'));
@@ -73,22 +78,25 @@ switch ($oPage->getRequestValue('action')) {
 $oPage->addItem(new UI\PageBottom());
 
 
-$infopanel = new IEInfoBox($script);
-$tools = new \Ease\TWB\Panel(_('Nástroje'), 'warning');
+$infopanel = new UI\InfoBox($script);
+$tools     = new \Ease\TWB\Panel(_('Nástroje'), 'warning');
 if ($script->getId()) {
     $tools->addItem($script->deleteButton());
-    $tools->addItem(new \Ease\TWB\Panel(_('Transfer'), 'warning', $script->transferForm()));
+    $tools->addItem(new \Ease\TWB\Panel(_('Transfer'), 'warning',
+        $script->transferForm()));
 
-    $command = new IECommand;
+    $command = new Engine\IECommand;
 
-    $usages = $command->getColumnsFromMySQL(array($command->getMyKeyColumn(), $command->nameColumn), array('script_id' => $command->getId()), $command->nameColumn, $command->getMyKeyColumn());
+    $usages = $command->getColumnsFromSQL([$command->getMyKeyColumn(), $command->nameColumn],
+        ['script_id' => $command->getId()], $command->nameColumn,
+        $command->getMyKeyColumn());
 
     if (count($usages)) {
         $usedBy = new \Ease\TWB\Panel(_('Používající příkazy'));
 
 
 
-        $listing = new \Ease\Html\UlTag(null, array('class' => 'list-group'));
+        $listing = new \Ease\Html\UlTag(null, ['class' => 'list-group']);
         foreach ($usages as $usage) {
 
             if (!isset($usage[$command->nameColumn])) {
@@ -97,12 +105,13 @@ if ($script->getId()) {
 
             $listing->addItem(
                 new \Ease\Html\LiTag(
-                new \Ease\Html\ATag('command.php?command_id=' . $usage['command_id'], $usage[$command->nameColumn])
-                , array('class' => 'list-group-item'))
+                new \Ease\Html\ATag('command.php?command_id='.$usage['command_id'],
+                $usage[$command->nameColumn])
+                , ['class' => 'list-group-item'])
             );
         }
 
-        EaseContainer::addItemCustom($listing, $usedBy);
+        \Ease\Container::addItemCustom($listing, $usedBy);
 
         $infopanel->addItem($usedBy);
     }
@@ -110,7 +119,9 @@ if ($script->getId()) {
 
 $pageRow = new \Ease\TWB\Row;
 $pageRow->addColumn(2, $infopanel);
-$pageRow->addColumn(6, new \Ease\TWB\Panel(_('Skript') . ' <strong>' . $script->getName() . '</strong>', 'default', $form));
+$pageRow->addColumn(6,
+    new \Ease\TWB\Panel(_('Skript').' <strong>'.$script->getName().'</strong>',
+    'default', $form));
 $pageRow->addColumn(4, $tools);
 $oPage->container->addItem($pageRow);
 

@@ -1,4 +1,5 @@
 <?php
+
 namespace Icinga\Editor\UI;
 
 /**
@@ -11,7 +12,6 @@ namespace Icinga\Editor\UI;
  */
 class ContactSelect extends \Ease\Html\Select
 {
-
     /**
      * Objekt kontaktu
      * @var IEContact
@@ -27,16 +27,18 @@ class ContactSelect extends \Ease\Html\Select
      * @param array  $itemsIDs     id položek
      * @param array  $properties   tag properties
      */
-    public function __construct($name, $items = null, $defaultValue = null, $itemsIDs = false, $properties = null)
+    public function __construct($name, $items = null, $defaultValue = null,
+                                $itemsIDs = false, $properties = null)
     {
-        $this->contact = new IEContact;
+        $this->contact = new \Icinga\Editor\Engine\IEContact();
         parent::__construct($name, $items, $defaultValue, $itemsIDs, $properties);
     }
 
     function loadItems()
     {
-        $items = array();
-        $contacts = $this->contact->getColumnsFromMySQL(array($this->contact->myKeyColumn, $this->contact->nameColumn), null, $this->contact->nameColumn);
+        $items    = [];
+        $contacts = $this->contact->getColumnsFromSQL([$this->contact->myKeyColumn,
+            $this->contact->nameColumn], null, $this->contact->nameColumn);
         if (count($contacts)) {
             foreach ($contacts as $contact) {
                 $items[$contact[$this->contact->myKeyColumn]] = $contact[$this->contact->nameColumn];
@@ -48,9 +50,9 @@ class ContactSelect extends \Ease\Html\Select
     public function finalize()
     {
         parent::finalize();
-        \Ease\Shared::webPage()->addJavaScript('$("#' . $this->getTagID() . '").msDropDown();', null, true);
+        \Ease\Shared::webPage()->addJavaScript('$("#'.$this->getTagID().'").msDropDown();',
+            null, true);
         \Ease\Shared::webPage()->includeJavaScript('js/msdropdown/jquery.dd.min.js');
         \Ease\Shared::webPage()->includeCss('css/msdropdown/dd.css');
     }
-
 }

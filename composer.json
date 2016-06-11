@@ -15,7 +15,8 @@
         "psr-4": {
             "Icinga\\Editor\\": "src/classes/",
             "Icinga\\Editor\\Engine\\": "src/classes/engine/",
-            "Icinga\\Editor\\UI\\": "src/classes/UI"
+            "Icinga\\Editor\\UI\\": "src/classes/UI",
+            "Icinga\\Editor\\modules\\": "src/modules"
         }
     },
     "require-dev": {

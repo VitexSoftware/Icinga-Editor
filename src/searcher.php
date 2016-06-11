@@ -1,4 +1,5 @@
 <?php
+
 namespace Icinga\Editor;
 
 /**
@@ -14,7 +15,7 @@ require_once './classes/IESearcher.php';
 
 $query = $oPage->getRequestValue('q', 'string');
 
-$found = array();
+$found = [];
 
 $searcher = new IESearcher;
 
@@ -25,7 +26,8 @@ if (strlen($query) > 1) {
 
     foreach ($results as $rectype => $records) {
         foreach ($records as $recid => $record) {
-            $found[] = array('url' => $rectype . '.php?' . $rectype . '_id=' . $recid, 'name' => current($record), 'type' => $rectype, 'what' => $record['what']);
+            $found[] = ['url' => $rectype.'.php?'.$rectype.'_id='.$recid, 'name' => current($record),
+                'type' => $rectype, 'what' => $record['what']];
         }
     }
 }

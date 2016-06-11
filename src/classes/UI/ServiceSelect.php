@@ -9,17 +9,17 @@ namespace Icinga\Editor\UI;
  */
 class ServiceSelect extends \Ease\Html\Select
 {
-    public $services  = array('' => array('image' => 'logos/icinga.gif'));
-    public $platforms = array(
-        'generic' => array('image' => 'logos/unknown.gif'),
-        'windows' => array('image' => 'logos/base/win40.gif'),
-        'linux' => array('image' => 'logos/base/linux40.gif'),
-    );
+    public $services  = ['' => ['image' => 'logos/icinga.gif']];
+    public $platforms = [
+        'generic' => ['image' => 'logos/unknown.gif'],
+        'windows' => ['image' => 'logos/base/win40.gif'],
+        'linux' => ['image' => 'logos/base/linux40.gif'],
+    ];
 
     function loadItems()
     {
-        $membersFound = array('' => '---');
-        $query        = 'SELECT  `service_id`, `icon_image`,`platform`,`service_description` FROM `'.'service` WHERE (user_id='.$this->user->getUserID().' OR public=1) AND register=1 ORDER BY  service_description ';
+        $membersFound = ['' => '---'];
+        $query        = 'SELECT  `service_id`, `icon_image`,`platform`,`service_description` FROM `'.'service` WHERE (user_id='.\Ease\Shared::user()->getUserID().' OR public=1) AND register=1 ORDER BY  service_description ';
 
         $membersFoundArray = \Ease\Shared::db()->queryToArray($query);
         if (count($membersFoundArray)) {
@@ -34,7 +34,7 @@ class ServiceSelect extends \Ease\Html\Select
                         $icon = 'logos/unknown.gif';
                     }
                 }
-                $this->services[$request['service_id']] = array('image' => $icon);
+                $this->services[$request['service_id']] = ['image' => $icon];
             }
         }
         return $membersFound;
@@ -47,7 +47,7 @@ class ServiceSelect extends \Ease\Html\Select
         foreach ($this->pageParts as $optionName => $option) {
             $platform = current($this->services);
             if (isset($platform['image'])) {
-                $this->pageParts[$optionName]->setTagProperties(array('data-image' => $platform['image']));
+                $this->pageParts[$optionName]->setTagProperties(['data-image' => $platform['image']]);
             }
             next($this->services);
         }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Icinga\Editor;
 
 /**
@@ -13,7 +14,7 @@ require_once 'includes/IEInit.php';
 
 $oPage->onlyForLogged();
 
-$contact = new IEContact($oPage->getRequestValue('contact_id', 'int'));
+$contact = new Engine\IEContact($oPage->getRequestValue('contact_id', 'int'));
 if (!$contact->getId()) {
     $oPage->redirect('contacts.php');
     exit();
@@ -26,7 +27,8 @@ switch ($oPage->getRequestValue('action')) {
             if ($contact->rename($newname)) {
                 $oUser->addStatusMessage(_('Kontakt byl přejmenován'), 'success');
             } else {
-                $oUser->addStatusMessage(_('Kontakt nebyl přejmenován'), 'warning');
+                $oUser->addStatusMessage(_('Kontakt nebyl přejmenován'),
+                    'warning');
             }
         }
         break;
@@ -45,21 +47,25 @@ if ($delsubcont) {
     $delcnt->delete($delsubcont);
 }
 
-$oPage->addItem(new UI\PageTop(_('Editace kontaktu') . ' ' . $contact->getName()));
+$oPage->addItem(new UI\PageTop(_('Editace kontaktu').' '.$contact->getName()));
 $oPage->addPageColumns();
 
 $oPage->columnII->addItem(new \Ease\Html\H3Tag($contact->getName()));
 
-$oPage->columnII->addItem(new IEContactTweaker($contact));
+$oPage->columnII->addItem(new UI\ContactTweaker($contact));
 
 if ($contact->getName() != $oUser->getUserLogin()) {
-    $oPage->columnIII->addItem($contact->deleteButton($contact->getName(), 'contact_id=' . $contact->getId()));
+    $oPage->columnIII->addItem($contact->deleteButton($contact->getName(),
+            'contact_id='.$contact->getId()));
 }
-$renameForm = new \Ease\TWB\Form('Rename', '?action=rename&amp;contact_id=' . $contact->getID() . '&contact_id=' . $contact->getId());
-$renameForm->addItem(new \Ease\Html\InputTextTag('newname'), $contact->getName(), array('class' => 'form-control'));
+$renameForm = new \Ease\TWB\Form('Rename',
+    '?action=rename&amp;contact_id='.$contact->getID().'&contact_id='.$contact->getId());
+$renameForm->addItem(new \Ease\Html\InputTextTag('newname'),
+    $contact->getName(), ['class' => 'form-control']);
 $renameForm->addItem(new \Ease\TWB\SubmitButton(_('Přejmenovat'), 'success'));
 
-$oPage->columnIII->addItem(new \Ease\TWB\Panel(_('Přejmenování'), 'default', $renameForm));
+$oPage->columnIII->addItem(new \Ease\TWB\Panel(_('Přejmenování'), 'default',
+    $renameForm));
 
 //$oPage->columnI->addItem(new IEHostSelector($contact));
 

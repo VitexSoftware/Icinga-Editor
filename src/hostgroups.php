@@ -10,13 +10,12 @@ namespace Icinga\Editor;
  * @copyright  2012 Vitex@hippy.cz (G)
  */
 require_once 'includes/IEInit.php';
-require_once 'classes/IEHostgroup.php';
 
 $oPage->onlyForLogged();
 
 $oPage->addItem(new UI\PageTop(_('Přehled skupin hostů')));
 
-$oPage->container->addItem(new IEDataGrid(_('Skupiny hostů'), new IEHostgroup));
+$oPage->container->addItem(new UI\DataGrid(_('Skupiny hostů'), new Engine\IEHostgroup));
 
 $oPage->addItem(new UI\PageBottom());
 

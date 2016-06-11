@@ -1,27 +1,21 @@
 <?php
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+namespace Icinga\Editor;
 
 /**
  * Description of IEPreferences
  *
  * @author vitex
  */
-class IEPreferences extends EaseBrick
+class IEPreferences extends \Ease\Brick
 {
-
-    public $myTable = 'preferences';
+    public $myTable     = 'preferences';
     public $myKeyColumn = 'key';
 
     /**
      * Pole předvoleb
      * @var array
      */
-    public $preferences = array();
+    public $preferences = [];
 
     /**
      * Objekt předvoleb
@@ -76,7 +70,7 @@ class IEPreferences extends EaseBrick
      */
     public function loadPrefs()
     {
-        $prefs = $this->getAllFromMySQL();
+        $prefs = $this->getAllFromSQL();
         foreach ($prefs as $pref) {
             $this->preferences[$pref['key']] = $pref['value'];
         }
@@ -92,5 +86,4 @@ class IEPreferences extends EaseBrick
     {
         return $this->preferences;
     }
-
 }

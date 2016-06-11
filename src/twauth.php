@@ -1,4 +1,5 @@
 <?php
+
 namespace Icinga\Editor;
 
 /**
@@ -13,19 +14,18 @@ require_once 'includes/IEInit.php';
 require 'classes/tmhOAuth.php';
 require 'classes/tmhUtilities.php';
 
-$tmhOAuth = new tmhOAuth(array(
-            'consumer_key' => IETwitter::$ConsumerKey,
-            'consumer_secret' => IETwitter::$ConsumerSecret,
-        ));
+$tmhOAuth = new tmhOAuth([
+    'consumer_key' => IETwitter::$ConsumerKey,
+    'consumer_secret' => IETwitter::$ConsumerSecret,
+    ]);
 
 $here = tmhUtilities::php_self();
 
 function outputError($tmhOAuth)
 {
-    echo 'Error: ' . $tmhOAuth->response['response'] . PHP_EOL;
+    echo 'Error: '.$tmhOAuth->response['response'].PHP_EOL;
     tmhUtilities::pr($tmhOAuth);
 }
-
 // reset request?
 if (isset($_REQUEST['wipe'])) {
     unset($_SESSION['access_token']);
@@ -33,17 +33,19 @@ if (isset($_REQUEST['wipe'])) {
 
 // already got some credentials stored?
 } elseif (isset($_SESSION['access_token'])) {
-    $tmhOAuth->config['user_token'] = $_SESSION['access_token']['oauth_token'];
+    $tmhOAuth->config['user_token']  = $_SESSION['access_token']['oauth_token'];
     $tmhOAuth->config['user_secret'] = $_SESSION['access_token']['oauth_token_secret'];
 
-    $code = $tmhOAuth->request('GET', $tmhOAuth->url('1/account/verify_credentials'));
+    $code = $tmhOAuth->request('GET',
+        $tmhOAuth->url('1/account/verify_credentials'));
     if ($code == 200) {
         $resp = json_decode($tmhOAuth->response['response']);
 
         $CurrentUser = \Ease\Shared::user();
 
         if ($CurrentUser->getUserID()) {
-            $CurrentUser->addStatusMessage(_('Účet twitteru, bayl přiřazen'), 'success');
+            $CurrentUser->addStatusMessage(_('Účet twitteru, bayl přiřazen'),
+                'success');
             $CurrentUser->setDataValue('twitter_id', $resp->id);
             if (!$CurrentUser->getSettingValue('icon')) {
                 $CurrentUser->setSettingValue('icon', $resp->profile_image_url);
@@ -62,12 +64,13 @@ if (isset($_REQUEST['wipe'])) {
     }
 // we're being called back by Twitter
 } elseif (isset($_REQUEST['oauth_verifier'])) {
-    $tmhOAuth->config['user_token'] = $_SESSION['oauth']['oauth_token'];
+    $tmhOAuth->config['user_token']  = $_SESSION['oauth']['oauth_token'];
     $tmhOAuth->config['user_secret'] = $_SESSION['oauth']['oauth_token_secret'];
 
-    $code = $tmhOAuth->request('POST', $tmhOAuth->url('oauth/access_token', ''), array(
+    $code = $tmhOAuth->request('POST', $tmhOAuth->url('oauth/access_token', ''),
+        [
         'oauth_verifier' => $_REQUEST['oauth_verifier']
-            ));
+    ]);
 
     if ($code == 200) {
         $_SESSION['access_token'] = $tmhOAuth->extract_params($tmhOAuth->response['response']);
@@ -81,9 +84,9 @@ if (isset($_REQUEST['wipe'])) {
 } elseif (isset($_REQUEST['authenticate']) || isset($_REQUEST['authorize'])) {
     $callback = isset($_REQUEST['oob']) ? 'oob' : $here;
 
-    $params = array(
+    $params = [
         'oauth_callback' => $callback
-    );
+    ];
 
     if (isset($_REQUEST['force_write'])) :
         $params['x_auth_access_type'] = 'write';
@@ -91,13 +94,14 @@ if (isset($_REQUEST['wipe'])) {
         $params['x_auth_access_type'] = 'read';
     endif;
 
-    $code = $tmhOAuth->request('POST', $tmhOAuth->url('oauth/request_token', ''), $params);
+    $code = $tmhOAuth->request('POST',
+        $tmhOAuth->url('oauth/request_token', ''), $params);
 
     if ($code == 200) {
         $_SESSION['oauth'] = $tmhOAuth->extract_params($tmhOAuth->response['response']);
-        $method = isset($_REQUEST['authenticate']) ? 'authenticate' : 'authorize';
-        $force = isset($_REQUEST['force']) ? '&force_login=1' : '';
-        $authurl = $tmhOAuth->url("oauth/{$method}", '') . "?oauth_token={$_SESSION['oauth']['oauth_token']}{$force}";
+        $method            = isset($_REQUEST['authenticate']) ? 'authenticate' : 'authorize';
+        $force             = isset($_REQUEST['force']) ? '&force_login=1' : '';
+        $authurl           = $tmhOAuth->url("oauth/{$method}", '')."?oauth_token={$_SESSION['oauth']['oauth_token']}{$force}";
         $oPage->redirect($authurl);
         exit;
     } else {

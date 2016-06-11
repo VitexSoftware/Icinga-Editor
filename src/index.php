@@ -20,11 +20,13 @@ if ($oUser->getUserId()) {
 $oPage->addItem(new UI\PageTop(_('Icinga Editor')));
 $oPage->addPageColumns();
 
-$oPage->heroUnit = $oPage->container->addItem(new \Ease\Html\Div( null, array('id'=>'heroUnit','class' => 'jumbotron')));
+$oPage->heroUnit = $oPage->container->addItem(new \Ease\Html\Div(null,
+    ['id' => 'heroUnit', 'class' => 'jumbotron']));
 $oPage->heroUnit->addItem(new \Ease\Html\ImgTag('img/vsmonitoring.png'));
-$oPage->heroUnit->addItem(new \Ease\Html\ATag('http://icinga.org/', new \Ease\Html\ImgTag('img/icinga_logo4-300x109.png')));
+$oPage->heroUnit->addItem(new \Ease\Html\ATag('http://icinga.org/',
+    new \Ease\Html\ImgTag('img/icinga_logo4-300x109.png')));
 $oPage->heroUnit->addItem(_('Monitoring služeb'));
-$oPage->heroUnit->setTagCss(array('text-align' => 'center'));
+$oPage->heroUnit->setTagCss(['text-align' => 'center']);
 
 $oPage->columnI->addItem(_('Sledování hostů'));
 $oPage->columnII->addItem(_('Sledování služeb'));

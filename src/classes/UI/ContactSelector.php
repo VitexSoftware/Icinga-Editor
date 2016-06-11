@@ -10,7 +10,7 @@ namespace Icinga\Editor\UI;
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2012 Vitex@hippy.cz (G)
  */
-class ContactSelector extends EaseContainer
+class ContactSelector extends \Ease\Container
 {
     public $myKeyColumn = 'service_name';
 
@@ -21,25 +21,27 @@ class ContactSelector extends EaseContainer
      */
     public function __construct($holder)
     {
-        $contactsAssigned = array();
+        $contactsAssigned = [];
         parent::__construct();
-        $fieldName        = $this->getmyKeyColumn();
+        $fieldName        = $holder->getmyKeyColumn();
         $initialContent   = new \Ease\TWB\Panel(_('Cíle notifikací'));
-        $initialContent->setTagCss(array('width' => '100%'));
+        $initialContent->setTagCss(['width' => '100%']);
 
         if (is_null($holder->getMyKey())) {
             $initialContent->addItem(_('Nejprve je potřeba uložit záznam'));
         } else {
             $serviceName = $holder->getName();
-            $contact     = new IEContact();
+            $contact     = new \Icinga\Editor\Engine\IEContact();
             $allContacts = $contact->getListing(null, true,
-                array('alias', 'parent_id'));
-            foreach ($holder->getDataValue('contacts') as $contactId => $contactName) {
-                if (isset($allContacts[$contactId])) {
-                    $contactsAssigned[$contactId] = $allContacts[$contactId];
+                ['alias', 'parent_id']);
+            $contacts    = $holder->getDataValue('contacts');
+            if (count($contacts)) {
+                foreach ($contacts as $contactId => $contactName) {
+                    if (isset($allContacts[$contactId])) {
+                        $contactsAssigned[$contactId] = $allContacts[$contactId];
+                    }
                 }
             }
-
             foreach ($allContacts as $contactID => $contactInfo) {
                 if ($contactInfo['register'] != 1) {
                     unset($allContacts[$contactID]);
@@ -59,12 +61,12 @@ class ContactSelector extends EaseContainer
                     $initialContent->addItem(
                         new \Ease\TWB\ButtonDropdown(
                         $contactInfo[$contact->nameColumn], 'inverse', 'xs',
-                        array(
+                        [
                         new \Ease\Html\ATag('contacttweak.php?contact_id='.$contactInfo['parent_id'].'&amp;service_id='.$holder->getId(),
                             \Ease\TWB\Part::GlyphIcon('wrench').' '._('Editace')),
                         new \Ease\Html\ATag('?addcontact='.$contactInfo[$contact->nameColumn].'&amp;contact_id='.$contactID.'&amp;'.$holder->getmyKeyColumn().'='.$holder->getMyKey().'&amp;'.$holder->nameColumn.'='.$holder->getName(),
                             \Ease\TWB\Part::GlyphIcon('plus').' '._('Začít obesílat'))
-                    )));
+                    ]));
                 }
             }
 
@@ -75,13 +77,13 @@ class ContactSelector extends EaseContainer
                     $initialContent->addItem(
                         new \Ease\TWB\ButtonDropdown(
                         $contactInfo[$contact->nameColumn], 'success', 'xs',
-                        array(
+                        [
                         new \Ease\Html\ATag(
                             '?delcontact='.$contactInfo[$contact->nameColumn].'&amp;contact_id='.$contactID.'&amp;'.$holder->getmyKeyColumn().'='.$holder->getMyKey().'&amp;'.$holder->nameColumn.'='.$holder->getName(),
                             \Ease\TWB\Part::GlyphIcon('remove').' '._('Přestat obesílat'))
                         , new \Ease\Html\ATag('contacttweak.php?contact_id='.$contactInfo['parent_id'].'&amp;service_id='.$holder->getId(),
                             \Ease\TWB\Part::GlyphIcon('wrench').' '._('Editace'))
-                        )
+                        ]
                         )
                     );
                 }

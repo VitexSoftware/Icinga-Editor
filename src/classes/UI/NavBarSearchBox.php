@@ -27,28 +27,26 @@ class NavBarSearchBox extends \Ease\TWB\Form
             $tagProperties);
         $term = \Ease\Shared::webPage()->getRequestValue('search', 'string');
 
-        $this->setTagProperties(array('class' => 'navbar-form', 'role' => 'search'));
+        $this->setTagProperties(['class' => 'navbar-form', 'role' => 'search']);
         $group   = $this->addItem(
             new \Ease\Html\Div(new \Ease\Html\InputTextTag(
             'search', $term,
-            array(
+            [
             'class' => 'form-control pull-right typeahead',
             'style' => 'width: 150px; margin-right: 35px, border: 1px solid black; background-color: #e5e5e5;',
             'placeholder' => _('Hledání'),
-            )), array('class' => 'input-group'))
+            ]), ['class' => 'input-group'])
         );
         $buttons = $group->addItem(new \Ease\Html\SpanTag(null, null,
-            array('class' => 'input-group-btn')));
+            ['class' => 'input-group-btn']));
         $buttons->addItem(new \Ease\Html\ButtonTag(new \Ease\Html\SpanTag(null,
-            new \Ease\Html\SpanTag(NULL, _('Zavřít'),
-            array('class' => 'sr-only')),
-            array('class' => 'glyphicon glyphicon-remove')),
-            array('type' => 'reset', 'class' => 'btn btn-default')));
+            new \Ease\Html\SpanTag(NULL, _('Zavřít'), ['class' => 'sr-only']),
+            ['class' => 'glyphicon glyphicon-remove']),
+            ['type' => 'reset', 'class' => 'btn btn-default']));
         $buttons->addItem(new \Ease\Html\ButtonTag(new \Ease\Html\SpanTag(null,
-            new \Ease\Html\SpanTag(NULL, _('Hledat'),
-            array('class' => 'sr-only')),
-            array('class' => 'glyphicon glyphicon-search')),
-            array('type' => 'submit', 'class' => 'btn btn-default')));
+            new \Ease\Html\SpanTag(NULL, _('Hledat'), ['class' => 'sr-only']),
+            ['class' => 'glyphicon glyphicon-search']),
+            ['type' => 'submit', 'class' => 'btn btn-default']));
     }
 
     function finalize()

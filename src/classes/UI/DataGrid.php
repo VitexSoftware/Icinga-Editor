@@ -19,13 +19,13 @@ class DataGrid extends \Ease\DataGrid
      * Výchozí nastavení sloupečků
      * @var array
      */
-    public $defaultColProp = array('sortable' => true);
+    public $defaultColProp = ['sortable' => true];
 
     /**
      * Nastavení
      * @var array
      */
-    public $options       = array(
+    public $options       = [
         'method' => 'GET',
         'dataType' => 'json',
         'height' => 'auto',
@@ -37,19 +37,19 @@ class DataGrid extends \Ease\DataGrid
         'rp' => 20,
         'dblClickResize' => true,
         'showTableToggleBtn' => true,
-        'add' => array(),
-        'edit' => array(),
-        'buttons' => array(
-            array('name' => 'CSV Export', 'bclass' => 'csvexport')
+        'add' => [],
+        'edit' => [],
+        'buttons' => [
+            ['name' => 'CSV Export', 'bclass' => 'csvexport']
 //        , array('name' => 'PDF Export', 'bclass' => 'pdfexport')
-        )
-    );
-    public $addFormItems  = array(array('name' => 'action', 'value' => 'add', 'type' => 'hidden'));
-    public $editFormItems = array(array('name' => 'action', 'value' => 'edit', 'type' => 'hidden'));
+        ]
+    ];
+    public $addFormItems  = [['name' => 'action', 'value' => 'add', 'type' => 'hidden']];
+    public $editFormItems = [['name' => 'action', 'value' => 'edit', 'type' => 'hidden']];
 
     /**
      * Objekt jehož data jsou zobrazována
-     * @var IECfg
+     * @var IEcfg
      */
     public $dataSource = null;
 
@@ -72,7 +72,7 @@ class DataGrid extends \Ease\DataGrid
         $this->options['title'] = $name;
         $this->setTagID();
 
-        $this->options['url']      = 'datasource.php?class='.get_class($datasource);
+        $this->options['url']      = 'datasource.php?class='.urlencode(get_class($datasource));
         $this->options['sortname'] = $datasource->getMyKeyColumn();
         $dataurl                   = null;
 
@@ -124,10 +124,10 @@ class DataGrid extends \Ease\DataGrid
     function addButton($title, $class, $onpress = null)
     {
         if ($onpress) {
-            $this->options['buttons'][] = array('name' => $title, 'bclass' => $class,
-                'onpress: '.$onpress);
+            $this->options['buttons'][] = ['name' => $title, 'bclass' => $class,
+                'onpress: '.$onpress];
         } else {
-            $this->options['buttons'][] = array('name' => $title, 'bclass' => $class);
+            $this->options['buttons'][] = ['name' => $title, 'bclass' => $class];
         }
     }
 
@@ -255,7 +255,7 @@ class DataGrid extends \Ease\DataGrid
     function setColumn($name, $title, $search = false, $columnProperties = null)
     {
         if (!isset($this->options['colModel'])) {
-            $this->options['colModel'] = array();
+            $this->options['colModel'] = [];
         }
         if (!isset($columnProperties['editable'])) {
             $columnProperties['editable'] = false;
@@ -276,8 +276,8 @@ class DataGrid extends \Ease\DataGrid
                 }
                 $search = implode(' OR ', $search);
             }
-            $this->options['searchitems'][] = array('display' => $title, 'name' => $name,
-                'where' => addslashes($search));
+            $this->options['searchitems'][] = ['display' => $title, 'name' => $name,
+                'where' => addslashes($search)];
         }
 
         if ($columnProperties['editable']) {

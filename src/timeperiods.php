@@ -1,4 +1,5 @@
 <?php
+
 namespace Icinga\Editor;
 
 /**
@@ -16,24 +17,25 @@ $oPage->onlyForLogged();
 $oPage->addItem(new UI\PageTop(_('Přehled časových period')));
 $oPage->addPageColumns();
 
-$Timeperiod = new IETimeperiod();
-$Periods = $Timeperiod->getListing();
+$Timeperiod = new Engine\IETimeperiod();
+$Periods    = $Timeperiod->getListing();
 
 if ($Periods) {
 
-    $cntList = new \Ease\Html\TableTag(null, array('class' => 'table'));
+    $cntList = new \Ease\Html\TableTag(null, ['class' => 'table']);
 
     $cid = 1;
     foreach ($Periods as $cId => $cInfo) {
-        $lastRow = $cntList->addRowColumns(array($cid++, new \Ease\Html\ATag('timeperiod.php?timeperiod_id=' . $cInfo['timeperiod_id'], $cInfo['timeperiod_name'] . ' <i class="icon-edit"></i>')));
+        $lastRow = $cntList->addRowColumns([$cid++, new \Ease\Html\ATag('timeperiod.php?timeperiod_id='.$cInfo['timeperiod_id'],
+                $cInfo['timeperiod_name'].' <i class="icon-edit"></i>')]);
         if ($cInfo['generate'] == 0) {
-            $lastRow->setTagCss(array('border-right' => '1px solid red'));
+            $lastRow->setTagCss(['border-right' => '1px solid red']);
         }
         if ($cInfo['public'] == 1) {
             if ($cInfo[$Timeperiod->userColumn] == $oUser->getUserID()) {
-                $lastRow->setTagCss(array('border-left' => '1px solid green'));
+                $lastRow->setTagCss(['border-left' => '1px solid green']);
             } else {
-                $lastRow->setTagCss(array('border-left' => '1px solid blue'));
+                $lastRow->setTagCss(['border-left' => '1px solid blue']);
             }
         }
     }
@@ -42,7 +44,8 @@ if ($Periods) {
     $oUser->addStatusMessage(_('Nemáte definované časové periody'), 'warning');
 }
 
-$oPage->columnIII->addItem(new \Ease\TWB\LinkButton('timeperiod.php', _('Založit časovou periodu ' . \Ease\TWB\Part::GlyphIcon('edit'))));
+$oPage->columnIII->addItem(new \Ease\TWB\LinkButton('timeperiod.php',
+    _('Založit časovou periodu '.\Ease\TWB\Part::GlyphIcon('edit'))));
 
 $oPage->addItem(new UI\PageBottom());
 

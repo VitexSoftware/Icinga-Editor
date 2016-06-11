@@ -11,13 +11,11 @@ namespace Icinga\Editor;
  */
 require_once 'includes/IEInit.php';
 
-require_once 'classes/IEDataGrid.php';
-
 $oPage->onlyForLogged();
 
 $oPage->addItem(new UI\PageTop(_('Přehled předloh sledovaných služeb')));
 
-$oPage->addItem(new \Ease\TWB\Container(new IEDataGrid(_('Předlohy sledovaných služeb'), new IEStemplate)));
+$oPage->addItem(new \Ease\TWB\Container(new UI\DataGrid(_('Předlohy sledovaných služeb'), new IEStemplate)));
 
 $oPage->addItem(new UI\PageBottom());
 

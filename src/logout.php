@@ -1,4 +1,5 @@
 <?php
+
 namespace Icinga\Editor;
 
 /**
@@ -14,17 +15,18 @@ unset($_SESSION['access_token']); //Twitter OAuth
 
 if ($oUser->getUserID()) {
     $oUser->logout();
-    $MessagesBackup = $oUser->getStatusMessages(TRUE);
-    \Ease\Shared::user(new EaseAnonym());
-    $oUser->addStatusMessages($MessagesBackup);
+    $messagesBackup = $oUser->getStatusMessages(TRUE);
+    \Ease\Shared::user(new \Ease\Anonym());
+    $oUser->addStatusMessages($messagesBackup);
 }
 
 $oPage->addItem(new UI\PageTop(_('Odhlášení')));
 $oPage->addPageColumns();
 
-$oPage->heroUnit = $oPage->container->addItem(new \Ease\Html\DivTag('heroUnit', null, array('class' => 'jumbotron')));
+$oPage->heroUnit = $oPage->container->addItem(new \Ease\Html\Div(
+    null, ['class' => 'jumbotron', 'id' => 'heroUnit']));
 
-$oPage->heroUnit->addItem(new \Ease\Html\Div( _('Děkujeme za vaši přízeň a těšíme se na další návštěvu')));
+$oPage->heroUnit->addItem(new \Ease\Html\Div(_('Děkujeme za vaši přízeň a těšíme se na další návštěvu')));
 
 $oPage->addItem(new UI\PageBottom());
 

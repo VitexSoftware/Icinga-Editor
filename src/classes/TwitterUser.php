@@ -33,7 +33,7 @@ class IETwitterUser extends IEUser
             $this->twitter = $twitter;
             $this->setmyKeyColumn('twitter_id');
             $this->setMyKey($twitter->id);
-            if (!$this->loadFromMySQL()) {
+            if (!$this->loadFromSQL()) {
                 $this->restoreObjectIdentity();
                 $this->setDataValue($this->LoginColumn, $twitter->screen_name);
                 $this->setSettingValue('icon', $twitter->profile_image_url);

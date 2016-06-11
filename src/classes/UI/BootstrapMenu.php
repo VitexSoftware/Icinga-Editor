@@ -22,8 +22,7 @@ class BootstrapMenu extends \Ease\TWB\Navbar
     {
         parent::__construct("Menu",
             new \Ease\Html\ImgTag('img/vsmonitoring.png', 'VSMonitoring', 20,
-            20, array('class' => 'img-rounded')),
-            array('class' => 'navbar-fixed-top'));
+            20, ['class' => 'img-rounded']), ['class' => 'navbar-fixed-top']);
 
         $user = \Ease\Shared::user();
         \Ease\TWB\Part::twBootstrapize();
@@ -74,9 +73,9 @@ class BootstrapMenu extends \Ease\TWB\Navbar
         $statusMessages = $this->webPage->getStatusMessagesAsHtml();
         if ($statusMessages) {
             $this->addItem(new \Ease\Html\Div($statusMessages,
-                array('id' => 'StatusMessages', 'class' => 'well', 'title' => _('kliknutím skryjete zprávy'),
-                'data-state' => 'down')));
-            $this->addItem(new \Ease\Html\Div(null, array('id' => 'smdrag')));
+                ['id' => 'StatusMessages', 'class' => 'well', 'title' => _('kliknutím skryjete zprávy'),
+                'data-state' => 'down']));
+            $this->addItem(new \Ease\Html\Div(null, ['id' => 'smdrag']));
         }
         parent::draw();
     }

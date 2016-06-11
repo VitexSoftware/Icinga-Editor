@@ -1,4 +1,5 @@
 <?php
+
 namespace Icinga\Editor\UI;
 
 /**
@@ -20,17 +21,18 @@ class ChildrenSelector extends \Ease\Container
      */
     public function __construct($Host)
     {
-        $FieldName = 'parents';
+        $FieldName      = 'parents';
         $InitialContent = new \Ease\TWB\Panel(_('Potomci'));
-        $InitialContent->setTagCss(array('width' => '100%'));
+        $InitialContent->setTagCss(['width' => '100%']);
 
         if (is_null($Host->getMyKey())) {
             $InitialContent->addItem(_('Nejprve je potřeba uložit záznam'));
         } else {
 
-            $Service = new IEService();
+            $Service = new Engine\IEService();
 
-            $ServicesAssigned = $Service->myDbLink->queryToArray('SELECT ' . $Service->myKeyColumn . ',' . $Service->nameColumn . ' FROM ' . $Service->myTable . ' WHERE ' . $FieldName . ' LIKE \'%"' . $Host->getName() . '"%\'', $Service->myKeyColumn);
+            $ServicesAssigned = $Service->dblink->queryToArray('SELECT '.$Service->myKeyColumn.','.$Service->nameColumn.' FROM '.$Service->myTable.' WHERE '.$FieldName.' LIKE \'%"'.$Host->getName().'"%\'',
+                $Service->myKeyColumn);
 
             $AllServices = $Service->getListing();
             foreach ($AllServices as $ServiceID => $ServiceInfo) {
@@ -46,8 +48,10 @@ class ChildrenSelector extends \Ease\Container
             if (count($AllServices)) {
 
                 foreach ($AllServices as $ServiceID => $ServiceInfo) {
-                    $Jellybean = new \Ease\Html\SpanTag($ServiceInfo[$Service->nameColumn], null, array('class' => 'jellybean gray'));
-                    $Jellybean->addItem(new \Ease\Html\ATag('?addservice=' . $ServiceInfo[$Service->nameColumn] . '&amp;service_id=' . $ServiceID . '&amp;' . $Host->getmyKeyColumn() . '=' . $Host->getMyKey() . '&amp;' . $Host->nameColumn . '=' . $Host->getName(), $ServiceInfo[$Service->nameColumn]));
+                    $Jellybean = new \Ease\Html\SpanTag($ServiceInfo[$Service->nameColumn],
+                        null, ['class' => 'jellybean gray']);
+                    $Jellybean->addItem(new \Ease\Html\ATag('?addservice='.$ServiceInfo[$Service->nameColumn].'&amp;service_id='.$ServiceID.'&amp;'.$Host->getmyKeyColumn().'='.$Host->getMyKey().'&amp;'.$Host->nameColumn.'='.$Host->getName(),
+                        $ServiceInfo[$Service->nameColumn]));
                     $InitialContent->addItem($Jellybean);
                 }
             }
@@ -55,9 +59,11 @@ class ChildrenSelector extends \Ease\Container
             if (count($ServicesAssigned)) {
                 $InitialContent->addItem('</br>');
                 foreach ($ServicesAssigned as $ServiceID => $ServiceInfo) {
-                    $Jellybean = new \Ease\Html\SpanTag($ServiceInfo[$Service->nameColumn], null, array('class' => 'jellybean'));
+                    $Jellybean = new \Ease\Html\SpanTag($ServiceInfo[$Service->nameColumn],
+                        null, ['class' => 'jellybean']);
                     $Jellybean->addItem($ServiceInfo[$Service->nameColumn]);
-                    $Jellybean->addItem(new \Ease\Html\ATag('?delservice=' . $ServiceInfo[$Service->nameColumn] . '&amp;service_id=' . $ServiceID . '&amp;' . $Host->getmyKeyColumn() . '=' . $Host->getMyKey() . '&amp;' . $Host->nameColumn . '=' . $Host->getName(), \Ease\TWB\Part::GlyphIcon('remove')));
+                    $Jellybean->addItem(new \Ease\Html\ATag('?delservice='.$ServiceInfo[$Service->nameColumn].'&amp;service_id='.$ServiceID.'&amp;'.$Host->getmyKeyColumn().'='.$Host->getMyKey().'&amp;'.$Host->nameColumn.'='.$Host->getName(),
+                        \Ease\TWB\Part::GlyphIcon('remove')));
                     $InitialContent->addItem($Jellybean);
                 }
             }
@@ -72,29 +78,34 @@ class ChildrenSelector extends \Ease\Container
      */
     public static function saveMembers($Request)
     {
-        $Service = new IEService();
+        $Service = new Engine\IEService();
         if (isset($Request[$Service->myKeyColumn])) {
-            if ($Service->loadFromMySQL($Request[$Service->myKeyColumn])) {
+            if ($Service->loadFromSQL($Request[$Service->myKeyColumn])) {
                 if (isset($Request['addservice']) || isset($Request['delservice'])) {
                     if (isset($Request['addservice'])) {
-                        $Service->addHostName($Request['host_id'], $Request['host_name']);
+                        $Service->addHostName($Request['host_id'],
+                            $Request['host_name']);
                         if ($Service->saveToSQL()) {
-                            $Service->addStatusMessage(sprintf(_('položka %s byla přidána'), $Request['addservice']), 'success');
+                            $Service->addStatusMessage(sprintf(_('položka %s byla přidána'),
+                                    $Request['addservice']), 'success');
                         } else {
-                            $Service->addStatusMessage(sprintf(_('položka %s nebyla přidána'), $Request['addservice']), 'warning');
+                            $Service->addStatusMessage(sprintf(_('položka %s nebyla přidána'),
+                                    $Request['addservice']), 'warning');
                         }
                     }
                     if (isset($Request['delservice'])) {
-                        $Service->delHostName($Request['host_id'], $Request['host_name']);
+                        $Service->delHostName($Request['host_id'],
+                            $Request['host_name']);
                         if ($Service->saveToSQL()) {
-                            $Service->addStatusMessage(sprintf(_('položka %s byla odebrána'), $Request['delservice']), 'success');
+                            $Service->addStatusMessage(sprintf(_('položka %s byla odebrána'),
+                                    $Request['delservice']), 'success');
                         } else {
-                            $Service->addStatusMessage(sprintf(_('položka %s nebyla odebrána'), $Request['delservice']), 'warning');
+                            $Service->addStatusMessage(sprintf(_('položka %s nebyla odebrána'),
+                                    $Request['delservice']), 'warning');
                         }
                     }
                 }
             }
         }
     }
-
 }

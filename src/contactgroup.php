@@ -1,4 +1,5 @@
 <?php
+
 namespace Icinga\Editor;
 
 /**
@@ -16,7 +17,8 @@ $oPage->onlyForLogged();
 $oPage->addItem(new UI\PageTop(_('Editace skupiny kontaktu')));
 
 
-$contactgroup = new IEContactgroup($oPage->getRequestValue('contactgroup_id', 'int'));
+$contactgroup = new Engine\IEContactgroup($oPage->getRequestValue('contactgroup_id',
+        'int'));
 
 if ($oPage->isPosted()) {
     $contactgroup->takeData($_POST);
@@ -35,26 +37,30 @@ if ($delete == 'true') {
     $contactgroup->delete();
 }
 
-$contactgroupEdit = new IECfgEditor($contactgroup);
+$contactgroupEdit = new UI\CfgEditor($contactgroup);
 
-$form = new \Ease\TWB\Form('Contactgroup', 'contactgroup.php', 'POST', $contactgroupEdit, array('class' => 'form-horizontal'));
+$form = new \Ease\TWB\Form('Contactgroup', 'contactgroup.php', 'POST',
+    $contactgroupEdit, ['class' => 'form-horizontal']);
 $form->setTagID($form->getTagName());
 if (!is_null($contactgroup->getMyKey())) {
-    $form->addItem(new \Ease\Html\InputHiddenTag($contactgroup->getmyKeyColumn(), $contactgroup->getMyKey()));
+    $form->addItem(new \Ease\Html\InputHiddenTag($contactgroup->getmyKeyColumn(),
+        $contactgroup->getMyKey()));
 }
 $form->addItem('<br>');
 $form->addItem(new \Ease\TWB\SubmitButton(_('Uložit'), 'success'));
 
 $oPage->addItem(new UI\PageBottom());
 
-$infopanel = new IEInfoBox($contactgroup);
-$tools = new \Ease\TWB\Panel(_('Nástroje'), 'warning');
+$infopanel = new UI\InfoBox($contactgroup);
+$tools     = new \Ease\TWB\Panel(_('Nástroje'), 'warning');
 if ($contactgroup->getId()) {
     $tools->addItem($contactgroup->deleteButton());
 }
 $pageRow = new \Ease\TWB\Row;
 $pageRow->addColumn(2, $infopanel);
-$pageRow->addColumn(6, new \Ease\TWB\Panel(_('Skupina kontaktů') . ' <strong>' . $contactgroup->getName() . '</strong>', 'default', $form));
+$pageRow->addColumn(6,
+    new \Ease\TWB\Panel(_('Skupina kontaktů').' <strong>'.$contactgroup->getName().'</strong>',
+    'default', $form));
 $pageRow->addColumn(4, $tools);
 
 $oPage->container->addItem($pageRow);

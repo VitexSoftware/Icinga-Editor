@@ -1,13 +1,8 @@
 <?php
 
-require_once 'IEUser.php';
+namespace Icinga\Editor;
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-class EaseOAuth extends EaseAtom
+class EaseOAuth extends \Ease\Atom
 {
     public static $RequestTokenURL = '';
     public static $AuthorizeURL = '';

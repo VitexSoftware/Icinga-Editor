@@ -12,8 +12,8 @@ class HostgroupSelect extends \Ease\Html\Select
 
     function loadItems()
     {
-        $membersFound = array('' => '---');
-        $query        = 'SELECT  `hostgroup_id`, `hostgroup_name` FROM `'.'hostgroup` WHERE (user_id='.$this->user->getUserID().')  ORDER BY  hostgroup_name ';
+        $membersFound = ['' => '---'];
+        $query        = 'SELECT  `hostgroup_id`, `hostgroup_name` FROM `'.'hostgroup` WHERE (user_id='.\Ease\Shared::user()->getUserID().')  ORDER BY  hostgroup_name ';
 
         $membersFoundArray = \Ease\Shared::db()->queryToArray($query);
         if (count($membersFoundArray)) {

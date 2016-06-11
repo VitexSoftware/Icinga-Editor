@@ -1,4 +1,5 @@
 <?php
+
 namespace Icinga\Editor;
 
 /**
@@ -13,8 +14,8 @@ require_once 'includes/IEInit.php';
 
 $oPage->onlyForLogged();
 
-$service = new IEService($oPage->getRequestValue('service_id', 'int'));
-$host = new IEHost($oPage->getRequestValue('host_id', 'int'));
+$service = new Engine\IEService($oPage->getRequestValue('service_id', 'int'));
+$host    = new Engine\IEHost($oPage->getRequestValue('host_id', 'int'));
 
 switch ($oPage->getRequestValue('action')) {
 
@@ -25,12 +26,13 @@ switch ($oPage->getRequestValue('action')) {
             'host_name', $host->getId(), $host->getName()
         );
 
-        $service->setDataValue('hostgroup_name', array());
+        $service->setDataValue('hostgroup_name', []);
         $service->setDataValue('user_id', $oUser->getID());
-        $service->setDataValue($service->nameColumn, _('Klon') . ' ' . $service->getName());
+        $service->setDataValue($service->nameColumn,
+            _('Klon').' '.$service->getName());
         if ($service->saveToSQL()) {
             $oUser->addStatusMessage(_('Služba byla naklonována'), 'success');
-            $oPage->redirect('servicetweak.php?service_id=' . $service->getId() . '&host_id=' . $host->getId());
+            $oPage->redirect('servicetweak.php?service_id='.$service->getId().'&host_id='.$host->getId());
         } else {
             $oUser->addStatusMessage(_('Sužba nebyla naklonována'), 'warning');
         }
@@ -39,9 +41,11 @@ switch ($oPage->getRequestValue('action')) {
         $newname = $oPage->getRequestValue('newname');
         if (strlen($newname)) {
             if ($service->rename($newname)) {
-                $oUser->addStatusMessage(_('Služba byla přejmenována'), 'success');
+                $oUser->addStatusMessage(_('Služba byla přejmenována'),
+                    'success');
             } else {
-                $oUser->addStatusMessage(_('Sužba nebyla přejmenována'), 'warning');
+                $oUser->addStatusMessage(_('Sužba nebyla přejmenována'),
+                    'warning');
             }
         }
         break;
@@ -53,13 +57,14 @@ switch ($oPage->getRequestValue('action')) {
 $delete = $oPage->getGetValue('delete', 'bool');
 if ($delete == 'true') {
     $service->delete();
-    $oPage->redirect('host.php?host_id=' . $host->getId());
+    $oPage->redirect('host.php?host_id='.$host->getId());
     exit();
 }
 
 if ($service->getOwnerID() != $oUser->getMyKey()) {
     if ($service->fork($host)) {
-        $oUser->addStatusMessage(_('Služba jiného vlastníka byla odvozena jako vlastní'), 'success');
+        $oUser->addStatusMessage(_('Služba jiného vlastníka byla odvozena jako vlastní'),
+            'success');
     } else {
         $oUser->addStatusMessage(_('Služba nebyla odvozena'), 'error');
     }
@@ -97,36 +102,43 @@ if ($addcnt) {
     $service->saveToSQL();
 }
 
-$oPage->addItem(new UI\PageTop(_('Editace služby') . ' ' . $service->getName()));
+$oPage->addItem(new UI\PageTop(_('Editace služby').' '.$service->getName()));
 $oPage->addPageColumns();
 
-$serviceTweak = new IEServiceTweaker($service, $host);
+$serviceTweak = new UI\ServiceTweaker($service, $host);
 
 $serviceName = $service->getDataValue('display_name');
 if (!$serviceName) {
     $serviceName = $service->getName();
 }
-$oPage->columnII->addItem(new \Ease\Html\H3Tag(array(new IEPlatformIcon($service->getDataValue('platform')), $serviceName)));
+$oPage->columnII->addItem(new \Ease\Html\H3Tag([new UI\PlatformIcon($service->getDataValue('platform')),
+    $serviceName]));
 
 $oPage->columnII->addItem($serviceTweak);
 
-$oPage->columnIII->addItem($service->deleteButton($service->getName(), 'host_id=' . $host->getId()));
+$oPage->columnIII->addItem($service->deleteButton($service->getName(),
+        'host_id='.$host->getId()));
 
-$oPage->columnIII->addItem(new \Ease\TWB\LinkButton('service.php?service_id=' . $service->getID(), _('Editace služby') . ' ' . $serviceName));
+$oPage->columnIII->addItem(new \Ease\TWB\LinkButton('service.php?service_id='.$service->getID(),
+    _('Editace služby').' '.$serviceName));
 
-$renameForm = new \Ease\TWB\Form('Rename', '?action=rename&amp;host_id=' . $host->getID() . '&service_id=' . $service->getId());
-$renameForm->addItem(new \Ease\Html\InputTextTag('newname'), $service->getName(), array('class' => 'form-control'));
+$renameForm = new \Ease\TWB\Form('Rename',
+    '?action=rename&amp;host_id='.$host->getID().'&service_id='.$service->getId());
+$renameForm->addItem(new \Ease\Html\InputTextTag('newname'),
+    $service->getName(), ['class' => 'form-control']);
 $renameForm->addItem(new \Ease\TWB\SubmitButton(_('Přejmenovat'), 'success'));
 
-$oPage->columnIII->addItem(new \Ease\TWB\Panel(_('Přejmenování'), 'info', $renameForm));
+$oPage->columnIII->addItem(new \Ease\TWB\Panel(_('Přejmenování'), 'info',
+    $renameForm));
 
 $oPage->columnIII->addItem($service->cloneButton());
 
 
-$oPage->columnI->addItem(new IEHostSelector($service));
-$oPage->columnI->addItem(new IEContactSelector($service));
+$oPage->columnI->addItem(new UI\HostSelector($service));
+$oPage->columnI->addItem(new UI\ContactSelector($service));
 
-$oPage->columnIII->addItem(new \Ease\TWB\LinkButton('host.php?host_id=' . $host->getId(), array(_('Zpět na') . ' ', $host, ' ', $host->getName()), 'default'));
+$oPage->columnIII->addItem(new \Ease\TWB\LinkButton('host.php?host_id='.$host->getId(),
+    [_('Zpět na').' ', $host, ' ', $host->getName()], 'default'));
 
 $oPage->addItem(new UI\PageBottom());
 

@@ -17,7 +17,7 @@ if (!is_object($oUser)) {
 
 $login = $oPage->getRequestValue('login');
 if ($login) {
-    \Ease\Shared::user(new User());
+    $oUser = \Ease\Shared::user(new User());
 
     if ($oUser->tryToLogin($_POST)) {
         if ($oUser->getUserID() == 1) {

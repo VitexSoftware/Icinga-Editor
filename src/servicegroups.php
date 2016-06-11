@@ -10,13 +10,12 @@ namespace Icinga\Editor;
  * @copyright  2012 Vitex@hippy.cz (G)
  */
 require_once 'includes/IEInit.php';
-require_once 'classes/IEServicegroup.php';
 
 $oPage->onlyForLogged();
 
 $oPage->addItem(new UI\PageTop(_('Přehled skupin služeb')));
 
-$oPage->container->addItem(new IEDataGrid(_('Skupiny služeb'), new IEServicegroup));
+$oPage->container->addItem(new UI\DataGrid(_('Skupiny služeb'), new Engine\IEServicegroup));
 
 $oPage->addItem(new UI\PageBottom());
 

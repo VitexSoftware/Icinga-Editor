@@ -1,4 +1,5 @@
 <?php
+
 namespace Icinga\Editor;
 
 /**
@@ -19,12 +20,12 @@ $oPage->addPageColumns();
 
 if ($oPage->isPosted()) {
 
-    $params = array('generate' => true);
+    $params = ['generate' => true];
     $public = $oPage->getRequestValue('public');
     if ($public) {
         $params['public'] = true;
     }
-    $importer = new IEImporter($params);
+    $importer = new Engine\IEImporter($params);
     if ($oPage->getRequestValue('dbinit') == 'on') {
         $importer->dbInit();
     }
@@ -34,12 +35,16 @@ if ($oPage->isPosted()) {
 $oPage->addItem(new UI\PageBottom());
 
 $importForm = new \Ease\Html\Form('ImportForm');
-$importForm->addItem(new EaseLabeledTextInput('maincfg', constant('CFG_DIRECTORY') . 'icinga.cfg', _('hlavní soubor konfigurace')));
+$importForm->addItem(new EaseLabeledTextInput('maincfg',
+    constant('CFG_DIRECTORY').'icinga.cfg', _('hlavní soubor konfigurace')));
 
-$importForm->addItem(new EaseLabeledCheckbox('dbinit', null, _('Znovu vytvořit strukturu databáze')));
+$importForm->addItem(new EaseLabeledCheckbox('dbinit', null,
+    _('Znovu vytvořit strukturu databáze')));
 $importForm->addItem('<br clear="all">');
-$importForm->addItem(new \Ease\JQuery\SubmitButton('submit', _('importovat'), _('Spustí proces importu')));
+$importForm->addItem(new \Ease\JQuery\SubmitButton('submit', _('importovat'),
+    _('Spustí proces importu')));
 
-$oPage->columnII->addItem(new \Ease\Html\FieldSet(_('parametry inicializace'), $importForm));
+$oPage->columnII->addItem(new \Ease\Html\FieldSet(_('parametry inicializace'),
+    $importForm));
 
 $oPage->draw();

@@ -1,4 +1,5 @@
 <?php
+
 namespace Icinga\Editor;
 
 /**
@@ -10,12 +11,10 @@ namespace Icinga\Editor;
  * @copyright  2012 Vitex@hippy.cz (G)
  */
 require_once 'includes/IEInit.php';
-require_once 'classes/IEContact.php';
-require_once 'classes/IECfgEditor.php';
 
 $oPage->onlyForLogged();
 
-$contact = new IEContact($oPage->getRequestValue('contact_id', 'int'));
+$contact = new Engine\IEContact($oPage->getRequestValue('contact_id', 'int'));
 
 if ($oPage->isPosted()) {
     $contact->takeData($_POST);
@@ -36,25 +35,30 @@ if ($delete == 'true') {
     exit();
 }
 
-$oPage->addItem(new UI\PageTop(_('Editace kontaktu') . ' ' . $contact->getName()));
+$oPage->addItem(new UI\PageTop(_('Editace kontaktu').' '.$contact->getName()));
 
 switch ($oPage->getRequestValue('action')) {
     case 'delete':
-        $form = new EaseContainer;
+        $form        = new \Ease\Container;
         $form->addItem(new \Ease\Html\H2Tag($contact->getName()));
-        $confirmator = $form->addItem(new \Ease\TWB\Panel(_('Opravdu smazat ?')), 'danger');
-        $confirmator->addItem(new \Ease\TWB\LinkButton('?' . $contact->myKeyColumn . '=' . $contact->getID(), _('Ne') . ' ' . \Ease\TWB\Part::glyphIcon('ok'), 'success'));
-        $confirmator->addItem(new \Ease\TWB\LinkButton('?delete=true&' . $contact->myKeyColumn . '=' . $contact->getID(), _('Ano') . ' ' . \Ease\TWB\Part::glyphIcon('remove'), 'danger'));
+        $confirmator = $form->addItem(new \Ease\TWB\Panel(_('Opravdu smazat ?')),
+            'danger');
+        $confirmator->addItem(new \Ease\TWB\LinkButton('?'.$contact->myKeyColumn.'='.$contact->getID(),
+            _('Ne').' '.\Ease\TWB\Part::glyphIcon('ok'), 'success'));
+        $confirmator->addItem(new \Ease\TWB\LinkButton('?delete=true&'.$contact->myKeyColumn.'='.$contact->getID(),
+            _('Ano').' '.\Ease\TWB\Part::glyphIcon('remove'), 'danger'));
         break;
     default :
 
 
-        $contactEdit = new IECfgEditor($contact);
+        $contactEdit = new Engine\IEcfgEditor($contact);
 
-        $form = new \Ease\Html\Form('Contact', 'contact.php', 'POST', $contactEdit, array('class' => 'form-horizontal'));
+        $form = new \Ease\Html\Form('Contact', 'contact.php', 'POST',
+            $contactEdit, ['class' => 'form-horizontal']);
         $form->setTagID($form->getTagName());
         if (!is_null($contact->getMyKey())) {
-            $form->addItem(new \Ease\Html\InputHiddenTag($contact->getmyKeyColumn(), $contact->getMyKey()));
+            $form->addItem(new \Ease\Html\InputHiddenTag($contact->getmyKeyColumn(),
+                $contact->getMyKey()));
         }
         $form->addItem('<br>');
         $form->addItem(new \Ease\TWB\SubmitButton(_('Uložit'), 'success'));
@@ -63,45 +67,54 @@ switch ($oPage->getRequestValue('action')) {
 
 
 
-$service = new IEService;
-$serviceUsages = $service->getColumnsFromMySQL(array($service->getMyKeyColumn(), $service->nameColumn), array('contacts' => '%' . $contact->getName() . '%'), $service->nameColumn, $service->getMyKeyColumn());
+$service       = new Engine\IEService;
+$serviceUsages = $service->getColumnsFromSQL([$service->getMyKeyColumn(), $service->nameColumn],
+    ['contacts' => '%'.$contact->getName().'%'], $service->nameColumn,
+    $service->getMyKeyColumn());
 
 
 
 $oPage->addItem(new UI\PageBottom());
 
-$infopanel = new IEInfoBox($contact);
-$tools = new \Ease\TWB\Panel(_('Nástroje'), 'warning');
+$infopanel = new Engine\IEInfoBox($contact);
+$tools     = new \Ease\TWB\Panel(_('Nástroje'), 'warning');
 if ($contact->getId()) {
     $tools->addItem($contact->deleteButton());
-    $tools->addItem(new \Ease\TWB\Panel(_('Transfer'), 'warning', $contact->transferForm()));
+    $tools->addItem(new \Ease\TWB\Panel(_('Transfer'), 'warning',
+        $contact->transferForm()));
 
 
 
     if (count($serviceUsages)) {
-        $usedBy = new \Ease\TWB\Panel(_('Používaný službami'));
-        $listing = $usedBy->addItem(new \Ease\Html\UlTag(null, array('class' => 'list-group')));
+        $usedBy  = new \Ease\TWB\Panel(_('Používaný službami'));
+        $listing = $usedBy->addItem(new \Ease\Html\UlTag(null,
+            ['class' => 'list-group']));
         foreach ($serviceUsages as $usage) {
             $listing->addItem(
                 new \Ease\Html\LiTag(
-                new \Ease\Html\ATag('service.php?service_id=' . $usage['service_id'], $usage[$service->nameColumn])
-                , array('class' => 'list-group-item'))
+                new \Ease\Html\ATag('service.php?service_id='.$usage['service_id'],
+                $usage[$service->nameColumn])
+                , ['class' => 'list-group-item'])
             );
         }
         $infopanel->addItem($usedBy);
     }
 
-    $host = new IEHost;
-    $hostUsages = $host->getColumnsFromMySQL(array($host->getMyKeyColumn(), $host->nameColumn), array('contacts' => '%' . $contact->getName() . '%'), $host->nameColumn, $host->getMyKeyColumn());
+    $host       = new Engine\IEHost;
+    $hostUsages = $host->getColumnsFromSQL([$host->getMyKeyColumn(), $host->nameColumn],
+        ['contacts' => '%'.$contact->getName().'%'], $host->nameColumn,
+        $host->getMyKeyColumn());
 
     if (count($hostUsages)) {
-        $usedBy = new \Ease\TWB\Panel(_('Používaný hosty'));
-        $listing = $usedBy->addItem(new \Ease\Html\UlTag(null, array('class' => 'list-group')));
+        $usedBy  = new \Ease\TWB\Panel(_('Používaný hosty'));
+        $listing = $usedBy->addItem(new \Ease\Html\UlTag(null,
+            ['class' => 'list-group']));
         foreach ($hostUsages as $usage) {
             $listing->addItem(
                 new \Ease\Html\LiTag(
-                new \Ease\Html\ATag('host.php?host_id=' . $usage['host_id'], $usage[$host->nameColumn])
-                , array('class' => 'list-group-item'))
+                new \Ease\Html\ATag('host.php?host_id='.$usage['host_id'],
+                $usage[$host->nameColumn])
+                , ['class' => 'list-group-item'])
             );
         }
         $infopanel->addItem($usedBy);
@@ -110,7 +123,9 @@ if ($contact->getId()) {
 
 $pageRow = new \Ease\TWB\Row;
 $pageRow->addColumn(2, $infopanel);
-$pageRow->addColumn(6, new \Ease\TWB\Panel(_('Příkaz') . ' <strong>' . $contact->getName() . '</strong>', 'default', $form));
+$pageRow->addColumn(6,
+    new \Ease\TWB\Panel(_('Příkaz').' <strong>'.$contact->getName().'</strong>',
+    'default', $form));
 $pageRow->addColumn(4, $tools);
 $oPage->container->addItem($pageRow);
 

@@ -1,4 +1,5 @@
 <?php
+
 namespace Icinga\Editor\UI;
 
 /**
@@ -18,52 +19,54 @@ class ConfirmationDialog extends \Ease\Html\Div
      * @param mixed  $content
      * @param array  $properties
      */
-    function __construct($name = null, $url, $title, $content = null, $properties = null)
+    function __construct($name = null, $url, $title, $content = null,
+                         $properties = null)
     {
-        if (isset($properties['class'])) {
-            $properties['class'] .= ' modal fade';
-        } else {
-            $properties['class'] = 'modal fade';
-        }
-        parent::__construct($name, null, $properties);
+        parent::__construct(null, null, $properties);
 
-        $modalDialog = $this->addItem(new \Ease\Html\Div( null, array('class' => 'modal-dialog')));
-        $modalContent = $modalDialog->addItem(new \Ease\Html\Div( null, array('class' => 'modal-content')));
+        $modalDialog  = $this->addItem(new \Ease\Html\Div(null,
+            ['class' => 'modal-dialog']));
+        $modalContent = $modalDialog->addItem(new \Ease\Html\Div(null,
+            ['class' => 'modal-content']));
 
 
-        $modalContent->addItem(new \Ease\Html\Div( array(
-          new \Ease\Html\ButtonTag('<span aria-hidden="true">&times;</span>', array('class' => 'close', 'data-dismiss' => 'modal', 'aria-label' => _('Zavřít'))),
-          new \Ease\Html\H4Tag($title, array('class' => 'modal-title'))
-            ), array('class' => 'modal-header')));
-        $modalContent->addItem(new \Ease\Html\Div( $content, array('class' => 'modal-body')));
-        $modalContent->addItem(new \Ease\Html\Div( array(
-          new \Ease\Html\ButtonTag(_('Ne'), array('class' => "btn btn-default", 'data-dismiss' => "modal")),
-          new \Ease\TWB\LinkButton($url, _('Ano'), 'danger'),
-            ), array('class' => 'modal-footer')));
+        $modalContent->addItem(new \Ease\Html\Div([
+            new \Ease\Html\ButtonTag('<span aria-hidden="true">&times;</span>',
+                ['class' => 'close', 'data-dismiss' => 'modal', 'aria-label' => _('Zavřít')]),
+            new \Ease\Html\H4Tag($title, ['class' => 'modal-title'])
+            ], ['class' => 'modal-header']));
+        $modalContent->addItem(new \Ease\Html\Div($content,
+            ['class' => 'modal-body']));
+        $modalContent->addItem(new \Ease\Html\Div([
+            new \Ease\Html\ButtonTag(_('Ne'),
+                ['class' => "btn btn-default", 'data-dismiss' => "modal"]),
+            new \Ease\TWB\LinkButton($url, _('Ano'), 'danger'),
+            ], ['class' => 'modal-footer']));
+        $this->setTagID($name);
+        $this->addTagClass('modal fade');
     }
 
     function finalize()
     {
         $this->addJavaScript("
-$('#" . $this->getTagID() . "').on('show', function() {
+$('#".$this->getTagID()."').on('show', function() {
     var id = $(this).data('id'),
         removeBtn = $(this).find('.danger');
 })
 
-$('#trigger" . $this->getTagID() . "').on('click', function(e) {
+$('#trigger".$this->getTagID()."').on('click', function(e) {
     var id = $(this).data('id');
-    $('#" . $this->getTagID() . "').data('id', id).modal('show');
+    $('#".$this->getTagID()."').data('id', id).modal('show');
     e.preventDefault();
 });
 
-$('#" . $this->getTagID() . "btnYes').click(function() {
+$('#".$this->getTagID()."btnYes').click(function() {
     // handle deletion here
-  	var id = $('#" . $this->getTagID() . "').data('id');
+  	var id = $('#".$this->getTagID()."').data('id');
   	//$('[data-id='+id+']').remove();
-  	$('#" . $this->getTagID() . "').modal('hide');
+  	$('#".$this->getTagID()."').modal('hide');
 });
 
             ", null, true);
     }
-
 }
