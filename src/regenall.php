@@ -132,7 +132,7 @@ if ($testing) {
 
             if (strstr($line, 'has no services associated with it!')) {
                 preg_match("/\'(.*)\'/", $line, $keywords);
-                $host = & $generator->IEClasses['host'];
+                $host = & $generator->Classes['host'];
                 $host->setmyKeyColumn($host->nameColumn);
                 $host->loadFromSQL($keywords[1]);
                 $host->resetObjectIdentity();

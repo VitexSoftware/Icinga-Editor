@@ -15,7 +15,7 @@ $class = $oPage->getRequestValue('class');
 if ($oPage->isPosted() && $class) {
     $data = $_POST;
     $importer = new Engine\Importer();
-    $recorder = $importer->IEClasses[$class];
+    $recorder = $importer->Classes[$class];
     unset($data[$recorder->myKeyColumn]);
     unset($data[$recorder->userColumn]);
     $recorder->importDataRow($data);
@@ -24,7 +24,7 @@ if ($oPage->isPosted() && $class) {
     $recorder->restoreObjectIdentity();
     if ($iresult) {
         $recorder->loadFromSql($recorder->getName());
-        echo $importer->IEClasses[$class]->keyword . ': ' . $iresult . ' (#' . $recorder->getId() . ')';
+        echo $importer->Classes[$class]->keyword . ': ' . $iresult . ' (#' . $recorder->getId() . ')';
     } else {
         echo 'false';
     }

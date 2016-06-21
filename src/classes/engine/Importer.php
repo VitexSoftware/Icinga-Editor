@@ -22,7 +22,7 @@ class Importer extends Configurator
      * Pole parsovacích tříd
      * @var array
      */
-    public $IEClasses = [];
+    public $Classes = [];
 
     /**
      * Třída pro hromadné operace s konfigurací
@@ -32,14 +32,14 @@ class Importer extends Configurator
     public function __construct($params = null)
     {
         parent::__construct();
-        $this->registerClass('\Icinga\Editor\Engine\IETimeperiod');
-        $this->registerClass('\Icinga\Editor\Engine\IECommand');
-        $this->registerClass('\Icinga\Editor\Engine\IEService');
-        $this->registerClass('\Icinga\Editor\Engine\IEServicegroup');
-        $this->registerClass('\Icinga\Editor\Engine\IEContact');
-        $this->registerClass('\Icinga\Editor\Engine\IEContactgroup');
-        $this->registerClass('\Icinga\Editor\Engine\IEHost');
-        $this->registerClass('\Icinga\Editor\Engine\IEHostgroup');
+        $this->registerClass('\Icinga\Editor\Engine\Timeperiod');
+        $this->registerClass('\Icinga\Editor\Engine\Command');
+        $this->registerClass('\Icinga\Editor\Engine\Service');
+        $this->registerClass('\Icinga\Editor\Engine\Servicegroup');
+        $this->registerClass('\Icinga\Editor\Engine\Contact');
+        $this->registerClass('\Icinga\Editor\Engine\Contactgroup');
+        $this->registerClass('\Icinga\Editor\Engine\Host');
+        $this->registerClass('\Icinga\Editor\Engine\Hostgroup');
         if (is_array($params)) {
             $this->setData($params);
         }
@@ -53,7 +53,7 @@ class Importer extends Configurator
     public function registerClass($className)
     {
         $newClass                            = new $className;
-        $this->IEClasses[$newClass->keyword] = new $className;
+        $this->Classes[$newClass->keyword] = new $className;
     }
 
     /**
@@ -61,7 +61,7 @@ class Importer extends Configurator
      */
     public function dbInit()
     {
-        foreach ($this->IEClasses as $IEClass) {
+        foreach ($this->Classes as $IEClass) {
             $IEClass->dbInit();
         }
     }
@@ -117,7 +117,7 @@ class Importer extends Configurator
             $this->setDataValue('register', 1);
         }
 
-        foreach ($this->IEClasses as $IEClass) {
+        foreach ($this->Classes as $IEClass) {
             $doneCount += $IEClass->importArray($cfg, $this->getData());
         }
         if ($doneCount) {
@@ -137,7 +137,7 @@ class Importer extends Configurator
      */
     public function writeConfigs($fileName)
     {
-        foreach ($this->IEClasses as $ieClass) {
+        foreach ($this->Classes as $ieClass) {
             if ($ieClass->writeConfig($fileName)) {
                 $this->addStatusMessage($ieClass->keyword.': '._('konfigurace byla vygenerována'),
                     'success');
