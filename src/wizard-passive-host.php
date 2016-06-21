@@ -79,7 +79,7 @@ if ($hostName && $platform) {
 $oPage->addItem(new UI\PageTop(_('Průvodce založením hosta')));
 
 $oPage->container->addItem(new \Ease\TWB\Panel(_('Nový pasivně sledovaný host'),
-    'info', new IEPassiveCheckedHostForm('passive')));
+    'info', new UI\PassiveCheckedHostForm('passive')));
 
 $oPage->addItem(new UI\PageBottom());
 

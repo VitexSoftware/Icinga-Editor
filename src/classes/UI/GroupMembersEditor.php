@@ -78,6 +78,9 @@ class GroupMembersEditor extends \Ease\Container
             $addText = _('Přiřadit');
             $delText = _('Odebrat');
 
+            $saverCode = htmlentities(str_replace('\\', '-',
+                    get_class($dataSource)));
+
             if (count($membersAviableArray)) {
                 foreach ($membersAviableArray as $memberID => $memberName) {
                     $reftable = $dataSource->keywordsInfo[$fieldName]['refdata']['table'];
@@ -90,10 +93,10 @@ class GroupMembersEditor extends \Ease\Container
                         new \Ease\Html\ATag(null,
                             \Ease\TWB\Part::GlyphIcon('plus-sign').' '.$addText,
                             [
-                            'onClick' => "addGroupMember('".get_class($dataSource)."','".$dataSource->getId()."','".$fieldName."','".$memberName[$nameColumn]."','".$memberID."')"
+                            'onClick' => "addGroupMember('".$saverCode."','".$dataSource->getId()."','".$fieldName."','".$memberName[$nameColumn]."','".$memberID."')"
                             , 'class' => 'handle', 'data-addtext' => $addText, 'data-deltext' => $delText])
                         ],
-                        ['id' => get_class($dataSource).'_'.$fieldName.'_'.$memberID,
+                        ['id' => $saverCode.'_'.$fieldName.'_'.$memberID,
                         'style' => 'margin: 1px;']));
                 }
             }
@@ -111,10 +114,10 @@ class GroupMembersEditor extends \Ease\Container
                         new \Ease\Html\ATag(null,
                             \Ease\TWB\Part::GlyphIcon('remove').' '._('Odebrat'),
                             [
-                            'onClick' => "delGroupMember('".get_class($dataSource)."','".$dataSource->getId()."','".$fieldName."','".$memberName."','".$memberID."')"
+                            'onClick' => "delGroupMember('".$saverCode."','".$dataSource->getId()."','".$fieldName."','".$memberName."','".$memberID."')"
                             , 'class' => 'handle', 'data-addtext' => $addText, 'data-deltext' => $delText])
                         ],
-                        ['id' => get_class($dataSource).'_'.$fieldName.'_'.$memberID,
+                        ['id' => $saverCode.'_'.$fieldName.'_'.$memberID,
                         'style' => 'margin: 1px;'])
                     );
                 }

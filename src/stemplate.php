@@ -22,7 +22,9 @@ switch ($oPage->getRequestValue('action')) {
         $stemplate->insertToSQL();
         $stemplate->setDataValue($stemplate->nameColumn,
             _('Nová předloha').' #'.$stemplate->getId());
-        $stemplate->updateToSQL();
+        if ($oPage->isPosted()) {
+            $stemplate->updateToSQL();
+        }
 
         break;
     case 'copyhost':

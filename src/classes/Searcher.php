@@ -41,14 +41,14 @@ class Searcher extends engine\Configurator
         $this->column = $column;
         parent::__construct();
 
-        $this->registerClass('Icinga\Editor\Engine\IEHost');
-        $this->registerClass('Icinga\Editor\Engine\IEHostgroup');
-        $this->registerClass('Icinga\Editor\Engine\IECommand');
-        $this->registerClass('Icinga\Editor\Engine\IEService');
-        $this->registerClass('Icinga\Editor\Engine\IEServicegroup');
-        $this->registerClass('Icinga\Editor\Engine\IEContact');
-        $this->registerClass('Icinga\Editor\Engine\IEContactgroup');
-        $this->registerClass('Icinga\Editor\Engine\IETimeperiod');
+        $this->registerClass('Icinga\Editor\Engine\Host');
+        $this->registerClass('Icinga\Editor\Engine\Hostgroup');
+        $this->registerClass('Icinga\Editor\Engine\Command');
+        $this->registerClass('Icinga\Editor\Engine\Service');
+        $this->registerClass('Icinga\Editor\Engine\Servicegroup');
+        $this->registerClass('Icinga\Editor\Engine\Contact');
+        $this->registerClass('Icinga\Editor\Engine\Contactgroup');
+        $this->registerClass('Icinga\Editor\Engine\Timeperiod');
     }
 
     public function registerClass($className)

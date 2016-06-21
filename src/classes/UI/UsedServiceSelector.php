@@ -80,9 +80,11 @@ class UsedServiceSelector extends \Ease\Container
 
             if (count($allServices)) {
                 foreach ($allServices as $serviceID => $serviceInfo) {
+
                     if (isset($parentServUsed[$serviceInfo['parent_id']])) {
                         continue;
                     }
+
                     $unchMenu = [];
 
                     if (intval($serviceInfo['parent_id'])) {

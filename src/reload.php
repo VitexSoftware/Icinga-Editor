@@ -15,7 +15,7 @@ $oPage->onlyForLogged();
 
 $oPage->addItem(new UI\PageTop(_('Icinga Editor')));
 
-IEcfg::reloadIcinga();
+Engine\Configurator::reloadIcinga();
 
 $oPage->addItem(new UI\PageBottom());
 

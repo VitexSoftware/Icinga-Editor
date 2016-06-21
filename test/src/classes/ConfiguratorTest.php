@@ -90,7 +90,7 @@ class ConfiguratorTest extends \Test\Ease\BrickTest
     /**
      * Převzetí dat.
      *
-     * @covers IEcfg::takeData
+     * @covers Vitexus/icinga_configurator::takeData
      */
     public function testTakeData()
     {
@@ -107,7 +107,7 @@ class ConfiguratorTest extends \Test\Ease\BrickTest
     }
 
     /**
-     * @covers IEcfg::doThings
+     * @covers Vitexus/icinga_configurator::doThings
      *
      * @todo   Implement testDoThings().
      */
@@ -122,7 +122,7 @@ class ConfiguratorTest extends \Test\Ease\BrickTest
     /**
      * Přěvede data do HTML.
      *
-     * @covers IEcfg::htmlizeData
+     * @covers Vitexus/icinga_configurator::htmlizeData
      */
     public function testHtmlizeData()
     {
@@ -137,7 +137,7 @@ class ConfiguratorTest extends \Test\Ease\BrickTest
     /**
      * Převede data do CSV.
      *
-     * @covers IEcfg::csvizeData
+     * @covers Vitexus/icinga_configurator::csvizeData
      */
     public function testCsvizeData()
     {
@@ -152,7 +152,7 @@ class ConfiguratorTest extends \Test\Ease\BrickTest
     /**
      * Převede řádku dat do CSV.
      *
-     * @covers IEcfg::csvizeRow
+     * @covers Vitexus/icinga_configurator::csvizeRow
      */
     public function testCsvizeRow()
     {
@@ -163,7 +163,7 @@ class ConfiguratorTest extends \Test\Ease\BrickTest
     /**
      * Převede řádku dat do HTML.
      *
-     * @covers IEcfg::htmlizeRow
+     * @covers Vitexus/icinga_configurator::htmlizeRow
      */
     public function testHtmlizeRow()
     {
@@ -187,7 +187,7 @@ class ConfiguratorTest extends \Test\Ease\BrickTest
     /**
      * Vrací ID záznamu.
      *
-     * @covers IEcfg::getId
+     * @covers Vitexus/icinga_configurator::getId
      */
     public function testGetId()
     {
@@ -199,7 +199,7 @@ class ConfiguratorTest extends \Test\Ease\BrickTest
     /**
      * Vrací jméno záznamu.
      *
-     * @covers IEcfg::getName
+     * @covers Vitexus/icinga_configurator::getName
      */
     public function testGetName()
     {
@@ -208,7 +208,7 @@ class ConfiguratorTest extends \Test\Ease\BrickTest
     }
 
     /**
-     * @covers IEcfg::delete
+     * @covers Vitexus/icinga_configurator::delete
      *
      * @todo   Implement testDelete().
      */
@@ -223,7 +223,7 @@ class ConfiguratorTest extends \Test\Ease\BrickTest
     /**
      * Vrací SELECT pro složitější SQL dotazy.
      *
-     * @covers IEcfg::getListingQuerySelect
+     * @covers Vitexus/icinga_configurator::getListingQuerySelect
      */
     public function testGetListingQuerySelect()
     {
@@ -234,7 +234,7 @@ class ConfiguratorTest extends \Test\Ease\BrickTest
     /**
      * Vrací WHERE pro složitější SQL dotazy.
      *
-     * @covers IEcfg::getListingQueryWhere
+     * @covers Vitexus/icinga_configurator::getListingQueryWhere
      */
     public function testGetListingQueryWhere()
     {
@@ -245,7 +245,7 @@ class ConfiguratorTest extends \Test\Ease\BrickTest
     /**
      * Místní nabídka operací se záznamem.
      *
-     * @covers IEcfg::operationsMenu
+     * @covers Vitexus/icinga_configurator::operationsMenu
      */
     public function testOperationsMenu()
     {
@@ -257,7 +257,7 @@ class ConfiguratorTest extends \Test\Ease\BrickTest
     /**
      * Prázdná funkce pro zpracování uploadu.
      *
-     * @covers IEcfg::handleUpload
+     * @covers Vitexus/icinga_configurator::handleUpload
      */
     public function testHandleUpload()
     {
@@ -265,7 +265,7 @@ class ConfiguratorTest extends \Test\Ease\BrickTest
     }
 
     /**
-     * @covers IEcfg::searchString
+     * @covers Vitexus/icinga_configurator::searchString
      *
      * @todo   Implement testSearchString().
      */
@@ -280,7 +280,7 @@ class ConfiguratorTest extends \Test\Ease\BrickTest
     /**
      * Odstraní z pole "Neznámé" sloupce.
      *
-     * @covers IEcfg::unsetUnknownColumns
+     * @covers Vitexus/icinga_configurator::unsetUnknownColumns
      */
     public function testUnsetUnknownColumns()
     {
@@ -292,7 +292,7 @@ class ConfiguratorTest extends \Test\Ease\BrickTest
     }
 
     /**
-     * @covers IEcfg::getDataFromSQL
+     * @covers Vitexus/icinga_configurator::getDataFromSQL
      *
      * @todo   Implement testGetDataFromSQL().
      */
@@ -305,7 +305,7 @@ class ConfiguratorTest extends \Test\Ease\BrickTest
     }
 
     /**
-     * @covers IEcfg::sqlColumnsToSelect
+     * @covers Vitexus/icinga_configurator::sqlColumnsToSelect
      */
     public function testSqlColumnsToSelect()
     {
@@ -316,7 +316,7 @@ class ConfiguratorTest extends \Test\Ease\BrickTest
     /**
      * Sql fragment dotazu specifický pro objekt.
      *
-     * @covers IEcfg::getWhere
+     * @covers Vitexus/icinga_configurator::getWhere
      */
     public function testGetWhere()
     {

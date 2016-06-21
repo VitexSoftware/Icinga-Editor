@@ -746,6 +746,9 @@ class Host extends Configurator
         $hostgroup = new Hostgroup(\Ease\Shared::user()->getUserLogin());
         $this->addMember('hostgroups', $hostgroup->getId(),
             $hostgroup->getName());
+
+        $this->setDataValue('hostgroups',
+            serialize($this->getDataValue('hostgroups')));
         return parent::insertToSQL();
     }
 }

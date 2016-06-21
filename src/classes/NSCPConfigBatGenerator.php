@@ -395,8 +395,8 @@ echo "file name=${log-path}/nsclient.log" >> $INI
         switch ($this->platform) {
             case 'windows':
                 $this->nscBatArray[] = "\n".'echo ^<h1^>'._('Konfigurace hosta').' '.$this->host->getName().'^</h1^> >> %ICIEDIT_HTML%';
-                $this->nscBatArray[] = "\n".'echo ^<br^>^<a data-role="editor" href="'.IEcfg::getBaseURL().'host.php?host_id='.$this->host->getId().'"^>'._('Konfigurace hosta').'^</a^> >> %ICIEDIT_HTML%';
-                $this->nscBatArray[] = "\n".'echo ^<br^>^<a data-role="bat" href="'.IEcfg::getBaseURL().'nscpcfggen.php?host_id='.$this->host->getId().'"^>'._('Znovu stahnout').' '.$this->host->getName().'_nscp.bat'.'^</a^> >> %ICIEDIT_HTML%';
+                $this->nscBatArray[] = "\n".'echo ^<br^>^<a data-role="editor" href="'.Vitexus/icinga_configurator::getBaseURL().'host.php?host_id='.$this->host->getId().'"^>'._('Konfigurace hosta').'^</a^> >> %ICIEDIT_HTML%';
+                $this->nscBatArray[] = "\n".'echo ^<br^>^<a data-role="bat" href="'.Vitexus/icinga_configurator::getBaseURL().'nscpcfggen.php?host_id='.$this->host->getId().'"^>'._('Znovu stahnout').' '.$this->host->getName().'_nscp.bat'.'^</a^> >> %ICIEDIT_HTML%';
                 $this->nscBatArray[] = "\n".'echo ^<br^>^<a data-role="confirm" href="'.$this->getCfgConfirmUrl().'"^>'._('Potvrzení konfigurace').'^</a^> >> %ICIEDIT_HTML%';
                 $this->nscBatArray[] = "\n".'echo ^</body^> >> %ICIEDIT_HTML%';
                 $this->nscBatArray[] = "\n".'echo ^</html^> >> %ICIEDIT_HTML%
@@ -462,7 +462,7 @@ service nscp start
 
     function getCfgConfirmUrl()
     {
-        return IEcfg::getBaseURL().'cfgconfirm.php?hash='.$this->host->getConfigHash().'&host_id='.$this->host->getId();
+        return Vitexus/icinga_configurator::getBaseURL().'cfgconfirm.php?hash='.$this->host->getConfigHash().'&host_id='.$this->host->getId();
     }
 
     /**
@@ -482,13 +482,13 @@ service nscp start
             foreach ($this->scriptsToDeploy as $script_name => $script_id) {
                 switch ($this->platform) {
                     case 'windows':
-                        $this->nscBatArray[] = "\n".'echo ^<a data-role="script" href="'.IEcfg::getBaseURL().'scriptget.php?script_id='.$script_id.'"^>'.$script_name.'^</a^>^<br^> >> %ICIEDIT_HTML%
+                        $this->nscBatArray[] = "\n".'echo ^<a data-role="script" href="'.Vitexus/icinga_configurator::getBaseURL().'scriptget.php?script_id='.$script_id.'"^>'.$script_name.'^</a^>^<br^> >> %ICIEDIT_HTML%
 ';
                         break;
                     case 'linux':
                         $this->nscBatArray[] = "\n".'
 # '.$script_name.'
-curl "'.IEcfg::getBaseURL().'scriptget.php?script_id='.$script_id.'"
+curl "'.Vitexus/icinga_configurator::getBaseURL().'scriptget.php?script_id='.$script_id.'"
 ';
                         break;
                     default:

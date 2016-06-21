@@ -20,17 +20,20 @@ $host = new Engine\Host($hostId);
 
 switch ($oPage->getRequestValue('action')) {
     case 'applystemplate':
-        $stemplate = new Stemplate($oPage->getRequestValue('stemplate_id',
-                'int'));
+        $stemplate = new Stemplate($oPage->getRequestValue('stemplate_id', 'int'));
         $services  = $stemplate->getDataValue('services');
         if (count($services)) {
-            $service = new Engine\Service;
+            $service = new Engine\Service();
             foreach ($services as $service_id => $service_name) {
-                $service->loadFromSQL($service_id);
-                $service->addMember('host_name', $host->getId(),
-                    $host->getName());
-                $service->saveToSQL();
-                $service->dataReset();
+                if ($service->loadFromSQL($service_id)) {
+                    $service->addMember('host_name', $host->getId(),
+                        $host->getName());
+                    $service->saveToSQL();
+                    $service->dataReset();
+                } else {
+                    $service->addStatusMessage(_(sprintf(_('Služba uvedená v předloze (#%s: %s) nebyla v databázi nalezena'),
+                                $service_id, $service_name)));
+                }
             }
         }
         $contacts = $stemplate->getDataValue('contacts');

@@ -15,19 +15,9 @@ if (!$oUser->GetUserID()) {
     die(_('nejprve se prosím přihlaš'));
 }
 
-$saverClass = $oPage->GetRequestValue('SaverClass');
+$saverClass = str_replace('-', '\\', $oPage->GetRequestValue('SaverClass'));
 if ($saverClass == 'undefined') {
     exit;
-}
-if (!$saverClass) {
-    $saverClass = 'LBSaver';
-}
-
-if (file_exists('classes/'.$saverClass.'.php')) {
-    require_once 'classes/'.$saverClass.'.php';
-} else {
-    $oUser->addStatusMessage(_('Načítání souboru: classes/'.$saverClass.'.php'),
-        'warning');
 }
 
 $field = $oPage->getRequestValue('Field');
