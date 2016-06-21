@@ -19,7 +19,7 @@ $platform     = $oPage->getRequestValue('platform');
 $host_group   = $oPage->getRequestValue('host_group', 'int');
 $check_method = $oPage->getRequestValue('check_method', 'int');
 
-$host = new Engine\IEHost($host_name);
+$host = new Engine\Host($host_name);
 
 if ($host->getId()) {
     $host->addStatusMessage(_('Host tohoto jména již existuje'), 'warning');

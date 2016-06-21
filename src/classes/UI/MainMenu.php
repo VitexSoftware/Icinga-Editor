@@ -53,7 +53,7 @@ class MainMenu extends \Ease\Html\Div
             null, true);
 
         $user            = \Ease\Shared::user();
-        $host            = new \Icinga\Editor\Engine\IEHost();
+        $host            = new \Icinga\Editor\Engine\Host();
         $hosts           = $host->getListing(null, null,
             ['icon_image', 'platform']);
         $hostsNotInGroup = [];
@@ -67,7 +67,7 @@ class MainMenu extends \Ease\Html\Div
         ];
         $topItems['wizard-active-host.php'] = \Ease\TWB\Part::GlyphIcon('star').' '._('Nový aktivní Host');
 
-        $hostgroup                 = new \Icinga\Editor\Engine\IEHostgroup();
+        $hostgroup                 = new \Icinga\Editor\Engine\Hostgroup();
         $topItems['hostgroup.php'] = \Ease\TWB\Part::GlyphIcon('plus').' '._('Nová skupina hostů'); /* ,
           'exthostinfo.php' => _('Rozšířené informace hostů'),
           'hostdependency.php' => _('Závislosti hostů'),
@@ -196,7 +196,7 @@ class MainMenu extends \Ease\Html\Div
                     ]
                 );
             } else {
-                $service  = new \Icinga\Editor\Engine\IEService();
+                $service  = new \Icinga\Editor\Engine\Service();
                 $services = $service->getListing(null, null,
                     ['icon_image', 'platform']);
 
@@ -210,7 +210,7 @@ class MainMenu extends \Ease\Html\Div
                 }
             }
 
-            $contact  = new \Icinga\Editor\Engine\IEContact();
+            $contact  = new \Icinga\Editor\Engine\Contact();
             $contacts = $contact->getListing(null, null, ['parent_id']);
             foreach ($contacts as $contactID => $contactInfo) { //Vyfiltrovat pouze primární kontakty
                 if ($contactInfo['parent_id']) {

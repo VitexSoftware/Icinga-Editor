@@ -18,6 +18,6 @@ if ($class) {
     if (file_exists('classes/' . $class . '.php')) {
         require_once 'classes/' . $class . '.php';
     }
-    $commands = new IEDataSource(new $class);
+    $commands = new DataSource(new $class);
     $commands->output();
 }

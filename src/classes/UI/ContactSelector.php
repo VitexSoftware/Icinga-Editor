@@ -31,7 +31,7 @@ class ContactSelector extends \Ease\Container
             $initialContent->addItem(_('Nejprve je potřeba uložit záznam'));
         } else {
             $serviceName = $holder->getName();
-            $contact     = new \Icinga\Editor\Engine\IEContact();
+            $contact     = new \Icinga\Editor\Engine\Contact();
             $allContacts = $contact->getListing(null, true,
                 ['alias', 'parent_id']);
             $contacts    = $holder->getDataValue('contacts');

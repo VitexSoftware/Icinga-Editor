@@ -17,7 +17,7 @@ $oPage->onlyForLogged();
 $oPage->addItem(new UI\PageTop(_('Přehled časových period')));
 $oPage->addPageColumns();
 
-$Timeperiod = new Engine\IETimeperiod();
+$Timeperiod = new Engine\Timeperiod();
 $Periods    = $Timeperiod->getListing();
 
 if ($Periods) {

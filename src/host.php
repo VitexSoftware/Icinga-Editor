@@ -16,15 +16,15 @@ $oPage->onlyForLogged();
 
 $hostId = $oPage->getRequestValue('host_id', 'int');
 
-$host = new Engine\IEHost($hostId);
+$host = new Engine\Host($hostId);
 
 switch ($oPage->getRequestValue('action')) {
     case 'applystemplate':
-        $stemplate = new IEStemplate($oPage->getRequestValue('stemplate_id',
+        $stemplate = new Stemplate($oPage->getRequestValue('stemplate_id',
                 'int'));
         $services  = $stemplate->getDataValue('services');
         if (count($services)) {
-            $service = new Engine\IEService;
+            $service = new Engine\Service;
             foreach ($services as $service_id => $service_name) {
                 $service->loadFromSQL($service_id);
                 $service->addMember('host_name', $host->getId(),

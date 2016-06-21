@@ -15,7 +15,7 @@ $host_id = $oPage->getRequestValue('host_id', 'int');
 $hash = $oPage->getRequestValue('hash');
 
 if ($host_id && $hash) {
-    $host = new Engine\IEHost($host_id);
+    $host = new Engine\Host($host_id);
     $host->setDataValue('config_hash', $hash);
     if ($host->saveToSQL()) {
         echo sprintf(_('Konfigurace %s potvrzena'), $host->getName());

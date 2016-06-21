@@ -1,4 +1,5 @@
 <?php
+
 namespace Icinga\Editor;
 
 /**
@@ -9,7 +10,7 @@ namespace Icinga\Editor;
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2015 Vitex@hippy.cz (G)
  */
-class IEDbFixer extends \Ease\Html\UlTag
+class DbFixer extends \Ease\Html\UlTag
 {
 
     public function __construct()
@@ -18,7 +19,25 @@ class IEDbFixer extends \Ease\Html\UlTag
         $this->fixContactIDs();
         $this->fixHostNameIDs();
         $this->fixHostHostgroupID();
+        $this->cleanUnusedServices();
         $this->setTagClass('list-group');
+    }
+
+    /**
+     * Delete unused child services
+     */
+    public function cleanUnusedServices()
+    {
+        $which    = 'host_name = \'a:0:{}\' AND parent_id IS NOT NULL';
+        $services = \Ease\Shared::db()->queryToArray('SELECT service_description FROM service WHERE '.$which);
+        if (count($services)) {
+            \Ease\Shared::db()->exeQuery('DELETE FROM service WHERE '.$which);
+            foreach ($services as $service) {
+                $servicesDeleted[] = current($service);
+            }
+            $this->addItemSmart(_('Smazané nepoužívané služby').': '.implode(' , ',
+                    $servicesDeleted), ['class' => 'list-group-item']);
+        }
     }
 
     public function fixHostNameIDs()
@@ -26,9 +45,9 @@ class IEDbFixer extends \Ease\Html\UlTag
         $hostsOK  = [];
         $hostsErr = [];
 
-        $host = new Engine\IEHost;
+        $host = new Engine\Host();
 
-        $service  = new Engine\IEService;
+        $service  = new Engine\Service();
         $services = $service->getColumnsFromSQL([$service->myKeyColumn, $service->nameColumn,
             'host_name'], null, null, $service->myKeyColumn);
         foreach ($services as $serviceId => $serviceInfo) {
@@ -62,7 +81,7 @@ class IEDbFixer extends \Ease\Html\UlTag
             }
         }
 
-        $hostgroup  = new Engine\IEHostgroup;
+        $hostgroup  = new Engine\Hostgroup();
         $hostgroups = $hostgroup->getListing();
         foreach ($hostgroups as $hostgroupId => $hostgroupInfo) {
             $hostgroup->loadFromSQL($hostgroupId);
@@ -94,10 +113,10 @@ class IEDbFixer extends \Ease\Html\UlTag
             .'parents'.' IS NOT NULL && parents !=\'a:0:{}\'',
             $host->myKeyColumn);
         foreach ($childsAssigned as $chid_id => $child_info) {
-            $child   = new Engine\IEHost($chid_id);
+            $child   = new Engine\Host($chid_id);
             $parents = $child->getDataValue('parents');
             foreach ($parents as $parent_id => $parent_name) {
-                $parent = new Engine\IEHost($parent_name);
+                $parent = new Engine\Host($parent_name);
                 if ($parent->getId()) {
                     //Ok Host toho jména existuje
                     if ($parent->getId() != $parent_id) { //Ale nesedí ID
@@ -126,8 +145,8 @@ class IEDbFixer extends \Ease\Html\UlTag
         $contactsOK  = [];
         $contactsErr = [];
 
-        $contact  = new Engine\IEContact;
-        $service  = new Engine\IEService;
+        $contact  = new Engine\Contact;
+        $service  = new Engine\Service;
         $services = $service->getColumnsFromSQL([$service->myKeyColumn]);
         foreach ($services as $serviceId => $serviceInfo) {
             $serviceId    = intval(current($serviceInfo));
@@ -160,7 +179,7 @@ class IEDbFixer extends \Ease\Html\UlTag
             }
         }
 
-        $host  = new Engine\IEHost;
+        $host  = new Engine\Host;
         $hosts = $host->getColumnsFromSQL([$host->myKeyColumn]);
         foreach ($hosts as $hostInfo) {
             $hostId       = intval(current($hostInfo));
@@ -198,8 +217,8 @@ class IEDbFixer extends \Ease\Html\UlTag
     {
         $hostgroupsOK  = [];
         $hostgroupsErr = [];
-        $host          = new Engine\IEHost;
-        $hostgroup     = new Engine\IEHostgroup;
+        $host          = new Engine\Host;
+        $hostgroup     = new Engine\Hostgroup;
         $hosts         = $host->getColumnsFromSQL([$host->myKeyColumn]);
         foreach ($hosts as $hostInfo) {
             $hostId         = intval(current($hostInfo));

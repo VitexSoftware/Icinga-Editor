@@ -6,7 +6,7 @@ namespace Icinga\Editor;
  *
  * @author vitex
  */
-class IEPreferences extends \Ease\Brick
+class Preferences extends \Ease\Brick
 {
     public $myTable     = 'preferences';
     public $myKeyColumn = 'key';

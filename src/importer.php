@@ -14,7 +14,7 @@ require_once 'includes/IEInit.php';
 $class = $oPage->getRequestValue('class');
 if ($oPage->isPosted() && $class) {
     $data = $_POST;
-    $importer = new Engine\IEImporter();
+    $importer = new Engine\Importer();
     $recorder = $importer->IEClasses[$class];
     unset($data[$recorder->myKeyColumn]);
     unset($data[$recorder->userColumn]);

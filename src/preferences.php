@@ -13,7 +13,7 @@ require_once 'includes/IEInit.php';
 
 $oPage->onlyForLogged();
 
-$prefs = new IEPreferences();
+$prefs = new Preferences();
 
 
 if ($oPage->isPosted()) {

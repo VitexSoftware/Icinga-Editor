@@ -18,7 +18,7 @@ $query = $oPage->getRequestValue('search', 'string');
 
 $found = [];
 
-$searcher = new IESearcher($oPage->getRequestValue('table', 'string'),
+$searcher = new Searcher($oPage->getRequestValue('table', 'string'),
     $oPage->getRequestValue('column', 'string'));
 
 if (strlen($query) < 2) {

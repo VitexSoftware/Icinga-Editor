@@ -17,7 +17,7 @@ $usergroup_name = $oPage->getRequestValue('usergroup_name');
 $usergroup_id = $oPage->getRequestValue('usergroup_id', 'int');
 $member_id = $oPage->getRequestValue('member_id', 'int');
 
-$userGroup = new Engine\IEUserGroup($usergroup_id);
+$userGroup = new Engine\UserGroup($usergroup_id);
 
 switch ($oPage->getRequestValue('action')) {
     case 'addmember':

@@ -15,7 +15,7 @@ $oPage->onlyForLogged();
 
 $oPage->addItem(new UI\PageTop(_('Přehled předloh sledovaných služeb')));
 
-$oPage->addItem(new \Ease\TWB\Container(new UI\DataGrid(_('Předlohy sledovaných služeb'), new IEStemplate)));
+$oPage->addItem(new \Ease\TWB\Container(new UI\DataGrid(_('Předlohy sledovaných služeb'), new Stemplate)));
 
 $oPage->addItem(new UI\PageBottom());
 

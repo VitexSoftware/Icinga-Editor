@@ -17,7 +17,7 @@ $oPage->onlyForLogged();
 $oPage->addItem(new UI\PageTop(_('Přehled služeb')));
 
 $oPage->addItem(new \Ease\TWB\Container(new UI\DataGrid(_('Služby'),
-    new engine\IEService)));
+    new engine\Service)));
 
 $oPage->addItem(new UI\PageBottom());
 

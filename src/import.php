@@ -25,7 +25,7 @@ if ($oPage->isPosted()) {
     if ($public) {
         $params['generate'] = true;
     }
-    $importer = new Engine\IEImporter($params);
+    $importer = new Engine\Importer($params);
 
     $cfgText = $oPage->getRequestValue('cfgtext');
     if ($cfgText) {

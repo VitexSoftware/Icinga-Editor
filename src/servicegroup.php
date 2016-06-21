@@ -14,7 +14,7 @@ require_once 'includes/IEInit.php';
 
 $oPage->onlyForLogged();
 
-$serviceGroup = new Engine\IEServicegroup($oPage->getRequestValue('servicegroup_id',
+$serviceGroup = new Engine\Servicegroup($oPage->getRequestValue('servicegroup_id',
         'int'));
 
 if ($oPage->isPosted()) {

@@ -47,7 +47,7 @@ if ($oPage->isPosted()) {
         $oPage->addStatusMessage(_('Stavy senzorů byly rozhasheny'), 'success');
     }
     if ($oPage->getRequestValue('sync')) {
-        $host     = new Engine\IEHost;
+        $host     = new Engine\Host;
         $allHosts = $host->getListing();
         foreach ($allHosts as $hostId => $hostInfo) {
             $host->dataReset();

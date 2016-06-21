@@ -16,7 +16,7 @@ $oPage->addItem(new UI\PageTop(_('Oprava databaze')));
 $oPage->onlyForLogged();
 
 $oPage->addItem(new \Ease\TWB\Container(new \Ease\TWB\Panel(_('Oprava databáze'),
-    'warning', new IEDbFixer())));
+    'warning', new DbFixer())));
 
 $oPage->addItem(new UI\PageBottom());
 

@@ -17,7 +17,7 @@ $query = $oPage->getRequestValue('q', 'string');
 
 $found = [];
 
-$searcher = new IESearcher;
+$searcher = new Searcher;
 
 header('ContentType: text/json');
 

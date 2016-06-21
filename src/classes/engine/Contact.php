@@ -10,7 +10,7 @@
 
 namespace Icinga\Editor\Engine;
 
-class IEContact extends IEcfg
+class Contact extends Configurator
 {
     public $myTable = 'contact';
 

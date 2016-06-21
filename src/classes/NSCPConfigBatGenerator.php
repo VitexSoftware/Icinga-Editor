@@ -6,7 +6,7 @@ namespace Icinga\Editor;
  *
  * @author vitex
  */
-class IENSCPConfigGenerator extends EaseAtom
+class NSCPConfigBatGenerator extends EaseAtom
 {
     /**
      * Objekt hostu
@@ -268,7 +268,7 @@ echo "file name=${log-path}/nsclient.log" >> $INI
 
     function cfgServices()
     {
-        $service = new Engine\IEService();
+        $service = new Engine\Service();
 
         $servicesAssigned = $service->dblink->queryToArray('SELECT '.$service->myKeyColumn.','.$service->nameColumn.',`use` FROM '.$service->myTable.' WHERE host_name LIKE \'%"'.$this->host->getName().'"%\'',
             $service->myKeyColumn);
@@ -296,7 +296,7 @@ echo "file name=${log-path}/nsclient.log" >> $INI
             if (isset($service['use'])) {
                 $remote = $service['check_command-remote'];
                 if (!isset($commandsCache[$remote])) {
-                    $command   = new Engine\IECommand($remote);
+                    $command   = new Engine\Command($remote);
                     $script_id = $command->getDataValue('script_id');
                     if ($script_id) {
                         $this->scriptsToDeploy[$command->getName()] = $script_id;
@@ -309,7 +309,7 @@ echo "file name=${log-path}/nsclient.log" >> $INI
                 $use = $service['use'];
 
                 if (!isset($usedCache[$use])) {
-                    $used             = new Engine\IEService;
+                    $used             = new Engine\Service();
                     $used->nameColumn = 'name';
 
                     if ($used->loadFromSQL($use)) {

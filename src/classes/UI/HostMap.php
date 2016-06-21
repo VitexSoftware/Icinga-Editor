@@ -49,7 +49,7 @@ class HostMap extends \Image_GraphViz
      */
     function fillUp()
     {
-        $host  = new \Icinga\Editor\Engine\IEHost();
+        $host  = new \Icinga\Editor\Engine\Host();
         $hosts = $host->getListing(null, false,
             ['alias', 'address', 'parents', 'notifications_enabled', 'active_checks_enabled',
             'passive_checks_enabled', $host->myCreateColumn, $host->myLastModifiedColumn]);

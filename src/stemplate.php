@@ -14,7 +14,7 @@ require_once 'includes/IEInit.php';
 
 $oPage->onlyForLogged();
 
-$stemplate = new IEStemplate($oPage->getRequestValue('stemplate_id', 'int'));
+$stemplate = new Stemplate($oPage->getRequestValue('stemplate_id', 'int'));
 
 switch ($oPage->getRequestValue('action')) {
     case 'new':
@@ -26,7 +26,7 @@ switch ($oPage->getRequestValue('action')) {
 
         break;
     case 'copyhost':
-        $host = new Engine\IEHost($oPage->getRequestValue('host_id', 'int'));
+        $host = new Engine\Host($oPage->getRequestValue('host_id', 'int'));
 
         $stemplate->setDataValue($stemplate->nameColumn, $host->getName());
         $stemplate->setDataValue('services', $host->getServices());

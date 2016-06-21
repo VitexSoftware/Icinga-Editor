@@ -12,6 +12,7 @@ namespace Icinga\Editor\UI;
  */
 class UsedServiceSelector extends \Ease\Container
 {
+
     /**
      * Editor k přidávání členů skupiny
      *
@@ -36,7 +37,7 @@ class UsedServiceSelector extends \Ease\Container
             $initialContent->addItem(_('Nejprve je potřeba uložit záznam'));
         } else {
             $hostName       = $host->getName();
-            $service        = new \Icinga\Editor\Engine\IEService();
+            $service        = new \Icinga\Editor\Engine\Service();
             $parentServUsed = [];
             $host_active    = (boolean) $host->getCfgValue('active_checks_enabled');
             $host_passive   = (boolean) $host->getCfgValue('passive_checks_enabled');
@@ -100,7 +101,8 @@ class UsedServiceSelector extends \Ease\Container
 
                     $initialContent->addItem(
                         new \Ease\TWB\ButtonDropdown($serviceName, 'inverse',
-                        'xs', $unchMenu));
+                        'xs', $unchMenu,
+                        ['title' => $serviceInfo['service_description']]));
                 }
             }
 
@@ -126,7 +128,7 @@ class UsedServiceSelector extends \Ease\Container
                             \Ease\TWB\Part::GlyphIcon('remove').' '._('Přestat sledovat'))
                         , new \Ease\Html\ATag('servicetweak.php?service_id='.$serviceID.'&amp;host_id='.$host->getId(),
                             \Ease\TWB\Part::GlyphIcon('wrench').' '._('Editace'))
-                        ]
+                        ], ['title' => $serviceInfo['service_description']]
                         )
                     );
                 }
@@ -153,7 +155,7 @@ class UsedServiceSelector extends \Ease\Container
      */
     public static function saveMembers($request)
     {
-        $service = new \Icinga\Editor\Engine\IEService();
+        $service = new \Icinga\Editor\Engine\Service();
         if (isset($request[$service->myKeyColumn])) {
             if ($service->loadFromSQL((int) $request[$service->myKeyColumn])) {
                 if (isset($request['addservice']) || isset($request['delservice'])) {

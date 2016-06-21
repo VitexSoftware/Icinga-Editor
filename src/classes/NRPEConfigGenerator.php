@@ -6,7 +6,7 @@ namespace Icinga\Editor;
  *
  * @author vitex
  */
-class IENRPEConfigGenerator extends EaseAtom
+class NRPEConfigGenerator extends EaseAtom
 {
     /**
      * Objekt hostu
@@ -82,7 +82,7 @@ class IENRPEConfigGenerator extends EaseAtom
      */
     function cfgServices()
     {
-        $service = new Engine\IEService();
+        $service = new Engine\Service();
 
         $servicesAssigned = $service->dblink->queryToArray('SELECT '.$service->myKeyColumn.','.$service->nameColumn.',`use` FROM '.$service->myTable.' WHERE host_name LIKE \'%"'.$this->host->getName().'"%\'',
             $service->myKeyColumn);
@@ -110,7 +110,7 @@ class IENRPEConfigGenerator extends EaseAtom
             if (isset($service['use'])) {
                 $remote = $service['check_command-remote'];
                 if (!isset($commandsCache[$remote])) {
-                    $command                = new Engine\IECommand($remote);
+                    $command                = new Engine\Command($remote);
                     $commandsCache[$remote] = $command->getData();
                 }
             }
@@ -119,7 +119,7 @@ class IENRPEConfigGenerator extends EaseAtom
                 $use = $service['use'];
 
                 if (!isset($usedCache[$use])) {
-                    $used             = new Engine\IEService;
+                    $used             = new Engine\Service;
                     $used->nameColumn = 'name';
 
                     if ($used->loadFromSQL($use)) {

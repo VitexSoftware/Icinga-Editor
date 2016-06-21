@@ -11,13 +11,8 @@
             <file>file:/home/vitex/Projects/VitexSoftware/iciedit/src/includes/Configure.php</file>
         </group>
         <group>
-            <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/src/classes/UI/WebPage.php</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/src/classes/UI/CfgEditor.php</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/src/classes/UI/MainMenu.php</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/src/service.php</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/src/classes/UI/BootstrapMenu.php</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/src/classes/UI/PageTop.php</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/src/hostgroups.php</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/src/classes/engine/IEService.php</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/src/modules/CheckDriveSize.inc.php</file>
         </group>
     </open-files>
 </project-private>

@@ -14,7 +14,7 @@ require_once 'includes/IEInit.php';
 $oPage->onlyForLogged();
 
 $hostId = $oPage->getRequestValue('host_id', 'int');
-$host = new Engine\IEHost($hostId);
+$host = new Engine\Host($hostId);
 
-$generator = new IENSCPConfigGenerator($host);
+$generator = new NSCPConfigBatGenerator($host);
 $generator->getCfg();

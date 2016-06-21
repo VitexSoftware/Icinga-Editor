@@ -79,7 +79,7 @@ function gethostbynamel6($host, $tryA = false)
         return $ipSix;
     }
 }
-$host        = new Engine\IEHost();
+$host        = new Engine\Host();
 $host->owner = &$oUser;
 
 if ($hostName || $address || $addressSix) {
@@ -134,7 +134,7 @@ if ($hostName || $address || $addressSix) {
     );
 
     if ($host_group) {
-        $hostgroup = new Engine\IEHostgroup($host_group);
+        $hostgroup = new Engine\Hostgroup($host_group);
         $host->addMember('hostgroups', $hostgroup->getId(),
             $hostgroup->getName());
         $hostgroup->addMember('members', $host->getId(), $host->getName());
@@ -144,13 +144,13 @@ if ($hostName || $address || $addressSix) {
 
     if ($host->saveToSQL()) {
 
-        $service = new Engine\IEService('PING');
+        $service = new Engine\Service('PING');
         $service->addMember('host_name', $host->getId(), $host->getName());
         $service->saveToSQL();
 
         $host->autoPopulateServices();
 
-        $hostGroup = new Engine\IEHostgroup;
+        $hostGroup = new Engine\Hostgroup;
         if ($hostGroup->loadDefault()) {
             $hostGroup->setDataValue($hostGroup->nameColumn,
                 \Ease\Shared::user()->getUserLogin());
@@ -166,7 +166,7 @@ if ($hostName || $address || $addressSix) {
     }
 }
 
-$contact    = new Engine\IEContact();
+$contact    = new Engine\Contact();
 $pocContact = $contact->getMyRecordsCount();
 if (!$pocContact) {
     $warning = $oPage->columnIII->addItem(new \Ease\Html\DivTag('Contact',

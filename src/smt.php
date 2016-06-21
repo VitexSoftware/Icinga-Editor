@@ -12,7 +12,7 @@ namespace Icinga\Editor;
  */
 require_once 'includes/IEInit.php';
 
-$service = new Engine\IEService($oPage->getRequestValue('service_id', 'int'));
+$service = new Engine\Service($oPage->getRequestValue('service_id', 'int'));
 
 
 $oPage->addItem(new UI\PageTop(_('Migrace služby').' '.$service->getName()));

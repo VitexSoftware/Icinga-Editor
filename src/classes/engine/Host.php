@@ -15,7 +15,7 @@ namespace Icinga\Editor\Engine;
  *
  * @author vitex
  */
-class IEHost extends IEcfg
+class Host extends Configurator
 {
     public $myTable     = 'host';
     public $keyword     = 'host';
@@ -327,11 +327,11 @@ class IEHost extends IEcfg
             $this->loadFromSQL($id);
         }
 
-        $hostGroup = new Engine\IEHostgroup();
+        $hostGroup = new Hostgroup();
         $hostGroup->deleteHost($this->getName());
 
         $delAll           = true;
-        $service          = new Engine\IEService();
+        $service          = new Service();
         $servicesAssigned = $service->dblink->queryToArray('SELECT '.$service->myKeyColumn.','.$service->nameColumn.' FROM '.$service->myTable.' WHERE '.'host_name'.' LIKE \'%"'.$this->getName().'"%\'',
             $service->myKeyColumn);
         foreach ($servicesAssigned as $ServiceID => $ServiceInfo) {
@@ -348,7 +348,7 @@ class IEHost extends IEcfg
             ' LIKE \'%'.$this->getName().'%\'', $this->myKeyColumn);
 
         foreach ($childsOfMe as $chid_id => $child_info) {
-            $child = new Engine\IEHost($chid_id);
+            $child = new Host($chid_id);
 
             if ($child->delMember('parents', $this->getId(), $this->getName()) && $child->saveToSQL()) {
                 $this->addStatusMessage(sprintf(_('%s již není rodičem %s'),
@@ -429,7 +429,7 @@ class IEHost extends IEcfg
      */
     public function autoPopulateServices()
     {
-        $scanner = new \Icinga\Editor\IEPortScanner($this);
+        $scanner = new \Icinga\Editor\PortScanner($this);
 
         return $scanner->assignServices();
     }
@@ -689,7 +689,7 @@ class IEHost extends IEcfg
     function getConfigHash()
     {
         $configuration    = [];
-        $service          = new IEService;
+        $service          = new Service;
         $servicesAssigned = $service->dblink->queryToArray('SELECT `'.$service->getmyKeyColumn().'` FROM '.$service->myTable.' WHERE host_name LIKE \'%"'.$this->getName().'"%\'',
             $service->myKeyColumn);
         foreach ($servicesAssigned as $serviceAssigned) {
@@ -743,7 +743,7 @@ class IEHost extends IEcfg
         if (!is_null($data)) {
             $this->takeData($data);
         }
-        $hostgroup = new IEHostgroup(\Ease\Shared::user()->getUserLogin());
+        $hostgroup = new Hostgroup(\Ease\Shared::user()->getUserLogin());
         $this->addMember('hostgroups', $hostgroup->getId(),
             $hostgroup->getName());
         return parent::insertToSQL();

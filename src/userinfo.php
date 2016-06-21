@@ -21,12 +21,12 @@ if ($userID) {
     $oPage->onlyForAdmin();
 }
 
-$host         = new Engine\IEHost();
-$hostgroup    = new Engine\IEHostgroup();
-$contact      = new Engine\IETimeperiod();
-$command      = new Engine\IECommand();
-$service      = new Engine\IEService();
-$serviceGroup = new Engine\IEServicegroup();
+$host         = new Engine\Host();
+$hostgroup    = new Engine\Hostgroup();
+$contact      = new Engine\Timeperiod();
+$command      = new Engine\Command();
+$service      = new Engine\Service();
+$serviceGroup = new Engine\Servicegroup();
 
 
 $ownership = $oPage->getRequestValue('ownership');

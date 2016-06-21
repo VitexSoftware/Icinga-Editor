@@ -17,7 +17,7 @@ require_once 'includes/IEInit.php';
 
 $params = array('public' => true, 'generate' => true);
 
-$importer = new Engine\IEImporter($params);
+$importer = new Engine\Importer($params);
 $importer->importCfgFile('/etc/icinga/icinga.cfg');
 
 foreach ($importer->files as $cfgFile) {

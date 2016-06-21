@@ -249,7 +249,7 @@ class CfgEditor extends \Ease\Container
 
                 $selector = $fieldBlock->addItem(new \Ease\Html\Select($fieldName,
                     $value, $keywordInfo['title']));
-                
+
                 if (!$required) {
                     $selector->addItems(['NULL' => _('Výchozí')]);
                 }
@@ -325,14 +325,15 @@ class CfgEditor extends \Ease\Container
                     'WHERE '.$sqlConds.' '.
                     'ORDER BY '.$nameColumn, $IDColumn);
 
-                $selector = $fieldBlock->addItem(new EaseLabeledSelect($fieldName,
-                    $value, $keywordInfo['title']));
-                $selector->enclosedElement->setTagClass('form-control');
+                $select = new \Ease\Html\Select($fieldName, $value);
+                $fieldBlock->addItem(new \Ease\TWB\FormGroup($keywordInfo['title'],
+                    $select));
+
                 if (!$required) {
-                    $selector->addItems(['' => '']);
+                    $select->addItems(['' => '']);
                 }
                 if (count($membersAviableArray)) {
-                    $selector->addItems(array_combine($membersAviableArray,
+                    $select->addItems(array_combine($membersAviableArray,
                             $membersAviableArray));
                 }
 
@@ -351,9 +352,10 @@ class CfgEditor extends \Ease\Container
                     ['class' => 'search-input', 'title' => _('vzdálený test')]));
                 $addNewItem->setDataSource('jsoncommand.php?maxRows=10');
 
-                $fieldBlock->addItem(new EaseLabeledTextInput($fieldName.'-params',
-                    $this->objectEdited->getDataValue($fieldName.'-params'),
-                    _('Parametry'), ['style' => 'width: 100%']));
+                $fieldBlock->addItem(new \Ease\TWB\FormGroup(_('Parametry'),
+                    new \Ease\Html\InputTextTag($fieldName.'-params',
+                    $this->objectEdited->getDataValue($fieldName.'-params')
+                    , ['style' => 'width: 100%'])));
 
                 break;
             case 'USER':

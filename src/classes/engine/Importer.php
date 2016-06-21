@@ -10,7 +10,7 @@
 
 namespace Icinga\Editor\Engine;
 
-class IEImporter extends IEcfg
+class Importer extends Configurator
 {
     /**
      * Pole zpracovaných souboru
@@ -74,7 +74,7 @@ class IEImporter extends IEcfg
      */
     public function importCfgFile($cfgFile)
     {
-        return $this->importCfg(IEcfg::readRawConfigFile($cfgFile, $this));
+        return $this->importCfg(Configurator::readRawConfigFile($cfgFile, $this));
     }
 
     /**

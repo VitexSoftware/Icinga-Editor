@@ -1,27 +1,28 @@
 <?php
 
-/**
- * Test základní třídy dotazníků.
- */
-class IEcfgTest extends PHPUnit_Framework_TestCase
-{
+namespace Test\Icinga\Editor;
 
+/**
+ * Basic Configurator class test.
+ */
+class ConfiguratorTest extends \Test\Ease\BrickTest
+{
     /**
      * Data Určená k testům.
      *
      * @var array
      */
     public $testRowA = array(
-      'class' => 'deleteme',
-      'name' => 'MyName1',
-      'string' => 'STRING',
-      'bool' => '0',
-      'date' => '20.5.2015',
-      'datetime' => '5-20-2015',
-      'text' => 'a"b',
-      'int' => '11,4',
-      'array2d' => 'a:2:{i:1;s:1:"A";i:2;s:1:"B";}',
-      'array3d' => 'a:3:{i:1;s:1:"A";i:2;s:1:"B";i:3;a:2:{i:10;s:1:"X";i:11;s:1:"Y";}}',
+        'class' => 'deleteme',
+        'name' => 'MyName1',
+        'string' => 'STRING',
+        'bool' => '0',
+        'date' => '20.5.2015',
+        'datetime' => '5-20-2015',
+        'text' => 'a"b',
+        'int' => '11,4',
+        'array2d' => 'a:2:{i:1;s:1:"A";i:2;s:1:"B";}',
+        'array3d' => 'a:3:{i:1;s:1:"A";i:2;s:1:"B";i:3;a:2:{i:10;s:1:"X";i:11;s:1:"Y";}}',
     );
 
     /**
@@ -30,16 +31,16 @@ class IEcfgTest extends PHPUnit_Framework_TestCase
      * @var array
      */
     public $testRowB = array(
-      'test_id' => 23,
-      'name' => 'MyName2',
-      'string' => 'STRING',
-      'bool' => '1',
-      'date' => '20.5.2015',
-      'datetime' => '5-20-2015',
-      'text' => 'a"b',
-      'int' => '11O',
-      'array2d' => array('1' => 'A', '2' => 'B'),
-      'array3d' => array(1 => 'A', 2 => 'B', 3 => array('10' => 'X', 11 => 'Y')),
+        'test_id' => 23,
+        'name' => 'MyName2',
+        'string' => 'STRING',
+        'bool' => '1',
+        'date' => '20.5.2015',
+        'datetime' => '5-20-2015',
+        'text' => 'a"b',
+        'int' => '11O',
+        'array2d' => array('1' => 'A', '2' => 'B'),
+        'array3d' => array(1 => 'A', 2 => 'B', 3 => array('10' => 'X', 11 => 'Y')),
     );
 
     /**
@@ -53,27 +54,27 @@ class IEcfgTest extends PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->object = new Engine\IEcfg();
+        $this->object = new \Icinga\Editor\Engine\Configurator();
 
-        $this->object->myKeyColumn = 'test_id';
-        $this->object->myTable = 'test';
-        $this->object->myCreateColumn = 'DatCreate';
+        $this->object->myKeyColumn          = 'test_id';
+        $this->object->myTable              = 'test';
+        $this->object->myCreateColumn       = 'DatCreate';
         $this->object->myLastModifiedColumn = 'DatSave';
-        $this->object->nameColumn = 'name';
+        $this->object->nameColumn           = 'name';
 
         $this->object->mySqlUp();
         $this->object->useKeywords = array(
-          'name' => 'STRING',
-          'bool' => 'BOOL',
-          'date' => 'DATE',
-          'datetime' => 'DATETIME',
-          'text' => 'TEXT',
-          'int' => 'INT',
-          'array' => 'VIRTUAL',
+            'name' => 'STRING',
+            'bool' => 'BOOL',
+            'date' => 'DATE',
+            'datetime' => 'DATETIME',
+            'text' => 'TEXT',
+            'int' => 'INT',
+            'array' => 'VIRTUAL',
         );
 
         $this->object->keywordsInfo = array(
-          'name' => array('title' => _('Jméno')),
+            'name' => array('title' => _('Jméno')),
         );
     }
 
@@ -321,5 +322,4 @@ class IEcfgTest extends PHPUnit_Framework_TestCase
     {
         $this->assertEmpty($this->object->getWhere());
     }
-
 }

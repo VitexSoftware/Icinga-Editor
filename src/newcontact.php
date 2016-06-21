@@ -14,7 +14,7 @@ require_once 'includes/IEInit.php';
 
 $oPage->onlyForLogged();
 
-$contact = new Engine\IEContact($oPage->getRequestValue('contact_id', 'int'));
+$contact = new Engine\Contact($oPage->getRequestValue('contact_id', 'int'));
 
 $name = $oPage->getRequestValue('name');
 

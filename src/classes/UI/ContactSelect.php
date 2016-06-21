@@ -30,7 +30,7 @@ class ContactSelect extends \Ease\Html\Select
     public function __construct($name, $items = null, $defaultValue = null,
                                 $itemsIDs = false, $properties = null)
     {
-        $this->contact = new \Icinga\Editor\Engine\IEContact();
+        $this->contact = new \Icinga\Editor\Engine\Contact();
         parent::__construct($name, $items, $defaultValue, $itemsIDs, $properties);
     }
 

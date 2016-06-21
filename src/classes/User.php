@@ -57,7 +57,7 @@ class User extends \Ease\User
      */
     public function getFirstContact()
     {
-        $contact = new Engine\IEContact();
+        $contact = new Engine\Contact();
         $cn      = $contact->getColumnsFromSQL([$contact->nameColumn, $contact->myKeyColumn],
             [$contact->userColumn => $this->getUserID(), 'parent_id' => 'IS NOT NULL'],
             $contact->myKeyColumn, $contact->nameColumn, 1);
@@ -75,7 +75,7 @@ class User extends \Ease\User
      */
     public function getDefaultContact()
     {
-        return new Engine\IEContact($this->getDataValue($this->loginColumn).' email');
+        return new Engine\Contact($this->getDataValue($this->loginColumn).' email');
     }
 
     /**
@@ -274,11 +274,11 @@ class User extends \Ease\User
         }
 
 
-        $userGroup = new Engine\IEUserGroup;
+        $userGroup = new Engine\UserGroup;
         $userGroup->delUser($id);
 
 
-        $command   = new Engine\IECommand;
+        $command   = new Engine\Command;
         $myCommand = $command->getOwned($id);
         if ($myCommand) {
             foreach ($myCommand as $command_id => $cmd) {
@@ -287,7 +287,7 @@ class User extends \Ease\User
             }
         }
 
-        $contact   = new Engine\IEContact;
+        $contact   = new Engine\Contact;
         $myContact = $contact->getOwned($id);
         if ($myContact) {
             foreach ($myContact as $contact_id => $cmd) {
@@ -298,7 +298,7 @@ class User extends \Ease\User
         }
 
 
-        $contactgroup   = new Engine\IEContactgroup;
+        $contactgroup   = new Engine\Contactgroup;
         $myContactgroup = $contactgroup->getOwned($id);
         if ($myContactgroup) {
             foreach ($myContactgroup as $contactgroup_id => $cmd) {
@@ -308,7 +308,7 @@ class User extends \Ease\User
         }
 
 
-        $hostgroup   = new Engine\IEHostgroup;
+        $hostgroup   = new Engine\Hostgroup;
         $myHostgroup = $hostgroup->getOwned($id);
         if ($myHostgroup) {
             foreach ($myHostgroup as $hostgroup_id => $cmd) {
@@ -317,7 +317,7 @@ class User extends \Ease\User
             }
         }
 
-        $host   = new Engine\IEHost;
+        $host   = new Engine\Host;
         $myHost = $host->getOwned($id);
         if ($myHost) {
             foreach ($myHost as $host_id => $cmd) {
@@ -326,7 +326,7 @@ class User extends \Ease\User
             }
         }
 
-        $servicegroup   = new Engine\IEServicegroup;
+        $servicegroup   = new Engine\Servicegroup;
         $myServicegroup = $servicegroup->getOwned($id);
         if ($myServicegroup) {
             foreach ($myServicegroup as $servicegroup_id => $cmd) {
@@ -335,7 +335,7 @@ class User extends \Ease\User
             }
         }
 
-        $service   = new Engine\IEService;
+        $service   = new Engine\Service;
         $myService = $service->getOwned($id);
         if ($myService) {
             foreach ($myService as $service_id => $cmd) {
@@ -344,7 +344,7 @@ class User extends \Ease\User
             }
         }
 
-        $timeperiod   = new Engine\IETimeperiod;
+        $timeperiod   = new Engine\Timeperiod;
         $myTimeperiod = $timeperiod->getOwned($id);
         if ($myTimeperiod) {
             foreach ($myTimeperiod as $timeperiod_id => $cmd) {

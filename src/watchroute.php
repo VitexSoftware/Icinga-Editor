@@ -37,12 +37,12 @@ function endRouteForm($host)
     return new \Ease\TWB\Panel(_('Volba cíle sledování').': '.$host->getName(),
         'default', $form, _('Vyberte hosta nebo zadejte IP adresu'));
 }
-$host = new Engine\IEHost($hostId);
+$host = new Engine\Host($hostId);
 $ip   = $host->getDataValue('address');
 if (!$ip) {
     $ip = $oPage->getRequestValue('ip');
     if (!$ip) {
-        $destHost = new Engine\IEHost($oPage->getRequestValue('dest_host_id',
+        $destHost = new Engine\Host($oPage->getRequestValue('dest_host_id',
                 'int'));
         $ip       = $destHost->getDataValue('address');
     }
@@ -59,7 +59,7 @@ if (is_null($hostId) || !$ip) {
     $defaultContactName = $oUser->getDefaultContact()->getName();
 
     $hgName    = sprintf(_('Cesta k %s'), $host->getName());
-    $hostGroup = new Engine\IEHostgroup($hgName);
+    $hostGroup = new Engine\Hostgroup($hgName);
     if ($hostGroup->getId()) {
 
     } else {

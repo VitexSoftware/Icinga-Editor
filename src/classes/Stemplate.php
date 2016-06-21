@@ -9,7 +9,7 @@ namespace Icinga\Editor;
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2012 Vitex@hippy.cz (G)
  */
-class IEStemplate extends Engine\IEcfg
+class Stemplate extends Engine\Configurator
 {
     public $myTable     = 'stemplate';
     public $myKeyColumn = 'stemplate_id';

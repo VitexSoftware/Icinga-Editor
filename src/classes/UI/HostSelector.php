@@ -32,7 +32,7 @@ class HostSelector extends \Ease\Container
             $initialContent->addItem(_('Nejprve je potřeba uložit záznam'));
         } else {
             $serviceName = $service->getName();
-            $host        = new \Icinga\Editor\Engine\IEHost();
+            $host        = new \Icinga\Editor\Engine\Host();
 
             if (\Ease\Shared::user()->getSettingValue('admin')) {
                 $allHosts = $host->getAllFromSQL(NULL,

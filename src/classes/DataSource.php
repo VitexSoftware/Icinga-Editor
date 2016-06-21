@@ -10,7 +10,7 @@ define('K_PATH_IMAGES', dirname(__DIR__).'/img/');
  *
  * @author vitex
  */
-class IEDataSource extends \Ease\Brick
+class DataSource extends \Ease\Brick
 {
     public $charset   = 'WINDOWS-1250//TRANSLIT';
     public $incharset = 'UTF-8';

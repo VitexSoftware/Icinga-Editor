@@ -13,7 +13,7 @@ namespace Icinga\Editor;
 require_once 'includes/IEInit.php';
 
 if ($oPage->isPosted()) {
-    $importer = new Engine\IECommand();
+    $importer = new Engine\Command();
     $success  = 0;
     $cfgText  = $oPage->getRequestValue('cfgtext');
     if ($cfgText) {

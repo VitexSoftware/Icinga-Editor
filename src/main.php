@@ -16,7 +16,7 @@ $oPage->onlyForLogged();
 
 $oPage->addItem(new UI\PageTop(_('Monitoring')));
 
-$host  = new engine\IEHost();
+$host  = new engine\Host();
 $hosts = $host->getListing(null, false,
     ['config_hash', 'address', 'parents', 'icon_image', 'contacts', 'contact_groups',
     $host->myCreateColumn, $host->myLastModifiedColumn]);

@@ -14,8 +14,8 @@ require_once 'includes/IEInit.php';
 
 $oPage->onlyForLogged();
 
-$service = new Engine\IEService($oPage->getRequestValue('service_id', 'int'));
-$host    = new Engine\IEHost($oPage->getRequestValue('host_id', 'int'));
+$service = new Engine\Service($oPage->getRequestValue('service_id', 'int'));
+$host    = new Engine\Host($oPage->getRequestValue('host_id', 'int'));
 
 switch ($oPage->getRequestValue('action')) {
 

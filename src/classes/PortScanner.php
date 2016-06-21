@@ -6,7 +6,7 @@ namespace Icinga\Editor;
  *
  * @author vitex
  */
-class IEPortScanner extends EaseSand
+class PortScanner extends EaseSand
 {
     /**
      * Porty k oskenování
@@ -40,7 +40,7 @@ class IEPortScanner extends EaseSand
     public function __construct($hostToScan = null)
     {
         parent::__construct();
-        $this->service = new Engine\IEService();
+        $this->service = new Engine\Service();
         if (is_object($hostToScan)) {
             $this->host = &$hostToScan;
             $this->performScan();

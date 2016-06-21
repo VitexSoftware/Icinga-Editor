@@ -17,7 +17,7 @@ $oPage->onlyForLogged();
 $hostName    = trim($oPage->getRequestValue('host_name'));
 $platform    = trim($oPage->getRequestValue('platform'));
 $host_group  = $oPage->getRequestValue('host_group', 'int');
-$host        = new Engine\IEHost();
+$host        = new Engine\Host();
 $host->owner = &$oUser;
 
 if ($hostName && $platform) {
@@ -42,7 +42,7 @@ if ($hostName && $platform) {
     );
 
     if ($host_group) {
-        $hostgroup = new Engine\IEHostgroup($host_group);
+        $hostgroup = new Engine\Hostgroup($host_group);
         $host->addMember('hostgroups', $hostgroup->getId(),
             $hostgroup->getName());
         $hostgroup->addMember('members', $host->getId(), $host->getName());
@@ -52,7 +52,7 @@ if ($hostName && $platform) {
 
     if ($host->saveToSQL()) {
 
-        $hostGroup = new Engine\IEHostgroup;
+        $hostGroup = new Engine\Hostgroup;
         if ($hostGroup->loadDefault()) {
             $hostGroup->setDataValue($hostGroup->nameColumn,
                 \Ease\Shared::user()->getUserLogin());

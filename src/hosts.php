@@ -15,7 +15,7 @@ $oPage->onlyForLogged();
 
 $oPage->addItem(new UI\PageTop(_('Přehled hostů')));
 
-$oPage->addItem(new \Ease\TWB\Container(new UI\DataGrid(_('Hosti'), new Engine\IEHost)));
+$oPage->addItem(new \Ease\TWB\Container(new UI\DataGrid(_('Hosti'), new Engine\Host)));
 
 $oPage->addItem(new UI\PageBottom());
 

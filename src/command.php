@@ -14,7 +14,7 @@ require_once 'includes/IEInit.php';
 
 $oPage->onlyForLogged();
 
-$command = new Engine\IECommand($oPage->getRequestValue('command_id', 'int'));
+$command = new Engine\Command($oPage->getRequestValue('command_id', 'int'));
 
 switch ($oPage->getRequestValue('action')) {
     case 'export':
@@ -88,7 +88,7 @@ if ($command->getId()) {
     $tools->addItem(new \Ease\TWB\Panel(_('Transfer'), 'warning',
         $command->transferForm()));
 
-    $service = new Engine\IEService;
+    $service = new Engine\Service;
     $usages  = $service->getColumnsFromSQL([$service->getMyKeyColumn(), $service->nameColumn],
         ['check_command' => $command->getName()], $service->nameColumn,
         $service->getMyKeyColumn());
@@ -107,7 +107,7 @@ if ($command->getId()) {
         $infopanel->addItem($usedBy);
     }
 
-    $contact       = new Engine\IEContact;
+    $contact       = new Engine\Contact;
     $hostNotify    = $contact->getColumnsFromSQL([$contact->getMyKeyColumn(), $contact->nameColumn],
         ['host_notification_commands' => '%'.$command->getName().'%'],
         $contact->nameColumn, $contact->getMyKeyColumn());

@@ -14,14 +14,14 @@ require_once 'includes/IEInit.php';
 
 $oPage->onlyForLogged();
 
-$hostgroup = new Engine\IEHostgroup($oPage->getRequestValue('hostgroup_id', 'int'));
+$hostgroup = new Engine\Hostgroup($oPage->getRequestValue('hostgroup_id', 'int'));
 
 
 switch ($oPage->getRequestValue('action')) {
     case 'contactAsign':
-        $contact = new Engine\IEContact($oPage->getRequestValue('contact_id', 'int'));
+        $contact = new Engine\Contact($oPage->getRequestValue('contact_id', 'int'));
         if ($contact->getId()) {
-            $host         = new Engine\IEHost;
+            $host         = new Engine\Host;
             $groupMembers = $hostgroup->getMembers();
             foreach ($groupMembers as $gmID => $hostName) {
                 $host->loadFromSQL((int) $gmID);

@@ -14,7 +14,7 @@ require_once 'includes/IEInit.php';
 
 $oPage->onlyForLogged();
 
-$contact = new Engine\IEContact($oPage->getRequestValue('contact_id', 'int'));
+$contact = new Engine\Contact($oPage->getRequestValue('contact_id', 'int'));
 
 if ($oPage->isPosted()) {
     $contact->takeData($_POST);
@@ -67,7 +67,7 @@ switch ($oPage->getRequestValue('action')) {
 
 
 
-$service       = new Engine\IEService;
+$service       = new Engine\Service;
 $serviceUsages = $service->getColumnsFromSQL([$service->getMyKeyColumn(), $service->nameColumn],
     ['contacts' => '%'.$contact->getName().'%'], $service->nameColumn,
     $service->getMyKeyColumn());
@@ -100,7 +100,7 @@ if ($contact->getId()) {
         $infopanel->addItem($usedBy);
     }
 
-    $host       = new Engine\IEHost;
+    $host       = new Engine\Host;
     $hostUsages = $host->getColumnsFromSQL([$host->getMyKeyColumn(), $host->nameColumn],
         ['contacts' => '%'.$contact->getName().'%'], $host->nameColumn,
         $host->getMyKeyColumn());

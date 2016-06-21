@@ -7,7 +7,7 @@ namespace Icinga\Editor;
  *
  * @author vitex
  */
-class IEIcingaWebUser
+class IcingaWebUser
 {
 
     public $icingaWebDir = '/usr/share/icinga-web';

@@ -5,7 +5,7 @@ namespace Icinga\Editor\Engine;
 /**
  * Uživatel Icinga Editoru
  */
-class IEUserGroup extends IEcfg
+class UserGroup extends Configurator
 {
     public $keyword     = 'usergroup';
     public $myTable     = 'user_group';

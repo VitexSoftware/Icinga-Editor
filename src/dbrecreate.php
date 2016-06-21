@@ -19,7 +19,7 @@ $oPage->addPageColumns();
 
 
 if ($oPage->getRequestValue('dbinit')) {
-    $importer = new Engine\IEImporter;
+    $importer = new Engine\Importer;
     $importer->dbInit();
     $oPage->columnII->addItem(new \Ease\TWB\LinkButton('wizard.php',
         _('vytvořit konfiguraci')));

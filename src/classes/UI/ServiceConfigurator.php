@@ -98,7 +98,7 @@ class ServiceConfigurator extends \Ease\Html\Div
             if ($this->reconfigureService()) {
 
                 if ($webPage->getRequestValue('clone')) {
-                    $oldService = new \Icinga\Editor\Engine\IEService($this->tweaker->service->getId());
+                    $oldService = new \Icinga\Editor\Engine\Service($this->tweaker->service->getId());
                     $oldService->delMember(
                         'host_name', $this->tweaker->host->getId(),
                         $this->tweaker->host->getName()
@@ -152,7 +152,7 @@ class ServiceConfigurator extends \Ease\Html\Div
 
         $parent_id = (int) $this->tweaker->service->getDataValue('parent_id');
         if ($parent_id) {
-            $parent_service = new \Icinga\Editor\Engine\IEService($parent_id);
+            $parent_service = new \Icinga\Editor\Engine\Service($parent_id);
             $this->addItem(new \Ease\TWB\Label('info',
                 sprintf(_('Toto je odvozená služba od %s'),
                     '<a href="service.php?service_id='.$parent_id.'">'.$parent_service->getName().'</a>')));

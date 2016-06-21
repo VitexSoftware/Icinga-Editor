@@ -15,7 +15,7 @@ $oPage->onlyForLogged();
 
 $oPage->addItem(new UI\PageTop(_('Přehled uživatelských skupin')));
 
-$oPage->addItem(new \Ease\TWB\Container(new UI\DataGrid(_('Uživatelské skupiny'), new Engine\IEUserGroup)));
+$oPage->addItem(new \Ease\TWB\Container(new UI\DataGrid(_('Uživatelské skupiny'), new Engine\UserGroup)));
 
 $oPage->addItem(new UI\PageBottom());
 

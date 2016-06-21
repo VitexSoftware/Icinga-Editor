@@ -13,7 +13,7 @@ namespace Icinga\Editor\Engine;
 /**
  * Spráce kontaktů
  */
-class IECommand extends IEcfg
+class Command extends Configurator
 {
     public $myTable     = 'command';
     public $myKeyColumn = 'command_id';

@@ -13,7 +13,7 @@ namespace Icinga\Editor;
 /**
  * Spráce kontaktů
  */
-class IEScript extends engine\IEcfg
+class Script extends engine\Configurator
 {
     public $myTable     = 'script';
     public $myKeyColumn = 'script_id';

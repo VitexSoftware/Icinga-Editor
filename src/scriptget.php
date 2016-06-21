@@ -15,7 +15,7 @@ require_once 'includes/IEInit.php';
 
 $script_id = $oPage->getRequestValue('script_id', 'int');
 if ($script_id) {
-    $script = new IEScript($script_id);
+    $script = new Script($script_id);
     $script->getCfg();
 } else {
     die('script_id ?');

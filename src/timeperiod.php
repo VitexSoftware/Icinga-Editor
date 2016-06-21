@@ -14,7 +14,7 @@ require_once 'includes/IEInit.php';
 
 $oPage->onlyForLogged();
 
-$Timeperiod = new Engine\IETimeperiod($oPage->getRequestValue('timeperiod_id', 'int'));
+$Timeperiod = new Engine\Timeperiod($oPage->getRequestValue('timeperiod_id', 'int'));
 
 if ($oPage->isPosted()) {
     unset($_POST['Save']);

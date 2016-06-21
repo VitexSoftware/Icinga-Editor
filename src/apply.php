@@ -38,7 +38,7 @@ if ($cfg) {
             $fileName), 'warning');
 }
 
-$generator = new Engine\IEImporter();
+$generator = new Engine\Importer();
 $generator->writeConfigs($fileName);
 
 $testing = popen("sudo /usr/sbin/icinga -v /etc/icinga/icinga.cfg", 'r');
@@ -92,7 +92,7 @@ if ($testing) {
                 switch (trim($keywords[2])) {
                     case 'specified for contact':
                         $errorLine->addItem(' specifikovaná pro kontakt ');
-                        $contact = new Engine\IEContact($keywords[3]);
+                        $contact = new Engine\Contact($keywords[3]);
                         $errorLine->addItem(new \Ease\Html\ATag('contact.php?contact_id='.$contact->getMyKey(),
                             $keywords[3]));
                         break;

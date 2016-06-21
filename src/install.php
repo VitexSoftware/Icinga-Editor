@@ -25,7 +25,7 @@ if ($oPage->isPosted()) {
     if ($public) {
         $params['public'] = true;
     }
-    $importer = new Engine\IEImporter($params);
+    $importer = new Engine\Importer($params);
     if ($oPage->getRequestValue('dbinit') == 'on') {
         $importer->dbInit();
     }

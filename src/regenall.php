@@ -26,7 +26,7 @@ foreach ($users as $userData) {
     \Ease\Shared::user(new User(intval($userData['id'])));
     \Ease\Shared::user()->loginSuccess();
 
-    $fileName = $oUser->getUserLogin().'.cfg';
+    $fileName = \Ease\Shared::user()->getUserLogin().'.cfg';
     if ($fileName == '.cfg') {
         $fileName = '_icinga.cfg';
     }
@@ -41,7 +41,7 @@ foreach ($users as $userData) {
                 $fileName), 'warning');
     }
 
-    $generator = new Engine\IEImporter();
+    $generator = new Engine\Importer();
     $generator->writeConfigs($fileName);
 }
 \Ease\Shared::user(new \Icinga\Editor\User($originalUserID));
@@ -65,7 +65,7 @@ if ($testing) {
                 ['class' => 'alert alert-danger']));
             $oUser->addStatusMessage(_('Kontrola konfigurace nevrátila výsledek.'),
                 'error');
-            $errorLine->addItem(_('Zkontroluj prosím zdlali nechybí potřebný fragment v /etc/sudoers:'));
+            $errorLine->addItem(_('Zkontroluj prosím zdali nechybí potřebný fragment v /etc/sudoers:'));
             $errorLine->addItem(new \Ease\Html\Div('User_Alias APACHE = www-data'));
             $errorLine->addItem(new \Ease\Html\Div('Cmnd_Alias ICINGA = /usr/sbin/icinga, /etc/init.d/icinga'));
             $errorLine->addItem(new \Ease\Html\Div('APACHE ALL = (ALL) NOPASSWD: ICINGA'));
@@ -99,7 +99,7 @@ if ($testing) {
                 switch (trim($keywords[2])) {
                     case 'specified for contact':
                         $errorLine->addItem(' specifikovaná pro kontakt ');
-                        $contact = new Engine\IEContact($keywords[3]);
+                        $contact = new Engine\Contact($keywords[3]);
                         $errorLine->addItem(new \Ease\Html\ATag('contact.php?contact_id='.$contact->getMyKey(),
                             $keywords[3]));
                         break;

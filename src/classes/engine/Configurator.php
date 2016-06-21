@@ -15,7 +15,7 @@ namespace Icinga\Editor\Engine;
  *
  * @author vitex
  */
-class IEcfg extends \Ease\Brick
+class Configurator extends \Ease\Brick
 {
     /**
      * Tabulka do níž objekt ukládá svá data
@@ -1213,7 +1213,7 @@ class IEcfg extends \Ease\Brick
      * Načte konfigurační soubor do pole
      *
      * @param  type $cfgFile
-     * @param IEImporter $importer Objekt importeru
+     * @param Importer $importer Objekt importeru
      * @return type
      */
     public static function readRawConfigFile($cfgFile, $importer = null)
@@ -1259,7 +1259,7 @@ class IEcfg extends \Ease\Brick
      * Načte všechny konfiguráky v adresáři
      *
      * @param  string $dirName
-     * @param IEImporter $importer Objekt importeru
+     * @param Importer $importer Objekt importeru
      * @return array  pole řádků načtené konfigurace
      */
     public static function readRawConfigDir($dirName, $importer = null)

@@ -17,7 +17,7 @@ $oPage->onlyForLogged();
 $oPage->addItem(new UI\PageTop(_('Icinga Editor')));
 $oPage->addPageColumns();
 
-$Timeperiod     = new Engine\IETimeperiod();
+$Timeperiod     = new Engine\Timeperiod();
 $pocTimeperiods = $Timeperiod->getMyRecordsCount();
 if ($pocTimeperiods) {
     $success = $oPage->columnIII->addItem(new \Ease\Html\DivTag('Timeperiod',
@@ -32,7 +32,7 @@ if ($pocTimeperiods) {
         _('Založit první časovou periodu <i class="icon-edit"></i>')));
 }
 
-$contact    = new Engine\IEContact();
+$contact    = new Engine\Contact();
 $pocContact = $contact->getMyRecordsCount();
 if ($pocContact) {
     $success = $oPage->columnII->addItem(new \Ease\Html\DivTag('Contact',
@@ -52,7 +52,7 @@ if ($pocContact) {
     }
 }
 
-$contactgroup    = new Engine\IEContactgroup();
+$contactgroup    = new Engine\Contactgroup();
 $pocContactgroup = $contactgroup->getMyRecordsCount();
 if ($pocContactgroup) {
     $success = $oPage->columnII->addItem(new \Ease\Html\DivTag('Contactgroup',
@@ -67,7 +67,7 @@ if ($pocContactgroup) {
         _('Založit první skupinu kontaktů '.\Ease\TWB\Part::GlyphIcon('edit'))));
 }
 
-$host     = new Engine\IEHost();
+$host     = new Engine\Host();
 $pocHostu = $host->getMyRecordsCount();
 if ($pocHostu) {
     $success = $oPage->columnI->addItem(new \Ease\Html\DivTag('Host',
@@ -87,7 +87,7 @@ if ($pocHostu) {
     }
 }
 
-$hostgroup     = new Engine\IEHostgroup();
+$hostgroup     = new Engine\Hostgroup();
 $pocHostgroups = $hostgroup->getMyRecordsCount();
 if ($pocHostgroups) {
     $success = $oPage->columnI->addItem(new \Ease\Html\DivTag('Hostgroup',
@@ -102,7 +102,7 @@ if ($pocHostgroups) {
         _('Založit první skupinu hostů <i class="icon-edit"></i>')));
 }
 
-$command     = new Engine\IECommand();
+$command     = new Engine\Command();
 $PocCommands = $command->getMyRecordsCount();
 if ($PocCommands) {
     $success = $oPage->columnIII->addItem(new \Ease\Html\DivTag('Command',
@@ -116,7 +116,7 @@ if ($PocCommands) {
         _('Importovat příkazy').' <i class="icon-download"></i>'));
 }
 
-$service     = new Engine\IEService();
+$service     = new Engine\Service();
 $pocServices = $service->getMyRecordsCount();
 if ($pocServices) {
     $success = $oPage->columnIII->addItem(new \Ease\Html\DivTag('Service',
@@ -142,7 +142,7 @@ if ($pocServices) {
     }
 }
 
-$serviceGroup     = new Engine\IEServicegroup();
+$serviceGroup     = new Engine\Servicegroup();
 $pocServicegroups = $serviceGroup->getMyRecordsCount();
 if ($pocServicegroups) {
     $success = $oPage->columnIII->addItem(new \Ease\Html\DivTag('Servicegroup',

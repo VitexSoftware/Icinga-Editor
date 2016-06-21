@@ -125,7 +125,7 @@ if ($oPage->isPosted()) {
 
             \Ease\Shared::user($newOUser)->loginSuccess();
 
-            $contact   = new Engine\IEContact();
+            $contact   = new Engine\Contact();
             $contact->setData(
                 [
                     'contact_name' => $login,
@@ -160,7 +160,7 @@ if ($oPage->isPosted()) {
                     'warning');
             }
 
-            $contactGroup = new Engine\IEContactgroup();
+            $contactGroup = new Engine\Contactgroup();
             $contactGroup->setData(['contactgroup_name' => _('Skupina').'_'.$login,
                 'alias' => _('Skupina').'_'.$login, 'generate' => true, $contactGroup->userColumn => $userID]);
             $contactGroup->addMember('members', $contactID, $login);
@@ -175,7 +175,7 @@ if ($oPage->isPosted()) {
                     'warning');
             }
 
-            $hostGroup = new Engine\IEHostgroup;
+            $hostGroup = new Engine\Hostgroup;
             $hostGroup->setName($newOUser->getUserLogin());
             $hostGroup->setDataValue('alias',
                 _('Výchozí skupina').' '.$newOUser->getUserLogin());

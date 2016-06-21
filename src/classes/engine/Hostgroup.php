@@ -10,7 +10,7 @@
 
 namespace Icinga\Editor\Engine;
 
-class IEHostgroup extends IEcfg
+class Hostgroup extends Configurator
 {
     public $myTable     = 'hostgroup';
     public $myKeyColumn = 'hostgroup_id';

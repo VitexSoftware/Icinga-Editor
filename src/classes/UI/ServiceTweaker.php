@@ -46,7 +46,7 @@ class ServiceTweaker extends \Ease\Html\Div
         $this->service = $service;
         $this->host    = $host;
 
-        $this->command = new \Icinga\Editor\Engine\IECommand();
+        $this->command = new \Icinga\Editor\Engine\Command();
         $this->command->setmyKeyColumn($this->command->nameColumn);
 
         $checkLocal = $this->service->getDataValue('check_command');
@@ -68,7 +68,7 @@ class ServiceTweaker extends \Ease\Html\Div
                         $module), 'error');
             }
         } else {
-            $this->configurator = $this->addItem(new IEServiceConfigurator($this));
+            $this->configurator = $this->addItem(new ServiceConfigurator($this));
         }
     }
 

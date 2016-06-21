@@ -14,7 +14,7 @@ require_once 'includes/IEInit.php';
 
 $oPage->onlyForLogged();
 
-$script = new IEScript($oPage->getRequestValue('script_id', 'int'));
+$script = new Script($oPage->getRequestValue('script_id', 'int'));
 
 switch ($oPage->getRequestValue('action')) {
     case 'export':
@@ -29,13 +29,12 @@ switch ($oPage->getRequestValue('action')) {
             $scriptID = $script->saveToSQL();
 
             if (is_null($scriptID)) {
-                $oUser->addStatusMessage(_('Příkaz nebyl uložen'), 'warning');
+                $oUser->addStatusMessage(_('Skript nebyl uložen'), 'warning');
             } else {
-                $oUser->addStatusMessage(_('Příkaz byl uložen'), 'success');
+                $oUser->addStatusMessage(_('Skript byl uložen'), 'success');
             }
         }
 }
-
 
 
 $delete = $oPage->getGetValue('delete', 'bool');
@@ -85,7 +84,7 @@ if ($script->getId()) {
     $tools->addItem(new \Ease\TWB\Panel(_('Transfer'), 'warning',
         $script->transferForm()));
 
-    $command = new Engine\IECommand;
+    $command = new Engine\Command;
 
     $usages = $command->getColumnsFromSQL([$command->getMyKeyColumn(), $command->nameColumn],
         ['script_id' => $command->getId()], $command->nameColumn,

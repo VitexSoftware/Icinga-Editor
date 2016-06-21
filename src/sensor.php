@@ -20,7 +20,7 @@ if ($hostId == 0) {
     exit();
 }
 
-$host = new Engine\IEHost($hostId);
+$host = new Engine\Host($hostId);
 
 $operation = $oPage->getRequestValue('operation');
 switch ($operation) {

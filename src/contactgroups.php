@@ -15,7 +15,7 @@ $oPage->onlyForLogged();
 
 $oPage->addItem(new UI\PageTop(_('Kontaktní skupiny')));
 
-$oPage->container->addItem(new UI\DataGrid(_('Kontaktní skupiny'), new Engine\IEContactgroup));
+$oPage->container->addItem(new UI\DataGrid(_('Kontaktní skupiny'), new Engine\Contactgroup));
 
 $oPage->addItem(new UI\PageBottom());
 

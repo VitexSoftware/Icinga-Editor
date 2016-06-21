@@ -13,7 +13,7 @@ namespace Icinga\Editor\Engine;
 /**
  * Služby
  */
-class IEService extends IEcfg
+class Service extends Configurator
 {
     public $myTable     = 'service';
     public $myKeyColumn = 'service_id';
@@ -525,7 +525,7 @@ class IEService extends IEcfg
     /**
      * Připraví podřízenu službu
      *
-     * @param  IEHost $host
+     * @param  Host $host
      * @param  int    $ownerId
      * @return int    ID nově vytvořené služby
      */

@@ -17,7 +17,7 @@ $oPage->onlyForLogged();
 $oPage->addItem(new UI\PageTop(_('Editace skupiny kontaktu')));
 
 
-$contactgroup = new Engine\IEContactgroup($oPage->getRequestValue('contactgroup_id',
+$contactgroup = new Engine\Contactgroup($oPage->getRequestValue('contactgroup_id',
         'int'));
 
 if ($oPage->isPosted()) {

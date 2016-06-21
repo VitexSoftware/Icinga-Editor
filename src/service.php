@@ -14,7 +14,7 @@ require_once 'includes/IEInit.php';
 
 $oPage->onlyForLogged();
 
-$service = new Engine\IEService($oPage->getRequestValue('service_id', 'int'));
+$service = new Engine\Service($oPage->getRequestValue('service_id', 'int'));
 
 switch ($oPage->getRequestValue('action')) {
     case 'rename':
@@ -41,8 +41,8 @@ switch ($oPage->getRequestValue('action')) {
     case 'system':
         $hosts = $service->getDataValue('host_name');
         foreach ($hosts as $host_id => $host_name) {
-            $host       = new Engine\IEHost($host_id);
-            $newService = new Engine\IEService($service->getId());
+            $host       = new Engine\Host($host_id);
+            $newService = new Engine\Service($service->getId());
             $newService->setDataValue($service->userColumn, 0);
             $newService->setDataValue('public', 0);
             if ($newService->fork($host, $host->getDataValue($host->userColumn))) {
@@ -150,7 +150,7 @@ input.ui-button { width: 100%; }
 
             $tools->addItem(new \Ease\TWB\Panel(_('Přejmenování'), 'info',
                 $renameForm));
-            $tools->addItem(new Engine\IEHostSelector($service));
+            $tools->addItem(new UI\HostSelector($service));
 
             if ($oUser->getSettingValue('admin')) {
                 $tools->addItem(new \Ease\TWB\LinkButton('?action=system&service_id='.$service->getId(),
@@ -158,12 +158,12 @@ input.ui-button { width: 100%; }
             }
 
             $tools->addItem(new \Ease\TWB\Panel(_('Výměna služby'), 'info',
-                new IEServiceSwapForm($service)));
+                new UI\ServiceSwapForm($service)));
             $tools->addItem(new \Ease\TWB\Panel(_('Transfer'), 'warning',
                 $service->transferForm()));
         }
 
-        $mainPanel->addItem(new \Ease\TWB\Panel(new \Ease\Html\H3Tag([new IEPlatformIcon($service->getDataValue('platform')),
+        $mainPanel->addItem(new \Ease\TWB\Panel(new \Ease\Html\H3Tag([new UI\PlatformIcon($service->getDataValue('platform')),
             $service->getName()]), 'default', $form));
 
         break;

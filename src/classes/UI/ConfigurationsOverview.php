@@ -38,7 +38,7 @@ class ConfigurationsOverview extends \Ease\TWB\Panel
             }
 
             if (isset($host_info['config_hash'])) {
-                $host = new \Icinga\Editor\Engine\IEHost((int) $host_id);
+                $host = new \Icinga\Editor\Engine\Host((int) $host_id);
                 if ($host->getConfigHash() == $host_info['config_hash']) {
                     unset($hosts[$host_id]);
                     $ok++;

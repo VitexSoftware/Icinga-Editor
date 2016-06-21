@@ -17,9 +17,9 @@ require_once 'includes/IEInit.php';
 $oPage->onlyForLogged();
 
 $hostId = $oPage->getRequestValue('host_id', 'int');
-$host   = new Engine\IEHost($hostId);
+$host   = new Engine\Host($hostId);
 
-$preferences = new IEPreferences;
+$preferences = new Preferences;
 $prefs       = $preferences->getPrefs();
 
 $nscabat = '
@@ -52,7 +52,7 @@ del "%ProgramFiles%\NSClient++\nsclient.ini"
 
 
 $hostName = $host->getName();
-$service  = new Engine\IEService();
+$service  = new Engine\Service();
 
 
 $host_passive = (boolean) $host->getDataValue('passive_checks_enabled');
@@ -99,7 +99,7 @@ foreach ($allServices as $rowId => $service) {
     if (isset($service['use'])) {
         $remote = $service['check_command-remote'];
         if (!isset($commandsCache[$remote])) {
-            $command                = new Engine\IECommand($remote);
+            $command                = new Engine\Command($remote);
             $commandsCache[$remote] = $command->getData();
         }
     }
@@ -108,7 +108,7 @@ foreach ($allServices as $rowId => $service) {
         $use = $service['use'];
 
         if (!isset($usedCache[$use])) {
-            $used = new Engine\IEService;
+            $used = new Engine\Service;
             $used->setmyKeyColumn('name');
             if ($used->loadFromSQL($use)) {
                 $used->resetObjectIdentity();

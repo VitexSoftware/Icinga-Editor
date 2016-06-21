@@ -3,14 +3,13 @@
  * Konfigurace Period
  *
  * @package    IcingaEditor
- * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2012 Vitex@hippy.cz (G)
  */
 
 namespace Icinga\Editor\Engine;
 
-class IETimeperiod extends IEcfg
+class Timeperiod extends Configurator
 {
     public $myTable      = 'timeperiod';
     public $myKeyColumn  = 'timeperiod_id';

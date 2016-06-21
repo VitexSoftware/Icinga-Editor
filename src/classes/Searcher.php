@@ -10,7 +10,7 @@ namespace Icinga\Editor;
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2012 Vitex@hippy.cz (G)
  */
-class IESearcher extends engine\IEcfg
+class Searcher extends engine\Configurator
 {
     /**
      * Prohledávaná tabulka

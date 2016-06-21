@@ -17,7 +17,7 @@ $oPage->onlyForLogged();
 $oPage->addItem(new UI\PageTop(_('Přehled skriptů')));
 
 $oPage->addItem(new \Ease\TWB\Container(new UI\DataGrid(_('Skripty'),
-    new IEScript())));
+    new Script())));
 
 $oPage->addItem(new UI\PageBottom());
 

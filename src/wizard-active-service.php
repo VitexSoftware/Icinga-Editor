@@ -19,7 +19,7 @@ $serviceName    = trim($oPage->getRequestValue('service_name'));
 $remoteCmd      = trim($oPage->getRequestValue('check_command-remote'));
 $remoteCmdParam = trim($oPage->getRequestValue('check_command-params'));
 $platform       = trim($oPage->getRequestValue('platform'));
-$service        = new Engine\IEService($serviceId);
+$service        = new Engine\Service($serviceId);
 $service->owner = &$oUser;
 
 if (isset($platform)) {

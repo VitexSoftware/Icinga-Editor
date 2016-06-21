@@ -10,7 +10,7 @@
 
 namespace Icinga\Editor\Engine;
 
-class IEContactgroup extends IEcfg
+class Contactgroup extends Configurator
 {
     public $myTable     = 'contactgroup';
     public $myKeyColumn = 'contactgroup_id';

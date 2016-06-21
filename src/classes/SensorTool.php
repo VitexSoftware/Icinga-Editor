@@ -39,7 +39,7 @@ class SensorTool extends \Ease\Container
         switch ($host->getDataValue('platform')) {
             case 'windows':
                 $pltIco       = 'logos/base/win40.gif';
-                $cfgGenerator = new IENSCPConfigGenerator($host);
+                $cfgGenerator = new NSCPConfigBatGenerator($host);
 
                 if ($host->getCfgValue('active_checks_enabled')) {
                     $windowsActiveTab = $sensorTabs->addTab(_('Windows NRPE'));
@@ -77,12 +77,12 @@ class SensorTool extends \Ease\Container
             case 'linux':
                 $pltIco = 'logos/base/linux40.gif';
 
-                $preferences = new IEPreferences;
+                $preferences = new Preferences;
                 $prefs       = $preferences->getPrefs();
 
                 if ($host->getCfgValue('active_checks_enabled')) {
 
-                    $nrpe_cfgGenerator = new IENRPEConfigGenerator($host);
+                    $nrpe_cfgGenerator = new NRPEConfigGenerator($host);
 
                     $linuxActiveTab = $sensorTabs->addTab(_('Linux NRPE'));
                     $linuxActiveTab->addItem(new \Ease\Html\H1Tag('<img src="'.$pltIco.'">'._('aktivní NRPE pro NRPE Server')));
@@ -108,7 +108,7 @@ class SensorTool extends \Ease\Container
                         $host->getName().'_nscp.sh '.\Ease\TWB\Part::GlyphIcon('download'),
                         'success'));
 
-                    $cfgGenerator = new IENSCPConfigGenerator($host);
+                    $cfgGenerator = new NSCPConfigBatGenerator($host);
                     $linuxPassiveTab->addItem(new \Ease\TWB\Container('<pre>'.htmlspecialchars($cfgGenerator->getCfg(false)).'</pre>',
                         ['font-face' => 'fixed']));
                 }
