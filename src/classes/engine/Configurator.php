@@ -254,7 +254,7 @@ class Configurator extends \Ease\Brick
     }
 
     /**
-     * Zapíše konfigurační soubor nagiosu
+     * Write config file for nagios/icinga
      *
      * @param string $filename
      * @param array  $columns

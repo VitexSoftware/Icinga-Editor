@@ -1,0 +1,36 @@
+{
+    "name": "vitexsoftware/icinga-editor",
+    "description": "Editor of Icinga Configuration files",
+    "authors": [
+        {
+            "name": "vitex",
+            "email": "info@vitexsoftware.cz"
+        }
+    ],
+    "minimum-stability": "dev",
+    "config": {
+	"vendor-dir": "/var/lib/icinga-editor"
+    },
+    "require": {
+        "php": ">= 5.5.9",
+        "vitexsoftware/ease-framework": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "Icinga\\Editor\\": "classes/",
+            "Icinga\\Editor\\Engine\\": "classes/engine/",
+            "Icinga\\Editor\\UI\\": "classes/UI",
+            "Icinga\\Editor\\modules\\": "modules"
+        }
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "/usr/share/php/Ease",
+            "options": {
+                "symlink": true
+            }
+        }
+    ]
+
+}

@@ -11,7 +11,7 @@ class CfgEditor extends \Ease\Container
 {
     /**
      * Právě editovaný objekt
-     * @var IEcfg Objekt konfigurace
+     * @var \Icinga\Editor\Engine\Configurator Objekt konfigurace
      */
     public $objectEdited = null;
 
