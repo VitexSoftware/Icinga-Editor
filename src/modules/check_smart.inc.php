@@ -14,7 +14,7 @@ namespace Icinga\Editor\modules;
  *
  * @author vitex
  */
-class check_smart extends IEServiceConfigurator
+class check_smart extends \Icinga\Editor\UI\ServiceConfigurator
 {
 
     /**

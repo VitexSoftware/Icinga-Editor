@@ -6,7 +6,7 @@ namespace Icinga\Editor;
  *
  * @author vitex
  */
-class NSCPConfigBatGenerator extends EaseAtom
+class NSCPConfigBatGenerator extends \Ease\Atom
 {
     /**
      * Objekt hostu
@@ -66,7 +66,7 @@ class NSCPConfigBatGenerator extends EaseAtom
         $this->host = $host;
         $this->setPlatform($host->getDataValue('platform'));
 
-        $preferences = new Engine\IEPreferences;
+        $preferences = new Preferences();
         $this->prefs = $preferences->getPrefs();
         $this->cfgInit();
         $this->cfgGeneralSet();

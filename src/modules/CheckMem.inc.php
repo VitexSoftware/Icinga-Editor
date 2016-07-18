@@ -14,7 +14,7 @@ namespace Icinga\Editor\modules;
  *
  * @author vitex
  */
-class CheckMem extends IEServiceConfigurator
+class CheckMem extends \Icinga\Editor\UI\ServiceConfigurator
 {
 
     /**

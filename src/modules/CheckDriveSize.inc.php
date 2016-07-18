@@ -14,7 +14,7 @@ namespace Icinga\Editor\modules;
  *
  * @author vitex
  */
-class CheckDriveSize extends IEServiceConfigurator
+class CheckDriveSize extends \Icinga\Editor\UI\ServiceConfigurator
 {
 
     /**

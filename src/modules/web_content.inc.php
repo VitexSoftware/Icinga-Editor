@@ -15,7 +15,7 @@ namespace Icinga\Editor\modules;
  *
  * @author vitex
  */
-class web_content extends IEServiceConfigurator
+class web_content extends \Icinga\Editor\UI\ServiceConfigurator
 {
 
     function init()
