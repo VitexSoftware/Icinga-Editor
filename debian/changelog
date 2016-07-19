@@ -1,4 +1,4 @@
-icinga-editor (0.200-11) UNRELEASED; urgency=medium
+icinga-editor (0.200-12) UNRELEASED; urgency=medium
 
   [ dvorak ]
   * Initial release. (Closes: #XXXXXX)
@@ -23,5 +23,6 @@ icinga-editor (0.200-11) UNRELEASED; urgency=medium
   * Database Renamed to icinga_editor
   * Fix User(s content) delete
   * Namespace use fix for engine classes
+  * Namespace use fix for engine classes II
 
- -- vitex <vitex@developer.kancl.brevnov.czf>  Tue, 19 Jul 2016 15:26:34 +0200
+ -- vitex <vitex@developer.kancl.brevnov.czf>  Tue, 19 Jul 2016 15:32:49 +0200
