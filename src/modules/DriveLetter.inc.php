@@ -43,7 +43,7 @@ class DriveLetter extends \Icinga\Editor\UI\ServiceConfigurator {
 
 
 
-        if (strstr($config['Drive'], '\\\\')) {
+        if (!strlen($config['Drive'])) {
             $this->form->addInput(new \Ease\Html\Select('Drive', $drives, '\\\\'), _('Disk'), 'X:', _('Volba písmene sledované diskové jednotky'));
         } else {
             $this->form->addInput(new \Ease\Html\Select('Drive', $drives, str_replace(':', '', $config['Drive'])), _('Disk'), 'X:', _('Volba písmene sledované diskové jednotky'));
@@ -63,10 +63,13 @@ class DriveLetter extends \Icinga\Editor\UI\ServiceConfigurator {
             switch ($key) {
                 case 'Drive':
 
-                    if (strlen(trim($value)) && ($value != '\\\\')) {
-                            $config['Drive'] = $value . ':';
-                            $this->tweaker->service->setDataValue($this->tweaker->service->nameColumn, _('Disk') . ' ' . strtoupper($value) . ':');
-                            $this->tweaker->service->setDataValue('display_name', sprintf(_('Volné místo disku %s: '), strtoupper($value)));
+                    if (strlen(trim($value)) && ($value != '')) {
+                        $config['Drive'] = $value . ':';
+                        $nameColumn = $this->tweaker->service->nameColumn;
+                        $newName = $this->tweaker->service->getDataValue($nameColumn) . ' ' . _('Disk') . ' ' . strtoupper($value) . ':';
+
+                        $this->tweaker->service->setDataValue($nameColumn, $newName);
+                        $this->tweaker->service->setDataValue('display_name', sprintf(_('Disk %s: '), strtoupper($value)));
                     }
 
                     break;

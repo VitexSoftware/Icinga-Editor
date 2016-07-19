@@ -68,7 +68,7 @@ class ServiceConfigurator extends \Ease\Html\Div
      */
     public function form()
     {
-
+        
     }
 
     /**

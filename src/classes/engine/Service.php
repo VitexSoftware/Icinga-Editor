@@ -569,12 +569,12 @@ class Service extends Configurator
      */
     public function swapTo($swapToID)
     {
-        $newService    = new Engine\IEService($swapToID);
+        $newService    = new Service($swapToID);
         $thisName      = $this->getName();
         $hostsOK       = [];
         $hostsErr      = [];
         $hostsAssigned = [];
-        $host          = new Engine\IEHost();
+        $host          = new Host();
 
         if (\Ease\Shared::user()->getSettingValue('admin')) {
             $allHosts = $host->getAllFromSQL(NULL,

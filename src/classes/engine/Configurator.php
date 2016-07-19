@@ -430,6 +430,12 @@ class Configurator extends \Ease\Brick
         unset($data['Save']);
         unset($data['class']);
         unset($data['CheckBoxGroups']);
+        if (isset($data['useFromTemplate']) && count($data['useFromTemplate'])) {
+            foreach ($data['useFromTemplate'] as $key => $one) {
+                $data[$key] = null;
+            }
+            unset($data['useFromTemplate']);
+        }
         foreach ($data as $key => $value) {
             if ($value === 'NULL') {
                 $data[$key] = null;
@@ -2012,41 +2018,41 @@ class Configurator extends \Ease\Brick
 
     function csvizeRow()
     {
-
+        
     }
 
     function getListingQuerySelect()
     {
-
+        
     }
 
     function getListingQueryWhere()
     {
-
+        
     }
 
     function operationsMenu()
     {
-
+        
     }
 
     function handleUpload()
     {
-
+        
     }
 
     function unsetUnknownColumns()
     {
-
+        
     }
 
     function sqlColumnsToSelect()
     {
-
+        
     }
 
     function getWhere()
     {
-
+        
     }
 }

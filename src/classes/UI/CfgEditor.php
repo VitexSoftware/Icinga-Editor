@@ -99,14 +99,16 @@ class CfgEditor extends \Ease\Container
 });", null, true);
             }
 
+            $templateCheckBoxName = "useFromTemplate[$fieldName]";
+
             if ($templateName && !is_null($templateValue)) {
-                $fieldBlock->addItem(new \Ease\Html\CheckboxTag(null, true, 1,
-                    ['id' => 'useTpl'.$fieldName]));
+                $fieldBlock->addItem(new \Ease\Html\CheckboxTag($templateCheckBoxName,
+                    true, 1, ['id' => 'useTpl'.$fieldName]));
                 $hint     = current($effective);
                 $disabled = true;
             } else {
-                $fieldBlock->addItem(new \Ease\Html\CheckboxTag(null, false, 1,
-                    ['id' => 'useTpl'.$fieldName]));
+                $fieldBlock->addItem(new \Ease\Html\CheckboxTag($templateCheckBoxName,
+                    false, 1, ['id' => 'useTpl'.$fieldName]));
                 $hint = $value;
             }
             $fieldBlock->addItem(' '._('Hodnota z předlohy').':');

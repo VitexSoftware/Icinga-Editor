@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Formulář testu IMCP odezvy
  *
@@ -7,6 +8,7 @@
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2014 Vitex@hippy.cz (G)
  */
+
 namespace Icinga\Editor\modules;
 
 /**
@@ -14,14 +16,12 @@ namespace Icinga\Editor\modules;
  *
  * @author vitex
  */
-class ping extends \Icinga\Editor\UI\ServiceConfigurator
-{
+class ping extends \Icinga\Editor\UI\ServiceConfigurator {
 
     /**
      *
      */
-    public function form()
-    {
+    public function form() {
         $warningValues = explode(',', $this->commandParams[0]);
         $criticalValues = explode(',', $this->commandParams[1]);
 
@@ -37,8 +37,7 @@ class ping extends \Icinga\Editor\UI\ServiceConfigurator
      * 
      * @return boolean
      */
-    public function reconfigureService()
-    {
+    public function reconfigureService() {
         $page = \Ease\Shared::webPage();
         $wt = $page->getRequestValue('wt', 'float');
         $ct = $page->getRequestValue('ct', 'float');
