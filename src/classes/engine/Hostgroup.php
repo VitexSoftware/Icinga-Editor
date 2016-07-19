@@ -172,7 +172,7 @@ class Hostgroup extends Configurator
         } else {
             $id = $this->getId();
         }
-        $host  = new Engine\IEHost;
+        $host  = new Host;
         $hosts = $host->getColumnsFromSQL(
             [$host->myKeyColumn],
             [
@@ -200,7 +200,7 @@ class Hostgroup extends Configurator
         }
 
 
-        $subgroup  = new Engine\IEHostgroup;
+        $subgroup  = new Hostgroup;
         $subgroups = $subgroup->getColumnsFromSQL(
             [$subgroup->myKeyColumn],
             [

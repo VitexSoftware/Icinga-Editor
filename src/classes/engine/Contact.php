@@ -409,8 +409,8 @@ class Contact extends Configurator
 
         if ($this->saveToSQL()) {
             $childs     = $this->getChilds();
-            $subcontact = new Engine\IEContact();
-            $service    = new Engine\IEService();
+            $subcontact = new Contact();
+            $service    = new Service();
             foreach ($childs as $childID => $childInfo) {
                 $subcontact->loadFromSQL($childID);
                 $type     = $subcontact->getDataValue('alias');

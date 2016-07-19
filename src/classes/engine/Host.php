@@ -443,11 +443,11 @@ class Host extends Configurator
         $oldname = $this->getName();
         $this->setDataValue($this->nameColumn, $newname);
 
-        $hostGroup = new Engine\IEHostgroup();
+        $hostGroup = new Hostgroup();
         $hostGroup->renameHost($oldname, $newname);
 
         $renameAll        = true;
-        $service          = new Engine\IEService();
+        $service          = new Service();
         $servicesAssigned = $service->dblink->queryToArray('SELECT '.$service->myKeyColumn.','.$service->nameColumn.' FROM '.$service->myTable.' WHERE '.'host_name'.' LIKE \'%"'.$oldname.'"%\'',
             $service->myKeyColumn);
         foreach ($servicesAssigned as $serviceID => $serviceInfo) {
@@ -463,7 +463,7 @@ class Host extends Configurator
         $childsAssigned = $this->dblink->queryToArray('SELECT '.$this->myKeyColumn.','.$this->nameColumn.' FROM '.$this->myTable.' WHERE '.'parents'.' LIKE \'%"'.$oldname.'"%\'',
             $this->myKeyColumn);
         foreach ($childsAssigned as $chid_id => $child_info) {
-            $child = new Engine\IEHost($chid_id);
+            $child = new Host($chid_id);
             $child->delMember('parents', $this->getId(), $oldname);
             $child->addMember('parents', $this->getId(), $newname);
             $child->updateToSQL();
@@ -599,7 +599,7 @@ class Host extends Configurator
     {
         $services = [];
 
-        $service          = new Engine\IEService;
+        $service          = new Service;
         $servicesAssigned = $service->dblink->queryToArray('SELECT '.$service->myKeyColumn.','.$service->nameColumn.' FROM '.$service->myTable.' WHERE host_name LIKE \'%"'.$this->getName().'"%\'',
             $service->myKeyColumn);
         if ($servicesAssigned) {
