@@ -335,7 +335,7 @@ class Contact extends Configurator
             $id = $parent;
         }
 
-        $contactgroup  = new Engine\IEContactgroup();
+        $contactgroup  = new Contactgroup();
         $contactgroups = $this->dblink->queryTo2DArray('SELECT '.$contactgroup->getmyKeyColumn().' FROM '.$contactgroup->myTable.' WHERE members LIKE \'%'.$this->getName().'%\'');
         if (count($contactgroups)) {
             foreach ($contactgroups as $contactgroupID) {
@@ -355,7 +355,7 @@ class Contact extends Configurator
         }
 
 
-        $service = new Engine\IEService();
+        $service = new Service();
 
         $services = $this->dblink->queryTo2DArray('SELECT '.$service->getmyKeyColumn().' FROM '.$service->myTable.' WHERE contacts LIKE \'%'.$this->getName().'%\'');
         if (count($services)) {
@@ -374,7 +374,7 @@ class Contact extends Configurator
             }
         }
 
-        $host = new Engine\IEHost();
+        $host = new Host();
 
         $hosts = $this->dblink->queryTo2DArray('SELECT '.$host->getmyKeyColumn().' FROM '.$host->myTable.' WHERE contacts LIKE \'%'.$this->getName().'%\'');
         if (count($hosts)) {
