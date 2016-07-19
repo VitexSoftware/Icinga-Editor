@@ -29,18 +29,18 @@ foreach ($langs as $code => $lang) {
     }
 }
 setlocale(LC_ALL, $locale);
-bind_textdomain_codeset('iciedit', 'UTF-8');
+bind_textdomain_codeset('icinga-editor', 'UTF-8');
 putenv("LC_ALL=$locale");
 if (file_exists('../locale')) {
-    bindtextdomain('messages', '../locale');
+    bindtextdomain('icinga-editor', '../locale');
 }
-textdomain('messages');
+textdomain('icinga-editor');
 
 session_start();
 
-/*
+/**
  * Objekt uživatele VSUser nebo VSAnonym
- * @global EaseUser
+ * @global \Ease\User
  */
 $oUser = \Ease\Shared::user();
 $oUser->settingsColumn = 'settings';

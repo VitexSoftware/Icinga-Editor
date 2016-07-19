@@ -18,3 +18,5 @@ debian/conf/icinga-editor etc/sudoers.d
 debian/plugins/*        usr/lib/nagios/plugins
 debian/bin/iecfgimporter.php        usr/bin
 
+locale/cs_CZ/LC_MESSAGES/*.mo       usr/share/locale/cs_CZ/LC_MESSAGES
+locale/en_US/LC_MESSAGES/*.mo       usr/share/locale/cs_CZ/LC_MESSAGES
