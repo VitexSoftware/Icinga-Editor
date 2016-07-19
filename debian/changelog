@@ -1,4 +1,4 @@
-icinga-editor (0.200-2) UNRELEASED; urgency=medium
+icinga-editor (0.200-1) UNRELEASED; urgency=medium
 
   [ dvorak ]
   * Initial release. (Closes: #XXXXXX)
@@ -10,5 +10,6 @@ icinga-editor (0.200-2) UNRELEASED; urgency=medium
   * Debian Package Fixtures
   * Debian Package Fixtures
   * Debian Package Fixtures
+  * Debian Package Fixtures II
 
- -- vitex <vitex@developer.kancl.brevnov.czf>  Tue, 19 Jul 2016 11:13:47 +0200
+ -- vitex <vitex@developer.kancl.brevnov.czf>  Tue, 19 Jul 2016 12:26:26 +0200
