@@ -106,6 +106,9 @@ if [ ! -f $IECFG ] ; then
 
 fi
 
+cd /usr/share/icinga-editor
+composer --no-dev -o install
+
 #DEBHELPER#
 
 exit 0
