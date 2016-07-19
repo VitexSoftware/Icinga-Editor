@@ -1,19 +1,19 @@
 {
     "name": "vitexsoftware/icinga-editor",
-    "description": "Editor of Icinga Configuration files",
+    "description": "Editor of Icinga Configuration files (debian version)",
     "authors": [
         {
             "name": "vitex",
             "email": "info@vitexsoftware.cz"
         }
     ],
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "config": {
 	"vendor-dir": "/var/lib/icinga-editor"
     },
     "require": {
         "php": ">= 5.5.9",
-        "vitexsoftware/ease-framework": "dev-master"
+        "vitexsoftware/ease-framework": "1.1-stable"
     },
     "autoload": {
         "psr-4": {
