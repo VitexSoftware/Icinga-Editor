@@ -1,4 +1,4 @@
-icinga-editor (0.200-9) UNRELEASED; urgency=medium
+icinga-editor (0.200-10) UNRELEASED; urgency=medium
 
   [ dvorak ]
   * Initial release. (Closes: #XXXXXX)
@@ -21,5 +21,6 @@ icinga-editor (0.200-9) UNRELEASED; urgency=medium
   * Added missing Classes on debian
   * typo fix
   * Database Renamed to icinga_editor
+  * Fix User(s content) delete
 
- -- vitex <vitex@developer.kancl.brevnov.czf>  Tue, 19 Jul 2016 14:16:01 +0200
+ -- vitex <vitex@developer.kancl.brevnov.czf>  Tue, 19 Jul 2016 15:22:55 +0200
