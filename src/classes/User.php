@@ -373,7 +373,7 @@ class User extends \Ease\User
             $email = new \Ease\Mailer($this->getDataValue('email'),
                 _('Oznámení o zrušení účtu'));
             $email->setMailHeaders(['From' => EMAIL_FROM]);
-            $email->addItem(new \Ease\Html\Div("Právě jste byl/a smazán/a z Aplikace VSMonitoring s těmito přihlašovacími údaji:\n"));
+            $email->addItem(new \Ease\Html\Div(_("Právě jste byl/a smazán/a z Aplikace VSMonitoring s těmito přihlašovacími údaji:")."\n"));
             $email->addItem(new \Ease\Html\Div(' Login: '.$this->GetUserLogin()."\n"));
 
             $email->send();

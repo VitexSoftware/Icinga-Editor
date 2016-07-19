@@ -460,16 +460,16 @@ class Service extends Configurator
                 }
 
                 if ($allData[$adKey]['max_check_attempts'] == 0) {
-                    unset($allData[$adKey]['max_check_attempts']);
+                    $allData[$adKey]['max_check_attempts'] = null;
                 }
                 if ($allData[$adKey]['check_interval'] == 0) {
-                    unset($allData[$adKey]['check_interval']);
+                    $allData[$adKey]['check_interval'] = null;
                 }
                 if ($allData[$adKey]['retry_interval'] == 0) {
-                    $allData[$adKey]['retry_interval'] == 60;
+                    $allData[$adKey]['retry_interval'] = null;
                 }
                 if ($allData[$adKey]['notification_interval'] == 0) {
-                    unset($allData[$adKey]['notification_interval']);
+                    $allData[$adKey]['notification_interval'] = null;
                 }
             }
         }

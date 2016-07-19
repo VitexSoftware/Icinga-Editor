@@ -165,7 +165,7 @@ if ($testing) {
     fclose($testing);
 
     if (!intval($errorCount) && !is_null($WarningCount)) {
-        if (Vitexus/icinga_configurator::reloadIcinga()) {
+        if (Engine\Configurator::reloadIcinga()) {
             $oPage->container->addItem(_('Všechny vaše konfigurační soubory byly přegenerovány'));
             $oPage->container->addItem(new \Ease\TWB\LinkButton('main.php',
                 _('Hotovo').' '.\Ease\TWB\Part::GlyphIcon('ok-sign'), 'success'));
