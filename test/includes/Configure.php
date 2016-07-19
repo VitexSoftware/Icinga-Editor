@@ -17,7 +17,7 @@ define('DB_SERVER', 'localhost');
 /**
  * Uživatelské jméno k databázi
  */
-define('DB_SERVER_USERNAME', 'iciedit');
+define('DB_SERVER_USERNAME', 'icinga_editor');
 /**
  * Heslo k databázi
  */
@@ -25,7 +25,7 @@ define('DB_SERVER_PASSWORD', 'LojAstod9');
 /**
  * Název databáze
  */
-define('DB_DATABASE', 'iciedit');
+define('DB_DATABASE', 'icinga_editor');
 
 /**
  * Adresář pro zápis logů

@@ -42,7 +42,7 @@ define('DB_TYPE', 'mysql');
 /**
  * Prefix tabulek
  */
-define('DB_PREFIX', 'iciedit_');
+define('DB_PREFIX', 'icinga_editor_');
 
 /**
  * Adresář pro zápis logů 
