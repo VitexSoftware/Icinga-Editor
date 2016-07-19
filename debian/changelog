@@ -1,5 +1,9 @@
-icinga-editor (0.194-1) UNRELEASED; urgency=medium
+icinga-editor (-) UNRELEASED; urgency=medium
 
+  [ dvorak ]
   * Initial release. (Closes: #XXXXXX)
 
- -- dvorak <dvorak@linuxadmin.austro-bohemia.local>  Tue, 01 Sep 2015 16:53:02 +0200
+  [ vitex ]
+  * Fixed Form save null as zero Fixes & Updates
+
+ -- vitex <vitex@developer.kancl.brevnov.czf>  Tue, 19 Jul 2016 10:36:17 +0200
