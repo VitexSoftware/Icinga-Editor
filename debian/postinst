@@ -46,13 +46,16 @@ if [ ! -f $IECFG ] ; then
     echo > $IECFG 
     echo "<?php" >> $IECFG 
     echo "define('SEND_MAILS_FROM', '$SEND_MAILS_FROM');" >> $IECFG 
+    echo "define('DB_TYPE', 'mysql');" >> $IECFG 
     echo "define('DB_SERVER', 'localhost');" >> $IECFG 
     echo "define('DB_SERVER_USERNAME', '$dbuser');" >> $IECFG 
     echo "define('DB_SERVER_PASSWORD', '$dbpass');" >> $IECFG 
     echo "define('DB_DATABASE', '$dbname');" >> $IECFG 
     echo "define('DB_PREFIX', '');" >> $IECFG 
-    echo "define('LOG_DIRECTORY', '/var/tmp/');" >> $IECFG 
+    echo "define('LOG_DIRECTORY', '/var/log/');" >> $IECFG 
     echo "define('CFG_GENERATED', '/etc/icinga/generated/');" >> $IECFG 
+    echo "define('LOG_NAME', 'IcingaEditor');" >> $IECFG 
+    echo "define('LOG_TYPE', 'syslog');" >> $IECFG 
 
     IWCFG="/etc/dbconfig-common/icinga-web.conf"
     IW_SERVER_USERNAME=`cat $IWCFG | grep dbc_dbuser= | awk -F\' '{print $2}'`
