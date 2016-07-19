@@ -9,6 +9,8 @@ src/img/*		usr/share/icinga-editor/img
 src/images/*		usr/share/icinga-editor/images
 src/includes/*.php		usr/share/icinga-editor/includes
 src/classes/*.php		usr/share/icinga-editor/classes
+src/classes/UI/*.php		usr/share/icinga-editor/classes/UI
+src/classes/Engine/*.php	usr/share/icinga-editor/classes/Engine
 src/modules/*.php		usr/share/icinga-editor/modules
 debian/sql/install/*    usr/share/dbconfig-common/data/icinga-editor/install
 debian/conf/composer.json       usr/share/icinga-editor/
