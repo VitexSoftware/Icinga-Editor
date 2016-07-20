@@ -16,11 +16,10 @@ class HostIcon extends \Ease\Html\ImgTag
     /**
      * Zobrazí obrázek hosta
      *
-     * @param IEHost $host
+     * @param \Icinga\Editor\Engine\Host $host
      */
     public function __construct($host)
     {
-        $image = 'unknown.gif';
         $title = '';
         if (is_array($host)) {
             if (isset($host['icon_image'])) {
@@ -31,6 +30,11 @@ class HostIcon extends \Ease\Html\ImgTag
             $image = $host->getDataValue('icon_image');
             $title = $host->getName();
         }
+
+        if (!strlen($image)) {
+            $image = 'unknown.gif';
+        }
+
         parent::__construct('logos/'.$image, $title, null, null,
             ['class' => 'host_icon']);
     }

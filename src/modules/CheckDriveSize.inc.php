@@ -118,8 +118,8 @@ class CheckDriveSize extends \Icinga\Editor\UI\ServiceConfigurator
             new \Ease\Html\InputTextTag('MinCritUsed', $config['MinCritUsed']),
             '5%', _('Minimum value before a critcal is returned.')));
 
-        $this->form->addInput(new UI\TWBSwitch('ShowAll', $config['ShowAll']),
-            _('Zobrazit vše'), null,
+        $this->form->addInput(new \Icinga\Editor\UI\TWBSwitch('ShowAll',
+            $config['ShowAll']), _('Zobrazit vše'), null,
             _('Configures display format (if set shows all items not only failures, if set to long shows all cores).'));
 
         //    $this->form->addInput(new \Ease\Html\InputTextTag('orig', $this->commandParams[0], array('disabled')));
@@ -148,7 +148,7 @@ class CheckDriveSize extends \Icinga\Editor\UI\ServiceConfigurator
                             if (strstr($value, '\\\\')) {
                                 $config['Drive'] = 'Drive='.$value;
                                 $this->tweaker->service->setDataValue($this->tweaker->service->nameColumn,
-                                    IENSCPConfigGenerator::stripServiceName(_('NetDisk').' '.$value));
+                                    \Icinga\Editor\NSCPConfigBatGenerator::stripServiceName(_('NetDisk').' '.$value));
                                 $this->tweaker->service->setDataValue('display_name',
                                     sprintf(_('Volné místo síťové jednotky %s: '),
                                         $value));

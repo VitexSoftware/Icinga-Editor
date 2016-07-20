@@ -11,7 +11,7 @@
 namespace Icinga\Editor\Engine;
 
 /**
- * Description of IEHosts
+ * Konfigurator
  *
  * @author vitex
  */
@@ -437,7 +437,7 @@ class Configurator extends \Ease\Brick
             unset($data['useFromTemplate']);
         }
         foreach ($data as $key => $value) {
-            if ($value === 'NULL') {
+            if (strtoupper($value) === 'NULL') {
                 $data[$key] = null;
             }
             if (strstr($key, '#')) {
@@ -740,18 +740,20 @@ class Configurator extends \Ease\Brick
                     break;
             }
         }
-
-        if ($this->allowTemplating && $this->isTemplate()) {
+        $dbId = null;
+        if ($this->allowTemplating && $this->isTemplate() && isset($data['name'])) {
             if (isset($data[$this->getmyKeyColumn()]) && (int) $data[$this->getmyKeyColumn()]) {
                 $dbId = $this->dblink->queryToValue('SELECT `'.$this->myKeyColumn.'` FROM '.$this->myTable.' WHERE `name`'." = '".$data['name']."' AND ".$this->myKeyColumn.' != '.$data[$this->getmyKeyColumn()]);
             } else {
                 $dbId = $this->dblink->queryToValue('SELECT `'.$this->myKeyColumn.'` FROM '.$this->myTable.' WHERE `name`'." = '".$data['name']."'");
             }
         } else {
-            if (isset($data[$this->getmyKeyColumn()]) && (int) $data[$this->getmyKeyColumn()]) {
-                $dbId = $this->dblink->queryToValue('SELECT `'.$this->myKeyColumn.'` FROM '.$this->myTable.' WHERE '.$this->nameColumn." = '".$data[$this->nameColumn]."' AND ".$this->myKeyColumn.' != '.$data[$this->getmyKeyColumn()]);
-            } else {
-                $dbId = $this->dblink->queryToValue('SELECT `'.$this->myKeyColumn.'` FROM '.$this->myTable.' WHERE '.$this->nameColumn." = '".$data[$this->nameColumn]."'");
+            if (isset($data[$this->nameColumn])) {
+                if (isset($data[$this->getmyKeyColumn()]) && (int) $data[$this->getmyKeyColumn()]) {
+                    $dbId = $this->dblink->queryToValue('SELECT `'.$this->myKeyColumn.'` FROM '.$this->myTable.' WHERE '.$this->nameColumn." = '".$data[$this->nameColumn]."' AND ".$this->myKeyColumn.' != '.$data[$this->getmyKeyColumn()]);
+                } else {
+                    $dbId = $this->dblink->queryToValue('SELECT `'.$this->myKeyColumn.'` FROM '.$this->myTable.' WHERE '.$this->nameColumn." = '".$data[$this->nameColumn]."'");
+                }
             }
         }
         if (!is_null($dbId) && ($dbId != $this->getMyKey($data) )) {
@@ -771,7 +773,7 @@ class Configurator extends \Ease\Brick
                 }
             }
             $result = parent::saveToSQL($data, $searchForID);
-            if (!is_null($result) && (get_class($this->user) == 'IEUser')) {
+            if (!is_null($result) && (get_class($this->user) == 'Icinga\Editor\User')) {
                 \Ease\Shared::user()->setSettingValue('unsaved', true);
             }
         }

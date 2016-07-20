@@ -2,8 +2,6 @@
 
 namespace Icinga\Editor\UI;
 
-define('IE_VERSION', '0.196');
-
 /**
  * Třídy pro vykreslení stránky
  *

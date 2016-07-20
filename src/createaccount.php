@@ -43,7 +43,8 @@ if ($oPage->isPosted()) {
         $error = true;
         $oUser->addStatusMessage(_('mailová adresa je příliš krátká'), 'warning');
     } else {
-        if (!$oUser->IsEmail($emailAddress, true)) {
+
+        if (!filter_var($emailAddress, FILTER_VALIDATE_EMAIL)) {
             $error = true;
             $oUser->addStatusMessage(_('chyba v mailové adrese'), 'warning');
         } else {

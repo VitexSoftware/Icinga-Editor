@@ -21,7 +21,7 @@ class ServiceWizardForm extends \Ease\TWB\Form
     /**
      * Formulář založení pasivní služby
      *
-     * @param IEService $service
+     * @param \Icinga\Editor\Engine\Service $service
      */
     function __construct($service)
     {
@@ -32,11 +32,42 @@ class ServiceWizardForm extends \Ease\TWB\Form
     function finalize()
     {
         parent::finalize();
+
+
         $platform = $this->service->getDataValue('platform');
-        $this->addItem(new \Ease\TWB\FormGroup(_('Jméno'),
-            new \Ease\Html\InputTextTag('service_name',
-            $this->service->getName()), $this->service->getName(),
-            _('Název služby testu')));
+        $this->addItem(new \Ease\TWB\FormGroup(_('Platforma'),
+            new PlatformSelector('platform', null, $platform),
+            _('Platforma sledovaného stroje')));
+
+
+        $user = \Ease\Shared::user();
+        if ($user->getSettingValue('admin')) {
+            $this->addInput(new TWBSwitch('register',
+                $this->service->getDataValue('user_id'), 1,
+                ['onText' => _('Sluzba'), 'offText' => _('Predloha')]),
+                _('Typ konfigurace'));
+
+            $this->addInput(new \Ease\Html\InputTextTag('name',
+                $this->service->getDataValue('name')), _('Jmeno'), _('Nazev'),
+                _('Nazev zakladane sluzby nebo predlohy '));
+
+            $this->addInput(new TemplateSelect('use', $this->service,
+                $this->service->getDataValue('use'))
+                , _('Pouzit predlohu'));
+
+            $this->addInput(new UserSelect('user_id', null,
+                $this->service->getDataValue('user_id'))
+                , _('Vlastnik'));
+        } else {
+            $this->addItem(new \Ease\Html\InputHiddenTag('user_id',
+                $user->getUserID()));
+            $this->addItem(new \Ease\TWB\FormGroup(_('Jméno'),
+                new \Ease\Html\InputTextTag('service_name',
+                $this->service->getName()), $this->service->getName(),
+                _('Název služby testu')));
+        }
+
+
 
         $addNewItem = new \Ease\Html\InputSearchTag('check_command-remote',
             $this->service->getDataValue('check_command-remote'),
@@ -52,11 +83,6 @@ class ServiceWizardForm extends \Ease\TWB\Form
             $this->service->getDataValue('check_command-params')),
             $this->service->getDataValue('command-params'),
             _('Parametry vzdáleného příkazu. (Pro nrpe oddělované vykřičníkem.)')));
-
-
-        $this->addItem(new \Ease\TWB\FormGroup(_('Platforma'),
-            new PlatformSelector('platform', null, $platform),
-            _('Platforma sledovaného stroje')));
 
         $this->addItem(new \Ease\TWB\SubmitButton(_('Založit').'&nbsp'.\Ease\TWB\Part::GlyphIcon('forward'),
             'success'));

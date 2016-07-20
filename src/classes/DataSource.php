@@ -62,8 +62,8 @@ class DataSource extends \Ease\Brick
     /**
      * Vrací data pro Grid
      *
-     * @param IEcfg $handledObejct objekt poskytující data
-     * @param type $fallBackUrl
+     * @param Engine\Configurator $handledObejct objekt poskytující data
+     * @param string $fallBackUrl
      */
     public function __construct($handledObejct, $fallBackUrl = null)
     {
@@ -88,17 +88,17 @@ class DataSource extends \Ease\Brick
         $this->ajaxify();
     }
 
-    function setOrder($order)
+    public function setOrder($order)
     {
         $this->order = $order;
     }
 
     /**
-     * Nastaví URL pro znovuzobrazení stránky
+     * Nastaví URL pro znovuzobrazení stránky.
      *
      * @param type $url
      */
-    function setBackUrl($url)
+    public function setBackUrl($url)
     {
         $this->fallBackUrl = $url;
     }
@@ -106,7 +106,7 @@ class DataSource extends \Ease\Brick
     /**
      * řešení
      */
-    function ajaxify()
+    public function ajaxify()
     {
         $action = $this->webPage->getRequestValue('action');
 
@@ -157,7 +157,7 @@ class DataSource extends \Ease\Brick
     }
 
     /**
-     * Vrací celkový počet výsledků dotazu bez stránkování
+     * Vrací celkový počet výsledků dotazu bez stránkování.
      *
      * @param string $queryRaw
      * @return int
@@ -536,6 +536,6 @@ class DataSource extends \Ease\Brick
      */
     public function getWhere()
     {
-        return '';
+        return $this->getListingQueryWhere();
     }
 }

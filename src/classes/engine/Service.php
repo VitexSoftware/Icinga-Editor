@@ -82,6 +82,7 @@ class Service extends Configurator
         'action_url' => 'VARCHAR(64)',
         'icon_image' => 'VARCHAR(64)',
         'icon_image_alt' => 'VARCHAR(64)',
+        'autocfg' => 'BOOL',
         'configurator' => 'VARCHAR(64)',
         'platform' => "PLATFORM"
     ];
@@ -292,6 +293,9 @@ class Service extends Configurator
         'icon_image_alt' => [
             'severity' => 'advanced',
             'title' => 'alternativní ikona služby'],
+        'autocfg' => [
+            'severity' => 'advanced',
+            'title' => 'Je nutné službu po naklonování konfigurovat ručně ?'],
         'configurator' => [
             'severity' => 'advanced',
             'title' => 'Plugin pro konfiguraci služby'],
@@ -386,6 +390,7 @@ class Service extends Configurator
             unset($allData[$adKey]['check_command-remote']);
             unset($allData[$adKey]['check_command-params']);
             unset($allData[$adKey]['tcp_port']);
+            unset($allData[$adKey]['autocfg']);
             unset($allData[$adKey]['configurator']);
             unset($allData[$adKey]['price']);
         }
@@ -610,5 +615,60 @@ class Service extends Configurator
                     $newService->getName()), 'warning');
             return false;
         }
+    }
+
+    /**
+     * Vrací seznam dostupných položek
+     *
+     * @param int     $thisID       id jiného než přihlášeného uživatele
+     * @param varchar $platform     Testy pro zvolenou platformu
+     * @param boolean $withShared   Vracet i nasdílené položky
+     * @param array   $extraColumns další vracené položky
+     *
+     * @return array
+     */
+    public function getPlatformListing($thisID = null, $platform = 'generic',
+                                       $withShared = true, $extraColumns = null)
+    {
+        if (is_null($thisID)) {
+            $thisID = \Ease\Shared::user()->getUserID();
+        }
+        $columnsToGet = [$this->getmyKeyColumn(), $this->nameColumn, 'generate',
+            $this->myLastModifiedColumn, $this->userColumn];
+        if ($this->allowTemplating) {
+            $columnsToGet[] = 'register';
+            $columnsToGet[] = 'name';
+        }
+
+        if (!is_null($extraColumns)) {
+            $columnsToGet = array_merge($columnsToGet, $extraColumns);
+        }
+
+        if ($this->publicRecords && $withShared) {
+            $columnsToGet[] = 'public';
+
+            $data = $this->getColumnsFromSQL($columnsToGet,
+                $this->userColumn.'='.$thisID.' OR '.$this->userColumn.' IS NULL OR public=1 '.$this->platformCondition($platform),
+                $this->nameColumn, $this->getmyKeyColumn());
+        } else {
+            $data = $this->getColumnsFromSQL($columnsToGet,
+                $this->ownershipCondition($thisID).$this->platformCondition($platform),
+                $this->nameColumn, $this->getmyKeyColumn());
+        }
+
+        return $this->unserializeArrays($data);
+    }
+
+    /**
+     * SQL Fragment pro volbu platformy sluzby
+     * @param type $platform
+     */
+    public function platformCondition($platform)
+    {
+        $sql = '';
+        if (!is_null($platform)) {
+            $sql = " AND ((`platform` =  '".$platform."') OR (`platform` = 'generic') OR (`platform` IS NULL) OR (`platform`='') ) ";
+        }
+        return $sql;
     }
 }

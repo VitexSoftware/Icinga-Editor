@@ -114,9 +114,9 @@ class ContactTweaker extends \Ease\Html\Div
             $this->addItem(new \Ease\TWB\Panel(_('Přidat kontaktní údaj'),
                 'default', $form));
         } else {
-            $this->addItem(new \Ease\Html\DivTag('plno',
+            $this->addItem(new \Ease\Html\Div(
                 _('K tomuto kontaktu již není možné přidávat další údaje.'),
-                ['class' => 'well warning', 'style' => 'margin: 10px']));
+                ['class' => 'well warning', 'style' => 'margin: 10px', 'id' => 'plno']));
         }
     }
 }

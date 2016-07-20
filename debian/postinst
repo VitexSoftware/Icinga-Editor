@@ -110,7 +110,12 @@ if [ ! -f $IECFG ] ; then
 fi
 
 cd /usr/share/icinga-editor
-composer --no-dev -o install
+
+if [ -f composer.lock ] ; then
+    rm composer.lock
+fi
+
+composer --no-dev -o update
 
 #DEBHELPER#
 

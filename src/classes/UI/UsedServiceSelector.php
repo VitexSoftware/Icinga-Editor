@@ -41,17 +41,21 @@ class UsedServiceSelector extends \Ease\Container
             $parentServUsed = [];
             $host_active    = (boolean) $host->getCfgValue('active_checks_enabled');
             $host_passive   = (boolean) $host->getCfgValue('passive_checks_enabled');
+            $platform       = $host->getCfgValue('platform');
+
 
             $servicesAssigned = $service->dblink->queryToArray('SELECT '.$service->myKeyColumn.',display_name,'.$service->nameColumn.' FROM '.$service->myTable.' WHERE `host_name` LIKE \'%"'.$host->getName().'"%\'',
                 $service->myKeyColumn);
-
-            $allServices = $service->getListing(
-                null, true,
+            $allServices      = $service->getPlatformListing(
+                null, $platform, true,
                 [
                 'platform', 'parent_id', 'passive_checks_enabled', 'active_checks_enabled',
                 'display_name'
                 ]
             );
+
+
+
             foreach ($allServices as $serviceID => $serviceInfo) {
                 $servicePassive = (boolean) $serviceInfo['passive_checks_enabled'];
                 $serviceActive  = (boolean) $serviceInfo['active_checks_enabled'];

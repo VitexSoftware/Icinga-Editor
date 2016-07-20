@@ -1,6 +1,7 @@
 {
     "name": "vitexsoftware/icinga-editor",
     "description": "Editor of Icinga Configuration files (debian version)",
+    "version": "0.200.30",
     "authors": [
         {
             "name": "vitex",

@@ -404,4 +404,15 @@ class User extends \Ease\User
     {
         return $this->getDataValue('email');
     }
+
+    /**
+     * Vrací typ sloupečku
+     *
+     * @param  string $columnName
+     * @return string
+     */
+    function getColumnType($columnName)
+    {
+        return 'string';
+    }
 }

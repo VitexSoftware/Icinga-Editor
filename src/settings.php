@@ -56,12 +56,13 @@ $settingsFrame->addItem(new \Ease\Html\ATag('https://secure.gravatar.com/',
     $oUser, ['title' => 'klikni pro změnu ikony']));
 
 $settingsFrame->addItem(new \Ease\TWB\FormGroup(_('přihlašovací jméno'),
-    new UI\TextInputSaver('login', $oUser->getUserLogin())));
+    new UI\TextInputSaver('login', $oUser->getUserLogin(), $oUser)));
 $settingsFrame->addItem(new \Ease\TWB\LinkButton('changepassword.php',
     _('změna hesla')));
 
 $settingsFrame->addItem(new \Ease\TWB\FormGroup(_('emailová adresa'),
-    new UI\TextInputSaver('email', $oUser->getUserEmail(), ['id' => 'UserMail'])));
+    new UI\TextInputSaver('email', $oUser->getUserEmail(), $oUser,
+    ['id' => 'UserMail'])));
 
 $settingsFrame->addItem('<br>');
 

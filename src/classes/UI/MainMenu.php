@@ -24,11 +24,31 @@ class MainMenu extends \Ease\Html\Div
     /**
      * Add "Apply Changes" Button into menu
      *
-     * @param IEBootstrapMenu $nav
+     * @param BootstrapMenu $nav
      */
     private function changesButton($nav)
     {
-        if (\Ease\Shared::user()->getSettingValue('unsaved') == true) {
+        $user = \Ease\Shared::user();
+        if ($user->getSettingValue('admin')) {
+            if ($user->getSettingValue('unsaved') == true) {
+                $nav->addMenuItem(
+                    new \Ease\TWB\LinkButton(
+                    'regenall.php', _('Přegenerovat všechny konfiguráky'),
+                    'warning'
+                    ), 'right'
+                );
+            } else {
+                $nav->addMenuItem(
+                    new \Ease\TWB\LinkButton(
+                    'regenall.php', _('Přegenerovat všechny konfiguráky'),
+                    'default'
+                    ), 'right'
+                );
+            }
+        }
+
+
+        if ($user->getSettingValue('unsaved') == true) {
             $nav->addMenuItem(
                 new \Ease\Html\ATag(
                 'apply.php', _('Uplatnit změny'), ['class' => 'btn btn-success']
@@ -43,7 +63,7 @@ class MainMenu extends \Ease\Html\Div
     /**
      * Add Groups/Hosts into menu
      *
-     * @param IEBootstrapMenu $nav
+     * @param BootstrapMenu $nav
      */
     private function groupsHostsMenu($nav)
     {
@@ -191,8 +211,8 @@ class MainMenu extends \Ease\Html\Div
                       'extserviceinfo.php' => _('Rozšířené informace služeb'),
                       'serviceescalation.php' => _('Eskalace služeb') */
                     '' => '',
-                    'stemplate.php?action=new' => \Ease\TWB\Part::GlyphIcon('plus').' '._('Nová předloha sledované služby'),
-                    'stemplates.php' => \Ease\TWB\Part::GlyphIcon('list').' '._('Přehled předloh sled. sl.')
+                    'stemplate.php?action=new' => \Ease\TWB\Part::GlyphIcon('plus').' '._('Nová sada sledované služby'),
+                    'stemplates.php' => \Ease\TWB\Part::GlyphIcon('list').' '._('Přehled sad sledovanych služeb')
                     ]
                 );
             } else {
@@ -266,7 +286,7 @@ class MainMenu extends \Ease\Html\Div
                 'wpnag.php' => \Ease\TWB\Part::GlyphIcon('Info').' '._('Win Phone')];
 
             if (file_exists('/etc/apache2/conf-enabled/icinga-web.conf')) {
-                $results['/icinga-web/'] = \Ease\TWB\Part::GlyphIcon('Info').' '._('Web');
+                $results['/icinga-web/'] = \Ease\TWB\Part::GlyphIcon('Info').' '._('Icinga Web');
             }
 
             $nav->addDropDownMenu(_('Výsledky testů'), $results);

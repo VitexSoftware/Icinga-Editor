@@ -29,17 +29,24 @@ class TextInputSaver extends \Ease\Html\InputTextTag
     public $myLastModifiedColumn = 'DatSave';
 
     /**
+     * ID Zaznamu
+     * @var int
+     */
+    public $engine = null;
+
+    /**
      * Input pro editaci položek uživatele
      * @param string $name
      * @param mixed  $value
-     * @param string $Label
-     * @param int    $UserID
-     * @param array  $Properties
+     * @param \Icinga\Editor\Engine\Configurator    $engine Ukladajici trida
+     * @param string $label
+     * @param array  $properties
      */
-    public function __construct($name, $value = NULL, $Label = NULL,
-                                $Properties = NULL)
+    public function __construct($name, $value = NULL, $engine = null,
+                                $label = NULL, $properties = NULL)
     {
-        parent::__construct($name, $value, $Label, $Properties);
+        $this->engine = $engine;
+        parent::__construct($name, $value, $label, $properties);
     }
 
     /**
@@ -47,7 +54,7 @@ class TextInputSaver extends \Ease\Html\InputTextTag
      */
     public function finalize()
     {
-        $this->setTagProperties(['OnChange' => '$.post(\'DataSaver.php\', { SaverClass: \''.get_class($this).'\', Field: \''.$this->GetTagProperty('name').'\', Value: this.value } )']);
+        $this->setTagProperties(['OnChange' => '$.post(\'datasaver.php\', { SaverClass: \''.addslashes(get_class($this->engine)).'\', Field: \''.$this->getTagProperty('name').'\', Value: this.value, Key: '.$this->engine->getMyKey().' } )']);
 //        $this->enclosedElement->SetTagProperties(array('OnChange' => '$.ajax( { type: \"POST\", url: \"DataSaver.php\", data: \"SaverClass=' . get_class($this) . '&amp;Field=' . $this->enclosedElement->GetTagProperty('name') . '&amp;Value=\" + this.value , async: false, success : function () { alert (this); }, statusCode: { 404: function () { alert(\'page not found\');} } }); '));
     }
 

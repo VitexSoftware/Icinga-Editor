@@ -15,7 +15,9 @@ require_once 'includes/IEInit.php';
 $oPage->onlyForLogged();
 
 $serviceId      = $oPage->getRequestValue('service_id', 'int');
-$serviceName    = trim($oPage->getRequestValue('service_name'));
+$owner_id       = $oPage->getRequestValue('user_id', 'int');
+$name           = trim($oPage->getRequestValue('name'));
+$use            = trim($oPage->getRequestValue('use'));
 $remoteCmd      = trim($oPage->getRequestValue('check_command-remote'));
 $remoteCmdParam = trim($oPage->getRequestValue('check_command-params'));
 $platform       = trim($oPage->getRequestValue('platform'));
@@ -26,22 +28,42 @@ if (isset($platform)) {
     $service->setDataValue('platform', $platform);
 }
 
+if (strlen($name)) {
 
-if ($serviceName) {
+    if (!isset($use)) {
+        $use = 'generic-service';
+    }
+
+    if (($owner_id == 0) || ($owner_id == 'null')) {
+        $owner_id = null;
+    }
 
     $data = [
-        $service->userColumn => $oUser->getUserID(),
-        'service_description' => $serviceName,
-        'use' => 'generic-service',
-        'register' => true,
+        $service->userColumn => $owner_id,
+        'use' => $use,
         'generate' => true,
-        'display_name' => $serviceName,
         'active_checks_enabled' => 0,
         'passive_checks_enabled' => 1,
         'check_freshness' => 1,
 //          'freshness_threshold' => ?
         'check_command' => 'return-unknown'
     ];
+
+    if ($oPage->getRequestValue('register', 'int')) {
+        $data['service_description'] = $name;
+        $data['display_name']        = $name;
+        $data['register']            = true;
+    } else {
+        $data['name']     = $name;
+        $data['register'] = false;
+    }
+
+    if ($oUser->getSettingValue('admin')) {
+        $data['public'] = true;
+    } else {
+        $data['public'] = false;
+    }
+
 
     if (isset($remoteCmd)) {
         $data['check_command-remote'] = $remoteCmd;
@@ -55,15 +77,15 @@ if ($serviceName) {
 
     if ($service->saveToSQL()) {
         /*
-          $serviceGroup = new Engine\IEServiceGroup;
+          $serviceGroup = new Engine\ServiceGroup;
           if ($serviceGroup->loadDefault()) {
           $serviceGroup->setDataValue($serviceGroup->nameColumn, \Ease\Shared::user()->getUserLogin());
           $serviceGroup->addMember('members', $service->getId(), $service->getName());
           $serviceGroup->saveToSQL();
           }
          */
-        if (strlen(trim($service->getDataValue('check_command-remote')))) {
-            $oPage->addStatusMessage(_('Služba byla založena'), 'success');
+        $oPage->addStatusMessage(_('Služba byla založena'), 'success');
+        if (strlen(trim($service->getDataValue('check_command-remote'))) && $data['register']) {
             $oPage->redirect('service.php?service_id='.$service->getId());
             exit();
         } else {
@@ -74,6 +96,8 @@ if ($serviceName) {
 } else {
     if ($oPage->isPosted()) {
         $oPage->addStatusMessage(_('Prosím zastejte název služby'), 'warning');
+    } else {
+        $service->setDataValue($service->userColumn, $oUser->getUserID());
     }
 }
 

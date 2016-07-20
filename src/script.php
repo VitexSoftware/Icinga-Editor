@@ -23,6 +23,18 @@ switch ($oPage->getRequestValue('action')) {
     default :
         if ($oPage->isPosted()) {
             $script->takeData($_POST);
+            if (isset($_FILES['upload'])) {
+                if (!$script->getDataValue('filename')) {
+                    $script->setDataValue('filename',
+                        basename($_FILES['upload']['name']));
+                }
+                $script->setDataValue('body',
+                    file_get_contents($_FILES['upload']['tmp_name']));
+                $script->addStatusMessage(_('Skript byl nahran na server'),
+                    'success');
+            }
+
+
             if (!$script->getName()) {
                 $oUser->addStatusMessage(_('Není zadán název'), 'warning');
             }
@@ -65,7 +77,11 @@ switch ($oPage->getRequestValue('action')) {
         $scriptEditor = new UI\CfgEditor($script);
 
         $form = new \Ease\TWB\Form('Script', 'script.php', 'POST',
-            $scriptEditor, ['class' => 'form-horizontal']);
+            $scriptEditor,
+            ['class' => 'form-horizontal', 'enctype' => 'multipart/form-data']);
+
+        $form->addInput(new \Ease\Html\InputFileTag('upload'),
+            _('Odeslat soubor'), 'script.sh', _('(Textarea bude prepsana)'));
 
         if (!$script->getId()) {
             $form->addItem(new \Ease\TWB\SubmitButton(_('Založit'), 'success'));
@@ -116,7 +132,7 @@ if ($script->getId()) {
     }
 }
 
-$pageRow = new \Ease\TWB\Row;
+$pageRow = new \Ease\TWB\Row();
 $pageRow->addColumn(2, $infopanel);
 $pageRow->addColumn(6,
     new \Ease\TWB\Panel(_('Skript').' <strong>'.$script->getName().'</strong>',

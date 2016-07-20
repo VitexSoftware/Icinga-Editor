@@ -51,7 +51,7 @@ switch ($oPage->getRequestValue('action')) {
     default :
 
 
-        $contactEdit = new Engine\IEcfgEditor($contact);
+        $contactEdit = new UI\CfgEditor($contact);
 
         $form = new \Ease\Html\Form('Contact', 'contact.php', 'POST',
             $contactEdit, ['class' => 'form-horizontal']);
@@ -76,7 +76,7 @@ $serviceUsages = $service->getColumnsFromSQL([$service->getMyKeyColumn(), $servi
 
 $oPage->addItem(new UI\PageBottom());
 
-$infopanel = new Engine\IEInfoBox($contact);
+$infopanel = new UI\InfoBox($contact);
 $tools     = new \Ease\TWB\Panel(_('Nástroje'), 'warning');
 if ($contact->getId()) {
     $tools->addItem($contact->deleteButton());
