@@ -21,6 +21,7 @@ class HostIcon extends \Ease\Html\ImgTag
     public function __construct($host)
     {
         $title = '';
+        $image = null;
         if (is_array($host)) {
             if (isset($host['icon_image'])) {
                 $image = $host['icon_image'];

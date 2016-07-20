@@ -437,7 +437,7 @@ class Configurator extends \Ease\Brick
             unset($data['useFromTemplate']);
         }
         foreach ($data as $key => $value) {
-            if (strtoupper($value) === 'NULL') {
+            if (isset($value) && is_string($value) && (strtoupper($value) === 'NULL')) {
                 $data[$key] = null;
             }
             if (strstr($key, '#')) {

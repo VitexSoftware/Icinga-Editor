@@ -1,4 +1,4 @@
-icinga-editor (0.200-30) UNRELEASED; urgency=medium
+icinga-editor (0.201-31) UNRELEASED; urgency=medium
 
   [ dvorak ]
   * Initial release. (Closes: #XXXXXX)
@@ -75,5 +75,6 @@ icinga-editor (0.200-30) UNRELEASED; urgency=medium
     or notification_interval value for services & other misc fixes
   * HotfFix Invalid max_check_attempts, check_interval, retry_interval,
     or notification_interval value for services & other misc fixes
+  * Scripts file upload Many fixes and improvements
 
- -- vitex <vitex@developer.kancl.brevnov.czf>  Wed, 20 Jul 2016 18:31:43 +0200
+ -- vitex <vitex@developer.kancl.brevnov.czf>  Wed, 20 Jul 2016 18:58:43 +0200
