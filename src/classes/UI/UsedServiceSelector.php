@@ -114,7 +114,7 @@ class UsedServiceSelector extends \Ease\Container
 
             if (count($servicesAssigned)) {
                 $saveAsTemplateButton = new \Ease\TWB\LinkButton('stemplate.php?action=copyhost&host_id='.$host->getId(),
-                    _('Uložit jako předlohu'), 'success');
+                    _('Uložit zvolene jako sadu sledovanych sluzeb'), 'success');
                 $initialContent->footer($saveAsTemplateButton);
 
                 $initialContent->addItem('</br>');
@@ -138,18 +138,17 @@ class UsedServiceSelector extends \Ease\Container
                         )
                     );
                 }
-            } else {
-                $presetSelForm = new \Ease\TWB\Form('presetSelForm');
-                $presetSelForm->addItem(new \Ease\Html\InputHiddenTag($host->getmyKeyColumn(),
-                    $host->getId()));
-                $presetSelForm->addItem(new \Ease\Html\InputHiddenTag('action',
-                    'applystemplate'));
-                $presetSelForm->addItem(new StemplateSelect('stemplate_id'));
-                $presetSelForm->addItem(new \Ease\TWB\SubmitButton(_('Aplikovat předlohu'),
-                    'success'));
-                $presetSelForm->setTagClass('form-inline');
-                $initialContent->footer($presetSelForm);
             }
+            $presetSelForm = new \Ease\TWB\Form('presetSelForm');
+            $presetSelForm->addItem(new \Ease\Html\InputHiddenTag($host->getmyKeyColumn(),
+                $host->getId()));
+            $presetSelForm->addItem(new \Ease\Html\InputHiddenTag('action',
+                'applystemplate'));
+            $presetSelForm->addItem(new StemplateSelect('stemplate_id'));
+            $presetSelForm->addItem(new \Ease\TWB\SubmitButton(_('Aplikovat sadu sluzeb'),
+                'success'));
+            $presetSelForm->setTagClass('form-inline');
+            $initialContent->footer($presetSelForm);
         }
         $this->addItem($initialContent);
     }

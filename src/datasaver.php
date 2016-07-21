@@ -36,7 +36,7 @@ switch ($saver->getColumnType($field)) {
         $valueId = $oPage->getRequestValue('ValueID');
         if (is_null($saverClass) || is_null($field) || is_null($value) || is_null($key)
             || is_null($value) || is_null($valueId)) {
-            header('HTTP/1.0 400 Bad Request', 400);
+            header('HTTP/1.1 400 Bad Request', 400);
             die(_('Chybné volání'));
         }
 
@@ -54,21 +54,27 @@ switch ($saver->getColumnType($field)) {
         break;
     default:
         if (is_null($saverClass) || is_null($field) || is_null($value) || is_null($key)) {
-            header('HTTP/1.0 400 Bad Request', 400);
+            header('HTTP/1.1 400 Bad Request', 400);
             die(_('Chybné volání'));
         }
+        if (strtolower($value) == 'null') {
+            $value = null;
+        }
+
         $saver->takeData([$field => $value]);
         break;
 }
 
 if (is_null($saver->saveToSQL())) {
-    header('HTTP/1.0 501 Not Implemented', 501);
+    header('HTTP/1.1 501 Not Implemented', 501);
     $oUser->addStatusMessage(_('Chyba ukládání do databáze: ').' '.$saver->dblink->ErrorText.': '.
         _('Třída').': <strong>'.$saverClass.'</strong> '.
         _('Tabulka').': <strong>'.$saver->myTable.'</strong> '.
         _('Pole').': <strong>'.$field.'</strong> '.
         _('Hodnota').': <strong>'.$value.'</strong> <tt>'.$saver->dblink->LastQuery.'</tt>',
         'error');
+} else {
+    header("HTTP/1.1 200 OK");
 }
 
 

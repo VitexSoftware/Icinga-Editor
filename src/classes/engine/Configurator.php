@@ -723,13 +723,30 @@ class Configurator extends \Ease\Brick
             $data = $this->getData();
         }
         foreach ($this->useKeywords as $keyWord => $columnType) {
-            if (!isset($data[$keyWord])) {
+            if (!array_key_exists($keyWord, $data)) {
                 continue;
             }
 //            if (isset($data[$keyWord]) && !is_null($data[$keyWord]) && !is_array($data[$keyWord]) && !strlen($data[$keyWord]) && is_bool($data[$keyWord])) {
 //                $data[$keyWord] = null;
 //            }
             switch ($columnType) {
+                case 'BOOL':
+                    switch ($data[$keyWord]) {
+                        case 'true':
+                        case '1':
+                            $value = true;
+                            break;
+                        case 'false':
+                        case '':
+                            $value = false;
+                            break;
+                        case 'null' :
+                        case 'NULL' :
+                        default :
+                            $value = null;
+                    }
+                    break;
+
                 case 'ARRAY':
                 case 'IDLIST':
                     if (isset($data[$keyWord]) && is_array($data[$keyWord])) {

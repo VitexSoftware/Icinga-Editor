@@ -24,7 +24,7 @@ class CfgEditor extends \Ease\Container
     /**
      * Vytvoří editační formulář podle CFG objektu
      *
-     * @param IEcfg  $this->ObjectEdited
+     * @param \Icinga\Editor\Engine\Configurator  $this->ObjectEdited
      * @param string $onlyColumn         Vrací editační pole jen pro sloupec daného jména
      */
     public function __construct($cfgObject, $onlyColumn = null)
@@ -51,6 +51,7 @@ class CfgEditor extends \Ease\Container
             $this->addItem(new \Ease\Html\InputHiddenTag('class',
                 get_class($cfgObject)));
         }
+        \Ease\Shared::webPage()->includeJavaScript('js/datasaver.js');
     }
 
     /**
@@ -122,7 +123,6 @@ class CfgEditor extends \Ease\Container
                 null, true);
         }
 
-
         switch ($fType) {
             case 'INT':
             case 'STRING':
@@ -133,13 +133,14 @@ class CfgEditor extends \Ease\Container
                 if ($required) {
                     $fieldBlock->addItem(new \Ease\TWB\FormGroup($fieldName,
                         new \Ease\Html\InputTextTag($fieldName, $value,
-                        ['class' => 'required form-control', 'title' => $fieldName]),
-                        $hint, $keywordInfo['title']));
+                        ['class' => 'required form-control', 'title' => $fieldName,
+                        'OnChange' => $this->onChangeCode($fieldName)]), $hint,
+                        $keywordInfo['title']));
 //                    $fieldBlock->addItem(new \Ease\Html\Div( new EaseLabeledTextInput($fieldName, $value, $keywordInfo['title'], array('class' => 'required form-control', 'title' => $fieldName))));
                 } else {
                     $fieldBlock->addItem(new \Ease\TWB\FormGroup($fieldName,
                         new \Ease\Html\InputTextTag($fieldName, $value,
-                        ['title' => $fieldName, 'class' => 'form-control']),
+                        ['title' => $fieldName, 'class' => 'form-control', 'OnChange' => $this->onChangeCode($fieldName)]),
                         $hint, $keywordInfo['title']));
 //                    $fieldBlock->addItem(new EaseLabeledTextInput($fieldName, $value, $keywordInfo['title'], array('title' => $fieldName, 'class' => 'form-control')));
                 }
@@ -196,7 +197,7 @@ class CfgEditor extends \Ease\Container
             case 'TEXT':
                 $fieldBlock->addItem(new \Ease\TWB\FormGroup($keywordInfo['title'],
                     new \Ease\TWB\Textarea($fieldName, $value,
-                    ['style' => 'width:100%'])));
+                    ['style' => 'width:100%', 'OnChange' => $this->onChangeCode($fieldName)])));
                 break;
             case 'ENUM':
                 $flags       = explode(',',
@@ -204,7 +205,8 @@ class CfgEditor extends \Ease\Container
                 $selector    = $fieldBlock->addItem(
                     new \Ease\TWB\FormGroup($keywordInfo['title'],
                     new \Ease\Html\Select($fieldName,
-                    array_combine($flags, $flags)))
+                    array_combine($flags, $flags), null, null,
+                    ['OnChange' => $this->onChangeCode($fieldName)]))
                 );
                 break;
             case 'PLATFORM':
@@ -250,7 +252,8 @@ class CfgEditor extends \Ease\Container
                     'ORDER BY '.$nameColumn, $IDColumn);
 
                 $selector = $fieldBlock->addItem(new \Ease\Html\Select($fieldName,
-                    $value, $keywordInfo['title']));
+                    $value, $keywordInfo['title'],
+                    ['OnChange' => $this->onChangeCode($fieldName)]));
 
                 if (!$required) {
                     $selector->addItems(['NULL' => _('Výchozí')]);
@@ -363,7 +366,7 @@ class CfgEditor extends \Ease\Container
             case 'USER':
                 $fieldBlock->addItem(new UserSelect($fieldName, null,
                     $this->objectEdited->getDataValue($fieldName), null,
-                    ['style' => 'width: 100%']));
+                    ['style' => 'width: 100%', 'OnChange' => $this->onChangeCode($fieldName)]));
                 break;
             default:
                 $fieldBlock->addItem(new EaseLabeledTextInput($fieldName,
@@ -712,5 +715,11 @@ class CfgEditor extends \Ease\Container
     {
         return new \Ease\Html\CheckboxTag(null, false, 1,
             ['id' => 'useTpl'.$name]);
+    }
+
+    public function onChangeCode($fieldName)
+    {
+        return 'saveColumnData(\''.str_replace('\\', '-',
+                get_class($this->objectEdited)).'\', \''.$this->objectEdited->getMyKey().'\', \''.$fieldName.'\')';
     }
 }
