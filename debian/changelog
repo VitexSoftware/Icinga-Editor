@@ -1,4 +1,4 @@
-icinga-editor (0.202-2) UNRELEASED; urgency=medium
+icinga-editor (0.202-1) UNRELEASED; urgency=medium
 
   [ dvorak ]
   * Initial release. (Closes: #XXXXXX)
@@ -78,5 +78,7 @@ icinga-editor (0.202-2) UNRELEASED; urgency=medium
   * Scripts file upload Many fixes and improvements
   * typo fixes
   * typo fixes
+  * Opravy formulare editace. Hlavne js autosave a nakladani s hodnotou
+    NULL
 
- -- vitex <vitex@developer.kancl.brevnov.czf>  Wed, 20 Jul 2016 19:50:37 +0200
+ -- vitex <vitex@developer.kancl.brevnov.czf>  Thu, 21 Jul 2016 19:46:59 +0200

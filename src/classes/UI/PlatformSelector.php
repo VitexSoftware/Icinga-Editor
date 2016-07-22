@@ -38,22 +38,35 @@ class PlatformSelector extends \Ease\Html\Select
             null, true);
         \Ease\Shared::webPage()->addJavaScript('$("#'.$this->getTagID().'").change(function() {
             var oDropdown = $("#'.$this->getTagID().'").msDropdown().data("dd");
-            var text = oDropdown.get("selectedText");
-            console.log(text);
+            var value = oDropdown.get("selectedText");
 
         var saverClass = $("[name=\'class\']").val();
-        var keyId = $(".keyId").val();
-        var columnName = $(this).attr("name");
+        var key = $(".keyId").val();
+        var field = $(this).attr("name");
 
-var jqxhr = $.post( "datasaver.php?SaverClass=" + saverClass , { Field: columnName, Value: text, Key: keyId }  ,   function() {
-    console.log( "success" );
-})
-.done(function() {
-    console.log( "second success" );
-})
-.fail(function() {
-    console.log( "error" );
-});
+        if(key) {
+            var field = $(this).attr("name");
+            var input = $("[name=\''.$this->getTagName().'\']");
+
+            $.post(\'datasaver.php\', {
+                SaverClass: saverClass,
+                Field: field,
+                Value: value,
+                Key: key,
+                success: function () {
+                    input.parent().parent().css({borderColor: "#0f0", borderStyle: "solid"}).animate({borderWidth: \'5px\'}, \'slow\', \'linear\');
+                    input.parent().parent().animate({borderColor: \'gray\', borderWidth: \'1px\'});
+                }
+            }
+            ).fail(function () {
+                    input.parent().parent().css({borderColor: "#f00", borderStyle: "solid"}).animate({borderWidth: \'5px\'}, \'slow\', \'linear\');
+                    input.parent().parent().animate({borderColor: \'gray\', borderWidth: \'1px\'});
+            });
+        }
+
+
+
+
         });', null, true);
         \Ease\Shared::webPage()->includeJavaScript('js/msdropdown/jquery.dd.min.js');
         \Ease\Shared::webPage()->includeCss('css/msdropdown/dd.css');

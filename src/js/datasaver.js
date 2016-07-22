@@ -1,10 +1,14 @@
-function saveColumnData(saverClass, key, field) {
+function saveColumnData(saverClass, key, field, value) {
     var input = $("[name='" + field + "']");
+
+    if( (value == undefined) || (value == NaN) ){
+        value = input.val(); 
+    }
 
     $.post('datasaver.php', {
         SaverClass: saverClass,
         Field: field,
-        Value: $("[name='" + field + "']").val(),
+        Value: value,
         Key: key,
         success: function () {
             input.css({borderColor: "#0f0", borderStyle: "solid"}).animate({borderWidth: '5px'}, 'slow', 'linear');

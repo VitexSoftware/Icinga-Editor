@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Ano/Ne switch
  *
@@ -8,6 +7,7 @@
  * @author     Vitex <dvorak@austro-bohemia.cz>
  * @copyright  2015 Austro-Bohemia s.r.o.
  */
+
 namespace Icinga\Editor\UI;
 
 /**
@@ -18,7 +18,8 @@ namespace Icinga\Editor\UI;
 class YesNoSwitch extends TWBSwitch
 {
 
-    function __construct($name, $checked = false, $value = null, $properties = null)
+    function __construct($name, $checked = false, $value = null,
+                         $properties = null)
     {
         parent::__construct($name, $checked, 'on', $properties);
     }
@@ -26,24 +27,32 @@ class YesNoSwitch extends TWBSwitch
     function finalize()
     {
         parent::finalize();
-        $this->addJavascript('$("[name=\'' . $this->getTagName() . '\']").on(\'switchChange.bootstrapSwitch\', function(event, state) {
+        $this->addJavascript('$("[name=\''.$this->getTagName().'\']").on(\'switchChange.bootstrapSwitch\', function(event, state) {
 
         var saverClass = $("[name=\'class\']").val();
-        var keyId = $(".keyId").val();
-        var columnName = $(this).attr("name");
+        var key = $(".keyId").val();
 
-var jqxhr = $.post( "datasaver.php?SaverClass=" + saverClass , { Field: columnName, Value: state, Key: keyId }  ,   function() {
-    console.log( "success" );
-})
-.done(function() {
-    console.log( "second success" );
-})
-.fail(function() {
-    console.log( "error" );
-});
+        if(key) {
+            var field = $(this).attr("name");
+            var input = $("[name=\''.$this->getTagName().'\']");
 
-});
+            $.post(\'datasaver.php\', {
+                SaverClass: saverClass,
+                Field: field,
+                Value: state,
+                Key: key,
+                success: function () {
+                    input.parent().parent().css({borderColor: "#0f0", borderStyle: "solid"}).animate({borderWidth: \'5px\'}, \'slow\', \'linear\');
+                    input.parent().parent().animate({borderColor: \'gray\', borderWidth: \'1px\'});
+                }
+            }
+            ).fail(function () {
+                    input.parent().parent().css({borderColor: "#f00", borderStyle: "solid"}).animate({borderWidth: \'5px\'}, \'slow\', \'linear\');
+                    input.parent().parent().animate({borderColor: \'gray\', borderWidth: \'1px\'});
+            });
+        }
+
+        });
             ', null, true);
     }
-
 }

@@ -284,7 +284,8 @@ class CfgEditor extends \Ease\Container
                     'WHERE '.$sqlConds.' '.
                     'ORDER BY '.$nameColumn, $IDColumn);
 
-                $select = new \Ease\Html\Select($fieldName, null, $value);
+                $select = new \Ease\Html\Select($fieldName, null, $value, null,
+                    ['OnChange' => $this->onChangeCode($fieldName)]);
 
                 $selector = $fieldBlock->addItem(
                     new \Ease\TWB\FormGroup($keywordInfo['title'], $select)
@@ -717,9 +718,20 @@ class CfgEditor extends \Ease\Container
             ['id' => 'useTpl'.$name]);
     }
 
+    /**
+     * Vraci kod pro ukladani policka formulare po editaci
+     *
+     * @param string $fieldName
+     * @return string javascript
+     */
     public function onChangeCode($fieldName)
     {
-        return 'saveColumnData(\''.str_replace('\\', '-',
-                get_class($this->objectEdited)).'\', \''.$this->objectEdited->getMyKey().'\', \''.$fieldName.'\')';
+        $chCode = '';
+        $id     = $this->objectEdited->getMyKey();
+        if (!is_null($id)) {
+            $chCode = 'saveColumnData(\''.str_replace('\\', '-',
+                    get_class($this->objectEdited)).'\', \''.$id.'\', \''.$fieldName.'\')';
+        }
+        return $chCode;
     }
 }
