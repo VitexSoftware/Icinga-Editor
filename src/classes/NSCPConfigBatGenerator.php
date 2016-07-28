@@ -137,6 +137,7 @@ class NSCPConfigBatGenerator extends \Ease\Atom
             case 'windows':
                 $this->nscBatArray = ['
 @ECHO OFF
+powershell Set-ExecutionPolicy ByPass
 set NSCDIR=%ProgramFiles%\NSClient++\
 set NSCLIENT="%NSCDIR%\nscp.exe"
 set ICINGA_SERVER="'.$this->prefs['serverip'].'"
@@ -502,3 +503,4 @@ curl "'.Engine\Configurator::getBaseURL().'scriptget.php?script_id='.$script_id.
         }
     }
 }
+
