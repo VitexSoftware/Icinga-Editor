@@ -6,9 +6,8 @@ namespace Icinga\Editor;
  * Icinga Editor služby
  *
  * @package    IcingaEditor
- * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
- * @copyright  2012 Vitex@hippy.cz (G)
+ * @copyright  2012-2016 Vitex@hippy.cz (G)
  */
 require_once 'includes/IEInit.php';
 
@@ -88,8 +87,8 @@ switch ($oPage->getRequestValue('action')) {
 
 $service->saveMembers();
 
-$delete = $oPage->getGetValue('delete', 'bool');
-if ($delete == 'true') {
+$delete = $oPage->getGetValue('delete');
+if ($delete === 'true') {
     $service->delete();
 }
 
@@ -160,8 +159,6 @@ input.ui-button { width: 100%; }
 
             $tools->addItem(new \Ease\TWB\Panel(_('Výměna služby'), 'info',
                 new UI\ServiceSwapForm($service)));
-            $tools->addItem(new \Ease\TWB\Panel(_('Transfer'), 'warning',
-                $service->transferForm()));
         }
 
         $mainPanel->addItem(new \Ease\TWB\Panel(new \Ease\Html\H3Tag([new UI\PlatformIcon($service->getDataValue('platform')),

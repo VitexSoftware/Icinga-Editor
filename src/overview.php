@@ -17,8 +17,8 @@ $oPage->onlyForLogged();
 $oPage->addItem(new UI\PageTop(_('Icinga Editor')));
 $oPage->addPageColumns();
 
-$Timeperiod     = new Engine\Timeperiod();
-$pocTimeperiods = $Timeperiod->getMyRecordsCount();
+$timeperiod     = new Engine\Timeperiod();
+$pocTimeperiods = $timeperiod->getMyRecordsCount();
 if ($pocTimeperiods) {
     $success = $oPage->columnIII->addItem(new \Ease\Html\DivTag('Timeperiod',
         new \Ease\TWB\LinkButton('timeperiods.php',

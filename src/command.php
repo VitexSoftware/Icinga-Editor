@@ -38,9 +38,10 @@ switch ($oPage->getRequestValue('action')) {
 
 
 
-$delete = $oPage->getGetValue('delete', 'bool');
+$delete = $oPage->getGetValue('delete', 'string');
 if ($delete == 'true') {
     $command->delete();
+    $oPage->redirect('commands.php');
 }
 
 $oPage->addItem(new UI\PageTop(_('Editace příkazu').' '.$command->getName()));

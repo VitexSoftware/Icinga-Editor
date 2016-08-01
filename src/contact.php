@@ -28,7 +28,7 @@ if ($oPage->isPosted()) {
 
 $contact->saveMembers();
 
-$delete = $oPage->getGetValue('delete', 'bool');
+$delete = $oPage->getGetValue('delete', 'string');
 if ($delete == 'true') {
     $contact->delete();
     $oPage->redirect('contacts.php');

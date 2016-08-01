@@ -29,9 +29,10 @@ if ($oPage->isPosted()) {
 
 $serviceGroup->saveMembers();
 
-$delete = $oPage->getGetValue('delete', 'bool');
+$delete = $oPage->getGetValue('delete', 'string');
 if ($delete == 'true') {
     $serviceGroup->delete();
+    $oPage->redirect('servicegroups.php');
 }
 
 $oPage->addItem(new UI\PageTop(_('Editace skupiny služeb').' '.$serviceGroup->getName()));

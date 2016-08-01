@@ -157,8 +157,8 @@ switch ($oPage->getRequestValue('action')) {
                 }
             }
 
-            $delete = $oPage->getGetValue('delete', 'bool');
-            if ($delete == 'true') {
+            $delete = $oPage->getGetValue('delete', 'string');
+            if ($delete === 'true') {
                 $host->delete();
                 $oPage->redirect('hosts.php');
                 exit();

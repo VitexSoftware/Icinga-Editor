@@ -46,7 +46,7 @@ switch ($oPage->getRequestValue('action')) {
             }
         }
 
-        $delete = $oPage->getGetValue('delete', 'bool');
+        $delete = $oPage->getGetValue('delete', 'string');
         if ($delete == 'true') {
             $userGroup->delete();
             $oPage->redirect('usergroups.php');

@@ -58,7 +58,7 @@ switch ($oPage->getRequestValue('action')) {
             }
             $hostgroup->saveMembers();
         }
-        $delete = $oPage->getGetValue('delete', 'bool');
+        $delete = $oPage->getGetValue('delete', 'string');
         if ($delete == 'true') {
             $hostgroup->delete();
             $oPage->redirect('hostgroups.php');

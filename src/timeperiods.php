@@ -17,8 +17,8 @@ $oPage->onlyForLogged();
 $oPage->addItem(new UI\PageTop(_('Přehled časových period')));
 $oPage->addPageColumns();
 
-$Timeperiod = new Engine\Timeperiod();
-$Periods    = $Timeperiod->getListing();
+$timeperiod = new Engine\Timeperiod();
+$Periods    = $timeperiod->getListing();
 
 if ($Periods) {
 
@@ -32,7 +32,7 @@ if ($Periods) {
             $lastRow->setTagCss(['border-right' => '1px solid red']);
         }
         if ($cInfo['public'] == 1) {
-            if ($cInfo[$Timeperiod->userColumn] == $oUser->getUserID()) {
+            if ($cInfo[$timeperiod->userColumn] == $oUser->getUserID()) {
                 $lastRow->setTagCss(['border-left' => '1px solid green']);
             } else {
                 $lastRow->setTagCss(['border-left' => '1px solid blue']);

@@ -62,9 +62,10 @@ switch ($oPage->getRequestValue('action')) {
 
 
 
-$delete = $oPage->getGetValue('delete', 'bool');
+$delete = $oPage->getGetValue('delete', 'string');
 if ($delete == 'true') {
     $stemplate->delete();
+    $oPage->redirect('stemplates.php');
 }
 
 $oPage->addItem(new UI\PageTop(_('Editace předvolby sledovaných služeb').' '.$stemplate->getName()));

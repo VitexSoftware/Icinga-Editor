@@ -54,7 +54,7 @@ switch ($oPage->getRequestValue('action')) {
         break;
 }
 
-$delete = $oPage->getGetValue('delete', 'bool');
+$delete = $oPage->getGetValue('delete', 'string');
 if ($delete == 'true') {
     $service->delete();
     $oPage->redirect('host.php?host_id='.$host->getId());
