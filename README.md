@@ -19,9 +19,11 @@ Instalation:
     aptitude install icinga-editor
     
 
-Sorry: Current Default localization is CZECH. English translation is just finished. 
-Sorry: Only for Icinga 1.x yet ...
-Please test and start issues in case you have found one.
+Sorry
+=====
+
+  * We support only Icinga 1.x configuration yet ...
+  * Current Default localization is CZECH. (English translation is almost finished.)
 
 Screenshots
 -----------
