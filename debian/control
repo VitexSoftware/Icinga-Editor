@@ -12,7 +12,7 @@ Recommends: mysql-server,icinga-web, icinga-web-config-icinga, graphicsmagick-im
 Architecture: all
 Section: web
 Priority: optional
-Description: Editor konfigurace icingy
- Vygeneruje konfiguraci Iingy pro jednotlivé uživatele a jimi zvolené způsoby notifikace
+Description: Icinga Configuration Web Interface
+ Tool for generation icinga 1.x configuration for multiplete users.
 
 

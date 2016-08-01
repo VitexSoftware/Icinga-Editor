@@ -1,7 +1,8 @@
-Ease framework for Debian
+IcingaEditor for Debian
 -------------------
     
-    Is installed by standart way in /usr/share/php/Ease
+    Is installed by standard way in /usr/share/icinga-editor
+    By default you can use on: http://localhost/icinga-editor
 
- -- Vítězslav Dvořák <vitex@hippy.cz>  Ne říj 21 15:17:56 CEST 2012
+ -- Vítězslav Dvořák <vitex@hippy.cz>  Po Srp 01 00:00:00 CEST 2016
 

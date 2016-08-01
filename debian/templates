@@ -1,16 +1,18 @@
 Template: icinga-editor/SEND_MAILS_FROM
 Type: string
-Description: mail address of icinga admin 
+Description: mail address of icinga admin:
+ Where to send info about new signups etc.
  Or simply press enter to use auto genrated name
 
 Template: icinga-editor/ICINGA_SERVER_IP
 Type: string
-Description: IP address of ICINGA server
+Description: IP address of ICINGA server:
+ Enter public IP of this machine 
  Or simply press enter to use auto genrated value
 
 Template: icinga-editor/IMPORT_CONFIG
 Type: boolean
 Default: true
 Description: Import icinga config files ?
- Choose yes to import all config files in /etc/icinga directory into database.
+ Now you can import all config files in /etc/icinga directory into database.
  Imported files remain renamed to *.disabled

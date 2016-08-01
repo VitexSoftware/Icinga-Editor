@@ -1,6 +1,6 @@
-name: icinga_configurator
+name: Icinga Editor
 description: "file:///README.md"
-url: "https://www.vitexsoftware.cz/monitoring.php"
+url: "https://github.com/VitexSoftware/Icinga-Editor"
 tags: Monitoring, Configurator
 vendor: Debian
 target: Inventory,Database

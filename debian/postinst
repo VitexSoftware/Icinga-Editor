@@ -111,7 +111,7 @@ if [ ! -f $IECFG ] ; then
             # Check their answer.
             db_get icinga-editor/IMPORT_CONFIG
             if [ "$RET" = "true" ]; then
-                /usr/bin/iecfgimporter
+                iecfgimporter
             fi
     fi
 

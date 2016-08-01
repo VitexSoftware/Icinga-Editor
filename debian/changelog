@@ -1,4 +1,4 @@
-icinga-editor (1.0-1) UNRELEASED; urgency=medium
+icinga-editor (1.0-11) UNRELEASED; urgency=medium
 
   [ dvorak ]
   * Initial release. (Closes: #XXXXXX)
@@ -92,5 +92,15 @@ icinga-editor (1.0-1) UNRELEASED; urgency=medium
   * Screenshots cropped
   * Screenshots cropped
   * Screenshots cropped
+  * Fixed config files import during debian package install process
+  * Fixed config files import during debian package install process
+  * Fixed config files import during debian package install process
+  * Fixed config files import during debian package install process
+  * Fixed config files import during debian package install process
+  * Fixed config files import during debian package install process
+  * Fixed config files import during debian package install process
+  * Fixed config files import during debian package install process
+  * Fixed config files import during debian package install process
+  * Fixed config files import during debian package install process
 
- -- vitex <vitex@developer.kancl.brevnov.czf>  Mon, 01 Aug 2016 20:55:29 +0200
+ -- vitex <vitex@developer.kancl.brevnov.czf>  Tue, 02 Aug 2016 00:41:20 +0200
