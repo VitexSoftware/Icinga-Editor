@@ -6,9 +6,9 @@
 */
 
 @media (min-width: 1200px) {
-  .container {
-    width: auto;
-  }
+    .container {
+        width: auto;
+    }
 }
 
 .navbar {
@@ -125,3 +125,20 @@ a img.avatar { height: 30px; width: 30px;}
 }
 
 #smdrag:hover { background-color: #f5ad66; }
+
+body { background-image: linear-gradient(top, rgba(255,255,255,.5), rgba(255,255,255,0)); 
+       background-color: #e9eeef ;
+       box-shadow: 0 60px 50px -30px rgba(255, 255, 255, .5) inset;
+}
+
+.navbar {
+    background-color: #c1e4ec;
+    background-image: -webkit-linear-gradient(top, rgba(255,255,255,.5), rgba(255,255,255,0));
+    background-image: -moz-linear-gradient(top, rgba(255,255,255,.5), rgba(255,255,255,0));
+    background-image: -ms-linear-gradient(top, rgba(255,255,255,.5), rgba(255,255,255,0));
+    background-image: -o-linear-gradient(top, rgba(255,255,255,.5), rgba(255,255,255,0));
+    background-image: linear-gradient(top, rgba(255,255,255,.5), rgba(255,255,255,0));	
+    -moz-box-shadow: 0 60px 50px -30px rgba(255, 255, 255, .5) inset;
+    -webkit-box-shadow: 0 60px 50px -30px rgba(255, 255, 255, .5) inset;
+    box-shadow: 0 60px 50px -30px rgba(255, 255, 255, .5) inset;	
+}	

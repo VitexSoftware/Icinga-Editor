@@ -6,11 +6,11 @@ namespace Icinga\Editor;
  *
  * @author vitex
  */
-class NRPEConfigGenerator extends EaseAtom
+class NRPEConfigGenerator extends \Ease\Atom
 {
     /**
      * Objekt hostu
-     * @var IEHost
+     * @var Engine\Host
      */
     public $host = null;
 
@@ -41,13 +41,13 @@ class NRPEConfigGenerator extends EaseAtom
     /**
      * Generátor konfigurace NSC++
      *
-     * @param IEHost $host
+     * @param Engine\Host $host
      */
     public function __construct($host)
     {
         $this->host = $host;
 
-        $preferences = new Engine\IEPreferences;
+        $preferences = new Preferences();
         $this->prefs = $preferences->getPrefs();
         $this->cfgInit();
         $this->cfgGeneralSet();
