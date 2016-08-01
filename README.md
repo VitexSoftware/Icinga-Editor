@@ -27,23 +27,23 @@ Screenshots
 -----------
 
 Application Dashboard:
-[Dashboard](https://raw.githubusercontent.com/VitexSoftware/Icinga-Editor/master/doc/dashboard.png)
+![Dashboard](https://raw.githubusercontent.com/VitexSoftware/Icinga-Editor/master/doc/dashboard.png)
 
 Hosts Listing:
-[Hosts](https://raw.githubusercontent.com/VitexSoftware/Icinga-Editor/master/doc/hosts.png)
+![Hosts](https://raw.githubusercontent.com/VitexSoftware/Icinga-Editor/master/doc/hosts.png)
 
 Topology map:
-[Map](https://raw.githubusercontent.com/VitexSoftware/Icinga-Editor/master/doc/map.png)
+![Map](https://raw.githubusercontent.com/VitexSoftware/Icinga-Editor/master/doc/map.png)
 
 Nrpe config tool:
-[NRPE](https://raw.githubusercontent.com/VitexSoftware/Icinga-Editor/master/doc/nrpe.png)
+![NRPE](https://raw.githubusercontent.com/VitexSoftware/Icinga-Editor/master/doc/nrpe.png)
 
 Regenerate all all icinga config files for all users.
-[REGENALL](https://raw.githubusercontent.com/VitexSoftware/Icinga-Editor/master/doc/regenall.png)
+![REGENALL](https://raw.githubusercontent.com/VitexSoftware/Icinga-Editor/master/doc/regenall.png)
 
 Script for deployment editation:
-[Script](https://raw.githubusercontent.com/VitexSoftware/Icinga-Editor/master/doc/script.png)
+![Script](https://raw.githubusercontent.com/VitexSoftware/Icinga-Editor/master/doc/script.png)
 
-Windows pasive configuration script for [NSClient++](https://www.nsclient.org/)
-[WinNsca](https://raw.githubusercontent.com/VitexSoftware/Icinga-Editor/master/doc/winnsca.png)
+Windows pasive configuration script for [NSClient++](https://www.nsclient.org/):
+![WinNsca](https://raw.githubusercontent.com/VitexSoftware/Icinga-Editor/master/doc/winnsca.png)
 
