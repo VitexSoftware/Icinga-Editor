@@ -10,6 +10,7 @@
     ],
     "require": {
         "php": ">= 5.5.9",
+        "php-fileinfo": "*",
         "vitexsoftware/ease-framework": "dev-master"
     },
     "autoload": {

@@ -1206,8 +1206,8 @@ class Configurator extends \Ease\Brick
                                 $this->updateToSQL(
                                     [$this->getmyKeyColumn() => $this->getMyKey(),
                                         $this->webLinkColumn =>
-                                        (str_replace(basename(EaseWebPage::getUri()),
-                                            '', EaseWebPage::phpSelf(true))).
+                                        (str_replace(basename(\Ease\WebPage::getUri()),
+                                            '', \Ease\WebPage::phpSelf(true))).
                                         $this->keyword.'.php?'.
                                         $this->getmyKeyColumn().'='.
                                         $this->getMyKey()]);

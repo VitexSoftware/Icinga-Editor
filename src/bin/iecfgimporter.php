@@ -1,7 +1,6 @@
-#!/usr/bin/env php
+#!/usr/bin/env php -q
 <?php
-
-namespace Icinga\Editor;
+//namespace Icinga\Editor;
 
 /**
  * Import konfigurace ze souboru
@@ -11,21 +10,20 @@ namespace Icinga\Editor;
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2015 Vitex@hippy.cz (G)
  */
-chdir('/usr/share/icinga-editor');
-
-require_once 'includes/IEInit.php';
+//require_once '/usr/share/icinga-editor/includes/IEInit.php';
+require_once '../includes/IEInit.php';
 
 $params = array('public' => true, 'generate' => true);
 
-$importer = new Engine\Importer($params);
+$importer = new Icinga\Editor\Engine\Importer($params);
 $importer->importCfgFile('/etc/icinga/icinga.cfg');
 
 foreach ($importer->files as $cfgFile) {
     if ($cfgFile == '/etc/icinga/icinga.cfg') {
         continue;
     }
-    if (unlink($cfgFile)) {
-        echo $cfgFile . " X\n";
+    if (rename($cfgFile, $cfgFile.'.disabled')) {
+        echo $cfgFile." imported\n";
     }
 }
 

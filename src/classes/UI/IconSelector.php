@@ -113,24 +113,28 @@ class IconSelector extends \Ease\Container
      */
     public static function imageTypeOK($tmpfilename)
     {
-        $finfo = new finfo(FILEINFO_MIME);
-        $info  = $finfo->file($tmpfilename);
-        if (!$info) {
-            return false;
+        if (class_exists('\finfo')) {
+            $finfo = new \finfo(constant('FILEINFO_MIME'));
+            $info  = $finfo->file($tmpfilename);
+            if (!$info) {
+                return false;
+            }
+            if (strstr($info, 'gif')) {
+                return true;
+            }
+            if (strstr($info, 'png')) {
+                return true;
+            }
+            if (strstr($info, 'jpeg')) {
+                return true;
+            }
+            if (strstr($info, 'ico')) {
+                return true;
+            }
+        } else {
+            \Ease\Shared::webPage()->addStatusMessage('php-fileinfo ?!?!?',
+                'error');
         }
-        if (strstr($info, 'gif')) {
-            return true;
-        }
-        if (strstr($info, 'png')) {
-            return true;
-        }
-        if (strstr($info, 'jpeg')) {
-            return true;
-        }
-        if (strstr($info, 'ico')) {
-            return true;
-        }
-
         return false;
     }
 

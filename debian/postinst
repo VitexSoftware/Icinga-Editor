@@ -69,7 +69,7 @@ if [ ! -f $IECFG ] ; then
 
 
     #rm -f /etc/icinga-editor/config-db.sh
-    ln -s   /usr/share/icinga/htdocs/images/logos /usr/share/icinga-editor/logos
+    #(Moved To links file) ln -s   /usr/share/icinga/htdocs/images/logos /usr/share/icinga-editor/logos
     
 
     if [ "$1" = "configure" ]; then
@@ -104,7 +104,15 @@ if [ ! -f $IECFG ] ; then
                 fi
             fi
 
-            iecfgimporter.php
+            # Import configuration Question ?
+            db_input medium icinga-editor/IMPORT_CONFIG || true
+            db_go
+
+            # Check their answer.
+            db_get icinga-editor/IMPORT_CONFIG
+            if [ "$RET" = "true" ]; then
+                /usr/bin/iecfgimporter
+            fi
     fi
 
 fi

@@ -8,8 +8,17 @@
 
 namespace Icinga\Editor;
 
-require_once 'includes/Configure.php';
-require_once '../vendor/autoload.php';
+set_include_path(
+    get_include_path().PATH_SEPARATOR.
+    'includes'.PATH_SEPARATOR.
+    '../includes'.PATH_SEPARATOR.
+    '/usr/share/icinga-editor/includes/'.PATH_SEPARATOR.
+    '/var/lib/icinga-editor'.PATH_SEPARATOR.
+    '../vendor'
+);
+
+require_once 'Configure.php';
+require_once 'autoload.php';
 
 //Initialise Gettext
 $langs  = [

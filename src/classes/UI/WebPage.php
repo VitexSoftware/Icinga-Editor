@@ -7,7 +7,7 @@ namespace Icinga\Editor\UI;
  *
  * @package   VitexSoftware
  * @author    Vitex <vitex@hippy.cz>
- * @copyright 2009-2011 Vitex@hippy.cz (G)
+ * @copyright 2009-2016 Vitex@hippy.cz (G)
  */
 class WebPage extends \Ease\TWB\WebPage
 {
@@ -103,4 +103,5 @@ class WebPage extends \Ease\TWB\WebPage
     {
         return parent::onlyForLogged($loginPage.'?backurl='.urlencode($_SERVER['REQUEST_URI']));
     }
+
 }

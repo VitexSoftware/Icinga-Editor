@@ -18,7 +18,7 @@ debian/conf/icinga-editor.conf	etc/apache2/conf-available
 debian/conf/icinga-editor.service etc/avahi/services
 debian/conf/icinga-editor etc/sudoers.d
 debian/plugins/*        usr/lib/nagios/plugins
-debian/bin/iecfgimporter.php        usr/bin
+src/bin/iecfgimporter.php        usr/bin
 
 locale/cs_CZ/LC_MESSAGES/*.mo       usr/share/locale/cs_CZ/LC_MESSAGES
 locale/en_US/LC_MESSAGES/*.mo       usr/share/locale/cs_CZ/LC_MESSAGES

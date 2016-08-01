@@ -611,6 +611,11 @@ class Host extends Configurator
         return $services;
     }
 
+    /**
+     * Info Block
+     * 
+     * @return \Ease\Html\Div
+     */
     public function getInfoBlock()
     {
         $block = parent::getInfoBlock();
