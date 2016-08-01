@@ -11,7 +11,7 @@ class ServiceConfigurator extends \Ease\Html\Div
 {
     /**
      * Objekt tweakeru
-     * @var IEServiceTweaker
+     * @var ServiceTweaker
      */
     public $tweaker = null;
 
@@ -31,11 +31,11 @@ class ServiceConfigurator extends \Ease\Html\Div
      * Položky vždy určené k tweakování
      * @var array
      */
-    public $commonFields = ['check_interval'];
+    public $commonFields = ['check_interval', 'check_command-params'];
 
     /**
      * Obecný modul pro konfiguraci služby
-     * @param IEServiceTweaker $tweaker
+     * @param ServiceTweaker $tweaker
      */
     public function __construct($tweaker)
     {

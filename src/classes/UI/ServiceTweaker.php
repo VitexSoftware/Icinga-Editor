@@ -11,19 +11,19 @@ class ServiceTweaker extends \Ease\Html\Div
 {
     /**
      * Objekt příkazu
-     * @var IECommand
+     * @var \Icinga\Editor\Engine\Command
      */
     public $command = null;
 
     /**
      * Objekt služby
-     * @var IEService
+     * @var \Icinga\Editor\Engine\Service
      */
     public $service = null;
 
     /**
      * Objekt Hosta
-     * @var IEHost
+     * @var \Icinga\Editor\Engine\Host
      */
     public $host = null;
 
@@ -36,8 +36,8 @@ class ServiceTweaker extends \Ease\Html\Div
     /**
      * Umožňuje měnit parametry služeb
      *
-     * @param IEService $service
-     * @param IEHost    $host    ObjektHostu
+     * @param \Icinga\Editor\Engine\Service $service
+     * @param \Icinga\Editor\Engine\Host    $host    ObjektHostu
      */
     public function __construct($service, $host)
     {

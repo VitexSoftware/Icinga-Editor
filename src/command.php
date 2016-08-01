@@ -53,7 +53,7 @@ $oPage->addItem(new UI\PageTop(_('Editace příkazu').' '.$command->getName()));
 
 switch ($oPage->getRequestValue('action')) {
     case 'delete':
-        $form = new \Ease\Container;
+        $form = new \Ease\Container();
         $form->addItem(new \Ease\Html\H2Tag($command->getName()));
 
         $confirmator = $form->addItem(new \Ease\TWB\Panel(_('Opravdu smazat ?')),

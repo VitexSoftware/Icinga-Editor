@@ -58,6 +58,9 @@ class ServiceWizardForm extends \Ease\TWB\Form
             $this->addInput(new UserSelect('user_id', null,
                 $this->service->getDataValue('user_id'))
                 , _('Vlastnik'));
+
+            $this->addInput(new YesNoSwitch('autocfg', false, 1),
+                _('Nabizet konfiguracni dialog'));
         } else {
             $this->addItem(new \Ease\Html\InputHiddenTag('user_id',
                 $user->getUserID()));

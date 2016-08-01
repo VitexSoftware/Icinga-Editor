@@ -50,6 +50,12 @@ if ($name) {
         'check_command' => 'return-unknown'
     ];
 
+    if ($oPage->getRequestValue('autocfg') == 'on') {
+        $data['autocfg'] = 1;
+    } else {
+        $data['autocfg'] = 0;
+    }
+
     if ($oPage->getRequestValue('register', 'int')) {
         $data['service_description'] = $name;
         $data['display_name']        = $name;

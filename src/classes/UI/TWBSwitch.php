@@ -43,7 +43,7 @@ class TWBSwitch extends \Ease\Html\CheckboxTag
         \Ease\TWB\Part::twBootstrapize();
         $this->includeCss('/javascript/twitter-bootstrap/css/bootstrap-switch.css');
         $this->includeJavascript('/javascript/twitter-bootstrap/js/bootstrap-switch.js');
-        $this->addJavascript('$("[name=\''.$this->getTagName().'\']").bootstrapSwitch({'.\Ease\TWB\Part::partPropertiesToString($this->properties).'})',
+        $this->addJavascript('$("[name=\''.$this->getTagName().'\']").bootstrapSwitch('.json_encode($this->properties).')',
             null, true);
     }
 }

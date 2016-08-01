@@ -106,7 +106,7 @@ if ($oPage->isPosted()) {
 
             $newOUser->loginSuccess();
 
-            $email = $oPage->addItem(new EaseMail($newOUser->getDataValue('email'),
+            $email = $oPage->addItem(new \Ease\Mailer($newOUser->getDataValue('email'),
                 _('Potvrzení registrace')));
             $email->setMailHeaders(['From' => EMAIL_FROM]);
             $email->addItem(new \Ease\Html\Div("Právě jste byl/a zaregistrován/a do Aplikace Monitoring s těmito přihlašovacími údaji:\n"));
@@ -114,13 +114,13 @@ if ($oPage->isPosted()) {
             $email->addItem(new \Ease\Html\Div(' Heslo: '.$_POST['password']."\n"));
             $email->send();
 
-            $email = $oPage->addItem(new EaseMail(SEND_INFO_TO,
+            $email = $oPage->addItem(new \Ease\Mailer(SEND_INFO_TO,
                 sprintf(_('Nová registrace do Monitoringu: %s'),
                     $newOUser->GetUserLogin())));
             $email->setMailHeaders(['From' => EMAIL_FROM]);
             $email->addItem(new \Ease\Html\Div(_("Právě byl zaregistrován nový uživatel:\n")));
-            $email->addItem(new \Ease\Html\DivTag('login',
-                ' Login: '.$newOUser->GetUserLogin()."\n"));
+            $email->addItem(new \Ease\Html\Div(
+                ' Login: '.$newOUser->GetUserLogin()."\n", ['id' => 'login']));
             $email->addItem($newOUser->customerAddress);
             $email->send();
 

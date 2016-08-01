@@ -76,6 +76,7 @@ class BootstrapMenu extends \Ease\TWB\Navbar
                 ['id' => 'StatusMessages', 'class' => 'well', 'title' => _('kliknutím skryjete zprávy'),
                 'data-state' => 'down']));
             $this->addItem(new \Ease\Html\Div(null, ['id' => 'smdrag']));
+            $this->webPage->cleanMessages();
         }
         parent::draw();
     }

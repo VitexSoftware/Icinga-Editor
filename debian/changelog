@@ -1,4 +1,4 @@
-icinga-editor (0.202-1) UNRELEASED; urgency=medium
+icinga-editor (0.202-5) UNRELEASED; urgency=medium
 
   [ dvorak ]
   * Initial release. (Closes: #XXXXXX)
@@ -80,5 +80,13 @@ icinga-editor (0.202-1) UNRELEASED; urgency=medium
   * typo fixes
   * Opravy formulare editace. Hlavne js autosave a nakladani s hodnotou
     NULL
+  * All widgets on on command edit form gives you visual response about
+    colum value save success.
+  * All widgets on on command edit form gives you visual response about
+    colum value save success.
+  * All widgets on on command edit form gives you visual response about
+    colum value save success.
+  * All widgets on on command edit form gives you visual response about
+    colum value save success.
 
- -- vitex <vitex@developer.kancl.brevnov.czf>  Thu, 21 Jul 2016 19:46:59 +0200
+ -- vitex <vitex@developer.kancl.brevnov.czf>  Mon, 25 Jul 2016 14:25:05 +0200

@@ -10,8 +10,6 @@
         <group name="Monitoring">
             <file>file:/home/vitex/Projects/VitexSoftware/iciedit/src/includes/Configure.php</file>
         </group>
-        <group>
-            <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/src/classes/engine/Configurator.php</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

@@ -33,15 +33,13 @@ class MainMenu extends \Ease\Html\Div
             if ($user->getSettingValue('unsaved') == true) {
                 $nav->addMenuItem(
                     new \Ease\TWB\LinkButton(
-                    'regenall.php', _('Přegenerovat všechny konfiguráky'),
-                    'warning'
+                    'regenall.php', _('Přegenerovat vše'), 'warning'
                     ), 'right'
                 );
             } else {
                 $nav->addMenuItem(
                     new \Ease\TWB\LinkButton(
-                    'regenall.php', _('Přegenerovat všechny konfiguráky'),
-                    'default'
+                    'regenall.php', _('Přegenerovat vše'), 'default'
                     ), 'right'
                 );
             }
@@ -301,4 +299,5 @@ class MainMenu extends \Ease\Html\Div
         \Ease\JQuery\Part::jQueryze($this);
         $this->includeJavaScript('js/slideupmessages.js');
     }
+
 }
