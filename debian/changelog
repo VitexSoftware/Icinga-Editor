@@ -1,4 +1,4 @@
-icinga-editor (0.202-6) UNRELEASED; urgency=medium
+icinga-editor (1.0-1) UNRELEASED; urgency=medium
 
   [ dvorak ]
   * Initial release. (Closes: #XXXXXX)
@@ -89,5 +89,8 @@ icinga-editor (0.202-6) UNRELEASED; urgency=medium
   * All widgets on on command edit form gives you visual response about
     colum value save success.
   * Fixings
+  * Screenshots cropped
+  * Screenshots cropped
+  * Screenshots cropped
 
- -- vitex <vitex@developer.kancl.brevnov.czf>  Mon, 01 Aug 2016 14:25:44 +0200
+ -- vitex <vitex@developer.kancl.brevnov.czf>  Mon, 01 Aug 2016 20:55:29 +0200

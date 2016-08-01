@@ -19,7 +19,8 @@ $hostgroup = new Engine\Hostgroup($oPage->getRequestValue('hostgroup_id', 'int')
 
 switch ($oPage->getRequestValue('action')) {
     case 'contactAsign':
-        $contact = new Engine\Contact($oPage->getRequestValue('contact_id', 'int'));
+        $contact = new Engine\Contact($oPage->getRequestValue('contact_id',
+                'int'));
         if ($contact->getId()) {
             $host         = new Engine\Host;
             $groupMembers = $hostgroup->getMembers();

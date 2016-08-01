@@ -183,4 +183,5 @@ class ServiceConfigurator extends \Ease\Html\Div
 
         $this->form->addItem(new \Ease\Html\LabelTag('V případě uložení kopie přestane sledovaný host používat původní službu.'));
     }
+
 }

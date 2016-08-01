@@ -1,4 +1,5 @@
 <?php
+
 namespace Icinga\Editor;
 
 /**
@@ -12,7 +13,7 @@ namespace Icinga\Editor;
 require_once 'includes/IEInit.php';
 
 $host_id = $oPage->getRequestValue('host_id', 'int');
-$hash = $oPage->getRequestValue('hash');
+$hash    = $oPage->getRequestValue('hash');
 
 if ($host_id && $hash) {
     $host = new Engine\Host($host_id);
@@ -22,7 +23,7 @@ if ($host_id && $hash) {
     } else {
         echo sprintf(_('Chyba potvrzení konfigurace'), $host->getName());
     }
-    echo "\n<br>" . _('Sledovat cestu k hostu') . ":\n";
+    echo "\n<br>"._('Sledovat cestu k hostu').":\n";
 
     if (isset($_SERVER['REQUEST_SCHEME'])) {
         $scheme = $_SERVER['REQUEST_SCHEME'];
@@ -30,11 +31,11 @@ if ($host_id && $hash) {
         $scheme = 'http';
     }
 
-    $enterPoint = $scheme . '://' . $_SERVER['SERVER_NAME'] . dirname($_SERVER['REQUEST_URI']) . '/';
+    $enterPoint = $scheme.'://'.$_SERVER['SERVER_NAME'].dirname($_SERVER['REQUEST_URI']).'/';
     $enterPoint = str_replace('\\', '', $enterPoint); //Win Hack
-    $confirmUrl = $enterPoint . 'watchroute.php?action=parent&host_id=' . $host_id . '&ip=' . $_SERVER['REMOTE_ADDR'];
+    $confirmUrl = $enterPoint.'watchroute.php?action=parent&host_id='.$host_id.'&ip='.$_SERVER['REMOTE_ADDR'];
 
-    echo '<a href="' . $confirmUrl . '"> ' . $confirmUrl . ' </a>';
+    echo '<a href="'.$confirmUrl.'"> '.$confirmUrl.' </a>';
 } else {
     die(_('Chybné volání'));
 }

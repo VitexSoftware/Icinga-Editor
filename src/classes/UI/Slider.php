@@ -1,6 +1,6 @@
 <?php
-namespace Icinga\Editor\UI;
 
+namespace Icinga\Editor\UI;
 
 /**
  * Description of \Ease\TWB\Slider
@@ -42,13 +42,13 @@ class Slider extends \Ease\Html\InputTextTag
 
         $id = $this->getTagID();
         if ($id) {
-            $me = '#' . $id;
+            $me = '#'.$id;
         } else {
-            $me = "input[name='" . $this->getTagName() . "']";
+            $me = "input[name='".$this->getTagName()."']";
         }
 
         $this->addJavaScript(
-            '$("' . $me . '").slider();', null, true
+            '$("'.$me.'").slider();', null, true
         );
     }
 

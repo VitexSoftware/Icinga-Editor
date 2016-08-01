@@ -98,7 +98,8 @@ if ($PocCommands) {
     $success = $oPage->columnIII->addItem(new \Ease\Html\Div(
         new \Ease\TWB\LinkButton('commands.php',
         _('<i class="icon-list"></i>').' '.sprintf(_('Definováno %s příkazů'),
-            $PocCommands)), ['class' => 'alert alert-success', 'id' => 'Command']));
+            $PocCommands)),
+        ['class' => 'alert alert-success', 'id' => 'Command']));
 }
 
 $pocServices = $service->getMyRecordsCount($userID);
@@ -106,7 +107,8 @@ if ($pocServices) {
     $success = $oPage->columnIII->addItem(new \Ease\Html\Div(
         new \Ease\TWB\LinkButton('services.php',
         _('<i class="icon-list"></i>').' '.sprintf(_('Definováno %s služeb'),
-            $pocServices)), ['class' => 'alert alert-success', 'id' => 'Service']));
+            $pocServices)),
+        ['class' => 'alert alert-success', 'id' => 'Service']));
 } else {
     if ($PocCommands) {
         if ($pocTimeperiods) {

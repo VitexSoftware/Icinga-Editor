@@ -24,4 +24,5 @@ class StemplateSelect extends \Ease\Html\Select
         }
         return $tpls;
     }
+
 }

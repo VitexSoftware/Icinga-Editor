@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Formulář testu webového obsahu
  *
@@ -8,6 +7,7 @@
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2014 Vitex@hippy.cz (G)
  */
+
 namespace Icinga\Editor\modules;
 
 /**
@@ -21,7 +21,7 @@ class web_content extends \Icinga\Editor\UI\ServiceConfigurator
     function init()
     {
         $hostname = $this->tweaker->host->getDataValue('host_name');
-        $command = 'http://' . $hostname . '/!' . _('Vše v pořádku');
+        $command  = 'http://'.$hostname.'/!'._('Vše v pořádku');
         $this->tweaker->service->setDataValue('check_command-params', $command);
         return TRUE;
     }
@@ -39,9 +39,15 @@ class web_content extends \Icinga\Editor\UI\ServiceConfigurator
             $errText = '';
         }
 
-        $this->form->addItem(new \Ease\TWB\FormGroup(_('Sledované url'), new \Ease\Html\InputTextTag('testUrl', $testUrl), '', _('Adresa sledované stránky')));
-        $this->form->addItem(new \Ease\TWB\FormGroup(_('Očekávaný obsah'), new \Ease\Html\InputTextTag('reqText', $reqText), '', _('Text očekávaný na stránce v rámci bezchybného obsahu')));
-        $this->form->addItem(new \Ease\TWB\FormGroup(_('Nechtěný obsah'), new \Ease\Html\InputTextTag('errText', $errText), '', _('Neočekávaný text, např. "Error" nebo jiný fragment chybového hlášení')));
+        $this->form->addItem(new \Ease\TWB\FormGroup(_('Sledované url'),
+            new \Ease\Html\InputTextTag('testUrl', $testUrl), '',
+            _('Adresa sledované stránky')));
+        $this->form->addItem(new \Ease\TWB\FormGroup(_('Očekávaný obsah'),
+            new \Ease\Html\InputTextTag('reqText', $reqText), '',
+            _('Text očekávaný na stránce v rámci bezchybného obsahu')));
+        $this->form->addItem(new \Ease\TWB\FormGroup(_('Nechtěný obsah'),
+            new \Ease\Html\InputTextTag('errText', $errText), '',
+            _('Neočekávaný text, např. "Error" nebo jiný fragment chybového hlášení')));
     }
 
     /**
@@ -51,7 +57,7 @@ class web_content extends \Icinga\Editor\UI\ServiceConfigurator
      */
     public function reconfigureService()
     {
-        $page = \Ease\Shared::webPage();
+        $page    = \Ease\Shared::webPage();
         $testUrl = $page->getRequestValue('testUrl');
         $reqText = $page->getRequestValue('reqText');
         $errText = $page->getRequestValue('errText');
@@ -59,7 +65,7 @@ class web_content extends \Icinga\Editor\UI\ServiceConfigurator
 
         if ($testUrl && $reqText) {
             if (substr($testUrl, 0, 4) != 'http') {
-                $testUrl = 'http://' . $testUrl;
+                $testUrl = 'http://'.$testUrl;
             }
 
             $regex = "((https?|ftp)\:\/\/)?"; // SCHEME
@@ -70,16 +76,17 @@ class web_content extends \Icinga\Editor\UI\ServiceConfigurator
             $regex .= "(\?[a-z+&\$_.-][a-z0-9;:@&%=+\/\$_.-]*)?"; // GET Query
             $regex .= "(#[a-z_.-][a-z0-9+\$_.-]*)?"; // Anchor 
             if (!preg_match("/^$regex$/", $testUrl)) {
-                $page->addStatusMessage(_('Neplatné url'),'error');
+                $page->addStatusMessage(_('Neplatné url'), 'error');
                 return false;
             }
 
-            $command = $testUrl . '!' . $reqText;
-            $command .= '!' . $errText;
+            $command = $testUrl.'!'.$reqText;
+            $command .= '!'.$errText;
             $command .= '!10'; //Timeout
-            
 
-            $this->tweaker->service->setDataValue('check_command-params', $command);
+
+            $this->tweaker->service->setDataValue('check_command-params',
+                $command);
 
             return parent::reconfigureService();
         }

@@ -64,7 +64,9 @@ var cola;
          * If G[i][j] <= 1 then it is used as a weighting on the contribution of the variance between ideal and actual separation between i and j to the goal function
          */
         function Descent(x, D, G) {
-            if (G === void 0) { G = null; }
+            if (G === void 0) {
+                G = null;
+            }
             this.D = D;
             this.G = G;
             this.threshold = 0.0001;
@@ -143,7 +145,9 @@ var cola;
                 l += x * x;
             }
             l = Math.sqrt(l);
-            return u.map(function (x) { return x *= _this.minD / l; });
+            return u.map(function (x) {
+                return x *= _this.minD / l;
+            });
         };
         // compute first and second derivative information storing results in this.g and this.H
         Descent.prototype.computeDerivatives = function (x) {
@@ -153,10 +157,10 @@ var cola;
                 return;
             var i;
             /* DEBUG
-                        for (var u: number = 0; u < n; ++u)
-                            for (i = 0; i < this.k; ++i)
-                                if (isNaN(x[i][u])) debugger;
-            DEBUG */
+             for (var u: number = 0; u < n; ++u)
+             for (i = 0; i < this.k; ++i)
+             if (isNaN(x[i][u])) debugger;
+             DEBUG */
             var d = new Array(this.k);
             var d2 = new Array(this.k);
             var Huu = new Array(this.k);
@@ -223,8 +227,7 @@ var cola;
                         if (this.scaleSnapByMaxH) {
                             this.g[i][u] += maxH * k * dx;
                             this.H[i][u][u] += maxH * k;
-                        }
-                        else {
+                        } else {
                             this.g[i][u] += k * dx;
                             this.H[i][u][u] += k;
                         }
@@ -240,13 +243,13 @@ var cola;
                 });
             }
             /* DEBUG
-                        for (var u: number = 0; u < n; ++u)
-                            for (i = 0; i < this.k; ++i) {
-                                if (isNaN(this.g[i][u])) debugger;
-                                for (var v: number = 0; v < n; ++v)
-                                    if (isNaN(this.H[i][u][v])) debugger;
-                            }
-            DEBUG */
+             for (var u: number = 0; u < n; ++u)
+             for (i = 0; i < this.k; ++i) {
+             if (isNaN(this.g[i][u])) debugger;
+             for (var v: number = 0; v < n; ++v)
+             if (isNaN(this.H[i][u][v])) debugger;
+             }
+             DEBUG */
         };
         Descent.dotProd = function (a, b) {
             var x = 0, i = a.length;
@@ -326,7 +329,9 @@ var cola;
                     if (isNaN(r[i][u]))
                         debugger;
             if (this.project) {
-                this.matrixApply(function (i, j) { return _this.e[i][j] = x0[i][j] - r[i][j]; });
+                this.matrixApply(function (i, j) {
+                    return _this.e[i][j] = x0[i][j] - r[i][j];
+                });
                 var beta = this.computeStepSize(this.e);
                 beta = Math.max(0.2, Math.min(beta, 1));
                 this.stepAndProject(x0, r, this.e, beta);
@@ -358,7 +363,9 @@ var cola;
             return disp;
         };
         Descent.mid = function (a, b, m) {
-            Descent.mApply(a.length, a[0].length, function (i, j) { return m[i][j] = a[i][j] + (b[i][j] - a[i][j]) / 2.0; });
+            Descent.mApply(a.length, a[0].length, function (i, j) {
+                return m[i][j] = a[i][j] + (b[i][j] - a[i][j]) / 2.0;
+            });
         };
         Descent.prototype.takeDescentStep = function (x, d, stepSize) {
             for (var i = 0; i < this.n; ++i) {
@@ -392,7 +399,9 @@ var cola;
     // Linear congruential pseudo random number generator
     var PseudoRandom = (function () {
         function PseudoRandom(seed) {
-            if (seed === void 0) { seed = 1; }
+            if (seed === void 0) {
+                seed = 1;
+            }
             this.seed = seed;
             this.a = 214013;
             this.c = 2531011;

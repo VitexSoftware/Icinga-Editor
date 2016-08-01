@@ -415,4 +415,5 @@ class User extends \Ease\User
     {
         return 'string';
     }
+
 }

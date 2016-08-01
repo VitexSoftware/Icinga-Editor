@@ -433,4 +433,5 @@ class Contact extends Configurator
             $this->addStatusMessage(_('Kontakt nelze přejmenovat'), 'warning');
         }
     }
+
 }

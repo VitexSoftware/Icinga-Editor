@@ -130,4 +130,5 @@ class GroupMembersEditor extends \Ease\Container
     {
         \Ease\Shared::webPage()->includeJavaScript('js/groupmembers.js');
     }
+
 }

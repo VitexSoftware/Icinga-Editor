@@ -1,8 +1,8 @@
 function saveColumnData(saverClass, key, field, value) {
     var input = $("[name='" + field + "']");
 
-    if( (value == undefined) || (value == NaN) ){
-        value = input.val(); 
+    if ((value == undefined) || (value == NaN)) {
+        value = input.val();
     }
 
     $.post('datasaver.php', {
@@ -16,8 +16,8 @@ function saveColumnData(saverClass, key, field, value) {
         }
     }
     ).fail(function () {
-            input.css({borderColor: "#f00", borderStyle: "solid"}).animate({borderWidth: '5px'}, 'slow', 'linear');
-            input.animate({borderColor: 'gray', borderWidth: '1px'});
+        input.css({borderColor: "#f00", borderStyle: "solid"}).animate({borderWidth: '5px'}, 'slow', 'linear');
+        input.animate({borderColor: 'gray', borderWidth: '1px'});
     });
 }
 ;

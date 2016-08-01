@@ -367,4 +367,5 @@ class DataGrid extends \Ease\DataGrid
             .'$(\'#'.$grid_id.'\').flexigrid({ '.\Ease\JQuery\Part::partPropertiesToString($this->options).' }); '.$grid_js,
             null, true);
     }
+
 }

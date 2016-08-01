@@ -55,4 +55,5 @@ class YesNoSwitch extends TWBSwitch
         });
             ', null, true);
     }
+
 }

@@ -37,6 +37,7 @@ function endRouteForm($host)
     return new \Ease\TWB\Panel(_('Volba cíle sledování').': '.$host->getName(),
         'default', $form, _('Vyberte hosta nebo zadejte IP adresu'));
 }
+
 $host = new Engine\Host($hostId);
 $ip   = $host->getDataValue('address');
 if (!$ip) {

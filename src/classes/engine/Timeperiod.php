@@ -192,4 +192,5 @@ class Timeperiod extends Configurator
     {
         return parent::deleteButton(_('Časovou periodu'), $addUrl);
     }
+
 }

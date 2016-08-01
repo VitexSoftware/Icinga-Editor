@@ -1,4 +1,5 @@
 <?php
+
 namespace Icinga\Editor\UI;
 
 /**
@@ -25,7 +26,8 @@ class ContactAsignForm extends \Ease\TWB\Form
 
     public function finalize()
     {
-        $this->addItem(new \Ease\TWB\SubmitButton(_('Přiřadit kontakt'), 'success'));
+        $this->addItem(new \Ease\TWB\SubmitButton(_('Přiřadit kontakt'),
+            'success'));
         parent::finalize();
     }
 

@@ -2074,4 +2074,5 @@ class Configurator extends \Ease\Brick
     {
         
     }
+
 }

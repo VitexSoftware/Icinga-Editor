@@ -14,67 +14,67 @@ var cola;
             trigger: function (e) {
                 event[e.type](e); // via d3 dispatcher, e.g. event.start(e);
             },
-
-            on: function(type, listener) {
+            on: function (type, listener) {
                 event.on(type, listener);
                 return adaptor;
             },
-
             kick: function (tick) {
                 d3.timer(tick);
             },
-
             // use `node.call(adaptor.drag)` to make nodes draggable
             drag: function () {
                 var drag = d3.behavior.drag()
-                    .origin(function(d){ return d; })
-                    .on("dragstart.d3adaptor", colaDragstart)
-                    .on("drag.d3adaptor", function (d) {
-                        d.px = d3.event.x, d.py = d3.event.y;
-                        adaptor.resume(); // restart annealing
-                    })
-                    .on("dragend.d3adaptor", colaDragend);
+                        .origin(function (d) {
+                            return d;
+                        })
+                        .on("dragstart.d3adaptor", colaDragstart)
+                        .on("drag.d3adaptor", function (d) {
+                            d.px = d3.event.x, d.py = d3.event.y;
+                            adaptor.resume(); // restart annealing
+                        })
+                        .on("dragend.d3adaptor", colaDragend);
 
-                if (!arguments.length) return drag;
+                if (!arguments.length)
+                    return drag;
 
                 this//.on("mouseover.adaptor", colaMouseover)
-                    //.on("mouseout.adaptor", colaMouseout)
-                    .call(drag);
+                        //.on("mouseout.adaptor", colaMouseout)
+                        .call(drag);
             }
         });
-        
+
         return adaptor;
     };
 
     /**
      * @class adaptor
      */
-    cola.adaptor = function (options) {   
+    cola.adaptor = function (options) {
         var adaptor = {},
-            trigger = options.trigger, // a function that is notified of events like "tick"
-            kick = options.kick, // a function that kicks off the simulation tick loop
-            size = [1, 1],
-            linkDistance = 20,
-            linkLengthCalculator = null,
-            linkType = null,
-            avoidOverlaps = false,
-            handleDisconnected = true,
-            drag,
-            alpha,
-            lastStress,
-            running = false,
-            nodes = [],
-            groups = [],
-            variables = [],
-            rootGroup = null,
-            links = [],
-            constraints = [],
-            distanceMatrix = null,
-            descent = null,
-            directedLinkConstraints = null,
-            threshold = 0.01,
-            defaultNodeSize = 10,
-            visibilityGraph = null;
+                trigger = options.trigger, // a function that is notified of events like "tick"
+                kick = options.kick, // a function that kicks off the simulation tick loop
+                size = [1, 1],
+                linkDistance = 20,
+                linkLengthCalculator = null,
+                linkType = null,
+                avoidOverlaps = false,
+                handleDisconnected = true,
+                drag,
+                alpha,
+                lastStress,
+                running = false,
+                nodes = [],
+                groups = [],
+                variables = [],
+                rootGroup = null,
+                links = [],
+                constraints = [],
+                distanceMatrix = null,
+                descent = null,
+                directedLinkConstraints = null,
+                threshold = 0.01,
+                defaultNodeSize = 10,
+                visibilityGraph = null;
 
         adaptor.on = options.on; // a function for binding to events on the adapter
         adaptor.drag = options.drag; // a function to allow for dragging of nodes
@@ -88,14 +88,14 @@ var cola;
         adaptor.tick = function () {
             if (alpha < threshold) {
                 running = false;
-                trigger({ type: "end", alpha: alpha = 0, stress: lastStress });
+                trigger({type: "end", alpha: alpha = 0, stress: lastStress});
                 delete lastStress;
                 return true;
             }
 
             var n = nodes.length,
-                m = links.length,
-                o;
+                    m = links.length,
+                    o;
 
             descent.locks.clear();
             for (var i = 0; i < n; ++i) {
@@ -130,7 +130,7 @@ var cola;
                 }
             }
 
-            trigger({ type: "tick", alpha: alpha, stress: lastStress });
+            trigger({type: "tick", alpha: alpha, stress: lastStress});
         };
 
         /**
@@ -164,19 +164,28 @@ var cola;
          * @default empty list
          */
         adaptor.groups = function (x) {
-            if (!arguments.length) return groups;
+            if (!arguments.length)
+                return groups;
             groups = x;
             rootGroup = {};
             groups.forEach(function (g) {
                 if (typeof g.padding === "undefined")
                     g.padding = 1;
                 if (typeof g.leaves !== "undefined")
-                    g.leaves.forEach(function (v, i) { (g.leaves[i] = nodes[v]).parent = g });
+                    g.leaves.forEach(function (v, i) {
+                        (g.leaves[i] = nodes[v]).parent = g
+                    });
                 if (typeof g.groups !== "undefined")
-                    g.groups.forEach(function (gi, i) { (g.groups[i] = groups[gi]).parent = g });
+                    g.groups.forEach(function (gi, i) {
+                        (g.groups[i] = groups[gi]).parent = g
+                    });
             });
-            rootGroup.leaves = nodes.filter(function (v) { return typeof v.parent === 'undefined'; });
-            rootGroup.groups = groups.filter(function (g) { return typeof g.parent === 'undefined'; });
+            rootGroup.leaves = nodes.filter(function (v) {
+                return typeof v.parent === 'undefined';
+            });
+            rootGroup.groups = groups.filter(function (g) {
+                return typeof g.parent === 'undefined';
+            });
             return adaptor;
         };
 
@@ -194,7 +203,8 @@ var cola;
          * @default false
          */
         adaptor.avoidOverlaps = function (v) {
-            if (!arguments.length) return avoidOverlaps;
+            if (!arguments.length)
+                return avoidOverlaps;
             avoidOverlaps = v;
             return adaptor;
         }
@@ -206,7 +216,8 @@ var cola;
          * @default false
          */
         adaptor.handleDisconnected = function (v) {
-            if (!arguments.length) return handleDisconnected;
+            if (!arguments.length)
+                return handleDisconnected;
             handleDisconnected = v;
             return adaptor;
         }
@@ -219,10 +230,13 @@ var cola;
          * @param minSeparation {number|link=>number} either a number specifying a minimum spacing required across all links or a function to return the minimum spacing for each link
          */
         adaptor.flowLayout = function (axis, minSeparation) {
-            if (!arguments.length) axis = 'y';
+            if (!arguments.length)
+                axis = 'y';
             directedLinkConstraints = {
                 axis: axis,
-                getMinSeparation: typeof minSeparation === 'number' ?  function () { return minSeparation } : minSeparation
+                getMinSeparation: typeof minSeparation === 'number' ? function () {
+                    return minSeparation
+                } : minSeparation
             };
             return adaptor;
         }
@@ -233,7 +247,8 @@ var cola;
          * @default empty list
          */
         adaptor.links = function (x) {
-            if (!arguments.length) return links;
+            if (!arguments.length)
+                return links;
             links = x;
             return adaptor;
         };
@@ -245,7 +260,8 @@ var cola;
          * @default empty list
          */
         adaptor.constraints = function (c) {
-            if (!arguments.length) return constraints;
+            if (!arguments.length)
+                return constraints;
             constraints = c;
             return adaptor;
         }
@@ -258,7 +274,8 @@ var cola;
          * @default null
          */
         adaptor.distanceMatrix = function (d) {
-            if (!arguments.length) return distanceMatrix;
+            if (!arguments.length)
+                return distanceMatrix;
             distanceMatrix = d;
             return adaptor;
         }
@@ -270,7 +287,8 @@ var cola;
          * @type {Array of Number}
          */
         adaptor.size = function (x) {
-            if (!arguments.length) return size;
+            if (!arguments.length)
+                return size;
             size = x;
             return adaptor;
         };
@@ -281,13 +299,14 @@ var cola;
          * @type {Number}
          */
         adaptor.defaultNodeSize = function (x) {
-            if (!arguments.length) return defaultNodeSize;
+            if (!arguments.length)
+                return defaultNodeSize;
             defaultNodeSize = x;
             return adaptor;
         };
 
         adaptor.linkDistance = function (x) {
-            if (!arguments.length) 
+            if (!arguments.length)
                 return typeof linkDistance === "function" ? linkDistance() : linkDistance;
             linkDistance = typeof x === "function" ? x : +x;
             linkLengthCalculator = null;
@@ -300,23 +319,27 @@ var cola;
         }
 
         adaptor.convergenceThreshold = function (x) {
-            if (!arguments.length) return threshold;
+            if (!arguments.length)
+                return threshold;
             threshold = typeof x === "function" ? x : +x;
             return adaptor;
         };
 
         adaptor.alpha = function (x) {
-            if (!arguments.length) return alpha;
+            if (!arguments.length)
+                return alpha;
 
             x = +x;
             if (alpha) { // if we're already running
-                if (x > 0) alpha = x; // we might keep it hot
-                else alpha = 0; // or, next tick will dispatch "end"
+                if (x > 0)
+                    alpha = x; // we might keep it hot
+                else
+                    alpha = 0; // or, next tick will dispatch "end"
             } else if (x > 0) { // otherwise, fire it up!
                 if (!running) {
                     running = true;
-                    trigger({ type: "start", alpha: alpha = x });
-                    kick( adaptor.tick );
+                    trigger({type: "start", alpha: alpha = x});
+                    kick(adaptor.tick);
                 }
             }
 
@@ -335,17 +358,25 @@ var cola;
             return typeof linkType === "function" ? linkType(link) : 0;
         }
 
-        var linkAccessor = { getSourceIndex: getSourceIndex, getTargetIndex: getTargetIndex, setLength: setLinkLength, getType: getLinkType };
+        var linkAccessor = {getSourceIndex: getSourceIndex, getTargetIndex: getTargetIndex, setLength: setLinkLength, getType: getLinkType};
 
         adaptor.symmetricDiffLinkLengths = function (idealLength, w) {
-            this.linkDistance(function (l) { return idealLength * l.length });
-            linkLengthCalculator = function () { cola.symmetricDiffLinkLengths(links, linkAccessor, w) };
+            this.linkDistance(function (l) {
+                return idealLength * l.length
+            });
+            linkLengthCalculator = function () {
+                cola.symmetricDiffLinkLengths(links, linkAccessor, w)
+            };
             return adaptor;
         }
 
         adaptor.jaccardLinkLengths = function (idealLength, w) {
-            this.linkDistance(function (l) { return idealLength * l.length });
-            linkLengthCalculator = function () { cola.jaccardLinkLengths(links, linkAccessor, w) };
+            this.linkDistance(function (l) {
+                return idealLength * l.length
+            });
+            linkLengthCalculator = function () {
+                cola.jaccardLinkLengths(links, linkAccessor, w)
+            };
             return adaptor;
         }
 
@@ -358,14 +389,15 @@ var cola;
          */
         adaptor.start = function () {
             var i,
-                j,
-                n = this.nodes().length,
-                N = n + 2 * groups.length,
-                m = links.length,
-                w = size[0],
-                h = size[1];
+                    j,
+                    n = this.nodes().length,
+                    N = n + 2 * groups.length,
+                    m = links.length,
+                    w = size[0],
+                    h = size[1];
 
-            if (linkLengthCalculator) linkLengthCalculator();
+            if (linkLengthCalculator)
+                linkLengthCalculator();
 
             var x = new Array(N), y = new Array(N);
             variables = new Array(N);
@@ -398,7 +430,9 @@ var cola;
 
                 // G is a square matrix with G[i][j] = 1 iff there exists an edge between node i and node j
                 // otherwise 2. (
-                G = cola.Descent.createSquareMatrix(N, function () { return 2 });
+                G = cola.Descent.createSquareMatrix(N, function () {
+                    return 2
+                });
                 links.forEach(function (e) {
                     var u = getSourceIndex(e), v = getTargetIndex(e);
                     G[u][v] = G[v][u] = 1;
@@ -411,20 +445,21 @@ var cola;
 
             if (rootGroup && typeof rootGroup.groups !== 'undefined') {
                 var i = n;
-                groups.forEach(function(g) {
+                groups.forEach(function (g) {
                     G[i][i + 1] = G[i + 1][i] = 1e-6;
                     D[i][i + 1] = D[i + 1][i] = 0.1;
                     x[i] = 0, y[i++] = 0;
                     x[i] = 0, y[i++] = 0;
                 });
-            } else rootGroup = { leaves: nodes, groups: [] };
+            } else
+                rootGroup = {leaves: nodes, groups: []};
 
             var curConstraints = constraints || [];
             if (directedLinkConstraints) {
                 linkAccessor.getMinSeparation = directedLinkConstraints.getMinSeparation;
                 curConstraints = curConstraints.concat(cola.generateDirectedEdgeConstraints(n, links, directedLinkConstraints.axis, linkAccessor));
             }
-            
+
             var initialUnconstrainedIterations = arguments.length > 0 ? arguments[0] : 0;
             var initialUserConstraintIterations = arguments.length > 1 ? arguments[1] : 0;
             var initialAllConstraintsIterations = arguments.length > 2 ? arguments[2] : 0;
@@ -447,15 +482,20 @@ var cola;
             descent.run(initialUnconstrainedIterations);
 
             // apply initialIterations with user constraints but no noverlap constraints
-            if (curConstraints.length > 0) descent.project = new cola.vpsc.Projection(nodes, groups, rootGroup, curConstraints).projectFunctions();
+            if (curConstraints.length > 0)
+                descent.project = new cola.vpsc.Projection(nodes, groups, rootGroup, curConstraints).projectFunctions();
             descent.run(initialUserConstraintIterations);
 
             // subsequent iterations will apply all constraints
             this.avoidOverlaps(ao);
             if (ao) {
-                nodes.forEach(function (v, i) { v.x = x[i], v.y = y[i]; });
+                nodes.forEach(function (v, i) {
+                    v.x = x[i], v.y = y[i];
+                });
                 descent.project = new cola.vpsc.Projection(nodes, groups, rootGroup, curConstraints, true).projectFunctions();
-                nodes.forEach(function (v, i) { x[i] = v.x, y[i] = v.y; });
+                nodes.forEach(function (v, i) {
+                    x[i] = v.x, y[i] = v.y;
+                });
             }
 
             // allow not immediately connected nodes to relax apart (p-stress)
@@ -463,8 +503,10 @@ var cola;
             descent.run(initialAllConstraintsIterations);
 
             links.forEach(function (l) {
-                if (typeof l.source == "number") l.source = nodes[l.source];
-                if (typeof l.target == "number") l.target = nodes[l.target];
+                if (typeof l.source == "number")
+                    l.source = nodes[l.source];
+                if (typeof l.target == "number")
+                    l.target = nodes[l.target];
             });
             nodes.forEach(function (v, i) {
                 v.x = x[i], v.y = y[i];
@@ -478,7 +520,7 @@ var cola;
                     descent.x[0][i] = v.x, descent.x[1][i] = v.y;
                 });
             }
-            
+
             return adaptor.resume();
         };
 
@@ -497,32 +539,38 @@ var cola;
                     }));
         }
 
-        adaptor.routeEdge = function(d, draw) {
+        adaptor.routeEdge = function (d, draw) {
             var lineData = [];
             //if (d.source.id === 10 && d.target.id === 11) {
             //    debugger;
             //}
-            var vg2 = new cola.geom.TangentVisibilityGraph(visibilityGraph.P, { V: visibilityGraph.V, E: visibilityGraph.E }),
-                port1 = { x: d.source.x, y: d.source.y },
-                port2 = { x: d.target.x, y: d.target.y },
-                start = vg2.addPoint(port1, d.source.id),
-                end = vg2.addPoint(port2, d.target.id);
+            var vg2 = new cola.geom.TangentVisibilityGraph(visibilityGraph.P, {V: visibilityGraph.V, E: visibilityGraph.E}),
+                    port1 = {x: d.source.x, y: d.source.y},
+            port2 = {x: d.target.x, y: d.target.y},
+            start = vg2.addPoint(port1, d.source.id),
+                    end = vg2.addPoint(port2, d.target.id);
             vg2.addEdgeIfVisible(port1, port2, d.source.id, d.target.id);
             if (typeof draw !== 'undefined') {
                 draw(vg2);
             }
-            var sourceInd = function(e) { return e.source.id }, targetInd = function(e) { return e.target.id }, length = function(e) { return e.length() }, 
-                spCalc = new cola.shortestpaths.Calculator(vg2.V.length, vg2.E, sourceInd, targetInd, length),
-                shortestPath = spCalc.PathFromNodeToNode(start.id, end.id);
+            var sourceInd = function (e) {
+                return e.source.id
+            }, targetInd = function (e) {
+                return e.target.id
+            }, length = function (e) {
+                return e.length()
+            },
+                    spCalc = new cola.shortestpaths.Calculator(vg2.V.length, vg2.E, sourceInd, targetInd, length),
+                    shortestPath = spCalc.PathFromNodeToNode(start.id, end.id);
             if (shortestPath.length === 1 || shortestPath.length === vg2.V.length) {
                 cola.vpsc.makeEdgeBetween(d, d.source.innerBounds, d.target.innerBounds, 5);
-                lineData = [{ x: d.sourceIntersection.x, y: d.sourceIntersection.y }, { x: d.arrowStart.x, y: d.arrowStart.y }];
+                lineData = [{x: d.sourceIntersection.x, y: d.sourceIntersection.y}, {x: d.arrowStart.x, y: d.arrowStart.y}];
             } else {
                 var n = shortestPath.length - 2,
-                    p = vg2.V[shortestPath[n]].p,
-                    q = vg2.V[shortestPath[0]].p,
-                    lineData = [d.source.innerBounds.rayIntersection(p.x, p.y)];
-                for (var i = n; i >= 0; --i) 
+                        p = vg2.V[shortestPath[n]].p,
+                        q = vg2.V[shortestPath[0]].p,
+                        lineData = [d.source.innerBounds.rayIntersection(p.x, p.y)];
+                for (var i = n; i >= 0; --i)
                     lineData.push(vg2.V[shortestPath[i]].p);
                 lineData.push(cola.vpsc.makeEdgeTo(q, d.target.innerBounds, 5));
             }

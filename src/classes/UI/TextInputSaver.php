@@ -57,4 +57,5 @@ class TextInputSaver extends \Ease\Html\InputTextTag
         $this->setTagProperties(['OnChange' => '$.post(\'datasaver.php\', { SaverClass: \''.addslashes(get_class($this->engine)).'\', Field: \''.$this->getTagProperty('name').'\', Value: this.value, Key: '.$this->engine->getMyKey().', success : function () { alert (this); } } )']);
 //        $this->enclosedElement->SetTagProperties(array('OnChange' => '$.ajax( { type: \"POST\", url: \"DataSaver.php\", data: \"SaverClass=' . get_class($this) . '&amp;Field=' . $this->enclosedElement->GetTagProperty('name') . '&amp;Value=\" + this.value , async: false, success : function () { alert (this); }, statusCode: { 404: function () { alert(\'page not found\');} } }); '));
     }
+
 }

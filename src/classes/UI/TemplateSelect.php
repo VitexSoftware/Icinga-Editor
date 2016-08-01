@@ -45,4 +45,5 @@ class TemplateSelect extends \Ease\Html\Select
             ['register' => 0, 'generate' => 1], 'name', 'name');
         return array_merge($templates, ['' => _('Bez predlohy')]);
     }
+
 }

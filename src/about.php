@@ -2,7 +2,6 @@
 
 namespace Flexplorer;
 
-
 namespace Icinga\Editor;
 
 /**

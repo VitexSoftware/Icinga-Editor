@@ -32,4 +32,5 @@ class HostgroupSelect extends \Ease\Html\Select
         \Ease\Shared::webPage()->includeJavaScript('js/msdropdown/jquery.dd.min.js');
         \Ease\Shared::webPage()->includeCss('css/msdropdown/dd.css');
     }
+
 }

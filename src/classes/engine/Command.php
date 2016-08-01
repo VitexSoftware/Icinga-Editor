@@ -154,4 +154,5 @@ class Command extends Configurator
         }
         return parent::takeData($data, $dataPrefix);
     }
+
 }

@@ -25,4 +25,5 @@ class UserSelect extends \Ease\Html\Select
         unset($ui[0]);
         return $ui;
     }
+
 }

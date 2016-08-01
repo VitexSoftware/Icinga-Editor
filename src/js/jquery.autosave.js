@@ -35,19 +35,19 @@
  * - Support timed autosave for textareas
  */
 
-(function($) {
-		  
-	//SB added to cope with jQuery 1.6 or later which requires the use of .prop to correctly post radio buttons 
+(function ($) {
+
+    //SB added to cope with jQuery 1.6 or later which requires the use of .prop to correctly post radio buttons 
     if (typeof $.fn.prop !== 'function')
-    $.fn.prop = function(name, value){
-        if (typeof value === 'undefined') {
-            return this.attr(name);
-        } else {
-            return this.attr(name, value);
-        }
-    };		  
-		  
-    $.fn.autosave = function(options) {
+        $.fn.prop = function (name, value) {
+            if (typeof value === 'undefined') {
+                return this.attr(name);
+            } else {
+                return this.attr(name, value);
+            }
+        };
+
+    $.fn.autosave = function (options) {
         /**
          * Define some needed variables
          * elems is a shortcut for the selected nodes
@@ -63,7 +63,7 @@
             success: false, // Callback
             dataType: "json" // From ajax return point
         }, options);
-        
+
         /**
          * If the root form is used as selector
          * bind to its submit and find all its
@@ -74,7 +74,7 @@
             options.grouped = true;
             elems = nodes = $(this).find(":input,button");
             // Bind to forms submit
-            $(this).bind('submit', function(e) {
+            $(this).bind('submit', function (e) {
                 e.preventDefault();
                 $.fn.autosave._makeRequest(e, nodes, options, $(this));
             });
@@ -85,7 +85,7 @@
          * Build a list of these nodes and bind them to some
          * onchange/onblur events for submitting
          */
-        elems.each(function(i) {
+        elems.each(function (i) {
             eventName = $(this).is('button,:submit') ? 'click' : 'change';
             $(this).bind(eventName, function (e) {
                 eventName == 'click' ? e.preventDefault() : false;
@@ -94,12 +94,12 @@
         });
         return $(this);
     }
-    
+
     /**
      * Actually make the http request
      * using previously supplied data
      */
-    $.fn.autosave._makeRequest = function(e, nodes, options, actsOn) {
+    $.fn.autosave._makeRequest = function (e, nodes, options, actsOn) {
         // Keep variables from global scope
         var vals = {}, form;
         /**
@@ -112,7 +112,7 @@
          */
         form = $(actsOn).is('form') ? $(actsOn) : $(actsOn.form);
         options = $.extend({
-            url: (form.attr('action'))? form.attr('action') : window.location.href,
+            url: (form.attr('action')) ? form.attr('action') : window.location.href,
             method: (form.attr('method')) ? form.attr('method') : "post"
         }, options);
 
@@ -130,20 +130,19 @@
                  * target, aka it was clicked
                  */
                 if (!$(this).is('button,:submit') || e.currentTarget == this) {
-                    if ($(this).is(':radio') && $(this).prop('checked')==false)
+                    if ($(this).is(':radio') && $(this).prop('checked') == false)
                         return;
-                   vals[this.name] = $(this).is(':checkbox') ? //if it's a checkbox...
-                        $(this).prop('checked') ? $(this).val() != 'on' ? $(this).val(): true : //and it's checked, if the checkbox has a value (not just 'on', return this, otherwise just a boolean true
-						false  : //if it's a checkbox and not checked, return false
-                        $(this).val();//and if it's not a checkbox, return the value
-						
-				}
+                    vals[this.name] = $(this).is(':checkbox') ? //if it's a checkbox...
+                            $(this).prop('checked') ? $(this).val() != 'on' ? $(this).val() : true : //and it's checked, if the checkbox has a value (not just 'on', return this, otherwise just a boolean true
+                            false : //if it's a checkbox and not checked, return false
+                            $(this).val();//and if it's not a checkbox, return the value
+
+                }
             });
-        }
-        else {
-            vals[actsOn.name] = $(actsOn).is(':checkbox') ? 
-                $(actsOn).attr('checked') : 
-                $(actsOn).val();
+        } else {
+            vals[actsOn.name] = $(actsOn).is(':checkbox') ?
+                    $(actsOn).attr('checked') :
+                    $(actsOn).val();
         }
         /**
          * Perform http request and trigger callbacks respectively
@@ -155,10 +154,10 @@
             data: vals,
             url: options.url,
             dataType: options.dataType,
-            success: function(resp) {
+            success: function (resp) {
                 options.success ? options.success(resp) : false;
             },
-            error: function(resp) {
+            error: function (resp) {
                 options.error ? options.error(resp) : false;
             }
         });
@@ -171,7 +170,7 @@
  * for the element/form you were autosaving.
  * Notice: No default "remover" of this spinner exists
  */
-defaultAutosaveSendVisualizer = function(node) {
+defaultAutosaveSendVisualizer = function (node) {
     var refNode;
     if (node.is('form'))
         refNode = $(node).find('legend');
@@ -179,8 +178,8 @@ defaultAutosaveSendVisualizer = function(node) {
         refNode = $(node).parent('fieldset').find('legend');
     // Create spinner
     var spinner = $('<img src="spin.gif" />').css({
-        'position':'relative',
-        'margin-left':'10px',
+        'position': 'relative',
+        'margin-left': '10px',
         'height': refNode.height(),
         'width': refNode.height()
     });

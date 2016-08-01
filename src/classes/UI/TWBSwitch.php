@@ -46,4 +46,5 @@ class TWBSwitch extends \Ease\Html\CheckboxTag
         $this->addJavascript('$("[name=\''.$this->getTagName().'\']").bootstrapSwitch('.json_encode($this->properties).')',
             null, true);
     }
+
 }

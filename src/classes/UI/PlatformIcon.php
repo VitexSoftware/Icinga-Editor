@@ -1,4 +1,5 @@
 <?php
+
 namespace Icinga\Editor\UI;
 
 /**
@@ -31,7 +32,7 @@ class PlatformIcon extends \Ease\Html\ImgTag
                 $image = 'unknown.gif';
                 break;
         }
-        parent::__construct('logos/' . $image, $platform);
+        parent::__construct('logos/'.$image, $platform);
     }
 
 }

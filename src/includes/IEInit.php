@@ -12,7 +12,7 @@ require_once 'includes/Configure.php';
 require_once '../vendor/autoload.php';
 
 //Initialise Gettext
-$langs = [
+$langs  = [
     'en_US' => ['en', 'English (International)'],
     'cs_CZ' => ['cs', 'Česky (Čeština)'],
 ];
@@ -42,7 +42,7 @@ session_start();
  * Objekt uživatele VSUser nebo VSAnonym
  * @global \Ease\User
  */
-$oUser = \Ease\Shared::user();
+$oUser                 = \Ease\Shared::user();
 $oUser->settingsColumn = 'settings';
 
 if (!\Ease\Shared::isCli()) {

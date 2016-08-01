@@ -45,4 +45,5 @@ class UserGroupForm extends \Ease\TWB\Form
                 'success'));
         }
     }
+
 }

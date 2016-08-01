@@ -24,4 +24,5 @@ class Switcher extends \Ease\Html\CheckboxTag
         $this->addJavascript('$("[name=\''.$this->getTagName().'\']").bootstrapSwitch({'.\Ease\TWB\Part::partPropertiesToString($this->properties).'})',
             null, true);
     }
+
 }

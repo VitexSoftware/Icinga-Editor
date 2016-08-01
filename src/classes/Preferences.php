@@ -1,4 +1,5 @@
 <?php
+
 namespace Icinga\Editor;
 
 /**
@@ -86,4 +87,5 @@ class Preferences extends \Ease\Brick
     {
         return $this->preferences;
     }
+
 }

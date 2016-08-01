@@ -502,5 +502,5 @@ curl "'.Engine\Configurator::getBaseURL().'scriptget.php?script_id='.$script_id.
             }
         }
     }
-}
 
+}

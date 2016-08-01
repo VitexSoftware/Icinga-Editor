@@ -1,4 +1,5 @@
 <?php
+
 namespace Icinga\Editor;
 
 /**
@@ -15,7 +16,8 @@ $oPage->onlyForLogged();
 
 $oPage->addItem(new UI\PageTop(_('Kontaktní skupiny')));
 
-$oPage->container->addItem(new UI\DataGrid(_('Kontaktní skupiny'), new Engine\Contactgroup));
+$oPage->container->addItem(new UI\DataGrid(_('Kontaktní skupiny'),
+    new Engine\Contactgroup));
 
 $oPage->addItem(new UI\PageBottom());
 

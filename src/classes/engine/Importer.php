@@ -52,7 +52,7 @@ class Importer extends Configurator
      */
     public function registerClass($className)
     {
-        $newClass                            = new $className;
+        $newClass                          = new $className;
         $this->Classes[$newClass->keyword] = new $className;
     }
 
@@ -147,4 +147,5 @@ class Importer extends Configurator
             }
         }
     }
+
 }

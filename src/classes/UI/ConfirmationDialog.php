@@ -69,4 +69,5 @@ $('#".$this->getTagID()."btnYes').click(function() {
 
             ", null, true);
     }
+
 }

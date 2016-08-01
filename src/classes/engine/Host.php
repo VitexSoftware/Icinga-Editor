@@ -551,7 +551,7 @@ class Host extends Configurator
 
 
 
-        $tmpfilename = sys_get_temp_dir().'/'.EaseSand::randomString();
+        $tmpfilename = sys_get_temp_dir().'/'.\Ease\Sand::randomString();
 
 
         $ch         = curl_init();
@@ -566,12 +566,13 @@ class Host extends Configurator
 
 
 
-        if (IEIconSelector::imageTypeOK($tmpfilename)) {
+        if (\Icinga\Editor\UI\IconSelector::imageTypeOK($tmpfilename)) {
 
             \Ease\Shared::webPage()->addStatusMessage(sprintf(_('Nalezena ikona %s'),
                     $icoUrl), 'success');
 
-            $newicon = IEIconSelector::saveIcon($tmpfilename, $this);
+            $newicon = \Icinga\Editor\UI\IconSelector::saveIcon($tmpfilename,
+                    $this);
 
             if ($newicon) {
                 $this->setDataValue('icon_image', $newicon);
@@ -751,4 +752,5 @@ class Host extends Configurator
             serialize($this->getDataValue('hostgroups')));
         return parent::insertToSQL();
     }
+
 }

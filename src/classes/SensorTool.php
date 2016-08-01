@@ -1,4 +1,5 @@
 <?php
+
 namespace Icinga\Editor;
 
 /**
@@ -129,4 +130,5 @@ class SensorTool extends \Ease\Container
         parent::__construct($commonWell);
         $this->addItem($sensorTabs);
     }
+
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Icinga\Editor\UI;
 
 /**
@@ -12,7 +13,6 @@ namespace Icinga\Editor\UI;
  */
 class ColumnsForm extends \Ease\TWB\Form
 {
-
     /**
      * Šířka sloupce.
      *
@@ -44,9 +44,12 @@ class ColumnsForm extends \Ease\TWB\Form
      * @param array  $tagProperties vlastnosti tagu například:
      *                              array('enctype' => 'multipart/form-data')
      */
-    public function __construct($formName, $formAction = null, $formMethod = 'post', $formContents = null, $tagProperties = null)
+    public function __construct($formName, $formAction = null,
+                                $formMethod = 'post', $formContents = null,
+                                $tagProperties = null)
     {
-        parent::__construct($formName, $formAction, $formMethod, $formContents, $tagProperties);
+        parent::__construct($formName, $formAction, $formMethod, $formContents,
+            $tagProperties);
         $this->row = $this->addItem(new \Ease\TWB\Row());
     }
 
@@ -58,13 +61,16 @@ class ColumnsForm extends \Ease\TWB\Form
      * @param string $placeholder předvysvětlující text
      * @param string $helptext    Dodatečná nápověda
      */
-    public function addInput($input, $caption = null, $placeholder = null, $helptext = null)
+    public function addInput($input, $caption = null, $placeholder = null,
+                             $helptext = null)
     {
         if ($this->row->getItemsCount() > $this->itemsPerRow) {
             $this->row = $this->addItem(new \Ease\TWB\Row());
         }
 
-        return $this->row->addItem(new \Ease\TWB\Col($this->colsize, new \Ease\TWB\FormGroup($caption, $input, $placeholder, $helptext)));
+        return $this->row->addItem(new \Ease\TWB\Col($this->colsize,
+                new \Ease\TWB\FormGroup($caption, $input, $placeholder,
+                $helptext)));
     }
 
 }

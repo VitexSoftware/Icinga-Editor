@@ -100,4 +100,5 @@ class HostgroupMap extends HostMap
             }
         }
     }
+
 }

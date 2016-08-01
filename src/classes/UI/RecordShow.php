@@ -43,4 +43,5 @@ class RecordShow extends \Ease\TWB\Well
 
         $this->addItem($row);
     }
+
 }

@@ -734,4 +734,5 @@ class CfgEditor extends \Ease\Container
         }
         return $chCode;
     }
+
 }

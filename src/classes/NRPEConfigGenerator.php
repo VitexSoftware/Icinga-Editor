@@ -1,4 +1,5 @@
 <?php
+
 namespace Icinga\Editor;
 
 /**
@@ -224,4 +225,5 @@ class NRPEConfigGenerator extends \Ease\Atom
     {
         $this->nscCfgArray[] = "echo \"$key=$value\" >> ".$this->cfgFile;
     }
+
 }

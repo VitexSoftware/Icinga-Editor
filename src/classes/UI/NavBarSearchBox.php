@@ -120,4 +120,5 @@ $(\'input[name="search"]\').css("top","2px").typeahead(null, {
 
             ', null, true);
     }
+
 }

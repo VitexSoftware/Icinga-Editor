@@ -232,4 +232,5 @@ class Hostgroup extends Configurator
 
         return parent::delete($id);
     }
+
 }

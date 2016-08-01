@@ -1,7 +1,7 @@
 {
     "name": "vitexsoftware/icinga-editor",
     "description": "Editor of Icinga Configuration files",
-    "version": "0.202",
+    "version": "1.0",
     "authors": [
         {
             "name": "vitex",

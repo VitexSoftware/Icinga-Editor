@@ -1,4 +1,5 @@
 <?php
+
 namespace Icinga\Editor;
 
 /**
@@ -14,7 +15,7 @@ require_once 'includes/IEInit.php';
 $oPage->onlyForLogged();
 
 $hostId = $oPage->getRequestValue('host_id', 'int');
-$host = new Engine\Host($hostId);
+$host   = new Engine\Host($hostId);
 
 $generator = new NSCPConfigBatGenerator($host);
 $generator->getCfg();

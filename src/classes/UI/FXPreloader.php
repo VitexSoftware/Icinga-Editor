@@ -35,4 +35,5 @@ class FXPreloader extends \Ease\Html\Div
 }​
             ');
     }
+
 }

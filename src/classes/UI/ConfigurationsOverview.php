@@ -145,4 +145,5 @@ class ConfigurationsOverview extends \Ease\TWB\Panel
             sprintf(_('Celkem %s hostů bez aktuální konfigurace. (%s aktuální)'),
                 count($hosts), $ok));
     }
+
 }

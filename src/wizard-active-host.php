@@ -79,6 +79,7 @@ function gethostbynamel6($host, $tryA = false)
         return $ipSix;
     }
 }
+
 $host        = new Engine\Host();
 $host->owner = &$oUser;
 

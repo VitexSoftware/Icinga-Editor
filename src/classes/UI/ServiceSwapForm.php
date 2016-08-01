@@ -47,4 +47,5 @@ class ServiceSwapForm extends \Ease\TWB\Form
             $this->service->getID()));
         $this->addItem(new \Ease\Html\InputHiddenTag('action', 'swap'));
     }
+
 }

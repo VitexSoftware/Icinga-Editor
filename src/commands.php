@@ -1,4 +1,5 @@
 <?php
+
 namespace Icinga\Editor;
 
 /**
@@ -15,7 +16,8 @@ $oPage->onlyForLogged();
 
 $oPage->addItem(new UI\PageTop(_('Přehled příkazů')));
 
-$oPage->addItem(new \Ease\TWB\Container(new UI\DataGrid(_('Příkazy'), new Engine\Command)));
+$oPage->addItem(new \Ease\TWB\Container(new UI\DataGrid(_('Příkazy'),
+    new Engine\Command)));
 
 $oPage->addItem(new UI\PageBottom());
 

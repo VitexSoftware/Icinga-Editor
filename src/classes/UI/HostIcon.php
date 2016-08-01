@@ -39,4 +39,5 @@ class HostIcon extends \Ease\Html\ImgTag
         parent::__construct('logos/'.$image, $title, null, null,
             ['class' => 'host_icon']);
     }
+
 }

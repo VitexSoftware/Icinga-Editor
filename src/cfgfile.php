@@ -1,4 +1,5 @@
 <?php
+
 namespace Icinga\Editor;
 
 /**
@@ -21,7 +22,7 @@ $oPage->addPageColumns();
 
 $lines = file($file);
 foreach ($lines as $line) {
-    $oPage->addItem($line . '<br>');
+    $oPage->addItem($line.'<br>');
 }
 
 $oPage->addItem(new UI\PageBottom());

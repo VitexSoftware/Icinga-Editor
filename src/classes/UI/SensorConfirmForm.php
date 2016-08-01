@@ -1,4 +1,5 @@
 <?php
+
 namespace Icinga\Editor\UI;
 
 /**
@@ -17,7 +18,8 @@ class SensorConfirmForm extends \Ease\TWB\Form
     {
         parent::__construct('sensor');
         $this->addItem(new \Ease\Html\InputHiddenTag('operation', 'confirm'));
-        $this->addItem(new \Ease\Html\InputHiddenTag($host->getmyKeyColumn(), $host->getId()));
+        $this->addItem(new \Ease\Html\InputHiddenTag($host->getmyKeyColumn(),
+            $host->getId()));
         $this->addItem(new \Ease\TWB\SubmitButton(_('Senzor je nasazen')));
         $status = $host->getSensorStatus();
         $this->addItem(new Switcher('confirm', ($status == 2)));

@@ -4,11 +4,11 @@
 $(document).ready(function () {
     setTimeout(function () {
         $("#StatusMessages").slideUp("slow");
-        $("#smdrag").fadeTo("slow",0.25);
+        $("#smdrag").fadeTo("slow", 0.25);
     }, 3000);
 
     $('#smdrag').on('mousedown', function (e) {
-        $("#smdrag").fadeTo("slow",1);
+        $("#smdrag").fadeTo("slow", 1);
         $("#StatusMessages").slideDown("slow");
 
         var $dragable = $('#StatusMessages'),
@@ -31,7 +31,7 @@ $(document).ready(function () {
     $("#StatusMessages").click(function () {
         $("#StatusMessages").slideUp("slow");
         $("#StatusMessages").attr('data-state', 'up');
-        $("#smdrag").fadeTo("slow",0.25);
+        $("#smdrag").fadeTo("slow", 0.25);
     });
 
 });

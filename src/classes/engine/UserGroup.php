@@ -202,4 +202,5 @@ class UserGroup extends Configurator
     {
         $this->dblink->exeQuery('DELETE FROM user_to_group WHERE user_id='.$id);
     }
+
 }

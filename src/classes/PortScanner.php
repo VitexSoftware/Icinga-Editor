@@ -1,12 +1,13 @@
 <?php
+
 namespace Icinga\Editor;
 
 /**
- * Description of IEPortScanner
+ * Description of PortScanner
  *
  * @author vitex
  */
-class PortScanner extends EaseSand
+class PortScanner extends \Ease\Sand
 {
     /**
      * Porty k oskenování
@@ -28,14 +29,14 @@ class PortScanner extends EaseSand
 
     /**
      * Objekt hosta
-     * @var IEHost
+     * @var Engine\Host
      */
     public $host = null;
 
     /**
      * Oskenuje hosta v argumentu na otevřené porty registrovaných služeb
      *
-     * @param IEHost $hostToScan
+     * @param Engine\Host $hostToScan
      */
     public function __construct($hostToScan = null)
     {
@@ -139,4 +140,5 @@ class PortScanner extends EaseSand
 
         return $fp;
     }
+
 }

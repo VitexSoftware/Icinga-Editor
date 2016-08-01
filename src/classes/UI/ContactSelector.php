@@ -91,4 +91,5 @@ class ContactSelector extends \Ease\Container
         }
         $this->addItem($initialContent);
     }
+
 }

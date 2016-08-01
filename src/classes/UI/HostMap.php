@@ -128,4 +128,5 @@ class HostMap extends \Image_GraphViz
     {
         return 'svg';
     }
+
 }

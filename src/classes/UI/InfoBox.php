@@ -19,4 +19,5 @@ class InfoBox extends \Ease\TWB\Panel
     {
         parent::__construct(_('informace'), 'info', $subject->getInfoBlock());
     }
+
 }

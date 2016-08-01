@@ -538,4 +538,5 @@ class DataSource extends \Ease\Brick
     {
         return $this->getListingQueryWhere();
     }
+
 }

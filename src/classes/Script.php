@@ -174,4 +174,5 @@ class Script extends engine\Configurator
             return $script;
         }
     }
+
 }

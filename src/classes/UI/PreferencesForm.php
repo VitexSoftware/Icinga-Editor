@@ -27,4 +27,5 @@ class PreferencesForm extends \Ease\TWB\Form
         $this->addItem(new \Ease\TWB\SubmitButton(_('Uložit').'&nbsp'.\Ease\TWB\Part::GlyphIcon('save'),
             'success'));
     }
+
 }

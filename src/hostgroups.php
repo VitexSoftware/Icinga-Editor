@@ -1,4 +1,5 @@
 <?php
+
 namespace Icinga\Editor;
 
 /**
@@ -15,7 +16,8 @@ $oPage->onlyForLogged();
 
 $oPage->addItem(new UI\PageTop(_('Přehled skupin hostů')));
 
-$oPage->container->addItem(new UI\DataGrid(_('Skupiny hostů'), new Engine\Hostgroup));
+$oPage->container->addItem(new UI\DataGrid(_('Skupiny hostů'),
+    new Engine\Hostgroup));
 
 $oPage->addItem(new UI\PageBottom());
 

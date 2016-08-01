@@ -1,4 +1,5 @@
 <?php
+
 namespace Icinga\Editor;
 
 /**
@@ -88,4 +89,5 @@ class Stemplate extends Engine\Configurator
     {
         return $allData;
     }
+
 }

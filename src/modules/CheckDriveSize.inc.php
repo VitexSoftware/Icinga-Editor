@@ -7,6 +7,7 @@
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2014 Vitex@hippy.cz (G)
  */
+
 namespace Icinga\Editor\modules;
 
 /**
@@ -202,4 +203,5 @@ class CheckDriveSize extends \Icinga\Editor\UI\ServiceConfigurator
 
         return FALSE;
     }
+
 }

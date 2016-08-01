@@ -263,8 +263,7 @@ class IconSelector extends \Ease\Container
         imagedestroy($thumbnailGdImage);
 
         $newname = 'custom/'.$id.'-'.$host->getName().'.'.$suffix;
-        if (rename($thumbnailImagePath,
-                self::$webdir.self::$icodir.'/'.$newname)) {
+        if (rename($thumbnailImagePath, self::$webdir.self::$icodir.'/'.$newname)) {
             unlink($tmpfilename);
 
             return $newname;
@@ -272,4 +271,5 @@ class IconSelector extends \Ease\Container
 
         return false;
     }
+
 }

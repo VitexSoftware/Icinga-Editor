@@ -1,4 +1,5 @@
 <?php
+
 namespace Icinga\Editor;
 
 /**
@@ -18,7 +19,8 @@ $oPage->addPageColumns();
 
 $oPage->columnI->addItem(_('Multiplatformní klient'));
 
-$oPage->columnI->addItem(new \Ease\Html\ATag('http://nagstamon.ifw-dresden.de/', new \Ease\Html\ImgTag('img/nagstamon_header_logo.gif')));
+$oPage->columnI->addItem(new \Ease\Html\ATag('http://nagstamon.ifw-dresden.de/',
+    new \Ease\Html\ImgTag('img/nagstamon_header_logo.gif')));
 
 $oPage->columnI->addItem(new \Ease\Html\PTag(_('<br>
 Nagstamon je monitor Nagiosu pro desktopové operační systémy.
@@ -34,7 +36,8 @@ Hostitelé a služby mohou být filtrovány podle kategorií a regulárních vý
 
 $oPage->columnII->addItem(new \Ease\Html\ImgTag('img/nagstamon1.png'));
 
-$oPage->columnI->addItem(new \Ease\Html\ATag('http://nagstamon.ifw-dresden.de/', _('Domovská stránka programu')));
+$oPage->columnI->addItem(new \Ease\Html\ATag('http://nagstamon.ifw-dresden.de/',
+    _('Domovská stránka programu')));
 
 $oPage->columnI->addItem(new \Ease\Html\H2Tag(_('Nastavení')));
 
@@ -44,10 +47,11 @@ $oPage->columnII->addItem(new \Ease\Html\ImgTag('img/nagstamon2.png'));
 $oPage->columnI->addItem('<p>Type: <b>icinga</b>');
 $oPage->columnI->addItem('<p>Monitor URL: <b>http://v.s.cz/icinga/</b></p>');
 $oPage->columnI->addItem('<p>Monitor Cgi URL: <b>http://v.s.cz/cgi-bin/icinga/</b></p>');
-$oPage->columnI->addItem('<p>Username: <b>' . $oUser->getUserLogin() . '</b></p>');
+$oPage->columnI->addItem('<p>Username: <b>'.$oUser->getUserLogin().'</b></p>');
 $oPage->columnI->addItem('<p>Password: <b>vaše heslo</b></p>');
 
-$oPage->columnI->addItem(new \Ease\TWB\LinkButton('settings.php', _('Změna hesla'), 'danger'));
+$oPage->columnI->addItem(new \Ease\TWB\LinkButton('settings.php',
+    _('Změna hesla'), 'danger'));
 
 $oPage->addItem(new UI\PageBottom());
 
