@@ -31,7 +31,7 @@ class PageBottom extends \Ease\TWB\Container
             $star    = '<iframe src="https://ghbtns.com/github-btn.html?user=Vitexus&repo=icinga_configurator&type=star&count=true" frameborder="0" scrolling="0" width="170px" height="20px"></iframe>';
             $footrow = new \Ease\TWB\Row();
             $footrow->addColumn(4,
-                '<a href="https://www.vitexsoftware.cz/monitoring.php">Icinga Editor</a> v.: '.$appInfo->version.'&nbsp;&nbsp; &copy; 2012-2015 <a href="http://vitexsoftware.cz/">Vitex Software</a>');
+                '<a href="https://www.vitexsoftware.cz/monitoring.php">Icinga Editor</a> v.: '.$appInfo->version.'&nbsp;&nbsp; &copy; 2012-2016 <a href="http://vitexsoftware.cz/">Vitex Software</a>');
             $footrow->addColumn(4,
                 '<a href="http://www.austro-bohemia.cz/"><img style="position: relative;top: -2px; left: -10px; height: 25px" align="right" style="border:0" src="images/austro-bohemia-logo.png" alt="ABSRO" title="Pasivní checky napsány pro společnost Austro Bohemia s.r.o." /></a>');
             $footrow->addColumn(4,
