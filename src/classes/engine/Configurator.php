@@ -786,7 +786,13 @@ class Configurator extends \Ease\Brick
         } else {
             foreach ($data as $fieldName => $value) {
                 if (!is_null($value)) {
-                    $data[$fieldName] = $this->dblink->addSlashes($value);
+                    if (is_string($value)) {
+                        $data[$fieldName] = $this->dblink->addSlashes($value);
+                    } else {
+                        if (is_bool($value)) {
+                             $data[$fieldName] = intval($value);
+                        }
+                    }
                 }
             }
             $result = parent::saveToSQL($data, $searchForID);

@@ -15,19 +15,21 @@ namespace Icinga\Editor;
  */
 class Script extends engine\Configurator
 {
-    public $myTable     = 'script';
-    public $myKeyColumn = 'script_id';
-    public $nameColumn  = 'filename';
-    public $keyword     = 'script';
+    public $myTable              = 'script';
+    public $myKeyColumn          = 'script_id';
+    public $nameColumn           = 'filename';
+    public $keyword              = 'script';
+    public $myCreateColumn       = 'DatCreate';
+    public $myLastModifiedColumn = 'DatSave';
 
     /**
-     * Přidat položky register a use ?
+     * Add register a use fields ?
      * @var boolean
      */
     public $allowTemplating = false;
 
     /**
-     * Položky
+     * Fields
      * @var array
      */
     public $useKeywords = [
@@ -45,19 +47,19 @@ class Script extends engine\Configurator
     public $keywordsInfo = [
         'filename' => [
             'severity' => 'mandatory',
-            'title' => 'název příkazu', 'required' => true],
+            'title' => 'Command Name', 'required' => true],
         'body' => [
             'severity' => 'mandatory',
-            'title' => 'tělo skriptu', 'required' => true],
+            'title' => 'Script body', 'required' => true],
         'user_id' => [
             'severity' => 'advanced',
-            'title' => 'vlastník příkazu', 'required' => false],
+            'title' => 'Comand owner', 'required' => false],
         'public' => [
             'severity' => 'advanced',
-            'title' => 'přístupnost'],
+            'title' => 'Publicity'],
         'platform' => [
             'severity' => 'basic',
-            'title' => 'Platforma', 'mandatory' => true]
+            'title' => 'Platform', 'mandatory' => true]
     ];
 
     /**
@@ -85,15 +87,15 @@ class Script extends engine\Configurator
      */
     public function getAllUserData()
     {
-        $AllData = parent::getAllUserData();
-        foreach ($AllData as $ADkey => $AD) {
-            unset($AllData[$ADkey]['deploy']);
-            unset($AllData[$ADkey]['script_type']);
-            unset($AllData[$ADkey]['script_local']);
-            unset($AllData[$ADkey]['script_remote']);
+        $allData = parent::getAllUserData();
+        foreach ($allData as $ADkey => $AD) {
+            unset($allData[$ADkey]['deploy']);
+            unset($allData[$ADkey]['script_type']);
+            unset($allData[$ADkey]['script_local']);
+            unset($allData[$ADkey]['script_remote']);
         }
 
-        return $AllData;
+        return $allData;
     }
 
     /**
@@ -123,7 +125,7 @@ class Script extends engine\Configurator
      */
     public function deleteButton($name = null, $addUrl = '')
     {
-        return parent::deleteButton(_('skript'), $addUrl);
+        return parent::deleteButton(_('Script'), $addUrl);
     }
 
     /**
@@ -135,6 +137,11 @@ class Script extends engine\Configurator
      */
     public function takeData($data, $dataPrefix = null)
     {
+        if (array_key_exists('public', $data)) {
+            $data['public'] = 1;
+        } else {
+            $data['public'] = 0;
+        }
         return parent::takeData($data, $dataPrefix);
     }
 

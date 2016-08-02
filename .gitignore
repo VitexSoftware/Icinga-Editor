@@ -4,3 +4,5 @@
 /nbproject/
 /test/build/
 /vendor/
+/debian/icinga-editor.postrm.debhelper
+/debian/icinga-editor.substvars

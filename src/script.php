@@ -8,7 +8,7 @@ namespace Icinga\Editor;
  * @package    IcingaEditor
  * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
- * @copyright  2012 Vitex@hippy.cz (G)
+ * @copyright  2012-2016 Vitex@hippy.cz (G)
  */
 require_once 'includes/IEInit.php';
 
@@ -30,20 +30,20 @@ switch ($oPage->getRequestValue('action')) {
                 }
                 $script->setDataValue('body',
                     file_get_contents($_FILES['upload']['tmp_name']));
-                $script->addStatusMessage(_('Skript byl nahran na server'),
+                $script->addStatusMessage(_('Script was uploaded to server'),
                     'success');
             }
 
 
             if (!$script->getName()) {
-                $oUser->addStatusMessage(_('Není zadán název'), 'warning');
+                $oUser->addStatusMessage(_('Script name missing'), 'warning');
             }
             $scriptID = $script->saveToSQL();
 
             if (is_null($scriptID)) {
-                $oUser->addStatusMessage(_('Skript nebyl uložen'), 'warning');
+                $oUser->addStatusMessage(_('Skript was not saved'), 'warning');
             } else {
-                $oUser->addStatusMessage(_('Skript byl uložen'), 'success');
+                $oUser->addStatusMessage(_('Skript was saved'), 'success');
             }
         }
 }
@@ -55,7 +55,7 @@ if ($delete == 'true') {
     $oPage->redirect('scripts.php');
 }
 
-$oPage->addItem(new UI\PageTop(_('Editace skriptu').' '.$script->getName()));
+$oPage->addItem(new UI\PageTop(_('Script Editor').' '.$script->getName()));
 
 
 switch ($oPage->getRequestValue('action')) {
@@ -63,7 +63,7 @@ switch ($oPage->getRequestValue('action')) {
         $form = new \Ease\Container;
         $form->addItem(new \Ease\Html\H2Tag($script->getName()));
 
-        $confirmator = $form->addItem(new \Ease\TWB\Panel(_('Opravdu smazat ?')),
+        $confirmator = $form->addItem(new \Ease\TWB\Panel(_('Script removal: Are you sure ?')),
             'danger');
 
         $confirmator->addItem(new \Ease\TWB\Well(nl2br($script->getDataValue('body'))));
@@ -82,12 +82,12 @@ switch ($oPage->getRequestValue('action')) {
             ['class' => 'form-horizontal', 'enctype' => 'multipart/form-data']);
 
         $form->addInput(new \Ease\Html\InputFileTag('upload'),
-            _('Odeslat soubor'), 'script.sh', _('(Textarea bude prepsana)'));
+            _('Odeslat soubor'), 'script.sh', _('(Textarea will overwrited)'));
 
         if (!$script->getId()) {
-            $form->addItem(new \Ease\TWB\SubmitButton(_('Založit'), 'success'));
+            $form->addItem(new \Ease\TWB\SubmitButton(_('Create'), 'success'));
         } else {
-            $form->addItem(new \Ease\TWB\SubmitButton(_('Uložit'), 'success'));
+            $form->addItem(new \Ease\TWB\SubmitButton(_('Save'), 'success'));
         }
         break;
 }
@@ -95,7 +95,7 @@ $oPage->addItem(new UI\PageBottom());
 
 
 $infopanel = new UI\InfoBox($script);
-$tools     = new \Ease\TWB\Panel(_('Nástroje'), 'warning');
+$tools     = new \Ease\TWB\Panel(_('Tools'), 'warning');
 if ($script->getId()) {
     $tools->addItem($script->deleteButton());
     $tools->addItem(new \Ease\TWB\Panel(_('Transfer'), 'warning',
@@ -108,9 +108,7 @@ if ($script->getId()) {
         $command->getMyKeyColumn());
 
     if (count($usages)) {
-        $usedBy = new \Ease\TWB\Panel(_('Používající příkazy'));
-
-
+        $usedBy = new \Ease\TWB\Panel(_('Used by commands'));
 
         $listing = new \Ease\Html\UlTag(null, ['class' => 'list-group']);
         foreach ($usages as $usage) {
@@ -136,7 +134,7 @@ if ($script->getId()) {
 $pageRow = new \Ease\TWB\Row();
 $pageRow->addColumn(2, $infopanel);
 $pageRow->addColumn(6,
-    new \Ease\TWB\Panel(_('Skript').' <strong>'.$script->getName().'</strong>',
+    new \Ease\TWB\Panel(_('Script').' <strong>'.$script->getName().'</strong>',
     'default', $form));
 $pageRow->addColumn(4, $tools);
 $oPage->container->addItem($pageRow);
