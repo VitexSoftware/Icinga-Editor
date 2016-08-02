@@ -25,7 +25,7 @@ class IconSelector extends \Ease\Container
     /**
      * Volba ikony pro host
      *
-     * @param IEHost $host
+     * @param \Icinga\Editor\Engine\Host $host
      */
     public function __construct($host)
     {

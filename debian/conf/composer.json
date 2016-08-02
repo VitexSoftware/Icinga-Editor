@@ -1,7 +1,8 @@
 {
     "name": "vitexsoftware/icinga-editor",
     "description": "Editor of Icinga Configuration files (debianized)",
-    "version": "1.0.11",
+    "version": "1.1.2",
+    "license": "GPL-2.0",
     "authors": [
         {
             "name": "vitex",
@@ -14,7 +15,7 @@
     },
     "require": {
         "php": ">= 5.5.9",
-        "vitexsoftware/ease-framework": ">= 1.1.2"
+        "ease-framework": "*"
     },
     "autoload": {
         "psr-4": {

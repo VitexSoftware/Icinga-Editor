@@ -21,6 +21,7 @@ else
     echo $VERSION > debian/lastversion
 fi
 
+rm -rf debian/$PACKAGE
 
 cd ..
 ls *.deb

@@ -12,9 +12,10 @@ set_include_path(
     get_include_path().PATH_SEPARATOR.
     'includes'.PATH_SEPARATOR.
     '../includes'.PATH_SEPARATOR.
-    '/usr/share/icinga-editor/includes/'.PATH_SEPARATOR.
+    '../../vendor'.PATH_SEPARATOR.
+    '../vendor'.PATH_SEPARATOR.
     '/var/lib/icinga-editor'.PATH_SEPARATOR.
-    '../vendor'
+    '/usr/share/icinga-editor/includes/'
 );
 
 require_once 'Configure.php';

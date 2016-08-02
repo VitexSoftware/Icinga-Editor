@@ -12,7 +12,7 @@ namespace Icinga\Editor;
 require_once 'includes/IEInit.php';
 
 if (!is_object($oUser)) {
-    die(_('Cookies jsou vyžadovány'));
+    die(_('Cookies requied'));
 }
 
 $login = $oPage->getRequestValue('login');
@@ -40,34 +40,34 @@ if ($login) {
         \Ease\Shared::user(new User($forceID));
         \Ease\Shared::user()->SettingsColumn = 'settings';
         $oUser->setSettingValue('admin', TRUE);
-        $oUser->addStatusMessage(_('Přihlášen jako: ').$oUser->getUserLogin(),
+        $oUser->addStatusMessage(_('Signed in as: ').$oUser->getUserLogin(),
             'success');
         \Ease\Shared::user()->loginSuccess();
         $oPage->redirect('main.php');
         exit;
     } else {
-        $oPage->addStatusMessage(_('Prosím zadejte vaše přihlašovací udaje'));
+        $oPage->addStatusMessage(_('Please enter your login name'));
     }
 }
 
-$oPage->addItem(new UI\PageTop(_('Přihlaš se')));
+$oPage->addItem(new UI\PageTop(_('Sign in')));
 $oPage->addPageColumns();
 
 $loginFace = new \Ease\Html\Div();
 
-$oPage->columnI->addItem(new \Ease\Html\Div(_('Zadejte, prosím, Vaše přihlašovací údaje:')));
+$oPage->columnI->addItem(new \Ease\Html\Div(_('Please enter your login details:')));
 
 $loginForm = $loginFace->addItem(new \Ease\TWB\Form('Login'));
-$loginForm->addItem(new \Ease\TWB\FormGroup(_('Uživatelské jméno'),
+$loginForm->addItem(new \Ease\TWB\FormGroup(_('User Name'),
     new \Ease\Html\InputTextTag('login', $login)));
-$loginForm->addItem(new \Ease\TWB\FormGroup(_('Heslo'),
+$loginForm->addItem(new \Ease\TWB\FormGroup(_('Pasword'),
     new \Ease\Html\InputPasswordTag('password')));
-$loginForm->addItem(new \Ease\TWB\SubmitButton('LogIn', _('Přihlášení')));
+$loginForm->addItem(new \Ease\TWB\SubmitButton('LogIn', _('Sign In')));
 
 $oPage->columnII->addItem($loginFace);
 
 $oPage->columnI->addItem(new \Ease\TWB\LinkButton('passwordrecovery.php',
-    _('Obnova hesla')));
+    _('Password recovery')));
 
 /*
   $oPage->columnII->addItem(new \Ease\Html\DivTag('TwitterAuth', IETwitter::AuthButton('twauth.php')));

@@ -26,7 +26,7 @@ if (count($hosts)) {
 } else {
     $oPage->container->addItem(new \Ease\TWB\LinkButton('wizard-host.php',
         _('Založte si první sledovaný host'), 'success'));
-    $oUser->addStatusMessage(_('Zatím není zaregistrovaný žádný sledovaný host'),
+    $oUser->addStatusMessage(_('It is not yet registered any monitored host'),
         'warning');
 }
 

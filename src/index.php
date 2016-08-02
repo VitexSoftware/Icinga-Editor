@@ -25,12 +25,12 @@ $oPage->heroUnit = $oPage->container->addItem(new \Ease\Html\Div(null,
 $oPage->heroUnit->addItem(new \Ease\Html\ImgTag('img/vsmonitoring.png'));
 $oPage->heroUnit->addItem(new \Ease\Html\ATag('http://icinga.org/',
     new \Ease\Html\ImgTag('img/icinga_logo4-300x109.png')));
-$oPage->heroUnit->addItem(_('Monitoring služeb'));
+$oPage->heroUnit->addItem(_('Editor'));
 $oPage->heroUnit->setTagCss(['text-align' => 'center']);
 
-$oPage->columnI->addItem(_('Sledování hostů'));
-$oPage->columnII->addItem(_('Sledování služeb'));
-$oPage->columnIII->addItem(_('Notifikace mail/jabber/sms/twitter'));
+$oPage->columnI->addItem(_('Watch the hosts'));
+$oPage->columnII->addItem(_('Watch the services'));
+$oPage->columnIII->addItem(_('Notifications on mail/jabber/sms/twitter'));
 
 $oPage->addItem(new UI\PageBottom());
 
