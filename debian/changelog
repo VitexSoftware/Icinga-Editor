@@ -1,4 +1,4 @@
-icinga-editor (1.1.2-13) UNRELEASED; urgency=medium
+icinga-editor (1.1.2-24) UNRELEASED; urgency=medium
 
   [ dvorak ]
   * Initial release. (Closes: #XXXXXX)
@@ -105,5 +105,18 @@ icinga-editor (1.1.2-13) UNRELEASED; urgency=medium
   * Better README
   * Fixed search path Fixed composer package version for debian
     Switching string to English
+  * Fixed Scripts Edit/Upload Switching strings to English
+  * Fixed Scripts Edit/Upload Switching strings to English
+  * Fixed Scripts Edit/Upload Switching strings to English
+  * Fixed Scripts Edit/Upload Switching strings to English
+  * Fixed Scripts Edit/Upload Switching strings to English
+  * Fixed Scripts Edit/Upload Switching strings to English
+  * Fixed Scripts Edit/Upload Switching strings to English
+  * Fixed Scripts Edit/Upload Switching strings to English
+  * Fixed Scripts Edit/Upload Switching strings to English
+  * Fixed Scripts Edit/Upload Switching strings to English
+  * Fixed Scripts Edit/Upload Switching strings to English
+  * Fixed Scripts Edit/Upload Switching strings to English
+  * Fixed Scripts Edit/Upload Switching strings to English
 
- -- vitex <vitex@developer.kancl.brevnov.czf>  Tue, 02 Aug 2016 14:55:12 +0200
+ -- vitex <vitex@developer.kancl.brevnov.czf>  Fri, 12 Aug 2016 19:27:30 +0200

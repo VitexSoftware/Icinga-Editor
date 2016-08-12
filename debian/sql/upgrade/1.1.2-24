@@ -1,0 +1,6 @@
+ALTER TABLE `script` CHANGE `user_id` `user_id` INT(11) NULL DEFAULT NULL COMMENT 'vlastník', CHANGE `public` `public` TINYINT(1) NULL DEFAULT NULL COMMENT 'viditelnost', CHANGE `DatCreate` `DatCreate` DATETIME NULL DEFAULT NULL, CHANGE `DatSave` `DatSave` DATETIME NULL DEFAULT NULL;
+ALTER TABLE `host` DROP COLUMN `vrml_image`;
+ALTER TABLE `host` DROP COLUMN `3d_coords`;
+ALTER TABLE `host` ADD `host_is_server` TINYINT(1) NULL;
+
+

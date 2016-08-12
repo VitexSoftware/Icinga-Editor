@@ -46,7 +46,7 @@ if ($name) {
         'active_checks_enabled' => 1,
         'passive_checks_enabled' => 0,
         'check_freshness' => 1,
-//          'freshness_threshold' => ?
+        'freshness_threshold' => 900,
         'check_command' => 'return-unknown'
     ];
 

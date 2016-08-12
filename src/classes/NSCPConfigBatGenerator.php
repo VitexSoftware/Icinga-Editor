@@ -11,56 +11,56 @@ class NSCPConfigBatGenerator extends \Ease\Atom
 {
     /**
      * Objekt hostu
-     * @var IEHost
+     * @var Engine\Host
      */
     public $host = null;
 
     /**
-     * Pole nastavení
-     * @var  Array
+     * Preferences
+     * @var  array
      */
     public $prefs = null;
 
     /**
-     * Pole konfiguračních fragmentů
+     * Config file fragments
      * @var array
      */
     public $nscBatArray = [];
 
     /**
-     * Aktivni režim
+     * Active mode
      * @var boolean
      */
     public $hostActiveMode = false;
 
     /**
-     * Pasivní režim
+     * Passive mode
      * @var boolean
      */
     public $hostPassiveMode = false;
 
     /**
-     * Platforma
+     * Platform
      * @var string
      */
     public $platform = 'generic';
 
     /**
-     * Volání proměnné s nsclient
+     * How to call %NSCLIENT variable ?
      * @var string
      */
     private $nscvar = '';
 
     /**
-     * Pole skriptů pro deploy
+     * Scripts to deploy listing
      * @var array
      */
     private $scriptsToDeploy = [];
 
     /**
-     * Generátor konfigurace NSC++
+     * NSC++ Configuration Generator
      *
-     * @param IEHost $host
+     * @param Engine\Host $host
      */
     public function __construct($host)
     {
@@ -387,7 +387,7 @@ echo "file name=${log-path}/nsclient.log" >> $INI
     }
 
     /**
-     * Spustí testovací režim a po jeho ukončení nastartuje službu
+     * Make HTML and start service
      */
     public function cfgEnding()
     {
@@ -397,12 +397,24 @@ echo "file name=${log-path}/nsclient.log" >> $INI
         switch ($this->platform) {
             case 'windows':
                 $this->nscBatArray[] = "\n".'echo ^<h1^>'._('Konfigurace hosta').' '.$this->host->getName().'^</h1^> >> %ICIEDIT_HTML%';
-                $this->nscBatArray[] = "\n".'echo ^<br^>^<a data-role="editor" href="'.Engine\Configurator::getBaseURL().'host.php?host_id='.$this->host->getId().'"^>'._('Konfigurace hosta').'^</a^> >> %ICIEDIT_HTML%';
-                $this->nscBatArray[] = "\n".'echo ^<br^>^<a data-role="bat" href="'.Engine\Configurator::getBaseURL().'nscpcfggen.php?host_id='.$this->host->getId().'"^>'._('Znovu stahnout').' '.$this->host->getName().'_nscp.bat'.'^</a^> >> %ICIEDIT_HTML%';
+                $this->nscBatArray[] = "\n".'echo ^<br^>^<a data-role="editor" href="'.Engine\Configurator::getBaseURL().'host.php?host_id='.$this->host->getId().'"^>'._('Host Configuration').'^</a^> >> %ICIEDIT_HTML%';
+                $this->nscBatArray[] = "\n".'echo ^<br^>^<a data-role="bat" href="'.Engine\Configurator::getBaseURL().'nscpcfggen.php?host_id='.$this->host->getId().'"^>'._('Refresh sensor installation').' '.$this->host->getName().'_nscp.bat'.'^</a^> >> %ICIEDIT_HTML%';
+                if ($this->host->getDataValue('host_is_server') == 0) {
+                    $dtUrl               = Engine\Configurator::getBaseURL().'downtime.php?host_id='.$this->host->getId();
+                    $this->nscBatArray[] = "\n".'echo ^<br^>^<a data-role="shutdown" href="'.$dtUrl.'&state=start"^>'._('Start host downtime').'^</a^> >> %ICIEDIT_HTML%';
+                    $this->nscBatArray[] = "\n".'echo ^<br^>^<a data-role="poweron" href="'.$dtUrl.'&state=stop"^>'._('End host downtime').'^</a^> >> %ICIEDIT_HTML%';
+                }
                 $this->nscBatArray[] = "\n".'echo ^<br^>^<a data-role="confirm" href="'.$this->getCfgConfirmUrl().'"^>'._('Potvrzení konfigurace').'^</a^> >> %ICIEDIT_HTML%';
                 $this->nscBatArray[] = "\n".'echo ^</body^> >> %ICIEDIT_HTML%';
                 $this->nscBatArray[] = "\n".'echo ^</html^> >> %ICIEDIT_HTML%
 ';
+                if ($this->host->getDataValue('host_is_server') == 0) {
+                    $upfile              = 'C:\\Windows\\System32\\GroupPolicy\\Machine\\Scripts\\Startup\\hostup.ps1';
+                    $this->nscBatArray[] = "\n".'echo (new-object System.Net.WebClient).DownloadFile("'.$dtUrl.'&state=stop","C:\tmp\hostup.txt") > '.$upfile;
+
+                    $downfile            = 'C:\\Windows\\System32\\GroupPolicy\\Machine\\Scripts\\Shutdown\\hostdown.ps1';
+                    $this->nscBatArray[] = "\n".'echo (new-object System.Net.WebClient).DownloadFile("'.$dtUrl.'&state=start","C:\tmp\hostdown.txt") > '.$downfile;
+                }
 
                 $this->nscBatArray[] = "\n".'
 '.$this->nscvar.' service --start

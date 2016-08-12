@@ -1,17 +1,16 @@
 <?php
 /**
- * Správce hostů
+ * Icinga Host Class
  *
  * @package    IcingaEditor
- * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
- * @copyright  2012 Vitex@hippy.cz (G)
+ * @copyright  2012-2016 Vitex@hippy.cz (G)
  */
 
 namespace Icinga\Editor\Engine;
 
 /**
- * Description of IEHosts
+ * Host representation
  *
  * @author vitex
  */
@@ -29,19 +28,19 @@ class Host extends Configurator
     public $webLinkColumn = 'action_url';
 
     /**
-     * Přidat položky register a use ?
+     * Add register and use use fields ?
      * @var boolean
      */
     public $allowTemplating = true;
 
     /**
-     * Dát tyto položky k dispozici i ostatním ?
+     * Is this records public ?
      * @var boolean
      */
     public $publicRecords = true;
 
     /**
-     * Sloupce záznamu
+     * Record columns
      * @var array
      */
     public $useKeywords  = [
@@ -86,31 +85,30 @@ class Host extends Configurator
         'action_url' => 'VARCHAR(128)',
         'icon_image' => 'VARCHAR(64)',
         'icon_image_alt' => 'VARCHAR(64)',
-        'vrml_image' => 'VARCHAR(64)',
         'statusmap_image' => 'VARCHAR(64)',
         '2d_coords' => 'VARCHAR(32)',
-        '3d_coords' => 'VARCHAR(64)',
-        'platform' => "PLATFORM"
+        'platform' => "PLATFORM",
+        'host_is_server' => 'BOOL'
     ];
     public $keywordsInfo = [
         'host_name' => [
             'severity' => 'mandatory',
-            'title' => 'Jméno hosta', 'required' => true],
+            'title' => 'Host Name', 'required' => true],
         'alias' => [
             'severity' => 'optional',
-            'title' => 'alias hosta', 'required' => true],
+            'title' => 'Host Alias', 'required' => true],
         'display_name' => [
             'severity' => 'optional',
-            'title' => 'zobrazované jméno'],
+            'title' => 'Display Name'],
         'address' => [
             'severity' => 'optional',
-            'title' => 'IPv4 adresa ', 'mandatory' => true],
+            'title' => 'IPv4 address ', 'mandatory' => true],
         'address6' => [
             'severity' => 'optional',
-            'title' => 'IPv6 adresa', 'mandatory' => true],
+            'title' => 'IPv6 address', 'mandatory' => true],
         'parents' => [
             'severity' => 'optional',
-            'title' => 'rodiče',
+            'title' => 'Parents',
             'refdata' => [
                 'table' => 'host',
                 'captioncolumn' => 'host_name',
@@ -119,7 +117,7 @@ class Host extends Configurator
                 'condition' => ['register' => 1]]],
         'hostgroups' => [
             'severity' => 'optional',
-            'title' => 'skupiny hostů',
+            'title' => 'Host Groups',
             'refdata' => [
                 'table' => 'hostgroup',
                 'captioncolumn' => 'hostgroup_name',
@@ -127,7 +125,7 @@ class Host extends Configurator
         ],
         'check_command' => [
             'severity' => 'advanced',
-            'title' => 'testovací příkaz',
+            'title' => 'Check command',
             'severity' => 'optional',
             'refdata' => [
                 'table' => 'command',
@@ -137,32 +135,32 @@ class Host extends Configurator
                 'condition' => ['command_type' => 'check']
             ]
         ],
-        'initial_state' => ['title' => 'výchozí předpokládaný stav',
+        'initial_state' => ['title' => 'Initial State',
             'severity' => 'advanced',
-            'o' => 'UP - spuštěn',
-            'd' => 'DOWN - vypnut',
-            'u' => 'UNREACHABLE - nedostupný',
+            'o' => 'UP',
+            'd' => 'DOWN',
+            'u' => 'UNREACHABLE',
         ],
         'max_check_attempts' => [
-            'title' => 'maximální počet pokusů',
+            'title' => 'maximál check attempts',
             'severity' => 'advanced',
         ],
-        'check_interval' => ['title' => 'interval otestování',
+        'check_interval' => ['title' => 'Check interval',
             'severity' => 'advanced',
         ],
         'retry_interval' => [
             'severity' => 'optional',
-            'title' => 'interval dalšího pokusu o test'
+            'title' => 'Retry interval'
         ],
         'active_checks_enabled' => [
             'severity' => 'advanced',
-            'title' => 'povolit aktivní testy'],
+            'title' => 'Active Checks enabled'],
         'passive_checks_enabled' => [
             'severity' => 'advanced',
-            'title' => 'povolit pasivní testy'],
+            'title' => 'Passive Checks enabled'],
         'check_period' => [
             'severity' => 'optional',
-            'title' => 'testovací perioda',
+            'title' => 'Check period',
             'refdata' => [
                 'table' => 'timeperiod',
                 'captioncolumn' => 'timeperiod_name',
@@ -171,14 +169,14 @@ class Host extends Configurator
         ],
         'obsess_over_host' => [
             'severity' => 'advanced',
-            'title' => 'Posedlost přes host'],
+            'title' => 'Obsess over host'],
         'check_freshness' => [
             'severity' => 'advanced',
-            'title' => 'testovat čerstvost'],
+            'title' => 'Check freshness'],
         'freshness_threshold' => [
             'severity' => 'advanced',
-            'title' => 'práh čertvosti'],
-        'event_handler' => ['title' => 'ošetřovač událostí',
+            'title' => 'Freshness threshold'],
+        'event_handler' => ['title' => 'Event handler',
             'severity' => 'advanced',
             'refdata' => [
                 'table' => 'command',
@@ -190,45 +188,45 @@ class Host extends Configurator
         ],
         'event_handler_enabled' => [
             'severity' => 'advanced',
-            'title' => 'povolit ošetření událostí'],
+            'title' => 'Event handler enabled'],
         'low_flap_threshold' => [
             'severity' => 'advanced',
-            'title' => 'nižší práh plácání'],
+            'title' => 'Low flap treshold'],
         'high_flap_threshold' => [
             'severity' => 'advanced',
-            'title' => 'vyšší práh plácání'],
+            'title' => 'High flap threshold'],
         'flap_detection_enabled' => [
             'severity' => 'advanced',
-            'title' => 'detekovat plácání'],
+            'title' => 'Flap detection enabled'],
         'flap_detection_options' => [
             'severity' => 'advanced',
-            'title' => 'možnosti detekce plácání',
+            'title' => 'Flap detection options',
             'o' => 'Up',
             'd' => 'Down',
-            'u' => 'Nedostupný',
+            'u' => 'Unreachable',
         ],
         'failure_prediction_enabled' => [
             'severity' => 'advanced',
-            'title' => 'Předpokládat výpadek'],
+            'title' => 'Failure prediction enabled'],
         'process_perf_data' => [
             'severity' => 'advanced',
-            'title' => 'zpracovávat výkonostní data'],
+            'title' => 'Process perf data'],
         'retain_status_information' => [
             'severity' => 'advanced',
-            'title' => 'držet stavové informace'],
+            'title' => 'retain_status_information'],
         'retain_nonstatus_information' => [
             'severity' => 'advanced',
-            'title' => 'držet nestavové informace'],
+            'title' => 'Retain nonstatus information'],
         'contacts' => [
             'severity' => 'optional',
-            'title' => 'kontakty',
+            'title' => 'Contacts',
             'refdata' => [
                 'table' => 'contact',
                 'captioncolumn' => 'contact_name',
                 'idcolumn' => 'contact_id']],
         'contact_groups' => [
             'severity' => 'optional',
-            'title' => 'členské skupiny kontaktů',
+            'title' => 'Contact Groups',
             'refdata' => [
                 'table' => 'contactgroup',
                 'captioncolumn' => 'contactgroup_name',
@@ -236,13 +234,13 @@ class Host extends Configurator
         ],
         'notification_interval' => [
             'severity' => 'optional',
-            'title' => 'interval notifikace'],
+            'title' => 'Notification interval'],
         'first_notification_delay' => [
             'severity' => 'advanced',
-            'title' => 'první prodleva v oznamování'],
+            'title' => 'First notification delay'],
         'notification_period' => [
             'severity' => 'optional',
-            'title' => 'perioda oznamování',
+            'title' => 'Notification period',
             'required' => true,
             'refdata' => [
                 'table' => 'timeperiod',
@@ -252,52 +250,49 @@ class Host extends Configurator
         ],
         'notification_options' => [
             'severity' => 'advanced',
-            'title' => 'oznamovat událost',
-            'd' => 'Vypnutí',
-            'u' => 'Nedostupnost',
-            'r' => 'Obnovení',
-            'f' => 'škytání',
-            's' => 'plánovaný výpadek'
+            'title' => 'notification options',
+            'd' => 'DOWN',
+            'u' => 'UNREACHABLE',
+            'r' => 'RECOVERY',
+            'f' => 'FLAPPING',
+            's' => 'SCHEDULED DOWNTIME'
         ],
         'notifications_enabled' => [
             'severity' => 'optional',
-            'title' => 'povolit oznamování'],
+            'title' => 'Notifications enabled'],
         'stalking_options' => [
             'severity' => 'advanced',
-            'title' => 'nastavení sledování',
-            'o' => 'sledovat UP stavy',
-            'd' => 'sledovat DOWN stavy',
-            'u' => 'sledovat UNREACHABLE stavy'],
+            'title' => 'Stalking options',
+            'o' => 'UP',
+            'd' => 'DOWN',
+            'u' => 'UNREACHABLE'],
         'notes' => [
             'severity' => 'basic',
-            'title' => 'poznámka', 'mandatory' => true],
+            'title' => 'Notes', 'mandatory' => true],
         'notes_url' => [
             'severity' => 'advanced',
-            'title' => 'url externí poznámky'],
+            'title' => 'Notes url'],
         'action_url' => [
             'severity' => 'advanced',
-            'title' => 'url externí aplikace'],
+            'title' => 'Action url'],
         'icon_image' => [
             'severity' => 'advanced',
-            'title' => 'ikona hostu', 'mandatory' => true],
+            'title' => 'Icon Image', 'mandatory' => true],
         'icon_image_alt' => [
             'severity' => 'advanced',
-            'title' => 'alternativní ikona'],
-        'vrml_image' => [
-            'severity' => 'advanced',
-            'title' => '3D ikona'],
+            'title' => 'Icon image title'],
         'statusmap_image' => [
             'severity' => 'advanced',
-            'title' => 'ikona statusmapy'],
+            'title' => 'Statusmap image'],
         '2d_coords' => [
             'severity' => 'advanced',
-            'title' => 'dvourozměrné koordináty'],
-        '3d_coords' => [
-            'severity' => 'advanced',
-            'title' => 'třírozměrné koordináty'],
+            'title' => 'Statusmap coordinates'],
         'platform' => [
             'severity' => 'basic',
-            'title' => 'Platforma', 'mandatory' => true]
+            'title' => 'Platform', 'mandatory' => true],
+        'host_is_server' => [
+            'severity' => 'advanced',
+            'title' => 'Host Is Server'],
     ];
 
     /**
@@ -334,11 +329,11 @@ class Host extends Configurator
         $service          = new Service();
         $servicesAssigned = $service->dblink->queryToArray('SELECT '.$service->myKeyColumn.','.$service->nameColumn.' FROM '.$service->myTable.' WHERE '.'host_name'.' LIKE \'%"'.$this->getName().'"%\'',
             $service->myKeyColumn);
-        foreach ($servicesAssigned as $ServiceID => $ServiceInfo) {
-            $service->loadFromSQL($ServiceID);
+        foreach ($servicesAssigned as $serviceID => $serviceInfo) {
+            $service->loadFromSQL($serviceID);
             $service->delHostName($this->getId(), $this->getName());
             if (!$service->saveToSQL()) {
-                $this->addStatusMessage(sprintf(_('Nepodařilo se odregistrovat %s ze služby %s'),
+                $this->addStatusMessage(sprintf(_('Unregister %s from service %s error'),
                         $this->getName(), $service->getName()), 'Error');
                 $delAll = false;
             }
@@ -351,10 +346,10 @@ class Host extends Configurator
             $child = new Host($chid_id);
 
             if ($child->delMember('parents', $this->getId(), $this->getName()) && $child->saveToSQL()) {
-                $this->addStatusMessage(sprintf(_('%s již není rodičem %s'),
+                $this->addStatusMessage(sprintf(_('%s not an parent of %s'),
                         $this->getName(), $child->getName()), 'success');
             } else {
-                $this->addStatusMessage(sprintf(_('%s je stále rodičem %s'),
+                $this->addStatusMessage(sprintf(_('%s is still parent of %s'),
                         $this->getName(), $child->getName()), 'warning');
             }
         }
@@ -368,7 +363,7 @@ class Host extends Configurator
     }
 
     /**
-     * Zkontroluje všechny položky
+     * Check all columns
      *
      * @param  array $allData
      * @return array
@@ -393,6 +388,7 @@ class Host extends Configurator
     {
         $allData = parent::getAllData();
         foreach ($allData as $hostID => $hostInfo) {
+            unset($allData[$hostID]['host_is_server']);
             if (!intval($hostInfo['register'])) {
                 continue;
             }
@@ -406,7 +402,7 @@ class Host extends Configurator
                 }
 
                 $hostOwnerLogin = $this->owner->getUserLogin();
-                /* Každý host musí mít jak kontakt login uživatele který ho má vidět */
+                /* Every host must  have contact to login to see it */
                 if (is_array($hostInfo['contacts'])) {
                     if (array_search($hostOwnerLogin, $hostInfo['contacts']) === false) {
                         $allData[$hostID]['contacts'][] = $hostOwnerLogin;
@@ -415,7 +411,7 @@ class Host extends Configurator
                     $allData[$hostID]['contacts'] = [$hostOwnerLogin];
                 }
             } else {
-                $this->addStatusMessage(_('Host bez vlastníka').': #'.$hostInfo[$this->myKeyColumn].': '.$hostInfo[$this->nameColumn],
+                $this->addStatusMessage(_('Host without owner').': #'.$hostInfo[$this->myKeyColumn].': '.$hostInfo[$this->nameColumn],
                     'warning');
             }
         }
@@ -424,7 +420,7 @@ class Host extends Configurator
     }
 
     /**
-     * Začne sledovat právě běžící TCP služby
+     * Scan & assifgn TCP services
      * @return int počet sledovaných
      */
     public function autoPopulateServices()
@@ -435,8 +431,8 @@ class Host extends Configurator
     }
 
     /**
-     * Přejmenuje hosta a závistlosti
-     * @param type $newname
+     * Rename host and dependencies
+     * @param string $newname
      */
     public function rename($newname)
     {
@@ -454,7 +450,7 @@ class Host extends Configurator
             $service->loadFromSQL($serviceID);
             $service->renameHostName($this->getId(), $newname);
             if (!$service->saveToSQL()) {
-                $this->addStatusMessage(sprintf(_('Nepodařilo se přejmenovat %s ve službě %s'),
+                $this->addStatusMessage(sprintf(_('Error renaming %s within service %s'),
                         $this->getName(), $service->getName()), $Type);
                 $renameAll = false;
             }
@@ -477,7 +473,7 @@ class Host extends Configurator
     }
 
     /**
-     * Zjistí ikonu, stahne jí z netu, zkonvertuje a použije jako ikonu hosta
+     * Check icon, download, convert an use as host icon
      */
     public function favToIcon()
     {
@@ -586,15 +582,18 @@ class Host extends Configurator
         return false;
     }
 
+    /**
+     * Draw host html representation
+     */
     function draw()
     {
         echo new \Icinga\Editor\UI\HostIcon($this);
     }
 
     /**
-     * Vrací služby přiřazené ke sledování hosta
+     * Obtain services that checks this host
      *
-     * @return array Seznam služeb
+     * @return array Service name listing
      */
     public function getServices()
     {
@@ -629,16 +628,16 @@ class Host extends Configurator
             foreach ($parents as $pId => $pName) {
                 $parents[$pId] = '<a href="host.php?host_id='.$pId.'">'.$pName.'</a>';
             }
-            $block->addDef(_('Rodiče'), implode(',', $parents));
+            $block->addDef(_('Parent'), implode(',', $parents));
         }
 
-        $block->addDef(_('Konfigurace senzoru'), $this->sensorStatusLabel());
+        $block->addDef(_('Sensor Configuration'), $this->sensorStatusLabel());
 
         return $block;
     }
 
     /**
-     * Vrací label se statusem registrace statusu
+     * Obtain label with status of sensor deployment
      *
      * @param int $status_code Kód nasazení senzoru 2: aktuální 1: zastaralý 0:nenasazeno
      * @return \\Ease\TWB\Label
@@ -653,23 +652,23 @@ class Host extends Configurator
 
         switch ($status_code) {
             case 2:
-                $status = new \Ease\TWB\Label('success', _('Aktuální'));
+                $status = new \Ease\TWB\Label('success', _('Actual'));
                 break;
             case 1:
-                $status = new \Ease\TWB\Label('warning', _('Zastaralá'));
+                $status = new \Ease\TWB\Label('warning', _('Obsolete'));
                 break;
             case 0:
             default :
-                $status = new \Ease\TWB\Label('danger', _('Nenasazeno'));
+                $status = new \Ease\TWB\Label('danger', _('Not installed'));
                 break;
         }
         return $status;
     }
 
     /**
-     * Vrací status nasazení senzoru
+     * Obtain sensor deploy status
      *
-     * @return int 2: aktuální 1: zastaralý 0:nenasazeno
+     * @return int 2: Actual 1: Obsolete 0: Not installed
      */
     function getSensorStatus()
     {
@@ -677,20 +676,18 @@ class Host extends Configurator
         $hash   = $this->getDataValue('config_hash');
         if ($hash) {
             if ($this->getConfigHash() == $hash) {
-                $status = 2;
+                $status = 2; //All OK
             } else {
-//Zastaralá konfigurace
-                $status = 1;
+                $status = 1; //Obsolete configuration
             }
         } else {
-//senzor neregistrován
-            $status = 0;
+            $status = 0; //Not installed
         }
         return $status;
     }
 
     /**
-     * Vrací hash vypočítaný z aktuální konfigurace hosta
+     * Obtain actual host/services configuration hash
      */
     function getConfigHash()
     {
@@ -718,17 +715,17 @@ class Host extends Configurator
     }
 
     /**
-     * Přidá hosta služby
+     * Add host to service
      *
-     * @param string $column     název sloupce
-     * @param int    $memberID
-     * @param string $memberName
+     * @param string $column     column name
+     * @param int    $memberID   host ID
+     * @param string $memberName host Name
      */
     function addMember($column, $memberID, $memberName)
     {
         if ($column == 'parents') {
             if ($memberName == $this->getName()) {
-                $this->addStatusMessage(_('Host nemůže být rodičem sebe sama'),
+                $this->addStatusMessage(_('Host can not by its own parent'),
                     'warning');
                 return null;
             }
@@ -737,12 +734,11 @@ class Host extends Configurator
     }
 
     /**
-     * Vytvoří nového hosta patřícího rovnou do výchozí skupiny uživatele
+     * Create new Host member of user's default hostgroup
      *
-     * @param array $data asiciativní pole dat
+     * @param array $data Host data
      *
-     * @return int|null id nově vloženého řádku nebo null, pokud se data
-     * nepovede vložit
+     * @return int|null ID of new record or null in case of error
      */
     public function insertToSQL($data = null)
     {

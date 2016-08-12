@@ -1,6 +1,6 @@
 src/*.php		usr/share/icinga-editor
 src/*.ico		usr/share/icinga-editor
-src/css/*.css	usr/share/icinga-editor/css
+src/css/*.css           usr/share/icinga-editor/css
 src/css/images/*	usr/share/icinga-editor/css/images
 src/css/msdropdown/*	usr/share/icinga-editor/css/msdropdown
 src/js/*.js		usr/share/icinga-editor/js
@@ -12,13 +12,14 @@ src/classes/*.php		usr/share/icinga-editor/classes
 src/classes/UI/*.php		usr/share/icinga-editor/classes/UI
 src/classes/engine/*.php	usr/share/icinga-editor/classes/engine
 src/modules/*.php		usr/share/icinga-editor/modules
-debian/sql/install/*    usr/share/dbconfig-common/data/icinga-editor/install
+debian/sql/install/*            usr/share/dbconfig-common/data/icinga-editor/install
 debian/conf/composer.json       usr/share/icinga-editor/
 debian/conf/icinga-editor.conf	etc/apache2/conf-available
 debian/conf/icinga-editor.service etc/avahi/services
-debian/conf/icinga-editor etc/sudoers.d
-debian/plugins/*        usr/lib/nagios/plugins
-src/bin/iecfgimporter.php        usr/bin
+debian/conf/icinga-editor       etc/sudoers.d
+debian/plugins/*                usr/lib/nagios/plugins
+bin/iecfgimporter.php           usr/bin
+bin/toicmdfile.sh               usr/bin
 
 locale/cs_CZ/LC_MESSAGES/*.mo       usr/share/locale/cs_CZ/LC_MESSAGES
 locale/en_US/LC_MESSAGES/*.mo       usr/share/locale/cs_CZ/LC_MESSAGES

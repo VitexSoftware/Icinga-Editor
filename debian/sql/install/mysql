@@ -164,11 +164,10 @@ CREATE TABLE IF NOT EXISTS `host` (
   `action_url` varchar(128) COLLATE utf8_czech_ci DEFAULT NULL,
   `icon_image` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
   `icon_image_alt` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
-  `vrml_image` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
   `statusmap_image` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
   `2d_coords` varchar(32) COLLATE utf8_czech_ci DEFAULT NULL,
-  `3d_coords` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
   `name` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
+  `host_is_server` TINYINT(1) NULL,
   `register` tinyint(1) DEFAULT NULL,
   `use` varchar(64) COLLATE utf8_czech_ci DEFAULT NULL,
   `public` tinyint(1) DEFAULT NULL,
@@ -225,13 +224,13 @@ DROP TABLE IF EXISTS `script`;
 CREATE TABLE IF NOT EXISTS `script` (
 `script_id` int(11) NOT NULL,
   `filename` varchar(255) NOT NULL,
-  `body` text NOT NULL,
-  `platform` varchar(64) NOT NULL,
-  `user_id` int(11) NOT NULL COMMENT 'vlastník',
-  `public` tinyint(1) NOT NULL COMMENT 'viditelnost',
-  `DatCreate` datetime NOT NULL,
-  `DatSave` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='skripty pro deploy';
+  `body` text,
+  `platform` varchar(64) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL COMMENT 'owner',
+  `public` tinyint(1) DEFAULT NULL COMMENT 'visibility',
+  `DatCreate` datetime DEFAULT NULL,
+  `DatSave` datetime DEFAULT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='scripts for deploy';
 
 -- --------------------------------------------------------
 

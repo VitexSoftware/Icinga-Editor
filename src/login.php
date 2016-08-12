@@ -58,13 +58,17 @@ $loginFace = new \Ease\Html\Div();
 $oPage->columnI->addItem(new \Ease\Html\Div(_('Please enter your login details:')));
 
 $loginForm = $loginFace->addItem(new \Ease\TWB\Form('Login'));
+
 $loginForm->addItem(new \Ease\TWB\FormGroup(_('User Name'),
     new \Ease\Html\InputTextTag('login', $login)));
 $loginForm->addItem(new \Ease\TWB\FormGroup(_('Pasword'),
     new \Ease\Html\InputPasswordTag('password')));
-$loginForm->addItem(new \Ease\TWB\SubmitButton('LogIn', _('Sign In')));
+$loginForm->addItem(new \Ease\TWB\SubmitButton(_('Sign In'), 'success'));
 
-$oPage->columnII->addItem($loginFace);
+$loginPanel = new \Ease\TWB\Panel(_('Sign in'), 'info', $loginFace);
+$loginPanel->body->setTagProperties(['style' => 'margin: 20px']);
+
+$oPage->columnII->addItem($loginPanel);
 
 $oPage->columnI->addItem(new \Ease\TWB\LinkButton('passwordrecovery.php',
     _('Password recovery')));
