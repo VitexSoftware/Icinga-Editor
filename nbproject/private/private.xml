@@ -10,15 +10,6 @@
         <group name="Monitoring">
             <file>file:/home/vitex/Projects/VitexSoftware/iciedit/src/includes/Configure.php</file>
         </group>
-        <group>
-            <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/src/classes/UI/MainMenu.php</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/debian/install</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/src/classes/Script.php</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/src/cfgconfirm.php</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/src/index.php</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/src/downtime.php</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/src/classes/ExternalCommand.php</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/src/script.php</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

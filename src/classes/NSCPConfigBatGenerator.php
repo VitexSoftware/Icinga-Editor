@@ -10,6 +10,18 @@ namespace Icinga\Editor;
 class NSCPConfigBatGenerator extends \Ease\Atom
 {
     /**
+     * Files in this format Suffix
+     * @var comment
+     */
+    public $formatSuffix = 'bat';
+
+    /**
+     * Comment mark
+     * @var string
+     */
+    public $comment = 'REM';
+
+    /**
      * Objekt hostu
      * @var Engine\Host
      */
@@ -25,7 +37,7 @@ class NSCPConfigBatGenerator extends \Ease\Atom
      * Config file fragments
      * @var array
      */
-    public $nscBatArray = [];
+    public $nscConfArray = [];
 
     /**
      * Active mode
@@ -49,13 +61,19 @@ class NSCPConfigBatGenerator extends \Ease\Atom
      * How to call %NSCLIENT variable ?
      * @var string
      */
-    private $nscvar = '';
+    protected $nscvar = '';
 
     /**
      * Scripts to deploy listing
      * @var array
      */
-    private $scriptsToDeploy = [];
+    public $scriptsToDeploy      = [];
+
+    /**
+     * List of script filenames to deploy
+     * @var array
+     */
+    public $scriptsToDeployNames = [];
 
     /**
      * NSC++ Configuration Generator
@@ -92,9 +110,9 @@ class NSCPConfigBatGenerator extends \Ease\Atom
      * @param string $key
      * @param string $value
      */
-    private function addCfg($path, $key, $value)
+    protected function addCfg($path, $key, $value)
     {
-        $this->nscBatArray[] = "\n".$this->nscvar.' settings --path "'.$path.'" --key "'.$key.'" --set "'.$value.'"';
+        $this->nscConfArray[] = "\n".$this->nscvar.' settings --path "'.$path.'" --key "'.$key.'" --set "'.$value.'"';
     }
 
     /**
@@ -112,7 +130,7 @@ class NSCPConfigBatGenerator extends \Ease\Atom
      *
      * @param string $platform
      */
-    private function setnscvar($platform)
+    public function setnscvar($platform)
     {
         switch ($platform) {
             case 'windows':
@@ -135,7 +153,7 @@ class NSCPConfigBatGenerator extends \Ease\Atom
     {
         switch ($this->platform) {
             case 'windows':
-                $this->nscBatArray = ['
+                $this->nscConfArray = ['
 @ECHO OFF
 powershell Set-ExecutionPolicy ByPass
 set NSCDIR=%ProgramFiles%\NSClient++\
@@ -146,15 +164,15 @@ del  "%NSCDIR%\nsclient.old"
 rename "%NSCDIR%\nsclient.ini" nsclient.old
 '];
 
-                $this->nscBatArray[] = "\n".'SET ICIEDIT_HTML="%NSCDIR%/icinga-editor.htm"';
-                $this->nscBatArray[] = "\n".'echo ^<html^> > %ICIEDIT_HTML%';
-                $this->nscBatArray[] = "\n".'echo ^<head^>^<meta charset="UTF-8"^>^</head^> >> %ICIEDIT_HTML%';
-                $this->nscBatArray[] = "\n".'echo ^<body^> >> %ICIEDIT_HTML%
+                $this->nscConfArray[] = "\n".'SET ICIEDIT_HTML="%NSCDIR%/icinga-editor.htm"';
+                $this->nscConfArray[] = "\n".'echo ^<html^> > %ICIEDIT_HTML%';
+                $this->nscConfArray[] = "\n".'echo ^<head^>^<meta charset="UTF-8"^>^</head^> >> %ICIEDIT_HTML%';
+                $this->nscConfArray[] = "\n".'echo ^<body^> >> %ICIEDIT_HTML%
 ';
 
                 break;
             case 'linux':
-                $this->nscBatArray = ['
+                $this->nscConfArray = ['
 export NSCLIENT=`which nscp`
 export ICINGA_SERVER="'.$this->prefs['serverip'].'"
 '.$this->nscvar.' service --stop
@@ -172,7 +190,7 @@ echo "file name=${log-path}/nsclient.log" >> $INI
 '];
                 break;
         }
-        $this->nscBatArray[] = $this->nscvar.' settings --generate';
+        $this->nscConfArray[] = $this->nscvar.' settings --generate';
     }
 
     /**
@@ -302,6 +320,7 @@ echo "file name=${log-path}/nsclient.log" >> $INI
                     $script_id = $command->getDataValue('script_id');
                     if ($script_id) {
                         $this->scriptsToDeploy[$command->getName()] = $script_id;
+                        $this->scriptsToDeployNames[$script_id]     = $command->getDataValue('command_line');
                     }
                     $commandsCache[$remote] = $command->getData();
                 }
@@ -342,10 +361,10 @@ echo "file name=${log-path}/nsclient.log" >> $INI
             $serviceParams = $service['check_command-params'];
             switch ($this->platform) {
                 case 'windows':
-                    $this->nscBatArray[] = "\n\nREM #".$service['service_id'].' '.$serviceName."\n";
+                    $this->nscConfArray[] = "\n\n".$this->comment." #".$service['service_id'].' '.$serviceName."\n";
                     break;
                 case 'linux':
-                    $this->nscBatArray[] = "\n\n# #".$service['service_id'].' '.$serviceName."\n";
+                    $this->nscConfArray[] = "\n\n# #".$service['service_id'].' '.$serviceName."\n";
                     break;
                 default:
                     break;
@@ -396,39 +415,39 @@ echo "file name=${log-path}/nsclient.log" >> $INI
         }
         switch ($this->platform) {
             case 'windows':
-                $this->nscBatArray[] = "\n".'echo ^<h1^>'._('Konfigurace hosta').' '.$this->host->getName().'^</h1^> >> %ICIEDIT_HTML%';
-                $this->nscBatArray[] = "\n".'echo ^<br^>^<a data-role="editor" href="'.Engine\Configurator::getBaseURL().'host.php?host_id='.$this->host->getId().'"^>'._('Host Configuration').'^</a^> >> %ICIEDIT_HTML%';
-                $this->nscBatArray[] = "\n".'echo ^<br^>^<a data-role="bat" href="'.Engine\Configurator::getBaseURL().'nscpcfggen.php?host_id='.$this->host->getId().'"^>'._('Refresh sensor installation').' '.$this->host->getName().'_nscp.bat'.'^</a^> >> %ICIEDIT_HTML%';
+                $this->nscConfArray[] = "\n".'echo ^<h1^>'._('Konfigurace hosta').' '.$this->host->getName().'^</h1^> >> %ICIEDIT_HTML%';
+                $this->nscConfArray[] = "\n".'echo ^<br^>^<a data-role="editor" href="'.Engine\Configurator::getBaseURL().'host.php?host_id='.$this->host->getId().'"^>'._('Host Configuration').'^</a^> >> %ICIEDIT_HTML%';
+                $this->nscConfArray[] = "\n".'echo ^<br^>^<a data-role="bat" href="'.Engine\Configurator::getBaseURL().'nscpcfggen.php?host_id='.$this->host->getId().'"^>'._('Refresh sensor installation').' '.$this->host->getName().'_nscp.bat'.'^</a^> >> %ICIEDIT_HTML%';
                 if ($this->host->getDataValue('host_is_server') == 0) {
                     $dtUrl               = Engine\Configurator::getBaseURL().'downtime.php?host_id='.$this->host->getId();
-                    $this->nscBatArray[] = "\n".'echo ^<br^>^<a data-role="shutdown" href="'.$dtUrl.'&state=start"^>'._('Start host downtime').'^</a^> >> %ICIEDIT_HTML%';
-                    $this->nscBatArray[] = "\n".'echo ^<br^>^<a data-role="poweron" href="'.$dtUrl.'&state=stop"^>'._('End host downtime').'^</a^> >> %ICIEDIT_HTML%';
+                    $this->nscConfArray[] = "\n".'echo ^<br^>^<a data-role="shutdown" href="'.$dtUrl.'&state=start"^>'._('Start host downtime').'^</a^> >> %ICIEDIT_HTML%';
+                    $this->nscConfArray[] = "\n".'echo ^<br^>^<a data-role="poweron" href="'.$dtUrl.'&state=stop"^>'._('End host downtime').'^</a^> >> %ICIEDIT_HTML%';
                 }
-                $this->nscBatArray[] = "\n".'echo ^<br^>^<a data-role="confirm" href="'.$this->getCfgConfirmUrl().'"^>'._('Potvrzení konfigurace').'^</a^> >> %ICIEDIT_HTML%';
-                $this->nscBatArray[] = "\n".'echo ^</body^> >> %ICIEDIT_HTML%';
-                $this->nscBatArray[] = "\n".'echo ^</html^> >> %ICIEDIT_HTML%
+                $this->nscConfArray[] = "\n".'echo ^<br^>^<a data-role="confirm" href="'.$this->getCfgConfirmUrl().'"^>'._('Potvrzení konfigurace').'^</a^> >> %ICIEDIT_HTML%';
+                $this->nscConfArray[] = "\n".'echo ^</body^> >> %ICIEDIT_HTML%';
+                $this->nscConfArray[] = "\n".'echo ^</html^> >> %ICIEDIT_HTML%
 ';
                 if ($this->host->getDataValue('host_is_server') == 0) {
                     $upfile              = 'C:\\Windows\\System32\\GroupPolicy\\Machine\\Scripts\\Startup\\hostup.ps1';
-                    $this->nscBatArray[] = "\n".'echo (new-object System.Net.WebClient).DownloadFile("'.$dtUrl.'&state=stop","C:\tmp\hostup.txt") > '.$upfile;
+                    $this->nscConfArray[] = "\n".'echo (new-object System.Net.WebClient).DownloadFile("'.$dtUrl.'&state=stop","C:\tmp\hostup.txt") > '.$upfile;
 
                     $downfile            = 'C:\\Windows\\System32\\GroupPolicy\\Machine\\Scripts\\Shutdown\\hostdown.ps1';
-                    $this->nscBatArray[] = "\n".'echo (new-object System.Net.WebClient).DownloadFile("'.$dtUrl.'&state=start","C:\tmp\hostdown.txt") > '.$downfile;
+                    $this->nscConfArray[] = "\n".'echo (new-object System.Net.WebClient).DownloadFile("'.$dtUrl.'&state=start","C:\tmp\hostdown.txt") > '.$downfile;
                 }
 
-                $this->nscBatArray[] = "\n".'
+                $this->nscConfArray[] = "\n".'
 '.$this->nscvar.' service --start
 start "" %ICIEDIT_HTML%
 ';
                 break;
             case 'linux':
-                $this->nscBatArray[] = "\n".'
+                $this->nscConfArray[] = "\n".'
 curl "'.$this->getCfgConfirmUrl().'"
 service nscp start
 ';
                 break;
             default:
-                $this->nscBatArray[] = $this->nscBatArray[] = "\n".'
+                $this->nscConfArray[] = $this->nscConfArray[] = "\n".'
 ';
                 break;
         }
@@ -442,7 +461,7 @@ service nscp start
      */
     public function getCfg($send = TRUE)
     {
-        $nscbat = implode('', $this->nscBatArray);
+        $nscbat = implode('', $this->nscConfArray);
         if ($send) {
             header('Content-Description: File Transfer');
             header('Content-Type: application/octet-stream');
@@ -454,7 +473,7 @@ service nscp start
         switch ($this->platform) {
             case 'windows':
                 if ($send) {
-                    header('Content-Disposition: attachment; filename='.$this->host->getName().'_nscp.bat');
+                    header('Content-Disposition: attachment; filename='.$this->host->getName().'_nscp.'.$this->formatSuffix);
                 }
                 $nscbat = str_replace("\n", "\r\n", $nscbat);
                 break;
@@ -474,6 +493,11 @@ service nscp start
         }
     }
 
+    /**
+     * Where To confirm sensor status ?
+     * 
+     * @return string
+     */
     function getCfgConfirmUrl()
     {
         return Engine\Configurator::getBaseURL().'cfgconfirm.php?hash='.$this->host->getConfigHash().'&host_id='.$this->host->getId();
@@ -487,7 +511,7 @@ service nscp start
         if (count($this->scriptsToDeploy)) {
             switch ($this->platform) {
                 case 'windows':
-                    $this->nscBatArray[] = "\n".'echo ^<h2^>'._('Skripty').'^</h2^> >> %ICIEDIT_HTML%
+                    $this->nscConfArray[] = "\n".'echo ^<h2^>'._('Skripty').'^</h2^> >> %ICIEDIT_HTML%
 ';
                     break;
             }
@@ -496,17 +520,17 @@ service nscp start
             foreach ($this->scriptsToDeploy as $script_name => $script_id) {
                 switch ($this->platform) {
                     case 'windows':
-                        $this->nscBatArray[] = "\n".'echo ^<a data-role="script" href="'.Engine\Configurator::getBaseURL().'scriptget.php?script_id='.$script_id.'"^>'.$script_name.'^</a^>^<br^> >> %ICIEDIT_HTML%
+                        $this->nscConfArray[] = "\n".'echo ^<a data-role="script" href="'.Engine\Configurator::getBaseURL().'scriptget.php?script_id='.$script_id.'"^>'.$script_name.'^</a^>^<br^> >> %ICIEDIT_HTML%
 ';
                         break;
                     case 'linux':
-                        $this->nscBatArray[] = "\n".'
+                        $this->nscConfArray[] = "\n".'
 # '.$script_name.'
 curl "'.Engine\Configurator::getBaseURL().'scriptget.php?script_id='.$script_id.'"
 ';
                         break;
                     default:
-                        $this->nscBatArray[] = $this->nscBatArray[] = "\n".'
+                        $this->nscConfArray[] = $this->nscConfArray[] = "\n".'
 '.$this->nscvar.' test
 ';
                         break;

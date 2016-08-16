@@ -31,8 +31,8 @@ if ($host_id && $state) {
             $extCmd->addCommand(' PROCESS_HOST_CHECK_RESULT;'.$host->getName().';1;Host go Down');
             break;
         case 'stop':
-            $extCmd->addCommand('DEL_DOWNTIME_BY_HOST_NAME;'.$host->getName());
             $extCmd->addCommand('PROCESS_HOST_CHECK_RESULT;'.$host->getName().';0;Host go Up');
+            $extCmd->addCommand('DEL_DOWNTIME_BY_HOST_NAME;'.$host->getName());
             break;
         default :
             $oPage->addStatusMessage(sprintf(_('Unknown state %s.'), $state));

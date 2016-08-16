@@ -17,5 +17,10 @@ $oPage->onlyForLogged();
 $hostId = $oPage->getRequestValue('host_id', 'int');
 $host   = new Engine\Host($hostId);
 
-$generator = new NSCPConfigBatGenerator($host);
+if ($oPage->getRequestValue('format') == 'ps1') {
+    $generator = new NSCPConfigPS1Generator($host);
+} else {
+    $generator = new NSCPConfigBatGenerator($host);
+}
+
 $generator->getCfg();
