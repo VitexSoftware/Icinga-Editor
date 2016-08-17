@@ -28,16 +28,18 @@ if ($host_id && $state) {
             $oneYear = 31556926; //In seconds
             $extCmd->addCommand('SCHEDULE_HOST_DOWNTIME;'.$host->getName().';'.$now.';'.($now
                 + $oneYear).';0;0;'.$oneYear.';'.$owner->getUserLogin().';remote downtime invoke');
-            $extCmd->addCommand(' PROCESS_HOST_CHECK_RESULT;'.$host->getName().';1;Host go Down');
+            $extCmd->addCommand('DISABLE_HOST_NOTIFICATIONS;'.$host->getName());
+            $extCmd->addCommand('PROCESS_HOST_CHECK_RESULT;'.$host->getName().';1;Host go Down');
             break;
         case 'stop':
             $extCmd->addCommand('PROCESS_HOST_CHECK_RESULT;'.$host->getName().';0;Host go Up');
             $extCmd->addCommand('DEL_DOWNTIME_BY_HOST_NAME;'.$host->getName());
+            $extCmd->addCommand('ENABLE_HOST_NOTIFICATIONS;'.$host->getName());
             break;
         default :
             $oPage->addStatusMessage(sprintf(_('Unknown state %s.'), $state));
             die(_('State can be only start or stop'));
             break;
     }
-    $extCmd->executeAll();
+    echo implode("\n", $extCmd->executeAll());
 }

@@ -36,11 +36,15 @@ class ExternalCommand extends \Ease\Atom
      */
     public function executeAll()
     {
+        $results = [];
         foreach ($this->commands as $id => $command) {
-            if ($this->execute($command) !== false) {
+            $result = $this->execute($command);
+            if ($result !== false) {
                 unset($this->commands[$id]);
+                $results[$command] = $result;
             }
         }
+        return $results;
     }
 
     /**
@@ -52,7 +56,10 @@ class ExternalCommand extends \Ease\Atom
     public function execute($command)
     {
         $this->addStatusMessage('External command: '.$command);
-        return system('sudo /usr/bin/toicmdfile.sh "['.time().'] '.$command.'"');
+        ob_start();
+        $result = system('sudo /usr/bin/toicmdfile.sh "['.time().'] '.$command.'"');
+        ob_end_clean();
+        return $result;
     }
 
     /**

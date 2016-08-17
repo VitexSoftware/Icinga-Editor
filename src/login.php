@@ -3,7 +3,7 @@
 namespace Icinga\Editor;
 
 /**
- * Přihlašovací stránka
+ * Sign in page
  *
  * @author    Vitex <vitex@hippy.cz>
  * @copyright Vitex@hippy.cz (G) 2009,2011

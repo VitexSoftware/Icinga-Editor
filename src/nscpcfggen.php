@@ -3,19 +3,23 @@
 namespace Icinga\Editor;
 
 /**
- * Icinga Editor - titulní strana
+ * Icinga Editor - Obtain configuration script for NSClient ++ deploy
  *
  * @package    IcingaEditor
- * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
- * @copyright  2012 Vitex@hippy.cz (G)
+ * @copyright  2012-2016 Vitex@hippy.cz (G)
  */
 require_once 'includes/IEInit.php';
 
-$oPage->onlyForLogged();
-
 $hostId = $oPage->getRequestValue('host_id', 'int');
 $host   = new Engine\Host($hostId);
+
+$forceUsername = $oPage->getRequestValue('user');
+if (!is_null($forceUsername)) {
+    \Ease\Shared::user(new \Icinga\Editor\User($forceUsername));
+} else {
+    \Ease\Shared::user(new \Icinga\Editor\User($host->getOwnerID()));
+}
 
 if ($oPage->getRequestValue('format') == 'ps1') {
     $generator = new NSCPConfigPS1Generator($host);

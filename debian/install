@@ -22,4 +22,4 @@ bin/iecfgimporter.php           usr/bin
 bin/toicmdfile.sh               usr/bin
 
 locale/cs_CZ/LC_MESSAGES/*.mo       usr/share/locale/cs_CZ/LC_MESSAGES
-locale/en_US/LC_MESSAGES/*.mo       usr/share/locale/cs_CZ/LC_MESSAGES
+locale/en_US/LC_MESSAGES/*.mo       usr/share/locale/en_US/LC_MESSAGES

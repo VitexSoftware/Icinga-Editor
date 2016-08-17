@@ -3,12 +3,11 @@
 namespace Icinga\Editor;
 
 /**
- * Icinga Editor - generování konfigurace
+ * Icinga Editor - Configuration Generating
  *
  * @package    IcingaEditor
- * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
- * @copyright  2012 Vitex@hippy.cz (G)
+ * @copyright  2012-2016 Vitex@hippy.cz (G)
  */
 require_once 'includes/IEInit.php';
 
@@ -56,9 +55,9 @@ if ($testing) {
         if (($line === false) && ($line_num == 1)) {
             $errorLine = $oPage->container->addItem(new \Ease\Html\Div('<span class="label label-important">'._('Chyba:').'</span>',
                 ['class' => 'alert alert-danger']));
-            $oUser->addStatusMessage(_('Kontrola konfigurace nevrátila výsledek.'),
+            $oUser->addStatusMessage(_('Configuration control empty result'),
                 'error');
-            $errorLine->addItem(_('Zkontroluj prosím zdlali nechybí potřebný fragment v /etc/sudoers:'));
+            $errorLine->addItem(_('Please check if /etc/sudoers contains:'));
             $errorLine->addItem(new \Ease\Html\Div('User_Alias APACHE = www-data'));
             $errorLine->addItem(new \Ease\Html\Div('Cmnd_Alias ICINGA = /usr/sbin/icinga, /etc/init.d/icinga'));
             $errorLine->addItem(new \Ease\Html\Div('APACHE ALL = (ALL) NOPASSWD: ICINGA'));
@@ -67,18 +66,18 @@ if ($testing) {
 
         if (strstr($line, 'Error:')) {
             $line      = str_replace('Error:', '', $line);
-            $errorLine = $oPage->container->addItem(new \Ease\Html\Div('<span class="label label-important">'._('Chyba:').'</span>',
+            $errorLine = $oPage->container->addItem(new \Ease\Html\Div('<span class="label label-important">'._('Error:').'</span>',
                 ['class' => 'alert alert-danger']));
 
             $keywords = preg_split("/['(.*)']+/", $line);
             switch (trim($keywords[0])) {
                 case 'Service notification period':
-                    $errorLine->addItem(' <a href="timeperiods.php">'._('Notifikační perioda').'</a> služeb ');
+                    $errorLine->addItem(' <a href="timeperiods.php">'._('Notification period').'</a> of services ');
                     $errorLine->addItem(new \Ease\Html\ATag('timeperiod.php?timeperiod_name='.$keywords[1],
                         $keywords[1]));
                     break;
                 case 'Host notification period':
-                    $errorLine->addItem(' <a href="timeperiods.php">'._('Notifikační perioda').'</a> hostů');
+                    $errorLine->addItem(' <a href="timeperiods.php">'._('Notification period').'</a> of hosts');
                     $errorLine->addItem(new \Ease\Html\ATag('timeperiod.php?timeperiod_name='.$keywords[1],
                         $keywords[1]));
                     break;
@@ -91,7 +90,7 @@ if ($testing) {
             if (isset($keywords[2])) {
                 switch (trim($keywords[2])) {
                     case 'specified for contact':
-                        $errorLine->addItem(' specifikovaná pro kontakt ');
+                        $errorLine->addItem(' specified for contact ');
                         $contact = new Engine\Contact($keywords[3]);
                         $errorLine->addItem(new \Ease\Html\ATag('contact.php?contact_id='.$contact->getMyKey(),
                             $keywords[3]));
@@ -104,11 +103,10 @@ if ($testing) {
             if (isset($keywords[4])) {
                 switch (trim($keywords[4])) {
                     case 'is not defined anywhere!':
-                        $errorLine->addItem(' není nikde definován/a ');
+                        $errorLine->addItem(''._('is not defined anywhere'));
                         break;
                 }
             }
-            //$OPage->addItem('<pre>' . EaseBrick::printPreBasic($keywords) . '</pre>');
         }
 
         if (strstr($line, 'Error in configuration file')) {
@@ -145,20 +143,21 @@ if ($testing) {
         if (strstr($line, 'Total Warnings')) {
             list($msg, $WarningCount) = explode(':', $line);
             if (intval(trim($WarningCount))) {
-                $oUser->addStatusMessage(sprintf(_('celkem %s varování'),
+                $oUser->addStatusMessage(sprintf(_('total %s warnings'),
                         $WarningCount), 'warning');
             } else {
-                $oUser->addStatusMessage(_('test proběhl bez varování'),
+                $oUser->addStatusMessage(_('test successfully done without warnings'),
                     'success');
             }
         }
         if (strstr($line, 'Total Errors')) {
             list($msg, $errorCount) = explode(':', $line);
             if (intval(trim($errorCount))) {
-                $oUser->addStatusMessage(sprintf(_('celkem %s chyb'),
+                $oUser->addStatusMessage(sprintf(_('total %s errors'),
                         $errorCount), 'warning');
             } else {
-                $oUser->addStatusMessage(_('test proběhl bez chyb'), 'success');
+                $oUser->addStatusMessage(_('test successfully done without errors'),
+                    'success');
             }
         }
     }
@@ -166,9 +165,10 @@ if ($testing) {
 
     if (!intval($errorCount) && !is_null($WarningCount)) {
         if (Engine\Configurator::reloadIcinga()) {
-            $oPage->container->addItem(_('Všechny vaše konfigurační soubory byly přegenerovány'));
+            $oPage->container->addItem(_('All your configuration files was regenerated'));
+
             $oPage->container->addItem(new \Ease\TWB\LinkButton('main.php',
-                _('Hotovo').' '.\Ease\TWB\Part::GlyphIcon('ok-sign'), 'success'));
+            _('Done').' '.\Ease\TWB\Part::GlyphIcon('ok-sign'), 'success'));
             \Ease\Shared::user()->setSettingValue('unsaved', false);
         }
     }

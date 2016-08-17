@@ -3,18 +3,17 @@
 namespace Icinga\Editor\UI;
 
 /**
- * Přehled hostů bez potvrzeného senzoru, nebo se zastaralou konf. senzoru.
+ * Hosts without confirmerd configuration or sensor deployed overview
  *
  * @package    IcingaEditor
- * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
- * @copyright  2012 Vitex@hippy.cz (G)
+ * @copyright  2012-2016 Vitex@hippy.cz (G)
  */
 class ConfigurationsOverview extends \Ease\TWB\Panel
 {
 
     /**
-     * Přehled hostů bez potvrzeného senzoru, nebo se zastaralou konf. senzoru.
+     * Hosts without confirmerd configuration or sensor deployed overview
      *
      * @param array $hosts
      */
@@ -43,28 +42,28 @@ class ConfigurationsOverview extends \Ease\TWB\Panel
                     unset($hosts[$host_id]);
                     $ok++;
                 } else {
-                    //Zastaralá konfigurace
+                    //Obsoleted configuration
                     $oldSensor[$host_id] = $host_info;
                 }
             } else {
                 $noSensor[$host_id] = $host_info;
-                //senzor neregistrován
+                //sensor undeployed yet
             }
 
             if (!isset($host_info['parents']) || !count($host_info['parents'])) {
                 $noParents[$host_id] = $host_info;
-                //Host bez rodičů
+                //Host without parents
             }
 
             if (!isset($host_info['icon_image']) || !strlen(trim($host_info['icon_image']))) {
                 $noIcon[$host_id] = $host_info;
-                //Host bez ikony
+                //Host without icon
             }
 
             if ((!isset($host_info['contacts']) || !count($host_info['contacts']))
                 || (!isset($host_info['contact_groups']) || !count($host_info['contact_groups']))) {
                 $noContacts[$host_id] = $host_info;
-                //Host bez kontaktů
+                //Host without contact
             }
         }
 
@@ -74,10 +73,10 @@ class ConfigurationsOverview extends \Ease\TWB\Panel
             foreach ($oldSensor as $host_id => $host_info) {
                 $row = $oldHostsTable->addRowColumns([new \Ease\Html\ATag('host.php?host_id='.$host_id,
                         $host_info['host_name']), new \Ease\TWB\LinkButton('sensor.php?host_id='.$host_id,
-                        _('aktualizovat senzor'))]);
+                        _('Actualise Sensor'))]);
                 $row->setTagClass('warning');
             }
-            $hostsTabs->addTab(sprintf(_('Neakt. Senzor <span class="badge">%s</span>'),
+            $hostsTabs->addTab(sprintf(_('Outdated Sensor <span class="badge">%s</span>'),
                     count($oldSensor)), $oldHostsTable);
         }
 
@@ -86,10 +85,10 @@ class ConfigurationsOverview extends \Ease\TWB\Panel
             foreach ($noSensor as $host_id => $host_info) {
                 $row = $noSensorTable->addRowColumns([new \Ease\Html\ATag('host.php?host_id='.$host_id,
                         $host_info['host_name']), new \Ease\TWB\LinkButton('sensor.php?host_id='.$host_id,
-                        _('nasadit senzor'))]);
+                        _('Sensor Deploy'))]);
                 $row->setTagClass('danger');
             }
-            $hostsTabs->addTab(sprintf(_('Bez senzoru <span class="badge">%s</span>'),
+            $hostsTabs->addTab(sprintf(_('Without sensor <span class="badge">%s</span>'),
                     count($noSensor)), $noSensorTable);
         }
 
@@ -101,9 +100,9 @@ class ConfigurationsOverview extends \Ease\TWB\Panel
                         new \Ease\Html\ATag('host.php?host_id='.$host_id,
                             $host_info['host_name']),
                         new \Ease\TWB\LinkButton('host.php?action=parent&host_id='.$host_id,
-                            _('přiřadit rodiče')),
+                            _('Assign parents')),
                         new \Ease\TWB\LinkButton('watchroute.php?action=parent&host_id='.$host_id,
-                            _('sledovat celou cestu'), 'warning',
+                            _('Watch hosts on route'), 'warning',
                             ['onClick' => "$('#preload').css('visibility', 'visible');"])
                     ]
                 );
@@ -111,7 +110,7 @@ class ConfigurationsOverview extends \Ease\TWB\Panel
 
                 $row->setTagClass('info');
             }
-            $hostsTabs->addTab(sprintf(_('Bez rodičů <span class="badge">%s</span>'),
+            $hostsTabs->addTab(sprintf(_('Without parents <span class="badge">%s</span>'),
                     count($noParents)), $noParentsTable);
         }
 
@@ -120,10 +119,10 @@ class ConfigurationsOverview extends \Ease\TWB\Panel
             foreach ($noIcon as $host_id => $host_info) {
                 $row = $noIconTable->addRowColumns([new \Ease\Html\ATag('host.php?host_id='.$host_id,
                         $host_info['host_name']), new \Ease\TWB\LinkButton('host.php?action=icon&host_id='.$host_id,
-                        _('přiřadit ikonu'))]);
+                        _('Assign icon'))]);
                 $row->setTagClass('default');
             }
-            $hostsTabs->addTab(sprintf(_('Bez ikony <span class="badge">%s</span>'),
+            $hostsTabs->addTab(sprintf(_('Without icon <span class="badge">%s</span>'),
                     count($noIcon)), $noIconTable);
         }
 
@@ -133,16 +132,16 @@ class ConfigurationsOverview extends \Ease\TWB\Panel
             foreach ($noContacts as $host_id => $host_info) {
                 $row = $noContactsTable->addRowColumns([new \Ease\Html\ATag('host.php?host_id='.$host_id,
                         $host_info['host_name']), new \Ease\TWB\LinkButton('host.php?host_id='.$host_id,
-                        _('přiřadit kontakty'))]);
+                        _('Assign Contact'))]);
                 $row->setTagClass('default');
             }
-            $hostsTabs->addTab(sprintf(_('Bez kontaktů <span class="badge">%s</span>'),
+            $hostsTabs->addTab(sprintf(_('Without contacts <span class="badge">%s</span>'),
                     count($noContacts)), $noContactsTable);
         }
 
-        parent::__construct(_('Hosty dle stavu konfigurace'), 'info',
+        parent::__construct(_('Hosts by configuration state'), 'info',
             $hostsTabs,
-            sprintf(_('Celkem %s hostů bez aktuální konfigurace. (%s aktuální)'),
+            sprintf(_('Overall %s hosts without actual configuration. (%s actual)'),
                 count($hosts), $ok));
     }
 

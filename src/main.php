@@ -3,12 +3,11 @@
 namespace Icinga\Editor;
 
 /**
- * Icinga Editor - titulní strana
+ * Icinga Editor - main page
  *
  * @package    IcingaEditor
- * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
- * @copyright  2012 Vitex@hippy.cz (G)
+ * @copyright  2012-2016 Vitex@hippy.cz (G)
  */
 require_once 'includes/IEInit.php';
 
@@ -25,7 +24,7 @@ if (count($hosts)) {
     $oPage->container->addItem(new UI\ConfigurationsOverview($hosts));
 } else {
     $oPage->container->addItem(new \Ease\TWB\LinkButton('wizard-host.php',
-        _('Založte si první sledovaný host'), 'success'));
+        _('Create first watched host'), 'success'));
     $oUser->addStatusMessage(_('It is not yet registered any monitored host'),
         'warning');
 }
