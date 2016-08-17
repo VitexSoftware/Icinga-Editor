@@ -3,38 +3,37 @@
 namespace Icinga\Editor\UI;
 
 /**
- * Volba služeb patřičných k hostu
+ * Host services selected
  *
  * @package    IcingaEditor
- * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
- * @copyright  2012 Vitex@hippy.cz (G)
+ * @copyright  2012-2016 Vitex@hippy.cz (G)
  */
 class UsedServiceSelector extends \Ease\Container
 {
 
     /**
-     * Editor k přidávání členů skupiny
+     * Editor for services on Host
      *
-     * @param IEHost $host
+     * @param \Icinga\Editor\Engine\Host $host
      */
     public function __construct($host)
     {
         parent::__construct();
 
         if ($host->getDataValue('platform') == 'generic') {
-            $note = '<small><span class="label label-info">Tip:</span> '._('Další sledovatelné služby budou nabídnuty po nastavení platformy hosta a vzdáleného senzoru.').'</small>';
+            $note = '<small><span class="label label-info">Tip:</span> '._('Choose Host platform to choose from more services').'</small>';
         } else {
             $note = [];
         }
 
 
-        $initialContent = new \Ease\TWB\Panel(_('Sledované služby'), 'default',
+        $initialContent = new \Ease\TWB\Panel(_('Services watched'), 'default',
             null, $note);
         $initialContent->setTagCss(['width' => '100%']);
 
         if (is_null($host->getMyKey())) {
-            $initialContent->addItem(_('Nejprve je potřeba uložit záznam'));
+            $initialContent->addItem(_('Please save record first'));
         } else {
             $hostName       = $host->getName();
             $service        = new \Icinga\Editor\Engine\Service();
@@ -114,7 +113,7 @@ class UsedServiceSelector extends \Ease\Container
 
             if (count($servicesAssigned)) {
                 $saveAsTemplateButton = new \Ease\TWB\LinkButton('stemplate.php?action=copyhost&host_id='.$host->getId(),
-                    _('Uložit zvolene jako sadu sledovanych sluzeb'), 'success');
+                    _('Save selected services as Preset'), 'success');
                 $initialContent->footer($saveAsTemplateButton);
 
                 $initialContent->addItem('</br>');
@@ -131,7 +130,7 @@ class UsedServiceSelector extends \Ease\Container
                         [
                         new \Ease\Html\ATag(
                             '?delservice='.$serviceInfo[$service->nameColumn].'&amp;service_id='.$serviceID.'&amp;'.$host->getmyKeyColumn().'='.$host->getMyKey().'&amp;'.$host->nameColumn.'='.$host->getName(),
-                            \Ease\TWB\Part::GlyphIcon('remove').' '._('Přestat sledovat'))
+                            \Ease\TWB\Part::GlyphIcon('remove').' '._('Stop watching'))
                         , new \Ease\Html\ATag('servicetweak.php?service_id='.$serviceID.'&amp;host_id='.$host->getId(),
                             \Ease\TWB\Part::GlyphIcon('wrench').' '._('Editace'))
                         ], ['title' => $serviceInfo['service_description']]
@@ -145,7 +144,7 @@ class UsedServiceSelector extends \Ease\Container
             $presetSelForm->addItem(new \Ease\Html\InputHiddenTag('action',
                 'applystemplate'));
             $presetSelForm->addItem(new StemplateSelect('stemplate_id'));
-            $presetSelForm->addItem(new \Ease\TWB\SubmitButton(_('Aplikovat sadu sluzeb'),
+            $presetSelForm->addItem(new \Ease\TWB\SubmitButton(_('Apply services Preset'),
                 'success'));
             $presetSelForm->setTagClass('form-inline');
             $initialContent->footer($presetSelForm);
@@ -168,16 +167,16 @@ class UsedServiceSelector extends \Ease\Container
                         $service->addMember('host_name', $request['host_id'],
                             $request['host_name']);
                         if ($service->saveToSQL()) {
-                            $service->addStatusMessage(sprintf(_('položka %s byla přidána'),
+                            $service->addStatusMessage(sprintf(_('item %s was added'),
                                     $request['addservice']), 'success');
                             if ($service->getDataValue('autocfg') == '1') {
-                                $service->addStatusMessage(sprintf(_('Službu %s je nutné nejprve zkonfigurovat'),
+                                $service->addStatusMessage(sprintf(_('Please save service %s first'),
                                         $request['addservice']), 'warning');
                                 \Ease\Shared::webPage()->redirect('servicetweak.php?host_id='.$request ['host_id'].'&service_id='.$request[$service->myKeyColumn]);
                                 exit();
                             }
                         } else {
-                            $service->addStatusMessage(sprintf(_('položka %s nebyla přidána'),
+                            $service->addStatusMessage(sprintf(_('item %s was not added'),
                                     $request['addservice']), 'warning');
                         }
                     }
@@ -185,10 +184,10 @@ class UsedServiceSelector extends \Ease\Container
                         $service->delMember('host_name', $request['host_id'],
                             $request['host_name']);
                         if ($service->saveToSQL()) {
-                            $service->addStatusMessage(sprintf(_('položka %s byla odebrána'),
+                            $service->addStatusMessage(sprintf(_('item %s was assigned'),
                                     $request['delservice']), 'success');
                         } else {
-                            $service->addStatusMessage(sprintf(_('položka %s nebyla odebrána'),
+                            $service->addStatusMessage(sprintf(_('item %s was not assigned'),
                                     $request['delservice']), 'warning');
                         }
                     }

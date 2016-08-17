@@ -3,12 +3,11 @@
 namespace Icinga\Editor\UI;
 
 /**
- * Volba contactů sledovaných danou službou
+ * Select contacts for service
  *
  * @package    IcingaEditor
- * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
- * @copyright  2012 Vitex@hippy.cz (G)
+ * @copyright  2012-2016 Vitex@hippy.cz (G)
  */
 class ContactSelector extends \Ease\Container
 {
@@ -24,11 +23,11 @@ class ContactSelector extends \Ease\Container
         $contactsAssigned = [];
         parent::__construct();
         $fieldName        = $holder->getmyKeyColumn();
-        $initialContent   = new \Ease\TWB\Panel(_('Cíle notifikací'));
+        $initialContent   = new \Ease\TWB\Panel(_('Contacts'));
         $initialContent->setTagCss(['width' => '100%']);
 
         if (is_null($holder->getMyKey())) {
-            $initialContent->addItem(_('Nejprve je potřeba uložit záznam'));
+            $initialContent->addItem(_('Please saver record first'));
         } else {
             $serviceName = $holder->getName();
             $contact     = new \Icinga\Editor\Engine\Contact();
@@ -63,9 +62,9 @@ class ContactSelector extends \Ease\Container
                         $contactInfo[$contact->nameColumn], 'inverse', 'xs',
                         [
                         new \Ease\Html\ATag('contacttweak.php?contact_id='.$contactInfo['parent_id'].'&amp;service_id='.$holder->getId(),
-                            \Ease\TWB\Part::GlyphIcon('wrench').' '._('Editace')),
+                            \Ease\TWB\Part::GlyphIcon('wrench').' '._('Edit')),
                         new \Ease\Html\ATag('?addcontact='.$contactInfo[$contact->nameColumn].'&amp;contact_id='.$contactID.'&amp;'.$holder->getmyKeyColumn().'='.$holder->getMyKey().'&amp;'.$holder->nameColumn.'='.$holder->getName(),
-                            \Ease\TWB\Part::GlyphIcon('plus').' '._('Začít obesílat'))
+                            \Ease\TWB\Part::GlyphIcon('plus').' '._('Start notifing'))
                     ]));
                 }
             }
@@ -80,9 +79,9 @@ class ContactSelector extends \Ease\Container
                         [
                         new \Ease\Html\ATag(
                             '?delcontact='.$contactInfo[$contact->nameColumn].'&amp;contact_id='.$contactID.'&amp;'.$holder->getmyKeyColumn().'='.$holder->getMyKey().'&amp;'.$holder->nameColumn.'='.$holder->getName(),
-                            \Ease\TWB\Part::GlyphIcon('remove').' '._('Přestat obesílat'))
+                            \Ease\TWB\Part::GlyphIcon('remove').' '._('Stop notifing'))
                         , new \Ease\Html\ATag('contacttweak.php?contact_id='.$contactInfo['parent_id'].'&amp;service_id='.$holder->getId(),
-                            \Ease\TWB\Part::GlyphIcon('wrench').' '._('Editace'))
+                            \Ease\TWB\Part::GlyphIcon('wrench').' '._('Edit'))
                         ]
                         )
                     );

@@ -3,12 +3,11 @@
 namespace Icinga\Editor\UI;
 
 /**
- * Formulář průvodce založením nového hosta
+ * New Passive Host Wizard Form
  *
  * @package    IcingaEditor
- * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
- * @copyright  2015 Vitex@hippy.cz (G)
+ * @copyright  2015-2016 Vitex@hippy.cz (G)
  */
 
 /**
@@ -24,11 +23,17 @@ class PassiveCheckedHostForm extends \Ease\TWB\Form
         $this->addItem(new \Ease\TWB\FormGroup(_('Jméno'),
             new \Ease\Html\InputTextTag('host_name',
             \Ease\Shared::webPage()->getRequestValue('host_name')),
-            _('hostname'), _('DOMAIN\machine'), _('Název sledovaného stroje')));
-        $this->addItem(new \Ease\TWB\FormGroup(_('Platforma'),
-            new PlatformSelector('platform'), null,
-            _('Platforma sledovaného stroje')));
-        $this->addItem(new \Ease\TWB\SubmitButton(_('Založit').'&nbsp'.\Ease\TWB\Part::GlyphIcon('forward'),
+            _('hostname'), _('DOMAIN\machine'), _('Watched host name')));
+        $this->addItem(new \Ease\TWB\FormGroup(_('Platform'),
+            new PlatformSelector('platform'), null, _('Watched host platform')));
+
+        $this->addInput(new UI\TWBSwitch('host_is_server', $check_method, true,
+            ['handleWidth' => '200px', 'onText' => _('Yes'), 'offText' => _('No')]),
+            _('Still running'), _('Still running ?'),
+            _('<strong>Yes</strong> host is still Up. <br><strong>No</strong> device every night down (notebook or PC etc.)'));
+
+
+        $this->addItem(new \Ease\TWB\SubmitButton(_('Create').'&nbsp'.\Ease\TWB\Part::GlyphIcon('forward'),
             'success'));
         $this->addItem(new \Ease\Html\InputHiddenTag('host_group',
             \Ease\Shared::webPage()->getRequestValue('host_group')));

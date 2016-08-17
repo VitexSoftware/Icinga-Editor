@@ -13,7 +13,7 @@ class InfoBox extends \Ease\TWB\Panel
     /**
      * Infopanel objektu
      *
-     * @param IEcfg $subject
+     * @param \Icinga\Editor\Engine\Configurator $subject
      */
     public function __construct($subject)
     {

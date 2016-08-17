@@ -3,12 +3,11 @@
 namespace Icinga\Editor;
 
 /**
- * Icinga Editor hosta
+ * Icinga Host Editor
  *
  * @package    IcingaEditor
- * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
- * @copyright  2012 Vitex@hippy.cz (G)
+ * @copyright  2012-2016 Vitex@hippy.cz (G)
  */
 require_once 'includes/IEInit.php';
 
@@ -31,7 +30,7 @@ switch ($oPage->getRequestValue('action')) {
                     $service->saveToSQL();
                     $service->dataReset();
                 } else {
-                    $service->addStatusMessage(_(sprintf(_('Služba uvedená v předloze (#%s: %s) nebyla v databázi nalezena'),
+                    $service->addStatusMessage(_(sprintf(_('Service used in template (#%s: %s) not found'),
                                 $service_id, $service_name)));
                 }
             }
@@ -66,7 +65,7 @@ switch ($oPage->getRequestValue('action')) {
             fclose($fp);
 
             if (!file_exists($tmpfilename)) {
-                $oPage->addStatusMessage(sprintf(_('Soubor %s se nepodařilo stahnout'),
+                $oPage->addStatusMessage(sprintf(_('Cannot download file %s'),
                         $icourlurl));
             }
         } else {
@@ -74,7 +73,7 @@ switch ($oPage->getRequestValue('action')) {
                 $tmpfilename = $_FILES['icofile']['tmp_name'];
             } else {
                 if ($oPage->isPosted()) {
-                    $oPage->addStatusMessage(_('Nebyl vybrán soubor s ikonou hosta'),
+                    $oPage->addStatusMessage(_('Icon file not selected'),
                         'warning');
                 }
             }
@@ -84,7 +83,7 @@ switch ($oPage->getRequestValue('action')) {
                 $newicon = IEIconSelector::saveIcon($tmpfilename, $host);
             } else {
                 unlink($tmpfilename);
-                $oPage->addStatusMessage(_('toto není obrázek požadovaného typu'),
+                $oPage->addStatusMessage(_('this is not requied image file type'),
                     'warning');
             }
         }
@@ -98,9 +97,9 @@ switch ($oPage->getRequestValue('action')) {
             $host->setDataValue('icon_image_alt',
                 $oPage->getRequestValue('icon_image_alt'));
             if ($host->saveToSQL()) {
-                $oUser->addStatusMessage(_('Ikona byla přiřazena'), 'success');
+                $oUser->addStatusMessage(_('Icon was assigned'), 'success');
             } else {
-                $oUser->addStatusMessage(_('Ikona nebyla přiřazena'), 'warning');
+                $oUser->addStatusMessage(_('Icon was not assigned'), 'warning');
             }
         }
         break;
@@ -108,9 +107,9 @@ switch ($oPage->getRequestValue('action')) {
         $newname = $oPage->getRequestValue('newname');
         if (strlen($newname)) {
             if ($host->rename($newname)) {
-                $oUser->addStatusMessage(_('Host byl přejmenován'), 'success');
+                $oUser->addStatusMessage(_('Host was renamed'), 'success');
             } else {
-                $oUser->addStatusMessage(_('Host nebyl přejmenován'), 'warning');
+                $oUser->addStatusMessage(_('Host was not renamed'), 'warning');
             }
         }
         break;
@@ -123,7 +122,7 @@ switch ($oPage->getRequestValue('action')) {
                 .'OR `address` = \''.addSlashes($np).'\' '
                 .'OR `address6` = \''.addSlashes($np).'\' ');
             if (!$newParent) {
-                $oUser->addStatusMessage(_('Rodič nebyl nalezen'), 'warning');
+                $oUser->addStatusMessage(_('Parent not found'), 'warning');
                 $oPage->redirect('watchroute.php?action=parent&host_id='.$host->getId().'&ip='.$np);
                 exit;
             } else {
@@ -132,9 +131,10 @@ switch ($oPage->getRequestValue('action')) {
                 $host->setDataValue('parents', $currentParents);
                 $hostID           = $host->saveToSQL();
                 if (is_null($hostID)) {
-                    $oUser->addStatusMessage(_('Rodič nebyl přidán'), 'warning');
+                    $oUser->addStatusMessage(_('Parent was not added'),
+                        'warning');
                 } else {
-                    $oUser->addStatusMessage(_('Rodič byl přidán'), 'success');
+                    $oUser->addStatusMessage(_('Parent was added'), 'success');
                 }
             }
         }
@@ -144,9 +144,9 @@ switch ($oPage->getRequestValue('action')) {
             $host->takeData($_POST);
             $hostID = $host->saveToSQL();
             if (is_null($hostID)) {
-                $oUser->addStatusMessage(_('Host nebyl uložen'), 'warning');
+                $oUser->addStatusMessage(_('Host was not saved'), 'warning');
             } else {
-                $oUser->addStatusMessage(_('Host byl uložen'), 'success');
+                $oUser->addStatusMessage(_('Host was saved'), 'success');
             }
         } else {
             $use = $oPage->getGetValue('use');
@@ -186,10 +186,10 @@ if ($addcnt) {
     $host->saveToSQL();
 }
 
-$oPage->addItem(new UI\PageTop(_('Editace hosta').' '.$host->getName()));
+$oPage->addItem(new UI\PageTop(_('Host Editor').' '.$host->getName()));
 
 $infopanel = new UI\InfoBox($host);
-$tools     = new \Ease\TWB\Panel(_('Nástroje'), 'warning');
+$tools     = new \Ease\TWB\Panel(_('Tools'), 'warning');
 
 $pageRow   = new \Ease\TWB\Row;
 $pageRow->addColumn(2, $infopanel);
@@ -202,8 +202,8 @@ $hostPanel = $mainPanel->addItem(new \Ease\TWB\Panel(new \Ease\Html\H1Tag($host-
     'info', null, nl2br(trim($host->getDataValue('notes')))));
 
 $hostTabs   = $hostPanel->addItem(new \Ease\TWB\Tabs('hostTabs'));
-$commonTab  = $hostTabs->addTab(_('Obecné'));
-$hostParams = $hostTabs->addTab(_('Konfigurace'));
+$commonTab  = $hostTabs->addTab(_('Common'));
+$hostParams = $hostTabs->addTab(_('Configuration'));
 
 switch ($oPage->getRequestValue('action')) {
     case 'parent':
@@ -213,7 +213,7 @@ switch ($oPage->getRequestValue('action')) {
         $commonTab->addItem(new UI\IconSelector($host));
         break;
     case 'delete':
-        $confirmator = $mainPanel->addItem(new \Ease\TWB\Panel(_('Opravdu smazat ?')),
+        $confirmator = $mainPanel->addItem(new \Ease\TWB\Panel(_('Are you sure to delete ?')),
             'danger');
         $confirmator->addItem(new UI\RecordShow($host));
         $confirmator->addItem(new \Ease\TWB\LinkButton('?'.$host->myKeyColumn.'='.$host->getID(),
@@ -242,7 +242,7 @@ input.ui-button { width: 100%; }
 
         if ($host->getDataValue('active_checks_enabled') == '1') {
             $tools->addItem(new \Ease\TWB\LinkButton('?action=populate&host_id='.$host->getID(),
-                _('Oskenovat a sledovat služby'), null,
+                _('Scan and watch services'), null,
                 ['onClick' => "$('#preload').css('visibility', 'visible');"]));
         }
 
@@ -250,31 +250,29 @@ input.ui-button { width: 100%; }
             '?action=rename&amp;host_id='.$host->getID());
         $renameForm->addItem(new \Ease\Html\InputTextTag('newname'),
             $host->getName(), ['class' => 'form-control']);
-        $renameForm->addItem(new \Ease\TWB\SubmitButton(_('Přejmenovat'),
-            'success'));
+        $renameForm->addItem(new \Ease\TWB\SubmitButton(_('Rename'), 'success'));
 
-        $tools->addItem(new \Ease\TWB\Panel(_('Přejmenování'), 'info',
-            $renameForm));
+        $tools->addItem(new \Ease\TWB\Panel(_('Renaming'), 'info', $renameForm));
 
         if (count($host->getDataValue('parents'))) {
             $tools->addItem(new \Ease\TWB\LinkButton('?action=parent&host_id='.$host->getId(),
-                _('Přiřadit rodiče'), 'default'));
+                _('Assign parents'), 'default'));
         } else {
             $tools->addItem(new \Ease\TWB\LinkButton('?action=parent&host_id='.$host->getId(),
-                _('Přiřadit rodiče'), 'success'));
+                _('Assign parents'), 'success'));
         }
 
         if ($host->getDataValue('icon_image')) {
             $tools->addItem(new \Ease\TWB\LinkButton('?action=icon&host_id='.$host->getId(),
-                _('Změnit ikonu'), 'default'));
+                _('Change icon'), 'default'));
         } else {
             $tools->addItem(new \Ease\TWB\LinkButton('?action=icon&host_id='.$host->getId(),
-                _('Nastavit ikonu'), 'success'));
+                _('Set icon'), 'success'));
         }
 
         if ($host->getDataValue('address')) {
             $tools->addItem(new \Ease\TWB\LinkButton('watchroute.php?host_id='.$host->getId(),
-                _('Sledovat cestu'), 'success',
+                _('Watch the route'), 'success',
                 ['onClick' => "$('#preload').css('visibility', 'visible');"]));
         }
 
@@ -286,16 +284,16 @@ input.ui-button { width: 100%; }
             $status_code = $host->getSensorStatus();
             switch ($status_code) {
                 case 2:
-                    $status = _('Senzor OK');
+                    $status = _('Sendor OK');
                     $type   = 'default';
                     break;
                 case 1:
-                    $status = _('Aktualizovat Senzor');
+                    $status = _('Actialize Sensor');
                     $type   = 'success';
                     break;
                 case 0:
                 default :
-                    $status = _('Nasadit senzor');
+                    $status = _('Deploy sensor');
                     $type   = 'warning';
                     break;
             }

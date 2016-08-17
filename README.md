@@ -9,9 +9,24 @@ Gui for generating Icinga configuration files and much more...
 [![Build Status](https://img.shields.io/travis/Vitexus/icinga_configurator/master.svg?style=flat-square)](https://travis-ci.org/Vitexus/icinga_configurator)
 [![Coverage Status](https://img.shields.io/coveralls/Vitexus/icinga_configurator/master.svg?style=flat-square)](https://coveralls.io/r/Vitexus/icinga_configurator?branch=master)
 
-Instalation:
+Features
+--------
 
-(Please run sql server first)
+ * Generate configuration for multiplete users
+ * Provide deploy scripts for auto configure NSClient++ 
+ * Scannig tcp ports for known services
+ * Outdated sensors overview
+ * Recursive import configuration form icinga/nagios config files
+ * Export configurations to another instance Icinga-editor using HTTP
+ * Network topology map
+ * Tool to watch traceroute ping 
+ * Automatic Downtime Schedule for devices every night down (Host is server switch)
+ * Host icon downloader
+
+Instalation
+-----------
+
+Please make sure you run sql server first
 
     wget -O - http://v.s.cz/info@vitexsoftware.cz.gpg.key|sudo apt-key add -
     echo deb http://v.s.cz/ stable main > /etc/apt/sources.list.d/ease.list
@@ -23,7 +38,7 @@ Sorry
 =====
 
   * We support only Icinga 1.x configuration yet ...
-  * Current Default localization is CZECH. (English translation is almost finished.)
+  * English translation is under progress. But some pages localization is still in CZECH language.
 
 Screenshots
 -----------

@@ -6,9 +6,8 @@ namespace Icinga\Editor;
  * Icinga Editor - titulní strana
  *
  * @package    IcingaEditor
- * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
- * @copyright  2012 Vitex@hippy.cz (G)
+ * @copyright  2012-2016 Vitex@hippy.cz (G)
  */
 require_once 'includes/IEInit.php';
 
@@ -16,7 +15,8 @@ $oPage->onlyForLogged();
 
 $hostName    = trim($oPage->getRequestValue('host_name'));
 $platform    = trim($oPage->getRequestValue('platform'));
-$host_group  = $oPage->getRequestValue('host_group', 'int');
+$host_group     = $oPage->getRequestValue('host_group', 'int');
+$host_is_server = $oPage->getRequestValue('host_is_server', 'boolean');
 $host        = new Engine\Host();
 $host->owner = &$oUser;
 
@@ -32,6 +32,7 @@ if ($hostName && $platform) {
             'generate' => TRUE,
             'platform' => $platform,
             'alias' => $hostName,
+            'host_is_server' => $host_is_server,
             'active_checks_enabled' => 0,
             'passive_checks_enabled' => 1,
             'check_freshness' => 1,
@@ -52,7 +53,7 @@ if ($hostName && $platform) {
 
     if ($host->saveToSQL()) {
 
-        $hostGroup = new Engine\Hostgroup;
+        $hostGroup = new Engine\Hostgroup();
         if ($hostGroup->loadDefault()) {
             $hostGroup->setDataValue($hostGroup->nameColumn,
                 \Ease\Shared::user()->getUserLogin());
@@ -68,7 +69,7 @@ if ($hostName && $platform) {
     }
 } else {
     if ($oPage->isPosted()) {
-        $oPage->addStatusMessage(_('Prosím zastejte název sledovaného hosta'),
+        $oPage->addStatusMessage(_('Please enter name of Host to watch'),
             'warning');
     }
 }
@@ -76,10 +77,9 @@ if ($hostName && $platform) {
 
 
 
-$oPage->addItem(new UI\PageTop(_('Průvodce založením hosta')));
+$oPage->addItem(new UI\PageTop(_('New Passive Host wizard')));
 
-$oPage->container->addItem(new \Ease\TWB\Panel(_('Nový pasivně sledovaný host'),
-    'info', new UI\PassiveCheckedHostForm('passive')));
+$oPage->container->addItem(new \Ease\TWB\Panel(_('New Passive Host'), 'info', new UI\PassiveCheckedHostForm('passive')));
 
 $oPage->addItem(new UI\PageBottom());
 

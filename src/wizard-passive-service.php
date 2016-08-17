@@ -3,12 +3,11 @@
 namespace Icinga\Editor;
 
 /**
- * Icinga Editor - titulní strana
+ * Icinga Editor - wizzard for new passive service
  *
  * @package    IcingaEditor
- * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
- * @copyright  2012 Vitex@hippy.cz (G)
+ * @copyright  2012-2016 Vitex@hippy.cz (G)
  */
 require_once 'includes/IEInit.php';
 
@@ -90,7 +89,7 @@ if (strlen($name)) {
           $serviceGroup->saveToSQL();
           }
          */
-        $oPage->addStatusMessage(_('Služba byla založena'), 'success');
+        $oPage->addStatusMessage(_('Service created'), 'success');
         if (strlen(trim($service->getDataValue('check_command-remote'))) && $data['register']) {
             $oPage->redirect('service.php?service_id='.$service->getId());
             exit();
@@ -101,23 +100,23 @@ if (strlen($name)) {
     }
 } else {
     if ($oPage->isPosted()) {
-        $oPage->addStatusMessage(_('Prosím zastejte název služby'), 'warning');
+        $oPage->addStatusMessage(_('Please enter the Service name'), 'warning');
     } else {
         $service->setDataValue($service->userColumn, $oUser->getUserID());
     }
 }
 
 
-$oPage->addItem(new UI\PageTop(_('Průvodce založením pasivně sledované služby')));
+$oPage->addItem(new UI\PageTop(_('New passive service wizzard')));
 $oPage->addPageColumns();
 
 $oPage->columnI->addItem(
-    new \Ease\TWB\Panel(_('Pasivní checky'), 'info',
-    _('senzor (nrpe/nscp.exe) běží na vzdáleném hostu, který je z monitorovacího serveru nedostupný (např. za NATem) ale má přístup do internetu a tak výsledky nadefinovaných testů zasílá protokolem NSCA na monitorovací server, který je přímá a zpracovává jako by se jednalo o výsledky aktivních testů.'))
+    new \Ease\TWB\Panel(_('Passive Checks'), 'info',
+    _('Passive checks are initiated and performed external applications/processes'))
 );
 $oPage->columnIII->addItem(
-    new \Ease\TWB\Panel(_('Pasivně sledovaná služba'), 'info',
-    _('Nabízené příkazy jsou definovány jako vzdálené a odpovídající zvolené platformě. Parametry záleží na konkrétně zvoleném příkazu testu.'))
+    new \Ease\TWB\Panel(_('Passive checked Service'), 'info',
+    _('Passive check service results are submitted to Icinga for processing'))
 );
 
 $oPage->columnII->addItem(new UI\ServiceWizardForm($service));

@@ -1,4 +1,4 @@
-icinga-editor (1.1.2-25) UNRELEASED; urgency=medium
+icinga-editor (1.1.2-26) UNRELEASED; urgency=medium
 
   [ dvorak ]
   * Initial release. (Closes: #XXXXXX)
@@ -119,5 +119,9 @@ icinga-editor (1.1.2-25) UNRELEASED; urgency=medium
   * Fixed Scripts Edit/Upload Switching strings to English
   * Fixed Scripts Edit/Upload Switching strings to English
   * Support for ShutDown & Up scripts to start/stop icinga
+  * Deploy script for Windows now use PowerShell Automatic icinga reload
+    after successfull Configuration files generation Deploying new
+    script C:\Program Files\NSClient++\refresh.ps1 Main page switched to
+    English language
 
- -- vitex <vitex@developer.kancl.brevnov.czf>  Tue, 16 Aug 2016 19:03:04 +0200
+ -- vitex <vitex@developer.kancl.brevnov.czf>  Wed, 17 Aug 2016 15:03:07 +0200
