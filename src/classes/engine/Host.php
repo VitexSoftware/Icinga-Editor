@@ -599,7 +599,7 @@ class Host extends Configurator
     {
         $services = [];
 
-        $service          = new Service;
+        $service          = new Service();
         $servicesAssigned = $service->dblink->queryToArray('SELECT '.$service->myKeyColumn.','.$service->nameColumn.' FROM '.$service->myTable.' WHERE host_name LIKE \'%"'.$this->getName().'"%\'',
             $service->myKeyColumn);
         if ($servicesAssigned) {
