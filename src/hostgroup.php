@@ -3,12 +3,11 @@
 namespace Icinga\Editor;
 
 /**
- * Icinga Editor - skupina hostů
+ * Icinga Editor - hostgroup
  *
  * @package    IcingaEditor
- * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
- * @copyright  2012 Vitex@hippy.cz (G)
+ * @copyright  2012-2016 Vitex@hippy.cz (G)
  */
 require_once 'includes/IEInit.php';
 
@@ -29,16 +28,15 @@ switch ($oPage->getRequestValue('action')) {
                 $host->addMember('contacts', $contact->getId(),
                     $contact->getName());
                 if ($host->saveToSQL()) {
-                    $host->addStatusMessage(sprintf(_('<strong>%s</strong> byl přidán mezi kontakty <strong>%s</strong>'),
+                    $host->addStatusMessage(sprintf(_('<strong>%s</strong> was add to contacts <strong>%s</strong>'),
                             $contact->getName(), $host->getName()), 'success');
                 } else {
-                    $host->addStatusMessage(sprintf(_('<strong>%s</strong> nebyl přidán mezi kontakty <strong>%s</strong>'),
+                    $host->addStatusMessage(sprintf(_('<strong>%s</strong> was not add to contacts <strong>%s</strong>'),
                             $contact->getName(), $host->getName()), 'warning');
                 }
             }
         } else {
-            $hostgroup->addStatusMessage(_('Chyba přiřazení kontaktu'),
-                'warning');
+            $hostgroup->addStatusMessage(_('Contact assigning error'), 'warning');
         }
         break;
     default :
@@ -51,11 +49,9 @@ switch ($oPage->getRequestValue('action')) {
 
             $hostgroupID = $hostgroup->saveToSQL();
             if (is_null($hostgroupID)) {
-                $oUser->addStatusMessage(_('Skupina hostů nebyla uložena'),
-                    'warning');
+                $oUser->addStatusMessage(_('Hostgroup was not saved'), 'warning');
             } else {
-                $oUser->addStatusMessage(_('Skupina hostů byla uložena'),
-                    'success');
+                $oUser->addStatusMessage(_('Hostgroup was saved'), 'success');
             }
             $hostgroup->saveMembers();
         }
@@ -70,7 +66,7 @@ switch ($oPage->getRequestValue('action')) {
 }
 
 
-$oPage->addItem(new UI\PageTop(_('Editace skupiny hostů').' '.$hostgroup->getName()));
+$oPage->addItem(new UI\PageTop(_('Hostgroup Editor').' '.$hostgroup->getName()));
 
 
 
@@ -86,14 +82,14 @@ if (!is_null($hostgroup->getMyKey())) {
     $form->addItem(new \Ease\Html\InputHiddenTag($hostgroup->getmyKeyColumn(),
         $hostgroup->getMyKey()));
 }
-$form->addItem(new \Ease\TWB\SubmitButton(_('Uložit'), 'success'));
+$form->addItem(new \Ease\TWB\SubmitButton(_('Save'), 'success'));
 
 $oPage->addItem(new UI\PageBottom());
 
 
 
 $infopanel = new UI\InfoBox($hostgroup);
-$tools     = new \Ease\TWB\Panel(_('Nástroje'), 'warning');
+$tools     = new \Ease\TWB\Panel(_('Tools'), 'warning');
 if ($hostgroup->getId()) {
     $tools->addItem($hostgroup->deleteButton());
     $tools->addItem(new \Ease\TWB\Panel(_('Transfer'), 'warning',
@@ -108,12 +104,12 @@ $pageRow->addColumn(4, $tools);
 $oPage->container->addItem($pageRow);
 
 
-$operations = $tools->addItem(new \Ease\TWB\Panel(_('Hromadné operace')),
+$operations = $tools->addItem(new \Ease\TWB\Panel(_('Bulk operations')),
     'success');
 $operations->addItem(new UI\ContactAsignForm());
 
 $tools->addItem(new \Ease\TWB\LinkButton('wizard-host.php?hostgroup_id='.$hostgroup->getId(),
-    \Ease\TWB\Part::GlyphIcon('plus')._('nový host ve skupině'), 'success'));
+    \Ease\TWB\Part::GlyphIcon('plus')._('New Host in Group'), 'success'));
 
 //$tools->addItem(new \Ease\TWB\LinkButton('hglayouteditor.php?hostgroup_id=' . $hostgroup->getId(), \Ease\TWB\Part::GlyphIcon('globe') . _('Rozvržení topologie'), 'info'));
 
