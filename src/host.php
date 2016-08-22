@@ -79,8 +79,8 @@ switch ($oPage->getRequestValue('action')) {
             }
         }
         if (isset($tmpfilename)) {
-            if (IEIconSelector::imageTypeOK($tmpfilename)) {
-                $newicon = IEIconSelector::saveIcon($tmpfilename, $host);
+            if (UI\IconSelector::imageTypeOK($tmpfilename)) {
+                $newicon = UI\IconSelector::saveIcon($tmpfilename, $host);
             } else {
                 unlink($tmpfilename);
                 $oPage->addStatusMessage(_('this is not requied image file type'),

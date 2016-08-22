@@ -14,6 +14,7 @@ Features
 
  * Generate configuration for multiplete users
  * Provide deploy scripts for auto configure NSClient++ 
+ * Checked Services presets - to apply on host or hostgroup
  * Scannig tcp ports for known services
  * Outdated sensors overview
  * Recursive import configuration form icinga/nagios config files

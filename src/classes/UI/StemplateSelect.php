@@ -15,7 +15,7 @@ class StemplateSelect extends \Ease\Html\Select
 
     function loadItems()
     {
-        $tpls      = ['' => _('choose ...')];
+        $tpls      = ['' => _('choose preset ...')];
         $stemplate = new \Icinga\Editor\Stemplate();
         $templates = $stemplate->getColumnsFromSQL([$stemplate->getmyKeyColumn(),
             $stemplate->nameColumn]);

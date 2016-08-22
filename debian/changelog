@@ -1,4 +1,4 @@
-icinga-editor (1.1.2-26) UNRELEASED; urgency=medium
+icinga-editor (1.2.1-2) UNRELEASED; urgency=medium
 
   [ dvorak ]
   * Initial release. (Closes: #XXXXXX)
@@ -123,5 +123,10 @@ icinga-editor (1.1.2-26) UNRELEASED; urgency=medium
     after successfull Configuration files generation Deploying new
     script C:\Program Files\NSClient++\refresh.ps1 Main page switched to
     English language
+  * Enable and disable services notifications during the automatic
+    downtime
+  * Enable and disable services notifications during the automatic
+    downtime
+  * Hostgroup page in English language
 
- -- vitex <vitex@developer.kancl.brevnov.czf>  Wed, 17 Aug 2016 15:03:07 +0200
+ -- vitex <vitex@developer.kancl.brevnov.czf>  Mon, 22 Aug 2016 17:03:33 +0200

@@ -3,12 +3,11 @@
 namespace Icinga\Editor\UI;
 
 /**
- * Formulář pro přiřazení kontaktu
+ * Contact assign form
  *
  * @package    IcingaEditor
- * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
- * @copyright  2015 Vitex@hippy.cz (G)
+ * @copyright  2015-2016 Vitex@hippy.cz (G)
  */
 class ContactAsignForm extends \Ease\TWB\Form
 {
@@ -26,8 +25,7 @@ class ContactAsignForm extends \Ease\TWB\Form
 
     public function finalize()
     {
-        $this->addItem(new \Ease\TWB\SubmitButton(_('Přiřadit kontakt'),
-            'success'));
+        $this->addItem(new \Ease\TWB\SubmitButton(_('Assign Contact'), 'success'));
         parent::finalize();
     }
 

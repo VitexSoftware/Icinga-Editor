@@ -17,6 +17,43 @@ $hostgroup = new Engine\Hostgroup($oPage->getRequestValue('hostgroup_id', 'int')
 
 
 switch ($oPage->getRequestValue('action')) {
+    case 'applystemplate':
+        $stemplate = new Stemplate($oPage->getRequestValue('stemplate_id', 'int'));
+        $services  = $stemplate->getDataValue('services');
+        if (count($services)) {
+            if ($oPage->getRequestValue('groupHosts') == 1) { //Assign service to hostgroup
+                $service = new Engine\Service();
+                foreach ($services as $service_id => $service_name) {
+                    if ($service->loadFromSQL($service_id)) {
+                        $service->addMember('hostgroup_name',
+                            $hostGroup->getId(), $hostGroup->getName());
+                        $service->saveToSQL();
+                        $service->dataReset();
+                    } else {
+                        $service->addStatusMessage(_(sprintf(_('Service used in template (#%s: %s) not found'),
+                                    $service_id, $service_name)));
+                    }
+                }
+            } else { //Several Hosts
+                foreach ($hostGroup->getHosts() as $hostID => $hostName) {
+                    $host    = new Engine\Host($hostID);
+                    $service = new Engine\Service();
+                    foreach ($services as $service_id => $service_name) {
+                        if ($service->loadFromSQL($service_id)) {
+                            $service->addMember('host_name', $host->getId(),
+                                $host->getName());
+                            $service->saveToSQL();
+                            $service->dataReset();
+                        } else {
+                            $service->addStatusMessage(_(sprintf(_('Service used in template (#%s: %s) not found'),
+                                        $service_id, $service_name)));
+                        }
+                    }
+                }
+            }
+        }
+        break;
+
     case 'contactAsign':
         $contact = new Engine\Contact($oPage->getRequestValue('contact_id',
                 'int'));
@@ -107,6 +144,18 @@ $oPage->container->addItem($pageRow);
 $operations = $tools->addItem(new \Ease\TWB\Panel(_('Bulk operations')),
     'success');
 $operations->addItem(new UI\ContactAsignForm());
+
+
+$presetSelForm = new UI\ServicePresetSelectForm();
+$presetSelForm->addItem(new \Ease\Html\InputHiddenTag($hostgroup->getmyKeyColumn(),
+    $hostgroup->getId()));
+
+$presetSelForm->addInput(new UI\TWBSwitch('groupHosts', false, true,
+    ['onText' => _('hostgroup'), 'offText' => _('hosts')]), _('Apply to'), null,
+    _('Apply preset to several Hosts or hostgroup itself'));
+
+$presetSelForm->setTagClass('form-inline');
+$operations->addItem($presetSelForm);
 
 $tools->addItem(new \Ease\TWB\LinkButton('wizard-host.php?hostgroup_id='.$hostgroup->getId(),
     \Ease\TWB\Part::GlyphIcon('plus')._('New Host in Group'), 'success'));

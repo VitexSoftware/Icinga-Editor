@@ -3,12 +3,11 @@
 namespace Icinga\Editor\UI;
 
 /**
- * Volba hostů sledovaných danou službou
+ * Choose hosts checked by an service
  *
  * @package    IcingaEditor
- * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
- * @copyright  2012 Vitex@hippy.cz (G)
+ * @copyright  2012-2016 Vitex@hippy.cz (G)
  */
 class HostSelector extends \Ease\Container
 {
@@ -24,12 +23,12 @@ class HostSelector extends \Ease\Container
         $hostsAssigned  = [];
         parent::__construct();
         $fieldName      = $this->myKeyColumn;
-        $initialContent = new \Ease\TWB\Panel(_('Sledované hosty služby'),
+        $initialContent = new \Ease\TWB\Panel(_('Hosts checked for service'),
             'default');
         $initialContent->setTagCss(['width' => '100%']);
 
         if (is_null($service->getMyKey())) {
-            $initialContent->addItem(_('Nejprve je potřeba uložit záznam'));
+            $initialContent->addItem(_('Please save record first'));
         } else {
             $serviceName = $service->getName();
             $host        = new \Icinga\Editor\Engine\Host();
@@ -72,9 +71,9 @@ class HostSelector extends \Ease\Container
                         $hostInfo[$host->nameColumn], 'inverse', 'xs',
                         [
                         new \Ease\Html\ATag('host.php?host_id='.$hostID.'&amp;service_id='.$service->getId(),
-                            \Ease\TWB\Part::GlyphIcon('wrench').' '._('Editace')),
+                            \Ease\TWB\Part::GlyphIcon('wrench').' '._('Edit')),
                         new \Ease\Html\ATag('?addhost='.$hostInfo[$host->nameColumn].'&amp;host_id='.$hostID.'&amp;'.$service->getmyKeyColumn().'='.$service->getMyKey().'&amp;'.$service->nameColumn.'='.$service->getName(),
-                            \Ease\TWB\Part::GlyphIcon('plus').' '._('Začít sledovat'))
+                            \Ease\TWB\Part::GlyphIcon('plus').' '._('Start checking'))
                     ]));
                 }
             }
@@ -102,13 +101,13 @@ class HostSelector extends \Ease\Container
     }
 
     /**
-     * Uloží položky
+     * Save items
      *
      * @param array $request
      */
     public static function saveMembers($request)
     {
-        $host = new Engine\IEHost();
+        $host = new \Icinga\Editor\Engine\Host();
         if (isset($request[$host->myKeyColumn])) {
             if ($host->loadFromSQL($request[$host->myKeyColumn])) {
                 if (isset($request['addhost']) || isset($request['delhost'])) {
@@ -116,10 +115,10 @@ class HostSelector extends \Ease\Container
                         $host->addMember('service_name', $request['service_id'],
                             $request['service_name']);
                         if ($host->saveToSQL()) {
-                            $host->addStatusMessage(sprintf(_('položka %s byla přidána'),
+                            $host->addStatusMessage(sprintf(_('Item %s was added'),
                                     $request['addhost']), 'success');
                         } else {
-                            $host->addStatusMessage(sprintf(_('položka %s nebyla přidána'),
+                            $host->addStatusMessage(sprintf(_('item %s was not added'),
                                     $request['addhost']), 'warning');
                         }
                     }
@@ -127,10 +126,10 @@ class HostSelector extends \Ease\Container
                         $host->delMember('service_name', $request['service_id'],
                             $request['service_name']);
                         if ($host->saveToSQL()) {
-                            $host->addStatusMessage(sprintf(_('položka %s byla odebrána'),
+                            $host->addStatusMessage(sprintf(_('item %s was removed'),
                                     $request['delhost']), 'success');
                         } else {
-                            $host->addStatusMessage(sprintf(_('položka %s nebyla odebrána'),
+                            $host->addStatusMessage(sprintf(_('item %s was not removed'),
                                     $request['delhost']), 'warning');
                         }
                     }

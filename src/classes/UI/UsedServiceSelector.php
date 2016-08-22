@@ -138,14 +138,9 @@ class UsedServiceSelector extends \Ease\Container
                     );
                 }
             }
-            $presetSelForm = new \Ease\TWB\Form('presetSelForm');
+            $presetSelForm = new ServicePresetSelectForm();
             $presetSelForm->addItem(new \Ease\Html\InputHiddenTag($host->getmyKeyColumn(),
                 $host->getId()));
-            $presetSelForm->addItem(new \Ease\Html\InputHiddenTag('action',
-                'applystemplate'));
-            $presetSelForm->addItem(new StemplateSelect('stemplate_id'));
-            $presetSelForm->addItem(new \Ease\TWB\SubmitButton(_('Apply services Preset'),
-                'success'));
             $presetSelForm->setTagClass('form-inline');
             $initialContent->footer($presetSelForm);
         }

@@ -3,20 +3,19 @@
 namespace Icinga\Editor;
 
 /**
- * Icinga Editor - přehled hostů
+ * Icinga Editor - hosts overview
  *
  * @package    IcingaEditor
- * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
- * @copyright  2012 Vitex@hippy.cz (G)
+ * @copyright  2012-2016 Vitex@hippy.cz (G)
  */
 require_once 'includes/IEInit.php';
 
 $oPage->onlyForLogged();
 
-$oPage->addItem(new UI\PageTop(_('Přehled hostů')));
+$oPage->addItem(new UI\PageTop(_('Hosts Overview')));
 
-$oPage->addItem(new \Ease\TWB\Container(new UI\DataGrid(_('Hosti'),
+$oPage->addItem(new \Ease\TWB\Container(new UI\DataGrid(_('Hosts'),
     new Engine\Host)));
 
 $oPage->addItem(new UI\PageBottom());
