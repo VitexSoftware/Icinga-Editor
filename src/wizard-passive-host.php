@@ -3,7 +3,7 @@
 namespace Icinga\Editor;
 
 /**
- * Icinga Editor - titulní strana
+ * Icinga Editor - wizard passive host
  *
  * @package    IcingaEditor
  * @author     Vitex <vitex@hippy.cz>
