@@ -5,13 +5,13 @@ namespace Icinga\Editor\UI;
 class BootstrapMenu extends \Ease\TWB\Navbar
 {
     /**
-     * Navigace
+     * Navigation
      * @var \Ease\Html\UlTag
      */
     public $nav = NULL;
 
     /**
-     * Hlavní menu aplikace
+     * Application main menu
      *
      * @param string $name
      * @param mixed  $content
@@ -66,7 +66,7 @@ class BootstrapMenu extends \Ease\TWB\Navbar
     }
 
     /**
-     * Vypíše stavové zprávy
+     * Show status messages
      */
     public function draw()
     {

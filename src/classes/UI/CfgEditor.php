@@ -10,13 +10,13 @@ namespace Icinga\Editor\UI;
 class CfgEditor extends \Ease\Container
 {
     /**
-     * Právě editovaný objekt
+     * Current edited object
      * @var \Icinga\Editor\Engine\Configurator Objekt konfigurace
      */
     public $objectEdited = null;
 
     /**
-     * Vyžadované položky formuláře
+     * Form required columns names
      * @var array
      */
     public $reqFields = [];
@@ -112,7 +112,7 @@ class CfgEditor extends \Ease\Container
                     false, 1, ['id' => 'useTpl'.$fieldName]));
                 $hint = $value;
             }
-            $fieldBlock->addItem(' '._('Hodnota z předlohy').':');
+            $fieldBlock->addItem(' '._('Value from template').':');
             $fieldBlock->addItem(new \Ease\Html\ATag('search.php?search='.key($effective),
                 key($effective)));
             $fieldBlock->addItem(': '.current($effective));
@@ -162,7 +162,7 @@ class CfgEditor extends \Ease\Container
                     if (isset($keywordInfo[$flag])) {
                         $checkboxes[$flag] = $keywordInfo[$flag];
                     } else {
-                        $this->addStatusMessage(_('Chybi definice').' '.$fieldName.' '.$flag,
+                        $this->addStatusMessage(_('Missing definiton').' '.$fieldName.' '.$flag,
                             'error');
                     }
                 }
@@ -256,7 +256,7 @@ class CfgEditor extends \Ease\Container
                     ['OnChange' => $this->onChangeCode($fieldName)]));
 
                 if (!$required) {
-                    $selector->addItems(['NULL' => _('Výchozí')]);
+                    $selector->addItems(['NULL' => _('Default')]);
                 }
                 if (count($membersAviableArray)) {
                     $selector->addItems(array_combine($membersAviableArray,
@@ -293,7 +293,7 @@ class CfgEditor extends \Ease\Container
 
 
                 if (!$required) {
-                    $select->addItems(['NULL' => _('Výchozí')]);
+                    $select->addItems(['NULL' => _('Default')]);
                 }
                 if (count($membersAviableArray)) {
                     foreach ($membersAviableArray as $option) {
@@ -372,7 +372,7 @@ class CfgEditor extends \Ease\Container
             default:
                 $fieldBlock->addItem(new EaseLabeledTextInput($fieldName,
                     $value, $keywordInfo['title'], ['title' => $fieldName]));
-                $this->addStatusMessage(sprintf(_('Neznámý typ %s pro sloupec %s'),
+                $this->addStatusMessage(sprintf(_('Unknown type of %s for column %s'),
                         $fType, $fieldName), 'warning');
                 break;
         }
@@ -381,7 +381,7 @@ class CfgEditor extends \Ease\Container
     public function fullEditor()
     {
         $tabs = new \Ease\TWB\Tabs('editorTabs');
-        $tabs->addTab(_('Více nastavení:'));
+        $tabs->addTab(_('More Options:'));
 
         if (\Ease\Shared::user()->getSettingValue('admin')) {
             $this->objectEdited->keywordsInfo[$this->objectEdited->userColumn] = [
@@ -392,7 +392,7 @@ class CfgEditor extends \Ease\Container
 
         if ($this->objectEdited->allowTemplating) {
             if (!$this->objectEdited->getCfgValue('register')) {
-                $this->addStatusMessage('toto je pouze předloha');
+                $this->addStatusMessage('this is template only');
                 foreach ($this->objectEdited->keywordsInfo as $Kw => $Props) {
                     unset($this->objectEdited->keywordsInfo[$Kw]['required']);
                 }
@@ -404,12 +404,12 @@ class CfgEditor extends \Ease\Container
             }
         }
         if (isset($this->objectEdited->useKeywords['generate']) && !(int) $this->objectEdited->getDataValue('generate')) {
-            $this->addStatusMessage(_('tento záznam se nebude generovat do konfigurace'),
+            $this->addStatusMessage(_('this record is not generated to icinga config file'),
                 'warning');
         }
         if ($this->objectEdited->publicRecords) {
             if ((int) $this->objectEdited->getDataValue('public')) {
-                $this->addStatusMessage(_('tento záznam je veřejný'));
+                $this->addStatusMessage(_('this record is public'));
             }
         }
         $this->addItem('<div class="error" style=""><span></span><br clear="all"></div>');
@@ -424,7 +424,7 @@ class CfgEditor extends \Ease\Container
 
             $keywordInfo = $this->objectEdited->keywordsInfo[$fieldName];
             if (!isset($keywordInfo['severity'])) {
-                $this->addStatusMessage(sprintf(_('Sloupeček %s/%s nemá uvedenou závažnost'),
+                $this->addStatusMessage(sprintf(_('Column %s/%s without known severity'),
                         $fieldName, get_class($this->objectEdited)), 'warning');
                 $keywordInfo['severity'] = null;
             }
@@ -438,13 +438,13 @@ class CfgEditor extends \Ease\Container
             }
 
             if (!isset($keywordInfo)) {
-                $this->addStatusMessage(_('Info Chybí').'   '.$fieldType.' '.$fieldName,
+                $this->addStatusMessage(_('Info missing').'   '.$fieldType.' '.$fieldName,
                     'warning');
                 continue;
             }
 
             if (!isset($keywordInfo['title'])) {
-                $this->addStatusMessage(_('sloupec bez popisku').' '.$fieldName,
+                $this->addStatusMessage(_('column without caption').' '.$fieldName,
                     'warning');
             }
 
@@ -475,13 +475,13 @@ class CfgEditor extends \Ease\Container
             if ($this->objectEdited->allowTemplating) {
                 if ($this->objectEdited->isTemplate()) {
                     if (\Ease\Shared::webPage()->isPosted() && is_null($value) && $required) {
-                        $this->addStatusMessage(_('Není vyplněna povinná položka').' '.$keywordInfo['title'],
+                        $this->addStatusMessage(_('Requied value is not set').' '.$keywordInfo['title'],
                             'warning');
                     }
                 }
             } else {
                 if (\Ease\Shared::webPage()->isPosted() && is_null($value) && $required) {
-                    $this->addStatusMessage(_('Není vyplněna povinná položka').' '.$keywordInfo['title'],
+                    $this->addStatusMessage(_('Requied value is not set').' '.$keywordInfo['title'],
                         'warning');
                 }
             }
@@ -491,7 +491,7 @@ class CfgEditor extends \Ease\Container
             switch ($keywordInfo['severity']) {
                 case 'advanced':
                     if (!isset($advancedTab)) {
-                        $advancedTab = $tabs->addTab(_('Rozšířené'));
+                        $advancedTab = $tabs->addTab(_('Advanced'));
                     }
                     $mainFieldBlock = $advancedTab->addItem(new \Ease\Html\Div(
                         null,
@@ -499,7 +499,7 @@ class CfgEditor extends \Ease\Container
                     break;
                 case 'optional':
                     if (!isset($optionalTab)) {
-                        $optionalTab = $tabs->addTab(_('Volitelné'));
+                        $optionalTab = $tabs->addTab(_('Optional'));
                     }
                     $mainFieldBlock = $optionalTab->addItem(new \Ease\Html\Div(null,
                         ['class' => 'fieldblock', 'id' => $fieldName.'-block']));
@@ -594,11 +594,11 @@ class CfgEditor extends \Ease\Container
     {
 
         if (!(int) $this->objectEdited->getDataValue('generate')) {
-            $this->addStatusMessage(_('tento záznam se nebude generovat do konfigurace'));
+            $this->addStatusMessage(_('this record is not generated to icinga config file'));
         }
         if ($this->objectEdited->publicRecords) {
             if ((int) $this->objectEdited->getDataValue('public')) {
-                $this->addStatusMessage(_('tento záznam je veřejný'));
+                $this->addStatusMessage(_('this record is public'));
             }
         }
         $this->addItem('<div class="error" style=""><span></span><br clear="all"></div>');
@@ -657,13 +657,13 @@ class CfgEditor extends \Ease\Container
             if ($this->objectEdited->allowTemplating) {
                 if ($this->objectEdited->isTemplate()) {
                     if (\Ease\Shared::webPage()->isPosted() && is_null($value) && $required) {
-                        $this->addStatusMessage(_('Není vyplněna povinná položka').' '.$keywordInfo['title'],
+                        $this->addStatusMessage(_('Requied value is not set').' '.$keywordInfo['title'],
                             'warning');
                     }
                 }
             } else {
                 if (\Ease\Shared::webPage()->isPosted() && is_null($value) && $required) {
-                    $this->addStatusMessage(_('Není vyplněna povinná položka').' '.$keywordInfo['title'],
+                    $this->addStatusMessage(_('Requied value is not set').' '.$keywordInfo['title'],
                         'warning');
                 }
             }

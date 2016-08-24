@@ -10,6 +10,12 @@
         <group name="Monitoring">
             <file>file:/home/vitex/Projects/VitexSoftware/iciedit/src/includes/Configure.php</file>
         </group>
-        <group/>
+        <group>
+            <file>file:/home/vitex/Projects/IcingaEditor/src/classes/UI/PageTop.php</file>
+            <file>file:/home/vitex/Projects/IcingaEditor/src/classes/UI/BootstrapMenu.php</file>
+            <file>file:/home/vitex/Projects/IcingaEditor/src/classes/UI/WebPage.php</file>
+            <file>file:/home/vitex/Projects/IcingaEditor/src/classes/UI/MainMenu.php</file>
+            <file>file:/home/vitex/Projects/IcingaEditor/src/hostgroup.php</file>
+        </group>
     </open-files>
 </project-private>

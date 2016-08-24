@@ -3,10 +3,9 @@
 namespace Icinga\Editor;
 
 /**
- * Icinga Editor Timeprioda
+ * Icinga Timepriod Editor
  *
  * @package    IcingaEditor
- * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2012 Vitex@hippy.cz (G)
  */
@@ -22,20 +21,20 @@ if ($oPage->isPosted()) {
     $timeperiod->takeData($_POST);
     $TimepriodID = $timeperiod->saveToSQL();
     if (is_null($TimepriodID)) {
-        $oUser->addStatusMessage(_('časová perioda nebyl uložena'), 'warning');
+        $oUser->addStatusMessage(_('timeperiod saving failed'), 'warning');
     } else {
-        $oUser->addStatusMessage(_('časová byla uložena'), 'success');
+        $oUser->addStatusMessage(_('timeperiod saved'), 'success');
     }
 }
 
-$DelColumn = $oPage->getGetValue('del');
-if (!is_null($DelColumn)) {
-    $Del         = $timeperiod->delTime($DelColumn);
+$delColumn = $oPage->getGetValue('del');
+if (!is_null($delColumn)) {
+    $Del         = $timeperiod->delTime($delColumn);
     $TimepriodID = $timeperiod->saveToSQL();
     if (is_null($TimepriodID) && !$Del) {
-        $oUser->addStatusMessage(_('položka nebyla odebrána'), 'warning');
+        $oUser->addStatusMessage(_('item was not removed'), 'warning');
     } else {
-        $oUser->addStatusMessage(_('položka byla odebrána'), 'success');
+        $oUser->addStatusMessage(_('item was removed'), 'success');
     }
 }
 
@@ -50,7 +49,7 @@ $oPage->addPageColumns();
 
 $TimepriodEdit = new UI\CfgEditor($timeperiod);
 
-$form = $oPage->columnII->addItem(new \Ease\Html\Form('Perioda',
+$form = $oPage->columnII->addItem(new \Ease\Html\Form('Period',
     'timeperiod.php', 'POST', $TimepriodEdit, ['class' => 'form-horizontal']));
 $form->setTagID($form->getTagName());
 if (!is_null($timeperiod->getMyKey())) {
@@ -61,16 +60,12 @@ $timesTable = new \Ease\Html\TableTag();
 
 $timesTable->addRowHeaderColumns(
     [
-        new \Ease\TWB\FormGroup(_('Označení'),
+        new \Ease\TWB\FormGroup(_('Label'),
             new \Ease\Html\InputTextTag('NewKey'))
         ,
-        new \Ease\TWB\FormGroup(_('Interval(y)'),
+        new \Ease\TWB\FormGroup(_('Interval(s)'),
             new \Ease\Html\InputTextTag('NewTimes'))
 ]);
-
-//$timesTable->addRowHeaderColumns([new EaseLabeledTextInput('NewKey', null,
-//        _('Označení')),
-//    new EaseLabeledTextInput('NewTimes', null, _('Interval(y)')), '']);
 
 foreach ($timeperiod->timeperiods as $timeName => $TimeIntervals) {
     $timesTable->addRowColumns([$timeName, $TimeIntervals, new \Ease\Html\ATag('?del='.$timeName.'&amp;'.$timeperiod->getmyKeyColumn().'='.$timeperiod->getMyKey(),
@@ -79,7 +74,7 @@ foreach ($timeperiod->timeperiods as $timeName => $TimeIntervals) {
 
 $form->addItem($timesTable);
 
-$form->addItem(new \Ease\TWB\SubmitButton(_('Uložit'), 'success'));
+$form->addItem(new \Ease\TWB\SubmitButton(_('Save'), 'success'));
 $oPage->AddCss('
 input.ui-button { width: 100%; }
 ');

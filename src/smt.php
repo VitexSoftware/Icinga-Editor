@@ -3,10 +3,9 @@
 namespace Icinga\Editor;
 
 /**
- * Icinga Editor služby
+ * Icinga Service Migration Tool
  *
  * @package    IcingaEditor
- * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2012 Vitex@hippy.cz (G)
  */
@@ -15,10 +14,10 @@ require_once 'includes/IEInit.php';
 $service = new Engine\Service($oPage->getRequestValue('service_id', 'int'));
 
 
-$oPage->addItem(new UI\PageTop(_('Migrace služby').' '.$service->getName()));
+$oPage->addItem(new UI\PageTop(_('Service Migration').' '.$service->getName()));
 $oPage->addPageColumns();
 
-$oPage->columnII->addItem(new \Ease\Html\H3Tag([new IEPlatformIcon($service->getDataValue('platform')),
+$oPage->columnII->addItem(new \Ease\Html\H3Tag([new UI\PlatformIcon($service->getDataValue('platform')),
     $service->getName()]));
 
 
@@ -42,7 +41,7 @@ foreach ($service->data as $key => $value) {
     }
 }
 
-$form->addItem(new \Ease\TWB\SubmitButton(_('Uložit'), 'success'));
+$form->addItem(new \Ease\TWB\SubmitButton(_('Save'), 'success'));
 $oPage->AddCss('
 input.ui-button { width: 100%; }
 ');
