@@ -21,8 +21,9 @@ class BootstrapMenu extends \Ease\TWB\Navbar
                                 $properties = null)
     {
         parent::__construct("Menu",
-            new \Ease\Html\ImgTag('img/vsmonitoring.png', 'VSMonitoring', 20,
-            20, ['class' => 'img-rounded']), ['class' => 'navbar-fixed-top']);
+            new \Ease\Html\ImgTag('img/vsmonitoring.png', 'VSMonitoring',
+            ['class' => 'img-rounded', 'width' => 20, 'heigt' => 20]),
+            ['class' => 'navbar-fixed-top']);
 
         $user = \Ease\Shared::user();
         \Ease\TWB\Part::twBootstrapize();
@@ -33,7 +34,7 @@ class BootstrapMenu extends \Ease\TWB\Navbar
                 '
 <li class="divider-vertical"></li>
 <li class="dropdown">
-<a class="dropdown-toggle" href="login.php" data-toggle="dropdown"><i class="icon-circle-arrow-left"></i> '._('Přihlášení').'<strong class="caret"></strong></a>
+<a class="dropdown-toggle" href="login.php" data-toggle="dropdown"><i class="icon-circle-arrow-left"></i> '._('Sign Up').'<strong class="caret"></strong></a>
 <div class="dropdown-menu" style="padding: 15px; padding-bottom: 0px; left: -150px;">
 <form method="post" class="navbar-form navbar-left" action="login.php" accept-charset="UTF-8">
 <input class="form-control" style="margin-bottom: 15px;" type="text" placeholder="'._('Username').'" id="username" name="login">

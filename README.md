@@ -94,6 +94,20 @@ Sorry
   * We support only Icinga 1.x configuration yet ...
   * English translation is under progress. But some pages localization is still in CZECH language.
 
+See in Action
+=============
+
+
+Production Site
+---------------
+
+Latest version of Debian package is installed here: http://v.s.cz/icinga-editor/
+
+ * Production site with SMS and XMPP (jabber) notifications Enabled. 
+ * Twitter inc. recognize our notifications as spam thus Twitter notifications are
+depricated now.
+
+
 Screenshots
 -----------
 

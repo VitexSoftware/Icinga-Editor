@@ -37,14 +37,14 @@ class NavBarSearchBox extends \Ease\TWB\Form
             'placeholder' => _('Hledání'),
             ]), ['class' => 'input-group'])
         );
-        $buttons = $group->addItem(new \Ease\Html\SpanTag(null, null,
+        $buttons = $group->addItem(new \Ease\Html\Span( null,
             ['class' => 'input-group-btn']));
-        $buttons->addItem(new \Ease\Html\ButtonTag(new \Ease\Html\SpanTag(null,
-            new \Ease\Html\SpanTag(NULL, _('Zavřít'), ['class' => 'sr-only']),
+        $buttons->addItem(new \Ease\Html\ButtonTag(new \Ease\Html\Span(
+            new \Ease\Html\Span( _('Zavřít'), ['class' => 'sr-only']),
             ['class' => 'glyphicon glyphicon-remove']),
             ['type' => 'reset', 'class' => 'btn btn-default']));
-        $buttons->addItem(new \Ease\Html\ButtonTag(new \Ease\Html\SpanTag(null,
-            new \Ease\Html\SpanTag(NULL, _('Hledat'), ['class' => 'sr-only']),
+        $buttons->addItem(new \Ease\Html\ButtonTag(new \Ease\Html\Span(
+            new \Ease\Html\Span( _('Hledat'), ['class' => 'sr-only']),
             ['class' => 'glyphicon glyphicon-search']),
             ['type' => 'submit', 'class' => 'btn btn-default']));
     }

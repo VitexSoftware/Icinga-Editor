@@ -1,4 +1,4 @@
-icinga-editor (1.2.1-2) UNRELEASED; urgency=medium
+icinga-editor (1.2.1-4) UNRELEASED; urgency=medium
 
   [ dvorak ]
   * Initial release. (Closes: #XXXXXX)
@@ -128,5 +128,8 @@ icinga-editor (1.2.1-2) UNRELEASED; urgency=medium
   * Enable and disable services notifications during the automatic
     downtime
   * Hostgroup page in English language
+  * Sign On page switched to English
+  * Added info how to install on CentOS 6.8 Editor core switched to
+    English languge
 
- -- vitex <vitex@developer.kancl.brevnov.czf>  Mon, 22 Aug 2016 17:03:33 +0200
+ -- vitex <vitex@developer.kancl.brevnov.czf>  Thu, 25 Aug 2016 09:49:10 +0200

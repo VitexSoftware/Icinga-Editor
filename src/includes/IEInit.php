@@ -3,23 +3,13 @@
  * Init aplikace
  *
  * @author    Vitex <vitex@hippy.cz>
- * @copyright Vitex@hippy.cz (G) 2010
+ * @copyright Vitex@hippy.cz (G) 2010-2016
  */
 
 namespace Icinga\Editor;
 
-set_include_path(
-    get_include_path().PATH_SEPARATOR.
-    'includes'.PATH_SEPARATOR.
-    '../includes'.PATH_SEPARATOR.
-    '../../vendor'.PATH_SEPARATOR.
-    '../vendor'.PATH_SEPARATOR.
-    '/var/lib/icinga-editor'.PATH_SEPARATOR.
-    '/usr/share/icinga-editor/includes/'
-);
-
 require_once 'Configure.php';
-require_once 'autoload.php';
+require_once '../vendor/autoload.php';
 
 //Initialise Gettext
 $langs  = [

@@ -11,7 +11,7 @@
     ],
     "require": {
         "php": ">= 5.5.9",
-        "vitexsoftware/ease-framework": ">= 1.1.3"
+        "vitexsoftware/ease-framework": "dev-master"
     },
     "autoload": {
         "psr-4": {

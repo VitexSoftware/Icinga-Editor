@@ -1004,11 +1004,11 @@ class Configurator extends \Ease\Brick
                     foreach ($used as $usId => $usInfo) {
                         if ($this->publicRecords && ($usInfo['public'] != true) && ($usInfo[$this->userColumn]
                             != \Ease\Shared::user()->getUserID() )) {
-                            $usedFrame->addItem(new \Ease\Html\SpanTag(null,
+                            $usedFrame->addItem(new \Ease\Html\Span(
                                 $usInfo[$this->nameColumn],
                                 ['class' => 'jellybean gray']));
                         } else {
-                            $usedFrame->addItem(new \Ease\Html\SpanTag(null,
+                            $usedFrame->addItem(new \Ease\Html\Span(
                                 new \Ease\Html\ATag('?'.$this->getmyKeyColumn().'='.$usId.'&'.$urlAdd,
                                 $usInfo[$this->nameColumn]),
                                 ['class' => 'jellybean']));
