@@ -48,8 +48,9 @@ class ChildrenSelector extends \Ease\Container
             if (count($allServices)) {
 
                 foreach ($allServices as $ServiceID => $serviceInfo) {
-                    $Jellybean = new \Ease\Html\SpanTag($serviceInfo[$Service->nameColumn],
-                        null, ['class' => 'jellybean gray']);
+                    $Jellybean = new \Ease\Html\Span(
+                        null,
+                        ['class' => 'jellybean gray', 'id' => $serviceInfo[$Service->nameColumn]]);
                     $Jellybean->addItem(new \Ease\Html\ATag('?addservice='.$serviceInfo[$Service->nameColumn].'&amp;service_id='.$ServiceID.'&amp;'.$Host->getmyKeyColumn().'='.$Host->getMyKey().'&amp;'.$Host->nameColumn.'='.$Host->getName(),
                         $serviceInfo[$Service->nameColumn]));
                     $InitialContent->addItem($Jellybean);
@@ -59,8 +60,9 @@ class ChildrenSelector extends \Ease\Container
             if (count($servicesAssigned)) {
                 $InitialContent->addItem('</br>');
                 foreach ($servicesAssigned as $ServiceID => $serviceInfo) {
-                    $Jellybean = new \Ease\Html\SpanTag($serviceInfo[$Service->nameColumn],
-                        null, ['class' => 'jellybean']);
+                    $Jellybean = new \Ease\Html\Span(
+                        null,
+                        ['class' => 'jellybean', 'id' => $serviceInfo[$Service->nameColumn]]);
                     $Jellybean->addItem($serviceInfo[$Service->nameColumn]);
                     $Jellybean->addItem(new \Ease\Html\ATag('?delservice='.$serviceInfo[$Service->nameColumn].'&amp;service_id='.$ServiceID.'&amp;'.$Host->getmyKeyColumn().'='.$Host->getMyKey().'&amp;'.$Host->nameColumn.'='.$Host->getName(),
                         \Ease\TWB\Part::GlyphIcon('remove')));
