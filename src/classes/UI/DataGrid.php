@@ -7,7 +7,7 @@ namespace Icinga\Editor\UI;
  *
  * @author vitex
  */
-class DataGrid extends \Ease\DataGrid
+class DataGrid extends \Ease\Html\TableTag
 {
     /**
      * Extra filtr výsledků
@@ -74,9 +74,7 @@ class DataGrid extends \Ease\DataGrid
 
         $this->options['url']      = 'datasource.php?class='.urlencode(get_class($datasource));
         $this->options['sortname'] = $datasource->getMyKeyColumn();
-        $dataurl                   = null;
-
-        parent::__construct($dataurl, $properties);
+        parent::__construct(null, $properties);
         \Ease\JQuery\Part::jQueryze($this);
         \Ease\Shared::webPage()->includeJavaScript('js/flexigrid.js');
         \Ease\Shared::webPage()->includeCSS('css/flexigrid.css');
