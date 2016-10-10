@@ -1,4 +1,4 @@
-icinga-editor (1.2.1-4) UNRELEASED; urgency=medium
+icinga-editor (1.2.1-6) UNRELEASED; urgency=medium
 
   [ dvorak ]
   * Initial release. (Closes: #XXXXXX)
@@ -131,5 +131,7 @@ icinga-editor (1.2.1-4) UNRELEASED; urgency=medium
   * Sign On page switched to English
   * Added info how to install on CentOS 6.8 Editor core switched to
     English languge
+  * Update to current EaseFramework
+  * Updated to current EaseFramework
 
- -- vitex <vitex@developer.kancl.brevnov.czf>  Thu, 25 Aug 2016 09:49:10 +0200
+ -- vitex <vitex@developer.kancl.brevnov.czf>  Thu, 06 Oct 2016 23:29:47 +0200

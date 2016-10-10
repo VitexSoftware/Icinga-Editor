@@ -1,7 +1,4 @@
 <?php
-
-namespace Flexplorer;
-
 namespace Icinga\Editor;
 
 /**
@@ -12,13 +9,20 @@ namespace Icinga\Editor;
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2012 Vitex@hippy.cz (G)
  */
+use League\CommonMark\CommonMarkConverter;
+
 require_once 'includes/IEInit.php';
 
 
 $oPage->addItem(new UI\PageTop(_('O Aplikaci')));
 
+$oPage->container->addItem(_('Used Libraries').':');
+$oPage->container->addItem('<br> EasePHP Framework v'.\Ease\Atom::$frameworkVersion);
+
 $oPage->container->addItem('<br/><br/><br/><br/>');
-$oPage->container->addItem(new \Ease\Html\Div(nl2br(file_get_contents('../README.md')),
+$converter = new CommonMarkConverter();
+
+$oPage->container->addItem(new \Ease\Html\Div($converter->convertToHtml(file_get_contents('../README.md')),
     ['class' => 'jumbotron']));
 $oPage->container->addItem('<br/><br/><br/><br/>');
 

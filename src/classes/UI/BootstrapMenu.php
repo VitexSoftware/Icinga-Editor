@@ -28,6 +28,8 @@ class BootstrapMenu extends \Ease\TWB\Navbar
         $user = \Ease\Shared::user();
         \Ease\TWB\Part::twBootstrapize();
         if (!$user->getUserID()) {
+            $this->addMenuItem('<a href="about.php">'.\Ease\TWB\Part::GlyphIcon('info').' '._('About').'</a>',
+                'right');
             $this->addMenuItem('<a href="createaccount.php">'.\Ease\TWB\Part::GlyphIcon('leaf').' '._('Sign Up').'</a>',
                 'right');
             $this->addMenuItem(

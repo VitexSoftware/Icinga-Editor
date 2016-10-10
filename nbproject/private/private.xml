@@ -10,11 +10,6 @@
         <group name="Monitoring">
             <file>file:/home/vitex/Projects/VitexSoftware/iciedit/src/includes/Configure.php</file>
         </group>
-        <group>
-            <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/src/classes/UI/DataGrid.php</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/src/includes/IEInit.php</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/debian/postinst</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/composer.json</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>
