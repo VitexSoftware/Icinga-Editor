@@ -14,7 +14,7 @@ use League\CommonMark\CommonMarkConverter;
 require_once 'includes/IEInit.php';
 
 
-$oPage->addItem(new UI\PageTop(_('O Aplikaci')));
+$oPage->addItem(new UI\PageTop(_('About Application')));
 
 $oPage->container->addItem(_('Used Libraries').':');
 $oPage->container->addItem('<br> EasePHP Framework v'.\Ease\Atom::$frameworkVersion);
