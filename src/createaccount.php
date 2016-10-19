@@ -47,7 +47,7 @@ if ($oPage->isPosted()) {
             $error = true;
             $oUser->addStatusMessage(_('invalid email address'), 'warning');
         } else {
-            $check_email = \Ease\Shared::db()->queryToValue("SELECT COUNT(*) AS total FROM user WHERE email = '".$oPage->EaseAddSlashes($emailAddress)."'");
+            $check_email = \Ease\Shared::db()->queryToValue("SELECT COUNT(*) AS total FROM user WHERE email = '".$oUser->dblink->addslashes($emailAddress)."'");
             if ($check_email > 0) {
                 $error = true;
                 $oUser->addStatusMessage(sprintf(_('Mail address %s is allready registered'),
@@ -65,7 +65,7 @@ if ($oPage->isPosted()) {
         $oUser->addStatusMessage(_('Password control does not match'), 'warning');
     }
 
-    $usedLogin = \Ease\Shared::db()->QueryToValue('SELECT id FROM user WHERE login=\''.$oPage->EaseAddSlashes($login).'\'');
+    $usedLogin = \Ease\Shared::db()->QueryToValue('SELECT id FROM user WHERE login=\''.$oUser->dblink->addslashes($login).'\'');
     if ($usedLogin) {
         $error = true;
         $oUser->addStatusMessage(sprintf(_('Username %s is used. Please choose another one'),

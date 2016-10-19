@@ -11,12 +11,14 @@
     ],
     "minimum-stability": "stable",
     "config": {
-	"vendor-dir": "/var/lib/icinga-editor"
+        "vendor-dir": "/var/lib/icinga-editor"
     },
     "require": {
         "php": ">= 5.5.9",
         "ease-framework": "*",
-        "league/commonmark": "^0.15.0"
+        "league/commonmark": "^0.15.0",
+        "pear/mail": ">=1.3.0",
+        "pear/mail_mime": ">=1.10.0"
     },
     "autoload": {
         "psr-4": {
