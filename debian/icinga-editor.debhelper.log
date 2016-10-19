@@ -7,6 +7,7 @@ override_dh_install dh_install
 dh_install
 dh_installdocs
 dh_installchangelogs
+dh_installman
 dh_installdebconf
 dh_pysupport
 dh_perl
@@ -18,3 +19,12 @@ dh_gencontrol
 dh_md5sums
 dh_builddeb
 dh_builddeb
+dh_install
+dh_install
+dh_install
+dh_install
+dh_install
+dh_install
+dh_install
+dh_install
+dh_install
