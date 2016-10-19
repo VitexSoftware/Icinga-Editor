@@ -36,8 +36,8 @@ if ($emailTo) {
         $passChanger = new User($userID);
         $passChanger->passwordChange($newPassword);
 
-        $email = $oPage->addItem(new EaseMail($userEmail,
-            'FlexiHuBee - '.sprintf(_('New password for %s'),
+        $email = $oPage->addItem(new \Ease\Mailer($userEmail,
+            _('Icinga Editor').' - '.sprintf(_('New password for %s'),
                 $_SERVER['SERVER_NAME'])));
         $email->setMailHeaders(['From' => constant('EMAIL_FROM')]);
         $email->addItem(_("Sign On informations was changed:\n"));
@@ -51,7 +51,7 @@ if ($emailTo) {
                 '<strong>'.$_REQUEST['Email'].'</strong>'));
         $success = true;
     } else {
-        $oUser->addStatusMessage(sprintf(_('unknow email address %s'),
+        $oUser->addStatusMessage(sprintf(_('unknown email address %s'),
                 '<strong>'.$_REQUEST['Email'].'</strong>'), 'warning');
     }
 } else {
@@ -62,21 +62,25 @@ $oPage->addItem(new UI\PageTop(_('Lost password recovery')));
 $oPage->addPageColumns();
 
 if (!$success) {
-    $columnI->addItem(new \Ease\Html\H1Tag('Lost password'));
+    $oPage->columnI->addItem(new \Ease\Html\H1Tag('Lost password'));
 
-    $columnIII->addItem(_('Forgot your password? Enter your e-mail address you entered during the registration and we will send you a new one.'));
+    $oPage->columnIII->addItem(_('Forgot your password? Enter your e-mail address you entered during the registration and we will send you a new one.'));
 
-    $emailForm = $columnII->addItem(new \Ease\TWB\Form('PassworRecovery'));
-    $emailForm->addItem(new EaseLabeledTextInput('Email', null, _('Email'),
-        ['size' => '40', 'class' => 'form-control']));
-    $emailForm->addItem(new EaseTWSubmitButton(_('Send New Password')));
+    $emailForm = $oPage->columnII->addItem(new \Ease\TWB\Form('PassworRecovery'));
+
+
+    $emailForm->addInput(new \Ease\Html\InputTextTag('Email', null,
+        ['type' => 'email']), _('Email'));
+    $emailForm->addItem(new \Ease\TWB\SubmitButton(_('Send New Password'),
+        'warning'));
 
     if (isset($_POST)) {
-        $mailForm->fillUp($_POST);
+        $emailForm->fillUp($_POST);
     }
 } else {
-    $columnII->addItem(new \Ease\TWB\LinkButton('login.php', _('Continue')));
-    $oPage->redirect('login.php');
+    $oPage->columnII->addItem(new \Ease\TWB\Well([_('Please check your mailbox for new password')
+        , ' '._('and').' ', new \Ease\TWB\LinkButton('login.php', _('Sign In'),
+            'success')]));
 }
 
 $oPage->addItem(new UI\PageBottom());
