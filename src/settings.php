@@ -3,10 +3,8 @@
 namespace Icinga\Editor;
 
 /**
- * Icinga Editor - nastavení uživatele
+ * Icinga Editor - user settings
  *
- * @package    IcingaEditor
- * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2012 Vitex@hippy.cz (G)
  */
@@ -16,22 +14,10 @@ $oPage->onlyForLogged();
 
 if ($oPage->getRequestValue('user') == 'normal') {
     $oUser->setSettingValue('admin', FALSE);
-    $oUser->addStatusMessage(_('Adminská oprávnění byla potlačena'));
+    $oUser->addStatusMessage(_('Admin privileges was supressed'));
 }
 
-switch ($oPage->getRequestValue('action')) {
-    case 'untwittering':
-        $oUser->setDataValue('twitter_id', null);
-        $oUser->saveToSQL();
-        unset($_SESSION['access_token']); //Twitter OAuth
-        $oUser->addStatusMessage(_('Twitter byl odvázán od aktuálního účtu'));
-        break;
-
-    default:
-        break;
-}
-
-$oPage->addItem(new UI\PageTop(_('Profil uživatele').' '.$oUser->GetUserLogin()));
+$oPage->addItem(new UI\PageTop(_('User settings').' '.$oUser->GetUserLogin()));
 $oPage->addPageColumns();
 
 
@@ -51,16 +37,16 @@ $(\'#UserMail\').change( function () {
 );
 ', NULL, TRUE);
 
-$settingsFrame = new \Ease\TWB\Panel(_('nastavení'));
+$settingsFrame = new \Ease\TWB\Panel(_('Settings'));
 $settingsFrame->addItem(new \Ease\Html\ATag('https://secure.gravatar.com/',
-    $oUser, ['title' => 'klikni pro změnu ikony']));
+    $oUser, ['title' => _('Click to change icon')]));
 
-$settingsFrame->addItem(new \Ease\TWB\FormGroup(_('přihlašovací jméno'),
+$settingsFrame->addItem(new \Ease\TWB\FormGroup(_('Login name'),
     new UI\TextInputSaver('login', $oUser->getUserLogin(), $oUser)));
 $settingsFrame->addItem(new \Ease\TWB\LinkButton('changepassword.php',
-    _('změna hesla')));
+    _('Password change')));
 
-$settingsFrame->addItem(new \Ease\TWB\FormGroup(_('emailová adresa'),
+$settingsFrame->addItem(new \Ease\TWB\FormGroup(_('Email address'),
     new UI\TextInputSaver('email', $oUser->getUserEmail(), $oUser,
     ['id' => 'UserMail'])));
 
@@ -70,15 +56,9 @@ $oPage->columnII->addItem($settingsFrame);
 
 if ((bool) $oUser->getSettingValue('admin')) {
     $oPage->columnIII->addItem(new \Ease\TWB\LinkButton('?user=normal',
-        _('Zahodit adminská oprávnění'), 'danger'));
+        _('Supress admin privileges'), 'danger'));
 }
-//
-//if (!intval($oUser->getDataValue('twitter_id'))) {
-//    $oPage->columnIII->addItem(new \Ease\TWB\LinkButton('twauth.php?authenticate=1', _('Propojit s twitterem')));
-//} else {
-//    $oPage->columnIII->addItem(new \Ease\TWB\LinkButton('?action=untwittering', _('Odpojit od twiteru')));
-//}
-//
+
 $oPage->addItem(new UI\PageBottom());
 
 $oPage->draw();

@@ -43,7 +43,7 @@ $fileForm = new \Ease\TWB\Form('CfgFileUp', null, 'POST', null,
 $fileForm->addInput(new \Ease\Html\TextareaTag('cfgtext', ''),
     _('konfigurační fragment'));
 $fileForm->addInput(new \Ease\Html\InputFileTag('cfgfile', null),
-    _('konfigurační soubor'));
+    _('configuration file'));
 
 $typeSelector = new \Ease\Html\Select('type', 'check');
 $typeSelector->addItems(['check' => 'check', 'notify' => 'notify', 'handler' => 'handler']);

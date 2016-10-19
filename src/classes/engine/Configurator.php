@@ -522,7 +522,7 @@ class Configurator extends \Ease\Brick
     }
 
     /**
-     * Načte všechny záznamy uživatele a vygeneruje z nich konfigurační soubory
+     * Načte všechny záznamy uživatele a vygeneruje z nich configuration filey
      *
      * @param  string  $fileName Soubor do kterého se bude generovat konfigirace
      * @return boolean
@@ -1239,7 +1239,7 @@ class Configurator extends \Ease\Brick
             }
         }
 
-//            $this->addStatusMessage(_('nebyl rozpoznán konfigurační soubor nagiosu pro').' '.$this->keyword);
+//            $this->addStatusMessage(_('nebyl rozpoznán configuration file nagiosu pro').' '.$this->keyword);
         return $success;
     }
 

@@ -1,3 +1,3 @@
 User_Alias APACHE = www-data
-Cmnd_Alias ICINGA = /usr/sbin/icinga, /etc/init.d/icinga, /usr/bin/toicmdfile.sh
+Cmnd_Alias ICINGA = /usr/sbin/icinga, /etc/init.d/icinga, /usr/bin/toicmdfile.sh, /usr/bin/htpasswd
 APACHE ALL = (ALL) NOPASSWD: ICINGA

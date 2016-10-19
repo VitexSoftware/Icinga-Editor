@@ -46,7 +46,7 @@ $importForm = new \Ease\TWB\Form('CfgFileUp', null, 'POST', null,
 $importForm->addInput(new \Ease\Html\TextareaTag('cfgtext', ''),
     _('konfigurační fragment'));
 $importForm->addInput(new \Ease\Html\InputFileTag('cfgfile'),
-    _('konfigurační soubor'));
+    _('configuration file'));
 $importForm->addInput(new UI\TWBSwitch('public'),
     _('Importovat data jako veřejná'));
 $importForm->addInput(new UI\TWBSwitch('generate'),

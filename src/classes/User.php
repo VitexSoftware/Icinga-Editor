@@ -101,7 +101,7 @@ class User extends \Ease\User
     public function passwordChange($newPassword, $userID = null)
     {
         if (parent::passwordChange($newPassword, $userID)) {
-
+                
             system('sudo htpasswd -b /etc/icinga/htpasswd.users '.$this->getUserLogin().' '.$newPassword);
             if (defined('DB_IW_SERVER_PASSWORD')) {
                 $mysqli = new mysqli(DB_SERVER, DB_IW_SERVER_USERNAME,

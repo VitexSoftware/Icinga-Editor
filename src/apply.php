@@ -14,7 +14,7 @@ require_once 'includes/IEInit.php';
 
 $oPage->onlyForLogged();
 
-$oPage->addItem(new UI\PageTop(_('Generování konfigurace')));
+$oPage->addItem(new UI\PageTop(_('Configuration Generation')));
 
 
 if ($oUser->getSettingValue('admin')) {
@@ -30,10 +30,10 @@ $fileName = $oUser->getUserLogin().'.cfg';
 $cfg = fopen(constant('CFG_GENERATED').'/'.$fileName, 'w');
 if ($cfg) {
     fclose($cfg);
-    $oUser->addStatusMessage(sprintf(_('konfigurační soubor %s byl znovu vytvořen'),
+    $oUser->addStatusMessage(sprintf(_('configuration file %s was created'),
             $fileName), 'success');
 } else {
-    $oUser->addStatusMessage(sprintf(_('konfigurační soubor  %s nebyl znovu vytvořen'),
+    $oUser->addStatusMessage(sprintf(_('configuration file  %s was not created'),
             $fileName), 'warning');
 }
 

@@ -10,6 +10,14 @@
         <group name="Monitoring">
             <file>file:/home/vitex/Projects/VitexSoftware/iciedit/src/includes/Configure.php</file>
         </group>
-        <group/>
+        <group>
+            <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/src/script.php</file>
+        </group>
+        <group name="System.spoje.net">
+            <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/src/settings.php</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/src/classes/User.php</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/src/classes/UI/MainMenu.php</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/src/changepassword.php</file>
+        </group>
     </open-files>
 </project-private>

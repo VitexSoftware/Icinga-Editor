@@ -286,6 +286,10 @@ class MainMenu extends \Ease\Html\Div
                 $results['/icinga-web/'] = \Ease\TWB\Part::GlyphIcon('Info').' '._('Icinga Web');
             }
 
+            if (file_exists('/etc/apache2/conf-enabled/icinga.conf')) {
+                $results['/icinga/'] = \Ease\TWB\Part::GlyphIcon('Info').' '._('Icinga Classic');
+            }
+
             $nav->addDropDownMenu(_('Tests results'), $results);
         }
     }

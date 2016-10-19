@@ -3,11 +3,10 @@
 namespace Icinga\Editor;
 
 /**
- * Změna hesla uživatele
+ * User passwords change
+ *
  * @author Vítězslav Dvořák <vitex@hippy.cz>
- * @copyright Vitex Software © 2011
- * @package LinkQuick
- * @subpackage WEBUI
+ * @copyright Vitex Software © 2011-2016
  */
 require_once 'includes/IEInit.php';
 
@@ -15,12 +14,11 @@ $oPage->onlyForLogged(); //Pouze pro přihlášené
 $formOK = true;
 
 if (!isset($_POST['password']) || !strlen($_POST['password'])) {
-    $oUser->addStatusMessage('Prosím zadejte nové heslo');
+    $oUser->addStatusMessage('Please enter new password');
     $formOK = false;
 } else {
     if ($_POST['password'] == $oUser->GetUserLogin()) {
-        $oUser->addStatusMessage('Heslo se nesmí shodovat s přihlašovacím jménem',
-            'waring');
+        $oUser->addStatusMessage('Password cant match with login', 'waring');
         $formOK = false;
     }
     /* TODO:
@@ -31,27 +29,27 @@ if (!isset($_POST['password']) || !strlen($_POST['password'])) {
      */
 }
 if (!isset($_POST['passwordConfirm']) || !strlen($_POST['passwordConfirm'])) {
-    $oUser->addStatusMessage('Prosím zadejte potvrzení hesla');
+    $oUser->addStatusMessage('Please enter password confirmation');
     $formOK = false;
 }
 if ((isset($_POST['passwordConfirm']) && isset($_POST['password'])) && ($_POST['passwordConfirm']
     != $_POST['password'])) {
-    $oUser->addStatusMessage('Zadaná hesla se neshodují', 'waring');
+    $oUser->addStatusMessage('Password control do not match', 'waring');
     $formOK = false;
 }
 
 if (!isset($_POST['CurrentPassword'])) {
-    $oUser->addStatusMessage('Prosím zadejte stávající heslo');
+    $oUser->addStatusMessage('Please enter current password');
     $formOK = false;
 } else {
     if (!$oUser->PasswordValidation($_POST['CurrentPassword'],
             $oUser->GetDataValue($oUser->passwordColumn))) {
-        $oUser->AddStatusMessage('Stávající heslo je neplatné', 'warning');
+        $oUser->AddStatusMessage('Current password invalid', 'warning');
         $formOK = false;
     }
 }
 
-$oPage->addItem(new UI\PageTop(_('Změna hesla uživatele')));
+$oPage->addItem(new UI\PageTop(_('User password change')));
 $oPage->addPageColumns();
 
 if ($formOK && $oPage->isPosted()) {
@@ -59,38 +57,37 @@ if ($formOK && $oPage->isPosted()) {
 
     if ($oUser->passwordChange($plainPass)) {
 
-        $oUser->addStatusMessage(_('Heslo bylo změněno'), 'success');
+        $oUser->addStatusMessage(_('Password was changed'), 'success');
 
-        $email = $oPage->addItem(new EaseMail($oUser->getDataValue($oUser->mailColumn),
-            _('Změněné heslo pro Monitoring')));
-        $email->addItem(_('Vážený zákazníku vaše přihlašovací údaje byly změněny').":\n");
-
-        $email->addItem(' Login: '.$oUser->getUserLogin()."\n");
-        $email->addItem(' Heslo: '.$plainPass."\n");
+        $email = $oPage->addItem(new \Ease\Mailer($oUser->getDataValue($oUser->mailColumn),
+            _('Changed monitoring password')));
+        $email->addItem(sprintf(_('Dear user %s, your monitoring password was changed to'),
+                $oUser->getUserLogin()).":\n");
+        $email->addItem(_('Password').': '.$plainPass."\n");
 
         $email->send();
     }
 } else {
     $loginForm = new \Ease\Html\Form(NULL);
 
-    $loginForm->addItem(new \Ease\TWB\FormGroup(_('Stávající heslo'),
+    $loginForm->addItem(new \Ease\TWB\FormGroup(_('Current password'),
         new \Ease\Html\InputPasswordTag('CurrentPassword'), NULL
     ));
 
-    $loginForm->addItem(new \Ease\TWB\FormGroup(_('Nové heslo'),
+    $loginForm->addItem(new \Ease\TWB\FormGroup(_('New Password'),
         new \Ease\Html\InputPasswordTag('password'), NULL
     ));
 
-    $loginForm->addItem(new \Ease\TWB\FormGroup(_('potvrzení hesla'),
+    $loginForm->addItem(new \Ease\TWB\FormGroup(_('Password confirm'),
         new \Ease\Html\InputPasswordTag('passwordConfirm'), NULL
     ));
 
-    $loginForm->addItem(new \Ease\TWB\SubmitButton(_('Změnit heslo')));
+    $loginForm->addItem(new \Ease\TWB\SubmitButton(_('Change password')));
 
     $loginForm->fillUp($_POST);
 
-    $oPage->columnII->addItem(new \Ease\TWB\Panel(_('změna hesla'), 'default',
-        $loginForm));
+    $oPage->columnII->addItem(new \Ease\TWB\Panel(_('Password change'),
+        'default', $loginForm));
 }
 
 $oPage->addItem(new UI\PageBottom());

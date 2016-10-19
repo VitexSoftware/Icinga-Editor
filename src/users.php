@@ -14,7 +14,7 @@ require_once 'includes/IEInit.php';
 
 $oPage->onlyForLogged();
 
-$oPage->addItem(new UI\PageTop(_('Přehled uživatelů')));
+$oPage->addItem(new UI\PageTop(_('Users')));
 $oPage->addPageColumns();
 
 $user = new User();
@@ -23,7 +23,7 @@ $users = $user->getColumnsFromSQL(['id', 'login'], null, 'login',
     $oUser->getmyKeyColumn());
 
 if ($users) {
-    $oPage->columnII->addItem(new \Ease\Html\H4Tag(_('Uživatelé')));
+    $oPage->columnII->addItem(new \Ease\Html\H4Tag(_('Users')));
     $cntList = new \Ease\Html\TableTag(null, ['class' => 'table']);
     $cid     = 1;
     foreach ($users as $cId => $cInfo) {
@@ -34,7 +34,7 @@ if ($users) {
             new \Ease\Html\ATag('userinfo.php?user_id='.$cId,
                 $cInfo['login'].' <i class="icon-edit"></i>'),
             new \Ease\Html\ATag('apply.php?force_user_id='.$cId,
-                _('Přegenerovat konfiguraci').' <i class="icon-repeat"></i>')
+                _('Regenerate configuration').' <i class="icon-repeat"></i>')
             ]
         );
     }
@@ -42,7 +42,7 @@ if ($users) {
 }
 
 $oPage->columnIII->addItem(new \Ease\TWB\LinkButton('createaccount.php',
-    _('Založit uživatele').' '.\Ease\TWB\Part::GlyphIcon('edit')));
+    _('Create user').' '.\Ease\TWB\Part::GlyphIcon('edit')));
 
 $oPage->addItem(new UI\PageBottom());
 

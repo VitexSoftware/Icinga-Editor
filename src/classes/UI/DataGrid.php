@@ -84,9 +84,9 @@ class DataGrid extends \Ease\Html\TableTag
 
     function setUpButtons()
     {
-        $this->addAddButton(_('Přidat'));
-        $this->addEditButton(_('Upravit'));
-        $this->addDeleteButton(_('Smazat'));
+        $this->addAddButton(_('Add'));
+        $this->addEditButton(_('Edit'));
+        $this->addDeleteButton(_('Delete'));
     }
 
     function setUpColumns()
@@ -94,7 +94,7 @@ class DataGrid extends \Ease\Html\TableTag
         foreach ($this->dataSource->useKeywords as $keyword => $type) {
             if (isset($this->dataSource->keywordsInfo[$keyword])) {
                 if (!isset($this->dataSource->keywordsInfo[$keyword]['title']) || !strlen(trim($this->dataSource->keywordsInfo[$keyword]['title']))) {
-                    $this->addStatusMessage(_('Chybi titulek').' '.$this->dataSource->keyword.': '.$keyword,
+                    $this->addStatusMessage(_('Title missing').' '.$this->dataSource->keyword.': '.$keyword,
                         'warning');
                     $this->dataSource->keywordsInfo[$keyword]['title'] = $keyword;
                 }
@@ -194,7 +194,7 @@ class DataGrid extends \Ease\Html\TableTag
                 });
             }
         } else {
-            alert("'._('Je třeba označit nějaké řádky').'");
+            alert("'._('Please select any rows').'");
         }
 
             }
@@ -234,7 +234,7 @@ class DataGrid extends \Ease\Html\TableTag
                 });
             }
         } else {
-            alert("'._('Je třeba označit nějaké řádky').'");
+            alert("'._('Please select any rows').'");
         }
 
 
