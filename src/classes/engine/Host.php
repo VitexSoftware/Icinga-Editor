@@ -482,7 +482,7 @@ class Host extends Configurator
         $indexpage = @file_get_contents($baseUrl);
         $icoUrls   = [];
         if (strlen($indexpage)) {
-            $dom   = new DOMDocument();
+            $dom   = new \DOMDocument();
             @$dom->loadHTML($indexpage);
             $links = $dom->getElementsByTagName('link');
             foreach ($links as $link) {
