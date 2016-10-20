@@ -51,7 +51,7 @@ switch ($oPage->getRequestValue('action')) {
 
         $icourl = $oPage->getRequestValue('icourl');
         if (strlen($icourl)) {
-            $tmpfilename = sys_get_temp_dir().'/'.EaseSand::randomString();
+            $tmpfilename = sys_get_temp_dir().'/'.\Ease\Sand::randomString();
             $fp          = fopen($tmpfilename, 'w');
             $ch          = curl_init($icourl);
             curl_setopt($ch, CURLOPT_FILE, $fp);
