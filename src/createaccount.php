@@ -47,7 +47,7 @@ if ($oPage->isPosted()) {
             $error = true;
             $oUser->addStatusMessage(_('invalid email address'), 'warning');
         } else {
-            $check_email = \Ease\Shared::db()->queryToValue("SELECT COUNT(*) AS total FROM user WHERE email = '".$oUser->dblink->addslashes($emailAddress)."'");
+            $check_email = \Ease\Shared::db()->queryToValue("SELECT COUNT(*) AS total FROM user WHERE email = '".\Ease\Shared::db()->addslashes($emailAddress)."'");
             if ($check_email > 0) {
                 $error = true;
                 $oUser->addStatusMessage(sprintf(_('Mail address %s is allready registered'),

@@ -82,7 +82,8 @@ switch ($oPage->getRequestValue('action')) {
             ['class' => 'form-horizontal', 'enctype' => 'multipart/form-data']);
 
         $form->addInput(new \Ease\Html\InputFileTag('upload'),
-            _('Odeslat soubor'), 'script.sh', _('(Textarea will overwrited)'));
+            _('Send file'),
+            'script.sh', '('._('Textarea will overwriten').')');
 
         if (!$script->getId()) {
             $form->addItem(new \Ease\TWB\SubmitButton(_('Create'), 'success'));
