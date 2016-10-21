@@ -32,8 +32,8 @@ function endRouteForm($host)
         _('First pingable pubic IP address on route to monitoring server'));
     $form->addItem(new \Ease\TWB\SubmitButton(_('Watch route'), 'success',
         ['onClick' => "$('#preload').css('visibility', 'visible');"]));
-    \Ease\Shared::webPage()->addItem(new \Ease\Html\DivTag('preload',
-        new UI\FXPreloader(), ['class' => 'fuelux']));
+    \Ease\Shared::webPage()->addItem(new \Ease\Html\Div(
+        new UI\FXPreloader(), ['class' => 'fuelux', 'id' => 'preload']));
     return new \Ease\TWB\Panel(_('Watch target route select').': '.$host->getName(),
         'default', $form, _('Choose host or enter an IP address'));
 }
