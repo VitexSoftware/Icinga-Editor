@@ -3,30 +3,27 @@
 namespace Icinga\Editor;
 
 /**
- * Icinga Editor - skupina kontaktů
+ * Icinga Editor - Contacgroup
  *
- * @package    IcingaEditor
- * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
- * @copyright  2012 Vitex@hippy.cz (G)
+ * @copyright  2012-2016 Vitex@hippy.cz (G)
  */
 require_once 'includes/IEInit.php';
 
 $oPage->onlyForLogged();
 
-$oPage->addItem(new UI\PageTop(_('Editace skupiny kontaktu')));
-
-
 $contactgroup = new Engine\Contactgroup($oPage->getRequestValue('contactgroup_id',
         'int'));
+
+$oPage->addItem(new UI\PageTop(_('Contactgroup').' '.$contactgroup->getName()));
 
 if ($oPage->isPosted()) {
     $contactgroup->takeData($_POST);
     $ContactgroupID = $contactgroup->saveToSQL();
     if (is_null($ContactgroupID)) {
-        $oUser->addStatusMessage(_('Skupina kontaktů nebyla uložena'), 'warning');
+        $oUser->addStatusMessage(_('Contactgroup was not saved'), 'warning');
     } else {
-        $oUser->addStatusMessage(_('Skupina kontaktů byla uložena'), 'success');
+        $oUser->addStatusMessage(_('Contactgroup saved'), 'success');
     }
 }
 
@@ -48,19 +45,19 @@ if (!is_null($contactgroup->getMyKey())) {
         $contactgroup->getMyKey()));
 }
 $form->addItem('<br>');
-$form->addItem(new \Ease\TWB\SubmitButton(_('Uložit'), 'success'));
+$form->addItem(new \Ease\TWB\SubmitButton(_('Save'), 'success'));
 
 $oPage->addItem(new UI\PageBottom());
 
 $infopanel = new UI\InfoBox($contactgroup);
-$tools     = new \Ease\TWB\Panel(_('Nástroje'), 'warning');
+$tools     = new \Ease\TWB\Panel(_('Tools'), 'warning');
 if ($contactgroup->getId()) {
     $tools->addItem($contactgroup->deleteButton());
 }
 $pageRow = new \Ease\TWB\Row;
 $pageRow->addColumn(2, $infopanel);
 $pageRow->addColumn(6,
-    new \Ease\TWB\Panel(_('Skupina kontaktů').' <strong>'.$contactgroup->getName().'</strong>',
+    new \Ease\TWB\Panel(_('Contactgroup').' <strong>'.$contactgroup->getName().'</strong>',
     'default', $form));
 $pageRow->addColumn(4, $tools);
 

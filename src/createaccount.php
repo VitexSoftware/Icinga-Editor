@@ -65,7 +65,7 @@ if ($oPage->isPosted()) {
         $oUser->addStatusMessage(_('Password control does not match'), 'warning');
     }
 
-    $usedLogin = \Ease\Shared::db()->QueryToValue('SELECT id FROM user WHERE login=\''.$oUser->dblink->addslashes($login).'\'');
+    $usedLogin = \Ease\Shared::db()->QueryToValue('SELECT id FROM user WHERE login=\''.\Ease\Shared::db()->addslashes($login).'\'');
     if ($usedLogin) {
         $error = true;
         $oUser->addStatusMessage(sprintf(_('Username %s is used. Please choose another one'),
