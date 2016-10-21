@@ -60,8 +60,7 @@ class ConfigurationsOverview extends \Ease\TWB\Panel
                 //Host without icon
             }
 
-            if ((!isset($host_info['contacts']) || !count($host_info['contacts']))
-                || (!isset($host_info['contact_groups']) || !count($host_info['contact_groups']))) {
+            if (!count($host_info['contacts']) + count($host_info['contact_groups'])) {
                 $noContacts[$host_id] = $host_info;
                 //Host without contact
             }

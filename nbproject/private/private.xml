@@ -14,10 +14,11 @@
             <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/src/script.php</file>
         </group>
         <group name="System.spoje.net">
-            <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/src/settings.php</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/src/classes/User.php</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/src/classes/UI/MainMenu.php</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/src/changepassword.php</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/src/contacttweak.php</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/src/classes/UI/ConfigurationsOverview.php</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/src/main.php</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/src/host.php</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/src/login.php</file>
         </group>
     </open-files>
 </project-private>

@@ -3,12 +3,11 @@
 namespace Icinga\Editor;
 
 /**
- * Icinga Editor služby
+ * Contacts Editor
  *
  * @package    IcingaEditor
- * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
- * @copyright  2012 Vitex@hippy.cz (G)
+ * @copyright  2012-2016 Vitex@hippy.cz (G)
  */
 require_once 'includes/IEInit.php';
 
@@ -25,10 +24,9 @@ switch ($oPage->getRequestValue('action')) {
         $newname = $oPage->getRequestValue('newname');
         if (strlen($newname)) {
             if ($contact->rename($newname)) {
-                $oUser->addStatusMessage(_('Kontakt byl přejmenován'), 'success');
+                $oUser->addStatusMessage(_('Contact was renamed'), 'success');
             } else {
-                $oUser->addStatusMessage(_('Kontakt nebyl přejmenován'),
-                    'warning');
+                $oUser->addStatusMessage(_('Contact was not renamed'), 'warning');
             }
         }
         break;
@@ -47,7 +45,7 @@ if ($delsubcont) {
     $delcnt->delete($delsubcont);
 }
 
-$oPage->addItem(new UI\PageTop(_('Editace kontaktu').' '.$contact->getName()));
+$oPage->addItem(new UI\PageTop(_('Contact editor').' '.$contact->getName()));
 $oPage->addPageColumns();
 
 $oPage->columnII->addItem(new \Ease\Html\H3Tag($contact->getName()));
@@ -62,12 +60,10 @@ $renameForm = new \Ease\TWB\Form('Rename',
     '?action=rename&amp;contact_id='.$contact->getID().'&contact_id='.$contact->getId());
 $renameForm->addItem(new \Ease\Html\InputTextTag('newname'),
     $contact->getName(), ['class' => 'form-control']);
-$renameForm->addItem(new \Ease\TWB\SubmitButton(_('Přejmenovat'), 'success'));
+$renameForm->addItem(new \Ease\TWB\SubmitButton(_('Rename'), 'success'));
 
-$oPage->columnIII->addItem(new \Ease\TWB\Panel(_('Přejmenování'), 'default',
+$oPage->columnIII->addItem(new \Ease\TWB\Panel(_('Renaming'), 'default',
     $renameForm));
-
-//$oPage->columnI->addItem(new IEHostSelector($contact));
 
 $oPage->addItem(new UI\PageBottom());
 
