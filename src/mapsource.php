@@ -3,7 +3,7 @@
 namespace Icinga\Editor;
 
 /**
- * Icinga Editor - neteork map dasource
+ * Icinga Editor - network map dasource
  *
  * @package    IcingaEditor
  * @author     Vitex <vitex@hippy.cz>

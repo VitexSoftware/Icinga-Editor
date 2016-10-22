@@ -77,6 +77,7 @@ class HostMap extends \Image_GraphViz
 
             $this->addNode($name,
                 [
+                'id' => $host_info['host_id'],
                 'URL' => 'host.php?host_id='.$host_info['host_id'],
                 'fontsize' => '10',
                 'color' => $color,
