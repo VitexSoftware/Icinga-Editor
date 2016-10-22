@@ -3,10 +3,9 @@
 namespace Icinga\Editor;
 
 /**
- * Icinga Editor - titulní strana
+ * Icinga Editor - neteork map dasource
  *
  * @package    IcingaEditor
- * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2012 Vitex@hippy.cz (G)
  */

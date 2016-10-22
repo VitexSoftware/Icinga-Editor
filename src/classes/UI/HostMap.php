@@ -52,7 +52,7 @@ class HostMap extends \Image_GraphViz
         $host  = new \Icinga\Editor\Engine\Host();
         $hosts = $host->getListing(null, false,
             ['alias', 'address', 'parents', 'notifications_enabled', 'active_checks_enabled',
-            'passive_checks_enabled', $host->myCreateColumn, $host->myLastModifiedColumn]);
+            'passive_checks_enabled', 'icon_image', $host->myCreateColumn, $host->myLastModifiedColumn]);
 
         foreach ($hosts as $host => $host_info) {
             $name = $host_info['host_name'];
@@ -82,6 +82,7 @@ class HostMap extends \Image_GraphViz
                 'color' => $color,
                 'height' => '0.2',
                 'width' => '2.1',
+                'image' => $host_info['icon_image'],
                 'fixedsize' => false,
                 'style' => 'filled',
                 'tooltip' => $host_info['address'],

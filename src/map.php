@@ -6,15 +6,14 @@ namespace Icinga\Editor;
  * Icinga Editor - titulní strana
  *
  * @package    IcingaEditor
- * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
- * @copyright  2012 Vitex@hippy.cz (G)
+ * @copyright  2012-2016 Vitex@hippy.cz (G)
  */
 require_once 'includes/IEInit.php';
 
 
 $oPage->onlyForLogged();
-$oPage->addItem(new UI\PageTop(_('Mapa sítě')));
+$oPage->addItem(new UI\PageTop(_('Network map')));
 
 $oPage->addCss('
 
@@ -161,6 +160,7 @@ var d3cola = cola.d3adaptor().convergenceThreshold(0.1);
                     )
                 .text(function (d) { return d.name; })
                 .attr("data-url", function (d) { return d.value.URL; } )
+                .attr("style", function (d) { return "url( logos/" + d.value.image + ")" ; } )
                 .on("dblclick", function(e) { window.location.href=e.value.URL; }  )
                 .call(d3cola.drag)
                 .each(function (d) {
