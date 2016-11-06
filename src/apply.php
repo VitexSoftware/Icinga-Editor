@@ -44,7 +44,7 @@ $testing = popen("sudo /usr/sbin/icinga -v /etc/icinga/icinga.cfg", 'r');
 if ($testing) {
     $errorCount   = 0;
     $line_num     = 0;
-    $WarningCount = null;
+    $warningCount = null;
     while (!feof($testing)) {
         $line = fgets($testing);
         $line = preg_replace("/\'([a-zA-Z0-9\.]*)\'/",
@@ -141,10 +141,10 @@ if ($testing) {
         }
 
         if (strstr($line, 'Total Warnings')) {
-            list($msg, $WarningCount) = explode(':', $line);
-            if (intval(trim($WarningCount))) {
+            list($msg, $warningCount) = explode(':', $line);
+            if (intval(trim($warningCount))) {
                 $oUser->addStatusMessage(sprintf(_('total %s warnings'),
-                        $WarningCount), 'warning');
+                        $warningCount), 'warning');
             } else {
                 $oUser->addStatusMessage(_('test successfully done without warnings'),
                     'success');
@@ -163,7 +163,7 @@ if ($testing) {
     }
     fclose($testing);
 
-    if (!intval($errorCount) && !is_null($WarningCount)) {
+    if (!intval($errorCount) && !is_null($warningCount)) {
         if (Engine\Configurator::reloadIcinga()) {
             $oPage->container->addItem(_('All your configuration files was regenerated'));
 

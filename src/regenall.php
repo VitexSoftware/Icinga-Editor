@@ -51,7 +51,7 @@ $testing = popen("sudo /usr/sbin/icinga -v /etc/icinga/icinga.cfg", 'r');
 if ($testing) {
     $errorCount   = 0;
     $line_num     = 0;
-    $WarningCount = null;
+    $warningCount = null;
     while (!feof($testing)) {
         $line = fgets($testing);
         $line = preg_replace("/\'([a-zA-Z0-9\.]*)\'/",
@@ -75,6 +75,18 @@ if ($testing) {
             $line      = str_replace('Error:', '', $line);
             $errorLine = $oPage->container->addItem(new \Ease\Html\Div('<span class="label label-important">'._('Error:').'</span>',
                 ['class' => 'alert alert-danger']));
+
+//            $line = preg_replace('/\config file \'([\/a-zA-Z.])\', starting on line (0|[1-9][0-9]*)\/',
+//                '/'._('config file').' <a href=\"cfgfile.php?file=${1}&line=${2}\">${1}, '._('starting on line').' ${2}</a> /',
+//                $line);
+//Could not find any host matching hostx001.brevnov.murka.cz (config file '/etc/icinga/generated/vitex.cfg', starting on line 102)
+
+            if (preg_match('/\(config file \'(.*?)\', starting on line (.*)\)/',
+                    $line, $matches)) {
+                $line = str_replace($matches[0],
+                    '('._('config file').' <a href="cfgfile.php?file='.$matches[1].'&line='.$matches[2].'">'.$matches[1].', '._('starting on line').' '.$matches[2].'</a> )',
+                    $line);
+            }
 
             $keywords = preg_split("/['(.*)']+/", $line);
             switch (trim($keywords[0])) {
@@ -134,10 +146,10 @@ if ($testing) {
                 $host->setmyKeyColumn($host->nameColumn);
                 $host->loadFromSQL($keywords[1]);
                 $host->resetObjectIdentity();
-                $line = '<span class="label label-warning">'._('Varování:').'</span> Host '.'<a href="host.php?host_id='.$host->getMyKey().'">'.$host->getName().'</a> '._('nemá přiřazené žádné služby');
+                $line = '<span class="label label-warning">'._('Warning').':</span> Host '.'<a href="host.php?host_id='.$host->getMyKey().'">'.$host->getName().'</a> '._('without services asigned');
             } else {
                 $line = str_replace('Warning:',
-                    '<span class="label label-warning">'._('Varování:').'</span>',
+                    '<span class="label label-warning">'._('Warning').':</span>',
                     $line);
             }
 
@@ -147,10 +159,10 @@ if ($testing) {
         }
 
         if (strstr($line, 'Total Warnings')) {
-            list($msg, $WarningCount) = explode(':', $line);
-            if (intval(trim($WarningCount))) {
+            list($msg, $warningCount) = explode(':', $line);
+            if (intval(trim($warningCount))) {
                 $oUser->addStatusMessage(sprintf(_('total %s warnings'),
-                        $WarningCount), 'warning');
+                        $warningCount), 'warning');
             } else {
                 $oUser->addStatusMessage(_('test successfully done without warnings'),
                     'success');
@@ -169,7 +181,7 @@ if ($testing) {
     }
     fclose($testing);
 
-    if (!intval($errorCount) && !is_null($WarningCount)) {
+    if (!intval($errorCount) && !is_null($warningCount)) {
         $extCmd = new ExternalCommand();
         $extCmd->addCommand('RESTART_PROCESS');
         $extCmd->executeAll();
@@ -181,6 +193,10 @@ if ($testing) {
         
     }
 }
+
+$oUser = new User($originalUserID);
+$oUser->loginSuccess();
+\Ease\Shared::user($oUser);
 
 $oPage->container->addItem(new UI\PageBottom());
 

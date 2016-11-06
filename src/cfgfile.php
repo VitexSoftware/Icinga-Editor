@@ -3,7 +3,7 @@
 namespace Icinga\Editor;
 
 /**
- * Icinga Editor - titulní strana
+ * Icinga Editor - config file browser
  *
  * @package    IcingaEditor
  * @subpackage WebUI
@@ -17,13 +17,22 @@ $oPage->onlyForLogged();
 $file = $oPage->getRequestValue('file');
 $line = $oPage->getRequestValue('line');
 
-$oPage->addItem(new UI\PageTop(_('Icinga Editor')));
-$oPage->addPageColumns();
-
-$lines = file($file);
-foreach ($lines as $line) {
-    $oPage->addItem($line.'<br>');
+if ($oPage->isPosted()) {
+    $cfg = $oPage->getRequestValue('cfg');
+    if (strlen(trim($cfg))) {
+        if (file_put_contents($file, $cfg) === false) {
+            $oPage->addStatusMessage(_('Error saving file').': '.$file, 'error');
+        } else {
+            $oPage->addStatusMessage(sprintf(_('File %s was saved'), $file),
+                'success');
+        }
+    }
 }
+
+$oPage->addItem(new UI\PageTop($file));
+
+$oPage->container->addItem(new \Ease\TWB\Panel($file.':'.$line, 'success',
+    new UI\FileEditor($file, $line)));
 
 $oPage->addItem(new UI\PageBottom());
 

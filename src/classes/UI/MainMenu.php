@@ -28,7 +28,7 @@ class MainMenu extends \Ease\Html\Div
     private function changesButton($nav)
     {
         $user = \Ease\Shared::user();
-        if ($user->getSettingValue('admin')) {
+        if ($user->isAdmin()) {
             if ($user->getSettingValue('unsaved') == true) {
                 $nav->addMenuItem(
                     new \Ease\TWB\LinkButton(
@@ -90,7 +90,8 @@ class MainMenu extends \Ease\Html\Div
           'hostdependency.php' => _('Závislosti hostů'),
           'hostescalation.php' => _('Eskalace hostů') */
 
-        $pocHostgroup      = $hostgroup->getMyRecordsCount();
+        $pocHostgroup      = $hostgroup->getMyRecordsCount(null,
+            $user->isAdmin());
         $hostGroupMenuItem = [];
 
         if ($pocHostgroup) {

@@ -436,4 +436,13 @@ class User extends \Ease\User
         return 'string';
     }
 
+    /**
+     * Is user privileged ?
+     * 
+     * @return boolean
+     */
+    public function isAdmin()
+    {
+       return $this->getSettingValue('admin') === true;
+    }
 }

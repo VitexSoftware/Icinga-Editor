@@ -10,9 +10,6 @@
         <group name="Monitoring">
             <file>file:/home/vitex/Projects/VitexSoftware/iciedit/src/includes/Configure.php</file>
         </group>
-        <group>
-            <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/src/script.php</file>
-        </group>
         <group name="System.spoje.net">
             <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/src/contacttweak.php</file>
             <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/src/classes/UI/ConfigurationsOverview.php</file>
@@ -20,5 +17,6 @@
             <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/src/host.php</file>
             <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/src/login.php</file>
         </group>
+        <group/>
     </open-files>
 </project-private>

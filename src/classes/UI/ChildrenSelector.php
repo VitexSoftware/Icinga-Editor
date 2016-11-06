@@ -6,8 +6,6 @@ namespace Icinga\Editor\UI;
  * Volba služeb patřičných k hostu
  *
  * @todo dodělat
- * @package    IcingaEditor
- * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2012 Vitex@hippy.cz (G)
  */
