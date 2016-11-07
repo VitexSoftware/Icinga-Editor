@@ -20,7 +20,51 @@ class DbFixer extends \Ease\Html\UlTag
         $this->fixHostNameIDs();
         $this->fixHostHostgroupID();
         $this->cleanUnusedServices();
+        $this->cleanUnusedHosts();
         $this->setTagClass('list-group');
+    }
+
+    public function cleanUnusedHosts()
+    {
+        $services = \Ease\Shared::db()->queryToArray('SELECT service_id,service_description,host_name FROM service',
+            'service_id');
+        if (count($services)) {
+
+            foreach ($services as $serviceID => $service) {
+
+                if ($serviceID == 411) {
+                    echo '';
+                }
+
+                if (($service['host_name'] == 'a:0:{}') || (!strlen(trim($service['host_name'])))) {
+                    continue;
+                }
+                $serviceHosts = unserialize($service['host_name']);
+                if (count($serviceHosts)) {
+                    $ok = true;
+                    foreach ($serviceHosts as $serviceHostID => $serviceHost) {
+                        if (!\Ease\Shared::db()->queryToCount('SELECT alias FROM host WHERE host_name like "'.$serviceHost.'"  AND host_id='.$serviceHostID)) {
+                            $ok = false;
+                            unset($serviceHosts[$serviceHostID]);
+                            $this->addStatusMessage(sprintf(_('Unexistent host %s in service %s: fixing'),
+                                    $service['service_description'],
+                                    $serviceHost));
+                        }
+                    }
+                    if ($ok === false) {
+                        $servicer = new Engine\Service($serviceID);
+                        $servicer->setDataValue('host_name', $serviceHosts);
+                        if ($servicer->saveToSQL()) {
+                            $servicer->addStatusMessage(sprintf(_('Service %s was fixed'),
+                                    $servicer->getName()), 'success');
+                        } else {
+                            $servicer->addStatusMessage(sprintf(_('Service %s was not fixed'),
+                                    $servicer->getName()), 'warning');
+                        }
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -251,5 +295,4 @@ class DbFixer extends \Ease\Html\UlTag
             }
         }
     }
-
 }
