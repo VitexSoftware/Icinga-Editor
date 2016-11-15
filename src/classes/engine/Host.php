@@ -465,7 +465,7 @@ class Host extends Configurator
             $child->updateToSQL();
         }
 
-        if ($this->save() && $renameAll) {
+        if ($this->saveToSQL() && $renameAll) {
             return true;
         }
 
