@@ -520,7 +520,7 @@ class Service extends Configurator
 
         $renameAll = true;
 
-        if ($this->save() && $renameAll) {
+        if ($this->saveToSQL() && $renameAll) {
             return true;
         }
 
