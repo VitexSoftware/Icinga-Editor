@@ -4,6 +4,7 @@ use Phinx\Migration\AbstractMigration;
 
 class HostIsServer extends AbstractMigration
 {
+
     /**
      * Change Method.
      *
@@ -27,8 +28,12 @@ class HostIsServer extends AbstractMigration
      */
     public function change()
     {
-        $table = $this->table('host');
-        $table->addColumn('host_is_server', 'boolean', array('null' => true))
-            ->update();
+        $table  = $this->table('host');
+        $column = $table->hasColumn('host_is_server');
+        if (!$column) {
+            $table->addColumn('host_is_server', 'boolean', array('null' => true))
+                ->update();
+        }
     }
+
 }

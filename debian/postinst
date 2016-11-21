@@ -80,6 +80,7 @@ if [ ! -f $IECFG ] ; then
             mkdir -p /usr/share/icinga-editor/temp
             mkdir -p /usr/share/icinga/htdocs/images/logos/custom
 
+            chown -R www-data:www-data    /etc/icinga/generated
             chown -R www-data:www-data    /usr/share/icinga-editor/log
             chown -R www-data:www-data    /usr/share/icinga-editor/temp
             chown -R www-data:www-data    /usr/share/icinga/htdocs/images/logos/custom

@@ -4,6 +4,7 @@ use Phinx\Migration\AbstractMigration;
 
 class Host3dOut extends AbstractMigration
 {
+
     /**
      * Change Method.
      *
@@ -28,8 +29,15 @@ class Host3dOut extends AbstractMigration
     public function change()
     {
         $table = $this->table('host');
-        $table->removeColumn('vrml_image')
-            ->removeColumn('3d_coords')
-            ->save();
+
+
+        $column = $table->hasColumn('vrml_image');
+
+        if ($column) {
+            $table->removeColumn('vrml_image')
+                ->removeColumn('3d_coords')
+                ->save();
+        }
     }
+
 }
