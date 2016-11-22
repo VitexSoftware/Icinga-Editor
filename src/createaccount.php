@@ -113,7 +113,6 @@ if ($oPage->isPosted()) {
             $email->addItem(new \Ease\Html\Div(_("New User:\n")));
             $email->addItem(new \Ease\Html\Div(
                 ' Login: ' . $newOUser->GetUserLogin() . "\n", ['id' => 'login']));
-            $email->addItem($newOUser->customerAddress);
             $email->send();
 
             \Ease\Shared::user($newOUser)->loginSuccess();

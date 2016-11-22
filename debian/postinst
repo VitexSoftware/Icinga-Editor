@@ -3,6 +3,13 @@
 
 set -e
 
+#Replace Key Value in PhinX Config File
+replaceYML() {
+    cfg="/var/lib/icinga-editor/phinx.yml"
+    sed -i "/${1}'/c\        ${1}: ${2}" $cfg
+}
+
+
 apache_install() {
 	COMMON_STATE=$(dpkg-query -f '${Status}' -W 'apache2.2-common' 2>/dev/null | awk '{print $3}' || true)
 
@@ -125,6 +132,30 @@ if [ -f composer.lock ] ; then
 fi
 
 composer --no-dev -o update
+
+
+    echo "define('DB_TYPE', 'mysql');" >> $IECFG 
+    echo "define('DB_SERVER', 'localhost');" >> $IECFG 
+    echo "define('DB_SERVER_USERNAME', '$dbuser');" >> $IECFG 
+    echo "define('DB_SERVER_PASSWORD', '$dbpass');" >> $IECFG 
+    echo "define('DB_DATABASE', '$dbname');" >> $IECFG 
+    echo "define('DB_PREFIX', '');" >> $IECFG 
+    echo "define('LOG_DIRECTORY', '/var/log/');" >> $IECFG 
+    echo "define('CFG_GENERATED', '/etc/icinga/generated/');" >> $IECFG 
+    echo "define('LOG_NAME', 'IcingaEditor');" >> $IECFG 
+    echo "define('LOG_TYPE', 'syslog');" >> $IECFG 
+
+
+replaceYML "adapter"    "mysql"
+replaceYML "host"       "localhost"
+replaceYML "port"       3306
+replaceYML "user"       $dbuser
+replaceYML "pass"       $dbpass
+replaceYML "name"       $dbname
+
+phinx -n -c/var/lib/icinga-editor/phinx.yml migrate
+
+
 
 #DEBHELPER#
 

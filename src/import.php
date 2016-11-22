@@ -3,7 +3,7 @@
 namespace Icinga\Editor;
 
 /**
- * Import konfigurace ze souboru
+ * Import Icinga Configuration
  *
  * @package    IcingaEditor
  * @subpackage WebUI
@@ -36,26 +36,19 @@ if ($oPage->isPosted()) {
         $importer->importCfgFile($_FILES['cfgfile']['tmp_name']);
     }
 } else {
-    $oPage->addStatusMessage(_('Zadejte konfigurační fragment příkazu, nebo zvolte soubor k importu'));
+    $oPage->addStatusMessage(_('Paste configuration fragment or choose file'));
 }
 
-$oPage->addItem(new UI\PageTop(_('Import konfigurace')));
+$oPage->addItem(new UI\PageTop(_('Configure')));
 
-$importForm = new \Ease\TWB\Form('CfgFileUp', null, 'POST', null,
-    ['class' => 'form-horizontal', 'enctype' => 'multipart/form-data']);
-$importForm->addInput(new \Ease\Html\TextareaTag('cfgtext', ''),
-    _('konfigurační fragment'));
-$importForm->addInput(new \Ease\Html\InputFileTag('cfgfile'),
-    _('configuration file'));
-$importForm->addInput(new UI\TWBSwitch('public'),
-    _('Importovat data jako veřejná'));
-$importForm->addInput(new UI\TWBSwitch('generate'),
-    _('Generovat do konfigurace'));
-$importForm->addItem(new \Ease\TWB\SubmitButton(_('importovat'), 'success',
-    ['title' => _('zahájí import konfigurace')]));
+$importForm = new \Ease\TWB\Form('CfgFileUp', null, 'POST', null, ['class' => 'form-horizontal', 'enctype' => 'multipart/form-data']);
+$importForm->addInput(new \Ease\Html\TextareaTag('cfgtext', ''), _('konfigurační fragment'));
+$importForm->addInput(new \Ease\Html\InputFileTag('cfgfile'), _('configuration file'));
+$importForm->addInput(new UI\TWBSwitch('public'), _('Import data as PUBLIC'));
+$importForm->addInput(new UI\TWBSwitch('generate'), _('Generate to Configuration'));
+$importForm->addItem(new \Ease\TWB\SubmitButton(_('Import now'), 'success', ['title' => _('Perform now')]));
 
-$oPage->container->addItem(new \Ease\TWB\Panel(_('Import konfigurace'),
-    'warning', $importForm));
+$oPage->container->addItem(new \Ease\TWB\Panel(_('Configuration Import'), 'warning', $importForm));
 
 $oPage->addItem(new UI\PageBottom());
 

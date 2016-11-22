@@ -1248,8 +1248,15 @@ class Configurator extends \Ease\Brick
         if (is_dir($dirName)) {
             $d     = dir($dirName);
             while (false !== ($entry = $d->read())) {
+                if ($entry[0] == '.') {
+                    continue;
+                }
                 if (substr($entry, -4) == '.cfg') {
                     foreach (self::readRawConfigFile($dirName . '/' . $entry, $importer) as $line) {
+                        $cfg[] = $line;
+                    }
+                } elseif (is_dir($dirName . '/' . $entry)) {
+                    foreach (self::readRawConfigDir($dirName . '/' . $entry, $importer) as $line) {
                         $cfg[] = $line;
                     }
                 }
