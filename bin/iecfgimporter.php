@@ -22,12 +22,12 @@ foreach ($importer->files as $cfgFile) {
     if ($cfgFile == '/etc/icinga/icinga.cfg') {
         continue;
     }
-    if (rename($cfgFile, $cfgFile.'.disabled')) {
-        echo $cfgFile." imported\n";
+    if (rename($cfgFile, $cfgFile . '.disabled')) {
+        echo $cfgFile . " imported\n";
     }
 }
 
 
-foreach ($oPage->getStatusMessages() as $type => $message) {
+foreach (\Ease\Shared::webPage()->getStatusMessages() as $type => $message) {
     echo "$type: $message \n";
 }
