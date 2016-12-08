@@ -12,7 +12,7 @@ class ConfiguratorTest extends \Test\Ease\BrickTest
      *
      * @var array
      */
-    public $testRowA = array(
+    public $testRowA = [
         'class' => 'deleteme',
         'name' => 'MyName1',
         'string' => 'STRING',
@@ -23,14 +23,14 @@ class ConfiguratorTest extends \Test\Ease\BrickTest
         'int' => '11,4',
         'array2d' => 'a:2:{i:1;s:1:"A";i:2;s:1:"B";}',
         'array3d' => 'a:3:{i:1;s:1:"A";i:2;s:1:"B";i:3;a:2:{i:10;s:1:"X";i:11;s:1:"Y";}}',
-    );
+    ];
 
     /**
      * Data Určená k testům.
      *
      * @var array
      */
-    public $testRowB = array(
+    public $testRowB = [
         'test_id' => 23,
         'name' => 'MyName2',
         'string' => 'STRING',
@@ -39,9 +39,9 @@ class ConfiguratorTest extends \Test\Ease\BrickTest
         'datetime' => '5-20-2015',
         'text' => 'a"b',
         'int' => '11O',
-        'array2d' => array('1' => 'A', '2' => 'B'),
-        'array3d' => array(1 => 'A', 2 => 'B', 3 => array('10' => 'X', 11 => 'Y')),
-    );
+        'array2d' => ['1' => 'A', '2' => 'B'],
+        'array3d' => [1 => 'A', 2 => 'B', 3 => ['10' => 'X', 11 => 'Y']],
+    ];
 
     /**
      * @var IEcfg
@@ -63,7 +63,7 @@ class ConfiguratorTest extends \Test\Ease\BrickTest
         $this->object->nameColumn           = 'name';
 
         $this->object->mySqlUp();
-        $this->object->useKeywords = array(
+        $this->object->useKeywords = [
             'name' => 'STRING',
             'bool' => 'BOOL',
             'date' => 'DATE',
@@ -71,11 +71,11 @@ class ConfiguratorTest extends \Test\Ease\BrickTest
             'text' => 'TEXT',
             'int' => 'INT',
             'array' => 'VIRTUAL',
-        );
+        ];
 
-        $this->object->keywordsInfo = array(
-            'name' => array('title' => _('Jméno')),
-        );
+        $this->object->keywordsInfo = [
+            'name' => ['title' => _('Jméno')],
+        ];
     }
 
     /**

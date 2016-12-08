@@ -31,7 +31,7 @@ class HostIsServer extends AbstractMigration
         $table  = $this->table('host');
         $column = $table->hasColumn('host_is_server');
         if (!$column) {
-            $table->addColumn('host_is_server', 'boolean', array('null' => true))
+            $table->addColumn('host_is_server', 'boolean', ['null' => true])
                 ->update();
         }
     }

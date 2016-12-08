@@ -13,7 +13,7 @@
 //require_once '/usr/share/icinga-editor/includes/IEInit.php';
 require_once '../includes/IEInit.php';
 
-$params = array('public' => true, 'generate' => true);
+$params = ['public' => true, 'generate' => true];
 
 $importer = new Icinga\Editor\Engine\Importer($params);
 $importer->importCfgFile('/etc/icinga/icinga.cfg');
