@@ -153,8 +153,7 @@ replaceYML "user"       $dbuser
 replaceYML "pass"       $dbpass
 replaceYML "name"       $dbname
 
-phinx -n -c/var/lib/icinga-editor/phinx.yml migrate
-
+phinx -n -c/var/lib/icinga-editor/phinx.yml -e production migrate
 
 
 #DEBHELPER#
