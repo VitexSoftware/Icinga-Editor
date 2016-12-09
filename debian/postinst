@@ -135,7 +135,7 @@ composer --no-dev -o update
     . /etc/icinga-editor/config-db.sh
 
 replacePHP "DB_TYPE" "mysql"
-replacePHP "DB_SERVER" "localhost"
+#replacePHP "DB_SERVER" "localhost"
 replacePHP "DB_SERVER_USERNAME" $dbuser
 replacePHP "DB_SERVER_PASSWORD" $dbpass
 replacePHP "DB_DATABASE" $dbname
