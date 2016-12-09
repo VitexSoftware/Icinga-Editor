@@ -3,10 +3,16 @@
 
 set -e
 
+IECFG="/usr/share/icinga-editor/includes/Configure.php"
+
 #Replace Key Value in PhinX Config File
 replaceYML() {
     cfg="/var/lib/icinga-editor/phinx.yml"
     sed -i "/${1}'/c\        ${1}: ${2}" $cfg
+}
+
+replacePHP() {
+    sed -i "/${1}/c\define('${1}', '${2}');" ${IECFG}
 }
 
 
@@ -21,7 +27,6 @@ apache_install() {
 	fi
 }
 
-IECFG="/usr/share/icinga-editor/includes/Configure.php"
 
 if [ ! -f $IECFG ] ; then
 
@@ -50,7 +55,6 @@ if [ ! -f $IECFG ] ; then
     . /etc/icinga-editor/config-db.sh
 
 
-    echo > $IECFG 
     echo "<?php" >> $IECFG 
     echo "define('SEND_MAILS_FROM', '$SEND_MAILS_FROM');" >> $IECFG 
     echo "define('DB_TYPE', 'mysql');" >> $IECFG 
@@ -73,11 +77,6 @@ if [ ! -f $IECFG ] ; then
     echo "define('DB_IW_SERVER_PASSWORD', '$IW_SERVER_PASSWORD');" >> $IECFG 
     echo "define('DB_IW_DATABASE', '$IW_DATABASE');" >> $IECFG 
 
-
-
-    #rm -f /etc/icinga-editor/config-db.sh
-    #(Moved To links file) ln -s   /usr/share/icinga/htdocs/images/logos /usr/share/icinga-editor/logos
-    
 
     if [ "$1" = "configure" ]; then
 
@@ -119,7 +118,7 @@ if [ ! -f $IECFG ] ; then
             # Check their answer.
             db_get icinga-editor/IMPORT_CONFIG
             if [ "$RET" = "true" ]; then
-                iecfgimporter
+                iecfgimporter /etc/icinga/icinga.cfg
             fi
     fi
 
@@ -133,17 +132,18 @@ fi
 
 composer --no-dev -o update
 
+    . /etc/icinga-editor/config-db.sh
 
-    echo "define('DB_TYPE', 'mysql');" >> $IECFG 
-    echo "define('DB_SERVER', 'localhost');" >> $IECFG 
-    echo "define('DB_SERVER_USERNAME', '$dbuser');" >> $IECFG 
-    echo "define('DB_SERVER_PASSWORD', '$dbpass');" >> $IECFG 
-    echo "define('DB_DATABASE', '$dbname');" >> $IECFG 
-    echo "define('DB_PREFIX', '');" >> $IECFG 
-    echo "define('LOG_DIRECTORY', '/var/log/');" >> $IECFG 
-    echo "define('CFG_GENERATED', '/etc/icinga/generated/');" >> $IECFG 
-    echo "define('LOG_NAME', 'IcingaEditor');" >> $IECFG 
-    echo "define('LOG_TYPE', 'syslog');" >> $IECFG 
+replacePHP "DB_TYPE" "mysql"
+replacePHP "DB_SERVER" "localhost"
+replacePHP "DB_SERVER_USERNAME" $dbuser
+replacePHP "DB_SERVER_PASSWORD" $dbpass
+replacePHP "DB_DATABASE" $dbname
+replacePHP "DB_PREFIX" ""
+#replacePHP "LOG_DIRECTORY" "/var/log/"
+#replacePHP "CFG_GENERATED" "/etc/icinga/generated/"
+#replacePHP "LOG_NAME" "IcingaEditor"
+#replacePHP "LOG_TYPE" "syslog"
 
 
 replaceYML "adapter"    "mysql"

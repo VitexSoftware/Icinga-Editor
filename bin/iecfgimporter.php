@@ -10,13 +10,22 @@
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2015 Vitex@hippy.cz (G)
  */
-//require_once '/usr/share/icinga-editor/includes/IEInit.php';
 require_once '../includes/IEInit.php';
+
+if (!isset($argv[1])) {
+    die("which file to import ?");
+} else {
+    if (file_exists($argv[1])) {
+        $cfgFile = $argv[1];
+    } else {
+        die("file $cfgFile does not exists");
+    }
+}
 
 $params = ['public' => true, 'generate' => true];
 
 $importer = new Icinga\Editor\Engine\Importer($params);
-$importer->importCfgFile('/etc/icinga/icinga.cfg');
+$importer->importCfgFile($cfgFile);
 
 foreach ($importer->files as $cfgFile) {
     if ($cfgFile == '/etc/icinga/icinga.cfg') {
@@ -28,6 +37,9 @@ foreach ($importer->files as $cfgFile) {
 }
 
 
-foreach (\Ease\Shared::webPage()->getStatusMessages() as $type => $message) {
-    echo "$type: $message \n";
+foreach (\Ease\Shared::webPage()->getStatusMessages() as $type => $messages) {
+    echo "====== $type ====== \n";
+    foreach ($messages as $message) {
+        echo $message . "\n";
+    }
 }

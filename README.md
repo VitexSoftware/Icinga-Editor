@@ -86,7 +86,12 @@ cd Icinga-Editor/bin
 ln -s /usr/share/icinga/images/logos/ /opt/Icinga-Editor/src/logos
 ```
 
+Configuration import
+-----------------------------
 
+Debian package contains comandline tool  **iecfgimporter** 
+This tool you can use to import several config files or whole configuration into database. 
+(It is used after first package install to fulfill initial database content)
 
 Sorry
 =====
