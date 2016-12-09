@@ -8,7 +8,7 @@ IECFG="/usr/share/icinga-editor/includes/Configure.php"
 #Replace Key Value in PhinX Config File
 replaceYML() {
     cfg="/var/lib/icinga-editor/phinx.yml"
-    sed -i "/${1}'/c\        ${1}: ${2}" $cfg
+    sed -i "/${1}:/c\        ${1}: ${2}" $cfg
 }
 
 replacePHP() {
