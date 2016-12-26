@@ -62,7 +62,6 @@ class ConfiguratorTest extends \Test\Ease\BrickTest
         $this->object->myLastModifiedColumn = 'DatSave';
         $this->object->nameColumn           = 'name';
 
-        $this->object->mySqlUp();
         $this->object->useKeywords = [
             'name' => 'STRING',
             'bool' => 'BOOL',

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Správce konfigurace
  *
@@ -18,7 +17,6 @@ namespace Icinga\Editor\Engine;
  */
 class Configurator extends \Ease\Brick
 {
-
     /**
      * Tabulka do níž objekt ukládá svá data
      * @var string
@@ -110,6 +108,12 @@ class Configurator extends \Ease\Brick
     public $parentCache = null;
 
     /**
+     * Column where to get Object Icon
+     * @var string 
+     */
+    public $iconImageColumn = null;
+
+    /**
      * Objekt konfigurace
      *
      * @param int|null $itemID
@@ -147,58 +151,58 @@ class Configurator extends \Ease\Brick
         if ($this->allowTemplating) {
             $this->useKeywords['name']      = 'VARCHAR(64)';
             $this->keywordsInfo['name']     = [
-              'severity' => 'advanced',
-              'title'    => _('Save as template')
+                'severity' => 'advanced',
+                'title' => _('Save as template')
             ];
             $this->useKeywords['register']  = 'BOOL';
             $this->useKeywords['use']       = 'SELECT';
             $this->keywordsInfo['register'] = [
-              'severity' => 'advanced',
-              'title'    => _('Not an template')
+                'severity' => 'advanced',
+                'title' => _('Not an template')
             ];
             $this->keywordsInfo['use']      = [
-              'severity'  => 'advanced',
-              'title'     => 'use template',
-              'mandatory' => true,
-              'refdata'   => [
-                'table'         => $this->myTable,
-                'captioncolumn' => 'name',
-                'idcolumn'      => $this->myKeyColumn,
-                'condition'     => ['register' => 0]
-              ]
+                'severity' => 'advanced',
+                'title' => 'use template',
+                'mandatory' => true,
+                'refdata' => [
+                    'table' => $this->myTable,
+                    'captioncolumn' => 'name',
+                    'idcolumn' => $this->myKeyColumn,
+                    'condition' => ['register' => 0]
+                ]
             ];
         }
 
         if ($this->publicRecords) {
             $this->useKeywords['public']                    = 'BOOL';
             $this->keywordsInfo['public']                   = [
-              'severity'  => 'advanced',
-              'title'     => 'Publicaly to use by other users',
-              'mandatory' => true
+                'severity' => 'advanced',
+                'title' => 'Publicaly to use by other users',
+                'mandatory' => true
             ];
             $this->keywordsInfo['use']['refdata']['public'] = true;
         }
         $this->keywordsInfo['user_id'] = [
-          'severity' => 'advanced',
-          'title'    => _('Owner')
+            'severity' => 'advanced',
+            'title' => _('Owner')
         ];
 
         $this->useKeywords['generate']  = 'BOOL';
         $this->keywordsInfo['generate'] = [
-          'title'     => 'Generate to Configuration',
-          'severity'  => 'advanced',
-          'mandatory' => true
+            'title' => 'Generate to Configuration',
+            'severity' => 'advanced',
+            'mandatory' => true
         ];
 
         if (isset($this->userColumn)) {
             $this->useKeywords[$this->userColumn]  = 'USER';
             $this->keywordsInfo[$this->userColumn] = [
-              'severity' => 'advanced',
-              'title'    => _('owner'),
-              'refdata'  => [
-                'table'         => 'user',
-                'captioncolumn' => 'login',
-                'idcolumn'      => 'user_id']
+                'severity' => 'advanced',
+                'title' => _('owner'),
+                'refdata' => [
+                    'table' => 'user',
+                    'captioncolumn' => 'login',
+                    'idcolumn' => 'user_id']
             ];
         }
     }
@@ -212,7 +216,8 @@ class Configurator extends \Ease\Brick
      *
      * @return array Results
      */
-    public function loadFromSQL($itemID = null, $dataPrefix = null, $multiplete = false)
+    public function loadFromSQL($itemID = null, $dataPrefix = null,
+                                $multiplete = false)
     {
         $result  = parent::loadFromSQL($itemID, $dataPrefix, $multiplete);
         $ownerid = $this->getDataValue($this->userColumn);
@@ -238,13 +243,15 @@ class Configurator extends \Ease\Brick
             if (count($TemplateData)) {
                 $TemplateData = $TemplateData[0];
             } else {
-                $this->addStatusMessage(sprintf(_('template %s was not loaded'), $TemplateData[$this->nameColumn]), 'error');
+                $this->addStatusMessage(sprintf(_('template %s was not loaded'),
+                        $TemplateData[$this->nameColumn]), 'error');
 
                 return false;
             }
             $this->restoreObjectIdentity();
         }
-        $this->addStatusMessage(sprintf(_('template %s was loaded'), $TemplateData[$this->nameColumn]));
+        $this->addStatusMessage(sprintf(_('template %s was loaded'),
+                $TemplateData[$this->nameColumn]));
         unset($TemplateData[$this->myKeyColumn]);
         unset($TemplateData[$this->nameColumn]);
         $this->setData($TemplateData);
@@ -260,7 +267,7 @@ class Configurator extends \Ease\Brick
      */
     public function writeConf($filename, $columns)
     {
-        $cfg = fopen(constant('CFG_GENERATED') . '/' . $filename, 'a+');
+        $cfg = fopen(constant('CFG_GENERATED').'/'.$filename, 'a+');
         if ($cfg) {
             $cmdlen = 0;
             unset($columns['public']);
@@ -274,7 +281,8 @@ class Configurator extends \Ease\Brick
                 }
             }
             ksort($columns);
-            fputs($cfg, "define " . $this->keyword . " { #" . $columns[$this->myKeyColumn] . "@" . $this->myTable . " \n");
+            fputs($cfg,
+                "define ".$this->keyword." { #".$columns[$this->myKeyColumn]."@".$this->myTable." \n");
             foreach ($columns as $columnName => $columnValue) {
 
                 if (is_array($columnValue) && (current($columnValue) == 'vitex')) {
@@ -291,7 +299,8 @@ class Configurator extends \Ease\Brick
                     }
 
                     if (strstr($this->useKeywords[$columnName], 'FLAGS')) {
-                        $columnValue = join(',', str_split(str_replace(',', '', $columnValue)));
+                        $columnValue = join(',',
+                            str_split(str_replace(',', '', $columnValue)));
                     }
 
                     if (is_array($columnValue) || !strlen(trim($columnValue))) {
@@ -303,7 +312,10 @@ class Configurator extends \Ease\Brick
                     }
 
 
-                    fputs($cfg, "\t$columnName" . str_repeat(' ', ($cmdlen - strlen($columnName) + 1)) . str_replace("\n", '\n', $columnValue) . "\n");
+                    fputs($cfg,
+                        "\t$columnName".str_repeat(' ',
+                            ($cmdlen - strlen($columnName) + 1)).str_replace("\n",
+                            '\n', $columnValue)."\n");
                 }
             }
             fputs($cfg, "}\n\n");
@@ -319,7 +331,8 @@ class Configurator extends \Ease\Brick
     public function createSqlStructure()
     {
         if ($this->getmyKeyColumn()) {
-            $myStruct = array_merge([$this->getmyKeyColumn() => 'INT'], $this->useKeywords);
+            $myStruct = array_merge([$this->getmyKeyColumn() => 'INT'],
+                $this->useKeywords);
         } else {
             $myStruct = $this->useKeywords;
         }
@@ -329,18 +342,20 @@ class Configurator extends \Ease\Brick
         }
 
         if (!is_null($this->myCreateColumn)) {
-            $myStruct = array_merge($myStruct, [$this->myCreateColumn => 'DATETIME']);
+            $myStruct = array_merge($myStruct,
+                [$this->myCreateColumn => 'DATETIME']);
         }
 
         if (!is_null($this->myLastModifiedColumn)) {
-            $myStruct = array_merge($myStruct, [$this->myLastModifiedColumn => 'DATETIME']);
+            $myStruct = array_merge($myStruct,
+                [$this->myLastModifiedColumn => 'DATETIME']);
         }
 
         $sqlStruct = [];
         foreach ($myStruct as $columnName => $columnType) {
 
             if (strstr($columnType, 'FLAGS')) {
-                $columnType = 'VARCHAR(' . count(explode(',', $columnType)) . ')';
+                $columnType = 'VARCHAR('.count(explode(',', $columnType)).')';
             }
 
             if (strstr($columnType, 'RADIO')) {
@@ -352,7 +367,7 @@ class Configurator extends \Ease\Brick
                         $maxlen = $len;
                     }
                 }
-                $columnType = 'VARCHAR(' . $maxlen . ')';
+                $columnType = 'VARCHAR('.$maxlen.')';
             }
 
             if ($columnType == 'VARCHAR()') {
@@ -475,7 +490,8 @@ class Configurator extends \Ease\Brick
                 case 'IDLIST':
                     if (isset($data[$fieldName]) && !is_array($data[$fieldName])) {
                         if (substr($data[$fieldName], 0, 2) != 'a:') {
-                            $data[$fieldName] = serialize(explode(',', $data[$fieldName]));
+                            $data[$fieldName] = serialize(explode(',',
+                                    $data[$fieldName]));
                         }
                     }
                     break;
@@ -498,13 +514,16 @@ class Configurator extends \Ease\Brick
     public function dbInit()
     {
         if ($this->dblink->tableExist($this->myTable)) {
-            $this->dblink->exeQuery('DROP TABLE ' . $this->myTable);
-            $this->addStatusMessage(sprintf(_('Tabulka %s byla smazána'), $this->myTable), 'info');
+            $this->dblink->exeQuery('DROP TABLE '.$this->myTable);
+            $this->addStatusMessage(sprintf(_('Tabulka %s byla smazána'),
+                    $this->myTable), 'info');
         }
         if ($this->createSqlStructure()) {
-            $this->addStatusMessage(sprintf(_('Tabulka %s byla vytvořena'), $this->myTable), 'success');
+            $this->addStatusMessage(sprintf(_('Tabulka %s byla vytvořena'),
+                    $this->myTable), 'success');
         } else {
-            $this->addStatusMessage(sprintf(_('Tabulka %s nebyla vytvořena'), $this->myTable), 'error');
+            $this->addStatusMessage(sprintf(_('Tabulka %s nebyla vytvořena'),
+                    $this->myTable), 'error');
         }
     }
 
@@ -547,13 +566,16 @@ class Configurator extends \Ease\Brick
                 if ($this->allowTemplating) {
                     if ($this->isTemplate($data)) {
                         if (!strlen($data['name'])) {
-                            $this->addStatusMessage($this->keyword . ': ' . sprintf(_('Teplate %s need name'), $data[$this->nameColumn]), 'error');
+                            $this->addStatusMessage($this->keyword.': '.sprintf(_('Teplate %s need name'),
+                                    $data[$this->nameColumn]), 'error');
                             $errors++;
                         }
                     }
                 }
-                if (!isset($data[$keyword]) || !$data[$keyword] || ($data[$keyword] == 'a:0:{}')) {
-                    $this->addStatusMessage($this->keyword . ': ' . sprintf(_('Required value missing %s for %s'), $keyword, $this->getName($data)), 'warning');
+                if (!isset($data[$keyword]) || !$data[$keyword] || ($data[$keyword]
+                    == 'a:0:{}')) {
+                    $this->addStatusMessage($this->keyword.': '.sprintf(_('Required value missing %s for %s'),
+                            $keyword, $this->getName($data)), 'warning');
                     $errors++;
                 }
             }
@@ -594,12 +616,14 @@ class Configurator extends \Ease\Brick
                                 $parentValue = $this->parentCache[$parent_name][$keyword];
                             } else {
                                 $parentValue                               = $parent->getColumnsFromSQL([
-                                  $keyword, 'use'], ['name' => $parent_name]);
+                                    $keyword, 'use'], ['name' => $parent_name]);
                                 $this->parentCache[$parent_name][$keyword] = $parentValue;
                             }
                             if (is_null($parent->getDataValue($keyword))) {
-                                $parent->setDataValue($keyword, $parentValue[0][$keyword]);
-                                $parent->setDataValue('use', $parentValue[0]['use']);
+                                $parent->setDataValue($keyword,
+                                    $parentValue[0][$keyword]);
+                                $parent->setDataValue('use',
+                                    $parentValue[0]['use']);
                                 $parent_used = $parent_name;
                             }
                         }
@@ -608,11 +632,12 @@ class Configurator extends \Ease\Brick
                             $parentValue = $this->parentCache[$parent_name][$keyword];
                         } else {
                             $parentValue                               = $parent->getColumnsFromSQL([
-                              $keyword, 'use'], ['name' => $parent_name]);
+                                $keyword, 'use'], ['name' => $parent_name]);
                             $this->parentCache[$parent_name][$keyword] = $parentValue;
                         }
                         if (isset($parentValue[0])) {
-                            $parent->setDataValue($keyword, $parentValue[0][$keyword]);
+                            $parent->setDataValue($keyword,
+                                $parentValue[0][$keyword]);
                             $parent->setDataValue('use', $parentValue[0]['use']);
                         }
                         $parent_used = $parent_name;
@@ -679,7 +704,8 @@ class Configurator extends \Ease\Brick
      */
     public function getAllUserData()
     {
-        return $this->controlAllData(self::unserializeArrays($this->getColumnsFromSQL('*', [$this->userColumn => \Ease\Shared::user()->getUserID()])));
+        return $this->controlAllData(self::unserializeArrays($this->getColumnsFromSQL('*',
+                        [$this->userColumn => \Ease\Shared::user()->getUserID()])));
     }
 
     /**
@@ -743,24 +769,26 @@ class Configurator extends \Ease\Brick
         $dbId = null;
         if ($this->allowTemplating && $this->isTemplate() && isset($data['name'])) {
             if (isset($data[$this->getmyKeyColumn()]) && (int) $data[$this->getmyKeyColumn()]) {
-                $dbId = $this->dblink->queryToValue('SELECT `' . $this->myKeyColumn . '` FROM ' . $this->myTable . ' WHERE `name`' . " = '" . $data['name'] . "' AND " . $this->myKeyColumn . ' != ' . $data[$this->getmyKeyColumn()]);
+                $dbId = $this->dblink->queryToValue('SELECT `'.$this->myKeyColumn.'` FROM '.$this->myTable.' WHERE `name`'." = '".$data['name']."' AND ".$this->myKeyColumn.' != '.$data[$this->getmyKeyColumn()]);
             } else {
-                $dbId = $this->dblink->queryToValue('SELECT `' . $this->myKeyColumn . '` FROM ' . $this->myTable . ' WHERE `name`' . " = '" . $data['name'] . "'");
+                $dbId = $this->dblink->queryToValue('SELECT `'.$this->myKeyColumn.'` FROM '.$this->myTable.' WHERE `name`'." = '".$data['name']."'");
             }
         } else {
             if (isset($data[$this->nameColumn])) {
                 if (isset($data[$this->getmyKeyColumn()]) && (int) $data[$this->getmyKeyColumn()]) {
-                    $dbId = $this->dblink->queryToValue('SELECT `' . $this->myKeyColumn . '` FROM ' . $this->myTable . ' WHERE ' . $this->nameColumn . " = '" . $data[$this->nameColumn] . "' AND " . $this->myKeyColumn . ' != ' . $data[$this->getmyKeyColumn()]);
+                    $dbId = $this->dblink->queryToValue('SELECT `'.$this->myKeyColumn.'` FROM '.$this->myTable.' WHERE '.$this->nameColumn." = '".$data[$this->nameColumn]."' AND ".$this->myKeyColumn.' != '.$data[$this->getmyKeyColumn()]);
                 } else {
-                    $dbId = $this->dblink->queryToValue('SELECT `' . $this->myKeyColumn . '` FROM ' . $this->myTable . ' WHERE ' . $this->nameColumn . " = '" . $data[$this->nameColumn] . "'");
+                    $dbId = $this->dblink->queryToValue('SELECT `'.$this->myKeyColumn.'` FROM '.$this->myTable.' WHERE '.$this->nameColumn." = '".$data[$this->nameColumn]."'");
                 }
             }
         }
         if (!is_null($dbId) && ($dbId != $this->getMyKey($data) )) {
             if ($this->allowTemplating && $this->isTemplate()) {
-                $this->addStatusMessage(sprintf(_('Template %s allready defined. Please use another name'), $data['name']), 'warning');
+                $this->addStatusMessage(sprintf(_('Template %s allready defined. Please use another name'),
+                        $data['name']), 'warning');
             } else {
-                $this->addStatusMessage(sprintf(_('%s %s allready defined. Please use another name.'), $this->nameColumn, $data[$this->nameColumn]), 'warning');
+                $this->addStatusMessage(sprintf(_('%s %s allready defined. Please use another name.'),
+                        $this->nameColumn, $data[$this->nameColumn]), 'warning');
             }
 
             return null;
@@ -807,7 +835,8 @@ class Configurator extends \Ease\Brick
                 switch ($columnType) {
                     case 'ARRAY':
                     case 'IDLIST':
-                        if (isset($data[$recordID][$keyWord]) && (substr($data[$recordID][$keyWord], 0, 2) == 'a:')) {
+                        if (isset($data[$recordID][$keyWord]) && (substr($data[$recordID][$keyWord],
+                                0, 2) == 'a:')) {
                             $data[$recordID][$keyWord] = unserialize(stripslashes($data[$recordID][$keyWord]));
                         } else {
                             $data[$recordID][$keyWord] = [];
@@ -836,13 +865,15 @@ class Configurator extends \Ease\Brick
             $thisID = \Ease\Shared::user()->getUserID();
         }
         $columnsToGet = [$this->getmyKeyColumn(), $this->nameColumn, 'generate',
-          $this->myLastModifiedColumn, $this->userColumn];
+            $this->myLastModifiedColumn, $this->userColumn];
 
         if (!is_null($extraColumns)) {
             $columnsToGet = array_merge($columnsToGet, $extraColumns);
         }
 
-        $data = $this->getColumnsFromSQL($columnsToGet, $this->userColumn . '=' . $thisID, $this->nameColumn, $this->getmyKeyColumn());
+        $data = $this->getColumnsFromSQL($columnsToGet,
+            $this->userColumn.'='.$thisID, $this->nameColumn,
+            $this->getmyKeyColumn());
 
         return $this->unserializeArrays($data);
     }
@@ -856,13 +887,14 @@ class Configurator extends \Ease\Brick
      *
      * @return array
      */
-    public function getListing($thisID = null, $withShared = true, $extraColumns = null)
+    public function getListing($thisID = null, $withShared = true,
+                               $extraColumns = null)
     {
         if (is_null($thisID)) {
             $thisID = \Ease\Shared::user()->getUserID();
         }
         $columnsToGet = [$this->getmyKeyColumn(), $this->nameColumn, 'generate',
-          $this->myLastModifiedColumn, $this->userColumn];
+            $this->myLastModifiedColumn, $this->userColumn];
         if ($this->allowTemplating) {
             $columnsToGet[] = 'register';
             $columnsToGet[] = 'name';
@@ -875,9 +907,13 @@ class Configurator extends \Ease\Brick
         if ($this->publicRecords && $withShared) {
             $columnsToGet[] = 'public';
 
-            $data = $this->getColumnsFromSQL($columnsToGet, $this->userColumn . '=' . $thisID . ' OR ' . $this->userColumn . ' IS NULL OR public=1 ', $this->nameColumn, $this->getmyKeyColumn());
+            $data = $this->getColumnsFromSQL($columnsToGet,
+                $this->userColumn.'='.$thisID.' OR '.$this->userColumn.' IS NULL OR public=1 ',
+                $this->nameColumn, $this->getmyKeyColumn());
         } else {
-            $data = $this->getColumnsFromSQL($columnsToGet, $this->ownershipCondition($thisID), $this->nameColumn, $this->getmyKeyColumn());
+            $data = $this->getColumnsFromSQL($columnsToGet,
+                $this->ownershipCondition($thisID), $this->nameColumn,
+                $this->getmyKeyColumn());
         }
 
         return $this->unserializeArrays($data);
@@ -889,7 +925,7 @@ class Configurator extends \Ease\Brick
             $thisID = \Ease\Shared::user()->getUserID();
         }
 
-        return $this->userColumn . '=' . $thisID . ' OR ' . $this->userColumn . ' IN (SELECT DISTINCT user_id FROM user_to_group WHERE group_id IN (SELECT group_id FROM user_to_group WHERE user_id = ' . $thisID . '))';
+        return $this->userColumn.'='.$thisID.' OR '.$this->userColumn.' IN (SELECT DISTINCT user_id FROM user_to_group WHERE group_id IN (SELECT group_id FROM user_to_group WHERE user_id = '.$thisID.'))';
     }
 
     /**
@@ -963,20 +999,27 @@ class Configurator extends \Ease\Brick
 
             if ($this->allowTemplating && $this->isTemplate()) {
                 $columnsList = [$this->getmyKeyColumn(), $this->nameColumn,
-                  $this->userColumn];
+                    $this->userColumn];
                 if ($this->publicRecords) {
                     $columnsList[] = 'public';
                 }
-                $used = $this->getColumnsFromSQL($columnsList, ['use' => $this->getDataValue('name')], $this->nameColumn, $this->getmyKeyColumn());
+                $used = $this->getColumnsFromSQL($columnsList,
+                    ['use' => $this->getDataValue('name')], $this->nameColumn,
+                    $this->getmyKeyColumn());
                 if (count($used)) {
-                    $usedFrame = new \Ease\TWB\Panel(_('is template for'), 'info', null, _('není proto možné smazat'));
+                    $usedFrame = new \Ease\TWB\Panel(_('is template for'),
+                        'info', null, _('není proto možné smazat'));
                     foreach ($used as $usId => $usInfo) {
-                        if ($this->publicRecords && ($usInfo['public'] != true) && ($usInfo[$this->userColumn] != \Ease\Shared::user()->getUserID() )) {
+                        if ($this->publicRecords && ($usInfo['public'] != true) && ($usInfo[$this->userColumn]
+                            != \Ease\Shared::user()->getUserID() )) {
                             $usedFrame->addItem(new \Ease\Html\Span(
-                                $usInfo[$this->nameColumn], ['class' => 'jellybean gray']));
+                                $usInfo[$this->nameColumn],
+                                ['class' => 'jellybean gray']));
                         } else {
                             $usedFrame->addItem(new \Ease\Html\Span(
-                                new \Ease\Html\ATag('?' . $this->getmyKeyColumn() . '=' . $usId . '&' . $urlAdd, $usInfo[$this->nameColumn]), ['class' => 'jellybean']));
+                                new \Ease\Html\ATag('?'.$this->getmyKeyColumn().'='.$usId.'&'.$urlAdd,
+                                $usInfo[$this->nameColumn]),
+                                ['class' => 'jellybean']));
                         }
                     }
 
@@ -984,10 +1027,15 @@ class Configurator extends \Ease\Brick
                 }
             }
 
-            \Ease\Shared::webPage()->addItem(new \Icinga\Editor\UI\ConfirmationDialog('delete' . $this->getId(), '?' . $this->getmyKeyColumn() . '=' . $this->getID() . '&delete=true' . '&' . $urlAdd, _('Delete') . ' ' . $name, sprintf(_('Are you sure to delete %s ?'), '<strong>' . $this->getName() . '</strong>')));
+            \Ease\Shared::webPage()->addItem(new \Icinga\Editor\UI\ConfirmationDialog('delete'.$this->getId(),
+                '?'.$this->getmyKeyColumn().'='.$this->getID().'&delete=true'.'&'.$urlAdd,
+                _('Delete').' '.$name,
+                sprintf(_('Are you sure to delete %s ?'),
+                    '<strong>'.$this->getName().'</strong>')));
             return new \Ease\Html\ButtonTag(
-                [\Ease\TWB\Part::GlyphIcon('remove'), _('Delete') . ' ' . $this->keyword . ' ' . $this->getName()], ['style'   => 'cursor: default', 'class'   => 'btn btn-danger',
-              'id'      => 'triggerdelete' . $this->getId(), 'data-id' => $this->getId()
+                [\Ease\TWB\Part::GlyphIcon('remove'), _('Delete').' '.$this->keyword.' '.$this->getName()],
+                ['style' => 'cursor: default', 'class' => 'btn btn-danger',
+                'id' => 'triggerdelete'.$this->getId(), 'data-id' => $this->getId()
             ]);
         } else {
             return '';
@@ -1017,9 +1065,11 @@ class Configurator extends \Ease\Brick
         }
         if ($ownerID) {
             $owner     = new \Ease\User($ownerID);
-            $ownerLink = new \Ease\TWB\LinkButton('userinfo.php?user_id=' . $ownerID, [$owner, '&nbsp;' . $owner->getUserLogin()]);
+            $ownerLink = new \Ease\TWB\LinkButton('userinfo.php?user_id='.$ownerID,
+                [$owner, '&nbsp;'.$owner->getUserLogin()]);
         } else {
-            $ownerLink = new \Ease\TWB\LinkButton('overview.php', ['<img class="avatar" src="img/vsmonitoring.png">', '&nbsp;' . _('Without owner')]);
+            $ownerLink = new \Ease\TWB\LinkButton('overview.php',
+                ['<img class="avatar" src="img/vsmonitoring.png">', '&nbsp;'._('Without owner')]);
         }
         return $ownerLink;
     }
@@ -1038,7 +1088,8 @@ class Configurator extends \Ease\Brick
         }
         if ($ownerID) {
             $owner     = new \Ease\User($ownerID);
-            $ownerLink = new \Ease\Html\ATag('userinfo.php?user_id=' . $ownerID, $owner->getUserLogin());
+            $ownerLink = new \Ease\Html\ATag('userinfo.php?user_id='.$ownerID,
+                $owner->getUserLogin());
         } else {
             $ownerLink = new \Ease\Html\ATag('overview.php', _('Without owner'));
         }
@@ -1066,13 +1117,15 @@ class Configurator extends \Ease\Brick
             }
         }
         if ($this->deleteFromSQL($id)) {
-            $this->addStatusMessage(sprintf(_(' %s %s was deleted '), $this->keyword, $this->getName()), 'success');
+            $this->addStatusMessage(sprintf(_(' %s %s was deleted '),
+                    $this->keyword, $this->getName()), 'success');
             $this->dataReset();
             \Ease\Shared::user()->setSettingValue('unsaved', true);
 
             return true;
         } else {
-            $this->addStatusMessage(sprintf(_(' %s %s was not deleted '), $this->keyword, $this->getName()), 'warning');
+            $this->addStatusMessage(sprintf(_(' %s %s was not deleted '),
+                    $this->keyword, $this->getName()), 'warning');
 
             return false;
         }
@@ -1102,7 +1155,8 @@ class Configurator extends \Ease\Brick
      */
     public function importFile($fileName, $commonValues)
     {
-        return $this->importArray($this->readRawConfigFile($fileName), $commonValues);
+        return $this->importArray($this->readRawConfigFile($fileName),
+                $commonValues);
     }
 
     /**
@@ -1114,7 +1168,8 @@ class Configurator extends \Ease\Brick
      */
     public function importText($cfgText, $commonValues)
     {
-        return $this->importArray(array_map('trim', preg_split('/\r\n|\n|\r/', $cfgText)), $commonValues);
+        return $this->importArray(array_map('trim',
+                    preg_split('/\r\n|\n|\r/', $cfgText)), $commonValues);
     }
 
     /**
@@ -1132,12 +1187,13 @@ class Configurator extends \Ease\Brick
                 if (strstr($cfgLine, '#')) {
                     $cfgLine = strstr($cfgLine, '#', true);
                 }
-                if (str_replace(' ', '', $cfgLine) == 'define' . $this->keyword . '{') {
+                if (str_replace(' ', '', $cfgLine) == 'define'.$this->keyword.'{') {
                     $buffer = [];
                     continue;
                 }
                 if (is_array($buffer)) {
-                    if (preg_match("/^([a-zA-Z_]*)[\s|\t]*(.*)$/", $cfgLine, $matches)) {
+                    if (preg_match("/^([a-zA-Z_]*)[\s|\t]*(.*)$/", $cfgLine,
+                            $matches)) {
                         if ($matches[2] != '}') {
                             $buffer[$matches[1]] = $matches[2];
                         }
@@ -1160,25 +1216,30 @@ class Configurator extends \Ease\Brick
                     if ($this->saveToSQL()) {
 
                         if ($this->isTemplate()) {
-                            $this->addStatusMessage(_('předloha') . ' ' . $this->keyword . ' <strong>' . $buffer['name'] . '</strong>' . _(' byl naimportován'), 'success');
+                            $this->addStatusMessage(_('předloha').' '.$this->keyword.' <strong>'.$buffer['name'].'</strong>'._(' byl naimportován'),
+                                'success');
                         } else {
                             if (!is_null($this->webLinkColumn) && !isset($buffer[$this->webLinkColumn])) {
                                 $this->updateToSQL(
                                     [$this->getmyKeyColumn() => $this->getMyKey(),
-                                      $this->webLinkColumn    =>
-                                      (str_replace(basename(\Ease\WebPage::getUri()), '', \Ease\WebPage::phpSelf(true))) .
-                                      $this->keyword . '.php?' .
-                                      $this->getmyKeyColumn() . '=' .
-                                      $this->getMyKey()]);
+                                        $this->webLinkColumn =>
+                                        (str_replace(basename(\Ease\WebPage::getUri()),
+                                            '', \Ease\WebPage::phpSelf(true))).
+                                        $this->keyword.'.php?'.
+                                        $this->getmyKeyColumn().'='.
+                                        $this->getMyKey()]);
                             }
-                            $this->addStatusMessage($this->keyword . ' <strong>' . $buffer[$this->nameColumn] . '</strong>' . _(' was imported'), 'success');
+                            $this->addStatusMessage($this->keyword.' <strong>'.$buffer[$this->nameColumn].'</strong>'._(' was imported'),
+                                'success');
                         }
                         $success++;
                     } else {
                         if ($this->isTemplate()) {
-                            $this->addStatusMessage($this->keyword . ' <strong>' . $buffer['name'] . '</strong>' . _(' was not imported'), 'error');
+                            $this->addStatusMessage($this->keyword.' <strong>'.$buffer['name'].'</strong>'._(' was not imported'),
+                                'error');
                         } else {
-                            $this->addStatusMessage($this->keyword . ' <strong>' . $buffer[$this->nameColumn] . '</strong>' . _(' was not imported'), 'error');
+                            $this->addStatusMessage($this->keyword.' <strong>'.$buffer[$this->nameColumn].'</strong>'._(' was not imported'),
+                                'error');
                         }
                     }
                     $buffer = null;
@@ -1200,7 +1261,8 @@ class Configurator extends \Ease\Brick
     public static function readRawConfigFile($cfgFile, $importer = null)
     {
         if (!is_file($cfgFile)) {
-            \Ease\Shared::user()->addStatusMessage(_('I need filename'), 'warning');
+            \Ease\Shared::user()->addStatusMessage(_('I need filename'),
+                'warning');
 
             return null;
         }
@@ -1252,11 +1314,13 @@ class Configurator extends \Ease\Brick
                     continue;
                 }
                 if (substr($entry, -4) == '.cfg') {
-                    foreach (self::readRawConfigFile($dirName . '/' . $entry, $importer) as $line) {
+                    foreach (self::readRawConfigFile($dirName.'/'.$entry,
+                        $importer) as $line) {
                         $cfg[] = $line;
                     }
-                } elseif (is_dir($dirName . '/' . $entry)) {
-                    foreach (self::readRawConfigDir($dirName . '/' . $entry, $importer) as $line) {
+                } elseif (is_dir($dirName.'/'.$entry)) {
+                    foreach (self::readRawConfigDir($dirName.'/'.$entry,
+                        $importer) as $line) {
                         $cfg[] = $line;
                     }
                 }
@@ -1357,25 +1421,36 @@ class Configurator extends \Ease\Brick
         $addColumn = $webPage->getGetValue('add');
         $name      = $webPage->getGetValue('name');
         if ($addColumn) {
-            $this->addMember($addColumn, $webPage->getRequestValue('member', 'int'), $name);
+            $this->addMember($addColumn,
+                $webPage->getRequestValue('member', 'int'), $name);
             $thisID = $this->saveToSQL();
             if (is_null($thisID)) {
-                $this->addStatusMessage(sprintf(_('item %s was not added to %s/%s/%s'), $name, $this->keyword, $this->getName(), $addColumn), 'warning');
+                $this->addStatusMessage(sprintf(_('item %s was not added to %s/%s/%s'),
+                        $name, $this->keyword, $this->getName(), $addColumn),
+                    'warning');
             } else {
-                $this->addStatusMessage(sprintf(_('item %s added to %s/%s/%s'), $name, $this->keyword, $this->getName(), $addColumn), 'success');
+                $this->addStatusMessage(sprintf(_('item %s added to %s/%s/%s'),
+                        $name, $this->keyword, $this->getName(), $addColumn),
+                    'success');
             }
         }
         $delColumn = $webPage->getGetValue('del');
         if (!is_null($delColumn)) {
             $thisID = null;
-            $del    = $this->delMember($delColumn, $webPage->getRequestValue('member', 'int'), $webPage->getGetValue('name'));
+            $del    = $this->delMember($delColumn,
+                $webPage->getRequestValue('member', 'int'),
+                $webPage->getGetValue('name'));
             if ($del) {
                 $thisID = $this->saveToSQL();
             }
             if (is_null($thisID) && !$del) {
-                $this->addStatusMessage(sprintf(_('item %s was not removed from %s/%s/%s'), $name, $this->keyword, $this->getName(), $delColumn), 'warning');
+                $this->addStatusMessage(sprintf(_('item %s was not removed from %s/%s/%s'),
+                        $name, $this->keyword, $this->getName(), $delColumn),
+                    'warning');
             } else {
-                $this->addStatusMessage(sprintf(_('item %s was removed from %s/%s/%s'), $name, $this->keyword, $this->getName(), $delColumn), 'success');
+                $this->addStatusMessage(sprintf(_('item %s was removed from %s/%s/%s'),
+                        $name, $this->keyword, $this->getName(), $delColumn),
+                    'success');
             }
         }
     }
@@ -1396,7 +1471,8 @@ class Configurator extends \Ease\Brick
                     if (self::isSerialized($keyData)) {
                         $allData[$keyWord] = unserialize(stripslashes($keyData));
                     } else {
-                        \Ease\Shared::webPage()->addStatusMessage(_('Deserialization error') . ':' . $keyData, 'error');
+                        \Ease\Shared::webPage()->addStatusMessage(_('Deserialization error').':'.$keyData,
+                            'error');
                     }
                 }
             }
@@ -1420,7 +1496,7 @@ class Configurator extends \Ease\Brick
         if ($testing) {
             while (!feof($testing)) {
                 $line = fgets($testing);
-                \Ease\Shared::user()->addStatusMessage('Reload: ' . $line);
+                \Ease\Shared::user()->addStatusMessage('Reload: '.$line);
             }
             fclose($testing);
         }
@@ -1430,7 +1506,8 @@ class Configurator extends \Ease\Brick
 
     public function cloneButton()
     {
-        return new \Ease\TWB\LinkButton('?action=clone&' . $this->getmyKeyColumn() . '=' . $this->getId(), _('Klonovat'));
+        return new \Ease\TWB\LinkButton('?action=clone&'.$this->getmyKeyColumn().'='.$this->getId(),
+            _('Klonovat'));
     }
 
     public function draw()
@@ -1451,21 +1528,22 @@ class Configurator extends \Ease\Brick
         $columns[] = $this->myKeyColumn;
         foreach ($this->useKeywords as $keyword => $keywordInfo) {
             if (strstr($keywordInfo, 'VARCHAR')) {
-                $conds[]   = " `$keyword` LIKE '%" . $what . "%'";
+                $conds[]   = " `$keyword` LIKE '%".$what."%'";
                 $columns[] = "`$keyword`";
             }
         }
 
-        $res = \Ease\Shared::db()->queryToArray("SELECT " . implode(',', $columns) . "," . $this->nameColumn . " FROM " . $this->myTable . " WHERE " . implode(' OR ', $conds) . ' ORDER BY ' . $this->nameColumn, $this->myKeyColumn);
+        $res = \Ease\Shared::db()->queryToArray("SELECT ".implode(',', $columns).",".$this->nameColumn." FROM ".$this->myTable." WHERE ".implode(' OR ',
+                $conds).' ORDER BY '.$this->nameColumn, $this->myKeyColumn);
         foreach ($res as $result) {
             $occurences = '';
             foreach ($result as $key => $value) {
                 if (strstr($value, $what)) {
-                    $occurences .= '(' . $key . ': ' . $value . ') ';
+                    $occurences .= '('.$key.': '.$value.') ';
                 }
             }
             $results[$result[$this->myKeyColumn]] = [$this->nameColumn => $result[$this->nameColumn],
-              'what'            => $occurences];
+                'what' => $occurences];
         }
         return $results;
     }
@@ -1550,7 +1628,7 @@ class Configurator extends \Ease\Brick
                                 if (is_array($templateValue)) {
                                     $templateValue = implode(',', $templateValue);
                                 }
-                                $data[$rowId][$templateKey] = '<span class="inherited" title="' . _('Předloha') . ': ' . $usedCache[$use]['name'] . '">' . $templateValue . '</span>';
+                                $data[$rowId][$templateKey] = '<span class="inherited" title="'._('Předloha').': '.$usedCache[$use]['name'].'">'.$templateValue.'</span>';
                             }
                         }
                     }
@@ -1608,7 +1686,7 @@ class Configurator extends \Ease\Brick
                                 $icon = 'logos/unknown.gif';
                                 break;
                         }
-                        $row[$key] = '<img class="gridimg" src="' . $icon . '"> ' . $value;
+                        $row[$key] = '<img class="gridimg" src="'.$icon.'"> '.$value;
                         break;
                     case 'BOOL':
                         if (is_null($value) || !strlen($value)) {
@@ -1631,18 +1709,20 @@ class Configurator extends \Ease\Brick
                                 $values = ['0' => $value];
                             }
                             if (!is_array($values)) {
-                                $this->addStatusMessage(sprintf(_('Unserialization error %s #%s '), $value, $key));
+                                $this->addStatusMessage(sprintf(_('Unserialization error %s #%s '),
+                                        $value, $key));
                             }
                             if (isset($this->keywordsInfo[$key]['refdata'])) {
                                 $idcolumn     = $this->keywordsInfo[$key]['refdata']['idcolumn'];
                                 $table        = $this->keywordsInfo[$key]['refdata']['table'];
                                 $searchColumn = $this->keywordsInfo[$key]['refdata']['captioncolumn'];
-                                $target       = str_replace('_id', '.php', $idcolumn);
+                                $target       = str_replace('_id', '.php',
+                                    $idcolumn);
                                 foreach ($values as $id => $name) {
                                     if ($id) {
-                                        $values[$id] = '<a title="' . $table . '" href="' . $target . '?' . $idcolumn . '=' . $id . '">' . $name . '</a>';
+                                        $values[$id] = '<a title="'.$table.'" href="'.$target.'?'.$idcolumn.'='.$id.'">'.$name.'</a>';
                                     } else {
-                                        $values[$id] = '<a title="' . $table . '" href="search.php?search=' . $name . '&table=' . $table . '&column=' . $searchColumn . '">' . $name . '</a> ' . \Ease\TWB\Part::glyphIcon('search');
+                                        $values[$id] = '<a title="'.$table.'" href="search.php?search='.$name.'&table='.$table.'&column='.$searchColumn.'">'.$name.'</a> '.\Ease\TWB\Part::glyphIcon('search');
                                     }
                                 }
                             }
@@ -1657,13 +1737,13 @@ class Configurator extends \Ease\Brick
                         if (isset($this->keywordsInfo[$key]['refdata']) && strlen(trim($value))) {
                             $table        = $this->keywordsInfo[$key]['refdata']['table'];
                             $searchColumn = $this->keywordsInfo[$key]['refdata']['captioncolumn'];
-                            $row[$key]    = '<a title="' . $table . '" href="search.php?search=' . $value . '&table=' . $table . '&column=' . $searchColumn . '">' . $value . '</a> ' . \Ease\TWB\Part::glyphIcon('search');
+                            $row[$key]    = '<a title="'.$table.'" href="search.php?search='.$value.'&table='.$table.'&column='.$searchColumn.'">'.$value.'</a> '.\Ease\TWB\Part::glyphIcon('search');
                         }
                         if (strstr($key, 'image') && strlen(trim($value))) {
-                            $row[$key] = '<img title="' . $value . '" src="logos/' . $value . '" class="gridimg">';
+                            $row[$key] = '<img title="'.$value.'" src="logos/'.$value.'" class="gridimg">';
                         }
                         if (strstr($key, 'url')) {
-                            $row[$key] = '<a href="' . $value . '">' . $value . '</a>';
+                            $row[$key] = '<a href="'.$value.'">'.$value.'</a>';
                         }
 
                         break;
@@ -1688,19 +1768,21 @@ class Configurator extends \Ease\Brick
 
             $data = $this->getData();
             if (!count($data)) {
-                $this->addStatusMessage(sprintf(_('Transfer %s / %s se failed'), get_class($this), $this->getName()), 'error');
+                $this->addStatusMessage(sprintf(_('Transfer %s / %s se failed'),
+                        get_class($this), $this->getName()), 'error');
                 return false;
             }
 
             $options = [
-              'http' => [
-                'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-                'method'  => 'POST',
-                'content' => http_build_query($data),
-              ],
+                'http' => [
+                    'header' => "Content-type: application/x-www-form-urlencoded\r\n",
+                    'method' => 'POST',
+                    'content' => http_build_query($data),
+                ],
             ];
             $context = stream_context_create($options);
-            $result  = file_get_contents($target . '/importer.php?class=' . $this->keyword, false, $context);
+            $result  = file_get_contents($target.'/importer.php?class='.$this->keyword,
+                false, $context);
 
             if (!$result || trim($result) == 'false') {
                 $this->addStatusMessage(_('Transfer failed'), 'warning');
@@ -1719,16 +1801,20 @@ class Configurator extends \Ease\Brick
      */
     public function &transferForm()
     {
-        $exportForm = new \Ease\TWB\Form('Export', $this->keyword . '.php');
+        $exportForm = new \Ease\TWB\Form('Export', $this->keyword.'.php');
         $exportForm->addItem(new \Ease\Html\InputHiddenTag('action', 'export'));
-        $exportForm->addItem(new \Ease\Html\InputHiddenTag($this->myKeyColumn, $this->getId()));
-        $exportForm->addInput(new \Ease\Html\InputTextTag('destination', \Ease\Shared::user()->getSettingValue('exporturl')), _('Cíl exportu'));
+        $exportForm->addItem(new \Ease\Html\InputHiddenTag($this->myKeyColumn,
+            $this->getId()));
+        $exportForm->addInput(new \Ease\Html\InputTextTag('destination',
+            \Ease\Shared::user()->getSettingValue('exporturl')),
+            _('Cíl exportu'));
 
         $exportForm->addItem(new \Ease\Html\H4Tag(_('Recursive import')));
 
         foreach ($this->keywordsInfo as $columnName => $columnInfo) {
             if (isset($columnInfo['refdata']['table'])) {
-                $exportForm->addInput(new \Icinga\Editor\UI\TWBSwitch('rels[' . $columnName . ']'), $columnInfo['title']);
+                $exportForm->addInput(new \Icinga\Editor\UI\TWBSwitch('rels['.$columnName.']'),
+                    $columnInfo['title']);
             }
         }
 
@@ -1771,11 +1857,12 @@ class Configurator extends \Ease\Brick
                     if (is_array($value)) {
                         $fixedValue = [];
                         foreach ($value as $item) {
-                            $localId = $this->dblink->queryToValue('SELECT ' . $columnInfo['refdata']['idcolumn'] . ' FROM ' . $columnInfo['refdata']['table'] . ' WHERE ' . $columnInfo['refdata']['captioncolumn'] . " = '$item'");
+                            $localId = $this->dblink->queryToValue('SELECT '.$columnInfo['refdata']['idcolumn'].' FROM '.$columnInfo['refdata']['table'].' WHERE '.$columnInfo['refdata']['captioncolumn']." = '$item'");
                             if ($localId) {
                                 $fixedValue[$localId] = $item;
                             } else {
-                                $this->addStatusMessage(sprintf(_('Unknown item %s column %s within import'), $item, $column));
+                                $this->addStatusMessage(sprintf(_('Unknown item %s column %s within import'),
+                                        $item, $column));
                             }
                         }
                         $dataRow[$column] = $fixedValue;
@@ -1785,7 +1872,8 @@ class Configurator extends \Ease\Brick
                     break;
                 case 'unknown':
                     unset($dataRow[$column]);
-                    $this->addStatusMessage(sprintf(_('Unknown imported column  %s'), $column));
+                    $this->addStatusMessage(sprintf(_('Unknown imported column  %s'),
+                            $column));
                     break;
                 default:
             }
@@ -1804,7 +1892,7 @@ class Configurator extends \Ease\Brick
         foreach ($this->keywordsInfo as $columnName => $columnInfo) {
             if (isset($columnInfo['refdata']['table'])) {
                 if (is_array($rels) && isset($rels[$columnName])) {
-                    $className = '\\Icinga\\Editor\\Engine\\' . ucfirst($columnInfo['refdata']['table']);
+                    $className = '\\Icinga\\Editor\\Engine\\'.ucfirst($columnInfo['refdata']['table']);
                     $transfer  = new $className($this->getDataValue($columnName));
                     $transfer->transfer($target);
                 }
@@ -1852,7 +1940,8 @@ class Configurator extends \Ease\Brick
         }
 
         if (isset($this->myCreateColumn)) {
-            $infoBlock->addDef(_('Created'), self::sqlDateTimeToLocaleDateTime($this->getDataValue($this->myCreateColumn)));
+            $infoBlock->addDef(_('Created'),
+                self::sqlDateTimeToLocaleDateTime($this->getDataValue($this->myCreateColumn)));
         }
 
         if (isset($this->userColumn)) {
@@ -1860,12 +1949,14 @@ class Configurator extends \Ease\Brick
         }
 
         if (isset($this->useKeywords['generate']) && !(int) $this->getDataValue('generate')) {
-            $infoBlock->addItem(new \Ease\TWB\Label('warning', _('do not generate to configuration')));
+            $infoBlock->addItem(new \Ease\TWB\Label('warning',
+                _('do not generate to configuration')));
         }
 
         if ($this->publicRecords) {
             if ((int) $this->getDataValue('public')) {
-                $infoBlock->addItem(new \Ease\TWB\Label('info', _('record is public')));
+                $infoBlock->addItem(new \Ease\TWB\Label('info',
+                    _('record is public')));
             }
         }
 
@@ -1895,7 +1986,8 @@ class Configurator extends \Ease\Brick
      *
      * @return string         převedené datum a čas
      */
-    static function sqlDateTimeToLocaleDateTime($sqldate, $format = 'm/d/Y h:i:s')
+    static function sqlDateTimeToLocaleDateTime($sqldate,
+                                                $format = 'm/d/Y h:i:s')
     {
         if ($sqldate) {
             return \DateTime::createFromFormat('Y-m-d H:i:s', $sqldate)->format($format);
@@ -1911,7 +2003,7 @@ class Configurator extends \Ease\Brick
     function getIdByName($name)
     {
 
-        $id = $this->dblink->queryToValue('SELECT ' . $this->getmyKeyColumn() . ' FROM ' . $this->getMyTable() . ' WHERE ' . $this->nameColumn . ' LIKE \'' . $this->dblink->addSlashes($name) . ' \'');
+        $id = $this->dblink->queryToValue('SELECT '.$this->getmyKeyColumn().' FROM '.$this->getMyTable().' WHERE '.$this->nameColumn.' LIKE \''.$this->dblink->addSlashes($name).' \'');
         if (is_numeric($id)) {
             $id = intval($id);
         }
@@ -1943,7 +2035,7 @@ class Configurator extends \Ease\Brick
      */
     function switchOwners($currentID, $newID)
     {
-        $this->dblink->exeQuery('UPDATE ' . $this->myTable . " SET " . $this->userColumn . " = '$newID' WHERE  " . $this->userColumn . " = $currentID");
+        $this->dblink->exeQuery('UPDATE '.$this->myTable." SET ".$this->userColumn." = '$newID' WHERE  ".$this->userColumn." = $currentID");
     }
 
     /**
@@ -1959,7 +2051,7 @@ class Configurator extends \Ease\Brick
             $scheme = 'http';
         }
 
-        $enterPoint = $scheme . '://' . $_SERVER['SERVER_NAME'] . dirname($_SERVER['REQUEST_URI']) . '/';
+        $enterPoint = $scheme.'://'.$_SERVER['SERVER_NAME'].dirname($_SERVER['REQUEST_URI']).'/';
 
 //        $enterPoint = str_replace('\\', '', $enterPoint); //Win Hack
         return $enterPoint;
@@ -2005,4 +2097,62 @@ class Configurator extends \Ease\Brick
         
     }
 
+    /**
+     * Get bject Icon 
+     * 
+     * @return \Ease\Html\ImgTag
+     */
+    function getObjectIcon()
+    {
+        return new \Ease\Html\ImgTag($this->getObjectIconUrl(),
+            $this->keyword.' #'.$this->getMyKey(),
+            ['title' => $this->getObjectName()]);
+    }
+
+    /**
+     * Icon Of Image that represents current object
+     * @return string
+     */
+    public function getObjectIconUrl()
+    {
+        if (isset($this->iconImageColumn)) {
+            $iconImage = $this->getDataValue($this->iconImageColumn);
+            if (strlen($iconImage)) {
+                $iconImage = 'logos/'.$iconImage;
+            }
+        }
+
+        if (is_null($iconImage) || ($iconImage == 'null')) {
+            $iconImage = 'logos/unknown.gif';
+        }
+
+        return $iconImage;
+    }
+
+    /**
+     * Get URL Link To Current Object
+     * @return string
+     */
+    function getObjectLink()
+    {
+        $link = $this->keyword.'.php';
+
+        $id = $this->getMyKey();
+        if (!is_null($id)) {
+            $link .= '?'.$this->getmyKeyColumn().'='.$this->getMyKey();
+        }
+
+        return $link;
+    }
+
+    /**
+     * Object Icon Image that link to object
+     * 
+     * @return \Ease\Html\ATag
+     */
+    public function getIconLink()
+    {
+        return new \Ease\Html\ATag($this->getObjectLink(),
+            $this->getObjectIcon());
+    }
 }

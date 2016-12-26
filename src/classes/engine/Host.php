@@ -298,6 +298,12 @@ class Host extends Configurator
     ];
 
     /**
+     * Column with icon image
+     * @var string 
+     */
+    public $iconImageColumn = 'icon_image';
+
+    /**
      * URL dokumentace objektu
      * @var string
      */

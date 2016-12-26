@@ -24,6 +24,12 @@
             "Icinga\\Editor\\modules\\": "src/modules"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Test\\Ease\\": "vendor/vitexsoftware/ease-framework/tests/src/Ease",
+            "Test\\": "testing/"
+        }
+    },
     "require-dev": {
         "phpunit/php-token-stream": "~1.2",
         "robmorgan/phinx": "dev-master"
