@@ -43,10 +43,11 @@ if [ ! -f $IECFG ] ; then
 
 
     . /usr/share/dbconfig-common/dpkg/postinst.mysql
+    dbc_dbuser="icinga_editor"
+    dbc_dbname="icinga_editor"
     dbc_generate_include_owner="root:www-data"
     dbc_generate_include_perms="0640"
     dbc_generate_include=sh:/etc/icinga-editor/config-db.sh
-
 
     if ! dbc_go icinga-editor $@ ; then
             echo 'Automatic configuration using dbconfig-common failed!'
@@ -65,8 +66,8 @@ if [ ! -f $IECFG ] ; then
     echo "define('DB_PREFIX', '');" >> $IECFG 
     echo "define('LOG_DIRECTORY', '/var/log/');" >> $IECFG 
     echo "define('CFG_GENERATED', '/etc/icinga/generated/');" >> $IECFG 
-    echo "define('LOG_NAME', 'IcingaEditor');" >> $IECFG 
-    echo "define('LOG_TYPE', 'syslog');" >> $IECFG 
+    echo "define('EASE_APPNAME', 'IcingaEditor');" >> $IECFG 
+    echo "define('EASE_LOGGER', 'syslog');" >> $IECFG 
 
     IWCFG="/etc/dbconfig-common/icinga-web.conf"
     IW_SERVER_USERNAME=`cat $IWCFG | grep dbc_dbuser= | awk -F\' '{print $2}'`
