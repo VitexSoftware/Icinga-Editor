@@ -112,15 +112,6 @@ if [ ! -f $IECFG ] ; then
                 fi
             fi
 
-            # Import configuration Question ?
-            db_input medium icinga-editor/IMPORT_CONFIG || true
-            db_go
-
-            # Check their answer.
-            db_get icinga-editor/IMPORT_CONFIG
-            if [ "$RET" = "true" ]; then
-                iecfgimporter /etc/icinga/icinga.cfg
-            fi
     fi
 
 fi
@@ -155,6 +146,17 @@ replaceYML "pass"       $dbpass
 replaceYML "name"       $dbname
 
 phinx -n -c/var/lib/icinga-editor/phinx.yml migrate -e production
+
+
+# Import configuration Question ?
+db_input medium icinga-editor/IMPORT_CONFIG || true
+db_go
+
+# Check their answer.
+db_get icinga-editor/IMPORT_CONFIG
+if [ "$RET" = "true" ]; then
+    iecfgimporter /etc/icinga/icinga.cfg
+fi
 
 
 #DEBHELPER#
