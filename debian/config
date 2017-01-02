@@ -6,6 +6,8 @@ set -e
 
 if [ -f /usr/share/dbconfig-common/dpkg/config.mysql ]; then
         . /usr/share/dbconfig-common/dpkg/config.mysql
+        dbc_dbuser="icinga_editor"
+        dbc_dbname="icinga_editor"
         if ! dbc_go icinga-editor $@ ; then
             echo 'Automatic configuration using dbconfig-common failed!'
         fi

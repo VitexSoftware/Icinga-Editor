@@ -1,0 +1,17 @@
+#!/bin/sh
+# postrm script for icinga-editor
+
+set -e
+
+if [ "$1" = "purge" ]; then
+    rm -fr /var/lib/icinga-editor 
+    rm -f /etc/icinga-editor/config-db.sh
+    if which ucf >/dev/null 2>&1; then
+        ucf --purge /etc/icinga-editor/config-db.sh
+        ucfr --purge icinga-editor /etc/icinga-editor/config-db.sh
+    fi
+fi
+
+#DEBHELPER#
+
+exit 0
