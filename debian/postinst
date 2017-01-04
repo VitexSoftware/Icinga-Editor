@@ -12,7 +12,11 @@ replaceYML() {
 }
 
 replacePHP() {
-    sed -i "/${1}/c\define('${1}', '${2}');" ${IECFG}
+    if [ `cat ${IECFG} | grep "define('${1}'," | wc -l` = "0" ]; then
+        echo "define('${1}', '${2}');" >> ${IECFG}
+    else
+        sed -i "/${1}/c\define('${1}', '${2}');" ${IECFG}
+    fi
 }
 
 
@@ -60,10 +64,10 @@ IW_SERVER_USERNAME=`cat $IWCFG | grep dbc_dbuser= | awk -F\' '{print $2}'`
 IW_SERVER_PASSWORD=`cat $IWCFG | grep dbc_dbpass= | awk -F\' '{print $2}'`
 IW_DATABASE=`cat $IWCFG | grep dbc_dbname= | awk -F\' '{print $2}'`
 
-echo "define('DB_IW_SERVER_USERNAME', '$IW_SERVER_USERNAME');" >> $IECFG 
-echo "define('DB_IW_SERVER_PASSWORD', '$IW_SERVER_PASSWORD');" >> $IECFG 
-echo "define('DB_IW_DATABASE', '$IW_DATABASE');" >> $IECFG 
 
+replacePHP "DB_IW_SERVER_USERNAME" $IW_SERVER_USERNAME
+replacePHP "DB_IW_SERVER_PASSWORD" $IW_SERVER_PASSWORD
+replacePHP "DB_IW_DATABASE" $IW_DATABASE
 
 if [ "$1" = "configure" ]; then
 
