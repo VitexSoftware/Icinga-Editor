@@ -8,8 +8,8 @@ Homepage: http://vitexsoftware.cz/monitoring.php
 
 Package: icinga-editor
 Depends: ${misc:Depends},libjs-twitter-bootstrap, ease-framework, dbconfig-common , php-mail, php5-curl, icinga-common, mtr-tiny, php-image-graphviz, libjs-d3js, php5-cli, php5-intl, composer, libjs-twitter-bootstrap-switch, nsca, traceroute
-Recommends: mysql-server,icinga-web, icinga-web-config-icinga, graphicsmagick-imagemagick-compat, pnp4icinga,icinga-cgi,icinga-cgi-bin
-Pre-Depends: php-phinx
+Recommends: mysql-server, graphicsmagick-imagemagick-compat, pnp4icinga,icinga-cgi,icinga-cgi-bin
+Pre-Depends: php-phinx,icinga-web,icinga-web-config-icinga
 Architecture: all
 Section: web
 Priority: optional
