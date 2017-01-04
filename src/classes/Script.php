@@ -2,16 +2,14 @@
 /**
  * Konfigurace Scriptů
  *
- * @package    IcingaEditor
- * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
- * @copyright  2012 Vitex@hippy.cz (G)
+ * @copyright  2012-2016 Vitex@hippy.cz (G)
  */
 
 namespace Icinga\Editor;
 
 /**
- * Spráce kontaktů
+ * Scripts manager
  */
 class Script extends engine\Configurator
 {
@@ -88,11 +86,11 @@ class Script extends engine\Configurator
     public function getAllUserData()
     {
         $allData = parent::getAllUserData();
-        foreach ($allData as $ADkey => $AD) {
-            unset($allData[$ADkey]['deploy']);
-            unset($allData[$ADkey]['script_type']);
-            unset($allData[$ADkey]['script_local']);
-            unset($allData[$ADkey]['script_remote']);
+        foreach ($allData as $adkey => $ad) {
+            unset($allData[$adkey]['deploy']);
+            unset($allData[$adkey]['script_type']);
+            unset($allData[$adkey]['script_local']);
+            unset($allData[$adkey]['script_remote']);
         }
 
         return $allData;

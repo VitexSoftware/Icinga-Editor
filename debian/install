@@ -8,7 +8,6 @@ src/js/msdropdown/*.js              usr/share/icinga-editor/js/msdropdown
 src/img/*                           usr/share/icinga-editor/img
 src/images/*                        usr/share/icinga-editor/images
 src/includes/*.php                  usr/share/icinga-editor/includes
-src/includes/*.php.dist                  usr/share/icinga-editor/includes
 src/classes/*.php                   usr/share/icinga-editor/classes
 src/classes/UI/*.php                usr/share/icinga-editor/classes/UI
 src/classes/engine/*.php            usr/share/icinga-editor/classes/engine

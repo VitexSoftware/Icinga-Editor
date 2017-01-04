@@ -28,93 +28,78 @@ apache_install() {
 }
 
 
-if [ ! -f $IECFG ] ; then
+. /usr/share/debconf/confmodule
 
-    . /usr/share/debconf/confmodule
+db_input critical icinga-editor/SEND_MAILS_FROM || true
+db_go || true
+db_get icinga-editor/SEND_MAILS_FROM
+SEND_MAILS_FROM=$RET
 
-    db_input critical icinga-editor/SEND_MAILS_FROM || true
-    db_go || true
-    db_get icinga-editor/SEND_MAILS_FROM
-
-    db_input critical icinga-editor/ICINGA_SERVER_IP || true
-    db_go || true
-    db_get icinga-editor/ICINGA_SERVER_IP
-
-
-
-    . /usr/share/dbconfig-common/dpkg/postinst.mysql
-    dbc_dbuser="icinga_editor"
-    dbc_dbname="icinga_editor"
-    dbc_generate_include_owner="root:www-data"
-    dbc_generate_include_perms="0640"
-    dbc_generate_include=sh:/etc/icinga-editor/config-db.sh
-
-    if ! dbc_go icinga-editor $@ ; then
-            echo 'Automatic configuration using dbconfig-common failed!'
-    fi
-
-    . /etc/icinga-editor/config-db.sh
+db_input critical icinga-editor/ICINGA_SERVER_IP || true
+db_go || true
+db_get icinga-editor/ICINGA_SERVER_IP
+ICINGA_SERVER_IP=$RET
 
 
-    echo "<?php" >> $IECFG 
-    echo "define('SEND_MAILS_FROM', '$SEND_MAILS_FROM');" >> $IECFG 
-    echo "define('DB_TYPE', 'mysql');" >> $IECFG 
-    echo "define('DB_SERVER', 'localhost');" >> $IECFG 
-    echo "define('DB_SERVER_USERNAME', '$dbuser');" >> $IECFG 
-    echo "define('DB_SERVER_PASSWORD', '$dbpass');" >> $IECFG 
-    echo "define('DB_DATABASE', '$dbname');" >> $IECFG 
-    echo "define('DB_PREFIX', '');" >> $IECFG 
-    echo "define('LOG_DIRECTORY', '/var/log/');" >> $IECFG 
-    echo "define('CFG_GENERATED', '/etc/icinga/generated/');" >> $IECFG 
-    echo "define('EASE_APPNAME', 'IcingaEditor');" >> $IECFG 
-    echo "define('EASE_LOGGER', 'syslog');" >> $IECFG 
+. /usr/share/dbconfig-common/dpkg/postinst.mysql
+dbc_dbuser="icinga_editor"
+dbc_dbname="icinga_editor"
+dbc_generate_include_owner="root:www-data"
+dbc_generate_include_perms="0640"
+dbc_generate_include=sh:/etc/icinga-editor/config-db.sh
 
-    IWCFG="/etc/dbconfig-common/icinga-web.conf"
-    IW_SERVER_USERNAME=`cat $IWCFG | grep dbc_dbuser= | awk -F\' '{print $2}'`
-    IW_SERVER_PASSWORD=`cat $IWCFG | grep dbc_dbpass= | awk -F\' '{print $2}'`
-    IW_DATABASE=`cat $IWCFG | grep dbc_dbname= | awk -F\' '{print $2}'`
+if ! dbc_go icinga-editor $@ ; then
+        echo 'Automatic configuration using dbconfig-common failed!'
+fi
 
-    echo "define('DB_IW_SERVER_USERNAME', '$IW_SERVER_USERNAME');" >> $IECFG 
-    echo "define('DB_IW_SERVER_PASSWORD', '$IW_SERVER_PASSWORD');" >> $IECFG 
-    echo "define('DB_IW_DATABASE', '$IW_DATABASE');" >> $IECFG 
+. /etc/icinga-editor/config-db.sh
 
 
-    if [ "$1" = "configure" ]; then
+IWCFG="/etc/dbconfig-common/icinga-web.conf"
+IW_SERVER_USERNAME=`cat $IWCFG | grep dbc_dbuser= | awk -F\' '{print $2}'`
+IW_SERVER_PASSWORD=`cat $IWCFG | grep dbc_dbpass= | awk -F\' '{print $2}'`
+IW_DATABASE=`cat $IWCFG | grep dbc_dbname= | awk -F\' '{print $2}'`
 
-            db_version 2.0
+echo "define('DB_IW_SERVER_USERNAME', '$IW_SERVER_USERNAME');" >> $IECFG 
+echo "define('DB_IW_SERVER_PASSWORD', '$IW_SERVER_PASSWORD');" >> $IECFG 
+echo "define('DB_IW_DATABASE', '$IW_DATABASE');" >> $IECFG 
 
-            mkdir -p /usr/share/icinga-editor/log
-            mkdir -p /usr/share/icinga-editor/temp
-            mkdir -p /usr/share/icinga/htdocs/images/logos/custom
 
-            chown -R www-data:www-data    /etc/icinga/generated
-            chown -R www-data:www-data    /usr/share/icinga-editor/log
-            chown -R www-data:www-data    /usr/share/icinga-editor/temp
-            chown -R www-data:www-data    /usr/share/icinga/htdocs/images/logos/custom
+if [ "$1" = "configure" ]; then
 
-            apache_install $1
-                    # Reload webserver in any case, configuration might have changed
-                    # Redirection of 3 is needed because Debconf uses it and it might 
-                    # be inherited by webserver. See bug #446324.
-            if [ -f /etc/init.d/apache2 ] ; then
-                if [ -x /usr/sbin/invoke-rc.d ]; then
-                    invoke-rc.d apache2 reload 3>/dev/null || true
-                else
-                    /etc/init.d/apache2 reload 3>/dev/null || true
-                fi
+        db_version 2.0
+
+        mkdir -p /usr/share/icinga-editor/log
+        mkdir -p /usr/share/icinga-editor/temp
+        mkdir -p /usr/share/icinga/htdocs/images/logos/custom
+
+        chown -R www-data:www-data    /etc/icinga/generated
+        chown -R www-data:www-data    /usr/share/icinga-editor/log
+        chown -R www-data:www-data    /usr/share/icinga-editor/temp
+        chown -R www-data:www-data    /usr/share/icinga/htdocs/images/logos/custom
+
+        apache_install $1
+                # Reload webserver in any case, configuration might have changed
+                # Redirection of 3 is needed because Debconf uses it and it might 
+                # be inherited by webserver. See bug #446324.
+        if [ -f /etc/init.d/apache2 ] ; then
+            if [ -x /usr/sbin/invoke-rc.d ]; then
+                invoke-rc.d apache2 reload 3>/dev/null || true
+            else
+                /etc/init.d/apache2 reload 3>/dev/null || true
             fi
+        fi
 
-            if [ -f /etc/init.d/avahi ] ; then
-                if [ -x /usr/sbin/invoke-rc.d ]; then
-                    invoke-rc.d avahi reload 3>/dev/null || true
-                else
-                    /etc/init.d/avahi reload 3>/dev/null || true
-                fi
+        if [ -f /etc/init.d/avahi ] ; then
+            if [ -x /usr/sbin/invoke-rc.d ]; then
+                invoke-rc.d avahi reload 3>/dev/null || true
+            else
+                /etc/init.d/avahi reload 3>/dev/null || true
             fi
-
-    fi
+        fi
 
 fi
+
 
 cd /usr/share/icinga-editor
 
@@ -132,6 +117,8 @@ replacePHP "DB_SERVER_USERNAME" $dbuser
 replacePHP "DB_SERVER_PASSWORD" $dbpass
 replacePHP "DB_DATABASE" $dbname
 replacePHP "DB_PREFIX" ""
+replacePHP "SEND_MAILS_FROM" $SEND_MAILS_FROM
+
 #replacePHP "LOG_DIRECTORY" "/var/log/"
 #replacePHP "CFG_GENERATED" "/etc/icinga/generated/"
 #replacePHP "LOG_NAME" "IcingaEditor"

@@ -27,6 +27,9 @@ class Preferences extends \Ease\Brick
         $this->loadPrefs();
     }
 
+    /**
+     * How to print object as string
+     */
     public function __toString()
     {
         echo $this->getDataValue('value');

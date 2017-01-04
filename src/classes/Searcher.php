@@ -5,10 +5,8 @@ namespace Icinga\Editor;
 /**
  * Třída pro import konfigurace
  *
- * @package    IcingaEditor
- * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
- * @copyright  2012 Vitex@hippy.cz (G)
+ * @copyright  2012-2016 Vitex@hippy.cz (G)
  */
 class Searcher extends engine\Configurator
 {
@@ -28,7 +26,7 @@ class Searcher extends engine\Configurator
      * Pole prohledávacích obejktů
      * @var array
      */
-    public $IEClasses = [];
+    public $ieClasses = [];
 
     /**
      * Třída pro hromadné operace s konfigurací
@@ -54,13 +52,13 @@ class Searcher extends engine\Configurator
     public function registerClass($className)
     {
         $newClass                            = new $className;
-        $this->IEClasses[$newClass->keyword] = new $className;
+        $this->ieClasses[$newClass->keyword] = new $className;
     }
 
     public function searchAll($term)
     {
         $results = [];
-        foreach ($this->IEClasses as $ieClass) {
+        foreach ($this->ieClasses as $ieClass) {
             if (!is_null($this->table) && ($ieClass->getMyTable() != $this->table)) {
                 continue;
             }

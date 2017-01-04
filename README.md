@@ -1,7 +1,7 @@
 Icinga Configurator
 ===================
 
-Gui for generating Icinga configuration files and much more...
+Gui for generating Icinga 1.x configuration files and much more...
 
 [![Source Code](http://img.shields.io/badge/source-Vitexus/icinga_configurator-blue.svg?style=flat-square)](https://github.com/Vitexus/icinga_configurator)
 [![Latest Version](https://img.shields.io/github/release/Vitexus/icinga_configurator.svg?style=flat-square)](https://github.com/Vitexus/icinga_configurator/releases)
@@ -96,7 +96,7 @@ This tool you can use to import several config files or whole configuration into
 Sorry
 =====
 
-  * We support only Icinga 1.x configuration yet ...
+  * We support only Icinga 1.x configuration ( Use https://github.com/Icinga/icingaweb2-module-director for Icinga2 )
   * English translation is under progress. But some pages localization is still in CZECH language.
 
 See in Action
@@ -106,7 +106,7 @@ See in Action
 Production Site
 ---------------
 
-Latest version of Debian package is installed here: http://v.s.cz/icinga-editor/
+Latest version of Debian package is installed here: https://www.vitexsoftware.cz/icinga-editor/
 
  * Production site with SMS and XMPP (jabber) notifications Enabled. 
  * Twitter inc. recognize our notifications as spam thus Twitter notifications are
