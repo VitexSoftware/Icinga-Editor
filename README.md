@@ -29,7 +29,9 @@ Instalation
 
 ### Debian 8 
 
-Please make sure you run sql server first
+(Install Icinga itself: https://debmon.org/IcingaIdoutilsIcingaWebInstallation)
+
+Then Editor:
 
     wget -O - http://v.s.cz/info@vitexsoftware.cz.gpg.key|sudo apt-key add -
     echo deb http://v.s.cz/ stable main > /etc/apt/sources.list.d/ease.list
@@ -38,7 +40,7 @@ Please make sure you run sql server first
 
 ### Centos 6.8    
 
-Make sure you have icinga installed. ( http://packages.icinga.org/epel/ )
+Make sure you have Icinga installed. ( http://packages.icinga.org/epel/ )
 
 ```
 rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm
