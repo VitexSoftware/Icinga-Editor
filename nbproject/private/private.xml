@@ -17,8 +17,6 @@
             <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/src/host.php</file>
             <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/src/login.php</file>
         </group>
-        <group>
-            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/README.md</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

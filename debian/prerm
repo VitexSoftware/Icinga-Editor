@@ -1,0 +1,17 @@
+#!/bin/sh
+# prerm script for icinga-editor
+
+set -e
+
+if [ -f /usr/sbin/a2disconf ] ; then
+    a2disconf icinga-editor    
+    if [ -x /usr/sbin/invoke-rc.d ]; then
+        invoke-rc.d apache2 reload 3>/dev/null || true
+    else
+        /etc/init.d/apache2 reload 3>/dev/null || true
+    fi
+fi
+
+#DEBHELPER#
+
+exit 0
