@@ -104,7 +104,7 @@ class User extends \Ease\User
                 
             system('sudo htpasswd -b /etc/icinga/htpasswd.users '.$this->getUserLogin().' '.$newPassword);
             if (defined('DB_IW_SERVER_PASSWORD')) {
-                $mysqli = new mysqli(DB_SERVER, DB_IW_SERVER_USERNAME,
+                $mysqli = new \mysqli(DB_SERVER_HOST, DB_IW_SERVER_USERNAME,
                     DB_IW_SERVER_PASSWORD, DB_IW_DATABASE);
                 if ($mysqli->connect_errno) {
                     $this->addStatusMessage("Failed to connect to MySQL: (".$mysqli->connect_errno.") ".$mysqli->connect_error,
@@ -148,7 +148,7 @@ class User extends \Ease\User
         $result = parent::insertToSQL($data);
 
         if (defined('DB_IW_SERVER_PASSWORD')) {
-            $mysqli = new mysqli(DB_SERVER, DB_IW_SERVER_USERNAME,
+            $mysqli = new \mysqli(DB_SERVER_HOST, DB_IW_SERVER_USERNAME,
                 DB_IW_SERVER_PASSWORD, DB_IW_DATABASE);
             if ($mysqli->connect_errno) {
                 $this->addStatusMessage("Failed to connect to MySQL: (".$mysqli->connect_errno.") ".$mysqli->connect_error,
