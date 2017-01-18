@@ -23,3 +23,6 @@ db_go || true
 
 db_input critical icinga-editor/ICINGA_SERVER_IP || true
 db_go || true
+
+db_input critical icinga-editor/IMPORT_CONFIG || true
+db_go || true

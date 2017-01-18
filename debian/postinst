@@ -5,6 +5,11 @@ set -e
 
 IECFG="/usr/share/icinga-editor/includes/Configure.php"
 
+
+if [ ! -f $IECFG ]; then
+    echo '<?php' > $IECFG
+fi
+
 #Replace Key Value in PhinX Config File
 replaceYML() {
     cfg="/var/lib/icinga-editor/phinx.yml"
@@ -18,7 +23,6 @@ replacePHP() {
         sed -i "/${1}/c\define('${1}', '${2}');" ${IECFG}
     fi
 }
-
 
 apache_install() {
 	COMMON_STATE=$(dpkg-query -f '${Status}' -W 'apache2.2-common' 2>/dev/null | awk '{print $3}' || true)
