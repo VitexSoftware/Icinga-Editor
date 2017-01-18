@@ -23,7 +23,7 @@ build:
             - mysql -u root -e "GRANT ALL PRIVILEGES ON icinga_editor.* TO icinga_editor@localhost IDENTIFIED BY 'LojAstod9'"
             - composer self-update
             - composer install --no-interaction --prefer-source
-            - ./vendor/bin/phinx migrate  --configuration tests/phinx.yml         
+            - ./vendor/bin/phinx migrate  --configuration test/phinx.yml         
     tests:
         override:
             -
