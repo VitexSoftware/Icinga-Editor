@@ -1260,6 +1260,7 @@ class Configurator extends \Ease\Brick
      */
     public static function readRawConfigFile($cfgFile, $importer = null)
     {
+        $cfg = [];
         if (!is_file($cfgFile)) {
             \Ease\Shared::user()->addStatusMessage(_('I need filename'),
                 'warning');
@@ -2024,7 +2025,7 @@ class Configurator extends \Ease\Brick
         if (isset($this->userColumn)) {
             $this->setDataValue($this->userColumn, $user->getMyKey());
         }
-        return parent::setUpUser($user, $targetObject);
+        return $this->getDataValue($this->userColumn);
     }
 
     /**
