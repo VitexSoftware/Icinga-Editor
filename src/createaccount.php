@@ -108,7 +108,7 @@ if ($oPage->isPosted()) {
             $email->addItem(new \Ease\Html\Div(' Password: ' . $_POST['password'] . "\n"));
             $email->send();
 
-            $email = $oPage->addItem(new \Ease\Mailer(SEND_INFO_TO, sprintf(_('New Icinga Editor account: %s'), $newOUser->GetUserLogin())));
+            $email = $oPage->addItem(new \Ease\Mailer(constant('SEND_MAILS_FROM'), sprintf(_('New Icinga Editor account: %s'), $newOUser->GetUserLogin())));
             $email->setMailHeaders(['From' => constant('SEND_MAILS_FROM')]);
             $email->addItem(new \Ease\Html\Div(_("New User:\n")));
             $email->addItem(new \Ease\Html\Div(

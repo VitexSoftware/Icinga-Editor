@@ -24,16 +24,6 @@ replacePHP() {
     fi
 }
 
-apache_install() {
-	COMMON_STATE=$(dpkg-query -f '${Status}' -W 'apache2.2-common' 2>/dev/null | awk '{print $3}' || true)
-
-	if [ -e /usr/share/apache2/apache2-maintscript-helper ] ; then
-		. /usr/share/apache2/apache2-maintscript-helper
-		apache2_invoke enconf icinga-editor
-	elif [ "$COMMON_STATE" = "installed" ] || [ "$COMMON_STATE" = "unpacked" ] ; then
-		[ -d /etc/apache2/conf.d/ ] && [ ! -L /etc/apache2/conf.d/icinga-editor.conf ] && ln -s ../conf-available/icinga-editor.conf /etc/apache2/conf.d/icinga-editor.conf
-	fi
-}
 
 
 . /usr/share/debconf/confmodule
@@ -86,24 +76,13 @@ if [ "$1" = "configure" ]; then
         chown -R www-data:www-data    /usr/share/icinga-editor/temp
         chown -R www-data:www-data    /usr/share/icinga/htdocs/images/logos/custom
 
-        apache_install $1
-                # Reload webserver in any case, configuration might have changed
-                # Redirection of 3 is needed because Debconf uses it and it might 
-                # be inherited by webserver. See bug #446324.
         if [ -f /etc/init.d/apache2 ] ; then
-            if [ -x /usr/sbin/invoke-rc.d ]; then
-                invoke-rc.d apache2 reload 3>/dev/null || true
-            else
-                /etc/init.d/apache2 reload 3>/dev/null || true
-            fi
+            a2enconf icinga-editor
+            service apache2 reload
         fi
 
         if [ -f /etc/init.d/avahi ] ; then
-            if [ -x /usr/sbin/invoke-rc.d ]; then
-                invoke-rc.d avahi reload 3>/dev/null || true
-            else
-                /etc/init.d/avahi reload 3>/dev/null || true
-            fi
+            service avahi reload
         fi
 
 fi
