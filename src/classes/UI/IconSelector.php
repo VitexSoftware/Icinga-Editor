@@ -5,10 +5,8 @@ namespace Icinga\Editor\UI;
 /**
  * Volba ikony patřičné k hostu
  *
- * @package    IcingaEditor
- * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
- * @copyright  2012 Vitex@hippy.cz (G)
+ * @copyright  2012-2017 Vitex@hippy.cz (G)
  */
 class IconSelector extends \Ease\Container
 {
@@ -23,7 +21,7 @@ class IconSelector extends \Ease\Container
     public static $imageSize = 40;
 
     /**
-     * Volba ikony pro host
+     * Host icon chooser
      *
      * @param \Icinga\Editor\Engine\Host $host
      */
@@ -34,8 +32,8 @@ class IconSelector extends \Ease\Container
 
         $icodirs = ['' => ''];
 
-        $icoBox = $this->addItem(new \Ease\TWB\Panel(_('Vyber Ikonu')));
-        $icoBox->setTagCss('width: 100%;');
+        $icoBox = $this->addItem(new \Ease\TWB\Panel(_('Choose icon')));
+        $icoBox->setTagCss(['width', '100%;']);
 
         $icodir = self::$webdir.self::$icodir;
         $d      = dir($icodir);
@@ -88,28 +86,27 @@ class IconSelector extends \Ease\Container
             $iconTabs->addTab($subicodir, $icons, $default);
         }
 
-        $uplBox    = $this->addItem(new \Ease\TWB\Panel(_('Nahraj vlastní'),
+        $uplBox    = $this->addItem(new \Ease\TWB\Panel(_('Uload your own'),
             'info'));
         $uplBox->setTagCss('width: 100%;');
         $icoupform = $uplBox->addItem(new \Ease\TWB\Form('icoUp', null, 'POST',
             null, ['enctype' => 'multipart/form-data']));
-        $icoupform->addItem(new \Ease\Html\EmTag(_('Obrázek typu GIF,PNG nebo JPG, nejlépe 40x40 px')));
-        $icoupform->addItem(new \Ease\TWB\FormGroup(_('Ikona ze souboru'),
-            new \Ease\Html\InputFileTag('icofile'), '', _('Soubor v počítači')));
-        $icoupform->addItem(new \Ease\TWB\FormGroup(_('Ikona z adresy'),
-            new \Ease\Html\InputTextTag('icourl'), '', _('Soubor na internetu')));
-        $icoupform->addItem(new \Ease\TWB\FormGroup(_('Titulek obrázku'),
-            new \Ease\Html\InputTextTag('icon_image_alt'), '', _('nepovinné')));
-        $icoupform->addItem(new \Ease\TWB\SubmitButton(_('Odeslat')));
+        $icoupform->addItem(new \Ease\Html\EmTag(_('GIF,PNG or JPG image, best 40x40 px')));
+        $icoupform->addItem(new \Ease\TWB\FormGroup(_('Icon from file'),
+            new \Ease\Html\InputFileTag('icofile'), '', _('File on your disk')));
+        $icoupform->addItem(new \Ease\TWB\FormGroup(_('Icon from URL'),
+            new \Ease\Html\InputTextTag('icourl'), '', _('File on internet')));
+        $icoupform->addItem(new \Ease\TWB\FormGroup(_('Image title'),
+            new \Ease\Html\InputTextTag('icon_image_alt'), '', _('Optional')));
+        $icoupform->addItem(new \Ease\TWB\SubmitButton(_('Save')));
         $icoupform->addItem(new \Ease\Html\InputHiddenTag('host_id',
             $host->getId()));
     }
 
     /**
-     * Otestuje zdali je soubor PNG/GIF/JPG
+     * Check if image is PNG/GIF/JPG
      *
-
-     *      * @param type $tmpfilename
+     * @param string $tmpfilename
      */
     public static function imageTypeOK($tmpfilename)
     {
@@ -139,7 +136,7 @@ class IconSelector extends \Ease\Container
     }
 
     /**
-     * Uloží ikonu do správné složky
+     * Save icon to propper folder
      *
      * @param  string  $tmpfilename
      * @param  IEHost  $host
@@ -275,5 +272,4 @@ class IconSelector extends \Ease\Container
 
         return false;
     }
-
 }
