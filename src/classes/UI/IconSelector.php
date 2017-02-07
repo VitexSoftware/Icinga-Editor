@@ -72,7 +72,7 @@ class IconSelector extends \Ease\Container
                         $hostIcon = new \Ease\Html\ImgTag(self::$webprefix.self::$icodir.'/'.$subicodir.'/'.$entry);
                         $hostIcon->setTagClass('host_icon');
                         if ($host->getDataValue('icon_image') == 'custom/'.$entry) {
-                            $hostIcon->setTagCss('border: 3px red solid;');
+                            $hostIcon->setTagCss(['border'=>'3px red solid']);
                         }
                         $icons->addItem(new \Ease\Html\ATag('?action=newicon&host_id='.$host->getId().'&newicon='.$subicodir.'/'.$entry,
                             $hostIcon));
