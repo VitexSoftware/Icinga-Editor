@@ -88,7 +88,7 @@ class IconSelector extends \Ease\Container
 
         $uplBox    = $this->addItem(new \Ease\TWB\Panel(_('Uload your own'),
             'info'));
-        $uplBox->setTagCss('width: 100%;');
+        $uplBox->setTagCss(['width'=>'100%;']);
         $icoupform = $uplBox->addItem(new \Ease\TWB\Form('icoUp', null, 'POST',
             null, ['enctype' => 'multipart/form-data']));
         $icoupform->addItem(new \Ease\Html\EmTag(_('GIF,PNG or JPG image, best 40x40 px')));
