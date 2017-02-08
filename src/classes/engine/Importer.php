@@ -67,6 +67,22 @@ class Importer extends Configurator
     }
 
     /**
+     * Import Configuration from path File or directory contents
+     * 
+     * @param string $path import target
+     * @return array import results
+     */
+    function importCfgPath($path){
+        $imported = [];
+        if(is_dir($path)){
+            $imported = $this->importCfg(Configurator::readRawConfigDir($path, $this));
+        } else {
+            $imported = $this->importCfgFile($path);
+        }
+        return $imported;
+    }
+    
+    /**
      * Naimportuje konfiguraci ze souboru
      *
      * @param  string $cfgFile
@@ -100,10 +116,10 @@ class Importer extends Configurator
     {
         $doneCount = 0;
         if (count($cfg)) {
-            $this->addStatusMessage(sprintf(_('Načteno %s řádek konfigurace'),
+            $this->addStatusMessage(sprintf(_('%s lines of configuration read'),
                     count($cfg)), 'success');
         } else {
-            $this->addStatusMessage(sprintf(_('konfigurace nebyla načtena'),
+            $this->addStatusMessage(sprintf(_('configuration parsing failed'),
                     count($cfg)), 'warning');
             return 0;
         }
@@ -121,10 +137,10 @@ class Importer extends Configurator
             $doneCount += $IEClass->importArray($cfg, $this->getData());
         }
         if ($doneCount) {
-            $this->addStatusMessage(sprintf(_('Bylo naimportováno %s konfigurací'),
+            $this->addStatusMessage(sprintf(_('%s configurations imported'),
                     $doneCount), 'success');
         } else {
-            $this->addStatusMessage(_('Nic se nenaimportovalo'), 'warning');
+            $this->addStatusMessage(_('None imported'), 'warning');
         }
 
         return $doneCount;

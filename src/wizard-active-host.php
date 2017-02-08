@@ -14,7 +14,7 @@ require_once 'includes/IEInit.php';
 
 $oPage->onlyForLogged();
 
-$oPage->addItem(new UI\PageTop(_('Icinga Editor')));
+$oPage->addItem(new UI\PageTop(_('New Active Host')));
 $oPage->addPageColumns();
 
 $hostName   = trim($oPage->getRequestValue('host_name'));

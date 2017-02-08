@@ -783,6 +783,7 @@ class Configurator extends \Ease\Brick
             }
         }
         if (!is_null($dbId) && ($dbId != $this->getMyKey($data) )) {
+            $result = -1;
             if ($this->allowTemplating && $this->isTemplate()) {
                 $this->addStatusMessage(sprintf(_('Template %s allready defined. Please use another name'),
                         $data['name']), 'warning');
@@ -791,7 +792,6 @@ class Configurator extends \Ease\Brick
                         $this->nameColumn, $data[$this->nameColumn]), 'warning');
             }
 
-            return null;
         } else {
             foreach ($data as $fieldName => $value) {
                 if (!is_null($value)) {
@@ -1213,27 +1213,10 @@ class Configurator extends \Ease\Brick
                     $this->dataReset();
 
                     $this->takeData($buffer);
-                    if ($this->saveToSQL()) {
+                    $import = $this->saveToSQL();
 
-                        if ($this->isTemplate()) {
-                            $this->addStatusMessage(_('předloha').' '.$this->keyword.' <strong>'.$buffer['name'].'</strong>'._(' byl naimportován'),
-                                'success');
-                        } else {
-                            if (!is_null($this->webLinkColumn) && !isset($buffer[$this->webLinkColumn])) {
-                                $this->updateToSQL(
-                                    [$this->getmyKeyColumn() => $this->getMyKey(),
-                                        $this->webLinkColumn =>
-                                        (str_replace(basename(\Ease\WebPage::getUri()),
-                                            '', \Ease\WebPage::phpSelf(true))).
-                                        $this->keyword.'.php?'.
-                                        $this->getmyKeyColumn().'='.
-                                        $this->getMyKey()]);
-                            }
-                            $this->addStatusMessage($this->keyword.' <strong>'.$buffer[$this->nameColumn].'</strong>'._(' was imported'),
-                                'success');
-                        }
-                        $success++;
-                    } else {
+
+                    if (is_null($import)) {
                         if ($this->isTemplate()) {
                             $this->addStatusMessage($this->keyword.' <strong>'.$buffer['name'].'</strong>'._(' was not imported'),
                                 'error');
@@ -1241,7 +1224,29 @@ class Configurator extends \Ease\Brick
                             $this->addStatusMessage($this->keyword.' <strong>'.$buffer[$this->nameColumn].'</strong>'._(' was not imported'),
                                 'error');
                         }
+                    } else {
+                        if ($import != -1) {
+                            if ($this->isTemplate()) {
+                                $this->addStatusMessage(_('Preset').' '.$this->keyword.' <strong>'.$buffer['name'].'</strong> '._('was imported'),
+                                    'success');
+                            } else {
+                                if (!is_null($this->webLinkColumn) && !isset($buffer[$this->webLinkColumn])) {
+                                    $this->updateToSQL(
+                                        [$this->getmyKeyColumn() => $this->getMyKey(),
+                                            $this->webLinkColumn =>
+                                            (str_replace(basename(\Ease\WebPage::getUri()),
+                                                '', \Ease\WebPage::phpSelf(true))).
+                                            $this->keyword.'.php?'.
+                                            $this->getmyKeyColumn().'='.
+                                            $this->getMyKey()]);
+                                }
+                                $this->addStatusMessage($this->keyword.' <strong>'.$buffer[$this->nameColumn].'</strong>'._(' was imported'),
+                                    'success');
+                            }
+                            $success++;
+                        }
                     }
+
                     $buffer = null;
                 }
             }

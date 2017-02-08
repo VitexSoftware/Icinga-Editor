@@ -18,7 +18,7 @@ debian/conf/icinga-editor.conf      etc/apache2/conf-available
 debian/conf/icinga-editor.service   etc/avahi/services
 debian/conf/icinga-editor           etc/sudoers.d
 debian/plugins/*                    usr/lib/nagios/plugins
-bin/iecfgimporter.php               usr/bin
+src/iecfgimporter                   usr/bin
 bin/toicmdfile.sh                   usr/bin
 
 db/migrations/*                     var/lib/icinga-editor/db/migrations/
