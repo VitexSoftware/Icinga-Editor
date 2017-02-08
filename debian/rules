@@ -8,6 +8,5 @@ override_dh_install:
 	sed -i -e 's/\.\.\//.\//g'                                         debian/icinga-editor/usr/share/icinga-editor/about.php
 	sed -i -e 's/..\/vendor/\/var\/lib\/icinga-editor/g'               debian/icinga-editor/usr/share/icinga-editor/includes/IEInit.php
 	sed -i -e 's/..\/locale/\/usr\/share\/locale/g'                    debian/icinga-editor/usr/share/icinga-editor/includes/IEInit.php
-	sed -i -e 's/..\/includes/\/usr\/share\/icinga-editor\/includes/g' debian/icinga-editor/usr/bin/iecfgimporter.php
+	sed -i -e 's/..\/includes/\/usr\/share\/icinga-editor\/includes/g' debian/icinga-editor/usr/bin/iecfgimporter
 	mv debian/icinga-editor/usr/share/icinga-editor/includes/Configure.php debian/icinga-editor/usr/share/icinga-editor/includes/Configure.php.dist
-	mv debian/icinga-editor/usr/bin/iecfgimporter.php                  debian/icinga-editor/usr/bin/iecfgimporter
