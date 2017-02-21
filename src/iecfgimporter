@@ -8,12 +8,11 @@
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2015-2017 Vitex@hippy.cz (G)
  */
-
 define('EASE_LOGGER', 'console|syslog');
 require_once 'includes/IEInit.php';
 
 if (!isset($argv[1])) {
-    die("which file to import ?");
+    die("usage: iecfgimporter </import/source/path/> [default owner: _icinga] [public 0/1] ");
 } else {
     if (file_exists($argv[1])) {
         $cfgFile = $argv[1];
@@ -22,18 +21,33 @@ if (!isset($argv[1])) {
     }
 }
 
-$params = ['public' => true, 'generate' => true];
+$owner = 0;
+if (isset($argv[2])) {
+    $oUser = new \Icinga\Editor\User($argv[2]);
+    $owner_id = $oUser->getUserID();
+    if($owner_id){
+        $owner = $owner_id;
+    }
+}
+
+$public = true;
+if (isset($argv[2])) {
+    $public = boolval($argv[2]);
+}
+
+$params = ['public' => $public, 'generate' => true, 'owner'=>$owner];
 
 $importer = new Icinga\Editor\Engine\Importer($params);
 $importer->importCfgPath($cfgFile);
-
-foreach ($importer->files as $cfgFile) {
-    if ($cfgFile == '/etc/icinga/icinga.cfg') {
-        continue;
-    }
-    if (is_writable($cfgFile) && rename($cfgFile, $cfgFile.'.disabled')) {
-        $importer->addStatusMessage($cfgFile." disabled",'success');
-    } else {
-        $importer->addStatusMessage($cfgFile." not disabled",'warning');
+if (count($importer->files)) {
+    foreach ($importer->files as $cfgFile) {
+        if ($cfgFile == '/etc/icinga/icinga.cfg') {
+            continue;
+        }
+        if (is_writable($cfgFile) && rename($cfgFile, $cfgFile.'.disabled')) {
+            $importer->addStatusMessage($cfgFile." disabled", 'success');
+        } else {
+            $importer->addStatusMessage($cfgFile." not disabled", 'warning');
+        }
     }
 }
