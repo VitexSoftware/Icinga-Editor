@@ -12,7 +12,7 @@ namespace Icinga\Editor;
  */
 require_once 'includes/IEInit.php';
 
-$oPage->onlyForAddmins();
+$oPage->onlyForAdmin();
 
 $oPage->addItem(new UI\PageTop(_('Users')));
 $oPage->addPageColumns();
