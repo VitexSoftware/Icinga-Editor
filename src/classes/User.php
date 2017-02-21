@@ -51,6 +51,23 @@ class User extends \Ease\User
             return $icon;
         }
     }
+    
+    /**
+     * Way how to set Admin's flag using Yes/No switch
+     * 
+     * @param array $data
+     * @return array
+     */
+    public function takeData($data)
+    {
+        foreach ($data as $key=> $value) {
+            if(strstr($key, 'admin-')){
+                $this->setSettingValue('admin', ($value === 'true') ? true : false );
+                unset($data[$key]);
+            }
+        }
+        return parent::takeData($data);
+    }
 
     /**
      * Obtain first contact for user

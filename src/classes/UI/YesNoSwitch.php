@@ -2,7 +2,7 @@
 /**
  * Ano/Ne switch
  *
- * @package    ABDotazník
+ * @package   Dotazník
  * @subpackage WebUI
  * @author     Vitex <dvorak@austro-bohemia.cz>
  * @copyright  2015 Austro-Bohemia s.r.o.
@@ -17,6 +17,7 @@ namespace Icinga\Editor\UI;
  */
 class YesNoSwitch extends TWBSwitch
 {
+    public $keyCode = 'var key = $(".keyId").val();';
 
     function __construct($name, $checked = false, $value = null,
                          $properties = null)
@@ -30,7 +31,7 @@ class YesNoSwitch extends TWBSwitch
         $this->addJavascript('$("[name=\''.$this->getTagName().'\']").on(\'switchChange.bootstrapSwitch\', function(event, state) {
 
         var saverClass = $("[name=\'class\']").val();
-        var key = $(".keyId").val();
+        '.$this->keyCode.'
 
         if(key) {
             var field = $(this).attr("name");
@@ -55,5 +56,4 @@ class YesNoSwitch extends TWBSwitch
         });
             ', null, true);
     }
-
 }

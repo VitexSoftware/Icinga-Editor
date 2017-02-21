@@ -3,16 +3,16 @@
 namespace Icinga\Editor;
 
 /**
- * Icinga Editor - přehled userů
+ * Icinga Editor - users overview
  *
  * @package    IcingaEditor
  * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
- * @copyright  2012 Vitex@hippy.cz (G)
+ * @copyright  2012-2017 Vitex@hippy.cz (G)
  */
 require_once 'includes/IEInit.php';
 
-$oPage->onlyForLogged();
+$oPage->onlyForAddmins();
 
 $oPage->addItem(new UI\PageTop(_('Users')));
 $oPage->addPageColumns();
@@ -30,11 +30,21 @@ if ($users) {
         if (!$cId) {
             continue;
         }
-        $lastRow = $cntList->addRowColumns([$cid++, new User((int) $cId),
+        $userInRow = new User((int) $cId);
+        
+        $adminSwitch = new UI\YesNoSwitch('admin-'.$cId, $userInRow->getSettingValue('admin'), 'true');
+        if($oUser->getSettingValue('admin')){
+            $adminSwitch->setProperties(['onText'=>_('Administrator'),'offText'=>_('User')]);
+        } else {
+            $adminSwitch->setProperties(['onText'=>_('Administrator'),'offText'=>_('User'),'disabled'=>'true']);
+        }
+        $adminSwitch->keyCode = 'var key = '.$cId.';';
+        $lastRow = $cntList->addRowColumns([$cid++, $userInRow,
             new \Ease\Html\ATag('userinfo.php?user_id='.$cId,
                 $cInfo['login'].' <i class="icon-edit"></i>'),
             new \Ease\Html\ATag('apply.php?force_user_id='.$cId,
-                _('Regenerate configuration').' <i class="icon-repeat"></i>')
+                _('Regenerate configuration').' <i class="icon-repeat"></i>'),
+            new \Ease\TWB\Form('ad'.$cId,null,null,['<input type="hidden" name="class" value="Icinga-Editor-User">', $adminSwitch])
             ]
         );
     }
