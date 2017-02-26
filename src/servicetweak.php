@@ -120,15 +120,15 @@ $oPage->columnIII->addItem($service->deleteButton($service->getName(),
         'host_id='.$host->getId()));
 
 $oPage->columnIII->addItem(new \Ease\TWB\LinkButton('service.php?service_id='.$service->getID(),
-    _('Editace služby').' '.$serviceName));
+    _('Service Edit').' '.$serviceName));
 
 $renameForm = new \Ease\TWB\Form('Rename',
     '?action=rename&amp;host_id='.$host->getID().'&service_id='.$service->getId());
 $renameForm->addItem(new \Ease\Html\InputTextTag('newname'),
     $service->getName(), ['class' => 'form-control']);
-$renameForm->addItem(new \Ease\TWB\SubmitButton(_('Přejmenovat'), 'success'));
+$renameForm->addItem(new \Ease\TWB\SubmitButton(_('Rename'), 'success'));
 
-$oPage->columnIII->addItem(new \Ease\TWB\Panel(_('Přejmenování'), 'info',
+$oPage->columnIII->addItem(new \Ease\TWB\Panel(_('Renaming'), 'info',
     $renameForm));
 
 $oPage->columnIII->addItem($service->cloneButton());

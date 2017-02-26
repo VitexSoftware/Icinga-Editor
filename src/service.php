@@ -129,7 +129,7 @@ switch ($oPage->getRequestValue('action')) {
                 $service->getMyKey()));
         }
         $form->addItem('<br>');
-        $form->addItem(new \Ease\TWB\SubmitButton(_('Uložit'), 'success'));
+        $form->addItem(new \Ease\TWB\SubmitButton(_('Save'), 'success'));
         $oPage->AddCss('
 input.ui-button { width: 100%; }
 ');
@@ -145,10 +145,10 @@ input.ui-button { width: 100%; }
                 '?action=rename&service_id='.$service->getId());
             $renameForm->addItem(new \Ease\Html\InputTextTag('newname'),
                 $service->getName(), ['class' => 'form-control']);
-            $renameForm->addItem(new \Ease\TWB\SubmitButton(_('Přejmenovat'),
+            $renameForm->addItem(new \Ease\TWB\SubmitButton(_('Rename'),
                 'success'));
 
-            $tools->addItem(new \Ease\TWB\Panel(_('Přejmenování'), 'info',
+            $tools->addItem(new \Ease\TWB\Panel(_('Renaming'), 'info',
                 $renameForm));
             $tools->addItem(new UI\HostSelector($service));
 
@@ -157,7 +157,7 @@ input.ui-button { width: 100%; }
                     _('Systémová služba')));
             }
 
-            $tools->addItem(new \Ease\TWB\Panel(_('Výměna služby'), 'info',
+            $tools->addItem(new \Ease\TWB\Panel(_('Service swap'), 'info',
                 new UI\ServiceSwapForm($service)));
         }
 

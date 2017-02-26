@@ -78,6 +78,9 @@ class ServiceConfigurator extends \Ease\Html\Div
     {
         foreach ($this->commonFields as $cf) {
             $value = \Ease\Shared::webPage()->getRequestValue($cf);
+            if (is_null($value)) {
+                continue;
+            }
             if ($value == 'NULL') {
                 $this->tweaker->service->setDataValue($cf, null);
             } else {

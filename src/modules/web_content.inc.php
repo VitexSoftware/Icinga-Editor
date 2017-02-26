@@ -3,21 +3,25 @@
  * Formulář testu webového obsahu
  *
  * @package    IcingaEditor
- * @subpackage plugins
  * @author     Vitex <vitex@hippy.cz>
- * @copyright  2014 Vitex@hippy.cz (G)
+ * @copyright  2014-2017 Vitex@hippy.cz (G)
  */
 
 namespace Icinga\Editor\modules;
 
 /**
- * Description of ping
+ * WebContent configuration dialog
  *
  * @author vitex
  */
 class web_content extends \Icinga\Editor\UI\ServiceConfigurator
 {
 
+    /**
+     * Initialize Module
+     *
+     * @return boolean
+     */
     function init()
     {
         $hostname = $this->tweaker->host->getDataValue('host_name');
@@ -27,27 +31,23 @@ class web_content extends \Icinga\Editor\UI\ServiceConfigurator
     }
 
     /**
-     *
+     * Form to check URL
      */
     public function form()
     {
         $testUrl = $this->commandParams[0];
-        $reqText = $this->commandParams[1];
-        if (isset($this->commandParams[2])) {
-            $errText = $this->commandParams[2];
-        } else {
-            $errText = '';
-        }
+        $reqText = isset($this->commandParams[1]) ? $this->commandParams[1] : '';
+        $errText = isset($this->commandParams[2]) ? $this->commandParams[2] : '';
 
-        $this->form->addItem(new \Ease\TWB\FormGroup(_('Sledované url'),
+        $this->form->addItem(new \Ease\TWB\FormGroup(_('Watched URL'),
             new \Ease\Html\InputTextTag('testUrl', $testUrl), '',
-            _('Adresa sledované stránky')));
-        $this->form->addItem(new \Ease\TWB\FormGroup(_('Očekávaný obsah'),
+            _('Web Page Address')));
+        $this->form->addItem(new \Ease\TWB\FormGroup(_('Content needed'),
             new \Ease\Html\InputTextTag('reqText', $reqText), '',
-            _('Text očekávaný na stránce v rámci bezchybného obsahu')));
-        $this->form->addItem(new \Ease\TWB\FormGroup(_('Nechtěný obsah'),
+            _('Text on healthy page')));
+        $this->form->addItem(new \Ease\TWB\FormGroup(_('Content unneeded'),
             new \Ease\Html\InputTextTag('errText', $errText), '',
-            _('Neočekávaný text, např. "Error" nebo jiný fragment chybového hlášení')));
+            _('Unwanted text, ex. "Error" ord another fragment of error message')));
     }
 
     /**
@@ -57,6 +57,7 @@ class web_content extends \Icinga\Editor\UI\ServiceConfigurator
      */
     public function reconfigureService()
     {
+        $success = false;
         $page    = \Ease\Shared::webPage();
         $testUrl = $page->getRequestValue('testUrl');
         $reqText = $page->getRequestValue('reqText');
@@ -76,7 +77,7 @@ class web_content extends \Icinga\Editor\UI\ServiceConfigurator
             $regex .= "(\?[a-z+&\$_.-][a-z0-9;:@&%=+\/\$_.-]*)?"; // GET Query
             $regex .= "(#[a-z_.-][a-z0-9+\$_.-]*)?"; // Anchor 
             if (!preg_match("/^$regex$/", $testUrl)) {
-                $page->addStatusMessage(_('Neplatné url'), 'error');
+                $page->addStatusMessage(_('Invalid URL'), 'error');
                 return false;
             }
 
@@ -88,10 +89,10 @@ class web_content extends \Icinga\Editor\UI\ServiceConfigurator
             $this->tweaker->service->setDataValue('check_command-params',
                 $command);
 
-            return parent::reconfigureService();
+            $success = parent::reconfigureService();
         }
 
-        return FALSE;
+        return $success;
     }
 
 }
