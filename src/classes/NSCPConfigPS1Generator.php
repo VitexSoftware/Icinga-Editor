@@ -33,7 +33,7 @@ class NSCPConfigPS1Generator extends NSCPConfigBatGenerator
             case 'linux':
                 $nsclient = '& $NSCLIENT';
                 break;
-            default:
+            default :
                 $nsclient = 'nsclient';
                 break;
         }
@@ -142,7 +142,7 @@ curl "'.$this->getCfgConfirmUrl().'"
 service nscp start
 ';
                 break;
-            default:
+            default :
                 $this->nscConfArray[] = $this->nscConfArray[] = "\n".'
 ';
                 break;
@@ -175,7 +175,7 @@ service nscp start
 curl "'.Engine\Configurator::getBaseURL().'scriptget.php?script_id='.$script_id.'"
 ';
                         break;
-                    default:
+                    default :
                         $this->nscConfArray[] = $this->nscConfArray[] = "\n".'
 '.$this->nscvar.' test
 ';

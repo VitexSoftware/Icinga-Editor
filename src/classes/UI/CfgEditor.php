@@ -369,7 +369,7 @@ class CfgEditor extends \Ease\Container
                     $this->objectEdited->getDataValue($fieldName), null,
                     ['style' => 'width: 100%', 'OnChange' => $this->onChangeCode($fieldName)]));
                 break;
-            default:
+            default :
                 $fieldBlock->addItem(new EaseLabeledTextInput($fieldName,
                     $value, $keywordInfo['title'], ['title' => $fieldName]));
                 $this->addStatusMessage(sprintf(_('Unknown type of %s for column %s'),

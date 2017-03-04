@@ -52,7 +52,7 @@ switch ($saver->getColumnType($field)) {
         }
 
         break;
-    default:
+    default :
         if (is_null($saverClass) || is_null($field) || is_null($value) || is_null($key)) {
             header('HTTP/1.1 400 Bad Request', 400);
             die(_('Chybné volání'));

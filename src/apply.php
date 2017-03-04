@@ -82,7 +82,7 @@ if ($testing) {
                         $keywords[1]));
                     break;
 
-                default:
+                default :
                     $errorLine->addItem($line);
                     break;
             }
@@ -96,7 +96,7 @@ if ($testing) {
                             $keywords[3]));
                         break;
 
-                    default:
+                    default :
                         break;
                 }
             }

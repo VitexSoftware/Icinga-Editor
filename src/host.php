@@ -139,7 +139,7 @@ switch ($oPage->getRequestValue('action')) {
             }
         }
         break;
-    default:
+    default :
         if ($oPage->isPosted()) {
             $host->takeData($_POST);
             $hostID = $host->saveToSQL();

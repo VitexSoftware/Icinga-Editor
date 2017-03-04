@@ -71,7 +71,7 @@ class PortScanner extends \Ease\Sand
                     $hostmod = true;
                     break;
 
-                default:
+                default :
                     break;
             }
             $this->service->setmyKeyColumn('tcp_port');

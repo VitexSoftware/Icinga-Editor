@@ -144,7 +144,7 @@ class DataSource extends \Ease\Brick
                         }
                         break;
 
-                    default:
+                    default :
                         break;
                 }
             }
@@ -210,7 +210,7 @@ class DataSource extends \Ease\Brick
                 $resultRaw = $this->handledObejct->htmlizeData($this->handledObejct->dblink->queryToArray($query));
                 break;
 
-            default:
+            default :
                 $resultRaw = $this->handledObejct->dblink->queryToArray($query);
                 break;
         }
@@ -370,7 +370,7 @@ class DataSource extends \Ease\Brick
                 $this->getPdf($queryRaw);
                 break;
 
-            default:
+            default :
                 // header("Content-type: application/json");
 
                 echo $this->getJson($queryRaw);

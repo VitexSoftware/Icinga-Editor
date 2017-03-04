@@ -169,7 +169,7 @@ class Script extends engine\Configurator
                     header('Content-Disposition: attachment; filename='.$this->getName());
                 }
                 break;
-            default:
+            default :
                 break;
         }
         if ($send) {

@@ -124,7 +124,7 @@ class SensorTool extends \Ease\Container
                         ['font-face' => 'fixed']));
                 }
                 break;
-            default:
+            default :
                 $pltIco = 'logos/unknown.gif';
                 if ($host->getCfgValue('active_checks_enabled')) {
                     $genericActiveTab = $sensorTabs->addTab(_('Generic Active'));

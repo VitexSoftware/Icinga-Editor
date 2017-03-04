@@ -131,7 +131,7 @@ class Configurator extends \Ease\Brick
 //                case 'IDLIST':
 //                    $this->Listings[$KeyWord] = array();
 //                    break;
-//                default:
+//                default :
 //                    break;
 //            }
 //        }
@@ -477,7 +477,7 @@ class Configurator extends \Ease\Brick
                             case 'false':
                             case 'off':
                             case 'n':
-                            default:
+                            default :
                                 $data[$fieldName] = (bool) 0;
                                 break;
                         }
@@ -495,7 +495,7 @@ class Configurator extends \Ease\Brick
                         }
                     }
                     break;
-                default:
+                default :
                     break;
             }
         }
@@ -762,7 +762,7 @@ class Configurator extends \Ease\Brick
                         $data[$keyWord] = serialize($data[$keyWord]);
                     }
                     break;
-                default:
+                default :
                     break;
             }
         }
@@ -842,7 +842,7 @@ class Configurator extends \Ease\Brick
                             $data[$recordID][$keyWord] = [];
                         }
                         break;
-                    default:
+                    default :
                         break;
                 }
             }
@@ -1575,7 +1575,7 @@ class Configurator extends \Ease\Brick
                 $this->getPdf($queryRaw);
                 break;
 
-            default:
+            default :
 // header("Content-type: application/json");
 
                 echo $this->getJson($queryRaw);
@@ -1688,7 +1688,7 @@ class Configurator extends \Ease\Brick
                             case 'linux':
                                 $icon = 'logos/base/linux40.gif';
                                 break;
-                            default:
+                            default :
                                 $icon = 'logos/unknown.gif';
                                 break;
                         }
@@ -1881,7 +1881,7 @@ class Configurator extends \Ease\Brick
                     $this->addStatusMessage(sprintf(_('Unknown imported column  %s'),
                             $column));
                     break;
-                default:
+                default :
             }
         }
         return $this->takeData($dataRow);

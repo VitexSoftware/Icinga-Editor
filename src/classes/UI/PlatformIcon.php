@@ -28,7 +28,7 @@ class PlatformIcon extends \Ease\Html\ImgTag
             case 'linux':
                 $image = 'base/linux40.gif';
                 break;
-            default:
+            default :
                 $image = 'unknown.gif';
                 break;
         }

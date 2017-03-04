@@ -139,7 +139,7 @@ class NSCPConfigBatGenerator extends \Ease\Atom
             case 'linux':
                 $nsclient = '$NSCLIENT';
                 break;
-            default:
+            default :
                 $nsclient = 'nsclient';
                 break;
         }
@@ -276,7 +276,7 @@ echo "file name=${log-path}/nsclient.log" >> $INI
             case 'linux':
                 $this->addCfg('/modules', 'CheckSystemUnix', 'enabled');
                 break;
-            default:
+            default :
                 break;
         }
         $this->addCfg('/modules', 'CheckHelpers', 'enabled');
@@ -366,7 +366,7 @@ echo "file name=${log-path}/nsclient.log" >> $INI
                 case 'linux':
                     $this->nscConfArray[] = "\n\n# #".$service['service_id'].' '.$serviceName."\n";
                     break;
-                default:
+                default :
                     break;
             }
 
@@ -446,7 +446,7 @@ curl "'.$this->getCfgConfirmUrl().'"
 service nscp start
 ';
                 break;
-            default:
+            default :
                 $this->nscConfArray[] = $this->nscConfArray[] = "\n".'
 ';
                 break;
@@ -482,7 +482,7 @@ service nscp start
                     header('Content-Disposition: attachment; filename='.$this->host->getName().'_nscp.sh');
                 }
                 break;
-            default:
+            default :
                 break;
         }
         if ($send) {
@@ -529,7 +529,7 @@ service nscp start
 curl "'.Engine\Configurator::getBaseURL().'scriptget.php?script_id='.$script_id.'"
 ';
                         break;
-                    default:
+                    default :
                         $this->nscConfArray[] = $this->nscConfArray[] = "\n".'
 '.$this->nscvar.' test
 ';

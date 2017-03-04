@@ -8,6 +8,7 @@ Gui for generating Icinga 1.x configuration files and much more...
 [![Software License](https://img.shields.io/badge/license-GPL-brightgreen.svg?style=flat-square)](https://github.com/Vitexus/icinga_configurator/blob/master/LICENSE)
 [![Build Status](https://img.shields.io/travis/Vitexus/icinga_configurator/master.svg?style=flat-square)](https://travis-ci.org/Vitexus/icinga_configurator)
 [![Coverage Status](https://img.shields.io/coveralls/Vitexus/icinga_configurator/master.svg?style=flat-square)](https://coveralls.io/r/Vitexus/icinga_configurator?branch=master)
+[![Translate Status](https://hosted.weblate.org/widgets/icinga-editor/-/shields-badge.svg)](https://hosted.weblate.org/engage/icinga-editor/?utm_source=widget)
 
 Features
 --------

@@ -40,7 +40,7 @@ switch ($oPage->getRequestValue('action')) {
                 'warning');
         }
         break;
-    default:
+    default :
 
         if ($usergroup_name) {
             $userGroup->setDataValue('usergroup_name', $usergroup_name);

@@ -186,7 +186,7 @@ class CheckDriveSize extends \Icinga\Editor\UI\ServiceConfigurator
                     }
                     break;
 
-                default:
+                default :
                     break;
             }
         }

@@ -110,7 +110,7 @@ class CheckMem extends \Icinga\Editor\UI\ServiceConfigurator
                     }
                     break;
 
-                default:
+                default :
                     break;
             }
         }
