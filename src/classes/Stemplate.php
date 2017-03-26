@@ -3,10 +3,8 @@
 namespace Icinga\Editor;
 
 /**
- * Konfigurace Předloh sledovaných služeb
+ * Watched services presets editor
  *
- * @package    IcingaEditor
- * @subpackage Engine
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2012 Vitex@hippy.cz (G)
  */
@@ -18,13 +16,13 @@ class Stemplate extends Engine\Configurator
     public $keyword     = 'stemplate';
 
     /**
-     * Dát tyto položky k dispozici i ostatním ?
+     * Public ?
      * @var boolean
      */
     public $publicRecords = false;
 
     /**
-     * Použité sloupce
+     * Used Columns
      * @var array
      */
     public $useKeywords = [
@@ -35,37 +33,10 @@ class Stemplate extends Engine\Configurator
     ];
 
     /**
-     * Informace o sloupečcích
+     * Columns info
      * @var array
      */
-    public $keywordsInfo = [
-        'stemplate_name' => [
-            'severity' => 'mandatory',
-            'title' => 'název předlohy sledovaných služeb',
-            'required' => true
-        ],
-        'services' => [
-            'severity' => 'mandatory',
-            'title' => 'členské služby',
-            'refdata' => [
-                'table' => 'service',
-                'captioncolumn' => 'service_description',
-                'idcolumn' => 'service_id',
-                'condition' => ['register' => 1]]
-        ],
-        'contacts' => [
-            'severity' => 'advanced',
-            'title' => 'členské kontakty',
-            'refdata' => [
-                'table' => 'contact',
-                'captioncolumn' => 'contact_name',
-                'idcolumn' => 'contact_id',
-                'condition' => ['register' => 1]]
-        ],
-        'notes' => [
-            'severity' => 'optional',
-            'title' => 'poznámky']
-    ];
+    public $keywordsInfo = [];
 
     /**
      * Předloha sledovaných služeb
@@ -74,6 +45,36 @@ class Stemplate extends Engine\Configurator
      */
     public function __construct($itemID = null)
     {
+
+        $this->keywordsInfo = [
+            'stemplate_name' => [
+                'severity' => 'mandatory',
+                'title' => _('Watched services preset name'),
+                'required' => true
+            ],
+            'services' => [
+                'severity' => 'mandatory',
+                'title' => _('memeber services'),
+                'refdata' => [
+                    'table' => 'service',
+                    'captioncolumn' => 'service_description',
+                    'idcolumn' => 'service_id',
+                    'condition' => ['register' => 1]]
+            ],
+            'contacts' => [
+                'severity' => 'advanced',
+                'title' => _('member contacts'),
+                'refdata' => [
+                    'table' => 'contact',
+                    'captioncolumn' => 'contact_name',
+                    'idcolumn' => 'contact_id',
+                    'condition' => ['register' => 1]]
+            ],
+            'notes' => [
+                'severity' => 'optional',
+                'title' => _('notes')]
+        ];
+
         parent::__construct($itemID);
         unset($this->useKeywords['generate']);
         unset($this->keywordsInfo['generate']);
@@ -89,5 +90,4 @@ class Stemplate extends Engine\Configurator
     {
         return $allData;
     }
-
 }

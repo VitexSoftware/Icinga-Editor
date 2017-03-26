@@ -42,23 +42,7 @@ class Script extends engine\Configurator
      * Info
      * @var array
      */
-    public $keywordsInfo = [
-        'filename' => [
-            'severity' => 'mandatory',
-            'title' => 'Command Name', 'required' => true],
-        'body' => [
-            'severity' => 'mandatory',
-            'title' => 'Script body', 'required' => true],
-        'user_id' => [
-            'severity' => 'advanced',
-            'title' => 'Comand owner', 'required' => false],
-        'public' => [
-            'severity' => 'advanced',
-            'title' => 'Publicity'],
-        'platform' => [
-            'severity' => 'basic',
-            'title' => 'Platform', 'mandatory' => true]
-    ];
+    public $keywordsInfo = [];
 
     /**
      * Dát tyto položky k dispozici i ostatním ?
@@ -73,13 +57,30 @@ class Script extends engine\Configurator
      */
     public function __construct($itemID = null)
     {
+        $this->keywordsInfo = [
+            'filename' => [
+                'severity' => 'mandatory',
+                'title' => _('Command Name'), 'required' => true],
+            'body' => [
+                'severity' => 'mandatory',
+                'title' => _('Script body'), 'required' => true],
+            'user_id' => [
+                'severity' => 'advanced',
+                'title' => _('Comand owner'), 'required' => false],
+            'public' => [
+                'severity' => 'advanced',
+                'title' => _('Publicity')],
+            'platform' => [
+                'severity' => 'basic',
+                'title' => _('Platform'), 'mandatory' => true]
+        ];
         parent::__construct($itemID);
         unset($this->keywordsInfo['generate']);
         unset($this->useKeywords['generate']);
     }
 
     /**
-     * Vrací všechna data uživatele
+     * Get all scripts data for user
      *
      * @return array
      */
@@ -97,7 +98,7 @@ class Script extends engine\Configurator
     }
 
     /**
-     * Vrací všechna data
+     * Obtain All data
      *
      * @return array
      */
@@ -179,5 +180,4 @@ class Script extends engine\Configurator
             return $script;
         }
     }
-
 }

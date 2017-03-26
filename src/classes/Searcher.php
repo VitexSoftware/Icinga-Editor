@@ -3,7 +3,7 @@
 namespace Icinga\Editor;
 
 /**
- * Třída pro import konfigurace
+ * Searcher Class
  *
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2012-2016 Vitex@hippy.cz (G)

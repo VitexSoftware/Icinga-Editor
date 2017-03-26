@@ -16,15 +16,15 @@ class PreferencesForm extends \Ease\TWB\Form
         parent::__construct($formName, $formAction, $formMethod, $formContents,
             $tagProperties);
 
-        $this->addItem(new \Ease\TWB\FormGroup(_('IP adresa serveru'),
+        $this->addItem(new \Ease\TWB\FormGroup(_('Server IP address'),
             new \Ease\Html\InputTextTag('serverip'), '',
             $_SERVER['SERVER_ADDR'],
-            _('Adresa na níž běží icinga. Sem se posílají NSCA testy a z této adresy je povoleno se dotazovat NRPE pluginů')));
-        $this->addItem(new \Ease\TWB\FormGroup(_('nsca heslo'),
+            _('Address where live Icinga itself. Here recieve NSCA tests and from here allow NRPE access')));
+        $this->addItem(new \Ease\TWB\FormGroup(_('nsca password'),
             new \Ease\Html\InputTextTag('nscapassword'), '', '',
-            _('Heslo kterým je šifrována NSCA komunikace')));
+            _('password used by NSCA ')));
 
-        $this->addItem(new \Ease\TWB\SubmitButton(_('Uložit').'&nbsp'.\Ease\TWB\Part::GlyphIcon('save'),
+        $this->addItem(new \Ease\TWB\SubmitButton(_('Save').'&nbsp'.\Ease\TWB\Part::GlyphIcon('save'),
             'success'));
     }
 

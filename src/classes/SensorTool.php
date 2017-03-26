@@ -96,7 +96,7 @@ class SensorTool extends \Ease\Container
                     $nrpe_cfgGenerator = new NRPEConfigGenerator($host);
 
                     $linuxActiveTab = $sensorTabs->addTab(_('Linux NRPE'));
-                    $linuxActiveTab->addItem(new \Ease\Html\H1Tag('<img src="'.$pltIco.'">'._('aktivní NRPE pro NRPE Server')));
+                    $linuxActiveTab->addItem(new \Ease\Html\H1Tag('<img src="'.$pltIco.'">'._('Active NRPE for NRPE Server')));
                     $linuxActiveTab->addItem(new \Ease\Html\PTag(_('Please install sensor first by this command').':'));
                     $linuxActiveTab->addItem(new \Ease\Html\Div('<pre>sudo aptitude -y install nagios-nrpe-server</pre>',
                         ['class' => 'code']));

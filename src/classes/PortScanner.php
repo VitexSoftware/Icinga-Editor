@@ -10,31 +10,31 @@ namespace Icinga\Editor;
 class PortScanner extends \Ease\Sand
 {
     /**
-     * Porty k oskenování
+     * Ports to scan
      * @var array
      */
     public $ports = [];
 
     /**
-     * Výsledky scanu
+     * Scanning results
      * @var array
      */
     public $results = [];
 
     /**
-     * Objekt služby
-     * @var IEService
+     * Used service object
+     * @var Engine\Service
      */
     public $service = null;
 
     /**
-     * Objekt hosta
+     * Host Object
      * @var Engine\Host
      */
     public $host = null;
 
     /**
-     * Oskenuje hosta v argumentu na otevřené porty registrovaných služeb
+     * Scan host for open ports of registered services
      *
      * @param Engine\Host $hostToScan
      */
@@ -49,7 +49,7 @@ class PortScanner extends \Ease\Sand
     }
 
     /**
-     * Přiřadí služby k hostům podle výsledků scannu
+     * Assign scan results to services
      */
     public function assignServices()
     {
@@ -80,11 +80,11 @@ class PortScanner extends \Ease\Sand
             $this->service->addMember('host_name', $this->host->getId(),
                 $this->host->getName());
             if ($this->service->saveToSQL()) {
-                $this->addStatusMessage(sprintf(_('Přidána sledovaná služba: %s'),
+                $this->addStatusMessage(sprintf(_('Added watched services: %s'),
                         $this->service->getName()), 'success');
                 $success++;
             } else {
-                $this->addStatusMessage(sprintf(_('Přidání sledované služby: %s se nezdařilo'),
+                $this->addStatusMessage(sprintf(_('Adding watched service: %s failed'),
                         $this->service->getName()), 'error');
             }
         }
@@ -96,7 +96,7 @@ class PortScanner extends \Ease\Sand
     }
 
     /**
-     * Vrací porty služeb k dispozici
+     * Obtain known ports
      */
     public function getServicePorts()
     {
@@ -107,9 +107,9 @@ class PortScanner extends \Ease\Sand
     }
 
     /**
-     * Oskenuje porty
+     * TCP Scan of ports
      *
-     * @return int počet otestovaných portů
+     * @return int scanned ports count
      */
     public function performScan()
     {
@@ -128,7 +128,7 @@ class PortScanner extends \Ease\Sand
     }
 
     /**
-     * Zkusí se připojit k portu
+     * Try to connect to port
      *
      * @param int $port
      */

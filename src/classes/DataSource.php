@@ -3,10 +3,9 @@
 namespace Icinga\Editor;
 
 define('K_PATH_IMAGES', dirname(__DIR__).'/img/');
-#require_once 'tcpdf/tcpdf.php';
 
 /**
- * Description of DBFDataSource
+ * Description of DataSource
  *
  * @author vitex
  */
@@ -36,8 +35,8 @@ class DataSource extends \Ease\Brick
     public $fallBackUrl = '';
 
     /**
-     * Instance objektu webové stránky
-     * @var EaseWebPage
+     * WebPage object instance
+     * @var \Ease\WebPage
      */
     public $webPage = null;
 
@@ -55,14 +54,14 @@ class DataSource extends \Ease\Brick
 
     /**
      * objekt poskytující data
-     * @var IEcfg
+     * @var Engine\Configurator
      */
     public $handledObejct = null;
 
     /**
-     * Vrací data pro Grid
+     * Obtain data for Grid
      *
-     * @param Engine\Configurator $handledObejct objekt poskytující data
+     * @param Engine\Configurator $handledObejct object with data
      * @param string $fallBackUrl
      */
     public function __construct($handledObejct, $fallBackUrl = null)
@@ -94,9 +93,9 @@ class DataSource extends \Ease\Brick
     }
 
     /**
-     * Nastaví URL pro znovuzobrazení stránky.
+     * Set URL for page refresh
      *
-     * @param type $url
+     * @param string $url
      */
     public function setBackUrl($url)
     {
@@ -104,7 +103,7 @@ class DataSource extends \Ease\Brick
     }
 
     /**
-     * řešení
+     * solutions
      */
     public function ajaxify()
     {
@@ -117,17 +116,17 @@ class DataSource extends \Ease\Brick
                         if ($this->controlDeleteColumns()) {
                             $this->fallBackUrl = false;
                             if ($this->deleteFromSQL()) {
-                                $this->webPage->addStatusMessage(_('Smazáno'));
+                                $this->webPage->addStatusMessage(_('Deleted'));
                             }
                         }
                         break;
                     case 'add':
                         if ($this->controlAddColumns()) {
                             if ($this->insertToSQL()) {
-                                $this->webPage->addStatusMessage(_('Záznam byl přidán'),
+                                $this->webPage->addStatusMessage(_('Record was added'),
                                     'success');
                             } else {
-                                $this->webPage->addStatusMessage(_('Záznam nebyl přidám'),
+                                $this->webPage->addStatusMessage(_('Record was not added'),
                                     'error');
                             }
                         }
@@ -135,10 +134,10 @@ class DataSource extends \Ease\Brick
                     case 'edit':
                         if ($this->controlEditColumns()) {
                             if ($this->saveToSQL()) {
-                                $this->webPage->addStatusMessage(_('Záznam byl upraven'),
+                                $this->webPage->addStatusMessage(_('Record was updated'),
                                     'success');
                             } else {
-                                $this->webPage->addStatusMessage(_('Záznam nebyl upravn'),
+                                $this->webPage->addStatusMessage(_('Record was not updated'),
                                     'error');
                             }
                         }
@@ -157,10 +156,10 @@ class DataSource extends \Ease\Brick
     }
 
     /**
-     * Vrací celkový počet výsledků dotazu bez stránkování.
+     * Obtaint results count
      *
      * @param string $queryRaw
-     * @return int
+     * @return int results
      */
     public function getTotal($queryRaw)
     {
@@ -170,6 +169,11 @@ class DataSource extends \Ease\Brick
         return $this->handledObejct->dblink->queryToValue($queryRaw);
     }
 
+    /**
+     * Obtain SQL fragment for curent conditions
+     *
+     * @return string
+     */
     function getListingQueryWhere()
     {
         $where = '';
@@ -182,6 +186,7 @@ class DataSource extends \Ease\Brick
     }
 
     /**
+     * Obtain data listing
      *
      * @param string $queryRaw
      * @param string $transform html|csv|none
@@ -331,7 +336,7 @@ class DataSource extends \Ease\Brick
     }
 
     /**
-     * Vrací buňku CSV
+     * Obtain CSV cell
      *
      * @param int|string $cell
      * @return string
@@ -353,7 +358,7 @@ class DataSource extends \Ease\Brick
     }
 
     /**
-     * Vypíše výsledek SQL dotazu v požadovaném tvaru
+     * Obtain query result in requested format
      *
      * @param type $queryRaw
      */
@@ -399,9 +404,7 @@ class DataSource extends \Ease\Brick
         $this->pdf->SetKeywords($title);
 
 // set default header data
-        $this->pdf->SetHeaderData('logo.png', 45, $title,
-            "DB Finance s.r.o - nezávislý investiční zprostředkovatel a pojišťovací makléř\n"
-            ."✉ dbfinance@dbfinance.cz ☎ 222 541 990 – 995 ⌨ www.dbfinance.cz ");
+        $this->pdf->SetHeaderData('logo.png', 45, $title, "Icinga Editor");
 // set header and footer fonts
         $this->pdf->setHeaderFont(['dejavusans', '', 8]);
         $this->pdf->setFooterFont([PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA]);
@@ -538,5 +541,4 @@ class DataSource extends \Ease\Brick
     {
         return $this->getListingQueryWhere();
     }
-
 }

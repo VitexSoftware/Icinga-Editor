@@ -71,5 +71,4 @@ class ExternalCommand extends \Ease\Atom
             $this->executeAll();
         }
     }
-
 }

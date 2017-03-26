@@ -3,14 +3,21 @@
 namespace Icinga\Editor;
 
 /**
- * Description of IEIcingaWebUser
+ * Description of IcingaWebUser
  *
  * @author vitex
  */
 class IcingaWebUser
 {
+    /**
+     * Where to get IcingaWeb sources
+     * @var string
+     */
     public $icingaWebDir = '/usr/share/icinga-web';
 
+    /**
+     * IcingaWeb user wrapper
+     */
     public function __construct()
     {
         if (file_exists($this->icingaWebDir.'/app/config.php')) {

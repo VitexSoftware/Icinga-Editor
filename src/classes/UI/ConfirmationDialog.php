@@ -3,7 +3,7 @@
 namespace Icinga\Editor\UI;
 
 /**
- * Description of ABConfirmationDialog
+ * Description of ConfirmationDialog
  *
  * @author vitex
  */
@@ -32,15 +32,15 @@ class ConfirmationDialog extends \Ease\Html\Div
 
         $modalContent->addItem(new \Ease\Html\Div([
             new \Ease\Html\ButtonTag('<span aria-hidden="true">&times;</span>',
-                ['class' => 'close', 'data-dismiss' => 'modal', 'aria-label' => _('Zavřít')]),
+                ['class' => 'close', 'data-dismiss' => 'modal', 'aria-label' => _('Close')]),
             new \Ease\Html\H4Tag($title, ['class' => 'modal-title'])
             ], ['class' => 'modal-header']));
         $modalContent->addItem(new \Ease\Html\Div($content,
             ['class' => 'modal-body']));
         $modalContent->addItem(new \Ease\Html\Div([
-            new \Ease\Html\ButtonTag(_('Ne'),
+            new \Ease\Html\ButtonTag(_('No'),
                 ['class' => "btn btn-default", 'data-dismiss' => "modal"]),
-            new \Ease\TWB\LinkButton($url, _('Ano'), 'danger'),
+            new \Ease\TWB\LinkButton($url, _('Yes'), 'danger'),
             ], ['class' => 'modal-footer']));
         $this->setTagID($name);
         $this->addTagClass('modal fade');

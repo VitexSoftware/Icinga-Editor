@@ -3,7 +3,7 @@
 namespace Icinga\Editor;
 
 /**
- * Description of IEPreferences
+ * Description of Preferences
  *
  * @author vitex
  */
@@ -13,13 +13,13 @@ class Preferences extends \Ease\Brick
     public $myKeyColumn = 'key';
 
     /**
-     * Pole předvoleb
+     * Preferences array
      * @var array
      */
     public $preferences = [];
 
     /**
-     * Objekt předvoleb
+     * Preferences class
      */
     function __construct()
     {
@@ -36,12 +36,12 @@ class Preferences extends \Ease\Brick
     }
 
     /**
-     * Uloží jednu předvolbu
+     * Save one preference
      *
-     * @param type $key
-     * @param type $value
+     * @param string $key
+     * @param string $value
      *
-     * @return type
+     * @return int|null record id or null
      */
     function saveOnePreference($key, $value)
     {
@@ -52,7 +52,7 @@ class Preferences extends \Ease\Brick
     }
 
     /**
-     * Uloží pole předvoleb
+     * Save preferences array
      *
      * @param array $data
      *
@@ -70,7 +70,7 @@ class Preferences extends \Ease\Brick
     }
 
     /**
-     * Načte předvolby
+     * Read Presets
      */
     public function loadPrefs()
     {
@@ -82,9 +82,9 @@ class Preferences extends \Ease\Brick
     }
 
     /**
-     * Vrací nastavení
+     * Obtain Preferences
      *
-     * @return array pole nastavení
+     * @return array of preferences
      */
     function getPrefs()
     {

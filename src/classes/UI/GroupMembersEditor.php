@@ -3,10 +3,8 @@
 namespace Icinga\Editor\UI;
 
 /**
- * Konfigurátor členů skupiny
+ * Group members Editor
  *
- * @package    IcingaEditor
- * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2012 Vitex@hippy.cz (G)
  */
@@ -14,11 +12,11 @@ class GroupMembersEditor extends \Ease\Container
 {
 
     /**
-     * Editor k přidávání členů skupiny
+     * Group Members Editor
      *
      * @param string $fieldName    název políčka formuláře
      * @param string $fieldCaption popisek políčka
-     * @param IEcfg  $dataSource   editovaný objekt
+     * @param \Icinga\Editor\Engine\Configurator  $dataSource   editovaný objekt
      */
     public function __construct($fieldName, $fieldCaption, $dataSource, $members)
     {
@@ -48,7 +46,7 @@ class GroupMembersEditor extends \Ease\Container
 
 
         if (is_null($dataSource->getMyKey())) {
-            $initialContent->addItem(_('Nejprve je potřeba uložit záznam'));
+            $initialContent->addItem(_('Save record first'));
         } else {
 
             if ($sTable == $dataSource->myTable) {
@@ -75,8 +73,8 @@ class GroupMembersEditor extends \Ease\Container
             if ($sTable == $dataSource->myTable) {
                 unset($members[$dataSource->getMyKey()]);
             }
-            $addText = _('Přiřadit');
-            $delText = _('Odebrat');
+            $addText = _('Assign');
+            $delText = _('Remove');
 
             $saverCode = htmlentities(str_replace('\\', '-',
                     get_class($dataSource)));
@@ -110,9 +108,9 @@ class GroupMembersEditor extends \Ease\Container
                         $memberName, 'success', 'xs',
                         [
                         new \Ease\Html\ATag($reftable.'.php?'.$reftable.'_id='.$memberID,
-                            \Ease\TWB\Part::GlyphIcon('wrench').' '._('Editace')),
+                            \Ease\TWB\Part::GlyphIcon('wrench').' '._('Edit')),
                         new \Ease\Html\ATag(null,
-                            \Ease\TWB\Part::GlyphIcon('remove').' '._('Odebrat'),
+                            \Ease\TWB\Part::GlyphIcon('remove').' '._('Remove'),
                             [
                             'onClick' => "delGroupMember('".$saverCode."','".$dataSource->getId()."','".$fieldName."','".$memberName."','".$memberID."')"
                             , 'class' => 'handle', 'data-addtext' => $addText, 'data-deltext' => $delText])
@@ -130,5 +128,4 @@ class GroupMembersEditor extends \Ease\Container
     {
         \Ease\Shared::webPage()->includeJavaScript('js/groupmembers.js');
     }
-
 }

@@ -1,9 +1,7 @@
 <?php
 /**
- * Konfigurace Kontaktů
+ * Command configurator
  *
- * @package    IcingaEditor
- * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2012 Vitex@hippy.cz (G)
  */
@@ -11,7 +9,7 @@
 namespace Icinga\Editor\Engine;
 
 /**
- * Spráce kontaktů
+ * Command Object
  */
 class Command extends Configurator
 {
@@ -21,13 +19,13 @@ class Command extends Configurator
     public $keyword     = 'command';
 
     /**
-     * Přidat položky register a use ?
+     * Add register and use columns ?
      * @var boolean
      */
     public $allowTemplating = false;
 
     /**
-     * Položky
+     * Items
      * @var array
      */
     public $useKeywords = [
@@ -44,51 +42,61 @@ class Command extends Configurator
      * Info
      * @var array
      */
-    public $keywordsInfo = [
-        'command_name' => [
-            'severity' => 'mandatory',
-            'title' => 'název příkazu', 'required' => true],
-        'command_line' => [
-            'severity' => 'mandatory',
-            'title' => 'příkaz', 'required' => true],
-        'command_type' => [
-            'severity' => 'mandatory',
-            'title' => 'druh příkazu', 'required' => true],
-        'command_local' => [
-            'severity' => 'basic',
-            'title' => 'lokální příkaz'],
-        'command_remote' => [
-            'severity' => 'basic',
-            'title' => 'vzdálený příkaz NRPE/Nsc++'],
-        'script_id' => [
-            'severity' => 'basic',
-            'title' => 'Instalace',
-            'refdata' => [
-                'table' => 'script',
-                'captioncolumn' => 'filename',
-                'idcolumn' => 'script_id',
-                'public' => true
-            ]
-        ],
-        'platform' => [
-            'severity' => 'basic',
-            'title' => 'Platforma', 'mandatory' => true]
-    ];
+    public $keywordsInfo = [];
 
     /**
-     * URL dokumentace objektu
+     * Command class
+     * @param int $itemID
+     */
+    public function __construct($itemID = null)
+    {
+        $this->keywordsInfo = [
+            'command_name' => [
+                'severity' => 'mandatory',
+                'title' => _('Command name'), 'required' => true],
+            'command_line' => [
+                'severity' => 'mandatory',
+                'title' => _('Command'), 'required' => true],
+            'command_type' => [
+                'severity' => 'mandatory',
+                'title' => _('Command type'), 'required' => true],
+            'command_local' => [
+                'severity' => 'basic',
+                'title' => _('local command')],
+            'command_remote' => [
+                'severity' => 'basic',
+                'title' => _('remote command NRPE/Nsc++')],
+            'script_id' => [
+                'severity' => 'basic',
+                'title' => _('Deploy'),
+                'refdata' => [
+                    'table' => 'script',
+                    'captioncolumn' => 'filename',
+                    'idcolumn' => 'script_id',
+                    'public' => true
+                ]
+            ],
+            'platform' => [
+                'severity' => 'basic',
+                'title' => _('Platform'), 'mandatory' => true]
+        ];
+
+        parent::__construct($itemID);
+    }
+    /**
+     * Object documentation URL
      * @var string
      */
     public $documentationLink = 'http://docs.icinga.org/latest/en/objectdefinitions.html#objectdefinitions-command';
 
     /**
-     * Dát tyto položky k dispozici i ostatním ?
+     * Can be record public ?
      * @var boolean
      */
     public $publicRecords = true;
 
     /**
-     * Vrací všechna data uživatele
+     * Obtain data for user
      *
      * @return array
      */
@@ -106,7 +114,7 @@ class Command extends Configurator
     }
 
     /**
-     * Vrací všechna data
+     * Obtain all data
      *
      * @return array
      */
@@ -125,7 +133,7 @@ class Command extends Configurator
     }
 
     /**
-     * Vrací mazací tlačítko
+     * Delete Button
      *
      * @param  string                     $name
      * @param  string                     $urlAdd Předávaná část URL
@@ -133,15 +141,15 @@ class Command extends Configurator
      */
     public function deleteButton($name = null, $addUrl = '')
     {
-        return parent::deleteButton(_('příkaz'), $addUrl);
+        return parent::deleteButton(_('Command'), $addUrl);
     }
 
     /**
-     * Načte data do objektu
+     * Take data to object
      *
      * @param  array  $data
      * @param  string $dataPrefix
-     * @return int    počet převzatých řádek
+     * @return int    taken items count
      */
     public function takeData($data, $dataPrefix = null)
     {
@@ -154,5 +162,4 @@ class Command extends Configurator
         }
         return parent::takeData($data, $dataPrefix);
     }
-
 }

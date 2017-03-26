@@ -3,7 +3,7 @@
 namespace Icinga\Editor\UI;
 
 /**
- * Description of IENavBarSearchBox
+ * Description of NavBarSearchBox
  *
  * @author vitex
  */
@@ -34,17 +34,17 @@ class NavBarSearchBox extends \Ease\TWB\Form
             [
             'class' => 'form-control pull-right typeahead',
             'style' => 'width: 150px; margin-right: 35px, border: 1px solid black; background-color: #e5e5e5;',
-            'placeholder' => _('Hledání'),
+            'placeholder' => _('Search'),
             ]), ['class' => 'input-group'])
         );
         $buttons = $group->addItem(new \Ease\Html\Span( null,
             ['class' => 'input-group-btn']));
         $buttons->addItem(new \Ease\Html\ButtonTag(new \Ease\Html\Span(
-            new \Ease\Html\Span( _('Zavřít'), ['class' => 'sr-only']),
+            new \Ease\Html\Span(_('Close'), ['class' => 'sr-only']),
             ['class' => 'glyphicon glyphicon-remove']),
             ['type' => 'reset', 'class' => 'btn btn-default']));
         $buttons->addItem(new \Ease\Html\ButtonTag(new \Ease\Html\Span(
-            new \Ease\Html\Span( _('Hledat'), ['class' => 'sr-only']),
+            new \Ease\Html\Span(_('Search'), ['class' => 'sr-only']),
             ['class' => 'glyphicon glyphicon-search']),
             ['type' => 'submit', 'class' => 'btn btn-default']));
     }

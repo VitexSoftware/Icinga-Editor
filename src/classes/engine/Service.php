@@ -37,7 +37,12 @@ class Service extends Configurator
      * @var boolean
      */
     public $publicRecords = true;
-    public $useKeywords   = [
+
+    /**
+     * Keywords info
+     * @var array
+     */
+    public $useKeywords = [
         'display_name' => 'VARCHAR(64)',
         'service_description' => 'VARCHAR(255)',
         'host_name' => 'IDLIST',
@@ -86,226 +91,236 @@ class Service extends Configurator
         'configurator' => 'VARCHAR(64)',
         'platform' => "PLATFORM"
     ];
-    public $keywordsInfo  = [
-        'host_name' => [
-            'severity' => 'mandatory',
-            'title' => 'hosty služby',
-            'required' => true,
-            'refdata' => [
-                'table' => 'host',
-                'captioncolumn' => 'host_name',
-                'idcolumn' => 'host_id',
-                'condition' => ['register' => 1]
-            ]
-        ],
-        'hostgroup_name' => [
-            'severity' => 'optional',
-            'title' => 'skupiny hostů služby',
-            'refdata' => [
-                'table' => 'hostgroup',
-                'captioncolumn' => 'hostgroup_name',
-                'idcolumn' => 'hostgroup_id']
-        ],
-        'service_description' => [
-            'severity' => 'mandatory',
-            'title' => 'popisek služby', 'required' => true],
-        'display_name' => [
-            'severity' => 'basic',
-            'title' => 'zobrazované jméno'],
-        'tcp_port' => [
-            'severity' => 'advanced',
-            'title' => 'sledovaný port služby'],
-        'servicegroups' => [
-            'severity' => 'optional',
-            'title' => 'skupiny služeb',
-            'refdata' => [
-                'table' => 'servicegroup',
-                'captioncolumn' => 'servicegroup_name',
-                'idcolumn' => 'servicegroup_id']
-        ],
-        'is_volatile' => [
-            'severity' => 'advanced',
-            'title' => 'volatile',
-            '0' => 'service is not volatile',
-            '1' => 'service is volatile',
-            '2' => 'service is volatile but will respect the re-notification interval for notifications'
-        ],
-        'check_command' => [
-            'severity' => 'mandatory',
-            'title' => 'příkaz testu',
-            'required' => true,
-            'refdata' => [
-                'table' => 'command',
-                'captioncolumn' => 'command_name',
-                'idcolumn' => 'command_id',
-                'condition' => ['command_type' => 'check']
-            ]
-        ],
-        'check_command-remote' => [
-            'severity' => 'basic',
-            'title' => 'vzdálený příkaz'],
-        'check_command-params' => [
-            'severity' => 'basic',
-            'title' => 'parametry testů'],
-        'initial_state' => [
-            'severity' => 'advanced',
-            'title' => 'výchozí stav',
-            'o' => 'Ok',
-            'w' => 'Warning',
-            'u' => 'Up',
-            'c' => 'Critical'],
-        'max_check_attempts' => [
-            'severity' => 'advanced',
-            'title' => 'maximální počet pokusů o test',
-            'required' => true
-        ],
-        'check_interval' => [
-            'severity' => 'mandatory',
-            'title' => 'interval testu', 'required' => true],
-        'retry_interval' => [
-            'severity' => 'optional',
-            'title' => 'interval opakování testu', 'required' => true],
-        'active_checks_enabled' => [
-            'severity' => 'mandatory',
-            'title' => 'Aktivní režim'],
-        'passive_checks_enabled' => [
-            'severity' => 'mandatory',
-            'title' => 'Pasivní režim'],
-        'check_period' => [
-            'severity' => 'optional',
-            'title' => 'perioda provádění testu', 'required' => true,
-            'refdata' => [
-                'table' => 'timeperiod',
-                'captioncolumn' => 'timeperiod_name',
-                'idcolumn' => 'timeperiod_id']
-        ],
-        'parallelize_check' => [
-            'severity' => 'advanced',
-            'value' => '1', 'title' => 'paraelizovat checky'],
-        'obsess_over_service' => [
-            'severity' => 'advanced',
-            'title' => 'posedlost službou'],
-        'check_freshness' => [
-            'severity' => 'advanced',
-            'title' => 'testovat čersvost'],
-        'freshness_threshold' => [
-            'severity' => 'advanced',
-            'title' => 'práh čerstvosti'],
-        'event_handler' => [
-            'severity' => 'advanced',
-            'title' => 'príkaz ošetření události',
-            'refdata' => [
-                'table' => 'command',
-                'captioncolumn' => 'command_name',
-                'idcolumn' => 'command_id',
-                'condition' => ['command_type' => 'handler']
-            ]
-        ],
-        'event_handler_enabled' => [
-            'severity' => 'advanced',
-            'title' => 'povolit ošetření události'],
-        'low_flap_threshold' => [
-            'severity' => 'advanced',
-            'title' => 'klapka nízkého prahu'],
-        'high_flap_threshold' => [
-            'severity' => 'advanced',
-            'title' => 'klapka vysokého prahu'],
-        'flap_detection_enabled' => [
-            'severity' => 'advanced',
-            'title' => 'detekce klapání'],
-        'flap_detection_options' => [
-            'severity' => 'advanced',
-            'title' => 'nastavení detekce klapání'],
-        'failure_prediction_enabled' => [
-            'severity' => 'advanced',
-            'title' => 'předpovídat výpadek'],
-        'process_perf_data' => [
-            'severity' => 'advanced',
-            'title' => 'zpracovávat výkonostní data'],
-        'retain_status_information' => [
-            'severity' => 'advanced',
-            'title' => 'uchovávat informace o stavu'],
-        'retain_nonstatus_information' => [
-            'severity' => 'advanced',
-            'title' => 'uchovávat nestavové informace'],
-        'notification_interval' => [
-            'severity' => 'optional',
-            'title' => 'notifikační interval'],
-        'first_notification_delay' => [
-            'severity' => 'advanced',
-            'title' => 'první prodleva notifikace'],
-        'notification_period' => [
-            'severity' => 'optional',
-            'title' => 'notifikační perioda',
-            'refdata' => [
-                'table' => 'timeperiod',
-                'captioncolumn' => 'timeperiod_name',
-                'idcolumn' => 'timeperiod_id']
-        ],
-        'notification_options' => [
-            'severity' => 'advanced',
-            'title' => 'možnosti oznamování',
-            'w' => 'send notifications on a WARNING state',
-            'u' => 'send notifications on an UNKNOWN state',
-            'c' => 'send notifications on a CRITICAL state',
-            'r' => 'send notifications on recoveries OK',
-            'f' => 'send notifications when the service starts and stops flapping',
-            's' => 'send notifications when scheduled downtime starts and ends',
-        ],
-        'notifications_enabled' => [
-            'severity' => 'basic',
-            'title' => 'povolit oznamování'],
-        'contacts' => [
-            'severity' => 'basic',
-            'title' => 'kontakty',
-            'refdata' => [
-                'table' => 'contact',
-                'captioncolumn' => 'contact_name',
-                'idcolumn' => 'contact_id']],
-        'contact_groups' => [
-            'severity' => 'optional',
-            'title' => 'členské skupiny kontaktů',
-            'refdata' => [
-                'table' => 'contactgroup',
-                'captioncolumn' => 'contactgroup_name',
-                'idcolumn' => 'contactgroup_id']
-        ],
-        'stalking_options' => [
-            'severity' => 'advanced',
-            'title' => 'možnosti stopování',
-            'o' => 'stalk on OK states',
-            'w' => 'stalk on WARNING states',
-            'u' => 'stalk on UNKNOWN states',
-            'c' => 'stalk on CRITICAL states'
-        ],
-        'notes' => [
-            'severity' => 'basic',
-            'title' => 'poznámka'],
-        'notes_url' => [
-            'severity' => 'advanced',
-            'title' => 'url dodatečných poznámek'],
-        'action_url' => [
-            'severity' => 'advanced',
-            'title' => 'url dodatečné akce'],
-        'icon_image' => [
-            'severity' => 'advanced',
-            'title' => 'ikona služby'],
-        'icon_image_alt' => [
-            'severity' => 'advanced',
-            'title' => 'alternativní ikona služby'],
-        'autocfg' => [
-            'severity' => 'advanced',
-            'title' => 'Je nutné službu po naklonování konfigurovat ručně ?'],
-        'configurator' => [
-            'severity' => 'advanced',
-            'title' => 'Plugin pro konfiguraci služby'],
-        'platform' => [
-            'severity' => 'basic',
-            'title' => 'Platforma', 'mandatory' => true]
-    ];
 
     /**
-     * URL dokumentace objektu
+     * Keywords info
+     * @var array
+     */
+    public $keywordsInfo = [];
+
+    public function __construct($itemID = null)
+    {
+        $this->keywordsInfo = [
+            'host_name' => [
+                'severity' => 'mandatory',
+                'title' => _('service hosts'),
+                'required' => true,
+                'refdata' => [
+                    'table' => 'host',
+                    'captioncolumn' => 'host_name',
+                    'idcolumn' => 'host_id',
+                    'condition' => ['register' => 1]
+                ]
+            ],
+            'hostgroup_name' => [
+                'severity' => 'optional',
+                'title' => _('service hostgroups'),
+                'refdata' => [
+                    'table' => 'hostgroup',
+                    'captioncolumn' => 'hostgroup_name',
+                    'idcolumn' => 'hostgroup_id']
+            ],
+            'service_description' => [
+                'severity' => 'mandatory',
+                'title' => _('service description'), 'required' => true],
+            'display_name' => [
+                'severity' => 'basic',
+                'title' => _('display name')],
+            'tcp_port' => [
+                'severity' => 'advanced',
+                'title' => _('tcp service port')],
+            'servicegroups' => [
+                'severity' => 'optional',
+                'title' => _('service group'),
+                'refdata' => [
+                    'table' => 'servicegroup',
+                    'captioncolumn' => 'servicegroup_name',
+                    'idcolumn' => 'servicegroup_id']
+            ],
+            'is_volatile' => [
+                'severity' => 'advanced',
+                'title' => _('volatile'),
+                '0' => 'service is not volatile',
+                '1' => 'service is volatile',
+                '2' => 'service is volatile but will respect the re-notification interval for notifications'
+            ],
+            'check_command' => [
+                'severity' => 'mandatory',
+                'title' => _('check command'),
+                'required' => true,
+                'refdata' => [
+                    'table' => 'command',
+                    'captioncolumn' => 'command_name',
+                    'idcolumn' => 'command_id',
+                    'condition' => ['command_type' => 'check']
+                ]
+            ],
+            'check_command-remote' => [
+                'severity' => 'basic',
+                'title' => _('remote check command')],
+            'check_command-params' => [
+                'severity' => 'basic',
+                'title' => _('check command parrams')],
+            'initial_state' => [
+                'severity' => 'advanced',
+                'title' => _('initial state'),
+                'o' => 'Ok',
+                'w' => 'Warning',
+                'u' => 'Up',
+                'c' => 'Critical'],
+            'max_check_attempts' => [
+                'severity' => 'advanced',
+                'title' => _('max check attempts'),
+                'required' => true
+            ],
+            'check_interval' => [
+                'severity' => 'mandatory',
+                'title' => _('check interval'), 'required' => true],
+            'retry_interval' => [
+                'severity' => 'optional',
+                'title' => _('retry interval'), 'required' => true],
+            'active_checks_enabled' => [
+                'severity' => 'mandatory',
+                'title' => _('Active mode')],
+            'passive_checks_enabled' => [
+                'severity' => 'mandatory',
+                'title' => _('Passive mode')],
+            'check_period' => [
+                'severity' => 'optional',
+                'title' => _('check period'), 'required' => true,
+                'refdata' => [
+                    'table' => 'timeperiod',
+                    'captioncolumn' => 'timeperiod_name',
+                    'idcolumn' => 'timeperiod_id']
+            ],
+            'parallelize_check' => [
+                'severity' => 'advanced',
+                'value' => '1', 'title' => _('paraelize check')],
+            'obsess_over_service' => [
+                'severity' => 'advanced',
+                'title' => _('obsess over service')],
+            'check_freshness' => [
+                'severity' => 'advanced',
+                'title' => _('check freshnes')],
+            'freshness_threshold' => [
+                'severity' => 'advanced',
+                'title' => _('freshness treshold')],
+            'event_handler' => [
+                'severity' => 'advanced',
+                'title' => _('event handler'),
+                'refdata' => [
+                    'table' => 'command',
+                    'captioncolumn' => 'command_name',
+                    'idcolumn' => 'command_id',
+                    'condition' => ['command_type' => 'handler']
+                ]
+            ],
+            'event_handler_enabled' => [
+                'severity' => 'advanced',
+                'title' => _('event handler enabled')],
+            'low_flap_threshold' => [
+                'severity' => 'advanced',
+                'title' => _('low flap treshold')],
+            'high_flap_threshold' => [
+                'severity' => 'advanced',
+                'title' => _('high flap treshold')],
+            'flap_detection_enabled' => [
+                'severity' => 'advanced',
+                'title' => _('flap detection enabled')],
+            'flap_detection_options' => [
+                'severity' => 'advanced',
+                'title' => _('flap detection enabled')],
+            'failure_prediction_enabled' => [
+                'severity' => 'advanced',
+                'title' => _('failure prediction enabled')],
+            'process_perf_data' => [
+                'severity' => 'advanced',
+                'title' => _('process perf data')],
+            'retain_status_information' => [
+                'severity' => 'advanced',
+                'title' => _('retain status information')],
+            'retain_nonstatus_information' => [
+                'severity' => 'advanced',
+                'title' => _('retain nonstatus information')],
+            'notification_interval' => [
+                'severity' => 'optional',
+                'title' => _('notification interval')],
+            'first_notification_delay' => [
+                'severity' => 'advanced',
+                'title' => _('first notification delay')],
+            'notification_period' => [
+                'severity' => 'optional',
+                'title' => _('notification period'),
+                'refdata' => [
+                    'table' => 'timeperiod',
+                    'captioncolumn' => 'timeperiod_name',
+                    'idcolumn' => 'timeperiod_id']
+            ],
+            'notification_options' => [
+                'severity' => 'advanced',
+                'title' => _('notification options'),
+                'w' => 'send notifications on a WARNING state',
+                'u' => 'send notifications on an UNKNOWN state',
+                'c' => 'send notifications on a CRITICAL state',
+                'r' => 'send notifications on recoveries OK',
+                'f' => 'send notifications when the service starts and stops flapping',
+                's' => 'send notifications when scheduled downtime starts and ends',
+            ],
+            'notifications_enabled' => [
+                'severity' => 'basic',
+                'title' => _('notifications enabled')],
+            'contacts' => [
+                'severity' => 'basic',
+                'title' => _('contacts'),
+                'refdata' => [
+                    'table' => 'contact',
+                    'captioncolumn' => 'contact_name',
+                    'idcolumn' => 'contact_id']],
+            'contact_groups' => [
+                'severity' => 'optional',
+                'title' => _('contactgroups'),
+                'refdata' => [
+                    'table' => 'contactgroup',
+                    'captioncolumn' => 'contactgroup_name',
+                    'idcolumn' => 'contactgroup_id']
+            ],
+            'stalking_options' => [
+                'severity' => 'advanced',
+                'title' => _('stalking options'),
+                'o' => 'stalk on OK states',
+                'w' => 'stalk on WARNING states',
+                'u' => 'stalk on UNKNOWN states',
+                'c' => 'stalk on CRITICAL states'
+            ],
+            'notes' => [
+                'severity' => 'basic',
+                'title' => _('notes')],
+            'notes_url' => [
+                'severity' => 'advanced',
+                'title' => _('notes url')],
+            'action_url' => [
+                'severity' => 'advanced',
+                'title' => _('action url')],
+            'icon_image' => [
+                'severity' => 'advanced',
+                'title' => _('icon image ')],
+            'icon_image_alt' => [
+                'severity' => 'advanced',
+                'title' => _('icon image alt text')],
+            'autocfg' => [
+                'severity' => 'advanced',
+                'title' => _('require additional configuration ?')],
+            'configurator' => [
+                'severity' => 'advanced',
+                'title' => _('Configuration plugin')],
+            'platform' => [
+                'severity' => 'basic',
+                'title' => _('Platform'), 'mandatory' => true]
+        ];
+        parent::__construct($itemID);
+    }
+    /**
+     * Object documentation URL
      * @var string
      */
     public $documentationLink = 'http://docs.icinga.org/latest/en/objectdefinitions.html#objectdefinitions-service';
@@ -329,7 +344,7 @@ class Service extends Configurator
             }
             unset($allData[$adKey]['check_command-remote']);
             unset($allData[$adKey]['check_command-params']);
-            $allData[$adKey]['check_command'].= $params;
+            $allData[$adKey]['check_command'] .= $params;
             unset($allData[$adKey]['tcp_port']);
 
             if (is_array($ad['contacts']) && count($ad['contacts'])) { //Projít kontakty, vyhodit nevlastněné uživatelem
@@ -378,13 +393,13 @@ class Service extends Configurator
 
             if (strlen($allData[$adKey]['check_command-remote'])) {
                 if (!is_null($params)) {
-                    $allData[$adKey]['check_command'].= '!'.$allData[$adKey]['check_command-remote'].'!'.$params;
+                    $allData[$adKey]['check_command'] .= '!'.$allData[$adKey]['check_command-remote'].'!'.$params;
                 } else {
-                    $allData[$adKey]['check_command'].= '!'.$allData[$adKey]['check_command-remote'];
+                    $allData[$adKey]['check_command'] .= '!'.$allData[$adKey]['check_command-remote'];
                 }
             } else {
                 if (strlen($params)) {
-                    $allData[$adKey]['check_command'].= '!'.$params;
+                    $allData[$adKey]['check_command'] .= '!'.$params;
                 }
             }
             unset($allData[$adKey]['check_command-remote']);
@@ -671,5 +686,4 @@ class Service extends Configurator
         }
         return $sql;
     }
-
 }

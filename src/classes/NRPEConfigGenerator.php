@@ -10,32 +10,32 @@ namespace Icinga\Editor;
 class NRPEConfigGenerator extends \Ease\Atom
 {
     /**
-     * Objekt hostu
+     * Host object
      * @var Engine\Host
      */
     public $host = null;
 
     /**
-     * Pole nastavení
+     * Preferences
      * @var  Array
      */
     public $prefs = null;
 
     /**
-     * Pole konfiguračních fragmentů
+     * Configuration fragments array
      * @var array
      */
     public $nscCfgArray = [];
 
     /**
-     * Volání proměnné s nsclient
+     * How to call variable with nsclient
      * @var string
      */
     private $nscvar = '';
 
     /**
-     *
-     * @var type
+     * Config file destination on remote system
+     * @var string
      */
     private $cfgFile = '/etc/nagios/nrpe_local.cfg';
 
@@ -99,12 +99,12 @@ class NRPEConfigGenerator extends \Ease\Atom
         foreach ($allServices as $serviceID => $serviceInfo) {
             if (!array_key_exists($serviceID, $servicesAssigned)) {
                 unset($allServices[$serviceID]);
-                continue; //Služba není přiřazena k hostu
+                continue; //Service is not assigned to host
             }
         }
 
 
-        /* Naplní hodnoty z předloh */
+        /* use presets values */
         $usedCache     = [];
         $commandsCache = [];
         foreach ($allServices as $rowId => $service) {
@@ -166,7 +166,7 @@ class NRPEConfigGenerator extends \Ease\Atom
     }
 
     /**
-     * Spustí testovací režim a po jeho ukončení nastartuje službu
+     * Test service and run it
      */
     public function cfgEnding()
     {

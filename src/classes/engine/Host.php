@@ -615,7 +615,8 @@ class Host extends Configurator
     {
         $block = parent::getInfoBlock();
         $block->addDef(_('Alias'), [new \Icinga\Editor\UI\HostIcon($this), $this->getDataValue('alias')]);
-        $block->addDef(_('Platforma'), new \Icinga\Editor\UI\PlatformIcon($this->getDataValue('platform')));
+        $block->addDef(_('Platform'),
+            new \Icinga\Editor\UI\PlatformIcon($this->getDataValue('platform')));
 
         $parents = $this->getDataValue('parents');
         if ($parents) {

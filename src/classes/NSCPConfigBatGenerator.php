@@ -304,12 +304,12 @@ echo "file name=${log-path}/nsclient.log" >> $INI
         foreach ($allServices as $serviceID => $serviceInfo) {
             if (!array_key_exists($serviceID, $servicesAssigned)) {
                 unset($allServices[$serviceID]);
-                continue; //Služba není přiřazena k hostu
+                continue; //Service is not assigned to host
             }
         }
 
 
-        /* Naplní hodnoty z předloh */
+        /* Use template values */
         $usedCache     = [];
         $commandsCache = [];
         foreach ($allServices as $rowId => $service) {
@@ -398,6 +398,12 @@ echo "file name=${log-path}/nsclient.log" >> $INI
         }
     }
 
+    /**
+     * Strip service name for use in NSCP
+     *
+     * @param string $serviceName
+     * @return string
+     */
     static function stripServiceName($serviceName)
     {
         return str_replace(' ', '_',
@@ -423,7 +429,7 @@ echo "file name=${log-path}/nsclient.log" >> $INI
                     $this->nscConfArray[] = "\n".'echo ^<br^>^<a data-role="shutdown" href="'.$dtUrl.'&state=start"^>'._('Start host downtime').'^</a^> >> %ICIEDIT_HTML%';
                     $this->nscConfArray[] = "\n".'echo ^<br^>^<a data-role="poweron" href="'.$dtUrl.'&state=stop"^>'._('End host downtime').'^</a^> >> %ICIEDIT_HTML%';
                 }
-                $this->nscConfArray[] = "\n".'echo ^<br^>^<a data-role="confirm" href="'.$this->getCfgConfirmUrl().'"^>'._('Potvrzení konfigurace').'^</a^> >> %ICIEDIT_HTML%';
+                $this->nscConfArray[] = "\n".'echo ^<br^>^<a data-role="confirm" href="'.$this->getCfgConfirmUrl().'"^>'._('Confirm configurations').'^</a^> >> %ICIEDIT_HTML%';
                 $this->nscConfArray[] = "\n".'echo ^</body^> >> %ICIEDIT_HTML%';
                 $this->nscConfArray[] = "\n".'echo ^</html^> >> %ICIEDIT_HTML%
 ';
@@ -511,7 +517,7 @@ service nscp start
         if (count($this->scriptsToDeploy)) {
             switch ($this->platform) {
                 case 'windows':
-                    $this->nscConfArray[] = "\n".'echo ^<h2^>'._('Skripty').'^</h2^> >> %ICIEDIT_HTML%
+                    $this->nscConfArray[] = "\n".'echo ^<h2^>'._('Scripts').'^</h2^> >> %ICIEDIT_HTML%
 ';
                     break;
             }

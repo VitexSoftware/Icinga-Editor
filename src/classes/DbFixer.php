@@ -168,13 +168,13 @@ class DbFixer extends \Ease\Html\UlTag
                         $child->addMember('parents', $parent->getId(),
                             $parent_name);
                         $child->saveToSQL();
-                        $this->addItemSmart(sprintf(_('Rodič <strong>%s</strong> hosta %s má špatné ID'),
+                        $this->addItemSmart(sprintf(_('Parent <strong>%s</strong> of host %s with wrong id ID'),
                                 $parent_name, $child_info[$host->nameColumn]),
                             ['class' => 'list-group-item']);
                     }
                 } else {
                     //Host tohoto jména neexistuje, nemůže být tedy PARENT
-                    $this->addItemSmart(sprintf(_('Rodič <strong>%s</strong> hosta %s neexistuje'),
+                    $this->addItemSmart(sprintf(_('Parent <strong>%s</strong> of hosta %s does not exist'),
                             $parent_name, $child_info[$host->nameColumn]),
                         ['class' => 'list-group-item']);
                     $child->delMember('parents', $parent->getId(), $parent_name);
