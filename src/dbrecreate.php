@@ -3,37 +3,31 @@
 namespace Icinga\Editor;
 
 /**
- * Icinga Editor - hlavní strana
+ * Icinga Editor - Recerate database
  *
- * @package    IcingaEditor
- * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
- * @copyright  2012 Vitex@hippy.cz (G)
+ * @copyright  2012-2017 Vitex@hippy.cz (G)
  */
 require_once 'includes/IEInit.php';
 
 $oPage->onlyForLogged();
 
-$oPage->addItem(new UI\PageTop(_('Icinga Editor - znovuvytvoření struktury databáze')));
+$oPage->addItem(new UI\PageTop(_('Icinga Editor - recereate database structure')));
 $oPage->addPageColumns();
 
 
 if ($oPage->getRequestValue('dbinit')) {
     $importer = new Engine\Importer;
     $importer->dbInit();
-    $oPage->columnII->addItem(new \Ease\TWB\LinkButton('wizard.php',
-        _('vytvořit konfiguraci')));
-    $oPage->columnIII->addItem(new \Ease\TWB\LinkButton('import.php',
-        _('importovat konfiguraci')));
+    $oPage->columnII->addItem(new \Ease\TWB\LinkButton('wizard.php', _('Create configuration')));
+    $oPage->columnIII->addItem(new \Ease\TWB\LinkButton('import.php', _('Import configuration')));
 } else {
     $importForm = new \Ease\Html\Form('ImportForm');
-    $oUser->addStatusMessage(_('Tato akce nevratně smaže veškerou konfiguraci. Opravdu to chcete udělat ?'));
-    $importForm->addItem(new \Ease\TWB\FormGroup(_('Vím co dělám'),
-        new UI\YesNoSwitch('dbinit')));
-    $importForm->addItem(new \Ease\TWB\SubmitButton(_('Budiž!')));
+    $oUser->addStatusMessage(_('This action irreversibly deletes any configuration. Do you really want to do this?'));
+    $importForm->addItem(new \Ease\TWB\FormGroup(_('I know what i do'), new UI\YesNoSwitch('dbinit')));
+    $importForm->addItem(new \Ease\TWB\SubmitButton(_('Go!')));
 
-    $oPage->columnII->addItem(new \Ease\Html\FieldSet(_('Znovu vytvořit strukturu databáze'),
-        $importForm));
+    $oPage->columnII->addItem(new \Ease\Html\FieldSet(_('Create again database structure'), $importForm));
 }
 
 $oPage->addItem(new UI\PageBottom());

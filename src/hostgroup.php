@@ -5,7 +5,6 @@ namespace Icinga\Editor;
 /**
  * Icinga Editor - hostgroup
  *
- * @package    IcingaEditor
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2012-2016 Vitex@hippy.cz (G)
  */
@@ -19,34 +18,30 @@ $hostgroup = new Engine\Hostgroup($oPage->getRequestValue('hostgroup_id', 'int')
 switch ($oPage->getRequestValue('action')) {
     case 'applystemplate':
         $stemplate = new Stemplate($oPage->getRequestValue('stemplate_id', 'int'));
-        $services  = $stemplate->getDataValue('services');
+        $services = $stemplate->getDataValue('services');
         if (count($services)) {
             if ($oPage->getRequestValue('groupHosts') == 1) { //Assign service to hostgroup
                 $service = new Engine\Service();
                 foreach ($services as $service_id => $service_name) {
                     if ($service->loadFromSQL($service_id)) {
-                        $service->addMember('hostgroup_name',
-                            $hostGroup->getId(), $hostGroup->getName());
+                        $service->addMember('hostgroup_name', $hostGroup->getId(), $hostGroup->getName());
                         $service->saveToSQL();
                         $service->dataReset();
                     } else {
-                        $service->addStatusMessage(_(sprintf(_('Service used in template (#%s: %s) not found'),
-                                    $service_id, $service_name)));
+                        $service->addStatusMessage(_(sprintf(_('Service used in template (#%s: %s) not found'), $service_id, $service_name)));
                     }
                 }
             } else { //Several Hosts
                 foreach ($hostGroup->getHosts() as $hostID => $hostName) {
-                    $host    = new Engine\Host($hostID);
+                    $host = new Engine\Host($hostID);
                     $service = new Engine\Service();
                     foreach ($services as $service_id => $service_name) {
                         if ($service->loadFromSQL($service_id)) {
-                            $service->addMember('host_name', $host->getId(),
-                                $host->getName());
+                            $service->addMember('host_name', $host->getId(), $host->getName());
                             $service->saveToSQL();
                             $service->dataReset();
                         } else {
-                            $service->addStatusMessage(_(sprintf(_('Service used in template (#%s: %s) not found'),
-                                        $service_id, $service_name)));
+                            $service->addStatusMessage(_(sprintf(_('Service used in template (#%s: %s) not found'), $service_id, $service_name)));
                         }
                     }
                 }
@@ -55,21 +50,17 @@ switch ($oPage->getRequestValue('action')) {
         break;
 
     case 'contactAsign':
-        $contact = new Engine\Contact($oPage->getRequestValue('contact_id',
-                'int'));
+        $contact = new Engine\Contact($oPage->getRequestValue('contact_id', 'int'));
         if ($contact->getId()) {
-            $host         = new Engine\Host;
+            $host = new Engine\Host;
             $groupMembers = $hostgroup->getMembers();
             foreach ($groupMembers as $gmID => $hostName) {
                 $host->loadFromSQL((int) $gmID);
-                $host->addMember('contacts', $contact->getId(),
-                    $contact->getName());
+                $host->addMember('contacts', $contact->getId(), $contact->getName());
                 if ($host->saveToSQL()) {
-                    $host->addStatusMessage(sprintf(_('<strong>%s</strong> was add to contacts <strong>%s</strong>'),
-                            $contact->getName(), $host->getName()), 'success');
+                    $host->addStatusMessage(sprintf(_('<strong>%s</strong> was add to contacts <strong>%s</strong>'), $contact->getName(), $host->getName()), 'success');
                 } else {
-                    $host->addStatusMessage(sprintf(_('<strong>%s</strong> was not add to contacts <strong>%s</strong>'),
-                            $contact->getName(), $host->getName()), 'warning');
+                    $host->addStatusMessage(sprintf(_('<strong>%s</strong> was not add to contacts <strong>%s</strong>'), $contact->getName(), $host->getName()), 'warning');
                 }
             }
         } else {
@@ -103,7 +94,7 @@ switch ($oPage->getRequestValue('action')) {
 }
 
 
-$oPage->addItem(new UI\PageTop(_('Hostgroup Editor').' '.$hostgroup->getName()));
+$oPage->addItem(new UI\PageTop(_('Hostgroup Editor') . ' ' . $hostgroup->getName()));
 
 
 
@@ -112,12 +103,10 @@ $oPage->addItem(new UI\PageTop(_('Hostgroup Editor').' '.$hostgroup->getName()))
 
 $hostgroupEdit = new UI\CfgEditor($hostgroup);
 
-$form = new \Ease\TWB\Form('Hostgroup', 'hostgroup.php', 'POST', $hostgroupEdit,
-    ['class' => 'form-horizontal']);
+$form = new \Ease\TWB\Form('Hostgroup', 'hostgroup.php', 'POST', $hostgroupEdit, ['class' => 'form-horizontal']);
 $form->setTagID($form->getTagName());
 if (!is_null($hostgroup->getMyKey())) {
-    $form->addItem(new \Ease\Html\InputHiddenTag($hostgroup->getmyKeyColumn(),
-        $hostgroup->getMyKey()));
+    $form->addItem(new \Ease\Html\InputHiddenTag($hostgroup->getmyKeyColumn(), $hostgroup->getMyKey()));
 }
 $form->addItem(new \Ease\TWB\SubmitButton(_('Save'), 'success'));
 
@@ -126,39 +115,32 @@ $oPage->addItem(new UI\PageBottom());
 
 
 $infopanel = new UI\InfoBox($hostgroup);
-$tools     = new \Ease\TWB\Panel(_('Tools'), 'warning');
+$tools = new \Ease\TWB\Panel(_('Tools'), 'warning');
 if ($hostgroup->getId()) {
     $tools->addItem($hostgroup->deleteButton());
-    $tools->addItem(new \Ease\TWB\Panel(_('Transfer'), 'warning',
-        $hostgroup->transferForm()));
+    $tools->addItem(new \Ease\TWB\Panel(_('Transfer'), 'warning', $hostgroup->transferForm()));
 }
 $pageRow = new \Ease\TWB\Row;
 $pageRow->addColumn(2, $infopanel);
-$pageRow->addColumn(6,
-    new \Ease\TWB\Panel(new \Ease\Html\H1Tag($hostgroup->getDataValue('alias').' <small>'.$hostgroup->getName().'</small>')
+$pageRow->addColumn(6, new \Ease\TWB\Panel(new \Ease\Html\H1Tag($hostgroup->getDataValue('alias') . ' <small>' . $hostgroup->getName() . '</small>')
     , 'default', $form));
 $pageRow->addColumn(4, $tools);
 $oPage->container->addItem($pageRow);
 
 
-$operations = $tools->addItem(new \Ease\TWB\Panel(_('Bulk operations')),
-    'success');
+$operations = $tools->addItem(new \Ease\TWB\Panel(_('Bulk operations')), 'success');
 $operations->addItem(new UI\ContactAsignForm());
 
 
 $presetSelForm = new UI\ServicePresetSelectForm();
-$presetSelForm->addItem(new \Ease\Html\InputHiddenTag($hostgroup->getmyKeyColumn(),
-    $hostgroup->getId()));
+$presetSelForm->addItem(new \Ease\Html\InputHiddenTag($hostgroup->getmyKeyColumn(), $hostgroup->getId()));
 
-$presetSelForm->addInput(new UI\TWBSwitch('groupHosts', false, true,
-    ['onText' => _('hostgroup'), 'offText' => _('hosts')]), _('Apply to'), null,
-    _('Apply preset to several Hosts or hostgroup itself'));
+$presetSelForm->addInput(new UI\TWBSwitch('groupHosts', false, true, ['onText' => _('hostgroup'), 'offText' => _('hosts')]), _('Apply to'), null, _('Apply preset to several Hosts or hostgroup itself'));
 
 $presetSelForm->setTagClass('form-inline');
 $operations->addItem($presetSelForm);
 
-$tools->addItem(new \Ease\TWB\LinkButton('wizard-host.php?hostgroup_id='.$hostgroup->getId(),
-    \Ease\TWB\Part::GlyphIcon('plus')._('New Host in Group'), 'success'));
+$tools->addItem(new \Ease\TWB\LinkButton('wizard-host.php?hostgroup_id=' . $hostgroup->getId(), \Ease\TWB\Part::GlyphIcon('plus') . _('New Host in Group'), 'success'));
 
 //$tools->addItem(new \Ease\TWB\LinkButton('hglayouteditor.php?hostgroup_id=' . $hostgroup->getId(), \Ease\TWB\Part::GlyphIcon('globe') . _('Rozvržení topologie'), 'info'));
 
