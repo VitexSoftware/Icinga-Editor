@@ -3,41 +3,36 @@
 namespace Icinga\Editor;
 
 /**
- * Icinga Editor - užibatelská skupina
+ * Icinga Editor - usergroup
  *
  * @package    IcingaEditor
- * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
- * @copyright  2012 Vitex@hippy.cz (G)
+ * @copyright  2012-2017 Vitex@hippy.cz (G)
  */
 require_once 'includes/IEInit.php';
 
 $oPage->onlyForLogged();
 
 $usergroup_name = $oPage->getRequestValue('usergroup_name');
-$usergroup_id   = $oPage->getRequestValue('usergroup_id', 'int');
-$member_id      = $oPage->getRequestValue('member_id', 'int');
+$usergroup_id = $oPage->getRequestValue('usergroup_id', 'int');
+$member_id = $oPage->getRequestValue('member_id', 'int');
 
 $userGroup = new Engine\UserGroup($usergroup_id);
 
 switch ($oPage->getRequestValue('action')) {
     case 'addmember':
         if ($userGroup->addMember(null, $member_id)) {
-            $userGroup->addStatusMessage(_('člen byl přidán do skupiny'),
-                'success');
+            $userGroup->addStatusMessage(_('member wasp added to group'), 'success');
         } else {
-            $userGroup->addStatusMessage(_('člen nebyl přidán do skupiny'),
-                'warning');
+            $userGroup->addStatusMessage(_('member was not add to group'), 'warning');
         }
 
         break;
     case 'delmember':
         if ($userGroup->delMember(null, $member_id)) {
-            $userGroup->addStatusMessage(_('člen byl odstraněn ze skupiny'),
-                'success');
+            $userGroup->addStatusMessage(_('member was removed from group'), 'success');
         } else {
-            $userGroup->addStatusMessage(_('člen nbyl odstraněn ze skupiny'),
-                'warning');
+            $userGroup->addStatusMessage(_('member was not removed from group'), 'warning');
         }
         break;
     default :
@@ -45,11 +40,9 @@ switch ($oPage->getRequestValue('action')) {
         if ($usergroup_name) {
             $userGroup->setDataValue('usergroup_name', $usergroup_name);
             if ($userGroup->saveToSQL()) {
-                $userGroup->addStatusMessage(_('skupina byla uložena'),
-                    'success');
+                $userGroup->addStatusMessage(_('group was saved'), 'success');
             } else {
-                $userGroup->addStatusMessage(_('skupina nebyla uložena'),
-                    'warning');
+                $userGroup->addStatusMessage(_('group was not saved'), 'warning');
             }
         }
 
@@ -66,18 +59,15 @@ switch ($oPage->getRequestValue('action')) {
 
 
 
-$oPage->addItem(new UI\PageTop(_('Uživatelská skupina')));
+$oPage->addItem(new UI\PageTop(_('User Group')));
 $oPage->addPageColumns();
 
 
 switch ($oPage->getRequestValue('action')) {
     case 'delete':
-        $confirmator = $oPage->columnII->addItem(new \Ease\TWB\Panel(_('Opravdu smazat ?')),
-            'danger');
-        $confirmator->addItem(new \Ease\TWB\LinkButton('?'.$userGroup->myKeyColumn.'='.$userGroup->getID(),
-            _('Ne').' '.\Ease\TWB\Part::glyphIcon('ok'), 'success'));
-        $confirmator->addItem(new \Ease\TWB\LinkButton('?delete=true&'.$userGroup->myKeyColumn.'='.$userGroup->getID(),
-            _('Ano').' '.\Ease\TWB\Part::glyphIcon('remove'), 'danger'));
+        $confirmator = $oPage->columnII->addItem(new \Ease\TWB\Panel(_('Are you sure ?')), 'danger');
+        $confirmator->addItem(new \Ease\TWB\LinkButton('?' . $userGroup->myKeyColumn . '=' . $userGroup->getID(), _('No') . ' ' . \Ease\TWB\Part::glyphIcon('ok'), 'success'));
+        $confirmator->addItem(new \Ease\TWB\LinkButton('?delete=true&' . $userGroup->myKeyColumn . '=' . $userGroup->getID(), _('Yes') . ' ' . \Ease\TWB\Part::glyphIcon('remove'), 'danger'));
 
         $oPage->columnI->addItem($userGroup->ownerLinkButton());
 
@@ -88,9 +78,7 @@ switch ($oPage->getRequestValue('action')) {
         if ($userGroup->getMyKey()) {
             $oPage->columnIII->addItem($userGroup->deleteButton());
         }
-        $oPage->columnI->addItem(new \Ease\TWB\Panel(_('Skupina uživatelů'),
-            'info',
-            _('Všichni členové skupiny mohou zobrazit a editovat konfigurace náležející ostatním uživatelům skupiny.')));
+        $oPage->columnI->addItem(new \Ease\TWB\Panel(_('User Group'), 'info', _('All group members can wiew and edit configurations owned by other members.')));
 }
 
 
