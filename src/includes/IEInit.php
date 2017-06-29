@@ -38,12 +38,16 @@ textdomain('icinga-editor');
 
 session_start();
 
-/**
- * Objekt uživatele VSUser nebo VSAnonym
- * @global \Ease\User
- */
-$oUser                 = \Ease\Shared::user();
-$oUser->settingsColumn = 'settings';
+try {
+    /**
+     * Objekt uživatele User nebo Anonym
+     * @global \Ease\User
+     */
+    $oUser                 = \Ease\Shared::user();
+    $oUser->settingsColumn = 'settings';
+} catch (Exception $e) {
+    echo 'Caught exception: ', $e->getMessage(), "\n";
+}
 
 if (!\Ease\Shared::isCli()) {
     /* @var $oPage \Sys\WebPage */
