@@ -5,7 +5,6 @@ namespace Icinga\Editor;
 /**
  * Contacts Editor
  *
- * @package    IcingaEditor
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2012-2016 Vitex@hippy.cz (G)
  */
@@ -45,7 +44,7 @@ if ($delsubcont) {
     $delcnt->delete($delsubcont);
 }
 
-$oPage->addItem(new UI\PageTop(_('Contact editor').' '.$contact->getName()));
+$oPage->addItem(new UI\PageTop(_('Contact editor') . ' ' . $contact->getName()));
 $oPage->addPageColumns();
 
 $oPage->columnII->addItem(new \Ease\Html\H3Tag($contact->getName()));
@@ -53,17 +52,13 @@ $oPage->columnII->addItem(new \Ease\Html\H3Tag($contact->getName()));
 $oPage->columnII->addItem(new UI\ContactTweaker($contact));
 
 if ($contact->getName() != $oUser->getUserLogin()) {
-    $oPage->columnIII->addItem($contact->deleteButton($contact->getName(),
-            'contact_id='.$contact->getId()));
+    $oPage->columnIII->addItem($contact->deleteButton($contact->getName(), 'contact_id=' . $contact->getId()));
 }
-$renameForm = new \Ease\TWB\Form('Rename',
-    '?action=rename&amp;contact_id='.$contact->getID().'&contact_id='.$contact->getId());
-$renameForm->addItem(new \Ease\Html\InputTextTag('newname'),
-    $contact->getName(), ['class' => 'form-control']);
+$renameForm = new \Ease\TWB\Form('Rename', '?action=rename&amp;contact_id=' . $contact->getID() . '&contact_id=' . $contact->getId());
+$renameForm->addItem(new \Ease\Html\InputTextTag('newname'), $contact->getName(), ['class' => 'form-control']);
 $renameForm->addItem(new \Ease\TWB\SubmitButton(_('Rename'), 'success'));
 
-$oPage->columnIII->addItem(new \Ease\TWB\Panel(_('Renaming'), 'default',
-    $renameForm));
+$oPage->columnIII->addItem(new \Ease\TWB\Panel(_('Renaming'), 'default', $renameForm));
 
 $oPage->addItem(new UI\PageBottom());
 

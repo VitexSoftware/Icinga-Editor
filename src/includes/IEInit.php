@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Init aplikace
  *
@@ -12,9 +13,10 @@ require_once 'Configure.php';
 require_once '../vendor/autoload.php';
 
 //Initialise Gettext
-$langs  = [
-    'en_US' => ['en', 'English (International)'],
-    'cs_CZ' => ['cs', 'Česky (Čeština)'],
+$langs = [
+  'en_US' => ['en', 'English (International)'],
+  'cs_CZ' => ['cs', 'Česky (Čeština)'],
+  'nl_NL' => ['nl', 'Dutch (Netherlands)'],
 ];
 $locale = 'en_US';
 if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {

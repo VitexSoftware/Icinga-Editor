@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Icinga Editor\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-03-26 23:58+0100\n"
-"PO-Revision-Date: 2017-03-26 23:58+0100\n"
-"Last-Translator: Vítězslav Dvořák <info@vitexsoftware.cz>\n"
+"POT-Creation-Date: 2017-03-28 14:50+0100\n"
+"PO-Revision-Date: 2017-03-28 14:51+0100\n"
+"Last-Translator: Vítězslav Dvořák <vitezslav.dvorak@adminit.cz>\n"
 "Language-Team: Vitex Software <info@vitexsoftware.cz>\n"
 "Language: nl_NL\n"
 "MIME-Version: 1.0\n"
@@ -34,70 +34,71 @@ msgstr ""
 msgid "configuration file %s was created"
 msgstr ""
 
-#: src/apply.php:36
+#: src/apply.php:35
 #, php-format
 msgid "configuration file  %s was not created"
 msgstr ""
 
-#: src/apply.php:56 src/regenall.php:63
+#: src/apply.php:53 src/regenall.php:63
 msgid "Chyba:"
 msgstr ""
 
-#: src/apply.php:58 src/regenall.php:65
+#: src/apply.php:54 src/regenall.php:65
 msgid "Configuration control empty result"
 msgstr ""
 
-#: src/apply.php:60 src/regenall.php:67
+#: src/apply.php:55 src/regenall.php:67
 msgid "Please check if /etc/sudoers contains:"
 msgstr ""
 
-#: src/apply.php:69 src/regenall.php:76
+#: src/apply.php:64 src/regenall.php:76
 msgid "Error:"
 msgstr ""
 
-#: src/apply.php:75 src/apply.php:80 src/regenall.php:94 src/regenall.php:99
+#: src/apply.php:69 src/apply.php:73 src/regenall.php:94 src/regenall.php:99
 msgid "Notification period"
 msgstr ""
 
-#: src/apply.php:106 src/regenall.php:125
+#: src/apply.php:97 src/regenall.php:125
 msgid "is not defined anywhere"
 msgstr ""
 
-#: src/apply.php:115 src/regenall.php:133
+#: src/apply.php:105 src/regenall.php:133
 msgid "Chyba v konfiguračním souboru"
 msgstr ""
 
-#: src/apply.php:131 src/apply.php:134
-msgid "Varování:"
+#: src/apply.php:119 src/apply.php:121 src/regenall.php:149
+#: src/regenall.php:152
+msgid "Warning"
 msgstr ""
 
-#: src/apply.php:131
+#: src/apply.php:119
 msgid "nemá přiřazené žádné služby"
 msgstr ""
 
-#: src/apply.php:146 src/regenall.php:164
+#: src/apply.php:131 src/regenall.php:164
 #, php-format
 msgid "total %s warnings"
 msgstr ""
 
-#: src/apply.php:149 src/regenall.php:167
+#: src/apply.php:133 src/regenall.php:167
 msgid "test successfully done without warnings"
 msgstr ""
 
-#: src/apply.php:156 src/regenall.php:174
+#: src/apply.php:139 src/regenall.php:174
 #, php-format
 msgid "total %s errors"
 msgstr ""
 
-#: src/apply.php:159 src/regenall.php:177
+#: src/apply.php:141 src/regenall.php:177
 msgid "test successfully done without errors"
 msgstr ""
 
-#: src/apply.php:168
+#: src/apply.php:149
 msgid "All your configuration files was regenerated"
 msgstr ""
 
-#: src/apply.php:171 src/regenall.php:190
+#: src/apply.php:151 src/regenall.php:190
 msgid "Done"
 msgstr ""
 
@@ -435,6 +436,7 @@ msgid "Sign off"
 msgstr ""
 
 #: src/classes/UI/BootstrapMenu.php:79
+#: vendor/vitexsoftware/ease-framework/src/Ease/TWB/StatusMessages.php:17
 msgid "Click to hide messages"
 msgstr ""
 
@@ -607,14 +609,14 @@ msgstr ""
 #: src/classes/UI/ConfirmationDialog.php:41
 #: src/classes/UI/PassiveCheckedHostForm.php:31
 #: src/classes/UI/TWBSwitch.php:30 src/wizard-host.php:57
-#: vendor/vitexsoftware/ease-framework/src/Ease/JQuery/ConfirmedLinkButton.php:34
+#: vendor/vitexsoftware/ease-framework/src/Ease/JQuery/ConfirmedLinkButton.php:32
 msgid "No"
 msgstr ""
 
 #: src/classes/UI/ConfirmationDialog.php:43
 #: src/classes/UI/PassiveCheckedHostForm.php:31
 #: src/classes/UI/TWBSwitch.php:27 src/wizard-host.php:57
-#: vendor/vitexsoftware/ease-framework/src/Ease/JQuery/ConfirmedLinkButton.php:33
+#: vendor/vitexsoftware/ease-framework/src/Ease/JQuery/ConfirmedLinkButton.php:31
 msgid "Yes"
 msgstr ""
 
@@ -3113,10 +3115,6 @@ msgstr ""
 msgid "starting on line"
 msgstr ""
 
-#: src/regenall.php:149 src/regenall.php:152
-msgid "Warning"
-msgstr ""
-
 #: src/regenall.php:149
 msgid "without services asigned"
 msgstr ""
@@ -4001,30 +3999,30 @@ msgstr ""
 msgid "Ol Three"
 msgstr ""
 
-#: vendor/vitexsoftware/ease-framework/src/Ease/Brick.php:369
+#: vendor/vitexsoftware/ease-framework/src/Ease/Brick.php:317
 msgid "UpdateToSQL: Missing data"
 msgstr ""
 
-#: vendor/vitexsoftware/ease-framework/src/Ease/JQuery/ConfirmedLinkButton.php:32
+#: vendor/vitexsoftware/ease-framework/src/Ease/JQuery/ConfirmedLinkButton.php:30
 msgid "Confirmation"
 msgstr ""
 
-#: vendor/vitexsoftware/ease-framework/src/Ease/JQuery/ConfirmedLinkButton.php:32
+#: vendor/vitexsoftware/ease-framework/src/Ease/JQuery/ConfirmedLinkButton.php:30
 msgid "Really"
 msgstr ""
 
-#: vendor/vitexsoftware/ease-framework/src/Ease/Logger/ToFile.php:280
-#: vendor/vitexsoftware/ease-framework/src/Ease/Logger/ToFile.php:283
+#: vendor/vitexsoftware/ease-framework/src/Ease/Logger/ToFile.php:281
+#: vendor/vitexsoftware/ease-framework/src/Ease/Logger/ToFile.php:284
 msgid " not an folder. Current directory:"
 msgstr ""
 
-#: vendor/vitexsoftware/ease-framework/src/Ease/Logger/ToFile.php:290
-#: vendor/vitexsoftware/ease-framework/src/Ease/Logger/ToFile.php:293
+#: vendor/vitexsoftware/ease-framework/src/Ease/Logger/ToFile.php:291
+#: vendor/vitexsoftware/ease-framework/src/Ease/Logger/ToFile.php:294
 msgid " not an readable folder. Current directory:"
 msgstr ""
 
-#: vendor/vitexsoftware/ease-framework/src/Ease/Logger/ToFile.php:300
-#: vendor/vitexsoftware/ease-framework/src/Ease/Logger/ToFile.php:303
+#: vendor/vitexsoftware/ease-framework/src/Ease/Logger/ToFile.php:301
+#: vendor/vitexsoftware/ease-framework/src/Ease/Logger/ToFile.php:304
 msgid " not an writeable folder. Current directory:"
 msgstr ""
 
@@ -4038,12 +4036,12 @@ msgstr ""
 msgid "Zpráva %s, pro %s nebyla odeslána z důvodu %s"
 msgstr ""
 
-#: vendor/vitexsoftware/ease-framework/src/Ease/Page.php:250
+#: vendor/vitexsoftware/ease-framework/src/Ease/Page.php:222
 msgid "Nejprve se prosím přihlašte"
 msgstr ""
 
 #: vendor/vitexsoftware/ease-framework/src/Ease/SQL/PDO.php:161
-msgid "Unimplemented Database"
+msgid "Unimplemented Database type"
 msgstr ""
 
 #: vendor/vitexsoftware/ease-framework/src/Ease/TWB/Carousel.php:115
@@ -4056,10 +4054,6 @@ msgstr ""
 
 #: vendor/vitexsoftware/ease-framework/src/Ease/TWB/Navbar.php:70
 msgid "Switch navigation"
-msgstr ""
-
-#: vendor/vitexsoftware/ease-framework/src/Ease/TWB/StatusMessages.php:16
-msgid "kliknutím skryjete zprávy"
 msgstr ""
 
 #: vendor/vitexsoftware/ease-framework/src/Ease/User.php:221
@@ -4088,7 +4082,7 @@ msgstr ""
 msgid "Sign in %s all ok"
 msgstr ""
 
-#: vendor/vitexsoftware/ease-framework/src/Ease/User.php:496
+#: vendor/vitexsoftware/ease-framework/src/Ease/User.php:472
 msgid "Odhlášení proběhlo uspěšně"
 msgstr ""
 
