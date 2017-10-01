@@ -9,34 +9,10 @@
 
 namespace Icinga\Editor;
 
-require_once 'Configure.php';
 require_once '../vendor/autoload.php';
 
-//Initialise Gettext
-$langs = [
-  'en_US' => ['en', 'English (International)'],
-  'cs_CZ' => ['cs', 'Česky (Čeština)'],
-  'nl_NL' => ['nl', 'Dutch (Netherlands)'],
-];
-$locale = 'en_US';
-if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
-    $locale = \locale_accept_from_http($_SERVER['HTTP_ACCEPT_LANGUAGE']);
-}
-if (isset($_GET['locale'])) {
-    $locale = preg_replace('/[^a-zA-Z_]/', '', substr($_GET['locale'], 0, 10));
-}
-foreach ($langs as $code => $lang) {
-    if ($locale == $lang[0]) {
-        $locale = $code;
-    }
-}
-setlocale(LC_ALL, $locale);
-bind_textdomain_codeset('icinga-editor', 'UTF-8');
-putenv("LC_ALL=$locale");
-if (file_exists('../locale')) {
-    bindtextdomain('icinga-editor', '../locale');
-}
-textdomain('icinga-editor');
+\Ease\Shared::instanced()->loadConfig('../config.json');
+\Ease\Shared::initializeGetText('icinga-editor', 'UTF-8', '../locale');
 
 session_start();
 

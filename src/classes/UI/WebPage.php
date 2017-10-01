@@ -13,25 +13,25 @@ class WebPage extends \Ease\TWB\WebPage
 {
     /**
      * Hlavní blok stránky
-     * @var \Ease\Html\Div
+     * @var \Ease\Html\DivTag
      */
     public $container = NULL;
 
     /**
      * První sloupec
-     * @var \Ease\Html\Div
+     * @var \Ease\Html\DivTag
      */
     public $columnI = NULL;
 
     /**
      * Druhý sloupec
-     * @var \Ease\Html\Div
+     * @var \Ease\Html\DivTag
      */
     public $columnII = NULL;
 
     /**
      * Třetí sloupec
-     * @var \Ease\Html\Div
+     * @var \Ease\Html\DivTag
      */
     public $columnIII = NULL;
 
@@ -59,7 +59,7 @@ class WebPage extends \Ease\TWB\WebPage
         $this->head->addItem('<link rel="apple-touch-icon-precomposed" href="img/vsmonitoring.png">');
         $this->head->addItem('<link rel="shortcut icon"  type="image/png" href="img/vsmonitoring.png">');
         $this->addItem('<br>');
-        $this->container    = $this->addItem(new \Ease\Html\Div(null,
+        $this->container    = $this->addItem(new \Ease\Html\DivTag(null,
             ['class' => 'container']));
     }
 
@@ -68,14 +68,14 @@ class WebPage extends \Ease\TWB\WebPage
      */
     function addPageColumns()
     {
-        $row = $this->container->addItem(new \Ease\Html\Div(null,
+        $row = $this->container->addItem(new \Ease\Html\DivTag(null,
             ['class' => 'row']));
 
-        $this->columnI   = $row->addItem(new \Ease\Html\Div(null,
+        $this->columnI   = $row->addItem(new \Ease\Html\DivTag(null,
             ['class' => 'col-md-4']));
-        $this->columnII  = $row->addItem(new \Ease\Html\Div(null,
+        $this->columnII  = $row->addItem(new \Ease\Html\DivTag(null,
             ['class' => 'col-md-4']));
-        $this->columnIII = $row->addItem(new \Ease\Html\Div(null,
+        $this->columnIII = $row->addItem(new \Ease\Html\DivTag(null,
             ['class' => 'col-md-4']));
     }
 
@@ -99,9 +99,10 @@ class WebPage extends \Ease\TWB\WebPage
      *
      * @param string $loginPage adresa přihlašovací stránky
      */
-    function onlyForLogged($loginPage = 'login.php')
+    function onlyForLogged($loginPage = 'login.php', $message = null)
     {
-        return parent::onlyForLogged($loginPage.'?backurl='.urlencode($_SERVER['REQUEST_URI']));
+        return parent::onlyForLogged($loginPage.'?backurl='.urlencode($_SERVER['REQUEST_URI']),
+                $message);
     }
 
 }

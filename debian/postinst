@@ -3,27 +3,16 @@
 
 set -e
 
-IECFG="/usr/share/icinga-editor/includes/Configure.php"
-
-
-if [ ! -f $IECFG ]; then
-    echo '<?php' > $IECFG
-fi
-
 #Replace Key Value in PhinX Config File
 replaceYML() {
     cfg="/var/lib/icinga-editor/phinx.yml"
     sed -i "/${1}:/c\        ${1}: ${2}" $cfg
 }
 
-replacePHP() {
-    if [ `cat ${IECFG} | grep "define('${1}'," | wc -l` = "0" ]; then
-        echo "define('${1}', '${2}');" >> ${IECFG}
-    else
-        sed -i "/${1}/c\define('${1}', '${2}');" ${IECFG}
-    fi
+replaceJSON() {
+    cfg="/etc/icinga-editor/config.json"
+    sed -i "/${1}/c\        \"${1}\": \"${2}\"," $cfg
 }
-
 
 
 . /usr/share/debconf/confmodule
@@ -59,9 +48,9 @@ IW_SERVER_PASSWORD=`cat $IWCFG | grep dbc_dbpass= | awk -F\' '{print $2}'`
 IW_DATABASE=`cat $IWCFG | grep dbc_dbname= | awk -F\' '{print $2}'`
 
 
-replacePHP "DB_IW_SERVER_USERNAME" $IW_SERVER_USERNAME
-replacePHP "DB_IW_SERVER_PASSWORD" $IW_SERVER_PASSWORD
-replacePHP "DB_IW_DATABASE" $IW_DATABASE
+replaceJSON "DB_IW_SERVER_USERNAME" $IW_SERVER_USERNAME
+replaceJSON "DB_IW_SERVER_PASSWORD" $IW_SERVER_PASSWORD
+replaceJSON "DB_IW_DATABASE" $IW_DATABASE
 
 if [ "$1" = "configure" ]; then
 
@@ -98,19 +87,13 @@ composer --no-dev -o update
 
     . /etc/icinga-editor/config-db.sh
 
-replacePHP "DB_TYPE" "mysql"
-replacePHP "DB_SERVER_HOST" "localhost"
-replacePHP "DB_SERVER_USERNAME" $dbuser
-replacePHP "DB_SERVER_PASSWORD" $dbpass
-replacePHP "DB_DATABASE" $dbname
-replacePHP "DB_PREFIX" ""
-replacePHP "SEND_MAILS_FROM" $SEND_MAILS_FROM
-
-#replacePHP "LOG_DIRECTORY" "/var/log/"
-#replacePHP "CFG_GENERATED" "/etc/icinga/generated/"
-#replacePHP "LOG_NAME" "IcingaEditor"
-#replacePHP "LOG_TYPE" "syslog"
-
+replaceJSON "DB_TYPE" "mysql"
+replaceJSON "DB_HOST" "localhost"
+replaceJSON "DB_USERNAME" $dbuser
+replaceJSON "DB_PASSWORD" $dbpass
+replaceJSON "DB_DATABASE" $dbname
+replaceJSON "DB_PREFIX" ""
+replaceJSON "SEND_MAILS_FROM" $SEND_MAILS_FROM
 
 replaceYML "adapter"    "mysql"
 replaceYML "host"       "localhost"

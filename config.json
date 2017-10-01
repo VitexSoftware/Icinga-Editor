@@ -1,0 +1,14 @@
+{
+    "EASE_APPNAME": "IcingaEditor",
+    "DB_TYPE": "mysql",
+    "DB_HOST": "localhost",
+    "DB_PORT": 3306,
+    "DB_DATABASE": "icinga_editor",
+    "DB_USERNAME": "icinga_editor",
+    "DB_PASSWORD": "LojAstod9",
+    "SEND_MAILS_FROM": "noreply@vitexsoftware.cz",
+    "CFG_GENERATED": "/etc/icinga/generated/",
+    "EMAIL_FROM": "monitor@v.s.cz",
+    "SEND_INFO_TO": "info@vitexsoftware.cz",
+    "EASE_LOGGER": "syslog"
+}
