@@ -104,5 +104,4 @@ class WebPage extends \Ease\TWB\WebPage
         return parent::onlyForLogged($loginPage.'?backurl='.urlencode($_SERVER['REQUEST_URI']),
                 $message);
     }
-
 }
