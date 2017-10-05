@@ -7,3 +7,4 @@
 /debian/icinga-editor.postrm.debhelper
 /debian/icinga-editor.substvars
 /composer.lock
+/.vagrant/

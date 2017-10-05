@@ -1,7 +1,7 @@
 all: fresh build install
 
 fresh:
-	echo fresh
+	git pull
 
 install: 
 	echo install
@@ -9,8 +9,10 @@ install:
 build:
 	echo build
 
-test:
+codeception:
+	sudo systemctl start selenium-chrome
 	codecept run
+	sudo systemctl stop selenium-chrome
 
 clean:
 	rm -rf debian/icinga-editor
@@ -19,5 +21,5 @@ clean:
 deb:
 	debuild -i -us -uc -b
 
-.PHONY : install
+.PHONY : install test
 	
