@@ -18,15 +18,9 @@
             <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/src/login.php</file>
         </group>
         <group>
-            <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/debian/install</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/src/classes/UI/WebPage.php</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/config.json</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/src/index.php</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/vendor/composer/ClassLoader.php</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/src/includes/IEInit.php</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/debian/postinst</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/src/host.php</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/src/classes/UI/FXPreloader.php</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/debian/rules</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/Makefile</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/bootstrap.sh</file>
         </group>
     </open-files>
 </project-private>
