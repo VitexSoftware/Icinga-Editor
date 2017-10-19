@@ -3,7 +3,7 @@
 namespace Icinga\Editor\Engine;
 
 /**
- * Uživatel Icinga Editoru
+ * Icinga UserGroup Configurator
  */
 class UserGroup extends Configurator
 {
@@ -23,8 +23,7 @@ class UserGroup extends Configurator
         'members' => ''
     ];
     public $keywordsInfo  = [
-        'usergroup_name' => ['title' => 'název skupiny', 'required' => true],
-        'members' => ['title' => 'členové']
+        'usergroup_name' => ['required' => true]
     ];
 
     /**
@@ -36,11 +35,14 @@ class UserGroup extends Configurator
     /**
      * Skupina uživatelů
      *
-     * @param string|id $id ID nebo jméno skupiny
+     * @param string|id $id ID or group name
      */
     public function __construct($id = null)
     {
         parent::__construct();
+
+        $this->keywordsInfo['usergroup_name']['title'] = _('Group Name');
+        $this->keywordsInfo['members']['title']        = _('Members');
 
         unset($this->useKeywords['generate']);
         unset($this->keywordsInfo['generate']);
@@ -69,7 +71,7 @@ class UserGroup extends Configurator
     }
 
     /**
-     * Načte členy skupiny z DB
+     * Read group members from database
      *
      * @param int $id ID skupiny
      * @return array
@@ -89,9 +91,9 @@ class UserGroup extends Configurator
     }
 
     /**
-     * Volba členů skupiny
+     * Group Member select
      *
-     * @return \\Ease\TWB\Panel
+     * @return \Ease\TWB\Panel
      */
     public function memberSelector()
     {
@@ -110,9 +112,9 @@ class UserGroup extends Configurator
                 $login, 'success', 'xs',
                 [
                 new \Ease\Html\ATag('?action=delmember&usergroup_id='.$this->getMyKey().'&member_id='.$userId,
-                    \Ease\TWB\Part::GlyphIcon('minus').' '._('Odebrat ze skupiny')),
+                    \Ease\TWB\Part::GlyphIcon('minus').' '._('Remove from group')),
                 new \Ease\Html\ATag('userinfo.php?user_id='.$userId,
-                    \Ease\TWB\Part::GlyphIcon('wrench').' '._('Editace'))
+                    \Ease\TWB\Part::GlyphIcon('wrench').' '._('Edit'))
             ]);
         }
 
@@ -121,18 +123,18 @@ class UserGroup extends Configurator
                 $login, 'inverse', 'xs',
                 [
                 new \Ease\Html\ATag('?action=addmember&usergroup_id='.$this->getMyKey().'&member_id='.$userId,
-                    \Ease\TWB\Part::GlyphIcon('plus').' '._('Přidat do skupiny')),
+                    \Ease\TWB\Part::GlyphIcon('plus').' '._('Add to group')),
                 new \Ease\Html\ATag('userinfo.php?user_id='.$userId,
-                    \Ease\TWB\Part::GlyphIcon('wrench').' '._('Editace'))
+                    \Ease\TWB\Part::GlyphIcon('wrench').' '._('Edit'))
             ]);
         }
 
 
-        return new \Ease\TWB\Panel(_('členové skupiny'), 'default', $users);
+        return new \Ease\TWB\Panel(_('UserGroup Members'), 'default', $users);
     }
 
     /**
-     * Přidá člena do aktuální uživatelské skupiny
+     * Add Member to current UserGroup
      *
      * @param int $memberID
      * @return boolean
@@ -150,7 +152,7 @@ class UserGroup extends Configurator
     }
 
     /**
-     * Odebere člena z aktuální uživatelské skupiny
+     * Remove Member from current UserGroup
      *
      * @param int $memberID
      * @return boolean
@@ -170,6 +172,11 @@ class UserGroup extends Configurator
         }
     }
 
+    /**
+     * Delete usergroup by id
+     *
+     * @param int $id
+     */
     public function delete($id = null)
     {
         if (is_null($id)) {
@@ -180,6 +187,12 @@ class UserGroup extends Configurator
         }
     }
 
+    /**
+     * Prepare raw data for datagrid
+     *
+     * @param array $row
+     * @return array
+     */
     function htmlizeRow($row)
     {
         $row   = parent::htmlizeRow($row);
@@ -194,7 +207,7 @@ class UserGroup extends Configurator
     }
 
     /**
-     * Smaže uživatele ze skupin
+     * Remove user from all UserGroups
      *
      * @param int $id UserID
      */

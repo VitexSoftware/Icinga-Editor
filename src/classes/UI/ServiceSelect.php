@@ -3,7 +3,7 @@
 namespace Icinga\Editor\UI;
 
 /**
- * Description of IEServiceSelect
+ * Dropdown to select one of availble services
  *
  * @author vitex
  */

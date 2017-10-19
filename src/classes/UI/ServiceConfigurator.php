@@ -3,38 +3,38 @@
 namespace Icinga\Editor\UI;
 
 /**
- * Description of IEServiceConfigurator
+ * Description of ServiceConfigurator
  *
  * @author vitex
  */
 class ServiceConfigurator extends \Ease\Html\Div
 {
     /**
-     * Objekt tweakeru
+     * Tweaker Object
      * @var ServiceTweaker
      */
     public $tweaker = null;
 
     /**
-     * Objekt formuláře
+     * Form Object
      * @var \Ease\TWB\Form
      */
     public $form = null;
 
     /**
-     * Pole konfiguračních parametrů příkazu služby
+     * Service configuration parameters
      * @var array
      */
     public $commandParams = null;
 
     /**
-     * Položky vždy určené k tweakování
+     * Fields to tweak
      * @var array
      */
     public $commonFields = ['check_interval', 'check_command-params'];
 
     /**
-     * Obecný modul pro konfiguraci služby
+     * Common service tweaking module
      * @param ServiceTweaker $tweaker
      */
     public function __construct($tweaker)
@@ -44,7 +44,7 @@ class ServiceConfigurator extends \Ease\Html\Div
         if (!$this->tweaker->service->getDataValue('DatSave')) {
             if ($this->init()) {
                 $this->tweaker->service->saveToSQL();
-                \Ease\Shared::webPage()->addStatusMessage(_('Prosím potvrďte nastavení služby'));
+                \Ease\Shared::webPage()->addStatusMessage(_('Please confirm service setup'));
             }
         }
 
@@ -54,7 +54,7 @@ class ServiceConfigurator extends \Ease\Html\Div
     }
 
     /**
-     * Výchozí konfigurace služby těsně po naklonování
+     * Initial configuration after cloning
      *
      * @return boolean
      */
@@ -64,15 +64,15 @@ class ServiceConfigurator extends \Ease\Html\Div
     }
 
     /**
-     * Funkce pro vykreslení formuláře
+     * Form draw functions
      */
     public function form()
     {
-        
+
     }
 
     /**
-     * funkce pro zpracování hodnot formuláře
+     * Form filelds processor
      */
     public function reconfigureService()
     {
@@ -92,7 +92,7 @@ class ServiceConfigurator extends \Ease\Html\Div
     }
 
     /**
-     * Po přidání do stránky
+     * Add Tweaker form into page
      */
     public function afterAdd()
     {
@@ -107,7 +107,7 @@ class ServiceConfigurator extends \Ease\Html\Div
                         $this->tweaker->host->getName()
                     );
                     if ($oldService->saveToSQL()) {
-                        $oldService->addStatusMessage(_('Původní služba byla upravena'));
+                        $oldService->addStatusMessage(_('Original service was modified'));
                     }
 
                     $this->tweaker->service->setDataValue('parent_id',
@@ -125,43 +125,43 @@ class ServiceConfigurator extends \Ease\Html\Div
                     $this->tweaker->service->setDataValue($this->tweaker->service->nameColumn,
                         _('Klon').' '.$this->tweaker->service->getName());
                     if ($this->tweaker->service->saveToSQL()) {
-                        $this->tweaker->service->addStatusMessage(_('Služba byla uložena jako klon'),
+                        $this->tweaker->service->addStatusMessage(_('Service was saved as clone'),
                             'success');
                         $webPage->redirect('servicetweak.php?service_id='.$this->tweaker->service->getId().'&host_id='.$this->tweaker->host->getId());
                     } else {
-                        $this->tweaker->service->addStatusMessage(_('Sužba nebyla naklonována'),
+                        $this->tweaker->service->addStatusMessage(_('Service cloning failed'),
                             'warning');
                     }
                 } else {
                     $serviceID = $this->tweaker->service->saveToSQL();
                     if (is_null($serviceID)) {
-                        $this->addStatusMessage(_('Služba nebyla uložena'),
+                        $this->addStatusMessage(_('Service saving failed'),
                             'error');
                     } else {
-                        $this->addStatusMessage(_('Služba byla uložena'),
+                        $this->addStatusMessage(_('Service was saved'),
                             'success');
                     }
                 }
             } else {
-                $this->addStatusMessage(_('Formulář nebyl uložen'), 'warning');
+                $this->addStatusMessage(_('Form was not saved'), 'warning');
             }
         }
 
         $this->commandParams = explode('!',
             $this->tweaker->service->getDataValue('check_command-params'));
-        $this->addItem(new \Ease\Html\Div(_('Služba').': <strong>'.$this->tweaker->service->getName().'</strong>'));
-        $this->addItem(new \Ease\Html\Div(_('Uloženo').': '.$this->tweaker->service->getDataValue('DatSave')));
-        $this->addItem(new \Ease\Html\Div(_('Založeno').': '.$this->tweaker->service->getDataValue('DatCreate')));
+        $this->addItem(new \Ease\Html\Div(_('Service').': <strong>'.$this->tweaker->service->getName().'</strong>'));
+        $this->addItem(new \Ease\Html\Div(_('Saved').': '.$this->tweaker->service->getDataValue('DatSave')));
+        $this->addItem(new \Ease\Html\Div(_('Created').': '.$this->tweaker->service->getDataValue('DatCreate')));
 
         $parent_id = (int) $this->tweaker->service->getDataValue('parent_id');
         if ($parent_id) {
             $parent_service = new \Icinga\Editor\Engine\Service($parent_id);
             $this->addItem(new \Ease\TWB\Label('info',
-                sprintf(_('Toto je odvozená služba od %s'),
-                    '<a href="service.php?service_id='.$parent_id.'">'.$parent_service->getName().'</a>')));
+                    sprintf(_('Toto je odvozená služba od %s'),
+                        '<a href="service.php?service_id='.$parent_id.'">'.$parent_service->getName().'</a>')));
         } else {
             $this->addItem(new \Ease\TWB\Label('info',
-                _('Toto je primární služba.')));
+                    _('This is primary service.')));
         }
 
 
@@ -173,18 +173,17 @@ class ServiceConfigurator extends \Ease\Html\Div
             $this->form->addItem(new CfgEditor($this->tweaker->service, $cf));
         }
         $this->form->addItem(new \Ease\Html\InputHiddenTag($this->tweaker->service->getMyKeyColumn(),
-            $this->tweaker->service->getMyKey()));
+                $this->tweaker->service->getMyKey()));
         $this->form->addItem(new \Ease\Html\InputHiddenTag($this->tweaker->host->getMyKeyColumn(),
-            $this->tweaker->host->getMyKey()));
+                $this->tweaker->host->getMyKey()));
         $this->form->addItem(new \Ease\Html\InputHiddenTag('action', 'tweak'));
         $this->form->addItem('<br/>');
 
-        $this->form->addItem(new \Ease\TWB\SubmitButton(_('Uložit upravenou službu jako '),
-            'success'));
+        $this->form->addItem(new \Ease\TWB\SubmitButton(_('Save modified service as'),
+                'success'));
         $this->form->addItem(new YesNoSwitch('clone', false, 'true',
-            ['onText' => _('Klon'), 'offText' => _('originál')]));
+                ['onText' => _('Clone'), 'offText' => _('Original')]));
 
-        $this->form->addItem(new \Ease\Html\LabelTag('V případě uložení kopie přestane sledovaný host používat původní službu.'));
+        $this->form->addItem(new \Ease\Html\LabelTag('In case of saving of Service as Clone The Watched hosts use this new one.'));
     }
-
 }
