@@ -3,12 +3,10 @@
 namespace Icinga\Editor;
 
 /**
- * Icinga Editor - Předloha sledovaných služeb
+ * Icinga Editor - Service template editor
  *
- * @package    IcingaEditor
- * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
- * @copyright  2012 Vitex@hippy.cz (G)
+ * @copyright  2012-2017 Vitex@hippy.cz (G)
  */
 require_once 'includes/IEInit.php';
 
@@ -18,7 +16,8 @@ $stemplate = new Stemplate($oPage->getRequestValue('stemplate_id', 'int'));
 
 switch ($oPage->getRequestValue('action')) {
     case 'new':
-        $stemplate->setDataValue($stemplate->nameColumn, _('Nová předloha'));
+        $stemplate->setDataValue($stemplate->nameColumn,
+            _('New  service template'));
         $stemplate->insertToSQL();
         $stemplate->setDataValue($stemplate->nameColumn,
             _('Nová předloha').' #'.$stemplate->getId());
@@ -33,10 +32,10 @@ switch ($oPage->getRequestValue('action')) {
         $stemplate->setDataValue($stemplate->nameColumn, $host->getName());
         $stemplate->setDataValue('services', $host->getServices());
         if ($stemplate->saveToSQL()) {
-            $stemplate->addStatusMessage(sprintf(_('Vytvořena nová předloha sledovaných služeb: %s'),
+            $stemplate->addStatusMessage(sprintf(_('New watched services template: %s was created '),
                     $stemplate->getName()), 'success');
         } else {
-            $stemplate->addStatusMessage(sprintf(_('Nebyla vytvořena nová předloha')),
+            $stemplate->addStatusMessage(sprintf(_('New template was not created')),
                 'warning');
         }
 
@@ -48,14 +47,16 @@ switch ($oPage->getRequestValue('action')) {
         if ($oPage->isPosted()) {
             $stemplate->takeData($_POST);
             if (!$stemplate->getName()) {
-                $oUser->addStatusMessage(_('Není zadán název'), 'warning');
+                $oUser->addStatusMessage(_('No name was set'), 'warning');
             }
             $stemplateID = $stemplate->saveToSQL();
 
             if (is_null($stemplateID)) {
-                $oUser->addStatusMessage(_('Příkaz nebyl uložen'), 'warning');
+                $oUser->addStatusMessage(_('Services template was not saved'),
+                    'warning');
             } else {
-                $oUser->addStatusMessage(_('Příkaz byl uložen'), 'success');
+                $oUser->addStatusMessage(_('Services template was saved'),
+                    'success');
             }
         }
 }
@@ -68,7 +69,7 @@ if ($delete == 'true') {
     $oPage->redirect('stemplates.php');
 }
 
-$oPage->addItem(new UI\PageTop(_('Editace předvolby sledovaných služeb').' '.$stemplate->getName()));
+$oPage->addItem(new UI\PageTop(_('Service template editor').' '.$stemplate->getName()));
 $oPage->addPageColumns();
 
 if ($stemplate->getId()) {
@@ -80,7 +81,7 @@ switch ($oPage->getRequestValue('action')) {
 
         $oPage->columnII->addItem(new \Ease\Html\H2Tag($stemplate->getName()));
 
-        $confirmator = $oPage->columnII->addItem(new \Ease\TWB\Panel(_('Opravdu smazat ?')),
+        $confirmator = $oPage->columnII->addItem(new \Ease\TWB\Panel(_('Do you really delete?')),
             'danger');
         $confirmator->addItem(new \Ease\TWB\LinkButton('?'.$stemplate->myKeyColumn.'='.$stemplate->getID(),
             _('Ne').' '.\Ease\TWB\Part::glyphIcon('ok'), 'success'));
@@ -97,9 +98,9 @@ switch ($oPage->getRequestValue('action')) {
             ['class' => 'form-horizontal']));
 
         if (!$stemplate->getId()) {
-            $form->addItem(new \Ease\TWB\SubmitButton(_('Založit'), 'success'));
+            $form->addItem(new \Ease\TWB\SubmitButton(_('Create'), 'success'));
         } else {
-            $form->addItem(new \Ease\TWB\SubmitButton(_('Uložit'), 'success'));
+            $form->addItem(new \Ease\TWB\SubmitButton(_('Save'), 'success'));
         }
         $oPage->columnIII->addItem(new \Ease\TWB\Panel(_('Transfer'), 'warning',
             $stemplate->transferForm()));

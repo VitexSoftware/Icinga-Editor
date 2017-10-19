@@ -11,25 +11,25 @@ class ContactTweaker extends \Ease\Html\Div
 {
     /**
      * Objekt služby
-     * @var IEContact
+     * @var Contact
      */
     public $contact = null;
 
     /**
      * Objekt Hosta
-     * @var IEHost
+     * @var Host
      */
     public $host = null;
 
     /**
      *
-     * @var type
+     * @var 
      */
     public $configurator = null;
 
     /**
-     *
-     * @var type
+     * Subcontact types used
+     * @var array
      */
     public $subcontactTypes = ['email', 'jabber', 'sms', 'twitter'];
 
@@ -42,8 +42,8 @@ class ContactTweaker extends \Ease\Html\Div
     /**
      * Umožňuje měnit parametry služeb
      *
-     * @param IEContact $contact
-     * @param IEHost    $host    ObjektHostu
+     * @param Contact $contact
+     * @param Host    $host    ObjektHostu
      */
     public function __construct($contact)
     {
@@ -53,7 +53,7 @@ class ContactTweaker extends \Ease\Html\Div
 
         $this->contact = $contact;
 
-        $this->addItem(new \Ease\Html\Div(_('Založeno').': '.$this->contact->getDataValue('DatCreate')));
+        $this->addItem(new \Ease\Html\Div(_('Created').': '.$this->contact->getDataValue('DatCreate')));
         $oPage = \Ease\Shared::webPage();
         if ($oPage->isPosted()) {
             $oldId       = $this->contact->getId();
@@ -61,11 +61,11 @@ class ContactTweaker extends \Ease\Html\Div
             $contactData = $oPage->getRequestValue('cnt');
             if (isset($contactType) && strlen($contactData)) {
                 if ($this->contact->fork([$contactType => $contactData])) {
-                    $this->addStatusMessage(sprintf(_('Kontaktní údaj %s %s byl přidán'),
+                    $this->addStatusMessage(sprintf(_('Contact information %s %s was added'),
                             $contactType, $contactData), 'success');
                     $this->cnt = '';
                 } else {
-                    $this->addStatusMessage(sprintf(_('Kontaktní údaj %s %s nebyl přidán'),
+                    $this->addStatusMessage(sprintf(_('Contact information %s %s was not saved'),
                             $contactType, $contactData), 'error');
                     $this->cnt = \Ease\Shared::webPage()->getRequestValue('cnt');
                 }
@@ -84,10 +84,10 @@ class ContactTweaker extends \Ease\Html\Div
                 'success', 'xs',
                 [
                 new \Ease\Html\ATag('contact.php?parent_id='.$this->contact->getId().'&contact_id='.$subcontatctID,
-                    \Ease\TWB\Part::GlyphIcon('wrench').' '._('Vlastnosti')),
-                new \Ease\Html\ATag('?contact_id='.$this->contact->getId().'&delsubcont_id='.$subcontatctID,
-                    \Ease\TWB\Part::GlyphIcon('minus').' '._('smazat').' '.$subcontatctInfo['type'])
-                ]
+                    \Ease\TWB\Part::GlyphIcon('wrench').' '._('Properties')),
+                    new \Ease\Html\ATag('?contact_id='.$this->contact->getId().'&delsubcont_id='.$subcontatctID,
+                    \Ease\TWB\Part::GlyphIcon('minus').' '._('Delete').' '.$subcontatctInfo['type'])
+                    ]
                 )
             );
 
@@ -103,20 +103,20 @@ class ContactTweaker extends \Ease\Html\Div
             $form->addItem(new \Ease\Html\InputHiddenTag('contact_id',
                 $this->contact->getId()));
             $form->addItem(
-                new \Ease\TWB\FormGroup(_('Kontakt'),
-                new \Ease\Html\InputTextTag('cnt', $this->cnt),
+                new \Ease\TWB\FormGroup(_('Contact'),
+                    new \Ease\Html\InputTextTag('cnt', $this->cnt),
                 \Ease\Shared::webPage()->getRequestValue('cnt'),
-                _('telefonní číslo, email či jabberová adresa dle druhu kontaktu')
+                _('phone number, email or jabber address by contact type')
                 )
             );
-            $form->addItem(new \Ease\TWB\SubmitButton(_('Uložit'), 'success'));
+            $form->addItem(new \Ease\TWB\SubmitButton(_('Save'), 'success'));
 
-            $this->addItem(new \Ease\TWB\Panel(_('Přidat kontaktní údaj'),
-                'default', $form));
+            $this->addItem(new \Ease\TWB\Panel(_('Add contact information'),
+                    'default', $form));
         } else {
             $this->addItem(new \Ease\Html\Div(
-                _('K tomuto kontaktu již není možné přidávat další údaje.'),
-                ['class' => 'well warning', 'style' => 'margin: 10px', 'id' => 'plno']));
+                _('You can not add more data to this contact.'),
+                    ['class' => 'well warning', 'style' => 'margin: 10px', 'id' => 'plno']));
         }
     }
 

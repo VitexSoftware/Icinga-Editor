@@ -120,7 +120,7 @@ class CheckDriveSize extends \Icinga\Editor\UI\ServiceConfigurator
             '5%', _('Minimum value before a critcal is returned.')));
 
         $this->form->addInput(new \Icinga\Editor\UI\TWBSwitch('ShowAll',
-            $config['ShowAll']), _('Zobrazit vše'), null,
+            $config['ShowAll']), _('Show All'), null,
             _('Configures display format (if set shows all items not only failures, if set to long shows all cores).'));
 
         //    $this->form->addInput(new \Ease\Html\InputTextTag('orig', $this->commandParams[0], array('disabled')));

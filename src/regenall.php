@@ -3,9 +3,8 @@
 namespace Icinga\Editor;
 
 /**
- * Icinga Editor - Configuration Generating
+ * Icinga Editor - All Configuration Generating
  *
- * @package    IcingaEditor
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2012-2016 Vitex@hippy.cz (G)
  */
@@ -60,8 +59,8 @@ if ($testing) {
         $line_num++;
 
         if (($line === false) && ($line_num == 1)) {
-            $errorLine = $oPage->container->addItem(new \Ease\Html\Div('<span class="label label-important">'._('Chyba:').'</span>',
-                ['class' => 'alert alert-danger']));
+            $errorLine = $oPage->container->addItem(new \Ease\Html\Div('<span class="label label-important">'._('Error').':</span>',
+                    ['class' => 'alert alert-danger']));
             $oUser->addStatusMessage(_('Configuration control empty result'),
                 'error');
             $errorLine->addItem(_('Please check if /etc/sudoers contains:'));
@@ -130,8 +129,8 @@ if ($testing) {
 
         if (strstr($line, 'Error in configuration file')) {
             $keywords  = preg_split("/'|\(|\)| - Line /", $line);
-            $errorLine = $oPage->container->addItem(new \Ease\Html\Div('<span class="label label-error">'._('Chyba v konfiguračním souboru'),
-                ['class' => 'alert alert-danger']));
+            $errorLine = $oPage->container->addItem(new \Ease\Html\Div('<span class="label label-error">'._('Error in configuration file'),
+                    ['class' => 'alert alert-danger']));
             $errorLine->addItem(new \Ease\Html\ATag('cfgfile.php?file='.$keywords[1].'&line='.$keywords[3],
                 $keywords[1]));
             $errorLine->addItem($keywords[4]);

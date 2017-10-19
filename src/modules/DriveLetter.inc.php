@@ -1,11 +1,9 @@
 <?php
 /**
- * Formulář pro vyber pismene Disku windows
+ * Disk drive select Form
  *
- * @package    IcingaEditor
- * @subpackage plugins
  * @author     Vitex <vitex@hippy.cz>
- * @copyright  2014 Vitex@hippy.cz (G)
+ * @copyright  2014-2017 Vitex@hippy.cz (G)
  */
 
 namespace Icinga\Editor\modules;
@@ -46,16 +44,17 @@ class DriveLetter extends \Icinga\Editor\UI\ServiceConfigurator
 
         if (!strlen($config['Drive'])) {
             $this->form->addInput(new \Ease\Html\Select('Drive', $drives, '\\\\'),
-                _('Disk'), 'X:', _('Volba písmene sledované diskové jednotky'));
+                _('Disk'), 'X:',
+                _('Select the drive letter followed by the drive letter'));
         } else {
             $this->form->addInput(new \Ease\Html\Select('Drive', $drives,
-                str_replace(':', '', $config['Drive'])), _('Disk'), 'X:',
-                _('Volba písmene sledované diskové jednotky'));
+                str_replace(':', '', $config['Drive'])), _('Drive'), 'X:',
+                _('Select the drive letter followed by the drive letter'));
         }
     }
 
     /**
-     * Zpracování formuláře
+     * Form processing
      *
      * @return boolean
      */

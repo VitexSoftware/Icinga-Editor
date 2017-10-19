@@ -50,7 +50,8 @@ if ($testing) {
         $line_num++;
 
         if (($line === false) && ($line_num == 1)) {
-            $errorLine = $oPage->container->addItem(new \Ease\Html\Div('<span class="label label-important">' . _('Chyba:') . '</span>', ['class' => 'alert alert-danger']));
+            $errorLine = $oPage->container->addItem(new \Ease\Html\Div('<span class="label label-important">'._('Error').':</span>',
+                    ['class' => 'alert alert-danger']));
             $oUser->addStatusMessage(_('Configuration control empty result'), 'error');
             $errorLine->addItem(_('Please check if /etc/sudoers contains:'));
             $errorLine->addItem(new \Ease\Html\Div('User_Alias APACHE = www-data'));
@@ -61,7 +62,8 @@ if ($testing) {
 
         if (strstr($line, 'Error:')) {
             $line = str_replace('Error:', '', $line);
-            $errorLine = $oPage->container->addItem(new \Ease\Html\Div('<span class="label label-important">' . _('Error:') . '</span>', ['class' => 'alert alert-danger']));
+            $errorLine = $oPage->container->addItem(new \Ease\Html\Div('<span class="label label-important">'._('Error').':</span>',
+                    ['class' => 'alert alert-danger']));
 
             $keywords = preg_split("/['(.*)']+/", $line);
             switch (trim($keywords[0])) {
@@ -102,7 +104,9 @@ if ($testing) {
 
         if (strstr($line, 'Error in configuration file')) {
 
-            $line = str_replace('Warning:', '<span class="label label-error">' . _('Chyba v konfiguračním souboru') . '</span>', $line);
+            $line = str_replace('Warning:',
+                '<span class="label label-error">'._('Error in configuration file').'</span>',
+                $line);
 
             $oPage->container->addItem(new \Ease\Html\Div($line, ['class' => 'alert alert-danger']));
             $errorCount++;
@@ -116,7 +120,7 @@ if ($testing) {
                 $host->setmyKeyColumn($host->nameColumn);
                 $host->loadFromSQL($keywords[1]);
                 $host->resetObjectIdentity();
-                $line = '<span class="label label-warning">' . _('Warning') . ':</span> Host ' . '<a href="host.php?host_id=' . $host->getMyKey() . '">' . $host->getName() . '</a> ' . _('nemá přiřazené žádné služby');
+                $line = '<span class="label label-warning">'._('Warning').':</span> Host '.'<a href="host.php?host_id='.$host->getMyKey().'">'.$host->getName().'</a> '._('without any assigned service');
             } else {
                 $line = str_replace('Warning:', '<span class="label label-warning">' . _('Warning') . ':</span>', $line);
             }

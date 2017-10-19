@@ -3,12 +3,10 @@
 namespace Icinga\Editor;
 
 /**
- * Icinga Editor - titulní strana
+ * Icinga Editor - sensor page
  *
- * @package    IcingaEditor
- * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
- * @copyright  2012 Vitex@hippy.cz (G)
+ * @copyright  2012-2017 Vitex@hippy.cz (G)
  */
 require_once 'includes/IEInit.php';
 
@@ -33,7 +31,7 @@ switch ($operation) {
             $host->setDataValue('config_hash', null);
         }
         if ($host->saveToSQL()) {
-            $host->addStatusMessage(_('Stav nasazení senzoru byl nastaven  ručně.'));
+            $host->addStatusMessage(_('Sensor deployment status was set manually'));
         }
 
         break;

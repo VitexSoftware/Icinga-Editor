@@ -280,7 +280,6 @@ class User extends \Ease\User
      */
     public function deleteButton($name = null, $urlAdd = '')
     {
-//        return new EaseJQConfirmedLinkButton('?user_id=' . $this->getID() . '&delete=true' . '&' . $urlAdd, _('Smazat ') . ' ' . $this->getUserLogin() . ' ' . \Ease\TWB\Part::GlyphIcon('remove-sign'));
 
         \Ease\Shared::webPage()->addItem(new UI\ConfirmationDialog('delete'.$this->getId(),
             '?user_id='.$this->getID().'&delete=true'.'&'.$urlAdd,
@@ -288,7 +287,7 @@ class User extends \Ease\User
             sprintf(_('Are you sure to delete %s ?'),
                 '<strong>'.$this->getUserName().'</strong>')));
         return new \Ease\Html\ButtonTag(
-            [\Ease\TWB\Part::GlyphIcon('remove'), _('Smazat').' '.$this->keyword.' '.$this->getUserName()],
+            [\Ease\TWB\Part::GlyphIcon('remove'), _('Delete').' '.$this->keyword.' '.$this->getUserName()],
             ['style' => 'cursor: default', 'class' => 'btn btn-danger', 'id' => 'triggerdelete'.$this->getId(),
             'data-id' => $this->getId()
         ]);

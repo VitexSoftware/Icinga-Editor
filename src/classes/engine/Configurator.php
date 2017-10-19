@@ -1008,7 +1008,7 @@ class Configurator extends \Ease\Brick
                     $this->getmyKeyColumn());
                 if (count($used)) {
                     $usedFrame = new \Ease\TWB\Panel(_('is template for'),
-                        'info', null, _('není proto možné smazat'));
+                        'info', null, _('thus can not be deleted'));
                     foreach ($used as $usId => $usInfo) {
                         if ($this->publicRecords && ($usInfo['public'] != true) && ($usInfo[$this->userColumn]
                             != \Ease\Shared::user()->getUserID() )) {
@@ -1042,6 +1042,13 @@ class Configurator extends \Ease\Brick
         }
     }
 
+    /**
+     * Is current service template ?
+     *
+     * @param array $data
+     * 
+     * @return boolean
+     */
     public function isTemplate($data = null)
     {
         if (is_null($data)) {
@@ -1052,9 +1059,10 @@ class Configurator extends \Ease\Brick
     }
 
     /**
-     * Zobrazí tlačítko s ikonou a odkazem na stránku s informacemi o vlastníku
+     * Button with link to service owner page
      *
-     * @param int $ownerID alternativní ID uživatele
+     * @param int $ownerID alternative user ID
+     * 
      * @return \\Ease\TWB\LinkButton
      */
     public function ownerLinkButton($ownerID = null)
@@ -1075,7 +1083,7 @@ class Configurator extends \Ease\Brick
     }
 
     /**
-     * Odkaz na stránku s informacemi o vlastníku
+     * Link to page with owner info
      *
      * @param int $ownerID alternativní ID uživatele
      * @return \\Ease\TWB\LinkButton
@@ -1097,10 +1105,11 @@ class Configurator extends \Ease\Brick
     }
 
     /**
-     * Smaže záznam
+     * Delete record
      *
-     * @param  int     $id má li být smazán jiný než aktuální záznam
-     * @return boolean smazal se záznam ?
+     * @param  int     $id to delete another than current record
+     *
+     * @return boolean operation result
      */
     public function delete($id = null)
     {
@@ -1132,10 +1141,11 @@ class Configurator extends \Ease\Brick
     }
 
     /**
-     * Je záznam vlastněn uživatelem ?
+     * Is current record owned by user with given ID ?
      *
-     * @param  type $thisID
-     * @return type
+     * @param  int $thisID
+     *
+     * @return boolean
      */
     public function isOwnedBy($thisID = null)
     {
@@ -1151,6 +1161,7 @@ class Configurator extends \Ease\Brick
      *
      * @param  string $fileName
      * @param  array  $commonValues defaults
+     * 
      * @return int
      */
     public function importFile($fileName, $commonValues)
@@ -1164,7 +1175,8 @@ class Configurator extends \Ease\Brick
      *
      * @param  text  $cfgText
      * @param  array $commonValues
-     * @return type
+     *
+     * @return boolean
      */
     public function importText($cfgText, $commonValues)
     {
@@ -1173,10 +1185,12 @@ class Configurator extends \Ease\Brick
     }
 
     /**
-     * Načte konfiguraci ze souboru
+     * Read configuration from array
      *
      * @param array $cfgArray
      * @param array $commonValues Hodnoty vkládané ke každému záznamu
+     *
+     * @return boolean operation restult status
      */
     public function importArray($cfgArray, $commonValues = null)
     {
@@ -1308,7 +1322,8 @@ class Configurator extends \Ease\Brick
      *
      * @param  string $dirName
      * @param Importer $importer Objekt importeru
-     * @return array  pole řádků načtené konfigurace
+     *
+     * @return array  rows of configuration
      */
     public static function readRawConfigDir($dirName, $importer = null)
     {
@@ -1338,9 +1353,11 @@ class Configurator extends \Ease\Brick
     }
 
     /**
-     * Upraví
-     * @param  type $rawData
-     * @return type
+     * Convert raw data to intrnal format
+     *
+     * @param  array $rawData
+     *
+     * @return array
      */
     public function rawToData($rawData)
     {
@@ -1350,11 +1367,13 @@ class Configurator extends \Ease\Brick
     }
 
     /**
-     * Přidá hosta služby
+     * Assign Host with service
      *
      * @param string $column     název sloupce
      * @param int    $memberID
      * @param string $memberName
+     *
+     * @return boolean Member adding status
      */
     public function addMember($column, $memberID, $memberName)
     {
@@ -1369,11 +1388,12 @@ class Configurator extends \Ease\Brick
     }
 
     /**
-     * Odebere položku skupiny
+     * Remove meber from group
      *
      * @param  string  $column     název sloupečku
      * @param  int     $memberID
      * @param  string  $memberName
+     * 
      * @return boolean
      */
     public function delMember($column, $memberID = null, $memberName = null)
@@ -1404,11 +1424,12 @@ class Configurator extends \Ease\Brick
     }
 
     /**
-     * Odebere notifikační příkaz skupiny
+     * Rename group member
      *
-     * @param  string  $column        název sloupečku
+     * @param  string  $column        column name
      * @param  int     $memberID
      * @param  string  $memberNewName
+     *
      * @return boolean
      */
     public function renameMember($column, $memberID, $memberNewName)
@@ -1419,7 +1440,7 @@ class Configurator extends \Ease\Brick
     }
 
     /**
-     * Uloží položky sloupečku ?name=
+     * Save members
      */
     public function saveMembers()
     {
@@ -1561,7 +1582,7 @@ class Configurator extends \Ease\Brick
     }
 
     /**
-     * Vypíše výsledek SQL dotazu v požadovaném tvaru
+     * Print SQL Query result in requested format
      *
      * @param type $queryRaw
      */
@@ -1584,9 +1605,10 @@ class Configurator extends \Ease\Brick
     }
 
     /**
-     * Připaví data na export jak CSV
+     * Prepare data to CSV export
      *
      * @param array $data
+     * 
      * @return array
      */
     public function csvizeData($data)
@@ -1607,8 +1629,10 @@ class Configurator extends \Ease\Brick
     }
 
     /**
-     * Vrací všechny záznamy jako html
+     * Convert raw data to html - add links to parents
+     *
      * @param array $data
+     *
      * @return array
      */
     public function htmlizeData($data)
@@ -1662,9 +1686,10 @@ class Configurator extends \Ease\Brick
     }
 
     /**
-     * Vrací řádek dat v HTML interpretaci
+     * Conver raw data row to HTML (add platform icons etc.)
      *
      * @param array $row
+     *
      * @return array
      */
     public function htmlizeRow($row)
@@ -1760,7 +1785,7 @@ class Configurator extends \Ease\Brick
     }
 
     /**
-     * Přenese data objektu do jiné instance Icinga Editoru
+     * Transfer object data to another Icinga Editor instance
      */
     public function transfer($target)
     {
@@ -1801,7 +1826,7 @@ class Configurator extends \Ease\Brick
     }
 
     /**
-     * Formulář pro přenos konfigurace
+     * Configuration transfer form
      *
      * @return \\Ease\TWB\Form
      */
@@ -1829,7 +1854,7 @@ class Configurator extends \Ease\Brick
     }
 
     /**
-     * Naimportuje celou tabulku dat
+     * Import whole data table
      *
      * @param array $data
      */
@@ -1841,9 +1866,10 @@ class Configurator extends \Ease\Brick
     }
 
     /**
-     * Importuje řádek konfigurace
+     * Impoty one row of icinga 1.x configuration
      *
      * @param array $dataRow
+     * 
      * @return int počet přijatých řádek
      */
     public function importDataRow($dataRow)
@@ -1891,6 +1917,7 @@ class Configurator extends \Ease\Brick
      * Export object ant its dependencies
      *
      * @param strig $target targer Icinga editor instance URL
+     *
      * @return bool
      */
     public function transferDeps($target, $rels = null)
@@ -1923,7 +1950,7 @@ class Configurator extends \Ease\Brick
     }
 
     /**
-     * Vrací informace o objektu
+     * Object info frame
      *
      * @return \Ease\Html\DlTag Vrací seznam vlastností a jejich hodnot z objektu
      */
@@ -1970,12 +1997,12 @@ class Configurator extends \Ease\Brick
     }
 
     /**
-     * Převede sql datum do národního formátu
+     * Conver language to local format
      *
      * @param string $sqldate SQL datum
-     * @param string $format  formát výstupu
+     * @param string $format  output format
      *
-     * @return string         převedené datum
+     * @return string         date converted
      */
     static function sqlDateToLocaleDate($sqldate, $format = 'm/d/Y')
     {

@@ -3,11 +3,10 @@
 namespace Icinga\Editor;
 
 /**
- * Icinga Editor služby
+ * Icinga Editor service editor
  *
- * @package    IcingaEditor
  * @author     Vitex <vitex@hippy.cz>
- * @copyright  2012-2016 Vitex@hippy.cz (G)
+ * @copyright  2012-2017 Vitex@hippy.cz (G)
  */
 require_once 'includes/IEInit.php';
 
@@ -20,9 +19,9 @@ switch ($oPage->getRequestValue('action')) {
         $newname = $oPage->getRequestValue('newname');
         if (strlen($newname)) {
             if ($service->rename($newname)) {
-                $oUser->addStatusMessage(_('Host byl přejmenován'), 'warning');
+                $oUser->addStatusMessage(_('Host was renamed'), 'warning');
             } else {
-                $oUser->addStatusMessage(_('Host nebyl přejmenován'), 'success');
+                $oUser->addStatusMessage(_('Host was not renamed'), 'success');
             }
         }
         break;
@@ -31,9 +30,9 @@ switch ($oPage->getRequestValue('action')) {
         $service->setDataValue($service->nameColumn,
             $service->getName().' '._('Cloned'));
         if ($service->saveToSQL()) {
-            $oUser->addStatusMessage(_('Služba byla zklonovana'), 'success');
+            $oUser->addStatusMessage(_('Service was cloned'), 'success');
         } else {
-            $oUser->addStatusMessage(_('Služba nebyla zklonovana'), 'error');
+            $oUser->addStatusMessage(_('Service was not cloned'), 'error');
         }
 
         break;
@@ -64,17 +63,17 @@ switch ($oPage->getRequestValue('action')) {
         if ($oPage->isPosted()) {
             if ($oPage->getRequestValue('action') != 'rename') {
                 if ($oPage->getRequestValue('action') == 'clone') {
-                    $oUser->addStatusMessage(_('Služba byla zklonovana'), 'info');
+                    $oUser->addStatusMessage(_('Service was cloned'), 'info');
                     $service->unsetDataValue($service->getMyKey());
                 } else {
                     $service->takeData($_POST);
                 }
                 $serviceID = $service->saveToSQL();
                 if (is_null($serviceID)) {
-                    $oUser->addStatusMessage(_('Služba nebyla uložena'),
+                    $oUser->addStatusMessage(_('Service was not saved'),
                         'warning');
                 } else {
-                    $oUser->addStatusMessage(_('Služba byla uložena'), 'success');
+                    $oUser->addStatusMessage(_('Service was saved'), 'success');
                 }
             }
         } else {
@@ -92,10 +91,10 @@ if ($delete === 'true') {
     $service->delete();
 }
 
-$oPage->addItem(new UI\PageTop(_('Editace služby').' '.$service->getName()));
+$oPage->addItem(new UI\PageTop(_('Service Editor').' '.$service->getName()));
 
 $infopanel = new UI\InfoBox($service);
-$tools     = new \Ease\TWB\Panel(_('Nástroje'), 'warning');
+$tools     = new \Ease\TWB\Panel(_('Tools'), 'warning');
 $pageRow   = new \Ease\TWB\Row;
 $pageRow->addColumn(2, $infopanel);
 $mainPanel = $pageRow->addColumn(6);
@@ -104,15 +103,15 @@ $oPage->container->addItem($pageRow);
 
 switch ($oPage->getRequestValue('action')) {
     case 'delete':
-        $confirmator = $mainPanel->addItem(new \Ease\TWB\Panel(_('Opravdu smazat ?')),
+        $confirmator = $mainPanel->addItem(new \Ease\TWB\Panel(_('Do you really delete?')),
             'danger');
         $confirmator->addItem(new UI\RecordShow($service));
         $confirmator->addItem(new \Ease\TWB\LinkButton('?'.$service->myKeyColumn.'='.$service->getID(),
             _('Ne').' '.\Ease\TWB\Part::glyphIcon('ok'), 'success'));
         $confirmator->addItem(new \Ease\TWB\LinkButton('?delete=true&'.$service->myKeyColumn.'='.$service->getID(),
             _('Ano').' '.\Ease\TWB\Part::glyphIcon('remove'), 'danger'));
-        $tools->addItem(new \Ease\TWB\Panel(_('Výměna služby'), 'info',
-            new UI\ServiceSwapForm($service)));
+        $tools->addItem(new \Ease\TWB\Panel(_('Service swap'), 'info',
+                new UI\ServiceSwapForm($service)));
         $infopanel->addItem($service->ownerLinkButton());
         $tools->addItem(new UI\HostSelector($service));
 
