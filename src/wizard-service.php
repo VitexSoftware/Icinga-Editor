@@ -3,10 +3,8 @@
 namespace Icinga\Editor;
 
 /**
- * Icinga Editor - titulní strana
+ * Icinga Editor - Service Wizard
  *
- * @package    IcingaEditor
- * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2012 Vitex@hippy.cz (G)
  */
@@ -14,7 +12,7 @@ require_once 'includes/IEInit.php';
 
 $oPage->onlyForLogged();
 
-$oPage->addItem(new UI\PageTop(_('Průvodce založením hosta')));
+$oPage->addItem(new UI\PageTop(_('Service Wizard')));
 $oPage->addPageColumns();
 
 $oPage->addCss('
@@ -44,18 +42,18 @@ $oPage->addCss('
     ');
 
 $oPage->columnI->addItem(
-    new \Ease\TWB\Panel(_('Aktivní'), 'success',
-    _('Aktivni testy vyžadují aby byla icinga schopná dosáhnout na testovaný stroj.'))
+    new \Ease\TWB\Panel(_('Active'), 'success',
+        _('Active checks are initiated by the Icinga process - Active checks are run on a regularly scheduled basis'))
 );
 $oPage->columnIII->addItem(
-    new \Ease\TWB\Panel(_('Pasivní'), 'info',
-    _('Pasivní služba zasílá sama na server kde běží icinga své výsledky testů pomocí protokolu nsca'))
+    new \Ease\TWB\Panel(_('Passive'), 'info',
+        _('Passive checks are initiated and performed external applications/processes - Passive check results are submitted to Icinga for processing'))
 );
 
 $oPage->columnII->addItem(new \Ease\TWB\LinkButton('wizard-active-service.php',
-    _('Aktivní'), 'success', ['class' => 'btn-xlarge']));
+    _('Active'), 'success', ['class' => 'btn-xlarge']));
 $oPage->columnII->addItem(new \Ease\TWB\LinkButton('wizard-passive-service.php',
-    _('Pasivní'), 'info', ['class' => 'btn-xlarge']));
+    _('Passive'), 'info', ['class' => 'btn-xlarge']));
 
 $oPage->addItem(new UI\PageBottom());
 

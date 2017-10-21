@@ -3,10 +3,8 @@
 namespace Icinga\Editor;
 
 /**
- * Icinga Editor - titulní strana
+ * Icinga Editor - New Host wizard
  *
- * @package    IcingaEditor
- * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2012 Vitex@hippy.cz (G)
  */
@@ -14,7 +12,7 @@ require_once 'includes/IEInit.php';
 
 $oPage->onlyForLogged();
 
-$oPage->addItem(new UI\PageTop(_('Průvodce založením hosta')));
+$oPage->addItem(new UI\PageTop(_('New host Wizard')));
 $oPage->addPageColumns();
 
 $oPage->addCss('
@@ -44,18 +42,17 @@ $oPage->addCss('
     ');
 
 $oPage->columnI->addItem(
-    new \Ease\TWB\Panel(_('Hosty'), 'success',
-    _('Hosty jsou počítače nebo zařízení'))
+    new \Ease\TWB\Panel(_('Hosts'), 'success', _('The computers or devices'))
 );
 $oPage->columnIII->addItem(
-    new \Ease\TWB\Panel(_('Služby'), 'info',
-    _('Služby jsou definice testů aplikované na hosty nebo jejich skupiny'))
+    new \Ease\TWB\Panel(_('Services'), 'info',
+        _('The test definitions applied to hosts or its groups'))
 );
 
 $oPage->columnII->addItem(new \Ease\TWB\LinkButton('wizard-host.php', _('Host'),
     'success', ['class' => 'btn-xlarge']));
 $oPage->columnII->addItem(new \Ease\TWB\LinkButton('wizard-service.php',
-    _('Služba'), 'info', ['class' => 'btn-xlarge']));
+    _('Service'), 'info', ['class' => 'btn-xlarge']));
 
 $oPage->addItem(new UI\PageBottom());
 

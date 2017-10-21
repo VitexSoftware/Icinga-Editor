@@ -218,7 +218,7 @@ switch ($oPage->getRequestValue('action')) {
         $form = $hostParams->addItem(new \Ease\Html\Form('Host', 'host.php', 'POST', $hostEdit, ['class' => 'form-horizontal']));
         $form->setTagID($form->getTagName());
         $form->addItem('<br>');
-        $form->addItem(new \Ease\TWB\SubmitButton(_('Uložit'), 'success'));
+        $form->addItem(new \Ease\TWB\SubmitButton(_('Save'), 'success'));
         $oPage->addCss('
 input.ui-button { width: 100%; }
 ');

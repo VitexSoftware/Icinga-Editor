@@ -65,7 +65,7 @@ if (!is_null($contact->getMyKey())) {
         $contact->getMyKey()));
 }
 $form->addItem('<br>');
-$form->addItem(new \Ease\TWB\SubmitButton(_('Uložit'), 'success'));
+$form->addItem(new \Ease\TWB\SubmitButton(_('Save'), 'success'));
 
 $oPage->addItem(new UI\PageBottom());
 

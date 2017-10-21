@@ -44,10 +44,11 @@ switch ($oPage->getRequestValue('action')) {
             $newService->setDataValue($service->userColumn, 0);
             $newService->setDataValue('public', 0);
             if ($newService->fork($host, $host->getDataValue($host->userColumn))) {
-                $oUser->addStatusMessage(sprintf(_('Služba %s byla odvozena'),
+                $oUser->addStatusMessage(sprintf(_('The service %s was derived'),
                         $newService->getName()), 'success');
             } else {
-                $oUser->addStatusMessage(_('Služba nebyla odvozena'), 'error');
+                $oUser->addStatusMessage(_('The service was not derived'),
+                    'error');
             }
         }
         $service->loadFromSQL($service->getId());

@@ -157,7 +157,7 @@ class ServiceConfigurator extends \Ease\Html\Div
         if ($parent_id) {
             $parent_service = new \Icinga\Editor\Engine\Service($parent_id);
             $this->addItem(new \Ease\TWB\Label('info',
-                    sprintf(_('Toto je odvozená služba od %s'),
+                    sprintf(_('This is derived service fom %s'),
                         '<a href="service.php?service_id='.$parent_id.'">'.$parent_service->getName().'</a>')));
         } else {
             $this->addItem(new \Ease\TWB\Label('info',

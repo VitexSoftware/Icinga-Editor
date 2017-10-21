@@ -3,10 +3,8 @@
 namespace Icinga\Editor;
 
 /**
- * Icinga Editor - titulní strana
+ * Icinga Editor - contacts
  *
- * @package    IcingaEditor
- * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2012 Vitex@hippy.cz (G)
  */
@@ -22,34 +20,34 @@ $pocTimeperiods = $timeperiod->getMyRecordsCount();
 if ($pocTimeperiods) {
     $success = $oPage->columnIII->addItem(new \Ease\Html\DivTag('Timeperiod',
         new \Ease\TWB\LinkButton('timeperiods.php',
-        _('<i class="icon-list"></i>').' '.sprintf(_('Definováno %s časových period'),
-            $pocTimeperiods)), ['class' => 'alert alert-success']));
+        _('<i class="icon-list"></i>').' '.sprintf(_('%s timeperiods'),
+                    $pocTimeperiods)), ['class' => 'alert alert-success']));
 } else {
     $warning = $oPage->columnIII->addItem(new \Ease\Html\Div(
-        _('Nemáte definovaný žádné časové periody'),
-        ['class' => 'alert alert-info', 'id' => 'Host']));
+        _('No timeperiods defined'),
+            ['class' => 'alert alert-info', 'id' => 'Host']));
     $warning->addItem(new \Ease\TWB\LinkButton('timeperiod.php',
-        _('Založit první časovou periodu <i class="icon-edit"></i>')));
+        _('Create first timeperiod').' <i class="icon-edit"></i>'));
 }
 
 $contact    = new Engine\Contact();
 $pocContact = $contact->getMyRecordsCount();
 if ($pocContact) {
-    $success = $oPage->columnII->addItem(new \Ease\Html\Div(
-        new \Ease\TWB\LinkButton('contacts.php',
-        _('<i class="icon-list"></i>').' '.sprintf(_('Definováno %s kontaktů'),
-            $pocContact)), ['class' => 'alert alert-success', 'id' => 'Contact']));
+    $success = $oPage->columnII->addItem(new \Ease\Html\DivTag(
+            new \Ease\TWB\LinkButton('contacts.php',
+        _('<i class="icon-list"></i>').' '.sprintf(_('%s contacts defined'),
+                    $pocContact)), ['class' => 'alert alert-success', 'id' => 'Contact']));
 } else {
     if ($pocTimeperiods) {
         $warning = $oPage->columnII->addItem(new \Ease\Html\Div(
-            _('Nemáte definovaný kontakt'),
-            ['class' => 'alert alert-info', 'id' => 'Contact']));
+            _('No contact defined'),
+                ['class' => 'alert alert-info', 'id' => 'Contact']));
         $warning->addItem(new \Ease\TWB\LinkButton('contact.php',
-            _('Založit první kontakt '.\Ease\TWB\Part::GlyphIcon('edit'))));
+            _('Create first contact ').\Ease\TWB\Part::GlyphIcon('edit')));
     } else {
-        $oPage->columnII->addItem(new \Ease\Html\DivTag('Contact',
-            _('Kontakty vyžadují časovou periodu'),
-            ['class' => 'alert alert-danger']));
+        $oPage->columnII->addItem(new \Ease\Html\DivTag(
+                _('timeperiod is required for cereatinf contact'),
+                ['class' => 'alert alert-danger']));
     }
 }
 
@@ -58,15 +56,15 @@ $pocContactgroup = $contactgroup->getMyRecordsCount();
 if ($pocContactgroup) {
     $success = $oPage->columnII->addItem(new \Ease\Html\Div(
         new \Ease\TWB\LinkButton('contactgroups.php',
-        _('<i class="icon-list"></i>').' '.sprintf(_('Definováno %s skupin kontaktů'),
-            $pocContactgroup)),
+        _('<i class="icon-list"></i>').' '.sprintf(_('%s contactgroups defined'),
+                    $pocContactgroup)),
         ['class' => 'alert alert-success', 'id' => 'Contactgroup']));
 } else {
     $warning = $oPage->columnII->addItem(new \Ease\Html\Div(
-        _('Nemáte definovanou skupinu kontaktů'),
-        ['class' => 'alert alert-info', 'id' => 'Contactgroup']));
+        _('No contactgroup defined'),
+            ['class' => 'alert alert-info', 'id' => 'Contactgroup']));
     $warning->addItem(new \Ease\TWB\LinkButton('contactgroup.php',
-        _('Založit první skupinu kontaktů '.\Ease\TWB\Part::GlyphIcon('edit'))));
+        _('Create first contactgroup ').\Ease\TWB\Part::GlyphIcon('edit')));
 }
 
 $host     = new Engine\Host();
@@ -74,19 +72,19 @@ $pocHostu = $host->getMyRecordsCount();
 if ($pocHostu) {
     $success = $oPage->columnI->addItem(new \Ease\Html\Div(
         new \Ease\TWB\LinkButton('hosts.php',
-        _('<i class="icon-list"></i>').' '.sprintf(_('Definováno %s hostů'),
-            $pocHostu)), ['class' => 'alert alert-success', 'id' => 'Host']));
+        _('<i class="icon-list"></i>').' '.sprintf(_('%s hosts defined'),
+                    $pocHostu)), ['class' => 'alert alert-success', 'id' => 'Host']));
 } else {
     if ($pocTimeperiods) {
         $warning = $oPage->columnI->addItem(new \Ease\Html\Div(
-            _('Nemáte definovaný žádný host'),
-            ['class' => 'alert alert-info', 'id' => 'Host']));
+            _('No host defined'),
+                ['class' => 'alert alert-info', 'id' => 'Host']));
         $warning->addItem(new \Ease\TWB\LinkButton('host.php',
-            _('Založit první host').' '.\Ease\TWB\Part::GlyphIcon('edit')));
+            _('Create first host').' '.\Ease\TWB\Part::GlyphIcon('edit')));
     } else {
         $warning = $oPage->columnI->addItem(new \Ease\Html\Div(
-            _('Hosty vyžadují časovou periodu ..'),
-            ['class' => 'alert alert-danger', 'id' => 'Host']));
+            _('Timeperiod is required for host'),
+                ['class' => 'alert alert-danger', 'id' => 'Host']));
     }
 }
 
@@ -95,31 +93,31 @@ $pocHostgroups = $hostgroup->getMyRecordsCount();
 if ($pocHostgroups) {
     $success = $oPage->columnI->addItem(new \Ease\Html\Div(
         new \Ease\TWB\LinkButton('hostgroups.php',
-        _('<i class="icon-list"></i>').' '.sprintf(_('Definováno %s skupin hostů'),
-            $pocHostgroups)),
+        _('<i class="icon-list"></i>').' '.sprintf(_('%s hostgroup defined'),
+                    $pocHostgroups)),
         ['class' => 'alert alert-success', 'id' => 'Hostgroup']));
 } else {
     $warning = $oPage->columnI->addItem(new \Ease\Html\DivTag(
-        _('Nemáte definovaný žádnou skupinu hostů'),
-        ['class' => 'alert alert-info', 'id' => 'Host']));
+        _('No hostgroup defined'),
+            ['class' => 'alert alert-info', 'id' => 'Host']));
     $warning->addItem(new \Ease\TWB\LinkButton('hostgroup.php',
-        _('Založit první skupinu hostů <i class="icon-edit"></i>')));
+        _('Create first hostgroup').' <i class="icon-edit"></i>'));
 }
 
 $command     = new Engine\Command();
-$PocCommands = $command->getMyRecordsCount();
-if ($PocCommands) {
+$pocCommands = $command->getMyRecordsCount();
+if ($pocCommands) {
     $success = $oPage->columnIII->addItem(new \Ease\Html\Div(
         new \Ease\TWB\LinkButton('commands.php',
-        _('<i class="icon-list"></i>').' '.sprintf(_('Definováno %s příkazů'),
-            $PocCommands)),
-        ['class' => 'alert alert-success', 'id' => 'Command']));
+        '<i class="icon-list"></i> '.sprintf(_('%s commands defined'),
+                    $pocCommands)),
+            ['class' => 'alert alert-success', 'id' => 'Command']));
 } else {
     $warning = $oPage->columnIII->addItem(new \Ease\Html\Div(
-        _('Nemáte definovaný žádné příkazy'),
-        ['class' => 'alert alert-info', 'id' => 'Host']));
+        _('No commands defined'),
+            ['class' => 'alert alert-info', 'id' => 'Host']));
     $warning->addItem(new \Ease\TWB\LinkButton('importcommand.php',
-        _('Importovat příkazy').' <i class="icon-download"></i>'));
+        _('Import commands').' <i class="icon-download"></i>'));
 }
 
 $service     = new Engine\Service();
@@ -127,26 +125,26 @@ $pocServices = $service->getMyRecordsCount();
 if ($pocServices) {
     $success = $oPage->columnIII->addItem(new \Ease\Html\Div(
         new \Ease\TWB\LinkButton('services.php',
-        _('<i class="icon-list"></i>').' '.sprintf(_('Definováno %s služeb'),
-            $pocServices)),
+        _('<i class="icon-list"></i>').' '.sprintf(_('%s services defined'),
+                    $pocServices)),
         ['class' => 'alert alert-success', 'id' => 'Service']));
 } else {
-    if ($PocCommands) {
+    if ($pocCommands) {
         if ($pocTimeperiods) {
             $warning = $oPage->columnIII->addItem(new \Ease\Html\Div(
-                _('Nemáte definovaný žádné služby'),
-                ['class' => 'alert alert-info', 'id' => 'Host']));
+                _('No services defined'),
+                    ['class' => 'alert alert-info', 'id' => 'Host']));
             $warning->addItem(new \Ease\TWB\LinkButton('service.php',
-                _('Založit první službu').' <i class="icon-edit"></i>'));
+                _('Create first service').' <i class="icon-edit"></i>'));
         } else {
             $warning = $oPage->columnIII->addItem(new \Ease\Html\Div(
-                _('Služby vyžadují časovou periodu ..'),
-                ['class' => 'alert alert-danger', 'id' => 'Host']));
+                _('Timeperiod is requied for service'),
+                    ['class' => 'alert alert-danger', 'id' => 'Host']));
         }
     } else {
         $warning = $oPage->columnIII->addItem(new \Ease\Html\Div(
-            _('Služby vyžadují příkazy ..'),
-            ['class' => 'alert alert-danger', 'id' => 'Host']));
+            _('Commands requied for service'),
+                ['class' => 'alert alert-danger', 'id' => 'Host']));
     }
 }
 
@@ -155,15 +153,15 @@ $pocServicegroups = $serviceGroup->getMyRecordsCount();
 if ($pocServicegroups) {
     $success = $oPage->columnIII->addItem(new \Ease\Html\Div(
         new \Ease\TWB\LinkButton('servicegroups.php',
-        _('<i class="icon-list"></i>').' '.sprintf(_('Definováno %s skupin služeb'),
-            $pocServicegroups)),
+        _('<i class="icon-list"></i>').' '.sprintf(_('%s servicegroup defined'),
+                    $pocServicegroups)),
         ['class' => 'alert alert-success', 'id' => 'Servicegroup']));
 } else {
     $warning = $oPage->columnIII->addItem(new \Ease\Html\Div(
-        _('Nemáte definovaný žádné skupiny služeb'),
-        ['class' => 'alert alert-info', 'id' => 'Host']));
+        _('No servicegroup defined'),
+            ['class' => 'alert alert-info', 'id' => 'Host']));
     $warning->addItem(new \Ease\TWB\LinkButton('servicegroup.php',
-        _('Založit první skupinu služeb').' <i class="icon-edit"></i>'));
+        _('Create first servicegroup').' <i class="icon-edit"></i>'));
 }
 
 $oPage->addItem(new UI\PageBottom());

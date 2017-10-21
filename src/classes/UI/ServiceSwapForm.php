@@ -33,15 +33,15 @@ class ServiceSwapForm extends \Ease\TWB\Form
     {
         $addNewItem = new ServiceSelect('new_service_id');
 
-        $this->addItem(new \Ease\TWB\FormGroup(_('Náhradní služba'),
-            $addNewItem, _('Jméno služby'),
-            sprintf(_('Tato služba se zamění za právě zvolenou službu <strong>%s</strong> u všech hostů kteří ji používají'),
-                $this->service->getName())
+        $this->addItem(new \Ease\TWB\FormGroup(_('Replacement Service'),
+                $addNewItem, _('Service Name'),
+                sprintf(_('This service is replacement for the selected service %s for all guests who use it'),
+                    '<strong>'.$this->service->getName().'</strong>')
         ));
 
-        $this->addItem(new \Ease\TWB\FormGroup(_('Vyměnit'),
-            new \Ease\TWB\SubmitButton(_('Vyměnit službu').' '.\Ease\TWB\Part::GlyphIcon('flash'),
-            'info')));
+        $this->addItem(new \Ease\TWB\FormGroup(_('Replace'),
+                new \Ease\TWB\SubmitButton(_('Replace service').' '.\Ease\TWB\Part::GlyphIcon('flash'),
+                    'info')));
 
         $this->addItem(new \Ease\Html\InputHiddenTag('service_id',
             $this->service->getID()));

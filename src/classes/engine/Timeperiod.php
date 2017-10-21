@@ -1,8 +1,7 @@
 <?php
 /**
- * Konfigurace Period
+ * Icinga editor - Timeperiod
  *
- * @package    IcingaEditor
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2012 Vitex@hippy.cz (G)
  */
@@ -53,6 +52,9 @@ class Timeperiod extends Configurator
      */
     public function takeData($data, $dataPrefix = null)
     {
+        $this->$keywordsInfo['timeperiod_name']['title'] = _('Timeperiod Name');
+        $this->$keywordsInfo['alias']['title']           = _('Period Alias');
+
         $this->timeperiods = [];
         if (isset($data['NewKey']) && strlen(trim($data['NewKey'])) && isset($data['NewTimes'])
             && strlen(trim($data['NewTimes']))) {
@@ -182,15 +184,16 @@ class Timeperiod extends Configurator
     }
 
     /**
-     * Vrací mazací tlačítko
+     * Return delete button
      *
      * @param  string                     $name
-     * @param  string                     $urlAdd Předávaná část URL
+     * @param  string                     $urlAdd part URL
+     * 
      * @return \EaseJQConfirmedLinkButton
      */
     public function deleteButton($name = null, $addUrl = '')
     {
-        return parent::deleteButton(_('Časovou periodu'), $addUrl);
+        return parent::deleteButton(_('Timeperiod'), $addUrl);
     }
 
 }

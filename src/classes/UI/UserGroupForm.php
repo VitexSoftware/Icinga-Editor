@@ -28,9 +28,9 @@ class UserGroupForm extends \Ease\TWB\Form
     function afterAdd()
     {
         $group_name   = $this->userGroup->getDataValue('usergroup_name');
-        $this->addItem(new \Ease\TWB\FormGroup(_('Jméno'),
-            new \Ease\Html\InputTextTag('usergroup_name', $group_name),
-            $group_name, _('Název skupiny'), _('Adminové')));
+        $this->addItem(new \Ease\TWB\FormGroup(_('Name'),
+                new \Ease\Html\InputTextTag('usergroup_name', $group_name),
+            $group_name, _('Group name'), _('Admins')));
         $this->addItem($this->userGroup->memberSelector());
         $usergroup_id = $this->userGroup->getMyKey();
         if ($usergroup_id) {
@@ -38,11 +38,11 @@ class UserGroupForm extends \Ease\TWB\Form
                 $usergroup_id));
         }
         if ($usergroup_id) {
-            $this->addItem(new \Ease\TWB\SubmitButton(_('Uložit').'&nbsp'.\Ease\TWB\Part::GlyphIcon('save'),
+            $this->addItem(new \Ease\TWB\SubmitButton(_('Save').'&nbsp'.\Ease\TWB\Part::GlyphIcon('save'),
                 'success'));
         } else {
-            $this->addItem(new \Ease\TWB\SubmitButton(_('Založit').'&nbsp'.\Ease\TWB\Part::GlyphIcon('forward'),
-                'success'));
+            $this->addItem(new \Ease\TWB\SubmitButton(_('Create').'&nbsp'.\Ease\TWB\Part::GlyphIcon('forward'),
+                    'success'));
         }
     }
 

@@ -6,8 +6,6 @@ namespace Icinga\Editor\UI;
  * Volba služeb patřičných k hostu
  *
  * @todo dodělat
- * @package    IcingaEditor
- * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2012 Vitex@hippy.cz (G)
  */
@@ -43,7 +41,7 @@ class TemplateSelect extends \Ease\Html\Select
     {
         $templates = $this->dataSource->getColumnsFromSQL(['name'],
             ['register' => 0, 'generate' => 1], 'name', 'name');
-        return array_merge($templates, ['' => _('Bez predlohy')]);
+        return array_merge($templates, ['' => _('Without template')]);
     }
 
 }

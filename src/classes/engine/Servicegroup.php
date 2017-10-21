@@ -1,9 +1,7 @@
 <?php
 /**
- * Konfigurace Skupin služeb
+ * Icinga Editor - Service Group
  *
- * @package    IcingaEditor
- * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2012 Vitex@hippy.cz (G)
  */

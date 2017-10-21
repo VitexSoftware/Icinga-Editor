@@ -25,10 +25,13 @@ class PageBottom extends \Ease\Html\FooterTag
 
         $container = $this->setTagID('footer');
         $this->addItem('<hr>');
-        $star      = '<iframe src="https://ghbtns.com/github-btn.html?user=Vitexus&repo=icinga_configurator&type=star&count=true" frameborder="0" scrolling="0" width="170px" height="20px"></iframe>';
         $footrow   = new \Ease\TWB\Row();
-        $footrow->addColumn(4,
-            '<a href="https://github.com/VitexSoftware/Icinga-Editor">Icinga Editor</a> v.: '.$appInfo->version.'&nbsp;&nbsp; &copy; 2012-2017 <a href="http://vitexsoftware.cz/">Vitex Software</a>');
+
+        $author = '<a href="https://github.com/VitexSoftware/Icinga-Editor">Icinga Editor</a> v.: '.$appInfo->version.'&nbsp;&nbsp; &copy; 2012-2017 <a href="http://vitexsoftware.cz/">Vitex Software</a>';
+        $trans = new \Ease\Html\ATag('https://hosted.weblate.org/projects/icinga-editor/translations/',
+           '<img src="img/weblate-128.png" width="20">'._('Translated with Weblate'));
+
+        $footrow->addColumn(4, [$author.'<br>'.$trans]);
         $footrow->addColumn(4,
             '<a href="http://www.austro-bohemia.cz/"><img style="position: relative;top: -2px; left: -10px; height: 25px" align="right" style="border:0" src="images/austro-bohemia-logo.png" alt="ABSRO" title="Pasivní checky napsány pro společnost Austro Bohemia s.r.o." /></a>');
         $footrow->addColumn(4,
