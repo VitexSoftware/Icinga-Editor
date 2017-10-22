@@ -3,10 +3,8 @@
 namespace Icinga\Editor;
 
 /**
- * Opravář databáze
+ * Databse fixer
  *
- * @package    IcingaEditor
- * @subpackage Engine
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2015 Vitex@hippy.cz (G)
  */
@@ -79,7 +77,7 @@ class DbFixer extends \Ease\Html\UlTag
             foreach ($services as $service) {
                 $servicesDeleted[] = current($service);
             }
-            $this->addItemSmart(_('Smazané nepoužívané služby').': '.implode(' , ',
+            $this->addItemSmart(_('Delete unused services').': '.implode(' , ',
                     $servicesDeleted), ['class' => 'list-group-item']);
         }
     }

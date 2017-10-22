@@ -3,7 +3,6 @@
 /**
  * Icinga Host Class
  *
- * @package    IcingaEditor
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2012-2016 Vitex@hippy.cz (G)
  */
@@ -318,7 +317,7 @@ class Host extends Configurator
      */
     public function deleteButton($name = null, $addUrl = '')
     {
-        return parent::deleteButton(_('Hosta'), $addUrl);
+        return parent::deleteButton(_('Host'), $addUrl);
     }
 
     /**

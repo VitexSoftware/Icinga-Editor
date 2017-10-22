@@ -1,9 +1,7 @@
 <?php
 /**
- * Formulář testu IMCP odezvy
+ * IMCP response test form
  *
- * @package    IcingaEditor
- * @subpackage plugins
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2014 Vitex@hippy.cz (G)
  */

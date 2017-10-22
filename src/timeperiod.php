@@ -5,7 +5,6 @@ namespace Icinga\Editor;
 /**
  * Icinga Timepriod Editor
  *
- * @package    IcingaEditor
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2012 Vitex@hippy.cz (G)
  */
@@ -44,7 +43,7 @@ if ($delete == 'true') {
     $oPage->redirect('timeperiods.php');
 }
 
-$oPage->addItem(new UI\PageTop(_('Editace časové periody').' '.$timeperiod->getName()));
+$oPage->addItem(new UI\PageTop(_('Timeperiod editor').' '.$timeperiod->getName()));
 $oPage->addPageColumns();
 
 $TimepriodEdit = new UI\CfgEditor($timeperiod);

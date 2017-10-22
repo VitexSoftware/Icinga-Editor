@@ -1,9 +1,7 @@
 <?php
 /**
- * Třída kontaktu
+ * Contact
  *
- * @package    IcingaEditor
- * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2012-2015 Vitex@hippy.cz (G)
  */
@@ -15,7 +13,7 @@ class Contact extends Configurator
     public $myTable = 'contact';
 
     /**
-     * Klíčový sloupeček
+     * Key Column
      * @var string
      */
     public $myKeyColumn = 'contact_id';
@@ -23,13 +21,13 @@ class Contact extends Configurator
     public $keyword     = 'contact';
 
     /**
-     * Přidat položky register a use ?
+     * Add register and use columns ?
      * @var boolean
      */
     public $allowTemplating = true;
 
     /**
-     * Dát tyto položky k dispozici i ostatním ?
+     * Can bee this records public ?
      * @var boolean
      */
     public $publicRecords = false;
@@ -176,6 +174,28 @@ class Contact extends Configurator
         ]
     ];
 
+    public function __construct($itemID = null)
+    {
+     $this->keywordsInfo['contact_name']['title'] = _('Contact Name');
+
+$this->keywordsInfo['contactgroups']['title'] = _('Contact Groups');
+$this->keywordsInfo['host_notifications_enabled']['title'] = _('Notify hosts events');
+$this->keywordsInfo['service_notifications_enabled']['title'] = _('Notify service events');
+        $this->keywordsInfo['host_notification_period']['title']      = _('Host notification period');
+        $this->keywordsInfo['service_notification_period']['title']   = _('Service notification period');
+        $this->keywordsInfo['host_notification_options']['title']     = _('Host notification options');
+        $this->keywordsInfo['service_notification_options']['title']  = _('Service notification options');
+        $this->keywordsInfo['host_notification_commands']['title']    = _('Host notification commands');
+        $this->keywordsInfo['service_notification_commands']['title'] = _('Service notification commands');
+        $this->keywordsInfo['email']['title']                         = _('Email Address');
+        $this->keywordsInfo['pager']['title']                         = _('SMS Number');
+        $this->keywordsInfo['address1']['title']                      = _('Jabber Address');
+        $this->keywordsInfo['address2']['title']                      = _('@Twitter (Deprecated)');
+        $this->keywordsInfo['can_submit_commands']['title']           = _('Can submit commands');
+        $this->keywordsInfo['retain_status_information']['title']     = _('Retain status information');
+        $this->keywordsInfo['retain_nonstatus_information']['title']  = _('Retain nostatus information');
+        parent::__construct($itemID);
+    }
     /**
      * URL dokumentace objektu
      * @var string
@@ -183,19 +203,19 @@ class Contact extends Configurator
     public $documentationLink = 'http://docs.icinga.org/latest/en/objectdefinitions.html#objectdefinitions-contact';
 
     /**
-     * Vrací mazací tlačítko
+     * Delete button
      *
      * @param  string                     $name
-     * @param  string                     $urlAdd Předávaná část URL
+     * @param  string                     $urlAdd URL to add
      * @return \EaseJQConfirmedLinkButton
      */
     public function deleteButton($name = null, $addUrl = '')
     {
-        return parent::deleteButton(_('Kontakt'), $addUrl);
+        return parent::deleteButton(_('Contacts'), $addUrl);
     }
 
     /**
-     * vrací nastavení pro výchozí kontakt uživatele
+     * Initial contact setup
      *
      * @return array Pole nastavení
      */
@@ -215,17 +235,12 @@ class Contact extends Configurator
         ];
     }
 
-    public function checkEmailAddress($email)
-    {
-        if (preg_match("/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/",
-                $email)) return true;
-        return false;
-    }
-
     /**
-     * Vytovří odvozený kontakt
+     * Create derived contact
+     *
      * @param  array $changes
-     * @return type
+     *
+     * @return int SQL record ID
      */
     public function fork($changes)
     {
@@ -237,8 +252,8 @@ class Contact extends Configurator
                 $change = ['address2' => $chVal];
                 break;
             case 'jabber':
-                if (!$this->checkEmailAddress($chVal)) {
-                    $this->addStatusMessage(_('Toto není platná jabberová adresa'),
+                if (!filter_var($chVal, FILTER_VALIDATE_EMAIL)) {
+                    $this->addStatusMessage(_('Invalid Jabber Address'),
                         'warning');
 
                     return false;
@@ -246,8 +261,8 @@ class Contact extends Configurator
                 $change = ['address1' => $chVal];
                 break;
             case 'email':
-                if (!$this->checkEmailAddress($chVal)) {
-                    $this->addStatusMessage(_('Toto není platná mailová adresa'),
+                if (!filter_var($chVal, FILTER_VALIDATE_EMAIL)) {
+                    $this->addStatusMessage(_('Invalid email address'),
                         'warning');
 
                     return false;
@@ -256,8 +271,7 @@ class Contact extends Configurator
                 break;
             case 'sms':
                 if (!preg_match("/^(\+420)? ?\d{3} ?\d{3} ?\d{3}$/i", $chVal)) {
-                    $this->addStatusMessage(_('Toto není platné telefoní číslo'),
-                        'warning');
+                    $this->addStatusMessage(_('Invalid phone number'), 'warning');
 
                     return false;
                 }
@@ -342,12 +356,12 @@ class Contact extends Configurator
                 $contactgroup->loadFromSQL((int) $contactgroupID);
                 if ($contactgroup->delMember('members', null, $this->getName())) {
                     if ($contactgroup->saveToSQL()) {
-                        $this->addStatusMessage(sprintf(_('Kontakt <strong>%s</strong> byl odebrán ze skupiny <strong>%s</strong>'),
+                        $this->addStatusMessage(sprintf(_('Contact %s was removed from group %s'),
                                 $this->getName(), $contactgroup->getName()),
                             'success');
                     }
                 } else {
-                    $this->addStatusMessage(sprintf(_('Kontakt <strong>%s</strong> nebyl odebrán ze skupiny <strong>%s</strong>'),
+                    $this->addStatusMessage(sprintf(_('Contact %s was not removed from group %s'),
                             $this->getName(), $contactgroup->getName()),
                         'warning');
                 }
@@ -363,12 +377,12 @@ class Contact extends Configurator
                 $service->loadFromSQL((int) $serviceID);
                 if ($service->delMember('contacts', $id)) {
                     if ($service->saveToSQL()) {
-                        $this->addStatusMessage(sprintf(_('Kontakt <strong>%s</strong> byl odebrán ze služby <strong>%s</strong>'),
+                        $this->addStatusMessage(sprintf(_('Contact %s was removed from service %s'),
                                 $this->getName(), $service->getName()),
                             'success');
                     }
                 } else {
-                    $this->addStatusMessage(sprintf(_('Kontakt <strong>%s</strong> nebyl odebrán ze služby <strong>%s</strong>'),
+                    $this->addStatusMessage(sprintf(_('Contact %s was not removed from service %s'),
                             $this->getName(), $service->getName()), 'warning');
                 }
             }
@@ -382,11 +396,11 @@ class Contact extends Configurator
                 $host->loadFromSQL((int) $hostID);
                 if ($host->delMember('contacts', $id)) {
                     if ($host->saveToSQL()) {
-                        $this->addStatusMessage(sprintf(_('Kontakt <strong>%s</strong> byl odebrán z hosta <strong>%s</strong>'),
+                        $this->addStatusMessage(sprintf(_('Contact %s was removed from host %s'),
                                 $this->getName(), $host->getName()), 'success');
                     }
                 } else {
-                    $this->addStatusMessage(sprintf(_('Kontakt <strong>%s</strong> nebyl odebrán z hosta <strong>%s</strong>'),
+                    $this->addStatusMessage(sprintf(_('Contact %s was not removed from host %s'),
                             $this->getName(), $host->getName()), 'warning');
                 }
             }
@@ -398,7 +412,7 @@ class Contact extends Configurator
     }
 
     /**
-     * Smazaže kontakt i jeho subkontakty
+     * Remove contact and its subcontacts
      *
      * @return boolean
      */
@@ -430,7 +444,7 @@ class Contact extends Configurator
                 $subcontact->saveToSQL();
             }
         } else {
-            $this->addStatusMessage(_('Kontakt nelze přejmenovat'), 'warning');
+            $this->addStatusMessage(_('Cannot rename contact'), 'warning');
         }
     }
 

@@ -5,8 +5,6 @@ namespace Icinga\Editor;
 /**
  * Icinga Editor - titulní strana
  *
- * @package    IcingaEditor
- * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2012-2016 Vitex@hippy.cz (G)
  */
@@ -86,7 +84,6 @@ function gethostbynamel6($host, $tryA = false)
         return $ipSix;
     }
 }
-
 $host        = new Engine\Host();
 $host->owner = &$oUser;
 
@@ -120,30 +117,31 @@ if ($hostName || $address || $addressSix) {
         $addressSix = gethostbyname6($hostName);
     }
 
-    $oUser->addStatusMessage('HostName: ' . $hostName);
-    $oUser->addStatusMessage('Address: ' . $address);
-    $oUser->addStatusMessage('Address6: ' . $addressSix);
+    $oUser->addStatusMessage('HostName: '.$hostName);
+    $oUser->addStatusMessage('Address: '.$address);
+    $oUser->addStatusMessage('Address6: '.$addressSix);
 
     $host->takeData(
         [
-          $host->userColumn        => $oUser->getUserID(),
+            $host->userColumn => $oUser->getUserID(),
 //        'check_command'=>'check-host-alive',
-          'host_name'              => $hostName,
-          'address'                => $address,
-          'address6'               => $addressSix,
-          'use'                    => 'generic-host',
-          'platform'               => $platform,
-          'register'               => true,
-          'generate'               => TRUE,
-          'alias'                  => $hostName,
-          'active_checks_enabled'  => 1,
-          'passive_checks_enabled' => 0
+            'host_name' => $hostName,
+            'address' => $address,
+            'address6' => $addressSix,
+            'use' => 'generic-host',
+            'platform' => $platform,
+            'register' => true,
+            'generate' => TRUE,
+            'alias' => $hostName,
+            'active_checks_enabled' => 1,
+            'passive_checks_enabled' => 0
         ]
     );
 
     if ($host_group) {
         $hostgroup = new Engine\Hostgroup($host_group);
-        $host->addMember('hostgroups', $hostgroup->getId(), $hostgroup->getName());
+        $host->addMember('hostgroups', $hostgroup->getId(),
+            $hostgroup->getName());
         $hostgroup->addMember('members', $host->getId(), $host->getName());
         $hostgroup->saveToSQL();
     }
@@ -159,14 +157,16 @@ if ($hostName || $address || $addressSix) {
 
         $hostGroup = new Engine\Hostgroup;
         if ($hostGroup->loadDefault()) {
-            $hostGroup->setDataValue($hostGroup->nameColumn, \Ease\Shared::user()->getUserLogin());
+            $hostGroup->setDataValue($hostGroup->nameColumn,
+                \Ease\Shared::user()->getUserLogin());
             $hostGroup->addMember('members', $host->getId(), $host->getName());
             $hostGroup->saveToSQL();
-            $host->addMember('hostgroups', $hostGroup->getId(), $hostGroup->getName());
+            $host->addMember('hostgroups', $hostGroup->getId(),
+                $hostGroup->getName());
             $host->saveToSQL();
         }
 
-        $oPage->redirect('host.php?host_id=' . $host->getId());
+        $oPage->redirect('host.php?host_id='.$host->getId());
     } else {
         $host->addStatusMessage(_('Host Save failed'), 'error');
     }
@@ -175,38 +175,54 @@ if ($hostName || $address || $addressSix) {
 $contact    = new Engine\Contact();
 $pocContact = $contact->getMyRecordsCount();
 if (!$pocContact) {
-    $warning = $oPage->columnIII->addItem(new \Ease\Html\DivTag('Contact', _('No contact defined'), ['class' => 'alert alert-info']));
-    $warning->addItem(new \Ease\TWB\LinkButton('contact.php?autocreate=default', _('Create initial contact') . ' ' . \Ease\TWB\Part::GlyphIcon('edit')));
+    $warning = $oPage->columnIII->addItem(new \Ease\Html\DivTag('Contact',
+            _('No contact defined'), ['class' => 'alert alert-info']));
+    $warning->addItem(new \Ease\TWB\LinkButton('contact.php?autocreate=default',
+            _('Create initial contact').' '.\Ease\TWB\Part::GlyphIcon('edit')));
 }
 
 $pocHostu = $host->getMyRecordsCount();
 if ($pocHostu) {
     $success = $oPage->columnIII->addItem(new \Ease\Html\Div(
-        new \Ease\TWB\LinkButton('hosts.php', _('<i class="icon-list"></i>') . ' ' . sprintf(_('%s hosts defined'), $pocHostu)), ['class' => 'alert alert-success', 'id' => 'Host']));
+            new \Ease\TWB\LinkButton('hosts.php',
+                _('<i class="icon-list"></i>').' '.sprintf(_('%s hosts defined'),
+                    $pocHostu)),
+            ['class' => 'alert alert-success', 'id' => 'Host']));
 }
 
 $firstHost = $oPage->columnII->addItem(new \Ease\TWB\Form('firsthost'));
-$firstHost->addItem(new \Ease\Html\InputHiddenTag('host_group', $oPage->getRequestValue('host_group')));
+$firstHost->addItem(new \Ease\Html\InputHiddenTag('host_group',
+        $oPage->getRequestValue('host_group')));
 $firstHost->setTagProperties(['onSubmit' => "$('#preload').css('visibility', 'visible');"]);
 
-$firstHost->addItem(new \Ease\TWB\FormGroup(_('Hostname serveru'), new \Ease\Html\InputTextTag('host_name', $hostName), null, _('Název hostu, tedy to co následuje po http:// ve webové adrese až k prvnímu lomítku, nebo otazníku.')));
-$firstHost->addItem(new \Ease\TWB\FormGroup(_('IPv4 Adresa'), new \Ease\Html\InputTextTag('address', $address), null, _('čtyři číslice od 0 do 255 oddělené tečkou')));
-$firstHost->addItem(new \Ease\TWB\FormGroup(_('IPv6 Adresa'), new \Ease\Html\InputTextTag('address6', $addressSix), null, _('nejvíce osm skupin čtyř hexadecimálních číslic oddělených dvojtečkou')));
+$firstHost->addItem(new \Ease\TWB\FormGroup(_('Server hostname'),
+        new \Ease\Html\InputTextTag('host_name', $hostName), null,
+        _('The guest name, that is what follows http:// in the web address to the first slash, or the question mark.')));
+$firstHost->addItem(new \Ease\TWB\FormGroup(_('IPv4 Address'),
+        new \Ease\Html\InputTextTag('address', $address), null,
+        _('four digits from 0 to 255 separated by a dot')));
+$firstHost->addItem(new \Ease\TWB\FormGroup(_('IPv6 Address'),
+        new \Ease\Html\InputTextTag('address6', $addressSix), null,
+        _('up to eight groups of four hexadecimal digits separated by a colon')));
 
-$firstHost->addItem(new \Ease\TWB\SubmitButton(\Ease\TWB\Part::GlyphIcon('plus') . ' ' . _('Přidej host'), 'success'));
+$firstHost->addItem(new \Ease\TWB\SubmitButton(\Ease\TWB\Part::GlyphIcon('plus').' '._('Add Host'),
+        'success'));
 
-$oPage->columnI->addItem(new \Ease\Html\Div(_('Po zadání alespoň jednoho vstupního údaje si tento '
-        . 'průvodce dohledá ostatní a provede sken na některé základní služby.'
-        . '<br>Pokud budou tyto nalezeny aktivují se jejich testy. Informace o stavu bude odesílána na první zadaný kontakt'), ['class' => 'well']));
+$oPage->columnI->addItem(new \Ease\Html\Div(
+        _('After entering at least one input data, this wizard searches others and scans for some basic services.').'<br>'.
+        _('If these are found, their tests will be activated. Status information will be sent to the first contact you entered'),
+        ['class' => 'well']));
 
-$oPage->columnI->addItem(new \Ease\Html\Div(_('Pro instalaci nového vzdáleného senzoru prosím nejprve na sledovaném počítači nainstalujte balík'
-        . ' a poté '
-        . '<code>wget -O - http://v.s.cz/info@vitexsoftware.cz.gpg.key | sudo apt-key add -</code>
+$oPage->columnI->addItem(new \Ease\Html\Div(_(
+            'To install a new remote sensor, please first install the package on your computer')
+        .'<code>wget -O - http://v.s.cz/info@vitexsoftware.cz.gpg.key | sudo apt-key add -</code>
 <code>echo deb http://v.s.cz/ stable main | sudo tee /etc/apt/sources.list.d/vitexsoftware.list</code>
 <code>sudo aptitude update</code>
-<code>aptitude install nagios-nrpe-server nagios-check-clamscan</code>'), ['class' => 'well']));
+<code>aptitude install nagios-nrpe-server nagios-check-clamscan</code>',
+        ['class' => 'well']));
 
-$oPage->addItem(new \Ease\Html\Div(new UI\FXPreloader(), ['class' => 'fuelux', 'id' => 'preload']));
+$oPage->addItem(new \Ease\Html\Div(new UI\FXPreloader(),
+        ['class' => 'fuelux', 'id' => 'preload']));
 
 $oPage->addItem(new UI\PageBottom());
 

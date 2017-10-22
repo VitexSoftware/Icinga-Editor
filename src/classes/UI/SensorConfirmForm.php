@@ -12,7 +12,7 @@ class SensorConfirmForm extends \Ease\TWB\Form
 
     /**
      * Formulář pro potvrzení nasazení senzoru
-     * @param IEHost $host
+     * @param \Icinga\Editor\Engine\Host $host
      */
     public function __construct($host)
     {
@@ -20,7 +20,7 @@ class SensorConfirmForm extends \Ease\TWB\Form
         $this->addItem(new \Ease\Html\InputHiddenTag('operation', 'confirm'));
         $this->addItem(new \Ease\Html\InputHiddenTag($host->getmyKeyColumn(),
             $host->getId()));
-        $this->addItem(new \Ease\TWB\SubmitButton(_('Senzor je nasazen')));
+        $this->addItem(new \Ease\TWB\SubmitButton(_('Sensor deployed')));
         $status = $host->getSensorStatus();
         $this->addItem(new Switcher('confirm', ($status == 2)));
     }

@@ -68,9 +68,9 @@ switch ($oPage->getRequestValue('action')) {
 
         $confirmator->addItem(new \Ease\TWB\Well(nl2br($script->getDataValue('body'))));
         $confirmator->addItem(new \Ease\TWB\LinkButton('?'.$script->myKeyColumn.'='.$script->getID(),
-            _('Ne').' '.\Ease\TWB\Part::glyphIcon('ok'), 'success'));
+            _('No').' '.\Ease\TWB\Part::glyphIcon('ok'), 'success'));
         $confirmator->addItem(new \Ease\TWB\LinkButton('?delete=true&'.$script->myKeyColumn.'='.$script->getID(),
-            _('Ano').' '.\Ease\TWB\Part::glyphIcon('remove'), 'danger'));
+            _('Yes').' '.\Ease\TWB\Part::glyphIcon('remove'), 'danger'));
 
 
         break;

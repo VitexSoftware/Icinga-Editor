@@ -20,7 +20,7 @@ switch ($oPage->getRequestValue('action')) {
             _('New  service template'));
         $stemplate->insertToSQL();
         $stemplate->setDataValue($stemplate->nameColumn,
-            _('Nová předloha').' #'.$stemplate->getId());
+            _('New template').' #'.$stemplate->getId());
         if ($oPage->isPosted()) {
             $stemplate->updateToSQL();
         }
@@ -84,9 +84,9 @@ switch ($oPage->getRequestValue('action')) {
         $confirmator = $oPage->columnII->addItem(new \Ease\TWB\Panel(_('Do you really delete?')),
             'danger');
         $confirmator->addItem(new \Ease\TWB\LinkButton('?'.$stemplate->myKeyColumn.'='.$stemplate->getID(),
-            _('Ne').' '.\Ease\TWB\Part::glyphIcon('ok'), 'success'));
+            _('No').' '.\Ease\TWB\Part::glyphIcon('ok'), 'success'));
         $confirmator->addItem(new \Ease\TWB\LinkButton('?delete=true&'.$stemplate->myKeyColumn.'='.$stemplate->getID(),
-            _('Ano').' '.\Ease\TWB\Part::glyphIcon('remove'), 'danger'));
+            _('Yes').' '.\Ease\TWB\Part::glyphIcon('remove'), 'danger'));
 
 
         break;

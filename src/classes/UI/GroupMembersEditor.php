@@ -87,7 +87,7 @@ class GroupMembersEditor extends \Ease\Container
                         $memberName[$nameColumn], 'inverse', 'xs',
                         [
                         new \Ease\Html\ATag($reftable.'.php?'.$reftable.'_id='.$memberID,
-                            \Ease\TWB\Part::GlyphIcon('wrench').' '._('Editace')),
+                            \Ease\TWB\Part::GlyphIcon('wrench').' '._('Editor')),
                         new \Ease\Html\ATag(null,
                             \Ease\TWB\Part::GlyphIcon('plus-sign').' '.$addText,
                             [

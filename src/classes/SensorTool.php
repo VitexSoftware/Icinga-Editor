@@ -52,8 +52,8 @@ class SensorTool extends \Ease\Container
                         ['style' => "background-image:url('img/nscpp.png'); width: 212px; height: 60px; ",
                         'title' => 'Download']));
                     $windowsActiveTab->addItem(new \Ease\TWB\LinkButton('host.php?action=populate&host_id='.$host->getID(),
-                        _('Oskenovat a sledovat služby'), null,
-                        ['onClick' => "$('#preload').css('visibility', 'visible');"]));
+                        _('Scan & Wartch services'), null,
+                            ['onClick' => "$('#preload').css('visibility', 'visible');"]));
                     $windowsActiveTab->addItem(new \Ease\TWB\LinkButton('nscpcfggen.php?host_id='.$host->getId(),
                         $host->getName().'_nscp.bat '.\Ease\TWB\Part::GlyphIcon('download'),
                         'success'));

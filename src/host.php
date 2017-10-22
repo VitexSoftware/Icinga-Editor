@@ -206,8 +206,8 @@ switch ($oPage->getRequestValue('action')) {
     case 'delete':
         $confirmator = $mainPanel->addItem(new \Ease\TWB\Panel(_('Are you sure to delete ?')), 'danger');
         $confirmator->addItem(new UI\RecordShow($host));
-        $confirmator->addItem(new \Ease\TWB\LinkButton('?' . $host->myKeyColumn . '=' . $host->getID(), _('Ne') . ' ' . \Ease\TWB\Part::glyphIcon('ok'), 'success'));
-        $confirmator->addItem(new \Ease\TWB\LinkButton('?delete=true&' . $host->myKeyColumn . '=' . $host->getID(), _('Ano') . ' ' . \Ease\TWB\Part::glyphIcon('remove'), 'danger'));
+        $confirmator->addItem(new \Ease\TWB\LinkButton('?' . $host->myKeyColumn . '=' . $host->getID(), _('No') . ' ' . \Ease\TWB\Part::glyphIcon('ok'), 'success'));
+        $confirmator->addItem(new \Ease\TWB\LinkButton('?delete=true&' . $host->myKeyColumn . '=' . $host->getID(), _('Yes') . ' ' . \Ease\TWB\Part::glyphIcon('remove'), 'danger'));
 
         $infopanel->addItem($host->ownerLinkButton());
 

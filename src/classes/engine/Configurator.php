@@ -2,8 +2,6 @@
 /**
  * Správce konfigurace
  *
- * @package    IcingaEditor
- * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2012 Vitex@hippy.cz (G)
  */
@@ -1232,10 +1230,10 @@ class Configurator extends \Ease\Brick
 
                     if (is_null($import)) {
                         if ($this->isTemplate()) {
-                            $this->addStatusMessage($this->keyword.' <strong>'.$buffer['name'].'</strong>'._(' was not imported'),
+                            $this->addStatusMessage($this->keyword.' <strong>'.$buffer['name'].'</strong> '._('was not imported'),
                                 'error');
                         } else {
-                            $this->addStatusMessage($this->keyword.' <strong>'.$buffer[$this->nameColumn].'</strong>'._(' was not imported'),
+                            $this->addStatusMessage($this->keyword.' <strong>'.$buffer[$this->nameColumn].'</strong> '._('was not imported'),
                                 'error');
                         }
                     } else {
@@ -1254,7 +1252,7 @@ class Configurator extends \Ease\Brick
                                             $this->getmyKeyColumn().'='.
                                             $this->getMyKey()]);
                                 }
-                                $this->addStatusMessage($this->keyword.' <strong>'.$buffer[$this->nameColumn].'</strong>'._(' was imported'),
+                                $this->addStatusMessage($this->keyword.' <strong>'.$buffer[$this->nameColumn].'</strong> '._('was imported'),
                                     'success');
                             }
                             $success++;
@@ -1658,7 +1656,7 @@ class Configurator extends \Ease\Brick
                                 if (is_array($templateValue)) {
                                     $templateValue = implode(',', $templateValue);
                                 }
-                                $data[$rowId][$templateKey] = '<span class="inherited" title="'._('Předloha').': '.$usedCache[$use]['name'].'">'.$templateValue.'</span>';
+                                $data[$rowId][$templateKey] = '<span class="inherited" title="'._('Template').': '.$usedCache[$use]['name'].'">'.$templateValue.'</span>';
                             }
                         }
                     }
@@ -1838,7 +1836,7 @@ class Configurator extends \Ease\Brick
             $this->getId()));
         $exportForm->addInput(new \Ease\Html\InputTextTag('destination',
             \Ease\Shared::user()->getSettingValue('exporturl')),
-            _('Cíl exportu'));
+            _('Export Target'));
 
         $exportForm->addItem(new \Ease\Html\H4Tag(_('Recursive import')));
 

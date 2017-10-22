@@ -5,8 +5,6 @@ namespace Icinga\Editor;
 /**
  * Icinga Editor - nastavení uživatele
  *
- * @package    IcingaEditor
- * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2012 Vitex@hippy.cz (G)
  */
@@ -20,13 +18,13 @@ $prefs = new Preferences();
 if ($oPage->isPosted()) {
     //unset($_REQUEST['']);
     if ($prefs->savePrefs($_REQUEST)) {
-        $oPage->addStatusMessage(_('Předvolby byly uloženy'), 'success');
+        $oPage->addStatusMessage(_('Preferneces was saved'), 'success');
     } else {
-        $oPage->addStatusMessage(_('Předvolby nebyly uloženy'), 'warning');
+        $oPage->addStatusMessage(_('Preferences was not saved'), 'warning');
     }
 }
 
-$oPage->addItem(new UI\PageTop(_('Předvolby')));
+$oPage->addItem(new UI\PageTop(_('Preferences')));
 $oPage->addPageColumns();
 
 $form = new UI\PreferencesForm('prefs');

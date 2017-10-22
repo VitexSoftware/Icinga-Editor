@@ -5,7 +5,6 @@ namespace Icinga\Editor\UI;
 /**
  * Choose hosts checked by an service
  *
- * @package    IcingaEditor
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2012-2016 Vitex@hippy.cz (G)
  */
@@ -88,9 +87,9 @@ class HostSelector extends \Ease\Container
                         [
                         new \Ease\Html\ATag(
                             '?delhost='.$hostInfo[$host->nameColumn].'&amp;host_id='.$hostID.'&amp;'.$service->getmyKeyColumn().'='.$service->getMyKey().'&amp;'.$service->nameColumn.'='.$service->getName(),
-                            \Ease\TWB\Part::GlyphIcon('remove').' '._('Přestat sledovat'))
-                        , new \Ease\Html\ATag('host.php?host_id='.$hostID.'&amp;service_id='.$service->getId(),
-                            \Ease\TWB\Part::GlyphIcon('wrench').' '._('Editace'))
+                            \Ease\TWB\Part::GlyphIcon('remove').' '._('Stop watching'))
+                            , new \Ease\Html\ATag('host.php?host_id='.$hostID.'&amp;service_id='.$service->getId(),
+                            \Ease\TWB\Part::GlyphIcon('wrench').' '._('Editor'))
                         ]
                         )
                     );

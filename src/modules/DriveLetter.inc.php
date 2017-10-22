@@ -70,12 +70,12 @@ class DriveLetter extends \Icinga\Editor\UI\ServiceConfigurator
                     if (strlen(trim($value)) && ($value != '')) {
                         $config['Drive'] = $value.':';
                         $nameColumn      = $this->tweaker->service->nameColumn;
-                        $newName         = $this->tweaker->service->getDataValue($nameColumn).' '._('Disk').' '.strtoupper($value).':';
+                        $newName         = $this->tweaker->service->getDataValue($nameColumn).' '._('Disc Drive').' '.strtoupper($value).':';
 
                         $this->tweaker->service->setDataValue($nameColumn,
                             $newName);
                         $this->tweaker->service->setDataValue('display_name',
-                            sprintf(_('Disk %s: '), strtoupper($value)));
+                            sprintf(_('Disc Drive %s: '), strtoupper($value)));
                     }
 
                     break;

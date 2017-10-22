@@ -1,9 +1,7 @@
 <?php
 /**
- * Formulář pro test Disku windows
+ * Windows Drive test form
  *
- * @package    IcingaEditor
- * @subpackage plugins
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2014 Vitex@hippy.cz (G)
  */
@@ -37,10 +35,10 @@ class check_smart extends \Icinga\Editor\UI\ServiceConfigurator
 
         $this->form->addInput(new \Ease\Html\Select('Disk', $drives,
             str_replace(':', '', $config['--device'])), _('Disk'), '/dev/sdX:',
-            _('Volba sledované diskové jednotky'));
+            _('Choose drive Letter'));
 
-        $this->form->addItem(new \Ease\TWB\FormGroup(_('Rozhraní'),
-            new \Ease\Html\InputTextTag('MaxWarn', $config['MaxWarn']), '80%',
+        $this->form->addItem(new \Ease\TWB\FormGroup(_('Warning treshold'),
+                new \Ease\Html\InputTextTag('MaxWarn', $config['MaxWarn']), '80%',
             _('Maximum value before a warning is returned.')));
     }
 
@@ -62,7 +60,7 @@ class check_smart extends \Icinga\Editor\UI\ServiceConfigurator
                     $this->tweaker->service->setDataValue($this->tweaker->service->nameColumn,
                         _('Disk').' '.$value.':');
                     $this->tweaker->service->setDataValue('display_name',
-                        sprintf(_('SMART status disku %s: '), $value));
+                        sprintf(_('SMART disk status %s: '), $value));
                     break;
                 case '--interface':
                     $config['--interface'] = '--interface '.$value;

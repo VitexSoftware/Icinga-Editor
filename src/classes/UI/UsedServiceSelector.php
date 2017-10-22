@@ -92,7 +92,7 @@ class UsedServiceSelector extends \Ease\Container
 
                     if (intval($serviceInfo['parent_id'])) {
                         $unchMenu[] = new \Ease\Html\ATag('servicetweak.php?service_id='.$serviceID,
-                            \Ease\TWB\Part::GlyphIcon('wrench').' '._('Editace'));
+                            \Ease\TWB\Part::GlyphIcon('wrench').' '._('Editor'));
                     }
                     $unchMenu [] = new \Ease\Html\ATag('?addservice='.$serviceInfo[$service->nameColumn].'&amp;service_id='.$serviceID.'&amp;'.$host->getmyKeyColumn().'='.$host->getMyKey().'&amp;'.$host->nameColumn.'='.$host->getName(),
                         \Ease\TWB\Part::GlyphIcon('plus').' '._('Začít sledovat'));
@@ -132,7 +132,7 @@ class UsedServiceSelector extends \Ease\Container
                             '?delservice='.$serviceInfo[$service->nameColumn].'&amp;service_id='.$serviceID.'&amp;'.$host->getmyKeyColumn().'='.$host->getMyKey().'&amp;'.$host->nameColumn.'='.$host->getName(),
                             \Ease\TWB\Part::GlyphIcon('remove').' '._('Stop watching'))
                         , new \Ease\Html\ATag('servicetweak.php?service_id='.$serviceID.'&amp;host_id='.$host->getId(),
-                            \Ease\TWB\Part::GlyphIcon('wrench').' '._('Editace'))
+                            \Ease\TWB\Part::GlyphIcon('wrench').' '._('Editor'))
                         ], ['title' => $serviceInfo['service_description']]
                         )
                     );

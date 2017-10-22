@@ -58,9 +58,13 @@ switch ($oPage->getRequestValue('action')) {
                 $host->loadFromSQL((int) $gmID);
                 $host->addMember('contacts', $contact->getId(), $contact->getName());
                 if ($host->saveToSQL()) {
-                    $host->addStatusMessage(sprintf(_('<strong>%s</strong> was add to contacts <strong>%s</strong>'), $contact->getName(), $host->getName()), 'success');
+                    $host->addStatusMessage(sprintf(_('%s was add to contacts %s'),
+                            '<strong>'.$contact->getName().'</strong>',
+                            '<strong>'.$host->getName().'</strong>'), 'success');
                 } else {
-                    $host->addStatusMessage(sprintf(_('<strong>%s</strong> was not add to contacts <strong>%s</strong>'), $contact->getName(), $host->getName()), 'warning');
+                    $host->addStatusMessage(sprintf(_('%s was not add to contacts %s'),
+                            '<strong>'.$contact->getName().'</strong>',
+                            '<strong>'.$host->getName().'</strong>'), 'warning');
                 }
             }
         } else {

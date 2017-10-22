@@ -25,7 +25,7 @@ class web_content extends \Icinga\Editor\UI\ServiceConfigurator
     function init()
     {
         $hostname = $this->tweaker->host->getDataValue('host_name');
-        $command  = 'http://'.$hostname.'/!'._('Vše v pořádku');
+        $command  = 'http://'.$hostname.'/!'._('All OK');
         $this->tweaker->service->setDataValue('check_command-params', $command);
         return TRUE;
     }

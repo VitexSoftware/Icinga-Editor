@@ -421,7 +421,7 @@ echo "file name=${log-path}/nsclient.log" >> $INI
         }
         switch ($this->platform) {
             case 'windows':
-                $this->nscConfArray[] = "\n".'echo ^<h1^>'._('Konfigurace hosta').' '.$this->host->getName().'^</h1^> >> %ICIEDIT_HTML%';
+                $this->nscConfArray[] = "\n".'echo ^<h1^>'._('Host Configuration').' '.$this->host->getName().'^</h1^> >> %ICIEDIT_HTML%';
                 $this->nscConfArray[] = "\n".'echo ^<br^>^<a data-role="editor" href="'.Engine\Configurator::getBaseURL().'host.php?host_id='.$this->host->getId().'"^>'._('Host Configuration').'^</a^> >> %ICIEDIT_HTML%';
                 $this->nscConfArray[] = "\n".'echo ^<br^>^<a data-role="bat" href="'.Engine\Configurator::getBaseURL().'nscpcfggen.php?host_id='.$this->host->getId().'"^>'._('Refresh sensor installation').' '.$this->host->getName().'_nscp.bat'.'^</a^> >> %ICIEDIT_HTML%';
                 if ($this->host->getDataValue('host_is_server') == 0) {

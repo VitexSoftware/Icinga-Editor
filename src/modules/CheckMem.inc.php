@@ -1,9 +1,7 @@
 <?php
 /**
- * Formulář pro test Disku windows
+ * Windows memory test check form
  *
- * @package    IcingaEditor
- * @subpackage plugins
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2014 Vitex@hippy.cz (G)
  */
@@ -50,8 +48,8 @@ class CheckMem extends \Icinga\Editor\UI\ServiceConfigurator
         $types = ['physical' => _('Physical memory (RAM)'), 'committed' => _('total memory (RAM+PAGE)')];
 
         $this->form->addInput(new \Ease\Html\Select('type', $types,
-            str_replace(':', '', $config['type'])), _('Typ'), '',
-            _('Typ sledované paměti'));
+            str_replace(':', '', $config['type'])), _('Type'), '',
+            _('Memory type'));
 
         $this->form->addItem(new \Ease\TWB\FormGroup(_('MaxWarn'),
             new \Ease\Html\InputTextTag('MaxWarn', $config['MaxWarn']), '80%',
@@ -75,7 +73,7 @@ class CheckMem extends \Icinga\Editor\UI\ServiceConfigurator
 
 
         $this->form->addInput(new UI\TWBSwitch('ShowAll', $config['ShowAll']),
-            _('Zobrazit vše'), null,
+            _('Show all'), null,
             _('Configures display format (if set shows all items not only failures, if set to long shows all cores).'));
 
         //    $this->form->addInput(new \Ease\Html\InputTextTag('orig', $this->commandParams[0], array('disabled')));

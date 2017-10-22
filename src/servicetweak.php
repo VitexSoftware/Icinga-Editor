@@ -28,7 +28,8 @@ switch ($oPage->getRequestValue('action')) {
 
         $service->setDataValue('hostgroup_name', []);
         $service->setDataValue('user_id', $oUser->getID());
-        $service->setDataValue($service->nameColumn, _('Clon') . ' ' . $service->getName());
+        $service->setDataValue($service->nameColumn,
+            _('Clone').' '.$service->getName());
         if ($service->saveToSQL()) {
             $oUser->addStatusMessage(_('Service was cloned'), 'success');
             $oPage->redirect('servicetweak.php?service_id=' . $service->getId() . '&host_id=' . $host->getId());

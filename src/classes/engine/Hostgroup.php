@@ -1,9 +1,7 @@
 <?php
 /**
- * Konfigurace Skupin hostů
+ * Hostgroup
  *
- * @package    IcingaEditor
- * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2012 Vitex@hippy.cz (G)
  */
@@ -67,6 +65,11 @@ class Hostgroup extends Configurator
             'title' => 'adresa doplnujících akcí'],
     ];
 
+    public function __construct($itemID = null)
+    {
+
+        parent::__construct($itemID);
+    }
     /**
      * URL dokumentace objektu
      * @var string
@@ -88,7 +91,7 @@ class Hostgroup extends Configurator
                 if ($member == $hostname) {
                     $found = true;
                     unset($this->data['members'][$ID]);
-                    $this->addStatusMessage(sprintf(_(' %s byl odstraněn ze skupiny %s '),
+                    $this->addStatusMessage(sprintf(_('%s was removed from group %s'),
                             $hostname, $group[$this->nameColumn]));
                 }
             }
@@ -99,10 +102,11 @@ class Hostgroup extends Configurator
     }
 
     /**
-     * Vrací mazací tlačítko
+     * Delete button
      *
      * @param  string                     $name
-     * @param  string                     $urlAdd Předávaná část URL
+     * @param  string                     $urlAdd URL to add
+     *
      * @return \EaseJQConfirmedLinkButton
      */
     public function deleteButton($name = null, $addUrl = '')
@@ -139,7 +143,7 @@ class Hostgroup extends Configurator
                 if ($member == $oldname) {
                     $found                      = true;
                     $this->data['members'][$id] = $newname;
-                    $this->addStatusMessage(sprintf(_(' %s byl přejmenován na %s ve skupině %s '),
+                    $this->addStatusMessage(sprintf(_(' %s was renamed to %s in group %s '),
                             $oldname, $newname, $group[$this->nameColumn]));
                 }
             }
@@ -163,6 +167,7 @@ class Hostgroup extends Configurator
      * Smaže hostgrupu i její použití v hostech
      *
      * @param int $id
+     * 
      * @return boolean
      */
     function delete($id = null)
@@ -188,10 +193,10 @@ class Hostgroup extends Configurator
                     if ($hostgroupId == $this->getId()) {
                         if ($host->delMember('hostgroups', $hostgroupId,
                                 $hostgroupName)) {
-                            $this->addStatusMessage(sprintf(_('host %s byl odstraněn ze skupiny %s'),
+                            $this->addStatusMessage(sprintf(_('host %s was removed from group %s'),
                                     $host->getName(), $hostgroupName), 'success');
                         } else {
-                            $this->addStatusMessage(sprintf(_('host %s byl odstraněn ze skupiny %s'),
+                            $this->addStatusMessage(sprintf(_('host %s was not removed from group %s'),
                                     $host->getName(), $hostgroupName), 'error');
                         }
                     }
@@ -216,11 +221,11 @@ class Hostgroup extends Configurator
                     if ($subgroupgroupId == $this->getId()) {
                         if ($subgroup->delMember('hostgroup_members',
                                 $subgroupgroupId, $subgroupgroupName)) {
-                            $this->addStatusMessage(sprintf(_('subgroup %s byl odstraněn ze skupiny %s'),
+                            $this->addStatusMessage(sprintf(_('subgroup %s was removed from group %s'),
                                     $subgroup->getName(), $subgroupgroupName),
                                 'success');
                         } else {
-                            $this->addStatusMessage(sprintf(_('subgroup %s byl odstraněn ze skupiny %s'),
+                            $this->addStatusMessage(sprintf(_('subgroup %s was not removed from group %s'),
                                     $subgroup->getName(), $subgroupgroupName),
                                 'error');
                         }

@@ -5,8 +5,6 @@ namespace Icinga\Editor;
 /**
  * Icinga Editor - skupina služeb
  *
- * @package    IcingaEditor
- * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2012 Vitex@hippy.cz (G)
  */
@@ -21,9 +19,9 @@ if ($oPage->isPosted()) {
     $serviceGroup->takeData($_POST);
     $ServicegroupID = $serviceGroup->saveToSQL();
     if (is_null($ServicegroupID)) {
-        $oUser->addStatusMessage(_('Skupina služeb nebyla uložena'), 'warning');
+        $oUser->addStatusMessage(_('Servicegroup was not saved'), 'warning');
     } else {
-        $oUser->addStatusMessage(_('Skupina služeb byla uložena'), 'success');
+        $oUser->addStatusMessage(_('Servicegroup was saved'), 'success');
     }
 }
 
@@ -35,7 +33,7 @@ if ($delete == 'true') {
     $oPage->redirect('servicegroups.php');
 }
 
-$oPage->addItem(new UI\PageTop(_('Editace skupiny služeb').' '.$serviceGroup->getName()));
+$oPage->addItem(new UI\PageTop(_('Servicegroup editor').' '.$serviceGroup->getName()));
 
 $servicegroupEdit = new UI\CfgEditor($serviceGroup);
 
@@ -52,7 +50,7 @@ $form->addItem(new \Ease\TWB\SubmitButton(_('Save'), 'success'));
 $oPage->addItem(new UI\PageBottom());
 
 $infopanel = new UI\InfoBox($serviceGroup);
-$tools     = new \Ease\TWB\Panel(_('Nástroje'), 'warning');
+$tools     = new \Ease\TWB\Panel(_('Tools'), 'warning');
 if ($serviceGroup->getId()) {
     $tools->addItem($serviceGroup->deleteButton());
     $tools->addItem(new \Ease\TWB\Panel(_('Transfer'), 'warning',
@@ -61,8 +59,8 @@ if ($serviceGroup->getId()) {
 $pageRow = new \Ease\TWB\Row;
 $pageRow->addColumn(2, $infopanel);
 $pageRow->addColumn(6,
-    new \Ease\TWB\Panel(_('Příkaz').' <strong>'.$serviceGroup->getName().'</strong>',
-    'default', $form));
+    new \Ease\TWB\Panel(_('Command').' <strong>'.$serviceGroup->getName().'</strong>',
+        'default', $form));
 $pageRow->addColumn(4, $tools);
 $oPage->container->addItem($pageRow);
 

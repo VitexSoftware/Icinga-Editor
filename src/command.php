@@ -73,7 +73,7 @@ $oPage->addItem(new UI\PageBottom());
 
 
 $infopanel = new UI\InfoBox($command);
-$tools = new \Ease\TWB\Panel(_('Nástroje'), 'warning');
+$tools = new \Ease\TWB\Panel(_('Tools'), 'warning');
 if ($command->getId()) {
     $tools->addItem($command->deleteButton());
     $tools->addItem(new \Ease\TWB\Panel(_('Transfer'), 'warning', $command->transferForm()));

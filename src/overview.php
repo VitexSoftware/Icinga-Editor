@@ -46,7 +46,7 @@ if ($pocContact) {
             _('Create first contact ').\Ease\TWB\Part::GlyphIcon('edit')));
     } else {
         $oPage->columnII->addItem(new \Ease\Html\DivTag(
-                _('timeperiod is required for cereatinf contact'),
+                _('timeperiod is required for cereating contact'),
                 ['class' => 'alert alert-danger']));
     }
 }

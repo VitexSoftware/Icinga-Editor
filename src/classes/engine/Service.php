@@ -618,12 +618,12 @@ class Service extends Configurator
             }
         }
         if ($this->saveToSQL() && $newService->saveToSQL() && count($hostsOK)) {
-            $this->addStatusMessage(sprintf(_('%s byl přesunut z %s/%s do %s'),
+            $this->addStatusMessage(sprintf(_('%s was moved from %s/%s to %s'),
                     implode(',', $hostsOK), $this->keyword, $this->getName(),
                     $newService->getName()), 'success');
             return true;
         } else {
-            $this->addStatusMessage(sprintf(_(' %s nebyl přesunut z %s/%s do %s'),
+            $this->addStatusMessage(sprintf(_(' %s was not moved from %s/%s to %s'),
                     implode(',', $hostsErr), $this->keyword, $this->getName(),
                     $newService->getName()), 'warning');
             return false;

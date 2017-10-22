@@ -2,8 +2,6 @@
 /**
  * Formulář pro test Disku windows
  *
- * @package    IcingaEditor
- * @subpackage plugins
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2014 Vitex@hippy.cz (G)
  */
@@ -53,9 +51,9 @@ class CheckDriveSize extends \Icinga\Editor\UI\ServiceConfigurator
         }
 
 
-        $drives = array_merge(['CheckAll' => _('Všechny disky')],
+        $drives = array_merge(['CheckAll' => _('All Drives')],
             array_combine(range('a', 'z'), range('A', 'Z')),
-            ['\\\\' => _('Cesta v síti')]);
+            ['\\\\' => _('Network Path')]);
         unset($drives[1]);
         foreach ($drives as $did => $dname) {
             if ($did != 'CheckAll') {
@@ -65,11 +63,11 @@ class CheckDriveSize extends \Icinga\Editor\UI\ServiceConfigurator
 
         if (strstr($config['Drive'], '\\\\')) {
             $this->form->addInput(new \Ease\Html\Select('Drive', $drives, '\\\\'),
-                _('Disk'), 'X:', _('Volba písmene sledované diskové jednotky'));
+                _('Disk'), 'X:', _('Disk drive letter select'));
         } else {
             $this->form->addInput(new \Ease\Html\Select('Drive', $drives,
                 str_replace(':', '', $config['Drive'])), _('Disk'), 'X:',
-                _('Volba písmene sledované diskové jednotky'));
+                _('Disk drive letter select'));
         }
 
         if (!strstr($config['Drive'], '\\\\')) {
@@ -77,7 +75,7 @@ class CheckDriveSize extends \Icinga\Editor\UI\ServiceConfigurator
         }
         $this->form->addItem(new \Ease\TWB\FormGroup(_('NetDrive'),
             new \Ease\Html\InputTextTag('NetDrive', $config['Drive']),
-            '\\\\server\\path\\', _('Cesta síťové jednotky')));
+            '\\\\server\\path\\', _('Network drive path')));
 
 
         $this->form->addItem(new \Ease\TWB\FormGroup(_('MaxWarn'),
@@ -151,14 +149,14 @@ class CheckDriveSize extends \Icinga\Editor\UI\ServiceConfigurator
                                 $this->tweaker->service->setDataValue($this->tweaker->service->nameColumn,
                                     \Icinga\Editor\NSCPConfigBatGenerator::stripServiceName(_('NetDisk').' '.$value));
                                 $this->tweaker->service->setDataValue('display_name',
-                                    sprintf(_('Volné místo síťové jednotky %s: '),
+                                    sprintf(_('Disk drive %s empty space: '),
                                         $value));
                             } else {
                                 $config['Drive'] = 'Drive='.$value.':';
                                 $this->tweaker->service->setDataValue($this->tweaker->service->nameColumn,
                                     _('Disk').' '.strtoupper($value).':');
                                 $this->tweaker->service->setDataValue('display_name',
-                                    sprintf(_('Volné místo disku %s: '),
+                                    sprintf(_('Disk drive %s empty space: '),
                                         strtoupper($value)));
                             }
                         }

@@ -5,8 +5,6 @@ namespace Icinga\Editor;
 /**
  * Icinga Editor - nový kontakt
  *
- * @package    IcingaEditor
- * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2012 Vitex@hippy.cz (G)
  */
@@ -39,9 +37,9 @@ if ($oPage->isPosted()) {
 
     $contactID = $contact->saveToSQL();
     if (is_null($contactID)) {
-        $oUser->addStatusMessage(_('Kontakt nebyl založen'), 'warning');
+        $oUser->addStatusMessage(_('Contact was not created'), 'warning');
     } else {
-        $oUser->addStatusMessage(_('Kontakt byl založen'), 'success');
+        $oUser->addStatusMessage(_('Contact was created'), 'success');
         $oPage->redirect('contacttweak.php?contact_id='.$contact->getId());
         exit;
     }
@@ -53,12 +51,12 @@ if ($autoCreate == 'default') {
     $contactID = $contact->saveToSQL();
 }
 
-$oPage->addItem(new UI\PageTop(_('Založení kontaktu').' '.$contact->getName()));
+$oPage->addItem(new UI\PageTop(_('New Contact').' '.$contact->getName()));
 $oPage->addPageColumns();
 
 $form = $oPage->columnII->addItem(new \Ease\TWB\Form('Contact', 'newcontact.php'));
-$form->addItem(new \Ease\TWB\FormGroup(_('Jméno'),
-    new \Ease\Html\InputTextTag('name', $name)));
+$form->addItem(new \Ease\TWB\FormGroup(_('Name'),
+        new \Ease\Html\InputTextTag('name', $name)));
 $form->setTagID($form->getTagName());
 if (!is_null($contact->getMyKey())) {
     $form->addItem(new \Ease\Html\InputHiddenTag($contact->getmyKeyColumn(),

@@ -5,8 +5,6 @@ namespace Icinga\Editor\UI;
 /**
  * Formulář průvodce založením nové služby
  *
- * @package    IcingaEditor
- * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2015 Vitex@hippy.cz (G)
  */
@@ -14,7 +12,7 @@ class ServiceWizardForm extends \Ease\TWB\Form
 {
     /**
      * Objekt služby
-     * @var IEService
+     * @var \Icinga\Editor\Engine\Service
      */
     public $service = null;
 
@@ -45,7 +43,7 @@ class ServiceWizardForm extends \Ease\TWB\Form
             $this->addInput(new TWBSwitch('register',
                 $this->service->getDataValue('user_id'), 1,
                 ['onText' => _('Service'), 'offText' => _('Preset')]),
-                _('Typ konfigurace'));
+                _('Configuration type'));
 
             $this->addInput(new \Ease\Html\InputTextTag('name',
                 $this->service->getDataValue('name')), _('Name'), _('Name'),

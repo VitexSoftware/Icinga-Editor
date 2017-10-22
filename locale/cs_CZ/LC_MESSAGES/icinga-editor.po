@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Icinga Editor\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-19 22:19+0200\n"
-"PO-Revision-Date: 2017-10-20 10:11+0200\n"
+"POT-Creation-Date: 2017-10-22 17:09+0200\n"
+"PO-Revision-Date: 2017-10-22 17:10+0200\n"
 "Last-Translator: Vítězslav Dvořák <info@vitexsoftware.cz>\n"
 "Language-Team: Vitex Software <info@vitexsoftware.cz>\n"
 "Language: cs_CZ\n"
@@ -176,7 +176,7 @@ msgstr "Potvrzení hesla"
 msgid "Change password"
 msgstr "Změna hesla"
 
-#: changepassword.php:89 settings.php:47
+#: changepassword.php:89 nagstamon.php:52 settings.php:47
 #, fuzzy
 msgid "Password change"
 msgstr "Změna hesla"
@@ -205,53 +205,49 @@ msgstr "Záznam byl aktualizován"
 msgid "Record was not updated"
 msgstr ""
 
-#: classes/DbFixer.php:49
+#: classes/DbFixer.php:47
 #, php-format
 msgid "Unexistent host %s in service %s: fixing"
 msgstr ""
 
-#: classes/DbFixer.php:58
+#: classes/DbFixer.php:56
 #, php-format
 msgid "Service %s was fixed"
-msgstr ""
+msgstr "Služba %s byla opravena"
 
-#: classes/DbFixer.php:61
+#: classes/DbFixer.php:59
 #, php-format
 msgid "Service %s was not fixed"
 msgstr ""
 
-#: classes/DbFixer.php:82
+#: classes/DbFixer.php:80
 #, fuzzy
-msgid "Smazané nepoužívané služby"
-msgstr "Sledované služby"
+msgid "Delete unused services"
+msgstr "Použité knihovny"
 
-#: classes/DbFixer.php:117 classes/DbFixer.php:145 classes/DbFixer.php:215
-#: classes/DbFixer.php:248 classes/DbFixer.php:287
+#: classes/DbFixer.php:115 classes/DbFixer.php:143 classes/DbFixer.php:213
+#: classes/DbFixer.php:246 classes/DbFixer.php:285
 #, php-format
 msgid "<strong>%s</strong> : %s"
 msgstr ""
 
-#: classes/DbFixer.php:120 classes/DbFixer.php:148 classes/DbFixer.php:218
-#: classes/DbFixer.php:251 classes/DbFixer.php:290
+#: classes/DbFixer.php:118 classes/DbFixer.php:146 classes/DbFixer.php:216
+#: classes/DbFixer.php:249 classes/DbFixer.php:288
 #, fuzzy, php-format
 msgid "%s : %s"
 msgstr "%s %s"
 
-#: classes/DbFixer.php:171
+#: classes/DbFixer.php:169
 #, php-format
 msgid "Parent <strong>%s</strong> of host %s with wrong id ID"
 msgstr ""
 
-#: classes/DbFixer.php:177
+#: classes/DbFixer.php:175
 #, php-format
 msgid "Parent <strong>%s</strong> of hosta %s does not exist"
 msgstr ""
 
 #: classes/NSCPConfigBatGenerator.php:424
-#, fuzzy
-msgid "Konfigurace hosta"
-msgstr "Editace hosta"
-
 #: classes/NSCPConfigBatGenerator.php:425 classes/NSCPConfigPS1Generator.php:99
 #: classes/NSCPConfigPS1Generator.php:100
 #, fuzzy
@@ -313,8 +309,8 @@ msgid "Publicity"
 msgstr ""
 
 #: classes/Script.php:75 classes/UI/PassiveCheckedHostForm.php:27
-#: classes/UI/ServiceWizardForm.php:38 classes/engine/Command.php:81
-#: classes/engine/Host.php:618 classes/engine/Service.php:318
+#: classes/UI/ServiceWizardForm.php:36 classes/engine/Command.php:81
+#: classes/engine/Host.php:617 classes/engine/Service.php:316
 #: wizard-host.php:50
 msgid "Platform"
 msgstr ""
@@ -336,8 +332,8 @@ msgid "Active NRPE for NSClient++"
 msgstr ""
 
 #: classes/SensorTool.php:55
-msgid "Oskenovat a sledovat služby"
-msgstr "Oskenovat a sledovat služby"
+msgid "Scan & Wartch services"
+msgstr ""
 
 #: classes/SensorTool.php:64
 msgid "Windows NSCA"
@@ -403,7 +399,7 @@ msgstr ""
 msgid "member contacts"
 msgstr ""
 
-#: classes/Stemplate.php:75 classes/engine/Service.php:297
+#: classes/Stemplate.php:75 classes/engine/Service.php:295
 msgid "notes"
 msgstr ""
 
@@ -470,11 +466,12 @@ msgid "Default"
 msgstr "Ve většině případu ponechte výchozí hodnotu"
 
 #: classes/UI/CfgEditor.php:358
-msgid "vzdálený test"
-msgstr "vzdálený test"
+msgid "Remote Test"
+msgstr ""
 
-#: classes/UI/CfgEditor.php:361
-msgid "Parametry"
+#: classes/UI/CfgEditor.php:361 classes/UI/ServiceWizardForm.php:82
+#, fuzzy
+msgid "Parameters"
 msgstr "Parametry"
 
 #: classes/UI/CfgEditor.php:375
@@ -623,19 +620,21 @@ msgstr "Zavřít"
 
 #: classes/UI/ConfirmationDialog.php:41
 #: classes/UI/PassiveCheckedHostForm.php:31 classes/UI/TWBSwitch.php:30
-#: command.php:55 usergroup.php:69 wizard-host.php:57
+#: command.php:55 contact.php:43 host.php:209 script.php:71 service.php:111
+#: stemplate.php:87 usergroup.php:69 wizard-host.php:57
 msgid "No"
 msgstr ""
 
 #: classes/UI/ConfirmationDialog.php:43
 #: classes/UI/PassiveCheckedHostForm.php:31 classes/UI/TWBSwitch.php:27
-#: command.php:56 usergroup.php:70 wizard-host.php:57
+#: command.php:56 contact.php:44 host.php:210 script.php:73 service.php:113
+#: stemplate.php:89 usergroup.php:70 wizard-host.php:57
 #, fuzzy
 msgid "Yes"
 msgstr "Ano"
 
 #: classes/UI/ContactSelector.php:26 classes/UI/MainMenu.php:249
-#: contacts.php:20 reset.php:68
+#: classes/engine/Contact.php:214 contacts.php:20 reset.php:68
 #, fuzzy
 msgid "Contacts"
 msgstr "Kontakt"
@@ -646,7 +645,7 @@ msgstr ""
 
 #: classes/UI/ContactSelector.php:65 classes/UI/ContactSelector.php:84
 #: classes/UI/DataGrid.php:88 classes/UI/GroupMembersEditor.php:111
-#: classes/UI/HostSelector.php:74 classes/engine/UserGroup.php:117
+#: classes/UI/HostSelector.php:73 classes/engine/UserGroup.php:117
 #: classes/engine/UserGroup.php:128
 #, fuzzy
 msgid "Edit"
@@ -661,7 +660,7 @@ msgid "Stop notifing"
 msgstr ""
 
 #: classes/UI/ContactTweaker.php:56 classes/UI/ServiceConfigurator.php:154
-#: classes/engine/Configurator.php:1976
+#: classes/engine/Configurator.php:1974
 #, fuzzy
 msgid "Created"
 msgstr "vytvořeno"
@@ -682,7 +681,7 @@ msgstr ""
 
 #: classes/UI/ContactTweaker.php:89 classes/UI/DataGrid.php:89
 #: classes/User.php:286 classes/User.php:290
-#: classes/engine/Configurator.php:1032 classes/engine/Configurator.php:1036
+#: classes/engine/Configurator.php:1030 classes/engine/Configurator.php:1034
 #, fuzzy
 msgid "Delete"
 msgstr "Smazat"
@@ -698,8 +697,10 @@ msgstr ""
 
 #: classes/UI/ContactTweaker.php:112 classes/UI/FileEditor.php:23
 #: classes/UI/IconSelector.php:101 classes/UI/PreferencesForm.php:27
-#: command.php:68 contact.php:57 contactgroup.php:48 hostgroup.php:111
-#: script.php:91 service.php:131 smt.php:44 stemplate.php:103 timeperiod.php:77
+#: classes/UI/UserGroupForm.php:41 command.php:68 contact.php:57
+#: contactgroup.php:48 host.php:221 hostgroup.php:115 newcontact.php:66
+#: script.php:91 service.php:132 servicegroup.php:48 smt.php:44
+#: stemplate.php:103 timeperiod.php:76
 #, fuzzy
 msgid "Save"
 msgstr "Ulož"
@@ -739,44 +740,45 @@ msgstr ""
 msgid "Remove"
 msgstr "Odstranit"
 
-#: classes/UI/GroupMembersEditor.php:90 classes/UI/HostSelector.php:93
+#: classes/UI/GroupMembersEditor.php:90 classes/UI/HostSelector.php:92
 #: classes/UI/ParentSelector.php:96 classes/UI/UsedServiceSelector.php:95
-#: classes/UI/UsedServiceSelector.php:135
-msgid "Editace"
-msgstr "Editace"
+#: classes/UI/UsedServiceSelector.php:135 index.php:27
+#, fuzzy
+msgid "Editor"
+msgstr "Editor"
 
-#: classes/UI/HostSelector.php:26
+#: classes/UI/HostSelector.php:25
 msgid "Hosts checked for service"
 msgstr ""
 
-#: classes/UI/HostSelector.php:31 classes/UI/UsedServiceSelector.php:36
+#: classes/UI/HostSelector.php:30 classes/UI/UsedServiceSelector.php:36
 msgid "Please save record first"
 msgstr ""
 
-#: classes/UI/HostSelector.php:76
+#: classes/UI/HostSelector.php:75
 msgid "Start checking"
 msgstr ""
 
-#: classes/UI/HostSelector.php:91
-msgid "Přestat sledovat"
-msgstr "Přestat sledovat"
+#: classes/UI/HostSelector.php:90 classes/UI/UsedServiceSelector.php:133
+msgid "Stop watching"
+msgstr ""
 
-#: classes/UI/HostSelector.php:118
+#: classes/UI/HostSelector.php:117
 #, php-format
 msgid "Item %s was added"
 msgstr ""
 
-#: classes/UI/HostSelector.php:121 classes/UI/UsedServiceSelector.php:174
+#: classes/UI/HostSelector.php:120 classes/UI/UsedServiceSelector.php:174
 #, php-format
 msgid "item %s was not added"
 msgstr ""
 
-#: classes/UI/HostSelector.php:129
+#: classes/UI/HostSelector.php:128
 #, fuzzy, php-format
 msgid "item %s was removed"
 msgstr "Položka košíku %s byla odstraněna"
 
-#: classes/UI/HostSelector.php:132
+#: classes/UI/HostSelector.php:131
 #, fuzzy, php-format
 msgid "item %s was not removed"
 msgstr "Položka košíku %s byla odstraněna"
@@ -834,7 +836,7 @@ msgstr ""
 msgid "New Host wizard"
 msgstr ""
 
-#: classes/UI/MainMenu.php:85 wizard-active-host.php:17
+#: classes/UI/MainMenu.php:85 wizard-active-host.php:15
 msgid "New Active Host"
 msgstr ""
 
@@ -854,7 +856,7 @@ msgstr ""
 msgid "Topology"
 msgstr ""
 
-#: classes/UI/MainMenu.php:147 hosts.php:18
+#: classes/UI/MainMenu.php:147 hosts.php:18 wizard.php:45
 #, fuzzy
 msgid "Hosts"
 msgstr "Hosta"
@@ -881,7 +883,7 @@ msgstr ""
 msgid "Usergroup overview"
 msgstr ""
 
-#: classes/UI/MainMenu.php:201 reset.php:70
+#: classes/UI/MainMenu.php:201 reset.php:70 wizard.php:48
 #, fuzzy
 msgid "Services"
 msgstr "Služby"
@@ -894,7 +896,7 @@ msgstr ""
 msgid "New service"
 msgstr ""
 
-#: classes/UI/MainMenu.php:205 classes/UI/MainMenu.php:222
+#: classes/UI/MainMenu.php:205 classes/UI/MainMenu.php:222 services.php:15
 msgid "Services overview"
 msgstr ""
 
@@ -914,7 +916,7 @@ msgstr ""
 msgid "Watched services sets overview"
 msgstr ""
 
-#: classes/UI/MainMenu.php:227 services.php:19 wizard.php:51
+#: classes/UI/MainMenu.php:227
 msgid "Služby"
 msgstr "Služby"
 
@@ -926,7 +928,7 @@ msgstr ""
 msgid "Contacts Overview"
 msgstr ""
 
-#: classes/UI/MainMenu.php:253
+#: classes/UI/MainMenu.php:253 newcontact.php:54
 #, fuzzy
 msgid "New Contact"
 msgstr "Nový kontakt"
@@ -940,7 +942,7 @@ msgid "New contactgroup"
 msgstr ""
 
 #: classes/UI/MainMenu.php:259 classes/engine/Command.php:59
-#: classes/engine/Command.php:144 command.php:122
+#: classes/engine/Command.php:144 command.php:122 servicegroup.php:62
 msgid "Command"
 msgstr ""
 
@@ -1029,6 +1031,10 @@ msgstr ""
 msgid "Search"
 msgstr "Hledání"
 
+#: classes/UI/PageBottom.php:32
+msgid "Translated with Weblate"
+msgstr ""
+
 #: classes/UI/ParentSelector.php:26
 msgid "Host Parents"
 msgstr ""
@@ -1050,8 +1056,7 @@ msgstr ""
 msgid "Remove parents"
 msgstr ""
 
-#: classes/UI/PassiveCheckedHostForm.php:23 classes/UI/UserGroupForm.php:31
-#: newcontact.php:60
+#: classes/UI/PassiveCheckedHostForm.php:23
 msgid "Jméno"
 msgstr "Jméno"
 
@@ -1086,8 +1091,9 @@ msgid ""
 "night down (notebook or PC etc.)"
 msgstr ""
 
-#: classes/UI/PassiveCheckedHostForm.php:36 classes/UI/ServiceWizardForm.php:90
-#: command.php:66 script.php:89 stemplate.php:101 wizard-host.php:63
+#: classes/UI/PassiveCheckedHostForm.php:36 classes/UI/ServiceWizardForm.php:88
+#: classes/UI/UserGroupForm.php:44 command.php:66 script.php:89
+#: stemplate.php:101 wizard-host.php:63
 #, fuzzy
 msgid "Create"
 msgstr "Založ"
@@ -1112,8 +1118,9 @@ msgid "password used by NSCA "
 msgstr ""
 
 #: classes/UI/SensorConfirmForm.php:23
-msgid "Senzor je nasazen"
-msgstr ""
+#, fuzzy
+msgid "Sensor deployed"
+msgstr "Sensor"
 
 #: classes/UI/ServiceConfigurator.php:47
 msgid "Please confirm service setup"
@@ -1124,9 +1131,10 @@ msgid "Original service was modified"
 msgstr ""
 
 #: classes/UI/ServiceConfigurator.php:126
+#: classes/UI/ServiceConfigurator.php:185 servicetweak.php:32
 #, fuzzy
-msgid "Klon"
-msgstr "Klonovat"
+msgid "Clone"
+msgstr "Cloned"
 
 #: classes/UI/ServiceConfigurator.php:128
 msgid "Service was saved as clone"
@@ -1140,7 +1148,7 @@ msgstr ""
 msgid "Service saving failed"
 msgstr ""
 
-#: classes/UI/ServiceConfigurator.php:141 service.php:76
+#: classes/UI/ServiceConfigurator.php:141 service.php:77
 #, fuzzy
 msgid "Service was saved"
 msgstr "Hostname serveru"
@@ -1150,7 +1158,8 @@ msgstr "Hostname serveru"
 msgid "Form was not saved"
 msgstr "Záznam nebyl přidán"
 
-#: classes/UI/ServiceConfigurator.php:152 classes/UI/ServiceWizardForm.php:47
+#: classes/UI/ServiceConfigurator.php:152 classes/UI/ServiceWizardForm.php:45
+#: services.php:17 wizard.php:55
 #, fuzzy
 msgid "Service"
 msgstr "Prosím zvolte službu"
@@ -1162,7 +1171,7 @@ msgstr "Ulož"
 
 #: classes/UI/ServiceConfigurator.php:160
 #, php-format
-msgid "Toto je odvozená služba od %s"
+msgid "This is derived service fom %s"
 msgstr ""
 
 #: classes/UI/ServiceConfigurator.php:164
@@ -1174,11 +1183,6 @@ msgid "Save modified service as"
 msgstr ""
 
 #: classes/UI/ServiceConfigurator.php:185
-#, fuzzy
-msgid "Clone"
-msgstr "Cloned"
-
-#: classes/UI/ServiceConfigurator.php:185
 msgid "Original"
 msgstr ""
 
@@ -1187,28 +1191,27 @@ msgid "Apply services Preset"
 msgstr ""
 
 #: classes/UI/ServiceSwapForm.php:36
-#, fuzzy
-msgid "Náhradní služba"
-msgstr "Nová služba"
+msgid "Replacement Service"
+msgstr ""
 
 #: classes/UI/ServiceSwapForm.php:37
 #, fuzzy
-msgid "Jméno služby"
-msgstr "Sledované služby"
+msgid "Service Name"
+msgstr "Prosím zvolte službu"
 
 #: classes/UI/ServiceSwapForm.php:38
 #, php-format
 msgid ""
-"Tato služba se zamění za právě zvolenou službu <strong>%s</strong> u všech "
-"hostů kteří ji používají"
+"This service is replacement for the selected service %s for all guests who "
+"use it"
 msgstr ""
 
 #: classes/UI/ServiceSwapForm.php:42
-msgid "Vyměnit"
+msgid "Replace"
 msgstr ""
 
 #: classes/UI/ServiceSwapForm.php:43
-msgid "Vyměnit službu"
+msgid "Replace service"
 msgstr ""
 
 #: classes/UI/ServiceTweaker.php:67
@@ -1216,68 +1219,64 @@ msgstr ""
 msgid "Modul %s nebyl nalezen"
 msgstr "Modul %s nebyl nalezen"
 
-#: classes/UI/ServiceWizardForm.php:40
+#: classes/UI/ServiceWizardForm.php:38
 msgid "Watched machine platform"
 msgstr ""
 
-#: classes/UI/ServiceWizardForm.php:47 classes/engine/Configurator.php:1244
+#: classes/UI/ServiceWizardForm.php:45 classes/engine/Configurator.php:1242
 msgid "Preset"
 msgstr ""
 
-#: classes/UI/ServiceWizardForm.php:48
+#: classes/UI/ServiceWizardForm.php:46
 #, fuzzy
-msgid "Typ konfigurace"
-msgstr "Import konfigurace"
+msgid "Configuration type"
+msgstr "Konfigurace tématu"
 
-#: classes/UI/ServiceWizardForm.php:51 classes/UI/ServiceWizardForm.php:67
-#: classes/engine/Configurator.php:1962 wizard-host.php:45
+#: classes/UI/ServiceWizardForm.php:49 classes/UI/ServiceWizardForm.php:65
+#: classes/UI/UserGroupForm.php:31 classes/engine/Configurator.php:1960
+#: newcontact.php:58 wizard-host.php:45
 #, fuzzy
 msgid "Name"
 msgstr "Jméno"
 
-#: classes/UI/ServiceWizardForm.php:52
+#: classes/UI/ServiceWizardForm.php:50
 msgid "Service or preset name "
 msgstr ""
 
-#: classes/UI/ServiceWizardForm.php:56
+#: classes/UI/ServiceWizardForm.php:54
 msgid "Use preset"
 msgstr ""
 
-#: classes/UI/ServiceWizardForm.php:60 classes/engine/Configurator.php:187
-#: classes/engine/Configurator.php:1981
+#: classes/UI/ServiceWizardForm.php:58 classes/engine/Configurator.php:185
+#: classes/engine/Configurator.php:1979
 msgid "Owner"
 msgstr ""
 
-#: classes/UI/ServiceWizardForm.php:63
+#: classes/UI/ServiceWizardForm.php:61
 msgid "Show configuration dialog"
 msgstr ""
 
-#: classes/UI/ServiceWizardForm.php:70
+#: classes/UI/ServiceWizardForm.php:68
 msgid "Test service name"
 msgstr ""
 
-#: classes/UI/ServiceWizardForm.php:77
+#: classes/UI/ServiceWizardForm.php:75
 msgid "remote test"
 msgstr ""
 
-#: classes/UI/ServiceWizardForm.php:80
+#: classes/UI/ServiceWizardForm.php:78
 msgid "Remote commands"
 msgstr ""
 
-#: classes/UI/ServiceWizardForm.php:81
+#: classes/UI/ServiceWizardForm.php:79
 msgid "Search commands for: "
 msgstr ""
 
-#: classes/UI/ServiceWizardForm.php:82
+#: classes/UI/ServiceWizardForm.php:80
 msgid "Command executed by remote NRPE/NSCP.exe"
 msgstr ""
 
-#: classes/UI/ServiceWizardForm.php:84
-#, fuzzy
-msgid "Parameters"
-msgstr "Parametry"
-
-#: classes/UI/ServiceWizardForm.php:88
+#: classes/UI/ServiceWizardForm.php:86
 msgid "Remote command params. (For nrpe divided by \"!\")"
 msgstr ""
 
@@ -1285,8 +1284,8 @@ msgstr ""
 msgid "choose preset ..."
 msgstr ""
 
-#: classes/UI/TemplateSelect.php:46
-msgid "Bez predlohy"
+#: classes/UI/TemplateSelect.php:44
+msgid "Without template"
 msgstr ""
 
 #: classes/UI/UsedServiceSelector.php:25
@@ -1303,10 +1302,6 @@ msgstr "Začít sledovat"
 
 #: classes/UI/UsedServiceSelector.php:116
 msgid "Save selected services as Preset"
-msgstr ""
-
-#: classes/UI/UsedServiceSelector.php:133
-msgid "Stop watching"
 msgstr ""
 
 #: classes/UI/UsedServiceSelector.php:165
@@ -1330,27 +1325,17 @@ msgid "item %s was not assigned"
 msgstr ""
 
 #: classes/UI/UserGroupForm.php:33
-msgid "Název skupiny"
-msgstr ""
+#, fuzzy
+msgid "Group name"
+msgstr "Uživatelké Jméno"
 
 #: classes/UI/UserGroupForm.php:33
-msgid "Adminové"
+msgid "Admins"
 msgstr ""
 
-#: classes/UI/UserGroupForm.php:41 host.php:221 newcontact.php:68
-#: servicegroup.php:50
-msgid "Uložit"
-msgstr "Uložit"
-
-#: classes/UI/UserGroupForm.php:44
-#, fuzzy
-msgid "Založit"
-msgstr "Uložit"
-
-#: classes/UI/UserSelect.php:20
-#, fuzzy
-msgid "Systémový uživatel"
-msgstr "Nový uživatel"
+#: classes/UI/UserSelect.php:17
+msgid "System user"
+msgstr ""
 
 #: classes/UI/WebPage.php:90
 msgid "Nejprve se prosím přihlašte jako admin"
@@ -1372,7 +1357,7 @@ msgstr ""
 msgid "Icinga Web user not created"
 msgstr ""
 
-#: classes/User.php:287 classes/engine/Configurator.php:1033
+#: classes/User.php:287 classes/engine/Configurator.php:1031
 #, php-format
 msgid "Are you sure to delete %s ?"
 msgstr ""
@@ -1420,548 +1405,642 @@ msgstr ""
 msgid "Deploy"
 msgstr ""
 
-#: classes/engine/Configurator.php:155
+#: classes/engine/Configurator.php:153
 msgid "Save as template"
 msgstr ""
 
-#: classes/engine/Configurator.php:161
+#: classes/engine/Configurator.php:159
 msgid "Not an template"
 msgstr ""
 
-#: classes/engine/Configurator.php:201
+#: classes/engine/Configurator.php:199
 msgid "owner"
 msgstr ""
 
-#: classes/engine/Configurator.php:246
+#: classes/engine/Configurator.php:244
 #, php-format
 msgid "template %s was not loaded"
 msgstr ""
 
-#: classes/engine/Configurator.php:253
+#: classes/engine/Configurator.php:251
 #, php-format
 msgid "template %s was loaded"
 msgstr ""
 
-#: classes/engine/Configurator.php:518
+#: classes/engine/Configurator.php:516
 #, php-format
 msgid "Tabulka %s byla smazána"
 msgstr "Tabulka %s byla smazána"
 
-#: classes/engine/Configurator.php:522
+#: classes/engine/Configurator.php:520
 #, php-format
 msgid "Tabulka %s byla vytvořena"
 msgstr "Tabulka %s byla vytvořena"
 
-#: classes/engine/Configurator.php:525
+#: classes/engine/Configurator.php:523
 #, php-format
 msgid "Tabulka %s nebyla vytvořena"
 msgstr "Tabulka %s nebyla vytvořena"
 
-#: classes/engine/Configurator.php:569
+#: classes/engine/Configurator.php:567
 #, php-format
 msgid "Teplate %s need name"
 msgstr ""
 
-#: classes/engine/Configurator.php:577
+#: classes/engine/Configurator.php:575
 #, php-format
 msgid "Required value missing %s for %s"
 msgstr ""
 
-#: classes/engine/Configurator.php:788
+#: classes/engine/Configurator.php:786
 #, php-format
 msgid "Template %s allready defined. Please use another name"
 msgstr ""
 
-#: classes/engine/Configurator.php:791
+#: classes/engine/Configurator.php:789
 #, php-format
 msgid "%s %s allready defined. Please use another name."
 msgstr ""
 
-#: classes/engine/Configurator.php:1010
+#: classes/engine/Configurator.php:1008
 msgid "is template for"
 msgstr ""
 
-#: classes/engine/Configurator.php:1011
+#: classes/engine/Configurator.php:1009
 msgid "thus can not be deleted"
 msgstr ""
 
-#: classes/engine/Configurator.php:1080 classes/engine/Configurator.php:1102
+#: classes/engine/Configurator.php:1078 classes/engine/Configurator.php:1100
 msgid "Without owner"
 msgstr ""
 
-#: classes/engine/Configurator.php:1129
+#: classes/engine/Configurator.php:1127
 #, php-format
 msgid " %s %s was deleted "
 msgstr ""
 
-#: classes/engine/Configurator.php:1136
+#: classes/engine/Configurator.php:1134
 #, php-format
 msgid " %s %s was not deleted "
 msgstr ""
 
-#: classes/engine/Configurator.php:1235 classes/engine/Configurator.php:1238
-msgid " was not imported"
-msgstr ""
+#: classes/engine/Configurator.php:1233 classes/engine/Configurator.php:1236
+#, fuzzy
+msgid "was not imported"
+msgstr "Položka košíku %s byla odstraněna"
 
-#: classes/engine/Configurator.php:1244
+#: classes/engine/Configurator.php:1242 classes/engine/Configurator.php:1255
 msgid "was imported"
 msgstr ""
 
-#: classes/engine/Configurator.php:1257
-msgid " was imported"
-msgstr ""
-
-#: classes/engine/Configurator.php:1284
+#: classes/engine/Configurator.php:1282
 msgid "I need filename"
 msgstr ""
 
-#: classes/engine/Configurator.php:1455
+#: classes/engine/Configurator.php:1453
 #, php-format
 msgid "item %s was not added to %s/%s/%s"
 msgstr ""
 
-#: classes/engine/Configurator.php:1459
+#: classes/engine/Configurator.php:1457
 #, php-format
 msgid "item %s added to %s/%s/%s"
 msgstr ""
 
-#: classes/engine/Configurator.php:1474
+#: classes/engine/Configurator.php:1472
 #, php-format
 msgid "item %s was not removed from %s/%s/%s"
 msgstr ""
 
-#: classes/engine/Configurator.php:1478
+#: classes/engine/Configurator.php:1476
 #, php-format
 msgid "item %s was removed from %s/%s/%s"
 msgstr ""
 
-#: classes/engine/Configurator.php:1501
+#: classes/engine/Configurator.php:1499
 msgid "Deserialization error"
 msgstr ""
 
-#: classes/engine/Configurator.php:1537
+#: classes/engine/Configurator.php:1535
 msgid "Klonovat"
 msgstr "Klonovat"
 
-#: classes/engine/Configurator.php:1661
+#: classes/engine/Configurator.php:1659
 #, fuzzy
-msgid "Předloha"
-msgstr "předloha"
+msgid "Template"
+msgstr "Nový kontakt"
 
-#: classes/engine/Configurator.php:1743
+#: classes/engine/Configurator.php:1741
 #, fuzzy, php-format
 msgid "Unserialization error %s #%s "
 msgstr "Chyba deserializace %s #%s "
 
-#: classes/engine/Configurator.php:1793
+#: classes/engine/Configurator.php:1791
 msgid "Export target URL missing"
 msgstr ""
 
-#: classes/engine/Configurator.php:1802
+#: classes/engine/Configurator.php:1800
 #, php-format
 msgid "Transfer %s / %s se failed"
 msgstr ""
 
-#: classes/engine/Configurator.php:1819
+#: classes/engine/Configurator.php:1817
 msgid "Transfer failed"
 msgstr ""
 
-#: classes/engine/Configurator.php:1841
-msgid "Cíl exportu"
-msgstr ""
+#: classes/engine/Configurator.php:1839
+#, fuzzy
+msgid "Export Target"
+msgstr "Importovat"
 
-#: classes/engine/Configurator.php:1843
+#: classes/engine/Configurator.php:1841
 msgid "Recursive import"
 msgstr ""
 
-#: classes/engine/Configurator.php:1852
+#: classes/engine/Configurator.php:1850
 #, fuzzy
 msgid "Export"
 msgstr "Importovat"
 
-#: classes/engine/Configurator.php:1896
+#: classes/engine/Configurator.php:1894
 #, php-format
 msgid "Unknown item %s column %s within import"
 msgstr ""
 
-#: classes/engine/Configurator.php:1907
+#: classes/engine/Configurator.php:1905
 #, php-format
 msgid "Unknown imported column  %s"
 msgstr ""
 
-#: classes/engine/Configurator.php:1968
+#: classes/engine/Configurator.php:1966
 msgid "Not yet modified"
 msgstr ""
 
-#: classes/engine/Configurator.php:1972
+#: classes/engine/Configurator.php:1970
 msgid "Last change"
 msgstr ""
 
-#: classes/engine/Configurator.php:1986
+#: classes/engine/Configurator.php:1984
 #, fuzzy
 msgid "do not generate to configuration"
 msgstr "Generovat do konfigurace"
 
-#: classes/engine/Configurator.php:1992
+#: classes/engine/Configurator.php:1990
 msgid "record is public"
 msgstr ""
 
-#: classes/engine/Contact.php:194
-msgid "Kontakt"
+#: classes/engine/Contact.php:179
+#, fuzzy
+msgid "Contact Name"
 msgstr "Kontakt"
 
-#: classes/engine/Contact.php:241
-msgid "Toto není platná jabberová adresa"
-msgstr "Toto není platná jabberová adresa"
+#: classes/engine/Contact.php:181
+#, fuzzy
+msgid "Contact Groups"
+msgstr "Kontakt"
 
-#: classes/engine/Contact.php:250
-msgid "Toto není platná mailová adresa"
-msgstr "Toto není platná mailová adresa"
+#: classes/engine/Contact.php:182
+msgid "Notify hosts events"
+msgstr ""
 
-#: classes/engine/Contact.php:259
-msgid "Toto není platné telefoní číslo"
-msgstr "Toto není platné telefoní číslo"
+#: classes/engine/Contact.php:183
+msgid "Notify service events"
+msgstr ""
 
-#: classes/engine/Contact.php:345
+#: classes/engine/Contact.php:184
+#, fuzzy
+msgid "Host notification period"
+msgstr "Notifikační perioda"
+
+#: classes/engine/Contact.php:185
+#, fuzzy
+msgid "Service notification period"
+msgstr "Notifikační perioda"
+
+#: classes/engine/Contact.php:186
+#, fuzzy
+msgid "Host notification options"
+msgstr "Notifikační perioda"
+
+#: classes/engine/Contact.php:187
+#, fuzzy
+msgid "Service notification options"
+msgstr "Notifikační perioda"
+
+#: classes/engine/Contact.php:188
+#, fuzzy
+msgid "Host notification commands"
+msgstr "Notifikační perioda"
+
+#: classes/engine/Contact.php:189
+#, fuzzy
+msgid "Service notification commands"
+msgstr "Záznam nebyl přidán"
+
+#: classes/engine/Contact.php:190 createaccount.php:215
+#, fuzzy
+msgid "Email Address"
+msgstr "Emailová adresa"
+
+#: classes/engine/Contact.php:191
+msgid "SMS Number"
+msgstr ""
+
+#: classes/engine/Contact.php:192
+#, fuzzy
+msgid "Jabber Address"
+msgstr "Emailová adresa"
+
+#: classes/engine/Contact.php:193
+msgid "@Twitter (Deprecated)"
+msgstr ""
+
+#: classes/engine/Contact.php:194
+msgid "Can submit commands"
+msgstr ""
+
+#: classes/engine/Contact.php:195
+msgid "Retain status information"
+msgstr ""
+
+#: classes/engine/Contact.php:196
+msgid "Retain nostatus information"
+msgstr ""
+
+#: classes/engine/Contact.php:256
+#, fuzzy
+msgid "Invalid Jabber Address"
+msgstr "Chybná emailová adresa"
+
+#: classes/engine/Contact.php:265
+#, fuzzy
+msgid "Invalid email address"
+msgstr "Chybná emailová adresa"
+
+#: classes/engine/Contact.php:274
+msgid "Invalid phone number"
+msgstr ""
+
+#: classes/engine/Contact.php:359
+#, php-format
+msgid "Contact %s was removed from group %s"
+msgstr ""
+
+#: classes/engine/Contact.php:364
 #, fuzzy, php-format
-msgid "Kontakt <strong>%s</strong> byl odebrán ze skupiny <strong>%s</strong>"
-msgstr "Kontakt %s byl odebrán ze služby %s"
+msgid "Contact %s was not removed from group %s"
+msgstr "Položka košíku %s byla odstraněna"
 
-#: classes/engine/Contact.php:350
-#, fuzzy, php-format
-msgid ""
-"Kontakt <strong>%s</strong> nebyl odebrán ze skupiny <strong>%s</strong>"
-msgstr "Kontakt %s byl odebrán ze služby %s"
-
-#: classes/engine/Contact.php:366
-#, fuzzy, php-format
-msgid "Kontakt <strong>%s</strong> byl odebrán ze služby <strong>%s</strong>"
-msgstr "Kontakt %s byl odebrán ze služby %s"
-
-#: classes/engine/Contact.php:371
-#, fuzzy, php-format
-msgid "Kontakt <strong>%s</strong> nebyl odebrán ze služby <strong>%s</strong>"
-msgstr "Kontakt %s byl odebrán ze služby %s"
+#: classes/engine/Contact.php:380
+#, php-format
+msgid "Contact %s was removed from service %s"
+msgstr ""
 
 #: classes/engine/Contact.php:385
+#, fuzzy, php-format
+msgid "Contact %s was not removed from service %s"
+msgstr "Položka košíku %s byla odstraněna"
+
+#: classes/engine/Contact.php:399
 #, php-format
-msgid "Kontakt <strong>%s</strong> byl odebrán z hosta <strong>%s</strong>"
+msgid "Contact %s was removed from host %s"
 msgstr ""
 
-#: classes/engine/Contact.php:389
-#, php-format
-msgid "Kontakt <strong>%s</strong> nebyl odebrán z hosta <strong>%s</strong>"
+#: classes/engine/Contact.php:403
+#, fuzzy, php-format
+msgid "Contact %s was not removed from host %s"
+msgstr "Položka košíku %s byla odstraněna"
+
+#: classes/engine/Contact.php:447
+msgid "Cannot rename contact"
 msgstr ""
 
-#: classes/engine/Contact.php:433
-msgid "Kontakt nelze přejmenovat"
-msgstr "Kontakt nelze přejmenovat"
+#: classes/engine/Host.php:320 wizard.php:52
+#, fuzzy
+msgid "Host"
+msgstr "Jméno hosta je vyžadováno"
 
-#: classes/engine/Host.php:321
-msgid "Hosta"
-msgstr "Hosta"
-
-#: classes/engine/Host.php:343
+#: classes/engine/Host.php:342
 #, php-format
 msgid "Unregister %s from service %s error"
 msgstr ""
 
-#: classes/engine/Host.php:355
+#: classes/engine/Host.php:354
 #, php-format
 msgid "%s not an parent of %s"
 msgstr ""
 
-#: classes/engine/Host.php:357
+#: classes/engine/Host.php:356
 #, php-format
 msgid "%s is still parent of %s"
 msgstr ""
 
-#: classes/engine/Host.php:418
+#: classes/engine/Host.php:417
 msgid "Host without owner"
 msgstr ""
 
-#: classes/engine/Host.php:455
+#: classes/engine/Host.php:454
 #, php-format
 msgid "Error renaming %s within service %s"
 msgstr ""
 
-#: classes/engine/Host.php:566
+#: classes/engine/Host.php:565
 #, php-format
 msgid "Nalezena ikona %s"
 msgstr "Nalezena ikona %s"
 
-#: classes/engine/Host.php:617
+#: classes/engine/Host.php:616
 msgid "Alias"
 msgstr ""
 
-#: classes/engine/Host.php:626
+#: classes/engine/Host.php:625
 msgid "Parent"
 msgstr ""
 
-#: classes/engine/Host.php:629
+#: classes/engine/Host.php:628
 msgid "Sensor Configuration"
 msgstr ""
 
-#: classes/engine/Host.php:650
+#: classes/engine/Host.php:649
 msgid "Actual"
 msgstr ""
 
-#: classes/engine/Host.php:653
+#: classes/engine/Host.php:652
 msgid "Obsolete"
 msgstr ""
 
-#: classes/engine/Host.php:657
+#: classes/engine/Host.php:656
 msgid "Not installed"
 msgstr ""
 
-#: classes/engine/Host.php:722
+#: classes/engine/Host.php:721
 msgid "Host can not by its own parent"
 msgstr ""
 
-#: classes/engine/Hostgroup.php:91
+#: classes/engine/Hostgroup.php:94
 #, php-format
-msgid " %s byl odstraněn ze skupiny %s "
-msgstr " %s byl odstraněn ze skupiny %s "
+msgid "%s was removed from group %s"
+msgstr ""
 
-#: classes/engine/Hostgroup.php:110
+#: classes/engine/Hostgroup.php:114
 msgid "skupinu hostů"
 msgstr "skupinu hostů"
 
-#: classes/engine/Hostgroup.php:142
+#: classes/engine/Hostgroup.php:146
 #, fuzzy, php-format
-msgid " %s byl přejmenován na %s ve skupině %s "
-msgstr "Nepodařilo se přejmenovat %s ve službě %s"
+msgid " %s was renamed to %s in group %s "
+msgstr "Položka košíku %s byla odstraněna"
 
-#: classes/engine/Hostgroup.php:191 classes/engine/Hostgroup.php:194
+#: classes/engine/Hostgroup.php:196
 #, fuzzy, php-format
-msgid "host %s byl odstraněn ze skupiny %s"
-msgstr " %s byl odstraněn ze skupiny %s "
+msgid "host %s was removed from group %s"
+msgstr "Položka košíku %s byla odstraněna"
 
-#: classes/engine/Hostgroup.php:219 classes/engine/Hostgroup.php:223
+#: classes/engine/Hostgroup.php:199
 #, fuzzy, php-format
-msgid "subgroup %s byl odstraněn ze skupiny %s"
-msgstr " %s byl odstraněn ze skupiny %s "
+msgid "host %s was not removed from group %s"
+msgstr "Položka košíku %s byla odstraněna"
 
-#: classes/engine/Importer.php:119
+#: classes/engine/Hostgroup.php:224
+#, php-format
+msgid "subgroup %s was removed from group %s"
+msgstr ""
+
+#: classes/engine/Hostgroup.php:228
+#, php-format
+msgid "subgroup %s was not removed from group %s"
+msgstr ""
+
+#: classes/engine/Importer.php:118
 #, php-format
 msgid "%s lines of configuration read"
 msgstr ""
 
-#: classes/engine/Importer.php:122
+#: classes/engine/Importer.php:121
 #, php-format
 msgid "configuration parsing failed"
 msgstr ""
 
-#: classes/engine/Importer.php:140
+#: classes/engine/Importer.php:139
 #, php-format
 msgid "%s configurations imported"
 msgstr ""
 
-#: classes/engine/Importer.php:143
+#: classes/engine/Importer.php:142
 msgid "None imported"
 msgstr ""
 
-#: classes/engine/Importer.php:158
-msgid "konfigurace byla vygenerována"
-msgstr "konfigurace byla vygenerována"
+#: classes/engine/Importer.php:157
+#, fuzzy
+msgid "Configuration was generated"
+msgstr "Generování konfigurace"
 
-#: classes/engine/Importer.php:161
-msgid "konfigurace nebyla vygenerována"
-msgstr "konfigurace nebyla vygenerována"
+#: classes/engine/Importer.php:160
+#, fuzzy
+msgid "Configuration was not generated"
+msgstr "konfigurační soubor %s nebyl vytvořen"
 
-#: classes/engine/Service.php:106
+#: classes/engine/Service.php:104
 #, fuzzy
 msgid "service hosts"
 msgstr "Editace hosta"
 
-#: classes/engine/Service.php:117
+#: classes/engine/Service.php:115
 msgid "service hostgroups"
 msgstr ""
 
-#: classes/engine/Service.php:125
+#: classes/engine/Service.php:123
 msgid "service description"
 msgstr ""
 
-#: classes/engine/Service.php:128
+#: classes/engine/Service.php:126
 msgid "display name"
 msgstr ""
 
-#: classes/engine/Service.php:131
+#: classes/engine/Service.php:129
 msgid "tcp service port"
 msgstr ""
 
-#: classes/engine/Service.php:134
+#: classes/engine/Service.php:132
 msgid "service group"
 msgstr ""
 
-#: classes/engine/Service.php:142
+#: classes/engine/Service.php:140
 msgid "volatile"
 msgstr ""
 
-#: classes/engine/Service.php:149
+#: classes/engine/Service.php:147
 msgid "check command"
 msgstr ""
 
-#: classes/engine/Service.php:160
+#: classes/engine/Service.php:158
 msgid "remote check command"
 msgstr ""
 
-#: classes/engine/Service.php:163
+#: classes/engine/Service.php:161
 msgid "check command parrams"
 msgstr ""
 
-#: classes/engine/Service.php:166
+#: classes/engine/Service.php:164
 msgid "initial state"
 msgstr ""
 
-#: classes/engine/Service.php:173
+#: classes/engine/Service.php:171
 msgid "max check attempts"
 msgstr ""
 
-#: classes/engine/Service.php:178
+#: classes/engine/Service.php:176
 msgid "check interval"
 msgstr ""
 
-#: classes/engine/Service.php:181
+#: classes/engine/Service.php:179
 msgid "retry interval"
 msgstr ""
 
-#: classes/engine/Service.php:184
+#: classes/engine/Service.php:182
 msgid "Active mode"
 msgstr ""
 
-#: classes/engine/Service.php:187
+#: classes/engine/Service.php:185
 msgid "Passive mode"
 msgstr ""
 
-#: classes/engine/Service.php:190
+#: classes/engine/Service.php:188
 msgid "check period"
 msgstr ""
 
-#: classes/engine/Service.php:198
+#: classes/engine/Service.php:196
 msgid "paraelize check"
 msgstr ""
 
-#: classes/engine/Service.php:201
+#: classes/engine/Service.php:199
 msgid "obsess over service"
 msgstr ""
 
-#: classes/engine/Service.php:204
+#: classes/engine/Service.php:202
 msgid "check freshnes"
 msgstr ""
 
-#: classes/engine/Service.php:207
+#: classes/engine/Service.php:205
 msgid "freshness treshold"
 msgstr ""
 
-#: classes/engine/Service.php:210
+#: classes/engine/Service.php:208
 msgid "event handler"
 msgstr ""
 
-#: classes/engine/Service.php:220
+#: classes/engine/Service.php:218
 msgid "event handler enabled"
 msgstr ""
 
-#: classes/engine/Service.php:223
+#: classes/engine/Service.php:221
 msgid "low flap treshold"
 msgstr ""
 
-#: classes/engine/Service.php:226
+#: classes/engine/Service.php:224
 msgid "high flap treshold"
 msgstr ""
 
-#: classes/engine/Service.php:229 classes/engine/Service.php:232
+#: classes/engine/Service.php:227 classes/engine/Service.php:230
 msgid "flap detection enabled"
 msgstr ""
 
-#: classes/engine/Service.php:235
+#: classes/engine/Service.php:233
 msgid "failure prediction enabled"
 msgstr ""
 
-#: classes/engine/Service.php:238
+#: classes/engine/Service.php:236
 msgid "process perf data"
 msgstr ""
 
-#: classes/engine/Service.php:241
+#: classes/engine/Service.php:239
 msgid "retain status information"
 msgstr ""
 
-#: classes/engine/Service.php:244
+#: classes/engine/Service.php:242
 msgid "retain nonstatus information"
 msgstr ""
 
-#: classes/engine/Service.php:247
+#: classes/engine/Service.php:245
 msgid "notification interval"
 msgstr ""
 
-#: classes/engine/Service.php:250
+#: classes/engine/Service.php:248
 msgid "first notification delay"
 msgstr ""
 
-#: classes/engine/Service.php:253
+#: classes/engine/Service.php:251
 #, fuzzy
 msgid "notification period"
 msgstr "Notifikační perioda"
 
-#: classes/engine/Service.php:261
+#: classes/engine/Service.php:259
 msgid "notification options"
 msgstr ""
 
-#: classes/engine/Service.php:271
+#: classes/engine/Service.php:269
 msgid "notifications enabled"
 msgstr ""
 
-#: classes/engine/Service.php:274
+#: classes/engine/Service.php:272
 #, fuzzy
 msgid "contacts"
 msgstr "Kontakt"
 
-#: classes/engine/Service.php:281
+#: classes/engine/Service.php:279
 msgid "contactgroups"
 msgstr ""
 
-#: classes/engine/Service.php:289
+#: classes/engine/Service.php:287
 msgid "stalking options"
 msgstr ""
 
-#: classes/engine/Service.php:300
+#: classes/engine/Service.php:298
 msgid "notes url"
 msgstr ""
 
-#: classes/engine/Service.php:303
+#: classes/engine/Service.php:301
 #, fuzzy
 msgid "action url"
 msgstr "Neplatné url"
 
-#: classes/engine/Service.php:306
+#: classes/engine/Service.php:304
 msgid "icon image "
 msgstr ""
 
-#: classes/engine/Service.php:309
+#: classes/engine/Service.php:307
 msgid "icon image alt text"
 msgstr ""
 
-#: classes/engine/Service.php:312
+#: classes/engine/Service.php:310
 msgid "require additional configuration ?"
 msgstr ""
 
-#: classes/engine/Service.php:315
+#: classes/engine/Service.php:313
 msgid "Configuration plugin"
 msgstr ""
 
-#: classes/engine/Service.php:623
+#: classes/engine/Service.php:621
 #, php-format
-msgid "%s byl přesunut z %s/%s do %s"
+msgid "%s was moved from %s/%s to %s"
 msgstr ""
 
-#: classes/engine/Service.php:628
-#, fuzzy, php-format
-msgid " %s nebyl přesunut z %s/%s do %s"
-msgstr "položka %s nebyla přidána do %s/%s/%s"
+#: classes/engine/Service.php:626
+#, php-format
+msgid " %s was not moved from %s/%s to %s"
+msgstr ""
 
-#: classes/engine/Timeperiod.php:193
-msgid "Časovou periodu"
-msgstr "Časovou periodu"
+#: classes/engine/Timeperiod.php:55
+msgid "Timeperiod Name"
+msgstr ""
+
+#: classes/engine/Timeperiod.php:56
+msgid "Period Alias"
+msgstr ""
+
+#: classes/engine/Timeperiod.php:196
+msgid "Timeperiod"
+msgstr ""
 
 #: classes/engine/UserGroup.php:44
 #, fuzzy
@@ -2008,12 +2087,14 @@ msgstr ""
 msgid "Are you sure ?"
 msgstr "Jste si jistý  %s ?"
 
-#: command.php:76 servicegroup.php:55
-msgid "Nástroje"
-msgstr ""
+#: command.php:76 contact.php:71 contactgroup.php:53 host.php:184
+#: hostgroup.php:122 script.php:99 service.php:98 servicegroup.php:53
+#, fuzzy
+msgid "Tools"
+msgstr "Nástroje"
 
-#: command.php:79 contact.php:74 hostgroup.php:121 script.php:102
-#: service.php:138 servicegroup.php:58 stemplate.php:105
+#: command.php:79 contact.php:74 hostgroup.php:125 script.php:102
+#: service.php:139 servicegroup.php:56 stemplate.php:105
 msgid "Transfer"
 msgstr ""
 
@@ -2050,21 +2131,6 @@ msgstr "Hostname serveru"
 #, fuzzy
 msgid "Contact Editor"
 msgstr "Hosti"
-
-#: contact.php:43 host.php:209 script.php:71 service.php:110 stemplate.php:87
-msgid "Ne"
-msgstr ""
-
-#: contact.php:44 host.php:210 script.php:73 service.php:112 stemplate.php:89
-#, fuzzy
-msgid "Ano"
-msgstr "Android"
-
-#: contact.php:71 contactgroup.php:53 host.php:184 hostgroup.php:118
-#: script.php:99 service.php:97
-#, fuzzy
-msgid "Tools"
-msgstr "Nástroje"
 
 #: contact.php:95
 #, fuzzy
@@ -2104,11 +2170,11 @@ msgstr ""
 msgid "Contact editor"
 msgstr ""
 
-#: contacttweak.php:59 host.php:235 service.php:147 servicetweak.php:121
+#: contacttweak.php:59 host.php:235 service.php:148 servicetweak.php:122
 msgid "Rename"
 msgstr ""
 
-#: contacttweak.php:61 host.php:237 service.php:150 servicetweak.php:123
+#: contacttweak.php:61 host.php:237 service.php:151 servicetweak.php:124
 msgid "Renaming"
 msgstr ""
 
@@ -2253,11 +2319,6 @@ msgstr "Přihlašovací jméno"
 #, fuzzy
 msgid "Requied"
 msgstr "Požadováno"
-
-#: createaccount.php:215
-#, fuzzy
-msgid "Email Address"
-msgstr "Emailová adresa"
 
 #: createaccount.php:218
 #, fuzzy
@@ -2442,65 +2503,65 @@ msgid "Deploy sensor"
 msgstr ""
 
 #: hostgroup.php:61
+#, php-format
+msgid "%s was add to contacts %s"
+msgstr ""
+
+#: hostgroup.php:65
 #, fuzzy, php-format
-msgid "<strong>%s</strong> was add to contacts <strong>%s</strong>"
+msgid "%s was not add to contacts %s"
 msgstr "Kontakt %s byl odebrán ze služby %s"
 
-#: hostgroup.php:63
-#, fuzzy, php-format
-msgid "<strong>%s</strong> was not add to contacts <strong>%s</strong>"
-msgstr "Kontakt %s byl odebrán ze služby %s"
-
-#: hostgroup.php:67
+#: hostgroup.php:71
 msgid "Contact assigning error"
 msgstr ""
 
-#: hostgroup.php:80
+#: hostgroup.php:84
 msgid "Hostgroup was not saved"
 msgstr ""
 
-#: hostgroup.php:82
+#: hostgroup.php:86
 msgid "Hostgroup was saved"
 msgstr ""
 
-#: hostgroup.php:97
+#: hostgroup.php:101
 msgid "Hostgroup Editor"
 msgstr ""
 
-#: hostgroup.php:131
+#: hostgroup.php:135
 msgid "Bulk operations"
 msgstr ""
 
-#: hostgroup.php:138
+#: hostgroup.php:142
 #, fuzzy
 msgid "hostgroup"
 msgstr "Skupina hostů"
 
-#: hostgroup.php:138
+#: hostgroup.php:142
 msgid "hosts"
 msgstr ""
 
-#: hostgroup.php:138
+#: hostgroup.php:142
 #, fuzzy
 msgid "Apply to"
 msgstr "Aplikovat"
 
-#: hostgroup.php:138
+#: hostgroup.php:142
 msgid "Apply preset to several Hosts or hostgroup itself"
 msgstr ""
 
-#: hostgroup.php:143
+#: hostgroup.php:147
 msgid "New Host in Group"
 msgstr ""
 
-#: hostgroups.php:17
-msgid "Přehled skupin hostů"
-msgstr "Přehled skupin hostů"
-
-#: hostgroups.php:19
+#: hostgroups.php:15
 #, fuzzy
-msgid "Skupiny hostů"
-msgstr "skupinu hostů"
+msgid "Hostgroup overview"
+msgstr "Hostname serveru"
+
+#: hostgroups.php:17 reset.php:67
+msgid "Hostgroups"
+msgstr ""
 
 #: hosts.php:16
 #, fuzzy
@@ -2516,11 +2577,11 @@ msgstr ""
 msgid "Configure"
 msgstr "Import konfigurace"
 
-#: import.php:45 importcommand.php:44
+#: import.php:45 importcommand.php:42
 msgid "konfigurační fragment"
 msgstr "konfigurační fragment"
 
-#: import.php:46 importcommand.php:46
+#: import.php:46 importcommand.php:44
 #, fuzzy
 msgid "configuration file"
 msgstr "Import konfigurace"
@@ -2547,45 +2608,40 @@ msgstr ""
 msgid "Configuration Import"
 msgstr ""
 
-#: importcommand.php:29
+#: importcommand.php:27
 #, fuzzy, php-format
-msgid "Příkaz %s byl naimportován"
-msgstr " byl naimportován"
+msgid "Command %s was imported"
+msgstr "Záznam nebyl přidán"
 
-#: importcommand.php:32
+#: importcommand.php:30
 #, fuzzy
-msgid "Příkaz nebyl naimportován"
-msgstr " nebyl naimportován"
+msgid "Command was not imported"
+msgstr "Položka košíku %s byla odstraněna"
 
-#: importcommand.php:35
-msgid "Zadejte konfigurační fragment příkazu, nebo zvolte soubor k importu"
-msgstr "Zadejte konfigurační fragment příkazu, nebo zvolte soubor k importu"
+#: importcommand.php:33
+msgid "Enter configuration fragment or choose config file"
+msgstr ""
 
-#: importcommand.php:39
-msgid "Načtení příkazů ze souboru"
-msgstr "Načtení příkazů ze souboru"
+#: importcommand.php:37
+msgid "Read commands from file"
+msgstr ""
 
-#: importcommand.php:51
-msgid "druh vkládaných příkazů"
-msgstr "druh vkládaných příkazů"
+#: importcommand.php:49
+msgid "Included commands type"
+msgstr ""
 
-#: importcommand.php:53 install.php:44
+#: importcommand.php:51 install.php:44
 msgid "importovat"
 msgstr "importovat"
 
-#: importcommand.php:55
+#: importcommand.php:53
 #, fuzzy
-msgid "Import příkazu do konfigurace"
-msgstr "Import konfigurace"
+msgid "Import command to configuration"
+msgstr "vytvořit konfiguraci"
 
-#: index.php:19 overview.php:17 passwordrecovery.php:40 reload.php:17
+#: index.php:19 overview.php:15 passwordrecovery.php:40 reload.php:17
 msgid "Icinga Editor"
 msgstr "Icinga Editor"
-
-#: index.php:27
-#, fuzzy
-msgid "Editor"
-msgstr "Editor"
 
 #: index.php:30
 msgid "Watch the hosts"
@@ -2680,163 +2736,158 @@ msgstr ""
 msgid "Network map"
 msgstr ""
 
+#: modules/CheckDriveSize.inc.php:54
+msgid "All Drives"
+msgstr ""
+
 #: modules/CheckDriveSize.inc.php:56
-msgid "Všechny disky"
+msgid "Network Path"
 msgstr ""
 
-#: modules/CheckDriveSize.inc.php:58
-msgid "Cesta v síti"
-msgstr ""
-
-#: modules/CheckDriveSize.inc.php:68 modules/CheckDriveSize.inc.php:71
-#: modules/CheckDriveSize.inc.php:159 modules/DriveLetter.inc.php:47
-#: modules/DriveLetter.inc.php:73 modules/check_smart.inc.php:39
-#: modules/check_smart.inc.php:63
+#: modules/CheckDriveSize.inc.php:66 modules/CheckDriveSize.inc.php:69
+#: modules/CheckDriveSize.inc.php:157 modules/DriveLetter.inc.php:47
+#: modules/check_smart.inc.php:37 modules/check_smart.inc.php:61
 msgid "Disk"
 msgstr ""
 
-#: modules/CheckDriveSize.inc.php:68 modules/CheckDriveSize.inc.php:72
-msgid "Volba písmene sledované diskové jednotky"
+#: modules/CheckDriveSize.inc.php:66 modules/CheckDriveSize.inc.php:70
+msgid "Disk drive letter select"
 msgstr ""
 
-#: modules/CheckDriveSize.inc.php:78
+#: modules/CheckDriveSize.inc.php:76
 msgid "NetDrive"
 msgstr ""
 
-#: modules/CheckDriveSize.inc.php:80
-msgid "Cesta síťové jednotky"
+#: modules/CheckDriveSize.inc.php:78
+msgid "Network drive path"
 msgstr ""
 
-#: modules/CheckDriveSize.inc.php:83 modules/CheckMem.inc.php:56
+#: modules/CheckDriveSize.inc.php:81 modules/CheckMem.inc.php:54
 msgid "MaxWarn"
 msgstr ""
 
-#: modules/CheckDriveSize.inc.php:85 modules/CheckDriveSize.inc.php:98
-#: modules/CheckDriveSize.inc.php:111 modules/CheckMem.inc.php:58
-#: modules/CheckMem.inc.php:71 modules/check_smart.inc.php:44
+#: modules/CheckDriveSize.inc.php:83 modules/CheckDriveSize.inc.php:96
+#: modules/CheckDriveSize.inc.php:109 modules/CheckMem.inc.php:56
+#: modules/CheckMem.inc.php:69 modules/check_smart.inc.php:42
 msgid "Maximum value before a warning is returned."
 msgstr ""
 
-#: modules/CheckDriveSize.inc.php:86 modules/CheckMem.inc.php:59
+#: modules/CheckDriveSize.inc.php:84 modules/CheckMem.inc.php:57
 msgid "MaxCrit"
 msgstr ""
 
-#: modules/CheckDriveSize.inc.php:88 modules/CheckMem.inc.php:61
+#: modules/CheckDriveSize.inc.php:86 modules/CheckMem.inc.php:59
 msgid "Maximum value before a critical is returned."
 msgstr ""
 
-#: modules/CheckDriveSize.inc.php:89 modules/CheckMem.inc.php:62
+#: modules/CheckDriveSize.inc.php:87 modules/CheckMem.inc.php:60
 msgid "MinWarn"
 msgstr ""
 
-#: modules/CheckDriveSize.inc.php:91 modules/CheckDriveSize.inc.php:104
-#: modules/CheckDriveSize.inc.php:117 modules/CheckMem.inc.php:64
+#: modules/CheckDriveSize.inc.php:89 modules/CheckDriveSize.inc.php:102
+#: modules/CheckDriveSize.inc.php:115 modules/CheckMem.inc.php:62
 msgid "Minimum value before a warning is returned."
 msgstr ""
 
-#: modules/CheckDriveSize.inc.php:92 modules/CheckMem.inc.php:65
+#: modules/CheckDriveSize.inc.php:90 modules/CheckMem.inc.php:63
 msgid "MinCrit"
 msgstr ""
 
-#: modules/CheckDriveSize.inc.php:94 modules/CheckMem.inc.php:67
+#: modules/CheckDriveSize.inc.php:92 modules/CheckMem.inc.php:65
 msgid "Minimum value before a critical is returned."
 msgstr ""
 
-#: modules/CheckDriveSize.inc.php:96
+#: modules/CheckDriveSize.inc.php:94
 msgid "MaxWarnFree"
 msgstr ""
 
-#: modules/CheckDriveSize.inc.php:99
+#: modules/CheckDriveSize.inc.php:97
 msgid "MaxCritFree"
 msgstr ""
 
-#: modules/CheckDriveSize.inc.php:101 modules/CheckDriveSize.inc.php:114
-#: modules/CheckMem.inc.php:74
+#: modules/CheckDriveSize.inc.php:99 modules/CheckDriveSize.inc.php:112
+#: modules/CheckMem.inc.php:72
 msgid "Maximum value before a critcal is returned."
 msgstr ""
 
-#: modules/CheckDriveSize.inc.php:102
+#: modules/CheckDriveSize.inc.php:100
 msgid "MinWarnFree"
 msgstr ""
 
-#: modules/CheckDriveSize.inc.php:105
+#: modules/CheckDriveSize.inc.php:103
 msgid "MinCritFree"
 msgstr ""
 
-#: modules/CheckDriveSize.inc.php:107 modules/CheckDriveSize.inc.php:120
+#: modules/CheckDriveSize.inc.php:105 modules/CheckDriveSize.inc.php:118
 msgid "Minimum value before a critcal is returned."
 msgstr ""
 
-#: modules/CheckDriveSize.inc.php:109
+#: modules/CheckDriveSize.inc.php:107
 msgid "MaxWarnUsed"
 msgstr ""
 
-#: modules/CheckDriveSize.inc.php:112
+#: modules/CheckDriveSize.inc.php:110
 msgid "MaxCritUsed"
 msgstr ""
 
-#: modules/CheckDriveSize.inc.php:115
+#: modules/CheckDriveSize.inc.php:113
 msgid "MinWarnUsed"
 msgstr ""
 
-#: modules/CheckDriveSize.inc.php:118
+#: modules/CheckDriveSize.inc.php:116
 msgid "MinCritUsed"
 msgstr ""
 
-#: modules/CheckDriveSize.inc.php:123
+#: modules/CheckDriveSize.inc.php:121
 msgid "Show All"
 msgstr ""
 
-#: modules/CheckDriveSize.inc.php:124 modules/CheckMem.inc.php:79
+#: modules/CheckDriveSize.inc.php:122 modules/CheckMem.inc.php:77
 msgid ""
 "Configures display format (if set shows all items not only failures, if set "
 "to long shows all cores)."
 msgstr ""
 
-#: modules/CheckDriveSize.inc.php:146
+#: modules/CheckDriveSize.inc.php:144
 msgid "Všechny jednotky"
 msgstr ""
 
-#: modules/CheckDriveSize.inc.php:152
+#: modules/CheckDriveSize.inc.php:150
 msgid "NetDisk"
 msgstr ""
 
-#: modules/CheckDriveSize.inc.php:154
+#: modules/CheckDriveSize.inc.php:152 modules/CheckDriveSize.inc.php:159
 #, php-format
-msgid "Volné místo síťové jednotky %s: "
+msgid "Disk drive %s empty space: "
 msgstr ""
 
-#: modules/CheckDriveSize.inc.php:161
-#, php-format
-msgid "Volné místo disku %s: "
-msgstr ""
-
-#: modules/CheckMem.inc.php:50
+#: modules/CheckMem.inc.php:48
 msgid "Physical memory (RAM)"
 msgstr ""
 
-#: modules/CheckMem.inc.php:50
+#: modules/CheckMem.inc.php:48
 msgid "total memory (RAM+PAGE)"
 msgstr ""
 
-#: modules/CheckMem.inc.php:53
-msgid "Typ"
+#: modules/CheckMem.inc.php:51
+#, fuzzy
+msgid "Type"
+msgstr "Typ"
+
+#: modules/CheckMem.inc.php:52
+msgid "Memory type"
 msgstr ""
 
-#: modules/CheckMem.inc.php:54
-msgid "Typ sledované paměti"
-msgstr ""
-
-#: modules/CheckMem.inc.php:69
+#: modules/CheckMem.inc.php:67
 msgid "warn"
 msgstr ""
 
-#: modules/CheckMem.inc.php:72
+#: modules/CheckMem.inc.php:70
 msgid "crit"
 msgstr ""
 
-#: modules/CheckMem.inc.php:78
-msgid "Zobrazit vše"
+#: modules/CheckMem.inc.php:76
+msgid "Show all"
 msgstr ""
 
 #: modules/DriveLetter.inc.php:48 modules/DriveLetter.inc.php:52
@@ -2847,65 +2898,69 @@ msgstr ""
 msgid "Drive"
 msgstr ""
 
+#: modules/DriveLetter.inc.php:73
+msgid "Disc Drive"
+msgstr ""
+
 #: modules/DriveLetter.inc.php:78
 #, php-format
-msgid "Disk %s: "
+msgid "Disc Drive %s: "
+msgstr ""
+
+#: modules/check_smart.inc.php:38
+msgid "Choose drive Letter"
 msgstr ""
 
 #: modules/check_smart.inc.php:40
 #, fuzzy
-msgid "Volba sledované diskové jednotky"
-msgstr "Adresa sledované stránky"
+msgid "Warning treshold"
+msgstr "Varování"
 
-#: modules/check_smart.inc.php:42
-msgid "Rozhraní"
-msgstr ""
-
-#: modules/check_smart.inc.php:65
+#: modules/check_smart.inc.php:63
 #, php-format
-msgid "SMART status disku %s: "
+msgid "SMART disk status %s: "
 msgstr ""
 
-#: modules/ping.inc.php:29
+#: modules/ping.inc.php:27
 msgid "Warning delay"
 msgstr ""
 
-#: modules/ping.inc.php:31
+#: modules/ping.inc.php:29
 msgid "The time in milliseconds, after which the warning will be reported"
 msgstr ""
 
-#: modules/ping.inc.php:32
+#: modules/ping.inc.php:30
 msgid "Warning Packet Loss"
 msgstr ""
 
-#: modules/ping.inc.php:34
+#: modules/ping.inc.php:32
 msgid ""
 "The percentage of lost packets after which the warning will be reported when "
 "the test is exceeded"
 msgstr ""
 
-#: modules/ping.inc.php:36
+#: modules/ping.inc.php:34
 msgid "Critical error delay"
 msgstr ""
 
-#: modules/ping.inc.php:38
+#: modules/ping.inc.php:36
 msgid ""
 "The time in milliseconds after which the test will exceed the critical error"
 msgstr ""
 
-#: modules/ping.inc.php:39
+#: modules/ping.inc.php:37
 msgid "Critical Packet Loss"
 msgstr ""
 
-#: modules/ping.inc.php:41
+#: modules/ping.inc.php:39
 msgid ""
 "The percentage of lost packets after which a critical error is reported in "
 "the test"
 msgstr ""
 
 #: modules/web_content.inc.php:28
-msgid "Vše v pořádku"
-msgstr "Vše v pořádku"
+msgid "All OK"
+msgstr ""
 
 #: modules/web_content.inc.php:42
 msgid "Watched URL"
@@ -2935,201 +2990,191 @@ msgstr ""
 msgid "Invalid URL"
 msgstr ""
 
-#: nagstamon.php:17
+#: nagstamon.php:15
 msgid "Nagstamon"
 msgstr "Nagstamon"
 
-#: nagstamon.php:20
-msgid "Multiplatformní klient"
+#: nagstamon.php:18
+#, fuzzy
+msgid "Multiplatform client"
 msgstr "Multiplatformní klient"
 
-#: nagstamon.php:25
-#, fuzzy
+#: nagstamon.php:23
 msgid ""
 "<br>\n"
-"Nagstamon je monitor Nagiosu pro desktopové operační systémy.\n"
-"Běží v systémové liště, nebo jako plovoucí aplikace, či ve stavovém řádku "
-"na\n"
-"ploše a ukazuje stručný přehled stavy hostitelů či služeb tzn:\n"
-"kritický, varovný, neznámý, nedosažitelný či vypnuto  a ukazuje podrobný "
-"přehled\n"
-"stavu při pohybu ukazatele myši nad ním.\n"
-"Připojení k zobrazeným hostitelům a službám je snadné z kontextové nabídky "
-"přes\n"
-"SSH, RDP a VNC nebo jakýchkoli jiných definovaných akcí.\n"
-"Uživatelé mohou být upozorněni zvukem.\n"
-"Hostitelé a služby mohou být filtrovány podle kategorií a regulárních "
-"výrazů.\n"
+"Nagstamon is a Nagios desktop monitor for desktop operating systems.\n"
+"Running in the system tray or floating application, or in the status bar at\n"
+"desktop and shows a brief overview of the host or service state, ie:\n"
+"critical, alert, unknown, unreachable or off, and shows a detailed overview\n"
+"status when moving the mouse pointer over it.\n"
+"Connecting to the displayed hosts and services is easy from the context menu "
+"over\n"
+"SSH, RDP and VNC or any other defined actions.\n"
+"Users can be alerted by sound.\n"
+"Hosts and services can be filtered by categories and regular expressions.\n"
 msgstr ""
-"<br>\n"
-"Nagstamon je monitor Nagiosu pro desktopové operační systémy. \n"
-"Běží v systémové liště, nebo jako plovoucí aplikace, či ve stavovém řádku "
-"na \n"
-"ploše a ukazuje stručný přehled stavy hostitelů či služeb tzn: \n"
-"kritický, varovný, neznámý, nedosažitelný či vypnuto  a ukazuje podrobný "
-"přehled \n"
-"stavu při pohybu ukazatele myši nad ním. \n"
-"Připojení k zobrazeným hostitelům a službám je snadné z kontextové nabídky "
-"přes \n"
-"SSH, RDP a VNC nebo jakýchkoli jiných definovaných akcí. \n"
-"Uživatelé mohou být upozorněni zvukem. \n"
-"Hostitelé a služby mohou být filtrovány podle kategorií a regulárních "
-"výrazů. \n"
+
+#: nagstamon.php:38
+msgid "Program homepage"
+msgstr ""
 
 #: nagstamon.php:40
-msgid "Domovská stránka programu"
-msgstr "Domovská stránka programu"
+msgid "Setup"
+msgstr ""
 
-#: nagstamon.php:42
-msgid "Nastavení"
-msgstr "Nastavení"
+#: nagstamon.php:49
+#, fuzzy
+msgid "Your password"
+msgstr "Vážený %s, vaše  heslo bylo změněno na"
 
-#: nagstamon.php:54
-msgid "Změna hesla"
-msgstr "Změna hesla"
+#: newcontact.php:40
+#, fuzzy
+msgid "Contact was not created"
+msgstr "Hostname serveru"
 
 #: newcontact.php:42
-msgid "Kontakt nebyl založen"
-msgstr "Kontakt nebyl založen"
-
-#: newcontact.php:44
-msgid "Kontakt byl založen"
-msgstr "Kontakt byl založen"
-
-#: newcontact.php:56
-msgid "Založení kontaktu"
-msgstr "Založení kontaktu"
+#, fuzzy
+msgid "Contact was created"
+msgstr "Hostname serveru"
 
 #: nsca.php:60
 msgid "Host neni konfigurovan pro pasivni checky"
 msgstr ""
 
-#: overview.php:25 overview.php:40 overview.php:61 overview.php:77
-#: overview.php:98 overview.php:114 overview.php:130 overview.php:158
-#: userinfo.php:66 userinfo.php:75 userinfo.php:91 userinfo.php:100
-#: userinfo.php:109 userinfo.php:128 wizard-active-host.php:185
+#: overview.php:23 overview.php:38 overview.php:59 overview.php:75
+#: overview.php:96 overview.php:128 overview.php:156 userinfo.php:64
+#: userinfo.php:73 userinfo.php:89 userinfo.php:98 userinfo.php:107
+#: userinfo.php:126 wizard-active-host.php:188
 msgid "<i class=\"icon-list\"></i>"
 msgstr "<i class=\"icon-list\"></i>"
 
-#: overview.php:25 userinfo.php:66
+#: overview.php:23
 #, php-format
-msgid "Definováno %s časových period"
-msgstr "Definováno %s časových period"
+msgid "%s timeperiods"
+msgstr ""
 
-#: overview.php:29
-msgid "Nemáte definovaný žádné časové periody"
-msgstr "Nemáte definovaný žádné časové periody"
+#: overview.php:27 timeperiods.php:42
+msgid "No timeperiods defined"
+msgstr ""
 
-#: overview.php:32
-msgid "Založit první časovou periodu <i class=\"icon-edit\"></i>"
-msgstr "Založit první časovou periodu <i class=\"icon-edit\"></i>"
+#: overview.php:30
+#, fuzzy
+msgid "Create first timeperiod"
+msgstr "Přegenerovat konfiguraci"
 
-#: overview.php:40
+#: overview.php:38
 #, php-format
-msgid "Definováno %s kontaktů"
-msgstr "Definováno %s kontaktů"
+msgid "%s contacts defined"
+msgstr ""
 
-#: overview.php:45
-msgid "Nemáte definovaný kontakt"
-msgstr "Nemáte definovaný kontakt"
+#: overview.php:43 wizard-active-host.php:179
+msgid "No contact defined"
+msgstr ""
 
-#: overview.php:48
-msgid "Založit první kontakt "
-msgstr "Založit první kontakt "
+#: overview.php:46
+#, fuzzy
+msgid "Create first contact "
+msgstr "Přegenerovat konfiguraci"
 
-#: overview.php:51
-msgid "Kontakty vyžadují časovou periodu"
-msgstr "Kontakty vyžadují časovou periodu"
+#: overview.php:49
+msgid "timeperiod is required for cereating contact"
+msgstr ""
 
-#: overview.php:61
+#: overview.php:59
 #, php-format
-msgid "Definováno %s skupin kontaktů"
-msgstr "Definováno %s skupin kontaktů"
+msgid "%s contactgroups defined"
+msgstr ""
 
-#: overview.php:66
-msgid "Nemáte definovanou skupinu kontaktů"
-msgstr "Nemáte definovanou skupinu kontaktů"
+#: overview.php:64
+msgid "No contactgroup defined"
+msgstr ""
 
-#: overview.php:69
-msgid "Založit první skupinu kontaktů "
-msgstr "Založit první skupinu kontaktů "
+#: overview.php:67
+msgid "Create first contactgroup "
+msgstr ""
 
-#: overview.php:77 userinfo.php:75
+#: overview.php:75 userinfo.php:73 wizard-active-host.php:188
 #, php-format
-msgid "Definováno %s hostů"
-msgstr "Definováno %s hostů"
+msgid "%s hosts defined"
+msgstr ""
 
-#: overview.php:82 userinfo.php:80
-msgid "Nemáte definovaný žádný host"
-msgstr "Nemáte definovaný žádný host"
+#: overview.php:80 userinfo.php:78
+msgid "No host defined"
+msgstr ""
 
-#: overview.php:85 userinfo.php:83
-msgid "Založit první host"
-msgstr "Založit první host"
+#: overview.php:83 userinfo.php:81
+#, fuzzy
+msgid "Create first host"
+msgstr "Přegenerovat konfiguraci"
 
-#: overview.php:88
-msgid "Hosty vyžadují časovou periodu .."
-msgstr "Hosty vyžadují časovou periodu .."
+#: overview.php:86
+msgid "Timeperiod is required for host"
+msgstr ""
 
-#: overview.php:98 userinfo.php:91
+#: overview.php:96
+#, fuzzy, php-format
+msgid "%s hostgroup defined"
+msgstr "Skupina hostů"
+
+#: overview.php:101
+#, fuzzy
+msgid "No hostgroup defined"
+msgstr "Skupina hostů"
+
+#: overview.php:104
+msgid "Create first hostgroup"
+msgstr ""
+
+#: overview.php:112 userinfo.php:98
 #, php-format
-msgid "Definováno %s skupin hostů"
-msgstr "Definováno %s skupin hostů"
+msgid "%s commands defined"
+msgstr ""
 
-#: overview.php:103
-msgid "Nemáte definovaný žádnou skupinu hostů"
-msgstr "Nemáte definovaný žádnou skupinu hostů"
+#: overview.php:117
+msgid "No commands defined"
+msgstr ""
 
-#: overview.php:106
-msgid "Založit první skupinu hostů <i class=\"icon-edit\"></i>"
-msgstr "Založit první skupinu hostů <i class=\"icon-edit\"></i>"
+#: overview.php:120
+#, fuzzy
+msgid "Import commands"
+msgstr "Importovat"
 
-#: overview.php:114 userinfo.php:100
+#: overview.php:128 userinfo.php:107
+#, fuzzy, php-format
+msgid "%s services defined"
+msgstr "Záznam nebyl přidán"
+
+#: overview.php:135 userinfo.php:114
+#, fuzzy
+msgid "No services defined"
+msgstr "Záznam nebyl přidán"
+
+#: overview.php:138 userinfo.php:117
+#, fuzzy
+msgid "Create first service"
+msgstr "Přegenerovat konfiguraci"
+
+#: overview.php:141
+msgid "Timeperiod is requied for service"
+msgstr ""
+
+#: overview.php:146
+#, fuzzy
+msgid "Commands requied for service"
+msgstr "Hostname serveru"
+
+#: overview.php:156
 #, php-format
-msgid "Definováno %s příkazů"
-msgstr "Definováno %s příkazů"
+msgid "%s servicegroup defined"
+msgstr ""
 
-#: overview.php:119
-msgid "Nemáte definovaný žádné příkazy"
-msgstr "Nemáte definovaný žádné příkazy"
+#: overview.php:161
+msgid "No servicegroup defined"
+msgstr ""
 
-#: overview.php:122
-msgid "Importovat příkazy"
-msgstr "Importovat příkazy"
-
-#: overview.php:130 userinfo.php:109
-#, php-format
-msgid "Definováno %s služeb"
-msgstr "Definováno %s služeb"
-
-#: overview.php:137 userinfo.php:116
-msgid "Nemáte definovaný žádné služby"
-msgstr "Nemáte definovaný žádné služby"
-
-#: overview.php:140 userinfo.php:119
-msgid "Založit první službu"
-msgstr "Založit první službu"
-
-#: overview.php:143
-msgid "Služby vyžadují časovou periodu .."
-msgstr "Služby vyžadují časovou periodu .."
-
-#: overview.php:148
-msgid "Služby vyžadují příkazy .."
-msgstr "Služby vyžadují příkazy .."
-
-#: overview.php:158 userinfo.php:128
-#, php-format
-msgid "Definováno %s skupin služeb"
-msgstr "Definováno %s skupin služeb"
-
-#: overview.php:163
-msgid "Nemáte definovaný žádné skupiny služeb"
-msgstr "Nemáte definovaný žádné skupiny služeb"
-
-#: overview.php:166
-msgid "Založit první skupinu služeb"
-msgstr "Založit první skupinu služeb"
+#: overview.php:164
+msgid "Create first servicegroup"
+msgstr ""
 
 #: passwordrecovery.php:40
 #, fuzzy, php-format
@@ -3188,20 +3233,19 @@ msgstr "Prosíme zkontrolujte svou poštu pro nové heslo"
 msgid "and"
 msgstr ""
 
+#: preferences.php:21
+#, fuzzy
+msgid "Preferneces was saved"
+msgstr "Hostname serveru"
+
 #: preferences.php:23
 #, fuzzy
-msgid "Předvolby byly uloženy"
-msgstr "Příkaz byl uložen"
+msgid "Preferences was not saved"
+msgstr "Hostname serveru"
 
-#: preferences.php:25
-#, fuzzy
-msgid "Předvolby nebyly uloženy"
-msgstr "Příkaz nebyl uložen"
-
-#: preferences.php:29
-#, fuzzy
-msgid "Předvolby"
-msgstr "Předlohy"
+#: preferences.php:27
+msgid "Preferences"
+msgstr ""
 
 #: regenall.php:15
 #, fuzzy
@@ -3280,10 +3324,6 @@ msgid "Remove hosts, but keep templates"
 msgstr ""
 
 #: reset.php:67
-msgid "Hostgroups"
-msgstr ""
-
-#: reset.php:67
 msgid "Remove hostgroups"
 msgstr ""
 
@@ -3299,7 +3339,7 @@ msgstr ""
 msgid "Remove Services"
 msgstr ""
 
-#: reset.php:71
+#: reset.php:71 servicegroups.php:17
 msgid "Servicegroups"
 msgstr ""
 
@@ -3375,17 +3415,17 @@ msgstr ""
 
 #: search.php:25
 #, fuzzy
-msgid "Vyheldávaný řetězec je příliš krátký"
-msgstr "heslo je příliš krátké"
+msgid "Search term is too short"
+msgstr "Heslo je příliš krátké"
 
-#: search.php:40
-msgid "Nalezen pouze jeden výsledek"
+#: search.php:39
+msgid "Only one result found"
 msgstr ""
 
-#: search.php:45
+#: search.php:44
 #, fuzzy
-msgid "Výsledky hledání"
-msgstr "Výsledky testů"
+msgid "Search results"
+msgstr "Výsledky vyhledávání"
 
 #: sensor.php:34
 msgid "Sensor deployment status was set manually"
@@ -3399,104 +3439,91 @@ msgstr "Sensor"
 msgid "Cloned"
 msgstr "Cloned"
 
-#: service.php:33 service.php:66 servicetweak.php:33
+#: service.php:33 service.php:67 servicetweak.php:34
 #, fuzzy
 msgid "Service was cloned"
 msgstr "Služby"
 
-#: service.php:35 servicetweak.php:36
+#: service.php:35 servicetweak.php:37
 #, fuzzy
 msgid "Service was not cloned"
 msgstr "Záznam nebyl přidán"
 
 #: service.php:47
-#, php-format
-msgid "Služba %s byla odvozena"
-msgstr "Služba %s byla odvozena"
+#, fuzzy, php-format
+msgid "The service %s was derived"
+msgstr "Záznam nebyl přidán"
 
 #: service.php:50
-msgid "Služba nebyla odvozena"
-msgstr "Služba nebyla odvozena"
+#, fuzzy
+msgid "The service was not derived"
+msgstr "Záznam nebyl přidán"
 
-#: service.php:73
+#: service.php:74
 #, fuzzy
 msgid "Service was not saved"
 msgstr "Hostname serveru"
 
-#: service.php:94 servicetweak.php:101
+#: service.php:95 servicetweak.php:102
 #, fuzzy
 msgid "Service Editor"
 msgstr "Icinga Editor"
 
-#: service.php:106 stemplate.php:84
+#: service.php:107 stemplate.php:84
 msgid "Do you really delete?"
 msgstr ""
 
-#: service.php:113 service.php:159
+#: service.php:114 service.php:160
 msgid "Service swap"
 msgstr ""
 
-#: service.php:156
+#: service.php:157
 msgid "Systémová služba"
 msgstr "Systémová služba"
 
+#: servicegroup.php:22
+#, fuzzy
+msgid "Servicegroup was not saved"
+msgstr "Hostname serveru"
+
 #: servicegroup.php:24
-msgid "Skupina služeb nebyla uložena"
-msgstr "Skupina služeb nebyla uložena"
-
-#: servicegroup.php:26
-msgid "Skupina služeb byla uložena"
-msgstr "Skupina služeb byla uložena"
-
-#: servicegroup.php:38
-msgid "Editace skupiny služeb"
-msgstr "Editace skupiny služeb"
-
-#: servicegroup.php:64
-msgid "Příkaz"
-msgstr "Příkaz"
-
-#: servicegroups.php:17
-msgid "Přehled skupin služeb"
-msgstr "Přehled skupin služeb"
-
-#: servicegroups.php:19
 #, fuzzy
-msgid "Skupiny služeb"
-msgstr "Nemáte definovaný žádné skupiny služeb"
+msgid "Servicegroup was saved"
+msgstr "Hostname serveru"
 
-#: services.php:17
-msgid "Přehled služeb"
-msgstr "Přehled služeb"
-
-#: servicetweak.php:31
+#: servicegroup.php:36
 #, fuzzy
-msgid "Clon"
-msgstr "Cloned"
+msgid "Servicegroup editor"
+msgstr "Icinga Editor"
 
-#: servicetweak.php:43
+#: servicegroups.php:15
+#, fuzzy
+msgid "Service group overview"
+msgstr "Záznam nebyl přidán"
+
+#: servicetweak.php:44
 msgid "Service was renamed"
 msgstr ""
 
-#: servicetweak.php:45
+#: servicetweak.php:46
 #, fuzzy
 msgid "Service was not renamed"
 msgstr "Záznam nebyl přidán"
 
-#: servicetweak.php:63
+#: servicetweak.php:64
 msgid "Other owner service was derived as own"
 msgstr ""
 
-#: servicetweak.php:65
+#: servicetweak.php:66
 #, fuzzy
 msgid "Service was not derived"
 msgstr "Záznam nebyl přidán"
 
-#: servicetweak.php:117
+#: servicetweak.php:118
 msgid "Service Edit"
 msgstr ""
 
-#: servicetweak.php:131
+#: servicetweak.php:132
 #, fuzzy
 msgid "Back to"
 msgstr "Zpět na %s "
@@ -3537,8 +3564,8 @@ msgstr ""
 
 #: stemplate.php:23
 #, fuzzy
-msgid "Nová předloha"
-msgstr "Není předloha"
+msgid "New template"
+msgstr "Nový kontakt"
 
 #: stemplate.php:35
 #, php-format
@@ -3570,53 +3597,49 @@ msgstr "Hostname serveru"
 msgid "Service template editor"
 msgstr "Icinga Editor"
 
+#: stemplates.php:15
+#, fuzzy
+msgid "Watched service templates overview"
+msgstr "Icinga Editor"
+
 #: stemplates.php:17
 #, fuzzy
-msgid "Přehled předloh sledovaných služeb"
-msgstr "Přehled skupin služeb"
+msgid "Watched service overview"
+msgstr "Záznam nebyl přidán"
 
-#: stemplates.php:19
-#, fuzzy
-msgid "Předlohy sledovaných služeb"
-msgstr "Předlohy služeb"
-
-#: timeperiod.php:24
+#: timeperiod.php:23
 msgid "timeperiod saving failed"
 msgstr ""
 
-#: timeperiod.php:26
+#: timeperiod.php:25
 msgid "timeperiod saved"
 msgstr ""
 
-#: timeperiod.php:35
+#: timeperiod.php:34
 #, fuzzy
 msgid "item was not removed"
 msgstr "Položka košíku %s byla odstraněna"
 
-#: timeperiod.php:37
+#: timeperiod.php:36
 msgid "item was removed"
 msgstr ""
 
-#: timeperiod.php:47
-msgid "Editace časové periody"
-msgstr "Editace časové periody"
+#: timeperiod.php:46
+msgid "Timeperiod editor"
+msgstr ""
 
-#: timeperiod.php:63
+#: timeperiod.php:62
 #, fuzzy
 msgid "Label"
 msgstr "Štítek"
 
-#: timeperiod.php:66
+#: timeperiod.php:65
 #, fuzzy
 msgid "Interval(s)"
 msgstr "Interval(y)"
 
 #: timeperiods.php:16
 msgid "Timeperiod overview"
-msgstr ""
-
-#: timeperiods.php:42
-msgid "No timeperiods defined"
 msgstr ""
 
 #: timeperiods.php:45
@@ -3663,28 +3686,42 @@ msgstr ""
 msgid "Usergroups"
 msgstr "Hosta"
 
-#: userinfo.php:41
-#, fuzzy
-msgid "Vlastnictví byla předána"
-msgstr "položka %s byla přidána"
+#: userinfo.php:39
+msgid "Ownership was handed over"
+msgstr ""
 
-#: userinfo.php:135
-msgid "Přihlásit se jako uživatel <i class=\"icon-refresh\"></i>"
-msgstr "Přihlásit se jako uživatel <i class=\"icon-refresh\"></i>"
+#: userinfo.php:64
+#, php-format
+msgid "Defined %s time periods"
+msgstr ""
+
+#: userinfo.php:89
+#, fuzzy, php-format
+msgid "%s hostgroups defined"
+msgstr "Skupina hostů"
+
+#: userinfo.php:126
+#, php-format
+msgid "%s servicegrops defined"
+msgstr ""
+
+#: userinfo.php:133
+msgid "Logn as user"
+msgstr ""
+
+#: userinfo.php:140
+#, fuzzy
+msgid "New owner"
+msgstr "Nový uživatel"
 
 #: userinfo.php:142
-#, fuzzy
-msgid "Nový vlastník"
-msgstr "Nahraj vlastní"
-
-#: userinfo.php:144
-#, fuzzy
-msgid "Předat"
-msgstr "Předlohy"
-
-#: userinfo.php:146
-msgid "Předat vlastnictví"
+msgid "Hand over ownership"
 msgstr ""
+
+#: userinfo.php:145
+#, fuzzy
+msgid "Hand over"
+msgstr "Hostname serveru"
 
 #: users.php:36 users.php:38
 msgid "Administrator"
@@ -3704,55 +3741,55 @@ msgstr "Přegenerovat konfiguraci"
 msgid "Create user"
 msgstr ""
 
-#: watchroute.php:16
+#: watchroute.php:15
 msgid "Add all hosts on route to watched"
 msgstr ""
 
-#: watchroute.php:29
+#: watchroute.php:28
 msgid "Gateway"
 msgstr ""
 
-#: watchroute.php:30
+#: watchroute.php:29
 msgid "Choose allready defined gateway or enter an address."
 msgstr ""
 
-#: watchroute.php:31
+#: watchroute.php:30
 #, fuzzy
 msgid "IP Address"
 msgstr "IPv4 Adresa"
 
-#: watchroute.php:32
+#: watchroute.php:31
 msgid "First pingable pubic IP address on route to monitoring server"
 msgstr ""
 
-#: watchroute.php:33
+#: watchroute.php:32
 msgid "Watch route"
 msgstr ""
 
-#: watchroute.php:37
+#: watchroute.php:36
 msgid "Watch target route select"
 msgstr ""
 
-#: watchroute.php:38
+#: watchroute.php:37
 msgid "Choose host or enter an IP address"
 msgstr ""
 
-#: watchroute.php:62
+#: watchroute.php:61
 #, php-format
-msgid "Cesta k %s"
+msgid "Route to %s"
 msgstr ""
 
-#: watchroute.php:125
+#: watchroute.php:124
 #, fuzzy, php-format
 msgid "New host %s %s created"
 msgstr "Mailový kontakt byl založen"
 
-#: watchroute.php:152
+#: watchroute.php:151
 #, php-format
 msgid "Hostgroup %s filled"
 msgstr ""
 
-#: watchroute.php:155
+#: watchroute.php:154
 #, php-format
 msgid "Hostgroup %s was not filled"
 msgstr ""
@@ -3761,113 +3798,98 @@ msgstr ""
 msgid "Host Save failed"
 msgstr ""
 
-#: wizard-active-host.php:178
-msgid "No contact defined"
-msgstr ""
-
-#: wizard-active-host.php:179
+#: wizard-active-host.php:181
 msgid "Create initial contact"
 msgstr ""
 
-#: wizard-active-host.php:185
-#, php-format
-msgid "%s hosts defined"
-msgstr ""
+#: wizard-active-host.php:198
+#, fuzzy
+msgid "Server hostname"
+msgstr "Prosím zvolte službu"
 
-#: wizard-active-host.php:192
-msgid "Hostname serveru"
-msgstr "Hostname serveru"
-
-#: wizard-active-host.php:192
+#: wizard-active-host.php:200
 msgid ""
-"Název hostu, tedy to co následuje po http:// ve webové adrese až k prvnímu "
-"lomítku, nebo otazníku."
+"The guest name, that is what follows http:// in the web address to the first "
+"slash, or the question mark."
 msgstr ""
-"Název hostu, tedy to co následuje po http:// ve webové adrese až k prvnímu "
-"lomítku, nebo otazníku."
 
-#: wizard-active-host.php:193
-msgid "IPv4 Adresa"
+#: wizard-active-host.php:201
+#, fuzzy
+msgid "IPv4 Address"
 msgstr "IPv4 Adresa"
 
-#: wizard-active-host.php:193
-msgid "čtyři číslice od 0 do 255 oddělené tečkou"
-msgstr "čtyři číslice od 0 do 255 oddělené tečkou"
-
-#: wizard-active-host.php:194
-msgid "IPv6 Adresa"
-msgstr "IPv6 Adresa"
-
-#: wizard-active-host.php:194
-msgid "nejvíce osm skupin čtyř hexadecimálních číslic oddělených dvojtečkou"
-msgstr "nejvíce osm skupin čtyř hexadecimálních číslic oddělených dvojtečkou"
-
-#: wizard-active-host.php:196
-msgid "Přidej host"
-msgstr "Přidej host"
-
-#: wizard-active-host.php:198
-msgid ""
-"Po zadání alespoň jednoho vstupního údaje si tento průvodce dohledá ostatní "
-"a provede sken na některé základní služby.<br>Pokud budou tyto nalezeny "
-"aktivují se jejich testy. Informace o stavu bude odesílána na první zadaný "
-"kontakt"
-msgstr ""
-"Po zadání alespoň jednoho vstupního údaje si tento průvodce dohledá ostatní "
-"a provede sken na některé základní služby.<br>Pokud budou tyto nalezeny "
-"aktivují se jejich testy. Informace o stavu bude odesílána na první zadaný "
-"kontakt"
-
-#: wizard-active-host.php:202
-msgid ""
-"Pro instalaci nového vzdáleného senzoru prosím nejprve na sledovaném "
-"počítači nainstalujte balík a poté <code>wget -O - http://v.s.cz/"
-"info@vitexsoftware.cz.gpg.key | sudo apt-key add -</code>\n"
-"<code>echo deb http://v.s.cz/ stable main | sudo tee /etc/apt/sources.list.d/"
-"vitexsoftware.list</code>\n"
-"<code>sudo aptitude update</code>\n"
-"<code>aptitude install nagios-nrpe-server nagios-check-clamscan</code>"
+#: wizard-active-host.php:203
+msgid "four digits from 0 to 255 separated by a dot"
 msgstr ""
 
-#: wizard-active-service.php:94
+#: wizard-active-host.php:204
 #, fuzzy
-msgid "Služba byla založena"
-msgstr "Služba byla uložena"
+msgid "IPv6 Address"
+msgstr "IPv4 Adresa"
 
-#: wizard-active-service.php:98 wizard-passive-service.php:97
-#, fuzzy
-msgid "Není zvolen vzdálený příkaz testu"
-msgstr "vzdálené příkazy"
-
-#: wizard-active-service.php:104
-#, fuzzy
-msgid "Prosím zastejte název služby"
-msgstr "Prosím potvrďte nastavení služby"
-
-#: wizard-active-service.php:111
-#, fuzzy
-msgid "Průvodce založením pasivně sledované služby"
-msgstr "Průvodce založením hostu"
-
-#: wizard-active-service.php:115
-msgid "Aktivní checky"
+#: wizard-active-host.php:206
+msgid "up to eight groups of four hexadecimal digits separated by a colon"
 msgstr ""
 
-#: wizard-active-service.php:116
+#: wizard-active-host.php:208
+#, fuzzy
+msgid "Add Host"
+msgstr "Nemáte definovaný žádný host"
+
+#: wizard-active-host.php:212
 msgid ""
-"senzor (nrpe/nscp.exe) běží na vzdáleném hostu, a výsledky nadefinovaných "
-"testů zasílá protokolem NRPE na monitorovací server."
+"After entering at least one input data, this wizard searches others and "
+"scans for some basic services."
 msgstr ""
 
-#: wizard-active-service.php:119
-#, fuzzy
-msgid "Aktivně sledovaná služba"
-msgstr "Přidána sledovaná služba: %s"
-
-#: wizard-active-service.php:120
+#: wizard-active-host.php:213
 msgid ""
-"Nabízené příkazy jsou definovány jako vzdálené a odpovídající zvolené "
-"platformě. Parametry záleží na konkrétně zvoleném příkazu testu."
+"If these are found, their tests will be activated. Status information will "
+"be sent to the first contact you entered"
+msgstr ""
+
+#: wizard-active-host.php:217
+msgid ""
+"To install a new remote sensor, please first install the package on your "
+"computer"
+msgstr ""
+
+#: wizard-active-service.php:92
+#, fuzzy
+msgid "Service was created"
+msgstr "Hostname serveru"
+
+#: wizard-active-service.php:96
+msgid "Remote command not specified"
+msgstr ""
+
+#: wizard-active-service.php:102
+#, fuzzy
+msgid "Please enter servce name"
+msgstr "Prosím zadejte svůj email"
+
+#: wizard-active-service.php:109
+msgid "Passive service Wizard"
+msgstr ""
+
+#: wizard-active-service.php:113
+msgid "Active check"
+msgstr ""
+
+#: wizard-active-service.php:114
+msgid ""
+"the sensor (nrpe / nscp.exe) runs on a remote host, and the results of the "
+"defined tests are sent by the NRPE protocol to the monitoring server."
+msgstr ""
+
+#: wizard-active-service.php:117
+msgid "Active watched service"
+msgstr ""
+
+#: wizard-active-service.php:118
+msgid ""
+"The commands offered are defined as remote and corresponding to the selected "
+"platform. Parameters depend on the particular test command you choose."
 msgstr ""
 
 #: wizard-host.php:26
@@ -3890,11 +3912,11 @@ msgstr "Jméno Hosta"
 msgid "Unique identificator"
 msgstr ""
 
-#: wizard-host.php:47
+#: wizard-host.php:47 wizard-service.php:45 wizard-service.php:54
 msgid "Active"
 msgstr ""
 
-#: wizard-host.php:47
+#: wizard-host.php:47 wizard-service.php:49 wizard-service.php:56
 msgid "Passive"
 msgstr ""
 
@@ -3942,6 +3964,11 @@ msgstr ""
 msgid "Service created"
 msgstr ""
 
+#: wizard-passive-service.php:97
+#, fuzzy
+msgid "Není zvolen vzdálený příkaz testu"
+msgstr "vzdálené příkazy"
+
 #: wizard-passive-service.php:103
 msgid "Please enter the Service name"
 msgstr ""
@@ -3967,51 +3994,477 @@ msgstr ""
 msgid "Passive check service results are submitted to Icinga for processing"
 msgstr ""
 
-#: wizard-service.php:17 wizard.php:17
+#: wizard-service.php:15
 #, fuzzy
-msgid "Průvodce založením hosta"
-msgstr "Průvodce založením hostu"
+msgid "Service Wizard"
+msgstr "Icinga Editor"
 
-#: wizard-service.php:47 wizard-service.php:56
-msgid "Aktivní"
-msgstr ""
-
-#: wizard-service.php:48
+#: wizard-service.php:46
 msgid ""
-"Aktivni testy vyžadují aby byla icinga schopná dosáhnout na testovaný stroj."
+"Active checks are initiated by the Icinga process - Active checks are run on "
+"a regularly scheduled basis"
 msgstr ""
 
-#: wizard-service.php:51 wizard-service.php:58
-msgid "Pasivní"
-msgstr ""
-
-#: wizard-service.php:52
+#: wizard-service.php:50
 msgid ""
-"Pasivní služba zasílá sama na server kde běží icinga své výsledky testů "
-"pomocí protokolu nsca"
+"Passive checks are initiated and performed external applications/processes - "
+"Passive check results are submitted to Icinga for processing"
 msgstr ""
 
-#: wizard.php:47
-msgid "Hosty"
-msgstr "Hosty"
+#: wizard.php:15
+msgid "New host Wizard"
+msgstr "Průvodce založením nového hosta"
 
-#: wizard.php:48
-msgid "Hosty jsou počítače nebo zařízení"
+#: wizard.php:45
+msgid "The computers or devices"
 msgstr ""
 
-#: wizard.php:52
-msgid "Služby jsou definice testů aplikované na hosty nebo jejich skupiny"
+#: wizard.php:49
+msgid "The test definitions applied to hosts or its groups"
 msgstr ""
 
-#: wizard.php:55
 #, fuzzy
-msgid "Host"
-msgstr "Nemáte definovaný žádný host"
+#~ msgid "Smazané nepoužívané služby"
+#~ msgstr "Sledované služby"
 
-#: wizard.php:58
 #, fuzzy
-msgid "Služba"
-msgstr "Služba byla zklonovana"
+#~ msgid "Konfigurace hosta"
+#~ msgstr "Editace hosta"
+
+#~ msgid "Oskenovat a sledovat služby"
+#~ msgstr "Oskenovat a sledovat služby"
+
+#~ msgid "vzdálený test"
+#~ msgstr "vzdálený test"
+
+#~ msgid "Parametry"
+#~ msgstr "Parametry"
+
+#~ msgid "Editace"
+#~ msgstr "Editace"
+
+#~ msgid "Přestat sledovat"
+#~ msgstr "Přestat sledovat"
+
+#, fuzzy
+#~ msgid "Typ konfigurace"
+#~ msgstr "Import konfigurace"
+
+#, fuzzy
+#~ msgid "Předloha"
+#~ msgstr "předloha"
+
+#, fuzzy
+#~ msgid " %s byl přejmenován na %s ve skupině %s "
+#~ msgstr "Nepodařilo se přejmenovat %s ve službě %s"
+
+#, fuzzy
+#~ msgid "<strong>%s</strong> was add to contacts <strong>%s</strong>"
+#~ msgstr "Kontakt %s byl odebrán ze služby %s"
+
+#~ msgid "Přehled skupin hostů"
+#~ msgstr "Přehled skupin hostů"
+
+#, fuzzy
+#~ msgid "Skupiny hostů"
+#~ msgstr "skupinu hostů"
+
+#, fuzzy
+#~ msgid "Příkaz %s byl naimportován"
+#~ msgstr " byl naimportován"
+
+#, fuzzy
+#~ msgid "Příkaz nebyl naimportován"
+#~ msgstr " nebyl naimportován"
+
+#~ msgid "Zadejte konfigurační fragment příkazu, nebo zvolte soubor k importu"
+#~ msgstr "Zadejte konfigurační fragment příkazu, nebo zvolte soubor k importu"
+
+#~ msgid "Načtení příkazů ze souboru"
+#~ msgstr "Načtení příkazů ze souboru"
+
+#~ msgid "druh vkládaných příkazů"
+#~ msgstr "druh vkládaných příkazů"
+
+#, fuzzy
+#~ msgid "Import příkazu do konfigurace"
+#~ msgstr "Import konfigurace"
+
+#, fuzzy
+#~ msgid "Volba sledované diskové jednotky"
+#~ msgstr "Adresa sledované stránky"
+
+#~ msgid "Vše v pořádku"
+#~ msgstr "Vše v pořádku"
+
+#, fuzzy
+#~ msgid ""
+#~ "<br>\n"
+#~ "Nagstamon je monitor Nagiosu pro desktopové operační systémy.\n"
+#~ "Běží v systémové liště, nebo jako plovoucí aplikace, či ve stavovém řádku "
+#~ "na\n"
+#~ "ploše a ukazuje stručný přehled stavy hostitelů či služeb tzn:\n"
+#~ "kritický, varovný, neznámý, nedosažitelný či vypnuto  a ukazuje podrobný "
+#~ "přehled\n"
+#~ "stavu při pohybu ukazatele myši nad ním.\n"
+#~ "Připojení k zobrazeným hostitelům a službám je snadné z kontextové "
+#~ "nabídky přes\n"
+#~ "SSH, RDP a VNC nebo jakýchkoli jiných definovaných akcí.\n"
+#~ "Uživatelé mohou být upozorněni zvukem.\n"
+#~ "Hostitelé a služby mohou být filtrovány podle kategorií a regulárních "
+#~ "výrazů.\n"
+#~ msgstr ""
+#~ "<br>\n"
+#~ "Nagstamon je monitor Nagiosu pro desktopové operační systémy. \n"
+#~ "Běží v systémové liště, nebo jako plovoucí aplikace, či ve stavovém řádku "
+#~ "na \n"
+#~ "ploše a ukazuje stručný přehled stavy hostitelů či služeb tzn: \n"
+#~ "kritický, varovný, neznámý, nedosažitelný či vypnuto  a ukazuje podrobný "
+#~ "přehled \n"
+#~ "stavu při pohybu ukazatele myši nad ním. \n"
+#~ "Připojení k zobrazeným hostitelům a službám je snadné z kontextové "
+#~ "nabídky přes \n"
+#~ "SSH, RDP a VNC nebo jakýchkoli jiných definovaných akcí. \n"
+#~ "Uživatelé mohou být upozorněni zvukem. \n"
+#~ "Hostitelé a služby mohou být filtrovány podle kategorií a regulárních "
+#~ "výrazů. \n"
+
+#~ msgid "Domovská stránka programu"
+#~ msgstr "Domovská stránka programu"
+
+#~ msgid "Nastavení"
+#~ msgstr "Nastavení"
+
+#~ msgid "Změna hesla"
+#~ msgstr "Změna hesla"
+
+#~ msgid "Kontakt nebyl založen"
+#~ msgstr "Kontakt nebyl založen"
+
+#~ msgid "Kontakt byl založen"
+#~ msgstr "Kontakt byl založen"
+
+#~ msgid "Založení kontaktu"
+#~ msgstr "Založení kontaktu"
+
+#~ msgid "Skupina služeb nebyla uložena"
+#~ msgstr "Skupina služeb nebyla uložena"
+
+#~ msgid "Skupina služeb byla uložena"
+#~ msgstr "Skupina služeb byla uložena"
+
+#~ msgid "Editace skupiny služeb"
+#~ msgstr "Editace skupiny služeb"
+
+#~ msgid "Příkaz"
+#~ msgstr "Příkaz"
+
+#~ msgid "Přehled skupin služeb"
+#~ msgstr "Přehled skupin služeb"
+
+#, fuzzy
+#~ msgid "Skupiny služeb"
+#~ msgstr "Nemáte definovaný žádné skupiny služeb"
+
+#~ msgid "Přehled služeb"
+#~ msgstr "Přehled služeb"
+
+#, fuzzy
+#~ msgid "Přehled předloh sledovaných služeb"
+#~ msgstr "Přehled skupin služeb"
+
+#, fuzzy
+#~ msgid "Předlohy sledovaných služeb"
+#~ msgstr "Předlohy služeb"
+
+#~ msgid "Editace časové periody"
+#~ msgstr "Editace časové periody"
+
+#~ msgid "Hostname serveru"
+#~ msgstr "Hostname serveru"
+
+#~ msgid ""
+#~ "Název hostu, tedy to co následuje po http:// ve webové adrese až k "
+#~ "prvnímu lomítku, nebo otazníku."
+#~ msgstr ""
+#~ "Název hostu, tedy to co následuje po http:// ve webové adrese až k "
+#~ "prvnímu lomítku, nebo otazníku."
+
+#~ msgid "IPv4 Adresa"
+#~ msgstr "IPv4 Adresa"
+
+#~ msgid "čtyři číslice od 0 do 255 oddělené tečkou"
+#~ msgstr "čtyři číslice od 0 do 255 oddělené tečkou"
+
+#~ msgid "IPv6 Adresa"
+#~ msgstr "IPv6 Adresa"
+
+#~ msgid "nejvíce osm skupin čtyř hexadecimálních číslic oddělených dvojtečkou"
+#~ msgstr ""
+#~ "nejvíce osm skupin čtyř hexadecimálních číslic oddělených dvojtečkou"
+
+#~ msgid "Přidej host"
+#~ msgstr "Přidej host"
+
+#~ msgid ""
+#~ "Po zadání alespoň jednoho vstupního údaje si tento průvodce dohledá "
+#~ "ostatní a provede sken na některé základní služby.<br>Pokud budou tyto "
+#~ "nalezeny aktivují se jejich testy. Informace o stavu bude odesílána na "
+#~ "první zadaný kontakt"
+#~ msgstr ""
+#~ "Po zadání alespoň jednoho vstupního údaje si tento průvodce dohledá "
+#~ "ostatní a provede sken na některé základní služby.<br>Pokud budou tyto "
+#~ "nalezeny aktivují se jejich testy. Informace o stavu bude odesílána na "
+#~ "první zadaný kontakt"
+
+#, fuzzy
+#~ msgid "Prosím zastejte název služby"
+#~ msgstr "Prosím potvrďte nastavení služby"
+
+#, fuzzy
+#~ msgid "Klon"
+#~ msgstr "Klonovat"
+
+#, fuzzy
+#~ msgid "Náhradní služba"
+#~ msgstr "Nová služba"
+
+#, fuzzy
+#~ msgid "Jméno služby"
+#~ msgstr "Sledované služby"
+
+#~ msgid "Uložit"
+#~ msgstr "Uložit"
+
+#, fuzzy
+#~ msgid "Založit"
+#~ msgstr "Uložit"
+
+#, fuzzy
+#~ msgid "Systémový uživatel"
+#~ msgstr "Nový uživatel"
+
+#~ msgid "Kontakt"
+#~ msgstr "Kontakt"
+
+#~ msgid "Toto není platná jabberová adresa"
+#~ msgstr "Toto není platná jabberová adresa"
+
+#~ msgid "Toto není platná mailová adresa"
+#~ msgstr "Toto není platná mailová adresa"
+
+#~ msgid "Toto není platné telefoní číslo"
+#~ msgstr "Toto není platné telefoní číslo"
+
+#, fuzzy
+#~ msgid ""
+#~ "Kontakt <strong>%s</strong> byl odebrán ze skupiny <strong>%s</strong>"
+#~ msgstr "Kontakt %s byl odebrán ze služby %s"
+
+#, fuzzy
+#~ msgid ""
+#~ "Kontakt <strong>%s</strong> nebyl odebrán ze skupiny <strong>%s</strong>"
+#~ msgstr "Kontakt %s byl odebrán ze služby %s"
+
+#, fuzzy
+#~ msgid ""
+#~ "Kontakt <strong>%s</strong> byl odebrán ze služby <strong>%s</strong>"
+#~ msgstr "Kontakt %s byl odebrán ze služby %s"
+
+#, fuzzy
+#~ msgid ""
+#~ "Kontakt <strong>%s</strong> nebyl odebrán ze služby <strong>%s</strong>"
+#~ msgstr "Kontakt %s byl odebrán ze služby %s"
+
+#~ msgid "Kontakt nelze přejmenovat"
+#~ msgstr "Kontakt nelze přejmenovat"
+
+#~ msgid "Hosta"
+#~ msgstr "Hosta"
+
+#~ msgid " %s byl odstraněn ze skupiny %s "
+#~ msgstr " %s byl odstraněn ze skupiny %s "
+
+#, fuzzy
+#~ msgid "host %s byl odstraněn ze skupiny %s"
+#~ msgstr " %s byl odstraněn ze skupiny %s "
+
+#, fuzzy
+#~ msgid "subgroup %s byl odstraněn ze skupiny %s"
+#~ msgstr " %s byl odstraněn ze skupiny %s "
+
+#~ msgid "konfigurace byla vygenerována"
+#~ msgstr "konfigurace byla vygenerována"
+
+#~ msgid "konfigurace nebyla vygenerována"
+#~ msgstr "konfigurace nebyla vygenerována"
+
+#, fuzzy
+#~ msgid " %s nebyl přesunut z %s/%s do %s"
+#~ msgstr "položka %s nebyla přidána do %s/%s/%s"
+
+#~ msgid "Časovou periodu"
+#~ msgstr "Časovou periodu"
+
+#, fuzzy
+#~ msgid "Ano"
+#~ msgstr "Android"
+
+#~ msgid "Definováno %s časových period"
+#~ msgstr "Definováno %s časových period"
+
+#~ msgid "Nemáte definovaný žádné časové periody"
+#~ msgstr "Nemáte definovaný žádné časové periody"
+
+#~ msgid "Založit první časovou periodu <i class=\"icon-edit\"></i>"
+#~ msgstr "Založit první časovou periodu <i class=\"icon-edit\"></i>"
+
+#~ msgid "Definováno %s kontaktů"
+#~ msgstr "Definováno %s kontaktů"
+
+#~ msgid "Nemáte definovaný kontakt"
+#~ msgstr "Nemáte definovaný kontakt"
+
+#~ msgid "Založit první kontakt "
+#~ msgstr "Založit první kontakt "
+
+#~ msgid "Kontakty vyžadují časovou periodu"
+#~ msgstr "Kontakty vyžadují časovou periodu"
+
+#~ msgid "Definováno %s skupin kontaktů"
+#~ msgstr "Definováno %s skupin kontaktů"
+
+#~ msgid "Nemáte definovanou skupinu kontaktů"
+#~ msgstr "Nemáte definovanou skupinu kontaktů"
+
+#~ msgid "Založit první skupinu kontaktů "
+#~ msgstr "Založit první skupinu kontaktů "
+
+#~ msgid "Definováno %s hostů"
+#~ msgstr "Definováno %s hostů"
+
+#~ msgid "Nemáte definovaný žádný host"
+#~ msgstr "Nemáte definovaný žádný host"
+
+#~ msgid "Založit první host"
+#~ msgstr "Založit první host"
+
+#~ msgid "Hosty vyžadují časovou periodu .."
+#~ msgstr "Hosty vyžadují časovou periodu .."
+
+#~ msgid "Definováno %s skupin hostů"
+#~ msgstr "Definováno %s skupin hostů"
+
+#~ msgid "Nemáte definovaný žádnou skupinu hostů"
+#~ msgstr "Nemáte definovaný žádnou skupinu hostů"
+
+#~ msgid "Založit první skupinu hostů <i class=\"icon-edit\"></i>"
+#~ msgstr "Založit první skupinu hostů <i class=\"icon-edit\"></i>"
+
+#~ msgid "Definováno %s příkazů"
+#~ msgstr "Definováno %s příkazů"
+
+#~ msgid "Nemáte definovaný žádné příkazy"
+#~ msgstr "Nemáte definovaný žádné příkazy"
+
+#~ msgid "Importovat příkazy"
+#~ msgstr "Importovat příkazy"
+
+#~ msgid "Definováno %s služeb"
+#~ msgstr "Definováno %s služeb"
+
+#~ msgid "Nemáte definovaný žádné služby"
+#~ msgstr "Nemáte definovaný žádné služby"
+
+#~ msgid "Založit první službu"
+#~ msgstr "Založit první službu"
+
+#~ msgid "Služby vyžadují časovou periodu .."
+#~ msgstr "Služby vyžadují časovou periodu .."
+
+#~ msgid "Služby vyžadují příkazy .."
+#~ msgstr "Služby vyžadují příkazy .."
+
+#~ msgid "Definováno %s skupin služeb"
+#~ msgstr "Definováno %s skupin služeb"
+
+#~ msgid "Nemáte definovaný žádné skupiny služeb"
+#~ msgstr "Nemáte definovaný žádné skupiny služeb"
+
+#~ msgid "Založit první skupinu služeb"
+#~ msgstr "Založit první skupinu služeb"
+
+#, fuzzy
+#~ msgid "Předvolby byly uloženy"
+#~ msgstr "Příkaz byl uložen"
+
+#, fuzzy
+#~ msgid "Předvolby nebyly uloženy"
+#~ msgstr "Příkaz nebyl uložen"
+
+#, fuzzy
+#~ msgid "Předvolby"
+#~ msgstr "Předlohy"
+
+#, fuzzy
+#~ msgid "Vyheldávaný řetězec je příliš krátký"
+#~ msgstr "heslo je příliš krátké"
+
+#, fuzzy
+#~ msgid "Výsledky hledání"
+#~ msgstr "Výsledky testů"
+
+#~ msgid "Služba %s byla odvozena"
+#~ msgstr "Služba %s byla odvozena"
+
+#~ msgid "Služba nebyla odvozena"
+#~ msgstr "Služba nebyla odvozena"
+
+#, fuzzy
+#~ msgid "Clon"
+#~ msgstr "Cloned"
+
+#, fuzzy
+#~ msgid "Nová předloha"
+#~ msgstr "Není předloha"
+
+#, fuzzy
+#~ msgid "Vlastnictví byla předána"
+#~ msgstr "položka %s byla přidána"
+
+#~ msgid "Přihlásit se jako uživatel <i class=\"icon-refresh\"></i>"
+#~ msgstr "Přihlásit se jako uživatel <i class=\"icon-refresh\"></i>"
+
+#, fuzzy
+#~ msgid "Nový vlastník"
+#~ msgstr "Nahraj vlastní"
+
+#, fuzzy
+#~ msgid "Předat"
+#~ msgstr "Předlohy"
+
+#, fuzzy
+#~ msgid "Služba byla založena"
+#~ msgstr "Služba byla uložena"
+
+#, fuzzy
+#~ msgid "Průvodce založením pasivně sledované služby"
+#~ msgstr "Průvodce založením hostu"
+
+#, fuzzy
+#~ msgid "Aktivně sledovaná služba"
+#~ msgstr "Přidána sledovaná služba: %s"
+
+#, fuzzy
+#~ msgid "Průvodce založením hosta"
+#~ msgstr "Průvodce založením hostu"
+
+#~ msgid "Hosty"
+#~ msgstr "Hosty"
+
+#, fuzzy
+#~ msgid "Služba"
+#~ msgstr "Služba byla zklonovana"
 
 #~ msgid "Založeno"
 #~ msgstr "Založeno"

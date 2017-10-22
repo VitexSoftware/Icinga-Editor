@@ -5,8 +5,6 @@ namespace Icinga\Editor;
 /**
  * Import ze souboru
  *
- * @package    IcingaEditor
- * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2012 Vitex@hippy.cz (G)
  */
@@ -26,17 +24,17 @@ if ($oPage->isPosted()) {
             ['command_type' => $oPage->getRequestValue('type')]);
     }
     if ($success) {
-        $oPage->addStatusMessage(sprintf(_('Příkaz %s byl naimportován'),
+        $oPage->addStatusMessage(sprintf(_('Command %s was imported'),
                 $importer->getName()), 'success');
     } else {
-        $oPage->addStatusMessage(_('Příkaz nebyl naimportován'), 'warning');
+        $oPage->addStatusMessage(_('Command was not imported'), 'warning');
     }
 } else {
-    $oPage->addStatusMessage(_('Zadejte konfigurační fragment příkazu, nebo zvolte soubor k importu'));
+    $oPage->addStatusMessage(_('Enter configuration fragment or choose config file'));
 }
 
 
-$oPage->addItem(new UI\PageTop(_('Načtení příkazů ze souboru')));
+$oPage->addItem(new UI\PageTop(_('Read commands from file')));
 
 $fileForm = new \Ease\TWB\Form('CfgFileUp', null, 'POST', null,
     ['class' => 'form-horizontal', 'enctype' => 'multipart/form-data']);
@@ -48,12 +46,12 @@ $fileForm->addInput(new \Ease\Html\InputFileTag('cfgfile', null),
 $typeSelector = new \Ease\Html\Select('type', 'check');
 $typeSelector->addItems(['check' => 'check', 'notify' => 'notify', 'handler' => 'handler']);
 
-$fileForm->addInput($typeSelector, _('druh vkládaných příkazů'));
+$fileForm->addInput($typeSelector, _('Included commands type'));
 
 $fileForm->addItem(new \Ease\TWB\SubmitButton(_('importovat'), 'success'));
 
-$oPage->container->addItem(new \Ease\TWB\Panel(_('Import příkazu do konfigurace'),
-    'success', $fileForm));
+$oPage->container->addItem(new \Ease\TWB\Panel(_('Import command to configuration'),
+        'success', $fileForm));
 
 $oPage->addItem(new UI\PageBottom());
 

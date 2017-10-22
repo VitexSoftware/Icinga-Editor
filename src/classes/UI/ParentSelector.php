@@ -93,7 +93,7 @@ class ParentSelector extends \Ease\Container
             new \Ease\Html\ATag('?'.$operation.'=parents&amp;name='.$parentInfo[$host->nameColumn].'&amp;member='.$parentID.'&amp;'.$host->myKeyColumn.'='.$host->getId(),
                 \Ease\TWB\Part::GlyphIcon($op).' '.$opCaption),
             new \Ease\Html\ATag('host.php?host_id='.$parentID,
-                \Ease\TWB\Part::GlyphIcon('wrench').' '._('Editace'))
+                \Ease\TWB\Part::GlyphIcon('wrench').' '._('Editor'))
             ]
         );
 

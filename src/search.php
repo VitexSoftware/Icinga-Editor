@@ -3,7 +3,7 @@
 namespace Icinga\Editor;
 
 /**
- * prohlížeč databáze
+ * Search page
  *
  * @package    IcingaEditor
  * @subpackage WebUI
@@ -22,8 +22,7 @@ $searcher = new Searcher($oPage->getRequestValue('table', 'string'),
     $oPage->getRequestValue('column', 'string'));
 
 if (strlen($query) < 2) {
-    $oPage->addStatusMessage(_('Vyheldávaný řetězec je příliš krátký'),
-        'warning');
+    $oPage->addStatusMessage(_('Search term is too short'), 'warning');
 } else {
 
     $results = $searcher->searchAll(\Ease\Shared::db()->EaseAddslashes($query));
@@ -37,12 +36,12 @@ if (strlen($query) < 2) {
     }
 
     if (count($found) == 1) {
-        $oPage->addStatusMessage(_('Nalezen pouze jeden výsledek', 'success'));
+        $oPage->addStatusMessage(_('Only one result found', 'success'));
         header('Location: '.$found[0]['url'].'&search='.$query);
         exit;
     }
 }
-$oPage->addItem(new UI\PageTop(_('Výsledky hledání')));
+$oPage->addItem(new UI\PageTop(_('Search results')));
 
 $listing = new \Ease\Html\UlTag(null, ['class' => 'list-group']);
 

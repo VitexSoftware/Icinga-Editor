@@ -5,7 +5,6 @@ namespace Icinga\Editor;
 /**
  * Icinga Editor - Watch route
  *
- * @package    IcingaEditor
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2012-2016 Vitex@hippy.cz (G)
  */
@@ -18,10 +17,10 @@ $oPage->addItem(new UI\PageTop(_('Add all hosts on route to watched')));
 $hostId = $oPage->getRequestValue('host_id', 'int');
 
 /**
- * Formulář cíle cesty pro hosta
+ * host route target form
  * 
  * @param Engine\Host $host
- * @return \\Ease\TWB\Panel
+ * @return \Ease\TWB\Panel
  */
 function endRouteForm($host)
 {
@@ -59,7 +58,7 @@ if (is_null($hostId) || !$ip) {
     $defaultContactId   = $oUser->getDefaultContact()->getId();
     $defaultContactName = $oUser->getDefaultContact()->getName();
 
-    $hgName    = sprintf(_('Cesta k %s'), $host->getName());
+    $hgName    = sprintf(_('Route to %s'), $host->getName());
     $hostGroup = new Engine\Hostgroup($hgName);
     if ($hostGroup->getId()) {
 

@@ -5,8 +5,6 @@ namespace Icinga\Editor;
 /**
  * Icinga Editor - titulní strana
  *
- * @package    IcingaEditor
- * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2012 Vitex@hippy.cz (G)
  */
@@ -91,33 +89,33 @@ if ($name) {
           }
          */
         if (strlen(trim($service->getDataValue('check_command-remote'))) && $data['register']) {
-            $oPage->addStatusMessage(_('Služba byla založena'), 'success');
+            $oPage->addStatusMessage(_('Service was created'), 'success');
             $oPage->redirect('service.php?service_id='.$service->getId());
             exit();
         } else {
-            $oPage->addStatusMessage(_('Není zvolen vzdálený příkaz testu'),
+            $oPage->addStatusMessage(_('Remote command not specified'),
                 'warning');
         }
     }
 } else {
     if ($oPage->isPosted()) {
-        $oPage->addStatusMessage(_('Prosím zastejte název služby'), 'warning');
+        $oPage->addStatusMessage(_('Please enter servce name'), 'warning');
     } else {
         $service->setDataValue($service->userColumn, $oUser->getUserID());
     }
 }
 
 
-$oPage->addItem(new UI\PageTop(_('Průvodce založením pasivně sledované služby')));
+$oPage->addItem(new UI\PageTop(_('Passive service Wizard')));
 $oPage->addPageColumns();
 
 $oPage->columnI->addItem(
-    new \Ease\TWB\Panel(_('Aktivní checky'), 'info',
-    _('senzor (nrpe/nscp.exe) běží na vzdáleném hostu, a výsledky nadefinovaných testů zasílá protokolem NRPE na monitorovací server.'))
+    new \Ease\TWB\Panel(_('Active check'), 'info',
+        _('the sensor (nrpe / nscp.exe) runs on a remote host, and the results of the defined tests are sent by the NRPE protocol to the monitoring server.'))
 );
 $oPage->columnIII->addItem(
-    new \Ease\TWB\Panel(_('Aktivně sledovaná služba'), 'info',
-    _('Nabízené příkazy jsou definovány jako vzdálené a odpovídající zvolené platformě. Parametry záleží na konkrétně zvoleném příkazu testu.'))
+    new \Ease\TWB\Panel(_('Active watched service'), 'info',
+        _('The commands offered are defined as remote and corresponding to the selected platform. Parameters depend on the particular test command you choose.'))
 );
 
 

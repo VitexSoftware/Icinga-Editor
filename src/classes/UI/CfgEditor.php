@@ -355,11 +355,11 @@ class CfgEditor extends \Ease\Container
 
                 $addNewItem = $fieldBlock->addItem(new \Ease\Html\InputSearchTag($fieldName.'-remote',
                     $this->objectEdited->getDataValue($fieldName.'-remote'),
-                    ['class' => 'search-input', 'title' => _('vzdálený test')]));
+                    ['class' => 'search-input', 'title' => _('Remote Test')]));
                 $addNewItem->setDataSource('jsoncommand.php?maxRows=10');
 
-                $fieldBlock->addItem(new \Ease\TWB\FormGroup(_('Parametry'),
-                    new \Ease\Html\InputTextTag($fieldName.'-params',
+                $fieldBlock->addItem(new \Ease\TWB\FormGroup(_('Parameters'),
+                        new \Ease\Html\InputTextTag($fieldName.'-params',
                     $this->objectEdited->getDataValue($fieldName.'-params')
                     , ['style' => 'width: 100%'])));
 

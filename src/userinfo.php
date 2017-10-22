@@ -142,7 +142,7 @@ if ($oUser->getSettingValue('admin') || ($oUser->getId() == $userID)) {
     $ownershipForm->addItem(new \Ease\TWB\SubmitButton(_('Hand over ownership'),
             'warning'));
     $oPage->columnII->addItem(
-        new \Ease\TWB\Panel(_('Hand ower'), 'warning', $ownershipForm)
+        new \Ease\TWB\Panel(_('Hand over'), 'warning', $ownershipForm)
     );
 }
 

@@ -108,9 +108,9 @@ switch ($oPage->getRequestValue('action')) {
             'danger');
         $confirmator->addItem(new UI\RecordShow($service));
         $confirmator->addItem(new \Ease\TWB\LinkButton('?'.$service->myKeyColumn.'='.$service->getID(),
-            _('Ne').' '.\Ease\TWB\Part::glyphIcon('ok'), 'success'));
+            _('No').' '.\Ease\TWB\Part::glyphIcon('ok'), 'success'));
         $confirmator->addItem(new \Ease\TWB\LinkButton('?delete=true&'.$service->myKeyColumn.'='.$service->getID(),
-            _('Ano').' '.\Ease\TWB\Part::glyphIcon('remove'), 'danger'));
+            _('Yes').' '.\Ease\TWB\Part::glyphIcon('remove'), 'danger'));
         $tools->addItem(new \Ease\TWB\Panel(_('Service swap'), 'info',
                 new UI\ServiceSwapForm($service)));
         $infopanel->addItem($service->ownerLinkButton());

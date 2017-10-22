@@ -1,6 +1,6 @@
 <?php
 /**
- * Ano/Ne switch
+ * Yes/No switch
  *
  * @package   Dotazník
  * @subpackage WebUI

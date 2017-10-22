@@ -123,7 +123,7 @@ class ServiceConfigurator extends \Ease\Html\Div
                     $this->tweaker->service->setDataValue('user_id',
                         \Ease\Shared::user()->getID());
                     $this->tweaker->service->setDataValue($this->tweaker->service->nameColumn,
-                        _('Klon').' '.$this->tweaker->service->getName());
+                        _('Clone').' '.$this->tweaker->service->getName());
                     if ($this->tweaker->service->saveToSQL()) {
                         $this->tweaker->service->addStatusMessage(_('Service was saved as clone'),
                             'success');

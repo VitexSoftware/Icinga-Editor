@@ -1,9 +1,7 @@
 <?php
 /**
- * Třída pro import konfigurace
+ * Configuration importer
  *
- * @package    IcingaEditor
- * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2012-2015 Vitex@hippy.cz (G)
  */
@@ -13,16 +11,16 @@ namespace Icinga\Editor\Engine;
 class Importer extends Configurator
 {
     /**
-     * Pole zpracovaných souboru
+     * Files to process
      * @var array
      */
     public $files = null;
 
     /**
-     * Pole parsovacích tříd
+     * Parser classes
      * @var array
      */
-    public $Classes = [];
+    public $parseClasses = [];
 
     /**
      * Třída pro hromadné operace s konfigurací
@@ -53,16 +51,17 @@ class Importer extends Configurator
     public function registerClass($className)
     {
         $newClass                          = new $className;
-        $this->Classes[$newClass->keyword] = new $className;
+        $this->parseClasses[$newClass->keyword] = new $className;
     }
 
     /**
-     * Znovu vytvoří struktury tabulek obejktů
+     * Create table structure again
+     * @deprecated since version 1.2.1
      */
     public function dbInit()
     {
-        foreach ($this->Classes as $IEClass) {
-            $IEClass->dbInit();
+        foreach ($this->parseClasses as $ieClass) {
+            $ieClass->dbInit();
         }
     }
 
@@ -133,7 +132,7 @@ class Importer extends Configurator
             $this->setDataValue('register', 1);
         }
 
-        foreach ($this->Classes as $IEClass) {
+        foreach ($this->parseClasses as $IEClass) {
             $doneCount += $IEClass->importArray($cfg, $this->getData());
         }
         if ($doneCount) {
@@ -153,12 +152,12 @@ class Importer extends Configurator
      */
     public function writeConfigs($fileName)
     {
-        foreach ($this->Classes as $ieClass) {
+        foreach ($this->parseClasses as $ieClass) {
             if ($ieClass->writeConfig($fileName)) {
-                $this->addStatusMessage($ieClass->keyword.': '._('konfigurace byla vygenerována'),
+                $this->addStatusMessage($ieClass->keyword.': '._('Configuration was generated'),
                     'success');
             } else {
-                $this->addStatusMessage($ieClass->keyword.': '._('konfigurace nebyla vygenerována'),
+                $this->addStatusMessage($ieClass->keyword.': '._('Configuration was not generated'),
                     'warning');
             }
         }
