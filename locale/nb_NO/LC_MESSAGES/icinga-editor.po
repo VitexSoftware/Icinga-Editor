@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Icinga Editor\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-22 17:08+0200\n"
-"PO-Revision-Date: 2017-10-22 17:10+0200\n"
+"POT-Creation-Date: 2017-10-23 09:59+0200\n"
+"PO-Revision-Date: 2017-10-23 10:02+0200\n"
 "Last-Translator: Vítězslav Dvořák <info@vitexsoftware.cz>\n"
 "Language-Team: Vitex Software <info@vitexsoftware.cz>\n"
 "Language: nb_NO\n"
@@ -19,7 +19,7 @@ msgstr ""
 
 #: about.php:17
 msgid "About Application"
-msgstr "About Application"
+msgstr "Om appen"
 
 #: about.php:19
 #, fuzzy
@@ -166,9 +166,8 @@ msgstr "Dear user %s, your monitoring password was changed to"
 
 #: changepassword.php:66 classes/UI/BootstrapMenu.php:43 createaccount.php:211
 #: passwordrecovery.php:46
-#, fuzzy
 msgid "Password"
-msgstr "Password"
+msgstr "Passord"
 
 #: changepassword.php:73
 #, fuzzy
@@ -700,9 +699,8 @@ msgstr ""
 #: classes/UI/PassiveCheckedHostForm.php:31 classes/UI/TWBSwitch.php:27
 #: command.php:56 contact.php:44 host.php:210 script.php:73 service.php:113
 #: stemplate.php:89 usergroup.php:70 wizard-host.php:57
-#, fuzzy
 msgid "Yes"
-msgstr "Yes"
+msgstr "Ja"
 
 #: classes/UI/ContactSelector.php:26 classes/UI/MainMenu.php:249
 #: classes/engine/Contact.php:214 contacts.php:20 reset.php:68
@@ -2285,7 +2283,7 @@ msgstr ""
 #: classes/engine/Timeperiod.php:196
 #, fuzzy
 msgid "Timeperiod"
-msgstr "timeperiod saving failed"
+msgstr "New Timeperiod"
 
 #: classes/engine/UserGroup.php:44
 msgid "Group Name"

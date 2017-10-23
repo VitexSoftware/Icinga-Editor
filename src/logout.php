@@ -3,11 +3,10 @@
 namespace Icinga\Editor;
 
 /**
- * Odhlašovací stránka
+ * Sign Off
  *
  * @author    Vitex <vitex@hippy.cz>
  * @copyright Vitex@hippy.cz (G) 2009,2011
- * @package IcingaEditor
  */
 require_once 'includes/IEInit.php';
 
@@ -26,7 +25,7 @@ $oPage->addPageColumns();
 $oPage->heroUnit = $oPage->container->addItem(new \Ease\Html\Div(
     null, ['class' => 'jumbotron', 'id' => 'heroUnit']));
 
-$oPage->heroUnit->addItem(new \Ease\Html\Div(_('Děkujeme za vaši přízeň a těšíme se na další návštěvu')));
+$oPage->heroUnit->addItem(new \Ease\Html\Div(_('Thank you for your favor and we are looking forward to your next visit')));
 
 $oPage->addItem(new UI\PageBottom());
 
