@@ -11,6 +11,7 @@ build:
 
 codeception:
 	sudo systemctl start selenium-chrome
+	sleep 10
 	codecept run
 	sudo systemctl stop selenium-chrome
 

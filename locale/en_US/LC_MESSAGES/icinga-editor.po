@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Icinga Editor\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-22 17:08+0200\n"
-"PO-Revision-Date: 2017-10-22 17:10+0200\n"
+"POT-Creation-Date: 2017-10-31 08:54+0100\n"
+"PO-Revision-Date: 2017-10-31 08:55+0100\n"
 "Last-Translator: Vítězslav Dvořák <info@vitexsoftware.cz>\n"
 "Language-Team: Vitex Software <info@vitexsoftware.cz>\n"
 "Language: en_US\n"
@@ -492,12 +492,17 @@ msgid "Optional"
 msgstr "Optional"
 
 #: classes/UI/CfgEditor.php:570
-msgid "Jedno povinné políčko zůstalo nevyplněné"
+msgid "One mandatory field left blank"
 msgstr "One mandatory field left blank"
 
 #: classes/UI/CfgEditor.php:571
-msgid "Není vyplněno ' + errors + ' políček. Tyto byly označeny"
-msgstr "Fields issing ' + errors + ' fields. They have been highlighted"
+#, fuzzy
+msgid "Requied "
+msgstr "Requied"
+
+#: classes/UI/CfgEditor.php:571
+msgid " fields"
+msgstr " fields"
 
 #: classes/UI/ChildrenSelector.php:23
 msgid "Children"
@@ -527,60 +532,60 @@ msgstr "The item %s has been removed"
 msgid "The item %s not removed"
 msgstr "The item %s not removed"
 
-#: classes/UI/ConfigurationsOverview.php:74
+#: classes/UI/ConfigurationsOverview.php:78
 msgid "Actualise Sensor"
 msgstr "Actualise Sensor"
 
-#: classes/UI/ConfigurationsOverview.php:77
+#: classes/UI/ConfigurationsOverview.php:81
 #, php-format
 msgid "Outdated Sensor <span class=\"badge\">%s</span>"
 msgstr "Outdated Sensor <span class=\"badge\">%s</span>"
 
-#: classes/UI/ConfigurationsOverview.php:84
+#: classes/UI/ConfigurationsOverview.php:92
 msgid "Sensor Deploy"
 msgstr "Sensor Deploy"
 
-#: classes/UI/ConfigurationsOverview.php:87
+#: classes/UI/ConfigurationsOverview.php:95
 #, php-format
 msgid "Without sensor <span class=\"badge\">%s</span>"
 msgstr "Without sensor <span class=\"badge\">%s</span>"
 
-#: classes/UI/ConfigurationsOverview.php:98 host.php:240 host.php:242
+#: classes/UI/ConfigurationsOverview.php:109 host.php:240 host.php:242
 msgid "Assign parents"
 msgstr "Assign parents"
 
-#: classes/UI/ConfigurationsOverview.php:99
+#: classes/UI/ConfigurationsOverview.php:111
 msgid "Watch hosts on route"
 msgstr "Watch hosts on route"
 
-#: classes/UI/ConfigurationsOverview.php:106
+#: classes/UI/ConfigurationsOverview.php:119
 #, php-format
 msgid "Without parents <span class=\"badge\">%s</span>"
 msgstr "Without parents <span class=\"badge\">%s</span>"
 
-#: classes/UI/ConfigurationsOverview.php:113
+#: classes/UI/ConfigurationsOverview.php:129
 msgid "Assign icon"
 msgstr "Assign icon"
 
-#: classes/UI/ConfigurationsOverview.php:116
+#: classes/UI/ConfigurationsOverview.php:132
 #, php-format
 msgid "Without icon <span class=\"badge\">%s</span>"
 msgstr "Without icon <span class=\"badge\">%s</span>"
 
-#: classes/UI/ConfigurationsOverview.php:123 classes/UI/ContactAsignForm.php:28
+#: classes/UI/ConfigurationsOverview.php:144 classes/UI/ContactAsignForm.php:28
 msgid "Assign Contact"
 msgstr "Assign Contact"
 
-#: classes/UI/ConfigurationsOverview.php:126
+#: classes/UI/ConfigurationsOverview.php:147
 #, php-format
 msgid "Without contacts <span class=\"badge\">%s</span>"
 msgstr "Without contacts <span class=\"badge\">%s</span>"
 
-#: classes/UI/ConfigurationsOverview.php:129
+#: classes/UI/ConfigurationsOverview.php:151
 msgid "Hosts by configuration state"
 msgstr "Hosts by configuration state"
 
-#: classes/UI/ConfigurationsOverview.php:129
+#: classes/UI/ConfigurationsOverview.php:153
 #, php-format
 msgid "Overall %s hosts without actual configuration. (%s actual)"
 msgstr "Overall %s hosts without actual configuration. (%s actual)"
@@ -2578,13 +2583,13 @@ msgstr "Pasword"
 msgid "Password recovery"
 msgstr "Password recovery"
 
-#: logout.php:23
+#: logout.php:22
 msgid "Odhlášení"
 msgstr "Logout"
 
-#: logout.php:29
-msgid "Děkujeme za vaši přízeň a těšíme se na další návštěvu"
-msgstr "Thanks for selecting icinga configuratror"
+#: logout.php:28
+msgid "Thank you for your favor and we are looking forward to your next visit"
+msgstr "Thank you for your favor and we are looking forward to your next visit"
 
 #: main.php:16
 msgid "Monitoring"
@@ -3861,6 +3866,20 @@ msgid "The test definitions applied to hosts or its groups"
 msgstr "The test definitions applied to hosts or its groups"
 
 #, fuzzy
+#~ msgid "Není vyplněno "
+#~ msgstr "Required item is missing"
+
+#, fuzzy
+#~ msgid " políček. Tyto byly označeny"
+#~ msgstr "Fields issing ' + errors + ' fields. They have been highlighted"
+
+#~ msgid "Jedno povinné políčko zůstalo nevyplněné"
+#~ msgstr "One mandatory field left blank"
+
+#~ msgid "Děkujeme za vaši přízeň a těšíme se na další návštěvu"
+#~ msgstr "Thanks for selecting icinga configuratror"
+
+#, fuzzy
 #~ msgid "Editor časové periody"
 #~ msgstr "Timeperiod Edit"
 
@@ -5069,9 +5088,6 @@ msgstr "The test definitions applied to hosts or its groups"
 
 #~ msgid "sloupec bez popisku"
 #~ msgstr "column without a label"
-
-#~ msgid "Není vyplněna povinná položka"
-#~ msgstr "Required item is missing"
 
 #~ msgid "Rozšířené"
 #~ msgstr "Extendeded"

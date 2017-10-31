@@ -8,3 +8,5 @@
 /debian/icinga-editor.substvars
 /composer.lock
 /.vagrant/
+/winsensor/build/
+/winsensor/build-winsensordeploy-Desktop_Qt_5_9_1_GCC_64bit-Ladu011bnu00ed/

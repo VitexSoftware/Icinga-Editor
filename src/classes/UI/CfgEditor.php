@@ -567,8 +567,8 @@ class CfgEditor extends \Ease\Container
             var errors = validator.numberOfInvalids();
             if (errors) {
                 var message = errors == 1
-                    ? \''._('Jedno povinné políčko zůstalo nevyplněné').'\'
-                    : \''._('Není vyplněno \' + errors + \' políček. Tyto byly označeny').'\';
+                    ? \''._('One mandatory field left blank').'\'
+                    : \''._('Requied ').' + errors + '._(' fields').'\';
                 $("div.error span").html(message);
                 $("div.error").show();
             } else {
