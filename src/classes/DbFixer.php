@@ -90,8 +90,8 @@ class DbFixer extends \Ease\Html\UlTag
         $host = new Engine\Host();
 
         $service  = new Engine\Service();
-        $services = $service->getColumnsFromSQL([$service->myKeyColumn, $service->nameColumn,
-            'host_name'], null, null, $service->myKeyColumn);
+        $services = $service->getColumnsFromSQL([$service->keyColumn, $service->nameColumn,
+            'host_name'], null, null, $service->keyColumn);
         foreach ($services as $serviceId => $serviceInfo) {
             $service->loadFromSQL($serviceId);
 
@@ -151,9 +151,9 @@ class DbFixer extends \Ease\Html\UlTag
             }
         }
 
-        $childsAssigned = $host->dblink->queryToArray('SELECT '.$host->myKeyColumn.','.$host->nameColumn.' FROM '.$host->myTable.' WHERE '
+        $childsAssigned = $host->dblink->queryToArray('SELECT '.$host->keyColumn.','.$host->nameColumn.' FROM '.$host->myTable.' WHERE '
             .'parents'.' IS NOT NULL && parents !=\'a:0:{}\'',
-            $host->myKeyColumn);
+            $host->keyColumn);
         foreach ($childsAssigned as $chid_id => $child_info) {
             $child   = new Engine\Host($chid_id);
             $parents = $child->getDataValue('parents');
@@ -189,7 +189,7 @@ class DbFixer extends \Ease\Html\UlTag
 
         $contact  = new Engine\Contact;
         $service  = new Engine\Service;
-        $services = $service->getColumnsFromSQL([$service->myKeyColumn]);
+        $services = $service->getColumnsFromSQL([$service->keyColumn]);
         foreach ($services as $serviceId => $serviceInfo) {
             $serviceId    = intval(current($serviceInfo));
             $service->loadFromSQL($serviceId);
@@ -222,7 +222,7 @@ class DbFixer extends \Ease\Html\UlTag
         }
 
         $host  = new Engine\Host;
-        $hosts = $host->getColumnsFromSQL([$host->myKeyColumn]);
+        $hosts = $host->getColumnsFromSQL([$host->keyColumn]);
         foreach ($hosts as $hostInfo) {
             $hostId       = intval(current($hostInfo));
             $host->loadFromSQL($hostId);
@@ -261,7 +261,7 @@ class DbFixer extends \Ease\Html\UlTag
         $hostgroupsErr = [];
         $host          = new Engine\Host;
         $hostgroup     = new Engine\Hostgroup;
-        $hosts         = $host->getColumnsFromSQL([$host->myKeyColumn]);
+        $hosts         = $host->getColumnsFromSQL([$host->keyColumn]);
         foreach ($hosts as $hostInfo) {
             $hostId         = intval(current($hostInfo));
             $host->loadFromSQL($hostId);

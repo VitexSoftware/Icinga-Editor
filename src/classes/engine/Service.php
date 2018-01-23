@@ -14,7 +14,7 @@ namespace Icinga\Editor\Engine;
 class Service extends Configurator
 {
     public $myTable     = 'service';
-    public $myKeyColumn = 'service_id';
+    public $KeyColumn = 'service_id';
     public $keyword     = 'service';
     public $nameColumn  = 'service_description';
 
@@ -470,7 +470,7 @@ class Service extends Configurator
 
                 if (is_null($allData[$adKey]['host_name']) || !count($allData[$adKey]['host_name'])) {
 //                    if ($ad[$this->userColumn] == $userID) {
-//                        //$service_link = 'service.php?' . $this->myKeyColumn . '=' . $ad[$this->myKeyColumn];
+//                        //$service_link = 'service.php?' . $this->keyColumn . '=' . $ad[$this->keyColumn];
 //                        //$this->addStatusMessage(sprintf(_('Service <a href="%s">%s</a> is not used. Do not generate into configuration'), $service_link, $ad[$this->nameColumn]), 'info');
 //                    }
                     unset($allData[$adKey]);
@@ -556,7 +556,7 @@ class Service extends Configurator
         $this->saveToSQL();
 
         $this->setDataValue('parent_id', $this->getId());
-        $this->unsetDataValue($this->getmyKeyColumn());
+        $this->unsetDataValue($this->getKeyColumn());
         $this->setDataValue('public', 0);
         $this->unsetDataValue('tcp_port');
         $this->unsetDataValue('DatSave');
@@ -567,7 +567,7 @@ class Service extends Configurator
 
         $newname = $this->getName().' '.$host->getName();
 
-        $servcount = $this->dblink->queryToCount('SELECT '.$this->getmyKeyColumn().' FROM '.$this->myTable.' WHERE '.$this->nameColumn.' LIKE \''.$newname.'%\' ');
+        $servcount = $this->dblink->queryToCount('SELECT '.$this->getKeyColumn().' FROM '.$this->myTable.' WHERE '.$this->nameColumn.' LIKE \''.$newname.'%\' ');
 
         if ($servcount) {
             $newname .= ' '.($servcount + 1);
@@ -596,8 +596,8 @@ class Service extends Configurator
 
         if (\Ease\Shared::user()->getSettingValue('admin')) {
             $allHosts = $host->getAllFromSQL(NULL,
-                [$host->myKeyColumn, $host->nameColumn, 'platform', 'register'],
-                null, $host->nameColumn, $host->myKeyColumn);
+                [$host->keyColumn, $host->nameColumn, 'platform', 'register'],
+                null, $host->nameColumn, $host->keyColumn);
         } else {
             $allHosts = $host->getListing(null, true, ['platform', 'register']);
         }
@@ -646,7 +646,7 @@ class Service extends Configurator
         if (is_null($thisID)) {
             $thisID = \Ease\Shared::user()->getUserID();
         }
-        $columnsToGet = [$this->getmyKeyColumn(), $this->nameColumn, 'generate',
+        $columnsToGet = [$this->getKeyColumn(), $this->nameColumn, 'generate',
             $this->myLastModifiedColumn, $this->userColumn];
         if ($this->allowTemplating) {
             $columnsToGet[] = 'register';
@@ -662,11 +662,11 @@ class Service extends Configurator
 
             $data = $this->getColumnsFromSQL($columnsToGet,
                 $this->userColumn.'='.$thisID.' OR '.$this->userColumn.' IS NULL OR public=1 '.$this->platformCondition($platform),
-                $this->nameColumn, $this->getmyKeyColumn());
+                $this->nameColumn, $this->getKeyColumn());
         } else {
             $data = $this->getColumnsFromSQL($columnsToGet,
                 $this->ownershipCondition($thisID).$this->platformCondition($platform),
-                $this->nameColumn, $this->getmyKeyColumn());
+                $this->nameColumn, $this->getKeyColumn());
         }
 
         return $this->unserializeArrays($data);

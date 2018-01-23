@@ -7,7 +7,7 @@ namespace Icinga\Editor\UI;
  *
  * @package    IcingaEditor
  * @author     Vitex <vitex@hippy.cz>
- * @copyright  2012-2016 Vitex@hippy.cz (G)
+ * @copyright  2012-2018 Vitex@hippy.cz (G)
  */
 class ConfigurationsOverview extends \Ease\TWB\Panel
 {

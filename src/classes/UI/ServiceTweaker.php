@@ -47,7 +47,7 @@ class ServiceTweaker extends \Ease\Html\Div
         $this->host    = $host;
 
         $this->command = new \Icinga\Editor\Engine\Command();
-        $this->command->setmyKeyColumn($this->command->nameColumn);
+        $this->command->setKeyColumn($this->command->nameColumn);
 
         $checkLocal = $this->service->getDataValue('check_command');
 //        $checkRemote = $this->service->getDataValue('check_command-remote');

@@ -26,7 +26,7 @@ switch ($oPage->getRequestValue('action')) {
         }
         break;
     case 'clone':
-        $service->unsetDataValue($service->getmyKeyColumn());
+        $service->unsetDataValue($service->getKeyColumn());
         $service->setDataValue($service->nameColumn,
             $service->getName().' '._('Cloned'));
         if ($service->saveToSQL()) {
@@ -107,9 +107,9 @@ switch ($oPage->getRequestValue('action')) {
         $confirmator = $mainPanel->addItem(new \Ease\TWB\Panel(_('Do you really delete?')),
             'danger');
         $confirmator->addItem(new UI\RecordShow($service));
-        $confirmator->addItem(new \Ease\TWB\LinkButton('?'.$service->myKeyColumn.'='.$service->getID(),
+        $confirmator->addItem(new \Ease\TWB\LinkButton('?'.$service->keyColumn.'='.$service->getID(),
             _('No').' '.\Ease\TWB\Part::glyphIcon('ok'), 'success'));
-        $confirmator->addItem(new \Ease\TWB\LinkButton('?delete=true&'.$service->myKeyColumn.'='.$service->getID(),
+        $confirmator->addItem(new \Ease\TWB\LinkButton('?delete=true&'.$service->keyColumn.'='.$service->getID(),
             _('Yes').' '.\Ease\TWB\Part::glyphIcon('remove'), 'danger'));
         $tools->addItem(new \Ease\TWB\Panel(_('Service swap'), 'info',
                 new UI\ServiceSwapForm($service)));

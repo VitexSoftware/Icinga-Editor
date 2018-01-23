@@ -18,7 +18,7 @@ class SensorConfirmForm extends \Ease\TWB\Form
     {
         parent::__construct('sensor');
         $this->addItem(new \Ease\Html\InputHiddenTag('operation', 'confirm'));
-        $this->addItem(new \Ease\Html\InputHiddenTag($host->getmyKeyColumn(),
+        $this->addItem(new \Ease\Html\InputHiddenTag($host->getKeyColumn(),
             $host->getId()));
         $this->addItem(new \Ease\TWB\SubmitButton(_('Sensor deployed')));
         $status = $host->getSensorStatus();

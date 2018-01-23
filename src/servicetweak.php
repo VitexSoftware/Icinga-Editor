@@ -21,7 +21,7 @@ switch ($oPage->getRequestValue('action')) {
 
     case 'clone':
         $service->setDataValue('parent_id', $service->getId());
-        $service->unsetDataValue($service->getmyKeyColumn());
+        $service->unsetDataValue($service->getKeyColumn());
         $service->addMember(
             'host_name', $host->getId(), $host->getName()
         );

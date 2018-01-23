@@ -75,13 +75,13 @@ class User extends \Ease\User
     public function getFirstContact()
     {
         $contact = new Engine\Contact();
-        $cn      = $contact->getColumnsFromSQL([$contact->nameColumn, $contact->myKeyColumn],
+        $cn      = $contact->getColumnsFromSQL([$contact->nameColumn, $contact->keyColumn],
             [$contact->userColumn => $this->getUserID(), 'parent_id' => 'IS NOT NULL'],
-            $contact->myKeyColumn, $contact->nameColumn, 1);
+            $contact->keyColumn, $contact->nameColumn, 1);
         if (count($cn)) {
             $curcnt = current($cn);
 
-            return [$curcnt[$contact->myKeyColumn] => $curcnt[$contact->nameColumn]];
+            return [$curcnt[$contact->keyColumn] => $curcnt[$contact->nameColumn]];
         }
 
         return null;

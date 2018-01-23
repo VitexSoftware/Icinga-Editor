@@ -83,9 +83,9 @@ switch ($oPage->getRequestValue('action')) {
 
         $confirmator = $oPage->columnII->addItem(new \Ease\TWB\Panel(_('Do you really delete?')),
             'danger');
-        $confirmator->addItem(new \Ease\TWB\LinkButton('?'.$stemplate->myKeyColumn.'='.$stemplate->getID(),
+        $confirmator->addItem(new \Ease\TWB\LinkButton('?'.$stemplate->keyColumn.'='.$stemplate->getID(),
             _('No').' '.\Ease\TWB\Part::glyphIcon('ok'), 'success'));
-        $confirmator->addItem(new \Ease\TWB\LinkButton('?delete=true&'.$stemplate->myKeyColumn.'='.$stemplate->getID(),
+        $confirmator->addItem(new \Ease\TWB\LinkButton('?delete=true&'.$stemplate->keyColumn.'='.$stemplate->getID(),
             _('Yes').' '.\Ease\TWB\Part::glyphIcon('remove'), 'danger'));
 
 

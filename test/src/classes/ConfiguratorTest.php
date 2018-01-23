@@ -56,7 +56,7 @@ class ConfiguratorTest extends \Test\Ease\BrickTest
     {
         $this->object = new \Icinga\Editor\Engine\Configurator();
 
-        $this->object->myKeyColumn          = 'test_id';
+        $this->object->keyColumn          = 'test_id';
         $this->object->myTable              = 'test';
         $this->object->myCreateColumn       = 'DatCreate';
         $this->object->myLastModifiedColumn = 'DatSave';

@@ -37,11 +37,11 @@ class ContactSelect extends \Ease\Html\Select
     function loadItems()
     {
         $items    = [];
-        $contacts = $this->contact->getColumnsFromSQL([$this->contact->myKeyColumn,
+        $contacts = $this->contact->getColumnsFromSQL([$this->contact->keyColumn,
             $this->contact->nameColumn], null, $this->contact->nameColumn);
         if (count($contacts)) {
             foreach ($contacts as $contact) {
-                $items[$contact[$this->contact->myKeyColumn]] = $contact[$this->contact->nameColumn];
+                $items[$contact[$this->contact->keyColumn]] = $contact[$this->contact->nameColumn];
             }
         }
         return $items;

@@ -6,7 +6,7 @@ namespace Icinga\Editor;
  * Icinga Editor - Watch route
  *
  * @author     Vitex <vitex@hippy.cz>
- * @copyright  2012-2016 Vitex@hippy.cz (G)
+ * @copyright  2012-2018 Vitex@hippy.cz (G)
  */
 require_once 'includes/IEInit.php';
 
@@ -128,7 +128,7 @@ if (is_null($hostId) || !$ip) {
         }
         if ($pos) {
             $parentIP = $trace[$pos - 1];
-            $host->addMember('parents', $parents[$parentIP][$host->myKeyColumn],
+            $host->addMember('parents', $parents[$parentIP][$host->keyColumn],
                 $parents[$parentIP][$host->nameColumn]);
         }
         $host->addMember('contacts', $defaultContactId, $defaultContactName);

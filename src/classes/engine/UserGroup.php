@@ -10,7 +10,7 @@ class UserGroup extends Configurator
     public $keyword     = 'usergroup';
     public $myTable     = 'user_group';
     public $nameColumn  = 'usergroup_name';
-    public $myKeyColumn = 'usergroup_id';
+    public $KeyColumn = 'usergroup_id';
     public $userColumn  = 'group_boss';
 
     /**
@@ -51,7 +51,7 @@ class UserGroup extends Configurator
             $this->loadFromSQL($id);
         } else {
             if (strlen($id)) {
-                $this->setmyKeyColumn($this->nameColumn);
+                $this->setKeyColumn($this->nameColumn);
                 $this->loadFromSQL($id);
                 $this->restoreObjectIdentity();
             }

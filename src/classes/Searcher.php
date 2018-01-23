@@ -6,7 +6,7 @@ namespace Icinga\Editor;
  * Searcher Class
  *
  * @author     Vitex <vitex@hippy.cz>
- * @copyright  2012-2016 Vitex@hippy.cz (G)
+ * @copyright  2012-2018 Vitex@hippy.cz (G)
  */
 class Searcher extends engine\Configurator
 {

@@ -52,8 +52,8 @@ switch ($oPage->getRequestValue('action')) {
         $form->addItem(new \Ease\Html\H2Tag($command->getName()));
 
         $confirmator = $form->addItem(new \Ease\TWB\Panel(_('Are you sure ?')), 'danger');
-        $confirmator->addItem(new \Ease\TWB\LinkButton('?' . $command->myKeyColumn . '=' . $command->getID(), _('No') . ' ' . \Ease\TWB\Part::glyphIcon('ok'), 'success'));
-        $confirmator->addItem(new \Ease\TWB\LinkButton('?delete=true&' . $command->myKeyColumn . '=' . $command->getID(), _('Yes') . ' ' . \Ease\TWB\Part::glyphIcon('remove'), 'danger'));
+        $confirmator->addItem(new \Ease\TWB\LinkButton('?' . $command->keyColumn . '=' . $command->getID(), _('No') . ' ' . \Ease\TWB\Part::glyphIcon('ok'), 'success'));
+        $confirmator->addItem(new \Ease\TWB\LinkButton('?delete=true&' . $command->keyColumn . '=' . $command->getID(), _('Yes') . ' ' . \Ease\TWB\Part::glyphIcon('remove'), 'danger'));
 
 
         break;

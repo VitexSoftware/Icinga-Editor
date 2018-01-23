@@ -74,9 +74,9 @@ class PortScanner extends \Ease\Sand
                 default :
                     break;
             }
-            $this->service->setmyKeyColumn('tcp_port');
+            $this->service->setKeyColumn('tcp_port');
             $this->service->loadFromSQL($port);
-            $this->service->setmyKeyColumn('service_id');
+            $this->service->setKeyColumn('service_id');
             $this->service->addMember('host_name', $this->host->getId(),
                 $this->host->getName());
             if ($this->service->saveToSQL()) {

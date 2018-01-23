@@ -95,7 +95,7 @@ class MainMenu extends \Ease\Html\Div
         $hostGroupMenuItem = [];
 
         if ($pocHostgroup) {
-            //$hostgroups = $hostgroup->dblink->queryToArray('SELECT ' . $hostgroup->getmyKeyColumn() . ', hostgroup_name, DatSave FROM ' . $hostgroup->myTable . ' WHERE user_id=' . $user->getUserID(), 'hostgroup_id');
+            //$hostgroups = $hostgroup->dblink->queryToArray('SELECT ' . $hostgroup->getKeyColumn() . ', hostgroup_name, DatSave FROM ' . $hostgroup->myTable . ' WHERE user_id=' . $user->getUserID(), 'hostgroup_id');
             $hostgroups = $hostgroup->getListing(null, null, ['members']);
 
             foreach ($hostgroups as $cID => $hgInfo) {
@@ -163,7 +163,7 @@ class MainMenu extends \Ease\Html\Div
             if ($user->getSettingValue('admin')) {
 
                 $users = $user->getColumnsFromSQL(['id', 'login'],
-                    ['id' => '!0'], 'login', $user->getmyKeyColumn());
+                    ['id' => '!0'], 'login', $user->getKeyColumn());
 
                 $userList = [];
                 if ($users) {

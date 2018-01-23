@@ -41,7 +41,7 @@ $form = new \Ease\Html\Form('Servicegroup', 'servicegroup.php', 'POST',
     $servicegroupEdit, ['class' => 'form-horizontal']);
 $form->setTagID($form->getTagName());
 if (!is_null($serviceGroup->getMyKey())) {
-    $form->addItem(new \Ease\Html\InputHiddenTag($serviceGroup->getmyKeyColumn(),
+    $form->addItem(new \Ease\Html\InputHiddenTag($serviceGroup->getKeyColumn(),
         $serviceGroup->getMyKey()));
 }
 $form->addItem('<br>');

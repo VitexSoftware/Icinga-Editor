@@ -8,7 +8,7 @@ namespace Icinga\Editor;
  * @package    IcingaEditor
  * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
- * @copyright  2012-2016 Vitex@hippy.cz (G)
+ * @copyright  2012-2018 Vitex@hippy.cz (G)
  */
 require_once 'includes/IEInit.php';
 
@@ -67,9 +67,9 @@ switch ($oPage->getRequestValue('action')) {
             'danger');
 
         $confirmator->addItem(new \Ease\TWB\Well(nl2br($script->getDataValue('body'))));
-        $confirmator->addItem(new \Ease\TWB\LinkButton('?'.$script->myKeyColumn.'='.$script->getID(),
+        $confirmator->addItem(new \Ease\TWB\LinkButton('?'.$script->keyColumn.'='.$script->getID(),
             _('No').' '.\Ease\TWB\Part::glyphIcon('ok'), 'success'));
-        $confirmator->addItem(new \Ease\TWB\LinkButton('?delete=true&'.$script->myKeyColumn.'='.$script->getID(),
+        $confirmator->addItem(new \Ease\TWB\LinkButton('?delete=true&'.$script->keyColumn.'='.$script->getID(),
             _('Yes').' '.\Ease\TWB\Part::glyphIcon('remove'), 'danger'));
 
 

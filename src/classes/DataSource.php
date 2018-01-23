@@ -196,7 +196,7 @@ class DataSource extends \Ease\Brick
     {
         $page      = isset($_REQUEST['page']) ? $_REQUEST['page'] : 1;
         $rp        = isset($_REQUEST['rp']) ? $_REQUEST['rp'] : 10;
-        $sortname  = isset($_REQUEST['sortname']) ? $_REQUEST['sortname'] : $this->handledObejct->getmyKeyColumn();
+        $sortname  = isset($_REQUEST['sortname']) ? $_REQUEST['sortname'] : $this->handledObejct->getKeyColumn();
         $sortorder = isset($_REQUEST['sortorder']) ? $_REQUEST['sortorder'] : 'desc';
         $where     = $this->getWhere();
         $sort      = " ORDER BY $sortname $sortorder";
@@ -251,8 +251,8 @@ class DataSource extends \Ease\Brick
             } else {
                 $order = '';
             }
-            $transactions = $this->handledObejct->dblink->queryToArray($queryRaw.' WHERE `'.$this->handledObejct->myKeyColumn.'` IN('.$rows.')'.$order,
-                $this->handledObejct->getmyKeyColumn());
+            $transactions = $this->handledObejct->dblink->queryToArray($queryRaw.' WHERE `'.$this->handledObejct->keyColumn.'` IN('.$rows.')'.$order,
+                $this->handledObejct->getKeyColumn());
             $total        = count(explode(',', $rows));
         } else {
             $total        = $this->getTotal($queryRaw.$this->getWhere());

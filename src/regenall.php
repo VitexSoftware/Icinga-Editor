@@ -6,7 +6,7 @@ namespace Icinga\Editor;
  * Icinga Editor - All Configuration Generating
  *
  * @author     Vitex <vitex@hippy.cz>
- * @copyright  2012-2016 Vitex@hippy.cz (G)
+ * @copyright  2012-2018 Vitex@hippy.cz (G)
  */
 require_once 'includes/IEInit.php';
 
@@ -142,7 +142,7 @@ if ($testing) {
             if (strstr($line, 'has no services associated with it!')) {
                 preg_match("/\'(.*)\'/", $line, $keywords);
                 $host = & $generator->parseClasses['host'];
-                $host->setmyKeyColumn($host->nameColumn);
+                $host->setKeyColumn($host->nameColumn);
                 $host->loadFromSQL($keywords[1]);
                 $host->resetObjectIdentity();
                 $line = '<span class="label label-warning">'._('Warning').':</span> Host '.'<a href="host.php?host_id='.$host->getMyKey().'">'.$host->getName().'</a> '._('without services asigned');

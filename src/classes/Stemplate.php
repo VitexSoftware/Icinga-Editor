@@ -11,7 +11,7 @@ namespace Icinga\Editor;
 class Stemplate extends Engine\Configurator
 {
     public $myTable     = 'stemplate';
-    public $myKeyColumn = 'stemplate_id';
+    public $KeyColumn = 'stemplate_id';
     public $nameColumn  = 'stemplate_name';
     public $keyword     = 'stemplate';
 

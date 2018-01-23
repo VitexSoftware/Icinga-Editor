@@ -112,7 +112,7 @@ class ServiceConfigurator extends \Ease\Html\Div
 
                     $this->tweaker->service->setDataValue('parent_id',
                         $this->tweaker->service->getId());
-                    $this->tweaker->service->unsetDataValue($this->tweaker->service->getmyKeyColumn());
+                    $this->tweaker->service->unsetDataValue($this->tweaker->service->getKeyColumn());
 
                     $this->tweaker->service->addMember(
                         'host_name', $this->tweaker->host->getId(),

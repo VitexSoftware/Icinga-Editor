@@ -7,11 +7,11 @@ namespace Icinga\Editor\UI;
  *
  * @package    IcingaEditor
  * @author     Vitex <vitex@hippy.cz>
- * @copyright  2012-2016 Vitex@hippy.cz (G)
+ * @copyright  2012-2018 Vitex@hippy.cz (G)
  */
 class ContactSelector extends \Ease\Container
 {
-    public $myKeyColumn = 'service_name';
+    public $KeyColumn = 'service_name';
 
     /**
      * Editor k přidávání členů skupiny
@@ -22,7 +22,7 @@ class ContactSelector extends \Ease\Container
     {
         $contactsAssigned = [];
         parent::__construct();
-        $fieldName        = $holder->getmyKeyColumn();
+        $fieldName        = $holder->getKeyColumn();
         $initialContent   = new \Ease\TWB\Panel(_('Contacts'));
         $initialContent->setTagCss(['width' => '100%']);
 
@@ -63,7 +63,7 @@ class ContactSelector extends \Ease\Container
                         [
                         new \Ease\Html\ATag('contacttweak.php?contact_id='.$contactInfo['parent_id'].'&amp;service_id='.$holder->getId(),
                             \Ease\TWB\Part::GlyphIcon('wrench').' '._('Edit')),
-                        new \Ease\Html\ATag('?addcontact='.$contactInfo[$contact->nameColumn].'&amp;contact_id='.$contactID.'&amp;'.$holder->getmyKeyColumn().'='.$holder->getMyKey().'&amp;'.$holder->nameColumn.'='.$holder->getName(),
+                        new \Ease\Html\ATag('?addcontact='.$contactInfo[$contact->nameColumn].'&amp;contact_id='.$contactID.'&amp;'.$holder->getKeyColumn().'='.$holder->getMyKey().'&amp;'.$holder->nameColumn.'='.$holder->getName(),
                             \Ease\TWB\Part::GlyphIcon('plus').' '._('Start notifing'))
                     ]));
                 }
@@ -78,7 +78,7 @@ class ContactSelector extends \Ease\Container
                         $contactInfo[$contact->nameColumn], 'success', 'xs',
                         [
                         new \Ease\Html\ATag(
-                            '?delcontact='.$contactInfo[$contact->nameColumn].'&amp;contact_id='.$contactID.'&amp;'.$holder->getmyKeyColumn().'='.$holder->getMyKey().'&amp;'.$holder->nameColumn.'='.$holder->getName(),
+                            '?delcontact='.$contactInfo[$contact->nameColumn].'&amp;contact_id='.$contactID.'&amp;'.$holder->getKeyColumn().'='.$holder->getMyKey().'&amp;'.$holder->nameColumn.'='.$holder->getName(),
                             \Ease\TWB\Part::GlyphIcon('remove').' '._('Stop notifing'))
                         , new \Ease\Html\ATag('contacttweak.php?contact_id='.$contactInfo['parent_id'].'&amp;service_id='.$holder->getId(),
                             \Ease\TWB\Part::GlyphIcon('wrench').' '._('Edit'))

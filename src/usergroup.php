@@ -66,8 +66,8 @@ $oPage->addPageColumns();
 switch ($oPage->getRequestValue('action')) {
     case 'delete':
         $confirmator = $oPage->columnII->addItem(new \Ease\TWB\Panel(_('Are you sure ?')), 'danger');
-        $confirmator->addItem(new \Ease\TWB\LinkButton('?' . $userGroup->myKeyColumn . '=' . $userGroup->getID(), _('No') . ' ' . \Ease\TWB\Part::glyphIcon('ok'), 'success'));
-        $confirmator->addItem(new \Ease\TWB\LinkButton('?delete=true&' . $userGroup->myKeyColumn . '=' . $userGroup->getID(), _('Yes') . ' ' . \Ease\TWB\Part::glyphIcon('remove'), 'danger'));
+        $confirmator->addItem(new \Ease\TWB\LinkButton('?' . $userGroup->keyColumn . '=' . $userGroup->getID(), _('No') . ' ' . \Ease\TWB\Part::glyphIcon('ok'), 'success'));
+        $confirmator->addItem(new \Ease\TWB\LinkButton('?delete=true&' . $userGroup->keyColumn . '=' . $userGroup->getID(), _('Yes') . ' ' . \Ease\TWB\Part::glyphIcon('remove'), 'danger'));
 
         $oPage->columnI->addItem($userGroup->ownerLinkButton());
 

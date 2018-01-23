@@ -19,7 +19,7 @@ $oPage->addPageColumns();
 
 $user = new User();
 
-$users = $user->getColumnsFromSQL(['id', 'login'], null, 'login', $oUser->getmyKeyColumn());
+$users = $user->getColumnsFromSQL(['id', 'login'], null, 'login', $oUser->getKeyColumn());
 
 if ($users) {
     $oPage->columnII->addItem(new \Ease\Html\H4Tag(_('Users')));

@@ -16,7 +16,7 @@ class Contact extends Configurator
      * Key Column
      * @var string
      */
-    public $myKeyColumn = 'contact_id';
+    public $KeyColumn = 'contact_id';
     public $nameColumn  = 'contact_name';
     public $keyword     = 'contact';
 
@@ -286,7 +286,7 @@ $this->keywordsInfo['service_notifications_enabled']['title'] = _('Notify servic
 
         $this->setDataValue('alias', $chType);
         $this->setDataValue('parent_id', $this->getId());
-        $this->unsetDataValue($this->getmyKeyColumn());
+        $this->unsetDataValue($this->getKeyColumn());
         $this->setDataValue('public', 0);
         $this->unsetDataValue('DatSave');
         $this->unsetDataValue('DatCreate');
@@ -296,7 +296,7 @@ $this->keywordsInfo['service_notifications_enabled']['title'] = _('Notify servic
 
         $newname = $this->getName().' '.$chType;
 
-        $servcount = $this->dblink->queryToCount('SELECT '.$this->getmyKeyColumn().' FROM '.$this->myTable.' WHERE '.$this->nameColumn.' LIKE \''.$newname.'%\' ');
+        $servcount = $this->dblink->queryToCount('SELECT '.$this->getKeyColumn().' FROM '.$this->myTable.' WHERE '.$this->nameColumn.' LIKE \''.$newname.'%\' ');
 
         if ($servcount) {
             $newname .= ' '.($servcount + 1);
@@ -314,8 +314,8 @@ $this->keywordsInfo['service_notifications_enabled']['title'] = _('Notify servic
     public function getChilds()
     {
         $subchilds = [];
-        $childs    = $this->dblink->queryToArray('SELECT `alias`,`'.$this->myKeyColumn.'`,`'.$this->nameColumn.'`,`email`,`pager`,`address1`,`address2`  FROM `'.$this->myTable.'` WHERE `parent_id` = '.$this->getId(),
-            $this->myKeyColumn);
+        $childs    = $this->dblink->queryToArray('SELECT `alias`,`'.$this->keyColumn.'`,`'.$this->nameColumn.'`,`email`,`pager`,`address1`,`address2`  FROM `'.$this->myTable.'` WHERE `parent_id` = '.$this->getId(),
+            $this->keyColumn);
         foreach ($childs as $childID => $childInfo) {
             $subchilds[$childID]['type']    = $childInfo['alias'];
             $subchilds[$childID]['contact'] = $childInfo['email'].$childInfo['pager'].$childInfo['address1'].$childInfo['address2'];
@@ -350,7 +350,7 @@ $this->keywordsInfo['service_notifications_enabled']['title'] = _('Notify servic
         }
 
         $contactgroup  = new Contactgroup();
-        $contactgroups = $this->dblink->queryTo2DArray('SELECT '.$contactgroup->getmyKeyColumn().' FROM '.$contactgroup->myTable.' WHERE members LIKE \'%'.$this->getName().'%\'');
+        $contactgroups = $this->dblink->queryTo2DArray('SELECT '.$contactgroup->getKeyColumn().' FROM '.$contactgroup->myTable.' WHERE members LIKE \'%'.$this->getName().'%\'');
         if (count($contactgroups)) {
             foreach ($contactgroups as $contactgroupID) {
                 $contactgroup->loadFromSQL((int) $contactgroupID);
@@ -371,7 +371,7 @@ $this->keywordsInfo['service_notifications_enabled']['title'] = _('Notify servic
 
         $service = new Service();
 
-        $services = $this->dblink->queryTo2DArray('SELECT '.$service->getmyKeyColumn().' FROM '.$service->myTable.' WHERE contacts LIKE \'%'.$this->getName().'%\'');
+        $services = $this->dblink->queryTo2DArray('SELECT '.$service->getKeyColumn().' FROM '.$service->myTable.' WHERE contacts LIKE \'%'.$this->getName().'%\'');
         if (count($services)) {
             foreach ($services as $serviceID) {
                 $service->loadFromSQL((int) $serviceID);
@@ -390,7 +390,7 @@ $this->keywordsInfo['service_notifications_enabled']['title'] = _('Notify servic
 
         $host = new Host();
 
-        $hosts = $this->dblink->queryTo2DArray('SELECT '.$host->getmyKeyColumn().' FROM '.$host->myTable.' WHERE contacts LIKE \'%'.$this->getName().'%\'');
+        $hosts = $this->dblink->queryTo2DArray('SELECT '.$host->getKeyColumn().' FROM '.$host->myTable.' WHERE contacts LIKE \'%'.$this->getName().'%\'');
         if (count($hosts)) {
             foreach ($hosts as $hostID) {
                 $host->loadFromSQL((int) $hostID);
@@ -430,7 +430,7 @@ $this->keywordsInfo['service_notifications_enabled']['title'] = _('Notify servic
                 $type     = $subcontact->getDataValue('alias');
                 $subcontact->setDataValue($subcontact->nameColumn,
                     $newname.' '.$type);
-                $services = $this->dblink->queryTo2DArray('SELECT '.$service->getmyKeyColumn().' FROM '.$service->myTable.' WHERE contacts LIKE \'%'.$oldname.' '.$type.'%\'');
+                $services = $this->dblink->queryTo2DArray('SELECT '.$service->getKeyColumn().' FROM '.$service->myTable.' WHERE contacts LIKE \'%'.$oldname.' '.$type.'%\'');
                 if (count($services)) {
                     foreach ($services as $serviceID) {
                         $service->loadFromSQL((int) $serviceID);

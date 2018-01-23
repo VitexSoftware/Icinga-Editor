@@ -11,7 +11,7 @@ namespace Icinga\Editor\Engine;
 class Timeperiod extends Configurator
 {
     public $myTable      = 'timeperiod';
-    public $myKeyColumn  = 'timeperiod_id';
+    public $KeyColumn  = 'timeperiod_id';
     public $keyword      = 'timeperiod';
     public $nameColumn   = 'timeperiod_name';
     public $useKeywords  = [
@@ -64,7 +64,7 @@ class Timeperiod extends Configurator
         unset($data['NewTimes']);
         unset($data['del']);
         foreach ($data as $key => $value) {
-            if (($key == $this->myKeyColumn) || array_key_exists($key,
+            if (($key == $this->keyColumn) || array_key_exists($key,
                     $this->useKeywords) || $key == $this->userColumn) {
                 $this->setDataValue($key, $value);
             } else {

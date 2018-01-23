@@ -12,7 +12,7 @@ namespace Icinga\Editor\UI;
  */
 class ParentSelector extends \Ease\Container
 {
-    public $myKeyColumn = 'host_name';
+    public $KeyColumn = 'host_name';
 
     /**
      * Editor k přidávání členů skupiny
@@ -22,7 +22,7 @@ class ParentSelector extends \Ease\Container
     public function __construct($host)
     {
         parent::__construct();
-        $fieldName      = $host->getmyKeyColumn();
+        $fieldName      = $host->getKeyColumn();
         $initialContent = new \Ease\TWB\Panel(_('Host Parents'));
 
         $addparentForm = $initialContent->addItem(new \Ease\TWB\Form('addparent'));
@@ -49,9 +49,9 @@ class ParentSelector extends \Ease\Container
 
             $parentsAssigned = [];
             foreach ($host->getDataValue('parents') as $parentAssigned) {
-                $parentID                                       = \Ease\Shared::db()->queryToValue('SELECT `'.$host->myKeyColumn.'` FROM '.$host->myTable.' WHERE `'.$host->nameColumn.'` = \''.addSlashes($parentAssigned).'\'');
+                $parentID                                       = \Ease\Shared::db()->queryToValue('SELECT `'.$host->keyColumn.'` FROM '.$host->myTable.' WHERE `'.$host->nameColumn.'` = \''.addSlashes($parentAssigned).'\'');
                 $parentsAssigned[$parentID][$host->nameColumn]  = $parentAssigned;
-                $parentsAssigned[$parentID][$host->myKeyColumn] = $parentID;
+                $parentsAssigned[$parentID][$host->keyColumn] = $parentID;
                 unset($allParents[$parentID]);
             }
 
@@ -90,7 +90,7 @@ class ParentSelector extends \Ease\Container
         $parentMenu = new \Ease\TWB\ButtonDropdown(
             $pName, $type, 'xs',
             [
-            new \Ease\Html\ATag('?'.$operation.'=parents&amp;name='.$parentInfo[$host->nameColumn].'&amp;member='.$parentID.'&amp;'.$host->myKeyColumn.'='.$host->getId(),
+            new \Ease\Html\ATag('?'.$operation.'=parents&amp;name='.$parentInfo[$host->nameColumn].'&amp;member='.$parentID.'&amp;'.$host->keyColumn.'='.$host->getId(),
                 \Ease\TWB\Part::GlyphIcon($op).' '.$opCaption),
             new \Ease\Html\ATag('host.php?host_id='.$parentID,
                 \Ease\TWB\Part::GlyphIcon('wrench').' '._('Editor'))

@@ -53,9 +53,9 @@ if ($login) {
 $oPage->addItem(new UI\PageTop(_('Sign in')));
 $oPage->addPageColumns();
 
-$loginFace = new \Ease\Html\Div();
+$loginFace = new \Ease\Html\DivTag();
 
-$oPage->columnI->addItem(new \Ease\Html\Div(_('Please enter your login details:')));
+$oPage->columnI->addItem(new \Ease\Html\DivTag(_('Please enter your login details:')));
 
 $loginForm = $loginFace->addItem(new \Ease\TWB\Form('Login'));
 
@@ -72,15 +72,6 @@ $oPage->columnII->addItem($loginPanel);
 
 $oPage->columnI->addItem(new \Ease\TWB\LinkButton('passwordrecovery.php',
     _('Password recovery')));
-
-/*
-  $oPage->columnII->addItem(new \Ease\Html\DivTag('TwitterAuth', IETwitter::AuthButton('twauth.php')));
-
-  $oPage->columnIII->addItem( '
-  <a class="twitter-timeline"  href="https://twitter.com/VSMonitoring" data-widget-id="255378607919210497">Tweets by @VSMonitoring</a>
-  <script>!function (d,s,id) {var js,fjs=d.getElementsByTagName(s)[0];if (!d.getElementById(id)) {js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-  ' );
- */
 
 $oPage->addItem(new UI\PageBottom());
 

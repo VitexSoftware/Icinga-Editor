@@ -8,7 +8,7 @@ namespace Icinga\Editor;
  * @package    IcingaEditor
  * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
- * @copyright  2012-2016 Vitex@hippy.cz (G)
+ * @copyright  2012-2018 Vitex@hippy.cz (G)
  */
 require_once 'includes/IEInit.php';
 
@@ -17,7 +17,7 @@ if ($oPage->isPosted() && $class) {
     $data     = $_POST;
     $importer = new Engine\Importer();
     $recorder = $importer->parseClasses[$class];
-    unset($data[$recorder->myKeyColumn]);
+    unset($data[$recorder->keyColumn]);
     unset($data[$recorder->userColumn]);
     $recorder->importDataRow($data);
     $recorder->setMyKeyColumn($recorder->nameColumn);

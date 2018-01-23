@@ -29,8 +29,8 @@ class ChildrenSelector extends \Ease\Container
 
             $Service = new \Icinga\Editor\Engine\Service();
 
-            $servicesAssigned = $Service->dblink->queryToArray('SELECT '.$Service->myKeyColumn.','.$Service->nameColumn.' FROM '.$Service->myTable.' WHERE '.$FieldName.' LIKE \'%"'.$Host->getName().'"%\'',
-                $Service->myKeyColumn);
+            $servicesAssigned = $Service->dblink->queryToArray('SELECT '.$Service->keyColumn.','.$Service->nameColumn.' FROM '.$Service->myTable.' WHERE '.$FieldName.' LIKE \'%"'.$Host->getName().'"%\'',
+                $Service->keyColumn);
 
             $allServices = $Service->getListing();
             foreach ($allServices as $ServiceID => $serviceInfo) {
@@ -49,7 +49,7 @@ class ChildrenSelector extends \Ease\Container
                     $Jellybean = new \Ease\Html\Span(
                         null,
                         ['class' => 'jellybean gray', 'id' => $serviceInfo[$Service->nameColumn]]);
-                    $Jellybean->addItem(new \Ease\Html\ATag('?addservice='.$serviceInfo[$Service->nameColumn].'&amp;service_id='.$ServiceID.'&amp;'.$Host->getmyKeyColumn().'='.$Host->getMyKey().'&amp;'.$Host->nameColumn.'='.$Host->getName(),
+                    $Jellybean->addItem(new \Ease\Html\ATag('?addservice='.$serviceInfo[$Service->nameColumn].'&amp;service_id='.$ServiceID.'&amp;'.$Host->getKeyColumn().'='.$Host->getMyKey().'&amp;'.$Host->nameColumn.'='.$Host->getName(),
                         $serviceInfo[$Service->nameColumn]));
                     $InitialContent->addItem($Jellybean);
                 }
@@ -62,7 +62,7 @@ class ChildrenSelector extends \Ease\Container
                         null,
                         ['class' => 'jellybean', 'id' => $serviceInfo[$Service->nameColumn]]);
                     $Jellybean->addItem($serviceInfo[$Service->nameColumn]);
-                    $Jellybean->addItem(new \Ease\Html\ATag('?delservice='.$serviceInfo[$Service->nameColumn].'&amp;service_id='.$ServiceID.'&amp;'.$Host->getmyKeyColumn().'='.$Host->getMyKey().'&amp;'.$Host->nameColumn.'='.$Host->getName(),
+                    $Jellybean->addItem(new \Ease\Html\ATag('?delservice='.$serviceInfo[$Service->nameColumn].'&amp;service_id='.$ServiceID.'&amp;'.$Host->getKeyColumn().'='.$Host->getMyKey().'&amp;'.$Host->nameColumn.'='.$Host->getName(),
                         \Ease\TWB\Part::GlyphIcon('remove')));
                     $InitialContent->addItem($Jellybean);
                 }
@@ -79,8 +79,8 @@ class ChildrenSelector extends \Ease\Container
     public static function saveMembers($request)
     {
         $service = new \Icinga\Editor\Engine\Service();
-        if (isset($request[$service->myKeyColumn])) {
-            if ($service->loadFromSQL($request[$service->myKeyColumn])) {
+        if (isset($request[$service->keyColumn])) {
+            if ($service->loadFromSQL($request[$service->keyColumn])) {
                 if (isset($request['addservice']) || isset($request['delservice'])) {
                     if (isset($request['addservice'])) {
                         $service->addHostName($request['host_id'],

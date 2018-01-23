@@ -1,10 +1,9 @@
 <?php
-
 /**
  * Icinga Host Class
  *
  * @author     Vitex <vitex@hippy.cz>
- * @copyright  2012-2016 Vitex@hippy.cz (G)
+ * @copyright  2012-2018 Vitex@hippy.cz (G)
  */
 
 namespace Icinga\Editor\Engine;
@@ -16,11 +15,10 @@ namespace Icinga\Editor\Engine;
  */
 class Host extends Configurator
 {
-
-    public $myTable     = 'host';
-    public $keyword     = 'host';
-    public $nameColumn  = 'host_name';
-    public $myKeyColumn = 'host_id';
+    public $myTable    = 'host';
+    public $keyword    = 'host';
+    public $nameColumn = 'host_name';
+    public $keyColumn  = 'host_id';
 
     /**
      * Weblink
@@ -45,255 +43,255 @@ class Host extends Configurator
      * @var array
      */
     public $useKeywords  = [
-      'host_name'                    => 'VARCHAR(255)',
-      'alias'                        => 'VARCHAR(64)',
-      'display_name'                 => 'VARCHAR(64)',
-      'address'                      => 'VARCHAR(64)',
-      'address6'                     => 'VARCHAR(128)',
-      'parents'                      => 'IDLIST',
-      'hostgroups'                   => 'IDLIST',
-      'check_command'                => 'SELECT',
-      'initial_state'                => "RADIO('o','d','u')",
-      'max_check_attempts'           => 'SLIDER',
-      'check_interval'               => 'INT',
-      'retry_interval'               => 'INT',
-      'active_checks_enabled'        => 'BOOL',
-      'passive_checks_enabled'       => 'BOOL',
-      'check_period'                 => 'SELECT',
-      'obsess_over_host'             => 'BOOL',
-      'check_freshness'              => 'BOOL',
-      'freshness_threshold'          => 'INT',
-      'event_handler'                => 'SELECT',
-      'event_handler_enabled'        => 'BOOL',
-      'low_flap_threshold'           => 'INT',
-      'high_flap_threshold'          => 'INT',
-      'flap_detection_enabled'       => 'BOOL',
-      'flap_detection_options'       => "FLAGS('o','d','u')",
-      'failure_prediction_enabled'   => 'BOOL',
-      'process_perf_data'            => 'BOOL',
-      'retain_status_information'    => 'BOOL',
-      'retain_nonstatus_information' => 'BOOL',
-      'contacts'                     => 'IDLIST',
-      'contact_groups'               => 'IDLIST',
-      'notification_interval'        => 'INT',
-      'first_notification_delay'     => 'INT',
-      'notification_period'          => 'SELECT',
-      'notification_options'         => "FLAGS('d','u','r','f','s')",
-      'notifications_enabled'        => 'BOOL',
-      'stalking_options'             => "FLAGS('o','d','u')",
-      'notes'                        => 'TEXT',
-      'notes_url'                    => 'VARCHAR(128)',
-      'action_url'                   => 'VARCHAR(128)',
-      'icon_image'                   => 'VARCHAR(64)',
-      'icon_image_alt'               => 'VARCHAR(64)',
-      'statusmap_image'              => 'VARCHAR(64)',
-      '2d_coords'                    => 'VARCHAR(32)',
-      'platform'                     => "PLATFORM",
-      'host_is_server'               => 'BOOL'
+        'host_name' => 'VARCHAR(255)',
+        'alias' => 'VARCHAR(64)',
+        'display_name' => 'VARCHAR(64)',
+        'address' => 'VARCHAR(64)',
+        'address6' => 'VARCHAR(128)',
+        'parents' => 'IDLIST',
+        'hostgroups' => 'IDLIST',
+        'check_command' => 'SELECT',
+        'initial_state' => "RADIO('o','d','u')",
+        'max_check_attempts' => 'SLIDER',
+        'check_interval' => 'INT',
+        'retry_interval' => 'INT',
+        'active_checks_enabled' => 'BOOL',
+        'passive_checks_enabled' => 'BOOL',
+        'check_period' => 'SELECT',
+        'obsess_over_host' => 'BOOL',
+        'check_freshness' => 'BOOL',
+        'freshness_threshold' => 'INT',
+        'event_handler' => 'SELECT',
+        'event_handler_enabled' => 'BOOL',
+        'low_flap_threshold' => 'INT',
+        'high_flap_threshold' => 'INT',
+        'flap_detection_enabled' => 'BOOL',
+        'flap_detection_options' => "FLAGS('o','d','u')",
+        'failure_prediction_enabled' => 'BOOL',
+        'process_perf_data' => 'BOOL',
+        'retain_status_information' => 'BOOL',
+        'retain_nonstatus_information' => 'BOOL',
+        'contacts' => 'IDLIST',
+        'contact_groups' => 'IDLIST',
+        'notification_interval' => 'INT',
+        'first_notification_delay' => 'INT',
+        'notification_period' => 'SELECT',
+        'notification_options' => "FLAGS('d','u','r','f','s')",
+        'notifications_enabled' => 'BOOL',
+        'stalking_options' => "FLAGS('o','d','u')",
+        'notes' => 'TEXT',
+        'notes_url' => 'VARCHAR(128)',
+        'action_url' => 'VARCHAR(128)',
+        'icon_image' => 'VARCHAR(64)',
+        'icon_image_alt' => 'VARCHAR(64)',
+        'statusmap_image' => 'VARCHAR(64)',
+        '2d_coords' => 'VARCHAR(32)',
+        'platform' => "PLATFORM",
+        'host_is_server' => 'BOOL'
     ];
     public $keywordsInfo = [
-      'host_name'                    => [
-        'severity' => 'mandatory',
-        'title'    => 'Host Name', 'required' => true],
-      'alias'                        => [
-        'severity' => 'optional',
-        'title'    => 'Host Alias', 'required' => true],
-      'display_name'                 => [
-        'severity' => 'optional',
-        'title'    => 'Display Name'],
-      'address'                      => [
-        'severity'  => 'optional',
-        'title'     => 'IPv4 address ', 'mandatory' => true],
-      'address6'                     => [
-        'severity'  => 'optional',
-        'title'     => 'IPv6 address', 'mandatory' => true],
-      'parents'                      => [
-        'severity' => 'optional',
-        'title'    => 'Parents',
-        'refdata'  => [
-          'table'         => 'host',
-          'captioncolumn' => 'host_name',
-          'idcolumn'      => 'host_id',
-          'public'        => true,
-          'condition'     => ['register' => 1]]],
-      'hostgroups'                   => [
-        'severity' => 'optional',
-        'title'    => 'Host Groups',
-        'refdata'  => [
-          'table'         => 'hostgroup',
-          'captioncolumn' => 'hostgroup_name',
-          'idcolumn'      => 'hostgroup_id']
-      ],
-      'check_command'                => [
-        'severity' => 'advanced',
-        'title'    => 'Check command',
-        'severity' => 'optional',
-        'refdata'  => [
-          'table'         => 'command',
-          'captioncolumn' => 'command_name',
-          'idcolumn'      => 'command_id',
-          'public'        => true,
-          'condition'     => ['command_type' => 'check']
-        ]
-      ],
-      'initial_state'                => ['title'    => 'Initial State',
-        'severity' => 'advanced',
-        'o'        => 'UP',
-        'd'        => 'DOWN',
-        'u'        => 'UNREACHABLE',
-      ],
-      'max_check_attempts'           => [
-        'title'    => 'maximál check attempts',
-        'severity' => 'advanced',
-      ],
-      'check_interval'               => ['title'    => 'Check interval',
-        'severity' => 'advanced',
-      ],
-      'retry_interval'               => [
-        'severity' => 'optional',
-        'title'    => 'Retry interval'
-      ],
-      'active_checks_enabled'        => [
-        'severity' => 'advanced',
-        'title'    => 'Active Checks enabled'],
-      'passive_checks_enabled'       => [
-        'severity' => 'advanced',
-        'title'    => 'Passive Checks enabled'],
-      'check_period'                 => [
-        'severity' => 'optional',
-        'title'    => 'Check period',
-        'refdata'  => [
-          'table'         => 'timeperiod',
-          'captioncolumn' => 'timeperiod_name',
-          'public'        => true,
-          'idcolumn'      => 'timeperiod_id']
-      ],
-      'obsess_over_host'             => [
-        'severity' => 'advanced',
-        'title'    => 'Obsess over host'],
-      'check_freshness'              => [
-        'severity' => 'advanced',
-        'title'    => 'Check freshness'],
-      'freshness_threshold'          => [
-        'severity' => 'advanced',
-        'title'    => 'Freshness threshold'],
-      'event_handler'                => ['title'    => 'Event handler',
-        'severity' => 'advanced',
-        'refdata'  => [
-          'table'         => 'command',
-          'captioncolumn' => 'command_name',
-          'idcolumn'      => 'command_id',
-          'public'        => true,
-          'condition'     => ['command_type' => 'handler']
-        ]
-      ],
-      'event_handler_enabled'        => [
-        'severity' => 'advanced',
-        'title'    => 'Event handler enabled'],
-      'low_flap_threshold'           => [
-        'severity' => 'advanced',
-        'title'    => 'Low flap treshold'],
-      'high_flap_threshold'          => [
-        'severity' => 'advanced',
-        'title'    => 'High flap threshold'],
-      'flap_detection_enabled'       => [
-        'severity' => 'advanced',
-        'title'    => 'Flap detection enabled'],
-      'flap_detection_options'       => [
-        'severity' => 'advanced',
-        'title'    => 'Flap detection options',
-        'o'        => 'Up',
-        'd'        => 'Down',
-        'u'        => 'Unreachable',
-      ],
-      'failure_prediction_enabled'   => [
-        'severity' => 'advanced',
-        'title'    => 'Failure prediction enabled'],
-      'process_perf_data'            => [
-        'severity' => 'advanced',
-        'title'    => 'Process perf data'],
-      'retain_status_information'    => [
-        'severity' => 'advanced',
-        'title'    => 'retain_status_information'],
-      'retain_nonstatus_information' => [
-        'severity' => 'advanced',
-        'title'    => 'Retain nonstatus information'],
-      'contacts'                     => [
-        'severity' => 'optional',
-        'title'    => 'Contacts',
-        'refdata'  => [
-          'table'         => 'contact',
-          'captioncolumn' => 'contact_name',
-          'idcolumn'      => 'contact_id']],
-      'contact_groups'               => [
-        'severity' => 'optional',
-        'title'    => 'Contact Groups',
-        'refdata'  => [
-          'table'         => 'contactgroup',
-          'captioncolumn' => 'contactgroup_name',
-          'idcolumn'      => 'contactgroup_id']
-      ],
-      'notification_interval'        => [
-        'severity' => 'optional',
-        'title'    => 'Notification interval'],
-      'first_notification_delay'     => [
-        'severity' => 'advanced',
-        'title'    => 'First notification delay'],
-      'notification_period'          => [
-        'severity' => 'optional',
-        'title'    => 'Notification period',
-        'required' => true,
-        'refdata'  => [
-          'table'         => 'timeperiod',
-          'captioncolumn' => 'timeperiod_name',
-          'public'        => true,
-          'idcolumn'      => 'timeperiod_id']
-      ],
-      'notification_options'         => [
-        'severity' => 'advanced',
-        'title'    => 'notification options',
-        'd'        => 'DOWN',
-        'u'        => 'UNREACHABLE',
-        'r'        => 'RECOVERY',
-        'f'        => 'FLAPPING',
-        's'        => 'SCHEDULED DOWNTIME'
-      ],
-      'notifications_enabled'        => [
-        'severity' => 'optional',
-        'title'    => 'Notifications enabled'],
-      'stalking_options'             => [
-        'severity' => 'advanced',
-        'title'    => 'Stalking options',
-        'o'        => 'UP',
-        'd'        => 'DOWN',
-        'u'        => 'UNREACHABLE'],
-      'notes'                        => [
-        'severity'  => 'basic',
-        'title'     => 'Notes', 'mandatory' => true],
-      'notes_url'                    => [
-        'severity' => 'advanced',
-        'title'    => 'Notes url'],
-      'action_url'                   => [
-        'severity' => 'advanced',
-        'title'    => 'Action url'],
-      'icon_image'                   => [
-        'severity'  => 'advanced',
-        'title'     => 'Icon Image', 'mandatory' => true],
-      'icon_image_alt'               => [
-        'severity' => 'advanced',
-        'title'    => 'Icon image title'],
-      'statusmap_image'              => [
-        'severity' => 'advanced',
-        'title'    => 'Statusmap image'],
-      '2d_coords'                    => [
-        'severity' => 'advanced',
-        'title'    => 'Statusmap coordinates'],
-      'platform'                     => [
-        'severity'  => 'basic',
-        'title'     => 'Platform', 'mandatory' => true],
-      'host_is_server'               => [
-        'severity' => 'advanced',
-        'title'    => 'Host Is Server'],
+        'host_name' => [
+            'severity' => 'mandatory',
+            'title' => 'Host Name', 'required' => true],
+        'alias' => [
+            'severity' => 'optional',
+            'title' => 'Host Alias', 'required' => true],
+        'display_name' => [
+            'severity' => 'optional',
+            'title' => 'Display Name'],
+        'address' => [
+            'severity' => 'optional',
+            'title' => 'IPv4 address ', 'mandatory' => true],
+        'address6' => [
+            'severity' => 'optional',
+            'title' => 'IPv6 address', 'mandatory' => true],
+        'parents' => [
+            'severity' => 'optional',
+            'title' => 'Parents',
+            'refdata' => [
+                'table' => 'host',
+                'captioncolumn' => 'host_name',
+                'idcolumn' => 'host_id',
+                'public' => true,
+                'condition' => ['register' => 1]]],
+        'hostgroups' => [
+            'severity' => 'optional',
+            'title' => 'Host Groups',
+            'refdata' => [
+                'table' => 'hostgroup',
+                'captioncolumn' => 'hostgroup_name',
+                'idcolumn' => 'hostgroup_id']
+        ],
+        'check_command' => [
+            'severity' => 'advanced',
+            'title' => 'Check command',
+            'severity' => 'optional',
+            'refdata' => [
+                'table' => 'command',
+                'captioncolumn' => 'command_name',
+                'idcolumn' => 'command_id',
+                'public' => true,
+                'condition' => ['command_type' => 'check']
+            ]
+        ],
+        'initial_state' => ['title' => 'Initial State',
+            'severity' => 'advanced',
+            'o' => 'UP',
+            'd' => 'DOWN',
+            'u' => 'UNREACHABLE',
+        ],
+        'max_check_attempts' => [
+            'title' => 'maximál check attempts',
+            'severity' => 'advanced',
+        ],
+        'check_interval' => ['title' => 'Check interval',
+            'severity' => 'advanced',
+        ],
+        'retry_interval' => [
+            'severity' => 'optional',
+            'title' => 'Retry interval'
+        ],
+        'active_checks_enabled' => [
+            'severity' => 'advanced',
+            'title' => 'Active Checks enabled'],
+        'passive_checks_enabled' => [
+            'severity' => 'advanced',
+            'title' => 'Passive Checks enabled'],
+        'check_period' => [
+            'severity' => 'optional',
+            'title' => 'Check period',
+            'refdata' => [
+                'table' => 'timeperiod',
+                'captioncolumn' => 'timeperiod_name',
+                'public' => true,
+                'idcolumn' => 'timeperiod_id']
+        ],
+        'obsess_over_host' => [
+            'severity' => 'advanced',
+            'title' => 'Obsess over host'],
+        'check_freshness' => [
+            'severity' => 'advanced',
+            'title' => 'Check freshness'],
+        'freshness_threshold' => [
+            'severity' => 'advanced',
+            'title' => 'Freshness threshold'],
+        'event_handler' => ['title' => 'Event handler',
+            'severity' => 'advanced',
+            'refdata' => [
+                'table' => 'command',
+                'captioncolumn' => 'command_name',
+                'idcolumn' => 'command_id',
+                'public' => true,
+                'condition' => ['command_type' => 'handler']
+            ]
+        ],
+        'event_handler_enabled' => [
+            'severity' => 'advanced',
+            'title' => 'Event handler enabled'],
+        'low_flap_threshold' => [
+            'severity' => 'advanced',
+            'title' => 'Low flap treshold'],
+        'high_flap_threshold' => [
+            'severity' => 'advanced',
+            'title' => 'High flap threshold'],
+        'flap_detection_enabled' => [
+            'severity' => 'advanced',
+            'title' => 'Flap detection enabled'],
+        'flap_detection_options' => [
+            'severity' => 'advanced',
+            'title' => 'Flap detection options',
+            'o' => 'Up',
+            'd' => 'Down',
+            'u' => 'Unreachable',
+        ],
+        'failure_prediction_enabled' => [
+            'severity' => 'advanced',
+            'title' => 'Failure prediction enabled'],
+        'process_perf_data' => [
+            'severity' => 'advanced',
+            'title' => 'Process perf data'],
+        'retain_status_information' => [
+            'severity' => 'advanced',
+            'title' => 'retain_status_information'],
+        'retain_nonstatus_information' => [
+            'severity' => 'advanced',
+            'title' => 'Retain nonstatus information'],
+        'contacts' => [
+            'severity' => 'optional',
+            'title' => 'Contacts',
+            'refdata' => [
+                'table' => 'contact',
+                'captioncolumn' => 'contact_name',
+                'idcolumn' => 'contact_id']],
+        'contact_groups' => [
+            'severity' => 'optional',
+            'title' => 'Contact Groups',
+            'refdata' => [
+                'table' => 'contactgroup',
+                'captioncolumn' => 'contactgroup_name',
+                'idcolumn' => 'contactgroup_id']
+        ],
+        'notification_interval' => [
+            'severity' => 'optional',
+            'title' => 'Notification interval'],
+        'first_notification_delay' => [
+            'severity' => 'advanced',
+            'title' => 'First notification delay'],
+        'notification_period' => [
+            'severity' => 'optional',
+            'title' => 'Notification period',
+            'required' => true,
+            'refdata' => [
+                'table' => 'timeperiod',
+                'captioncolumn' => 'timeperiod_name',
+                'public' => true,
+                'idcolumn' => 'timeperiod_id']
+        ],
+        'notification_options' => [
+            'severity' => 'advanced',
+            'title' => 'notification options',
+            'd' => 'DOWN',
+            'u' => 'UNREACHABLE',
+            'r' => 'RECOVERY',
+            'f' => 'FLAPPING',
+            's' => 'SCHEDULED DOWNTIME'
+        ],
+        'notifications_enabled' => [
+            'severity' => 'optional',
+            'title' => 'Notifications enabled'],
+        'stalking_options' => [
+            'severity' => 'advanced',
+            'title' => 'Stalking options',
+            'o' => 'UP',
+            'd' => 'DOWN',
+            'u' => 'UNREACHABLE'],
+        'notes' => [
+            'severity' => 'basic',
+            'title' => 'Notes', 'mandatory' => true],
+        'notes_url' => [
+            'severity' => 'advanced',
+            'title' => 'Notes url'],
+        'action_url' => [
+            'severity' => 'advanced',
+            'title' => 'Action url'],
+        'icon_image' => [
+            'severity' => 'advanced',
+            'title' => 'Icon Image', 'mandatory' => true],
+        'icon_image_alt' => [
+            'severity' => 'advanced',
+            'title' => 'Icon image title'],
+        'statusmap_image' => [
+            'severity' => 'advanced',
+            'title' => 'Statusmap image'],
+        '2d_coords' => [
+            'severity' => 'advanced',
+            'title' => 'Statusmap coordinates'],
+        'platform' => [
+            'severity' => 'basic',
+            'title' => 'Platform', 'mandatory' => true],
+        'host_is_server' => [
+            'severity' => 'advanced',
+            'title' => 'Host Is Server'],
     ];
 
     /**
@@ -334,26 +332,30 @@ class Host extends Configurator
 
         $delAll           = true;
         $service          = new Service();
-        $servicesAssigned = $service->dblink->queryToArray('SELECT ' . $service->myKeyColumn . ',' . $service->nameColumn . ' FROM ' . $service->myTable . ' WHERE ' . 'host_name' . ' LIKE \'%"' . $this->getName() . '"%\'', $service->myKeyColumn);
+        $servicesAssigned = $service->dblink->queryToArray('SELECT '.$service->keyColumn.','.$service->nameColumn.' FROM '.$service->myTable.' WHERE '.'host_name'.' LIKE \'%"'.$this->getName().'"%\'',
+            $service->keyColumn);
         foreach ($servicesAssigned as $serviceID => $serviceInfo) {
             $service->loadFromSQL($serviceID);
             $service->delHostName($this->getId(), $this->getName());
             if (!$service->saveToSQL()) {
-                $this->addStatusMessage(sprintf(_('Unregister %s from service %s error'), $this->getName(), $service->getName()), 'Error');
+                $this->addStatusMessage(sprintf(_('Unregister %s from service %s error'),
+                        $this->getName(), $service->getName()), 'Error');
                 $delAll = false;
             }
         }
 
-        $childsOfMe = $this->dblink->queryToArray('SELECT ' . $this->myKeyColumn . ',' . $this->nameColumn . ' FROM ' . $this->myTable . ' WHERE parents ' .
-            ' LIKE \'%' . $this->getName() . '%\'', $this->myKeyColumn);
+        $childsOfMe = $this->dblink->queryToArray('SELECT '.$this->keyColumn.','.$this->nameColumn.' FROM '.$this->myTable.' WHERE parents '.
+            ' LIKE \'%'.$this->getName().'%\'', $this->keyColumn);
 
         foreach ($childsOfMe as $chid_id => $child_info) {
             $child = new Host($chid_id);
 
             if ($child->delMember('parents', $this->getId(), $this->getName()) && $child->saveToSQL()) {
-                $this->addStatusMessage(sprintf(_('%s not an parent of %s'), $this->getName(), $child->getName()), 'success');
+                $this->addStatusMessage(sprintf(_('%s not an parent of %s'),
+                        $this->getName(), $child->getName()), 'success');
             } else {
-                $this->addStatusMessage(sprintf(_('%s is still parent of %s'), $this->getName(), $child->getName()), 'warning');
+                $this->addStatusMessage(sprintf(_('%s is still parent of %s'),
+                        $this->getName(), $child->getName()), 'warning');
             }
         }
 
@@ -414,7 +416,8 @@ class Host extends Configurator
                     $allData[$hostID]['contacts'] = [$hostOwnerLogin];
                 }
             } else {
-                $this->addStatusMessage(_('Host without owner') . ': #' . $hostInfo[$this->myKeyColumn] . ': ' . $hostInfo[$this->nameColumn], 'warning');
+                $this->addStatusMessage(_('Host without owner').': #'.$hostInfo[$this->keyColumn].': '.$hostInfo[$this->nameColumn],
+                    'warning');
             }
         }
 
@@ -446,17 +449,20 @@ class Host extends Configurator
 
         $renameAll        = true;
         $service          = new Service();
-        $servicesAssigned = $service->dblink->queryToArray('SELECT ' . $service->myKeyColumn . ',' . $service->nameColumn . ' FROM ' . $service->myTable . ' WHERE ' . 'host_name' . ' LIKE \'%"' . $oldname . '"%\'', $service->myKeyColumn);
+        $servicesAssigned = $service->dblink->queryToArray('SELECT '.$service->keyColumn.','.$service->nameColumn.' FROM '.$service->myTable.' WHERE '.'host_name'.' LIKE \'%"'.$oldname.'"%\'',
+            $service->keyColumn);
         foreach ($servicesAssigned as $serviceID => $serviceInfo) {
             $service->loadFromSQL($serviceID);
             $service->renameHostName($this->getId(), $newname);
             if (!$service->saveToSQL()) {
-                $this->addStatusMessage(sprintf(_('Error renaming %s within service %s'), $this->getName(), $service->getName()), $Type);
+                $this->addStatusMessage(sprintf(_('Error renaming %s within service %s'),
+                        $this->getName(), $service->getName()), $Type);
                 $renameAll = false;
             }
         }
 
-        $childsAssigned = $this->dblink->queryToArray('SELECT ' . $this->myKeyColumn . ',' . $this->nameColumn . ' FROM ' . $this->myTable . ' WHERE ' . 'parents' . ' LIKE \'%"' . $oldname . '"%\'', $this->myKeyColumn);
+        $childsAssigned = $this->dblink->queryToArray('SELECT '.$this->keyColumn.','.$this->nameColumn.' FROM '.$this->myTable.' WHERE '.'parents'.' LIKE \'%"'.$oldname.'"%\'',
+            $this->keyColumn);
         foreach ($childsAssigned as $chid_id => $child_info) {
             $child = new Host($chid_id);
             $child->delMember('parents', $this->getId(), $oldname);
@@ -477,7 +483,7 @@ class Host extends Configurator
     public function favToIcon()
     {
         $icoUrl    = false;
-        $baseUrl   = 'http://' . $this->getDataValue('host_name') . '/';
+        $baseUrl   = 'http://'.$this->getDataValue('host_name').'/';
         $indexpage = @file_get_contents($baseUrl);
         $icoUrls   = [];
         if (strlen($indexpage)) {
@@ -489,7 +495,8 @@ class Host extends Configurator
                 if (isset($link->attributes)) {
                     foreach ($link->attributes as $atribut) {
                         if (isset($atribut->name)) {
-                            if (($atribut->name == 'rel') && stristr($atribut->value, 'icon')) {
+                            if (($atribut->name == 'rel') && stristr($atribut->value,
+                                    'icon')) {
                                 $urlLink = true;
                                 $rel     = $atribut->value;
                             }
@@ -502,7 +509,7 @@ class Host extends Configurator
                         if (strstr($url, '://')) {
                             $icoUrls[$rel] = $url;
                         } else {
-                            $icoUrls[$rel] = $baseUrl . $url;
+                            $icoUrls[$rel] = $baseUrl.$url;
                         }
                     }
                 }
@@ -510,7 +517,7 @@ class Host extends Configurator
         }
 
         if (!count($icoUrls)) {
-            $icoUrls[] = $baseUrl . '/favicon.ico';
+            $icoUrls[] = $baseUrl.'/favicon.ico';
         } else {
             if (count($icoUrls) == 1) {
                 $icoUrl = current($icoUrls);
@@ -545,7 +552,7 @@ class Host extends Configurator
 
 
 
-        $tmpfilename = sys_get_temp_dir() . '/' . \Ease\Sand::randomString();
+        $tmpfilename = sys_get_temp_dir().'/'.\Ease\Sand::randomString();
 
 
         $ch         = curl_init();
@@ -562,9 +569,11 @@ class Host extends Configurator
 
         if (\Icinga\Editor\UI\IconSelector::imageTypeOK($tmpfilename)) {
 
-            \Ease\Shared::webPage()->addStatusMessage(sprintf(_('Nalezena ikona %s'), $icoUrl), 'success');
+            \Ease\Shared::webPage()->addStatusMessage(sprintf(_('Nalezena ikona %s'),
+                    $icoUrl), 'success');
 
-            $newicon = \Icinga\Editor\UI\IconSelector::saveIcon($tmpfilename, $this);
+            $newicon = \Icinga\Editor\UI\IconSelector::saveIcon($tmpfilename,
+                    $this);
 
             if ($newicon) {
                 $this->setDataValue('icon_image', $newicon);
@@ -596,7 +605,8 @@ class Host extends Configurator
         $services = [];
 
         $service          = new Service();
-        $servicesAssigned = $service->dblink->queryToArray('SELECT ' . $service->myKeyColumn . ',' . $service->nameColumn . ' FROM ' . $service->myTable . ' WHERE host_name LIKE \'%"' . $this->getName() . '"%\'', $service->myKeyColumn);
+        $servicesAssigned = $service->dblink->queryToArray('SELECT '.$service->keyColumn.','.$service->nameColumn.' FROM '.$service->myTable.' WHERE host_name LIKE \'%"'.$this->getName().'"%\'',
+            $service->keyColumn);
         if ($servicesAssigned) {
             foreach ($servicesAssigned as $service_id => $service_info) {
                 $services[$service_id] = $service_info[$service->nameColumn];
@@ -613,14 +623,15 @@ class Host extends Configurator
     public function getInfoBlock()
     {
         $block = parent::getInfoBlock();
-        $block->addDef(_('Alias'), [new \Icinga\Editor\UI\HostIcon($this), $this->getDataValue('alias')]);
+        $block->addDef(_('Alias'),
+            [new \Icinga\Editor\UI\HostIcon($this), $this->getDataValue('alias')]);
         $block->addDef(_('Platform'),
             new \Icinga\Editor\UI\PlatformIcon($this->getDataValue('platform')));
 
         $parents = $this->getDataValue('parents');
         if ($parents) {
             foreach ($parents as $pId => $pName) {
-                $parents[$pId] = '<a href="host.php?host_id=' . $pId . '">' . $pName . '</a>';
+                $parents[$pId] = '<a href="host.php?host_id='.$pId.'">'.$pName.'</a>';
             }
             $block->addDef(_('Parent'), implode(',', $parents));
         }
@@ -687,9 +698,10 @@ class Host extends Configurator
     {
         $configuration    = [];
         $service          = new Service;
-        $servicesAssigned = $service->dblink->queryToArray('SELECT `' . $service->getmyKeyColumn() . '` FROM ' . $service->myTable . ' WHERE host_name LIKE \'%"' . $this->getName() . '"%\'', $service->myKeyColumn);
+        $servicesAssigned = $service->dblink->queryToArray('SELECT `'.$service->getKeyColumn().'` FROM '.$service->myTable.' WHERE host_name LIKE \'%"'.$this->getName().'"%\'',
+            $service->keyColumn);
         foreach ($servicesAssigned as $serviceAssigned) {
-            $service->loadFromSQL((int) $serviceAssigned[$service->myKeyColumn]);
+            $service->loadFromSQL((int) $serviceAssigned[$service->keyColumn]);
             $service->unsetDataValue('display_name'); //Položky které se mohou měnit bez nutnosti aktualizovat senzor
             $service->unsetDataValue('service_description');
             $service->unsetDataValue('host_name');
@@ -704,7 +716,7 @@ class Host extends Configurator
             $service->unsetDataValue($service->myLastModifiedColumn);
             $configuration[] = $service->getEffectiveCfg();
         }
-        return hash('md5', $this->getName() . serialize($configuration));
+        return hash('md5', $this->getName().serialize($configuration));
     }
 
     /**
@@ -718,7 +730,8 @@ class Host extends Configurator
     {
         if ($column == 'parents') {
             if ($memberName == $this->getName()) {
-                $this->addStatusMessage(_('Host can not by its own parent'), 'warning');
+                $this->addStatusMessage(_('Host can not by its own parent'),
+                    'warning');
                 return null;
             }
         }
@@ -738,9 +751,11 @@ class Host extends Configurator
             $this->takeData($data);
         }
         $hostgroup = new Hostgroup(\Ease\Shared::user()->getUserLogin());
-        $this->addMember('hostgroups', $hostgroup->getId(), $hostgroup->getName());
+        $this->addMember('hostgroups', $hostgroup->getId(),
+            $hostgroup->getName());
 
-        $this->setDataValue('hostgroups', serialize($this->getDataValue('hostgroups')));
+        $this->setDataValue('hostgroups',
+            serialize($this->getDataValue('hostgroups')));
         return parent::insertToSQL();
     }
 
@@ -760,5 +775,4 @@ class Host extends Configurator
         }
         return parent::takeData($data, $dataPrefix);
     }
-
 }

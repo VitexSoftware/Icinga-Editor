@@ -10,7 +10,7 @@ namespace Icinga\Editor;
 class Preferences extends \Ease\Brick
 {
     public $myTable     = 'preferences';
-    public $myKeyColumn = 'key';
+    public $KeyColumn = 'key';
 
     /**
      * Preferences array

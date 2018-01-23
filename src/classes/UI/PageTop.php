@@ -9,7 +9,7 @@ namespace Icinga\Editor\UI;
  * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
  */
-class PageTop extends \Ease\Html\Div
+class PageTop extends \Ease\Html\HeaderTag
 {
     /**
      * Titulek stránky

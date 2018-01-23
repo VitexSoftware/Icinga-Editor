@@ -6,7 +6,7 @@ namespace Icinga\Editor;
  * Icinga Editor - Contacgroup
  *
  * @author     Vitex <vitex@hippy.cz>
- * @copyright  2012-2016 Vitex@hippy.cz (G)
+ * @copyright  2012-2018 Vitex@hippy.cz (G)
  */
 require_once 'includes/IEInit.php';
 
@@ -41,7 +41,7 @@ $form = new \Ease\TWB\Form('Contactgroup', 'contactgroup.php', 'POST',
     $contactgroupEdit, ['class' => 'form-horizontal']);
 $form->setTagID($form->getTagName());
 if (!is_null($contactgroup->getMyKey())) {
-    $form->addItem(new \Ease\Html\InputHiddenTag($contactgroup->getmyKeyColumn(),
+    $form->addItem(new \Ease\Html\InputHiddenTag($contactgroup->getKeyColumn(),
         $contactgroup->getMyKey()));
 }
 $form->addItem('<br>');

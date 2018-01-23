@@ -6,7 +6,7 @@ namespace Icinga\Editor;
  * User passwords change
  *
  * @author Vítězslav Dvořák <vitex@hippy.cz>
- * @copyright Vitex Software © 2011-2016
+ * @copyright Vitex Software © 2011-2018
  */
 require_once 'includes/IEInit.php';
 

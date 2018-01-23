@@ -4,7 +4,7 @@
  * Init aplikace
  *
  * @author    Vitex <vitex@hippy.cz>
- * @copyright Vitex@hippy.cz (G) 2010-2016
+ * @copyright Vitex@hippy.cz (G) 2010-2018
  */
 
 namespace Icinga\Editor;

@@ -46,7 +46,7 @@ class HostgroupMap extends HostMap
         $hosts   = $host->getColumnsFromSQL(
             ['alias', 'address', 'parents', 'notifications_enabled', 'active_checks_enabled',
             'passive_checks_enabled', '3d_coords', $host->myCreateColumn, $host->myLastModifiedColumn,
-            $host->nameColumn, $host->myKeyColumn],
+            $host->nameColumn, $host->keyColumn],
             'host_id IN ( '.implode(',', array_keys($members)).' )'
         );
 
@@ -79,8 +79,8 @@ class HostgroupMap extends HostMap
 
             $this->addNode($name,
                 [
-                'id' => 'host_'.$host_info[$host->myKeyColumn],
-                'node_id' => $host_info[$host->myKeyColumn],
+                'id' => 'host_'.$host_info[$host->keyColumn],
+                'node_id' => $host_info[$host->keyColumn],
                 'color' => $color,
                 'x' => $x,
                 'y' => $y,

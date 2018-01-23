@@ -11,7 +11,7 @@ namespace Icinga\Editor\Engine;
 class Hostgroup extends Configurator
 {
     public $myTable     = 'hostgroup';
-    public $myKeyColumn = 'hostgroup_id';
+    public $KeyColumn = 'hostgroup_id';
     public $keyword     = 'hostgroup';
     public $nameColumn  = 'hostgroup_name';
 
@@ -82,8 +82,8 @@ class Hostgroup extends Configurator
      */
     public function deleteHost($hostname)
     {
-        $memberOf = \Ease\Shared::db()->queryToArray('SELECT '.$this->getmyKeyColumn().','.$this->nameColumn.' FROM '.$this->myTable.' WHERE members LIKE \'%"'.$hostname.'"%\' ',
-            $this->getmyKeyColumn());
+        $memberOf = \Ease\Shared::db()->queryToArray('SELECT '.$this->getKeyColumn().','.$this->nameColumn.' FROM '.$this->myTable.' WHERE members LIKE \'%"'.$hostname.'"%\' ',
+            $this->getKeyColumn());
         foreach ($memberOf as $groupID => $group) {
             $found = false;
             $this->loadFromSQL($groupID);
@@ -116,7 +116,7 @@ class Hostgroup extends Configurator
 
     public function loadDefault()
     {
-        $groupID = \Ease\Shared::db()->queryToValue('SELECT '.$this->getmyKeyColumn().' FROM '.$this->myTable.' WHERE '.$this->userColumn.'= '.\Ease\Shared::user()->getUserID().' ORDER BY '.$this->getmyKeyColumn().' DESC LIMIT 1');
+        $groupID = \Ease\Shared::db()->queryToValue('SELECT '.$this->getKeyColumn().' FROM '.$this->myTable.' WHERE '.$this->userColumn.'= '.\Ease\Shared::user()->getUserID().' ORDER BY '.$this->getKeyColumn().' DESC LIMIT 1');
         if ($groupID) {
             $this->loadFromSQL((int) $groupID);
 
@@ -134,8 +134,8 @@ class Hostgroup extends Configurator
      */
     public function renameHost($oldname, $newname)
     {
-        $memberOf = \Ease\Shared::db()->queryToArray('SELECT '.$this->getmyKeyColumn().','.$this->nameColumn.' FROM '.$this->myTable.' WHERE members LIKE \'%"'.$oldname.'"%\' ',
-            $this->getmyKeyColumn());
+        $memberOf = \Ease\Shared::db()->queryToArray('SELECT '.$this->getKeyColumn().','.$this->nameColumn.' FROM '.$this->myTable.' WHERE members LIKE \'%"'.$oldname.'"%\' ',
+            $this->getKeyColumn());
         foreach ($memberOf as $groupID => $group) {
             $found = false;
             $this->loadFromSQL($groupID);
@@ -179,7 +179,7 @@ class Hostgroup extends Configurator
         }
         $host  = new Host;
         $hosts = $host->getColumnsFromSQL(
-            [$host->myKeyColumn],
+            [$host->keyColumn],
             [
             'hostgroups' => '%'.$this->getName().'%'
             ]
@@ -207,7 +207,7 @@ class Hostgroup extends Configurator
 
         $subgroup  = new Hostgroup;
         $subgroups = $subgroup->getColumnsFromSQL(
-            [$subgroup->myKeyColumn],
+            [$subgroup->keyColumn],
             [
             'hostgroup_members' => '%'.$this->getName().'%'
             ]

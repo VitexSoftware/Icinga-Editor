@@ -3,7 +3,7 @@
  * Konfigurace Scriptů
  *
  * @author     Vitex <vitex@hippy.cz>
- * @copyright  2012-2016 Vitex@hippy.cz (G)
+ * @copyright  2012-2018 Vitex@hippy.cz (G)
  */
 
 namespace Icinga\Editor;
@@ -14,7 +14,7 @@ namespace Icinga\Editor;
 class Script extends engine\Configurator
 {
     public $myTable              = 'script';
-    public $myKeyColumn          = 'script_id';
+    public $KeyColumn          = 'script_id';
     public $nameColumn           = 'filename';
     public $keyword              = 'script';
     public $myCreateColumn       = 'DatCreate';

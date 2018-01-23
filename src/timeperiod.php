@@ -52,7 +52,7 @@ $form = $oPage->columnII->addItem(new \Ease\Html\Form('Period',
     'timeperiod.php', 'POST', $TimepriodEdit, ['class' => 'form-horizontal']));
 $form->setTagID($form->getTagName());
 if (!is_null($timeperiod->getMyKey())) {
-    $form->addItem(new \Ease\Html\InputHiddenTag($timeperiod->getmyKeyColumn(),
+    $form->addItem(new \Ease\Html\InputHiddenTag($timeperiod->getKeyColumn(),
         $timeperiod->getMyKey()));
 }
 $timesTable = new \Ease\Html\TableTag();
@@ -67,7 +67,7 @@ $timesTable->addRowHeaderColumns(
 ]);
 
 foreach ($timeperiod->timeperiods as $timeName => $TimeIntervals) {
-    $timesTable->addRowColumns([$timeName, $TimeIntervals, new \Ease\Html\ATag('?del='.$timeName.'&amp;'.$timeperiod->getmyKeyColumn().'='.$timeperiod->getMyKey(),
+    $timesTable->addRowColumns([$timeName, $TimeIntervals, new \Ease\Html\ATag('?del='.$timeName.'&amp;'.$timeperiod->getKeyColumn().'='.$timeperiod->getMyKey(),
             '<i class="icon-remove"></i>')]);
 }
 

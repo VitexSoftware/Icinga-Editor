@@ -95,7 +95,7 @@ class Configurator extends \Ease\Brick
 
     /**
      * Objekt vlastníka objektu
-     * @var IEUser
+     * @var \Icinga\Editor\User
      */
     public $owner = null;
 
@@ -136,7 +136,7 @@ class Configurator extends \Ease\Brick
 
         if (!is_null($itemID)) {
             if (is_string($itemID) && $this->nameColumn) {
-                $this->setmyKeyColumn($this->nameColumn);
+                $this->setKeyColumn($this->nameColumn);
                 $this->loadFromSQL($itemID);
                 $this->resetObjectIdentity();
             } else {
@@ -165,7 +165,7 @@ class Configurator extends \Ease\Brick
                 'refdata' => [
                     'table' => $this->myTable,
                     'captioncolumn' => 'name',
-                    'idcolumn' => $this->myKeyColumn,
+                    'idcolumn' => $this->keyColumn,
                     'condition' => ['register' => 0]
                 ]
             ];
@@ -236,7 +236,7 @@ class Configurator extends \Ease\Brick
         if (is_numeric($template)) {
             $TemplateData = $this->getDataFromSQL((int) $template);
         } else {
-            $this->setmyKeyColumn('name');
+            $this->setKeyColumn('name');
             $TemplateData = $this->getDataFromSQL($template);
             if (count($TemplateData)) {
                 $TemplateData = $TemplateData[0];
@@ -250,7 +250,7 @@ class Configurator extends \Ease\Brick
         }
         $this->addStatusMessage(sprintf(_('template %s was loaded'),
                 $TemplateData[$this->nameColumn]));
-        unset($TemplateData[$this->myKeyColumn]);
+        unset($TemplateData[$this->keyColumn]);
         unset($TemplateData[$this->nameColumn]);
         $this->setData($TemplateData);
 
@@ -280,7 +280,7 @@ class Configurator extends \Ease\Brick
             }
             ksort($columns);
             fputs($cfg,
-                "define ".$this->keyword." { #".$columns[$this->myKeyColumn]."@".$this->myTable." \n");
+                "define ".$this->keyword." { #".$columns[$this->keyColumn]."@".$this->myTable." \n");
             foreach ($columns as $columnName => $columnValue) {
 
                 if (is_array($columnValue) && (current($columnValue) == 'vitex')) {
@@ -328,8 +328,8 @@ class Configurator extends \Ease\Brick
      */
     public function createSqlStructure()
     {
-        if ($this->getmyKeyColumn()) {
-            $myStruct = array_merge([$this->getmyKeyColumn() => 'INT'],
+        if ($this->getKeyColumn()) {
+            $myStruct = array_merge([$this->getKeyColumn() => 'INT'],
                 $this->useKeywords);
         } else {
             $myStruct = $this->useKeywords;
@@ -393,7 +393,7 @@ class Configurator extends \Ease\Brick
             }
 
             $sqlStruct[$columnName]['type'] = $columnType;
-            if ($columnName == $this->getmyKeyColumn()) {
+            if ($columnName == $this->getKeyColumn()) {
                 $sqlStruct[$columnName]['key']      = 'primary';
                 $sqlStruct[$columnName]['ai']       = true;
                 $sqlStruct[$columnName]['unsigned'] = true;
@@ -605,7 +605,7 @@ class Configurator extends \Ease\Brick
                         $parent = clone $this;
                     }
                     $parent->dataReset();
-                    $parent->setmyKeyColumn('name');
+                    $parent->setKeyColumn('name');
                     $parent->nameColumn = 'name';
                     if (strstr($parent_name, ',')) {
                         $parents = explode(',', $parent_name);
@@ -717,7 +717,7 @@ class Configurator extends \Ease\Brick
     }
 
     /**
-     * Uloží pole dat do MySQL. Pokud je $SearchForID 0 updatuje pokud ze nastaven  myKeyColumn
+     * Uloží pole dat do MySQL. Pokud je $SearchForID 0 updatuje pokud ze nastaven  KeyColumn
      *
      * @param array $data        asociativní pole dat
      * @param bool  $searchForID Zjistit zdali updatovat nebo insertovat
@@ -766,17 +766,17 @@ class Configurator extends \Ease\Brick
         }
         $dbId = null;
         if ($this->allowTemplating && $this->isTemplate() && isset($data['name'])) {
-            if (isset($data[$this->getmyKeyColumn()]) && (int) $data[$this->getmyKeyColumn()]) {
-                $dbId = $this->dblink->queryToValue('SELECT `'.$this->myKeyColumn.'` FROM '.$this->myTable.' WHERE `name`'." = '".$data['name']."' AND ".$this->myKeyColumn.' != '.$data[$this->getmyKeyColumn()]);
+            if (isset($data[$this->getKeyColumn()]) && (int) $data[$this->getKeyColumn()]) {
+                $dbId = $this->dblink->queryToValue('SELECT `'.$this->keyColumn.'` FROM '.$this->myTable.' WHERE `name`'." = '".$data['name']."' AND ".$this->keyColumn.' != '.$data[$this->getKeyColumn()]);
             } else {
-                $dbId = $this->dblink->queryToValue('SELECT `'.$this->myKeyColumn.'` FROM '.$this->myTable.' WHERE `name`'." = '".$data['name']."'");
+                $dbId = $this->dblink->queryToValue('SELECT `'.$this->keyColumn.'` FROM '.$this->myTable.' WHERE `name`'." = '".$data['name']."'");
             }
         } else {
             if (isset($data[$this->nameColumn])) {
-                if (isset($data[$this->getmyKeyColumn()]) && (int) $data[$this->getmyKeyColumn()]) {
-                    $dbId = $this->dblink->queryToValue('SELECT `'.$this->myKeyColumn.'` FROM '.$this->myTable.' WHERE '.$this->nameColumn." = '".$data[$this->nameColumn]."' AND ".$this->myKeyColumn.' != '.$data[$this->getmyKeyColumn()]);
+                if (isset($data[$this->getKeyColumn()]) && (int) $data[$this->getKeyColumn()]) {
+                    $dbId = $this->dblink->queryToValue('SELECT `'.$this->keyColumn.'` FROM '.$this->myTable.' WHERE '.$this->nameColumn." = '".$data[$this->nameColumn]."' AND ".$this->keyColumn.' != '.$data[$this->getKeyColumn()]);
                 } else {
-                    $dbId = $this->dblink->queryToValue('SELECT `'.$this->myKeyColumn.'` FROM '.$this->myTable.' WHERE '.$this->nameColumn." = '".$data[$this->nameColumn]."'");
+                    $dbId = $this->dblink->queryToValue('SELECT `'.$this->keyColumn.'` FROM '.$this->myTable.' WHERE '.$this->nameColumn." = '".$data[$this->nameColumn]."'");
                 }
             }
         }
@@ -789,7 +789,6 @@ class Configurator extends \Ease\Brick
                 $this->addStatusMessage(sprintf(_('%s %s allready defined. Please use another name.'),
                         $this->nameColumn, $data[$this->nameColumn]), 'warning');
             }
-
         } else {
             foreach ($data as $fieldName => $value) {
                 if (!is_null($value)) {
@@ -822,7 +821,7 @@ class Configurator extends \Ease\Brick
     public function getDataFromSQL($itemID = null)
     {
         if (is_string($itemID)) {
-            $this->setmyKeyColumn($this->nameColumn);
+            $this->setKeyColumn($this->nameColumn);
             $data = parent::getDataFromSQL($itemID);
             $this->restoreObjectIdentity();
         } else {
@@ -862,7 +861,7 @@ class Configurator extends \Ease\Brick
         if (is_null($thisID)) {
             $thisID = \Ease\Shared::user()->getUserID();
         }
-        $columnsToGet = [$this->getmyKeyColumn(), $this->nameColumn, 'generate',
+        $columnsToGet = [$this->getKeyColumn(), $this->nameColumn, 'generate',
             $this->myLastModifiedColumn, $this->userColumn];
 
         if (!is_null($extraColumns)) {
@@ -871,7 +870,7 @@ class Configurator extends \Ease\Brick
 
         $data = $this->getColumnsFromSQL($columnsToGet,
             $this->userColumn.'='.$thisID, $this->nameColumn,
-            $this->getmyKeyColumn());
+            $this->getKeyColumn());
 
         return $this->unserializeArrays($data);
     }
@@ -891,7 +890,7 @@ class Configurator extends \Ease\Brick
         if (is_null($thisID)) {
             $thisID = \Ease\Shared::user()->getUserID();
         }
-        $columnsToGet = [$this->getmyKeyColumn(), $this->nameColumn, 'generate',
+        $columnsToGet = [$this->getKeyColumn(), $this->nameColumn, 'generate',
             $this->myLastModifiedColumn, $this->userColumn];
         if ($this->allowTemplating) {
             $columnsToGet[] = 'register';
@@ -907,14 +906,14 @@ class Configurator extends \Ease\Brick
 
             $data = $this->getColumnsFromSQL($columnsToGet,
                 $this->userColumn.'='.$thisID.' OR '.$this->userColumn.' IS NULL OR public=1 ',
-                $this->nameColumn, $this->getmyKeyColumn());
+                $this->nameColumn, $this->getKeyColumn());
         } else {
             $data = $this->getColumnsFromSQL($columnsToGet,
                 $this->ownershipCondition($thisID), $this->nameColumn,
-                $this->getmyKeyColumn());
+                $this->getKeyColumn());
         }
 
-        return $this->unserializeArrays($data);
+        return empty($data) ? [] : $this->unserializeArrays($data);
     }
 
     public function ownershipCondition($thisID)
@@ -996,14 +995,14 @@ class Configurator extends \Ease\Brick
         if (($this->getOwnerID() == \Ease\Shared::user()->getUserID()) || \Ease\Shared::user()->getSettingValue('admin')) {
 
             if ($this->allowTemplating && $this->isTemplate()) {
-                $columnsList = [$this->getmyKeyColumn(), $this->nameColumn,
+                $columnsList = [$this->getKeyColumn(), $this->nameColumn,
                     $this->userColumn];
                 if ($this->publicRecords) {
                     $columnsList[] = 'public';
                 }
                 $used = $this->getColumnsFromSQL($columnsList,
                     ['use' => $this->getDataValue('name')], $this->nameColumn,
-                    $this->getmyKeyColumn());
+                    $this->getKeyColumn());
                 if (count($used)) {
                     $usedFrame = new \Ease\TWB\Panel(_('is template for'),
                         'info', null, _('thus can not be deleted'));
@@ -1011,13 +1010,13 @@ class Configurator extends \Ease\Brick
                         if ($this->publicRecords && ($usInfo['public'] != true) && ($usInfo[$this->userColumn]
                             != \Ease\Shared::user()->getUserID() )) {
                             $usedFrame->addItem(new \Ease\Html\Span(
-                                $usInfo[$this->nameColumn],
-                                ['class' => 'jellybean gray']));
+                                    $usInfo[$this->nameColumn],
+                                    ['class' => 'jellybean gray']));
                         } else {
                             $usedFrame->addItem(new \Ease\Html\Span(
-                                new \Ease\Html\ATag('?'.$this->getmyKeyColumn().'='.$usId.'&'.$urlAdd,
-                                $usInfo[$this->nameColumn]),
-                                ['class' => 'jellybean']));
+                                    new \Ease\Html\ATag('?'.$this->getKeyColumn().'='.$usId.'&'.$urlAdd,
+                                        $usInfo[$this->nameColumn]),
+                                    ['class' => 'jellybean']));
                         }
                     }
 
@@ -1026,10 +1025,10 @@ class Configurator extends \Ease\Brick
             }
 
             \Ease\Shared::webPage()->addItem(new \Icinga\Editor\UI\ConfirmationDialog('delete'.$this->getId(),
-                '?'.$this->getmyKeyColumn().'='.$this->getID().'&delete=true'.'&'.$urlAdd,
-                _('Delete').' '.$name,
-                sprintf(_('Are you sure to delete %s ?'),
-                    '<strong>'.$this->getName().'</strong>')));
+                    '?'.$this->getKeyColumn().'='.$this->getID().'&delete=true'.'&'.$urlAdd,
+                    _('Delete').' '.$name,
+                    sprintf(_('Are you sure to delete %s ?'),
+                        '<strong>'.$this->getName().'</strong>')));
             return new \Ease\Html\ButtonTag(
                 [\Ease\TWB\Part::GlyphIcon('remove'), _('Delete').' '.$this->keyword.' '.$this->getName()],
                 ['style' => 'cursor: default', 'class' => 'btn btn-danger',
@@ -1244,12 +1243,12 @@ class Configurator extends \Ease\Brick
                             } else {
                                 if (!is_null($this->webLinkColumn) && !isset($buffer[$this->webLinkColumn])) {
                                     $this->updateToSQL(
-                                        [$this->getmyKeyColumn() => $this->getMyKey(),
+                                        [$this->getKeyColumn() => $this->getMyKey(),
                                             $this->webLinkColumn =>
                                             (str_replace(basename(\Ease\WebPage::getUri()),
                                                 '', \Ease\WebPage::phpSelf(true))).
                                             $this->keyword.'.php?'.
-                                            $this->getmyKeyColumn().'='.
+                                            $this->getKeyColumn().'='.
                                             $this->getMyKey()]);
                                 }
                                 $this->addStatusMessage($this->keyword.' <strong>'.$buffer[$this->nameColumn].'</strong> '._('was imported'),
@@ -1531,7 +1530,7 @@ class Configurator extends \Ease\Brick
 
     public function cloneButton()
     {
-        return new \Ease\TWB\LinkButton('?action=clone&'.$this->getmyKeyColumn().'='.$this->getId(),
+        return new \Ease\TWB\LinkButton('?action=clone&'.$this->getKeyColumn().'='.$this->getId(),
             _('Klonovat'));
     }
 
@@ -1550,7 +1549,7 @@ class Configurator extends \Ease\Brick
     {
         $results   = [];
         $conds     = [];
-        $columns[] = $this->myKeyColumn;
+        $columns[] = $this->keyColumn;
         foreach ($this->useKeywords as $keyword => $keywordInfo) {
             if (strstr($keywordInfo, 'VARCHAR')) {
                 $conds[]   = " `$keyword` LIKE '%".$what."%'";
@@ -1559,7 +1558,7 @@ class Configurator extends \Ease\Brick
         }
 
         $res = \Ease\Shared::db()->queryToArray("SELECT ".implode(',', $columns).",".$this->nameColumn." FROM ".$this->myTable." WHERE ".implode(' OR ',
-                $conds).' ORDER BY '.$this->nameColumn, $this->myKeyColumn);
+                $conds).' ORDER BY '.$this->nameColumn, $this->keyColumn);
         foreach ($res as $result) {
             $occurences = '';
             foreach ($result as $key => $value) {
@@ -1567,7 +1566,7 @@ class Configurator extends \Ease\Brick
                     $occurences .= '('.$key.': '.$value.') ';
                 }
             }
-            $results[$result[$this->myKeyColumn]] = [$this->nameColumn => $result[$this->nameColumn],
+            $results[$result[$this->keyColumn]] = [$this->nameColumn => $result[$this->nameColumn],
                 'what' => $occurences];
         }
         return $results;
@@ -1694,7 +1693,7 @@ class Configurator extends \Ease\Brick
     {
         if (is_array($row) && count($row)) {
             foreach ($row as $key => $value) {
-                if ($key == $this->myKeyColumn) {
+                if ($key == $this->keyColumn) {
                     continue;
                 }
                 if (!isset($this->useKeywords[$key])) {
@@ -1832,10 +1831,10 @@ class Configurator extends \Ease\Brick
     {
         $exportForm = new \Ease\TWB\Form('Export', $this->keyword.'.php');
         $exportForm->addItem(new \Ease\Html\InputHiddenTag('action', 'export'));
-        $exportForm->addItem(new \Ease\Html\InputHiddenTag($this->myKeyColumn,
-            $this->getId()));
+        $exportForm->addItem(new \Ease\Html\InputHiddenTag($this->keyColumn,
+                $this->getId()));
         $exportForm->addInput(new \Ease\Html\InputTextTag('destination',
-            \Ease\Shared::user()->getSettingValue('exporturl')),
+                \Ease\Shared::user()->getSettingValue('exporturl')),
             _('Export Target'));
 
         $exportForm->addItem(new \Ease\Html\H4Tag(_('Recursive import')));
@@ -1981,13 +1980,13 @@ class Configurator extends \Ease\Brick
 
         if (isset($this->useKeywords['generate']) && !(int) $this->getDataValue('generate')) {
             $infoBlock->addItem(new \Ease\TWB\Label('warning',
-                _('do not generate to configuration')));
+                    _('do not generate to configuration')));
         }
 
         if ($this->publicRecords) {
             if ((int) $this->getDataValue('public')) {
                 $infoBlock->addItem(new \Ease\TWB\Label('info',
-                    _('record is public')));
+                        _('record is public')));
             }
         }
 
@@ -2034,7 +2033,7 @@ class Configurator extends \Ease\Brick
     function getIdByName($name)
     {
 
-        $id = $this->dblink->queryToValue('SELECT '.$this->getmyKeyColumn().' FROM '.$this->getMyTable().' WHERE '.$this->nameColumn.' LIKE \''.$this->dblink->addSlashes($name).' \'');
+        $id = $this->dblink->queryToValue('SELECT '.$this->getKeyColumn().' FROM '.$this->getMyTable().' WHERE '.$this->nameColumn.' LIKE \''.$this->dblink->addSlashes($name).' \'');
         if (is_numeric($id)) {
             $id = intval($id);
         }
@@ -2170,7 +2169,7 @@ class Configurator extends \Ease\Brick
 
         $id = $this->getMyKey();
         if (!is_null($id)) {
-            $link .= '?'.$this->getmyKeyColumn().'='.$this->getMyKey();
+            $link .= '?'.$this->getKeyColumn().'='.$this->getMyKey();
         }
 
         return $link;

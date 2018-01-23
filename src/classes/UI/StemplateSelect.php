@@ -17,10 +17,10 @@ class StemplateSelect extends \Ease\Html\Select
     {
         $tpls      = ['' => _('choose preset ...')];
         $stemplate = new \Icinga\Editor\Stemplate();
-        $templates = $stemplate->getColumnsFromSQL([$stemplate->getmyKeyColumn(),
+        $templates = $stemplate->getColumnsFromSQL([$stemplate->getKeyColumn(),
             $stemplate->nameColumn]);
         foreach ($templates as $template_id => $template_info) {
-            $tpls[$template_info[$stemplate->myKeyColumn]] = $template_info[$stemplate->nameColumn];
+            $tpls[$template_info[$stemplate->keyColumn]] = $template_info[$stemplate->nameColumn];
         }
         return $tpls;
     }

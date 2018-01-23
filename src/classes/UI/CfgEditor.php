@@ -44,7 +44,7 @@ class CfgEditor extends \Ease\Container
             }
 
             if ($cfgObject->getId()) {
-                $this->addItem(new \Ease\Html\InputHiddenTag($cfgObject->getmyKeyColumn(),
+                $this->addItem(new \Ease\Html\InputHiddenTag($cfgObject->getKeyColumn(),
                     $cfgObject->getMyKey(), ['class' => 'keyId']));
             }
 
@@ -499,7 +499,7 @@ class CfgEditor extends \Ease\Container
                     break;
                 case 'optional':
                     if (!isset($optionalTab)) {
-                        $optionalTab = $tabs->addTab(_('Optional'));
+                            $optionalTab = $tabs->addTab(_('Optional'));
                     }
                     $mainFieldBlock = $optionalTab->addItem(new \Ease\Html\Div(null,
                         ['class' => 'fieldblock', 'id' => $fieldName.'-block']));

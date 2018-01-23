@@ -60,8 +60,8 @@ if (!$host_passive) {
     die(_('Host neni konfigurovan pro pasivni checky'));
 }
 
-$servicesAssigned = $service->dblink->queryToArray('SELECT '.$service->myKeyColumn.','.$service->nameColumn.',`use` FROM '.$service->myTable.' WHERE host_name LIKE \'%"'.$host->getName().'"%\'',
-    $service->myKeyColumn);
+$servicesAssigned = $service->dblink->queryToArray('SELECT '.$service->keyColumn.','.$service->nameColumn.',`use` FROM '.$service->myTable.' WHERE host_name LIKE \'%"'.$host->getName().'"%\'',
+    $service->keyColumn);
 
 
 $allServices = $service->getListing(
@@ -109,7 +109,7 @@ foreach ($allServices as $rowId => $service) {
 
         if (!isset($usedCache[$use])) {
             $used = new Engine\Service;
-            $used->setmyKeyColumn('name');
+            $used->setKeyColumn('name');
             if ($used->loadFromSQL($use)) {
                 $used->resetObjectIdentity();
                 $usedCache[$use] = $used->getData();

@@ -6,7 +6,7 @@ namespace Icinga\Editor;
  * Icinga Editor - hostgroup
  *
  * @author     Vitex <vitex@hippy.cz>
- * @copyright  2012-2016 Vitex@hippy.cz (G)
+ * @copyright  2012-2018 Vitex@hippy.cz (G)
  */
 require_once 'includes/IEInit.php';
 
@@ -110,7 +110,7 @@ $hostgroupEdit = new UI\CfgEditor($hostgroup);
 $form = new \Ease\TWB\Form('Hostgroup', 'hostgroup.php', 'POST', $hostgroupEdit, ['class' => 'form-horizontal']);
 $form->setTagID($form->getTagName());
 if (!is_null($hostgroup->getMyKey())) {
-    $form->addItem(new \Ease\Html\InputHiddenTag($hostgroup->getmyKeyColumn(), $hostgroup->getMyKey()));
+    $form->addItem(new \Ease\Html\InputHiddenTag($hostgroup->getKeyColumn(), $hostgroup->getMyKey()));
 }
 $form->addItem(new \Ease\TWB\SubmitButton(_('Save'), 'success'));
 
@@ -137,7 +137,7 @@ $operations->addItem(new UI\ContactAsignForm());
 
 
 $presetSelForm = new UI\ServicePresetSelectForm();
-$presetSelForm->addItem(new \Ease\Html\InputHiddenTag($hostgroup->getmyKeyColumn(), $hostgroup->getId()));
+$presetSelForm->addItem(new \Ease\Html\InputHiddenTag($hostgroup->getKeyColumn(), $hostgroup->getId()));
 
 $presetSelForm->addInput(new UI\TWBSwitch('groupHosts', false, true, ['onText' => _('hostgroup'), 'offText' => _('hosts')]), _('Apply to'), null, _('Apply preset to several Hosts or hostgroup itself'));
 

@@ -290,8 +290,8 @@ echo "file name=${log-path}/nsclient.log" >> $INI
     {
         $service = new Engine\Service();
 
-        $servicesAssigned = $service->dblink->queryToArray('SELECT '.$service->myKeyColumn.','.$service->nameColumn.',`use` FROM '.$service->myTable.' WHERE host_name LIKE \'%"'.$this->host->getName().'"%\'',
-            $service->myKeyColumn);
+        $servicesAssigned = $service->dblink->queryToArray('SELECT '.$service->keyColumn.','.$service->nameColumn.',`use` FROM '.$service->myTable.' WHERE host_name LIKE \'%"'.$this->host->getName().'"%\'',
+            $service->keyColumn);
 
         $allServices = $service->getListing(
             null, true,

@@ -7,7 +7,7 @@ namespace Icinga\Editor\UI;
  *
  * @package    IcingaEditor
  * @author     Vitex <vitex@hippy.cz>
- * @copyright  2012-2016 Vitex@hippy.cz (G)
+ * @copyright  2012-2018 Vitex@hippy.cz (G)
  */
 class UsedServiceSelector extends \Ease\Container
 {
@@ -43,8 +43,8 @@ class UsedServiceSelector extends \Ease\Container
             $platform       = $host->getCfgValue('platform');
 
 
-            $servicesAssigned = $service->dblink->queryToArray('SELECT '.$service->myKeyColumn.',display_name,'.$service->nameColumn.' FROM '.$service->myTable.' WHERE `host_name` LIKE \'%"'.$host->getName().'"%\'',
-                $service->myKeyColumn);
+            $servicesAssigned = $service->dblink->queryToArray('SELECT '.$service->keyColumn.',display_name,'.$service->nameColumn.' FROM '.$service->myTable.' WHERE `host_name` LIKE \'%"'.$host->getName().'"%\'',
+                $service->keyColumn);
             $allServices      = $service->getPlatformListing(
                 null, $platform, true,
                 [
@@ -94,7 +94,7 @@ class UsedServiceSelector extends \Ease\Container
                         $unchMenu[] = new \Ease\Html\ATag('servicetweak.php?service_id='.$serviceID,
                             \Ease\TWB\Part::GlyphIcon('wrench').' '._('Editor'));
                     }
-                    $unchMenu [] = new \Ease\Html\ATag('?addservice='.$serviceInfo[$service->nameColumn].'&amp;service_id='.$serviceID.'&amp;'.$host->getmyKeyColumn().'='.$host->getMyKey().'&amp;'.$host->nameColumn.'='.$host->getName(),
+                    $unchMenu [] = new \Ease\Html\ATag('?addservice='.$serviceInfo[$service->nameColumn].'&amp;service_id='.$serviceID.'&amp;'.$host->getKeyColumn().'='.$host->getMyKey().'&amp;'.$host->nameColumn.'='.$host->getName(),
                         \Ease\TWB\Part::GlyphIcon('plus').' '._('Začít sledovat'));
 
 
@@ -129,7 +129,7 @@ class UsedServiceSelector extends \Ease\Container
                         'xs',
                         [
                         new \Ease\Html\ATag(
-                            '?delservice='.$serviceInfo[$service->nameColumn].'&amp;service_id='.$serviceID.'&amp;'.$host->getmyKeyColumn().'='.$host->getMyKey().'&amp;'.$host->nameColumn.'='.$host->getName(),
+                            '?delservice='.$serviceInfo[$service->nameColumn].'&amp;service_id='.$serviceID.'&amp;'.$host->getKeyColumn().'='.$host->getMyKey().'&amp;'.$host->nameColumn.'='.$host->getName(),
                             \Ease\TWB\Part::GlyphIcon('remove').' '._('Stop watching'))
                         , new \Ease\Html\ATag('servicetweak.php?service_id='.$serviceID.'&amp;host_id='.$host->getId(),
                             \Ease\TWB\Part::GlyphIcon('wrench').' '._('Editor'))
@@ -139,7 +139,7 @@ class UsedServiceSelector extends \Ease\Container
                 }
             }
             $presetSelForm = new ServicePresetSelectForm();
-            $presetSelForm->addItem(new \Ease\Html\InputHiddenTag($host->getmyKeyColumn(),
+            $presetSelForm->addItem(new \Ease\Html\InputHiddenTag($host->getKeyColumn(),
                 $host->getId()));
             $presetSelForm->setTagClass('form-inline');
             $initialContent->footer($presetSelForm);
@@ -155,8 +155,8 @@ class UsedServiceSelector extends \Ease\Container
     public static function saveMembers($request)
     {
         $service = new \Icinga\Editor\Engine\Service();
-        if (isset($request[$service->myKeyColumn])) {
-            if ($service->loadFromSQL((int) $request[$service->myKeyColumn])) {
+        if (isset($request[$service->keyColumn])) {
+            if ($service->loadFromSQL((int) $request[$service->keyColumn])) {
                 if (isset($request['addservice']) || isset($request['delservice'])) {
                     if (isset($request['addservice'])) {
                         $service->addMember('host_name', $request['host_id'],
@@ -167,7 +167,7 @@ class UsedServiceSelector extends \Ease\Container
                             if ($service->getDataValue('autocfg') == '1') {
                                 $service->addStatusMessage(sprintf(_('Please save service %s first'),
                                         $request['addservice']), 'warning');
-                                \Ease\Shared::webPage()->redirect('servicetweak.php?host_id='.$request ['host_id'].'&service_id='.$request[$service->myKeyColumn]);
+                                \Ease\Shared::webPage()->redirect('servicetweak.php?host_id='.$request ['host_id'].'&service_id='.$request[$service->keyColumn]);
                                 exit();
                             }
                         } else {
