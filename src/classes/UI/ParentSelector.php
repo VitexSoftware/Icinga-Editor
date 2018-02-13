@@ -12,7 +12,7 @@ namespace Icinga\Editor\UI;
  */
 class ParentSelector extends \Ease\Container
 {
-    public $KeyColumn = 'host_name';
+    public $keyColumn = 'host_name';
 
     /**
      * Editor k přidávání členů skupiny

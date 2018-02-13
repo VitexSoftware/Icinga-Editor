@@ -14,7 +14,7 @@ namespace Icinga\Editor\Engine;
 class Command extends Configurator
 {
     public $myTable     = 'command';
-    public $KeyColumn = 'command_id';
+    public $keyColumn = 'command_id';
     public $nameColumn  = 'command_name';
     public $keyword     = 'command';
 

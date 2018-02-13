@@ -4,8 +4,7 @@
 #include <QObject>
 #include <QCoreApplication>
 
-class MainClass : public QObject
-{
+class MainClass : public QObject {
     Q_OBJECT
 private:
     QCoreApplication *app;

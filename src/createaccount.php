@@ -47,10 +47,11 @@ if ($oPage->isPosted()) {
             $error = true;
             $oUser->addStatusMessage(_('invalid email address'), 'warning');
         } else {
-            $check_email = \Ease\Shared::db()->queryToValue("SELECT COUNT(*) AS total FROM user WHERE email = '" . \Ease\Shared::db()->addslashes($emailAddress) . "'");
+            $check_email = \Ease\Shared::db()->queryToValue("SELECT COUNT(*) AS total FROM user WHERE email = '".\Ease\Shared::db()->addslashes($emailAddress)."'");
             if ($check_email > 0) {
                 $error = true;
-                $oUser->addStatusMessage(sprintf(_('Mail address %s is allready registered'), $emailAddress), 'warning');
+                $oUser->addStatusMessage(sprintf(_('Mail address %s is allready registered'),
+                        $emailAddress), 'warning');
             }
         }
     }
@@ -63,10 +64,11 @@ if ($oPage->isPosted()) {
         $oUser->addStatusMessage(_('Password control does not match'), 'warning');
     }
 
-    $usedLogin = \Ease\Shared::db()->queryToValue('SELECT id FROM user WHERE login=\'' . \Ease\Shared::db()->addslashes($login) . '\'');
+    $usedLogin = \Ease\Shared::db()->queryToValue('SELECT id FROM user WHERE login=\''.\Ease\Shared::db()->addslashes($login).'\'');
     if ($usedLogin) {
         $error = true;
-        $oUser->addStatusMessage(sprintf(_('Username %s is used. Please choose another one'), $login), 'warning');
+        $oUser->addStatusMessage(sprintf(_('Username %s is used. Please choose another one'),
+                $login), 'warning');
     }
 
     if ($error == false) {
@@ -74,12 +76,12 @@ if ($oPage->isPosted()) {
         $newOUser = new User();
         $newOUser->setData(
             [
-              'email'     => $emailAddress,
-              'parent'    => (int) $customerParent,
-              'login'     => $login,
-              'password'  => $newOUser->encryptPassword($password),
-              'firstname' => $firstname,
-              'lastname'  => $lastname
+                'email' => $emailAddress,
+                'parent' => (int) $customerParent,
+                'login' => $login,
+                'password' => $newOUser->encryptPassword($password),
+                'firstname' => $firstname,
+                'lastname' => $lastname
             ]
         );
 
@@ -91,28 +93,32 @@ if ($oPage->isPosted()) {
 
             if ($userID == 1) {
                 $newOUser->setSettingValue('admin', true);
-                $oUser->addStatusMessage(_('Admin prvileges assigned'), 'success');
+                $oUser->addStatusMessage(_('Admin prvileges assigned'),
+                    'success');
                 $newOUser->saveToSQL();
             } else {
                 $oUser->addStatusMessage(_('User account created'), 'success');
             }
 
-            system('sudo htpasswd -b /etc/icinga/htpasswd.users ' . $newOUser->getUserLogin() . ' ' . $password);
+            system('sudo htpasswd -b /etc/icinga/htpasswd.users '.$newOUser->getUserLogin().' '.$password);
 
             $newOUser->loginSuccess();
 
-            $email = $oPage->addItem(new \Ease\Mailer($newOUser->getDataValue('email'), _('Sign On info')));
+            $email = $oPage->addItem(new \Ease\Mailer($newOUser->getDataValue('email'),
+                    _('Sign On info')));
             $email->setMailHeaders(['From' => constant('SEND_MAILS_FROM')]);
-            $email->addItem(new \Ease\Html\Div(_('Icinga Editor Account') . "\n"));
-            $email->addItem(new \Ease\Html\Div(' Login: ' . $newOUser->GetUserLogin() . "\n"));
-            $email->addItem(new \Ease\Html\Div(' Password: ' . $_POST['password'] . "\n"));
+            $email->addItem(new \Ease\Html\Div(_('Icinga Editor Account')."\n"));
+            $email->addItem(new \Ease\Html\Div(' Login: '.$newOUser->GetUserLogin()."\n"));
+            $email->addItem(new \Ease\Html\Div(' Password: '.$_POST['password']."\n"));
             $email->send();
 
-            $email = $oPage->addItem(new \Ease\Mailer(constant('SEND_MAILS_FROM'), sprintf(_('New Icinga Editor account: %s'), $newOUser->GetUserLogin())));
+            $email = $oPage->addItem(new \Ease\Mailer(constant('SEND_MAILS_FROM'),
+                    sprintf(_('New Icinga Editor account: %s'),
+                        $newOUser->GetUserLogin())));
             $email->setMailHeaders(['From' => constant('SEND_MAILS_FROM')]);
             $email->addItem(new \Ease\Html\Div(_("New User:\n")));
             $email->addItem(new \Ease\Html\Div(
-                ' Login: ' . $newOUser->GetUserLogin() . "\n", ['id' => 'login']));
+                    ' Login: '.$newOUser->GetUserLogin()."\n", ['id' => 'login']));
             $email->send();
 
             \Ease\Shared::user($newOUser)->loginSuccess();
@@ -120,50 +126,57 @@ if ($oPage->isPosted()) {
             $contact   = new Engine\Contact();
             $contact->setData(
                 [
-                  'contact_name'                  => $login,
-                  'use'                           => 'generic-contact',
-                  $contact->userColumn            => $userID,
-                  'generate'                      => true,
-                  'host_notifications_enabled'    => true,
-                  'service_notifications_enabled' => true,
-                  'host_notification_period'      => '24x7',
-                  'service_notification_period'   => '24x7',
-                  'service_notification_options'  => ' w,u,c,r',
-                  'host_notification_options'     => 'd,u,r',
-                  'service_notification_commands' => 'notify-service-by-email',
-                  'host_notification_commands'    => 'notify-host-by-email',
-                  'register'                      => 1]
+                    'contact_name' => $login,
+                    'use' => 'generic-contact',
+                    $contact->userColumn => $userID,
+                    'generate' => true,
+                    'host_notifications_enabled' => true,
+                    'service_notifications_enabled' => true,
+                    'host_notification_period' => '24x7',
+                    'service_notification_period' => '24x7',
+                    'service_notification_options' => ' w,u,c,r',
+                    'host_notification_options' => 'd,u,r',
+                    'service_notification_commands' => 'notify-service-by-email',
+                    'host_notification_commands' => 'notify-host-by-email',
+                    'register' => 1]
             );
             $contactID = $contact->saveToSQL();
             if ($contactID) {
-                $oUser->addStatusMessage(_('Initial contact was created'), 'success');
+                $oUser->addStatusMessage(_('Initial contact was created'),
+                    'success');
             } else {
-                $oUser->addStatusMessage(_('Initial contact was not created'), 'warning');
+                $oUser->addStatusMessage(_('Initial contact was not created'),
+                    'warning');
             }
 
             $mailID = $contact->fork(['email' => $emailAddress]);
             if ($mailID) {
-                $oUser->addStatusMessage(_('email contact was created'), 'success');
+                $oUser->addStatusMessage(_('email contact was created'),
+                    'success');
             } else {
-                $oUser->addStatusMessage(_('email contact was not created'), 'warning');
+                $oUser->addStatusMessage(_('email contact was not created'),
+                    'warning');
             }
 
             $contactGroup = new Engine\Contactgroup();
-            $contactGroup->setData(['contactgroup_name'       => _('Group') . '_' . $login,
-              'alias'                   => _('Group') . '_' . $login, 'generate'                => true, $contactGroup->userColumn => $userID]);
+            $contactGroup->setData(['contactgroup_name' => _('Group').'_'.$login,
+                'alias' => _('Group').'_'.$login, 'generate' => true, $contactGroup->userColumn => $userID]);
             $contactGroup->addMember('members', $contactID, $login);
             $contactGroup->addMember('members', $mailID, $contact->getName());
             $cgID         = $contactGroup->saveToSQL();
 
             if ($cgID) {
-                $oUser->addStatusMessage(_('Initial contact group was created'), 'success');
+                $oUser->addStatusMessage(_('Initial contact group was created'),
+                    'success');
             } else {
-                $oUser->addStatusMessage(_('Initial contact group was not created'), 'warning');
+                $oUser->addStatusMessage(_('Initial contact group was not created'),
+                    'warning');
             }
 
             $hostGroup = new Engine\Hostgroup;
             $hostGroup->setName($newOUser->getUserLogin());
-            $hostGroup->setDataValue('alias', _('Initial Group') . ' ' . $newOUser->getUserLogin());
+            $hostGroup->setDataValue('alias',
+                _('Initial Group').' '.$newOUser->getUserLogin());
             $hostGroup->setDataValue('generate', true);
             $hostGroup->setUpUser($newOUser);
             $hostGroup->insertToSQL();
@@ -172,8 +185,10 @@ if ($oPage->isPosted()) {
             exit;
         } else {
             $oUser->addStatusMessage(_('Error writing to database'), 'error');
-            $email = $oPage->addItem(new EaseMail(constant('SEND_ORDERS_TO'), 'Sign on Failed'));
-            $email->addItem(new \Ease\Html\DivTag('Sign On', $oPage->PrintPre($newOUser->getData())));
+            $email = $oPage->addItem(new EaseMail(constant('SEND_ORDERS_TO'),
+                    'Sign on Failed'));
+            $email->addItem(new \Ease\Html\DivTag('Sign On',
+                    $oPage->PrintPre($newOUser->getData())));
             $email->send();
         }
     }
@@ -185,37 +200,45 @@ $oPage->addPageColumns();
 $oPage->columnI->addItem(new \Ease\Html\H2Tag(_('Wellcome')));
 $oPage->columnI->addItem(
     new \Ease\Html\UlTag(
-    [
-  _('After registering, you will be prompted to enter straight first host.'),
-  _('All notifications target to your email'),
-  _('For XMPP (jabber) or SMS, add this on Contact edit page.')
-    ]
+        [
+        _('After registering, you will be prompted to enter straight first host.'),
+        _('All notifications target to your email'),
+        _('For XMPP (jabber) or SMS, add this on Contact edit page.')
+        ]
     )
 );
 
 $regFace = $oPage->columnII->addItem(new \Ease\Html\Div());
 
-$regForm = $regFace->addItem(new \Ease\TWB\Form('create_account', 'createaccount.php', 'POST', null, ['class' => 'form-horizontal']));
+$regForm = $regFace->addItem(new \Ease\TWB\Form('create_account',
+        'createaccount.php', 'POST', null, ['class' => 'form-horizontal']));
 if ($oUser->getUserID()) {
-    $regForm->addItem(new \Ease\Html\InputHiddenTag('u_parent', $oUser->GetUserID()));
+    $regForm->addItem(new \Ease\Html\InputHiddenTag('u_parent',
+            $oUser->GetUserID()));
 }
 
-$regForm->addInput(new \Ease\Html\InputTextTag('firstname', $firstname), _('First Name'));
-$regForm->addInput(new \Ease\Html\InputTextTag('lastname', $lastname), _('Last Name'));
+$regForm->addInput(new \Ease\Html\InputTextTag('firstname', $firstname),
+    _('First Name'));
+$regForm->addInput(new \Ease\Html\InputTextTag('lastname', $lastname),
+    _('Last Name'));
 
 $regForm->addItem(new \Ease\Html\H3Tag(_('Account')));
 
 $regForm->addInput(
     new \Ease\Html\InputTextTag('login', $login), _('Login'), null, _('Requied'));
 $regForm->addInput(
-    new \Ease\Html\InputPasswordTag('password', $password), _('Password'), null, _('Requied'));
+    new \Ease\Html\InputPasswordTag('password', $password), _('Password'), null,
+    _('Requied'));
 $regForm->addInput(
-    new \Ease\Html\InputPasswordTag('confirmation', $confirmation), _('Password confirm'), null, _('Requied'));
+    new \Ease\Html\InputPasswordTag('confirmation', $confirmation),
+    _('Password confirm'), null, _('Requied'));
 $regForm->addInput(
-    new \Ease\Html\InputTextTag('email_address', $email_address, ['type' => 'email']), _('Email Address'));
+    new \Ease\Html\InputTextTag('email_address', $email_address,
+        ['type' => 'email']), _('Email Address'));
 
 $regForm->addItem(new \Ease\Html\Div(
-    new \Ease\Html\InputSubmitTag('Register', _('Singn On'), ['title' => _('Finish'), 'class' => 'btn btn-success'])));
+        new \Ease\Html\InputSubmitTag('Register', _('Singn On'),
+            ['title' => _('Finish'), 'class' => 'btn btn-success'])));
 
 if (isset($_POST)) {
     $regForm->fillUp($_POST);

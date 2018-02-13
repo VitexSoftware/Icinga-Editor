@@ -91,8 +91,8 @@ class NRPEConfigGenerator extends \Ease\Atom
         $allServices = $service->getListing(
             null, true,
             [
-            'platform', 'check_command-remote', 'check_command-params', 'passive_checks_enabled',
-            'active_checks_enabled', 'use', 'check_interval', 'check_command-remote'
+                'platform', 'check_command-remote', 'check_command-params', 'passive_checks_enabled',
+                'active_checks_enabled', 'use', 'check_interval', 'check_command-remote'
             ]
         );
 
@@ -225,5 +225,4 @@ class NRPEConfigGenerator extends \Ease\Atom
     {
         $this->nscCfgArray[] = "echo \"$key=$value\" >> ".$this->cfgFile;
     }
-
 }

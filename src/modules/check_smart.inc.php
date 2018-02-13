@@ -34,12 +34,12 @@ class check_smart extends \Icinga\Editor\UI\ServiceConfigurator
 
 
         $this->form->addInput(new \Ease\Html\Select('Disk', $drives,
-            str_replace(':', '', $config['--device'])), _('Disk'), '/dev/sdX:',
-            _('Choose drive Letter'));
+                str_replace(':', '', $config['--device'])), _('Disk'),
+            '/dev/sdX:', _('Choose drive Letter'));
 
         $this->form->addItem(new \Ease\TWB\FormGroup(_('Warning treshold'),
-                new \Ease\Html\InputTextTag('MaxWarn', $config['MaxWarn']), '80%',
-            _('Maximum value before a warning is returned.')));
+                new \Ease\Html\InputTextTag('MaxWarn', $config['MaxWarn']),
+                '80%', _('Maximum value before a warning is returned.')));
     }
 
     /**
@@ -81,5 +81,4 @@ class check_smart extends \Icinga\Editor\UI\ServiceConfigurator
 
         return $configResult;
     }
-
 }

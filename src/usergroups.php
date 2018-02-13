@@ -15,7 +15,8 @@ $oPage->onlyForLogged();
 
 $oPage->addItem(new UI\PageTop(_('Usergroup overview')));
 
-$oPage->addItem(new \Ease\TWB\Container(new UI\DataGrid(_('Usergroups'), new Engine\UserGroup)));
+$oPage->addItem(new \Ease\TWB\Container(new UI\DataGrid(_('Usergroups'),
+            new Engine\UserGroup)));
 
 $oPage->addItem(new UI\PageBottom());
 

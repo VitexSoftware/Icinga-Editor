@@ -84,9 +84,9 @@ switch ($oPage->getRequestValue('action')) {
         $confirmator = $oPage->columnII->addItem(new \Ease\TWB\Panel(_('Do you really delete?')),
             'danger');
         $confirmator->addItem(new \Ease\TWB\LinkButton('?'.$stemplate->keyColumn.'='.$stemplate->getID(),
-            _('No').' '.\Ease\TWB\Part::glyphIcon('ok'), 'success'));
+                _('No').' '.\Ease\TWB\Part::glyphIcon('ok'), 'success'));
         $confirmator->addItem(new \Ease\TWB\LinkButton('?delete=true&'.$stemplate->keyColumn.'='.$stemplate->getID(),
-            _('Yes').' '.\Ease\TWB\Part::glyphIcon('remove'), 'danger'));
+                _('Yes').' '.\Ease\TWB\Part::glyphIcon('remove'), 'danger'));
 
 
         break;
@@ -94,8 +94,8 @@ switch ($oPage->getRequestValue('action')) {
         $stemplateEditor = new UI\CfgEditor($stemplate);
 
         $form = $oPage->columnII->addItem(new \Ease\Html\Form('Stemplate',
-            'stemplate.php', 'POST', $stemplateEditor,
-            ['class' => 'form-horizontal']));
+                'stemplate.php', 'POST', $stemplateEditor,
+                ['class' => 'form-horizontal']));
 
         if (!$stemplate->getId()) {
             $form->addItem(new \Ease\TWB\SubmitButton(_('Create'), 'success'));
@@ -103,7 +103,7 @@ switch ($oPage->getRequestValue('action')) {
             $form->addItem(new \Ease\TWB\SubmitButton(_('Save'), 'success'));
         }
         $oPage->columnIII->addItem(new \Ease\TWB\Panel(_('Transfer'), 'warning',
-            $stemplate->transferForm()));
+                $stemplate->transferForm()));
         break;
 }
 

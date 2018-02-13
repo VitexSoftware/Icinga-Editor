@@ -152,8 +152,7 @@ class DbFixer extends \Ease\Html\UlTag
         }
 
         $childsAssigned = $host->dblink->queryToArray('SELECT '.$host->keyColumn.','.$host->nameColumn.' FROM '.$host->myTable.' WHERE '
-            .'parents'.' IS NOT NULL && parents !=\'a:0:{}\'',
-            $host->keyColumn);
+            .'parents'.' IS NOT NULL && parents !=\'a:0:{}\'', $host->keyColumn);
         foreach ($childsAssigned as $chid_id => $child_info) {
             $child   = new Engine\Host($chid_id);
             $parents = $child->getDataValue('parents');

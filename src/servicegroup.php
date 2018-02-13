@@ -42,7 +42,7 @@ $form = new \Ease\Html\Form('Servicegroup', 'servicegroup.php', 'POST',
 $form->setTagID($form->getTagName());
 if (!is_null($serviceGroup->getMyKey())) {
     $form->addItem(new \Ease\Html\InputHiddenTag($serviceGroup->getKeyColumn(),
-        $serviceGroup->getMyKey()));
+            $serviceGroup->getMyKey()));
 }
 $form->addItem('<br>');
 $form->addItem(new \Ease\TWB\SubmitButton(_('Save'), 'success'));
@@ -54,7 +54,7 @@ $tools     = new \Ease\TWB\Panel(_('Tools'), 'warning');
 if ($serviceGroup->getId()) {
     $tools->addItem($serviceGroup->deleteButton());
     $tools->addItem(new \Ease\TWB\Panel(_('Transfer'), 'warning',
-        $serviceGroup->transferForm()));
+            $serviceGroup->transferForm()));
 }
 $pageRow = new \Ease\TWB\Row;
 $pageRow->addColumn(2, $infopanel);

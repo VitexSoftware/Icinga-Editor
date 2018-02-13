@@ -22,7 +22,7 @@ class SensorTool extends \Ease\Container
         $commonRow  = new \Ease\TWB\Row;
         $hostColumn = $commonRow->addColumn(6,
             new \Ease\Html\ATag('host.php?host_id='.$host->getId(),
-            new \Ease\Html\H1Tag($host->getName())));
+                new \Ease\Html\H1Tag($host->getName())));
         $hostColumn->addItem($host);
         $hostColumn->addItem($host->sensorStatusLabel());
 
@@ -30,7 +30,7 @@ class SensorTool extends \Ease\Container
 
         $commonRow->addColumn(4,
             new \Ease\TWB\Panel(_('Set sensor state manually'), 'info',
-            new UI\SensorConfirmForm($host)));
+                new UI\SensorConfirmForm($host)));
 
 
         $sensorTabs = new \Ease\TWB\Tabs('sensorTabs');
@@ -39,7 +39,7 @@ class SensorTool extends \Ease\Container
 
         switch ($host->getDataValue('platform')) {
             case 'windows':
-                $pltIco       = 'logos/base/win40.gif';
+                $pltIco          = 'logos/base/win40.gif';
                 $cfgBatGenerator = new NSCPConfigBatGenerator($host);
                 $cfgPS1Generator = new NSCPConfigPS1Generator($host);
 
@@ -47,18 +47,18 @@ class SensorTool extends \Ease\Container
                     $windowsActiveTab = $sensorTabs->addTab(_('Windows NRPE'));
                     $windowsActiveTab->addItem(new \Ease\Html\H1Tag('<img src="'.$pltIco.'">'._('Active NRPE for NSClient++')));
                     $windowsActiveTab->addItem(new \Ease\TWB\LinkButton('http://www.nsclient.org/download/',
-                        ' NSC++ '.\Ease\TWB\Part::GlyphIcon('download'),
-                        'success',
-                        ['style' => "background-image:url('img/nscpp.png'); width: 212px; height: 60px; ",
-                        'title' => 'Download']));
+                            ' NSC++ '.\Ease\TWB\Part::GlyphIcon('download'),
+                            'success',
+                            ['style' => "background-image:url('img/nscpp.png'); width: 212px; height: 60px; ",
+                            'title' => 'Download']));
                     $windowsActiveTab->addItem(new \Ease\TWB\LinkButton('host.php?action=populate&host_id='.$host->getID(),
-                        _('Scan & Wartch services'), null,
+                            _('Scan & Wartch services'), null,
                             ['onClick' => "$('#preload').css('visibility', 'visible');"]));
                     $windowsActiveTab->addItem(new \Ease\TWB\LinkButton('nscpcfggen.php?host_id='.$host->getId(),
-                        $host->getName().'_nscp.bat '.\Ease\TWB\Part::GlyphIcon('download'),
-                        'success'));
+                            $host->getName().'_nscp.bat '.\Ease\TWB\Part::GlyphIcon('download'),
+                            'success'));
                     $windowsActiveTab->addItem(new \Ease\TWB\Container('<pre>'.htmlspecialchars($cfgBatGenerator->getCfg(false)).'</pre>',
-                        ['font-face' => 'fixed']));
+                            ['font-face' => 'fixed']));
                 }
                 if ($host->getCfgValue('passive_checks_enabled')) {
                     $windowsPassiveTab = $sensorTabs->addTab(_('Windows NSCA'));
@@ -70,18 +70,18 @@ class SensorTool extends \Ease\Container
                     $ps1Tab = $winNscaTabs->addTab('PowerShell Configuration Script');
 
                     $ps1Tab->addItem(new \Ease\TWB\LinkButton('nscpcfggen.php?format=ps1&host_id='.$host->getId(),
-                        $host->getName().'_nscp.ps1 '.\Ease\TWB\Part::GlyphIcon('download'),
-                        'success'));
+                            $host->getName().'_nscp.ps1 '.\Ease\TWB\Part::GlyphIcon('download'),
+                            'success'));
                     $ps1Tab->addItem(new \Ease\TWB\Well('<pre>'.htmlspecialchars($cfgPS1Generator->getCfg(false),
-                            ENT_QUOTES).'</pre>', ['font-face' => 'fixed']));
+                                ENT_QUOTES).'</pre>', ['font-face' => 'fixed']));
 
                     $batTab = $winNscaTabs->addTab(_('Deprecated BAT Configuration Script'));
 
                     $batTab->addItem(new \Ease\TWB\LinkButton('nscpcfggen.php?host_id='.$host->getId(),
-                        $host->getName().'_nscp.bat '.\Ease\TWB\Part::GlyphIcon('download'),
-                        'success'));
+                            $host->getName().'_nscp.bat '.\Ease\TWB\Part::GlyphIcon('download'),
+                            'success'));
                     $batTab->addItem(new \Ease\TWB\Well('<pre>'.htmlspecialchars($cfgBatGenerator->getCfg(false),
-                            ENT_QUOTES).'</pre>', ['font-face' => 'fixed']));
+                                ENT_QUOTES).'</pre>', ['font-face' => 'fixed']));
                 }
 
                 break;
@@ -105,26 +105,26 @@ curl "'.Engine\Configurator::getBaseURL().'nrpecfggen.php?host_id='.$host->getId
 </pre>', ['class' => 'code']));
 
                     $linuxActiveTab->addItem(new \Ease\TWB\LinkButton('nrpecfggen.php?host_id='.$host->getId(),
-                        $host->getName().'_nrpe.sh '.\Ease\TWB\Part::GlyphIcon('download'),
-                        'success'));
+                            $host->getName().'_nrpe.sh '.\Ease\TWB\Part::GlyphIcon('download'),
+                            'success'));
 
                     $linuxActiveTab->addItem(new \Ease\TWB\Container('<pre>'.htmlspecialchars($nrpe_cfgGenerator->getCfg(false)).'</pre>',
-                        ['font-face' => 'fixed']));
+                            ['font-face' => 'fixed']));
 
                     $linuxActiveTab->addItem(new \Ease\TWB\LinkButton('host.php?action=populate&host_id='.$host->getID(),
-                        _('Scan & watch services'), null,
-                        ['onClick' => "$('#preload').css('visibility', 'visible');"]));
+                            _('Scan & watch services'), null,
+                            ['onClick' => "$('#preload').css('visibility', 'visible');"]));
                 }
                 if ($host->getCfgValue('passive_checks_enabled')) {
                     $linuxPassiveTab = $sensorTabs->addTab(_('Linux NSCA'));
                     $linuxPassiveTab->addItem(new \Ease\Html\H1Tag('<img src="'.$pltIco.'">'._('Passive NSCA for NSCP Sensor')));
                     $linuxPassiveTab->addItem(new \Ease\TWB\LinkButton('nscpcfggen.php?host_id='.$host->getId(),
-                        $host->getName().'_nscp.sh '.\Ease\TWB\Part::GlyphIcon('download'),
-                        'success'));
+                            $host->getName().'_nscp.sh '.\Ease\TWB\Part::GlyphIcon('download'),
+                            'success'));
 
                     $cfgBatGenerator = new NSCPConfigBatGenerator($host);
                     $linuxPassiveTab->addItem(new \Ease\TWB\Container('<pre>'.htmlspecialchars($cfgBatGenerator->getCfg(false)).'</pre>',
-                        ['font-face' => 'fixed']));
+                            ['font-face' => 'fixed']));
                 }
                 break;
             default :
@@ -132,8 +132,8 @@ curl "'.Engine\Configurator::getBaseURL().'nrpecfggen.php?host_id='.$host->getId
                 if ($host->getCfgValue('active_checks_enabled')) {
                     $genericActiveTab = $sensorTabs->addTab(_('Generic Active'));
                     $genericActiveTab->addItem(new \Ease\TWB\LinkButton('host.php?action=populate&host_id='.$host->getID(),
-                        _('Scan & Watch services'), null,
-                        ['onClick' => "$('#preload').css('visibility', 'visible');"]));
+                            _('Scan & Watch services'), null,
+                            ['onClick' => "$('#preload').css('visibility', 'visible');"]));
                 }
                 if ($host->getCfgValue('passive_checks_enabled')) {
                     $genericPassiveTab = $sensorTabs->addTab(_('Generic Passive'));
@@ -156,5 +156,4 @@ curl "'.Engine\Configurator::getBaseURL().'nrpecfggen.php?host_id='.$host->getId
             ['style' => "background-image:url('img/nscpp.png'); width: 212px; height: 60px; ",
             'title' => _('Download NSClient++')]);
     }
-
 }

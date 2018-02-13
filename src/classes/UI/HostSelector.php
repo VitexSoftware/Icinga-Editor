@@ -10,7 +10,7 @@ namespace Icinga\Editor\UI;
  */
 class HostSelector extends \Ease\Container
 {
-    public $KeyColumn = 'service_name';
+    public $keyColumn = 'service_name';
 
     /**
      * Editor k přidávání členů skupiny

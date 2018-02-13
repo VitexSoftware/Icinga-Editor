@@ -26,17 +26,17 @@ class ping extends \Icinga\Editor\UI\ServiceConfigurator
 
         $this->form->addItem(new \Ease\TWB\FormGroup(_('Warning delay'),
                 new \Ease\Html\InputTextTag('wt', $warningValues[0]), '100.0',
-            _('The time in milliseconds, after which the warning will be reported')));
+                _('The time in milliseconds, after which the warning will be reported')));
         $this->form->addItem(new \Ease\TWB\FormGroup(_('Warning Packet Loss'),
                 new \Ease\Html\InputTextTag('wp', $warningValues[1]), '20 %',
-            _('The percentage of lost packets after which the warning will be reported when the test is exceeded')));
+                _('The percentage of lost packets after which the warning will be reported when the test is exceeded')));
 
         $this->form->addItem(new \Ease\TWB\FormGroup(_('Critical error delay'),
                 new \Ease\Html\InputTextTag('ct', $criticalValues[0]), '500.0',
-            _('The time in milliseconds after which the test will exceed the critical error')));
+                _('The time in milliseconds after which the test will exceed the critical error')));
         $this->form->addItem(new \Ease\TWB\FormGroup(_('Critical Packet Loss'),
                 new \Ease\Html\InputTextTag('cp', $criticalValues[1]), '60 %',
-            _('The percentage of lost packets after which a critical error is reported in the test')));
+                _('The percentage of lost packets after which a critical error is reported in the test')));
     }
 
     /**
@@ -64,5 +64,4 @@ class ping extends \Icinga\Editor\UI\ServiceConfigurator
 
         return FALSE;
     }
-
 }

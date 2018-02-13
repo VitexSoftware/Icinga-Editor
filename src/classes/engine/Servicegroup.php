@@ -11,7 +11,7 @@ namespace Icinga\Editor\Engine;
 class Servicegroup extends Configurator
 {
     public $myTable     = 'servicegroup';
-    public $KeyColumn = 'servicegroup_id';
+    public $keyColumn = 'servicegroup_id';
     public $nameColumn  = 'servicegroup_name';
     public $keyword     = 'servicegroup';
 

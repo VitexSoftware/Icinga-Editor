@@ -15,7 +15,7 @@ require_once 'includes/IEInit.php';
 $oPage->onlyForLogged();
 
 $service = new Engine\Service($oPage->getRequestValue('service_id', 'int'));
-$host = new Engine\Host($oPage->getRequestValue('host_id', 'int'));
+$host    = new Engine\Host($oPage->getRequestValue('host_id', 'int'));
 
 switch ($oPage->getRequestValue('action')) {
 
@@ -32,7 +32,7 @@ switch ($oPage->getRequestValue('action')) {
             _('Clone').' '.$service->getName());
         if ($service->saveToSQL()) {
             $oUser->addStatusMessage(_('Service was cloned'), 'success');
-            $oPage->redirect('servicetweak.php?service_id=' . $service->getId() . '&host_id=' . $host->getId());
+            $oPage->redirect('servicetweak.php?service_id='.$service->getId().'&host_id='.$host->getId());
         } else {
             $oUser->addStatusMessage(_('Service was not cloned'), 'warning');
         }
@@ -55,13 +55,14 @@ switch ($oPage->getRequestValue('action')) {
 $delete = $oPage->getGetValue('delete', 'string');
 if ($delete == 'true') {
     $service->delete();
-    $oPage->redirect('host.php?host_id=' . $host->getId());
+    $oPage->redirect('host.php?host_id='.$host->getId());
     exit();
 }
 
 if ($service->getOwnerID() != $oUser->getMyKey()) {
     if ($service->fork($host)) {
-        $oUser->addStatusMessage(_('Other owner service was derived as own'), 'success');
+        $oUser->addStatusMessage(_('Other owner service was derived as own'),
+            'success');
     } else {
         $oUser->addStatusMessage(_('Service was not derived'), 'error');
     }
@@ -99,7 +100,7 @@ if ($addcnt) {
     $service->saveToSQL();
 }
 
-$oPage->addItem(new UI\PageTop(_('Service Editor') . ' ' . $service->getName()));
+$oPage->addItem(new UI\PageTop(_('Service Editor').' '.$service->getName()));
 $oPage->addPageColumns();
 
 $serviceTweak = new UI\ServiceTweaker($service, $host);
@@ -109,19 +110,24 @@ if (!$serviceName) {
     $serviceName = $service->getName();
 }
 $oPage->columnII->addItem(new \Ease\Html\H3Tag([new UI\PlatformIcon($service->getDataValue('platform')),
-  $serviceName]));
+        $serviceName]));
 
 $oPage->columnII->addItem($serviceTweak);
 
-$oPage->columnIII->addItem($service->deleteButton($service->getName(), 'host_id=' . $host->getId()));
+$oPage->columnIII->addItem($service->deleteButton($service->getName(),
+        'host_id='.$host->getId()));
 
-$oPage->columnIII->addItem(new \Ease\TWB\LinkButton('service.php?service_id=' . $service->getID(), _('Service Edit') . ' ' . $serviceName));
+$oPage->columnIII->addItem(new \Ease\TWB\LinkButton('service.php?service_id='.$service->getID(),
+        _('Service Edit').' '.$serviceName));
 
-$renameForm = new \Ease\TWB\Form('Rename', '?action=rename&amp;host_id=' . $host->getID() . '&service_id=' . $service->getId());
-$renameForm->addItem(new \Ease\Html\InputTextTag('newname'), $service->getName(), ['class' => 'form-control']);
+$renameForm = new \Ease\TWB\Form('Rename',
+    '?action=rename&amp;host_id='.$host->getID().'&service_id='.$service->getId());
+$renameForm->addItem(new \Ease\Html\InputTextTag('newname'),
+    $service->getName(), ['class' => 'form-control']);
 $renameForm->addItem(new \Ease\TWB\SubmitButton(_('Rename'), 'success'));
 
-$oPage->columnIII->addItem(new \Ease\TWB\Panel(_('Renaming'), 'info', $renameForm));
+$oPage->columnIII->addItem(new \Ease\TWB\Panel(_('Renaming'), 'info',
+        $renameForm));
 
 $oPage->columnIII->addItem($service->cloneButton());
 
@@ -129,7 +135,8 @@ $oPage->columnIII->addItem($service->cloneButton());
 $oPage->columnI->addItem(new UI\HostSelector($service));
 $oPage->columnI->addItem(new UI\ContactSelector($service));
 
-$oPage->columnIII->addItem(new \Ease\TWB\LinkButton('host.php?host_id=' . $host->getId(), [_('Back to') . ' ', $host, ' ', $host->getName()], 'default'));
+$oPage->columnIII->addItem(new \Ease\TWB\LinkButton('host.php?host_id='.$host->getId(),
+        [_('Back to').' ', $host, ' ', $host->getName()], 'default'));
 
 $oPage->addItem(new UI\PageBottom());
 

@@ -13,7 +13,7 @@ namespace Icinga\Editor\Engine;
 class Contactgroup extends Configurator
 {
     public $myTable     = 'contactgroup';
-    public $KeyColumn = 'contactgroup_id';
+    public $keyColumn = 'contactgroup_id';
     public $nameColumn  = 'contactgroup_name';
     public $keyword     = 'contactgroup';
 

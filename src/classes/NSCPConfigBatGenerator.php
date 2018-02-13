@@ -67,7 +67,7 @@ class NSCPConfigBatGenerator extends \Ease\Atom
      * Scripts to deploy listing
      * @var array
      */
-    public $scriptsToDeploy      = [];
+    public $scriptsToDeploy = [];
 
     /**
      * List of script filenames to deploy
@@ -296,8 +296,8 @@ echo "file name=${log-path}/nsclient.log" >> $INI
         $allServices = $service->getListing(
             null, true,
             [
-            'platform', 'check_command-remote', 'check_command-params', 'passive_checks_enabled',
-            'active_checks_enabled', 'use', 'check_interval', 'check_command-remote'
+                'platform', 'check_command-remote', 'check_command-params', 'passive_checks_enabled',
+                'active_checks_enabled', 'use', 'check_interval', 'check_command-remote'
             ]
         );
 
@@ -425,7 +425,7 @@ echo "file name=${log-path}/nsclient.log" >> $INI
                 $this->nscConfArray[] = "\n".'echo ^<br^>^<a data-role="editor" href="'.Engine\Configurator::getBaseURL().'host.php?host_id='.$this->host->getId().'"^>'._('Host Configuration').'^</a^> >> %ICIEDIT_HTML%';
                 $this->nscConfArray[] = "\n".'echo ^<br^>^<a data-role="bat" href="'.Engine\Configurator::getBaseURL().'nscpcfggen.php?host_id='.$this->host->getId().'"^>'._('Refresh sensor installation').' '.$this->host->getName().'_nscp.bat'.'^</a^> >> %ICIEDIT_HTML%';
                 if ($this->host->getDataValue('host_is_server') == 0) {
-                    $dtUrl               = Engine\Configurator::getBaseURL().'downtime.php?host_id='.$this->host->getId();
+                    $dtUrl                = Engine\Configurator::getBaseURL().'downtime.php?host_id='.$this->host->getId();
                     $this->nscConfArray[] = "\n".'echo ^<br^>^<a data-role="shutdown" href="'.$dtUrl.'&state=start"^>'._('Start host downtime').'^</a^> >> %ICIEDIT_HTML%';
                     $this->nscConfArray[] = "\n".'echo ^<br^>^<a data-role="poweron" href="'.$dtUrl.'&state=stop"^>'._('End host downtime').'^</a^> >> %ICIEDIT_HTML%';
                 }
@@ -434,10 +434,10 @@ echo "file name=${log-path}/nsclient.log" >> $INI
                 $this->nscConfArray[] = "\n".'echo ^</html^> >> %ICIEDIT_HTML%
 ';
                 if ($this->host->getDataValue('host_is_server') == 0) {
-                    $upfile              = 'C:\\Windows\\System32\\GroupPolicy\\Machine\\Scripts\\Startup\\hostup.ps1';
+                    $upfile               = 'C:\\Windows\\System32\\GroupPolicy\\Machine\\Scripts\\Startup\\hostup.ps1';
                     $this->nscConfArray[] = "\n".'echo (new-object System.Net.WebClient).DownloadFile("'.$dtUrl.'&state=stop","C:\tmp\hostup.txt") > '.$upfile;
 
-                    $downfile            = 'C:\\Windows\\System32\\GroupPolicy\\Machine\\Scripts\\Shutdown\\hostdown.ps1';
+                    $downfile             = 'C:\\Windows\\System32\\GroupPolicy\\Machine\\Scripts\\Shutdown\\hostdown.ps1';
                     $this->nscConfArray[] = "\n".'echo (new-object System.Net.WebClient).DownloadFile("'.$dtUrl.'&state=start","C:\tmp\hostdown.txt") > '.$downfile;
                 }
 
@@ -544,5 +544,4 @@ curl "'.Engine\Configurator::getBaseURL().'scriptget.php?script_id='.$script_id.
             }
         }
     }
-
 }

@@ -11,7 +11,7 @@ namespace Icinga\Editor\Engine;
 class Hostgroup extends Configurator
 {
     public $myTable     = 'hostgroup';
-    public $KeyColumn = 'hostgroup_id';
+    public $keyColumn = 'hostgroup_id';
     public $keyword     = 'hostgroup';
     public $nameColumn  = 'hostgroup_name';
 

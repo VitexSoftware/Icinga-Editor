@@ -48,12 +48,12 @@ $listing = new \Ease\Html\UlTag(null, ['class' => 'list-group']);
 foreach ($found as $foundItem) {
     $listing->addItem(
         new \Ease\Html\LiTag(
-        new \Ease\Html\ATag(
-        $foundItem['url'],
-        $foundItem['type'].'&nbsp;<h4>'.$foundItem['name'].'</h4>&nbsp;'.str_replace($query,
-            '<strong>'.$query.'</strong>', $foundItem['what'])
-        )
-        , ['class' => 'list-group-item'])
+            new \Ease\Html\ATag(
+                $foundItem['url'],
+                $foundItem['type'].'&nbsp;<h4>'.$foundItem['name'].'</h4>&nbsp;'.str_replace($query,
+                    '<strong>'.$query.'</strong>', $foundItem['what'])
+            )
+            , ['class' => 'list-group-item'])
     );
 }
 

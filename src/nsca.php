@@ -67,8 +67,8 @@ $servicesAssigned = $service->dblink->queryToArray('SELECT '.$service->keyColumn
 $allServices = $service->getListing(
     null, true,
     [
-    'platform', 'check_command-remote', 'check_command-params', 'passive_checks_enabled',
-    'active_checks_enabled', 'use', 'check_interval', 'check_command-remote'
+        'platform', 'check_command-remote', 'check_command-params', 'passive_checks_enabled',
+        'active_checks_enabled', 'use', 'check_interval', 'check_command-remote'
     ]
 );
 
@@ -152,7 +152,7 @@ foreach ($intervals as $interval => $members) {
         $serviceName   = $service['service_description'];
         $serviceCmd    = $service['check_command-remote'];
         $serviceParams = $service['check_command-params'];
-        $nscabat .= "\nREM #".$service['service_id'].' '.$serviceName."\n";
+        $nscabat       .= "\nREM #".$service['service_id'].' '.$serviceName."\n";
 
         if (isset($commandsCache[$serviceCmd])) {
             $cmdline = $commandsCache[$serviceCmd]['command_line'];

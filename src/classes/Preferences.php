@@ -9,8 +9,8 @@ namespace Icinga\Editor;
  */
 class Preferences extends \Ease\Brick
 {
-    public $myTable     = 'preferences';
-    public $KeyColumn = 'key';
+    public $myTable   = 'preferences';
+    public $keyColumn = 'key';
 
     /**
      * Preferences array
@@ -90,5 +90,4 @@ class Preferences extends \Ease\Brick
     {
         return $this->preferences;
     }
-
 }

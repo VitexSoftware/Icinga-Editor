@@ -14,7 +14,7 @@ namespace Icinga\Editor;
 class Script extends engine\Configurator
 {
     public $myTable              = 'script';
-    public $KeyColumn          = 'script_id';
+    public $keyColumn            = 'script_id';
     public $nameColumn           = 'filename';
     public $keyword              = 'script';
     public $myCreateColumn       = 'DatCreate';

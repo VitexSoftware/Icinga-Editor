@@ -74,5 +74,4 @@ class Searcher extends engine\Configurator
         }
         return $results;
     }
-
 }

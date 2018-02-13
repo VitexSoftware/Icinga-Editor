@@ -49,11 +49,11 @@ $oPage->addPageColumns();
 $TimepriodEdit = new UI\CfgEditor($timeperiod);
 
 $form = $oPage->columnII->addItem(new \Ease\Html\Form('Period',
-    'timeperiod.php', 'POST', $TimepriodEdit, ['class' => 'form-horizontal']));
+        'timeperiod.php', 'POST', $TimepriodEdit, ['class' => 'form-horizontal']));
 $form->setTagID($form->getTagName());
 if (!is_null($timeperiod->getMyKey())) {
     $form->addItem(new \Ease\Html\InputHiddenTag($timeperiod->getKeyColumn(),
-        $timeperiod->getMyKey()));
+            $timeperiod->getMyKey()));
 }
 $timesTable = new \Ease\Html\TableTag();
 

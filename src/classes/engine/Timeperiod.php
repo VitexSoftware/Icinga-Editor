@@ -11,7 +11,7 @@ namespace Icinga\Editor\Engine;
 class Timeperiod extends Configurator
 {
     public $myTable      = 'timeperiod';
-    public $KeyColumn  = 'timeperiod_id';
+    public $keyColumn  = 'timeperiod_id';
     public $keyword      = 'timeperiod';
     public $nameColumn   = 'timeperiod_name';
     public $useKeywords  = [

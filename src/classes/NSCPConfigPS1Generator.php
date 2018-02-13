@@ -110,7 +110,7 @@ echo "file name=${log-path}/nsclient.log" >> $INI
 ';
                 if ($this->host->getDataValue('host_is_server') == 0) {
                     $this->nscConfArray[] = "\n".$this->registryUpdaterCode();
-                    
+
                     $gpspath = 'C:\\Windows\\System32\\GroupPolicy\\Machine\\Scripts\\';
 
                     $this->nscConfArray[] = "\n"."if(!(Test-Path -Path $gpspath )){ New-Item -ItemType directory -Path $gpspath }";
@@ -195,7 +195,7 @@ curl "'.Engine\Configurator::getBaseURL().'scriptget.php?script_id='.$script_id.
         return str_replace('&', '"&"', parent::getCfgConfirmUrl());
     }
 
-public static function registryUpdaterCode()
+    public static function registryUpdaterCode()
     {
         return '
 # UPDATE REGISTRY
@@ -336,5 +336,4 @@ New-ItemProperty -Path $StatePathStartup -Name "SOM-ID" -Value "Local"
 }
 ';
     }
-
 }

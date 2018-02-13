@@ -19,15 +19,19 @@ $oPage->addPageColumns();
 if ($oPage->getRequestValue('dbinit')) {
     $importer = new Engine\Importer;
     $importer->dbInit();
-    $oPage->columnII->addItem(new \Ease\TWB\LinkButton('wizard.php', _('Create configuration')));
-    $oPage->columnIII->addItem(new \Ease\TWB\LinkButton('import.php', _('Import configuration')));
+    $oPage->columnII->addItem(new \Ease\TWB\LinkButton('wizard.php',
+            _('Create configuration')));
+    $oPage->columnIII->addItem(new \Ease\TWB\LinkButton('import.php',
+            _('Import configuration')));
 } else {
     $importForm = new \Ease\Html\Form('ImportForm');
     $oUser->addStatusMessage(_('This action irreversibly deletes any configuration. Do you really want to do this?'));
-    $importForm->addItem(new \Ease\TWB\FormGroup(_('I know what i do'), new UI\YesNoSwitch('dbinit')));
+    $importForm->addItem(new \Ease\TWB\FormGroup(_('I know what i do'),
+            new UI\YesNoSwitch('dbinit')));
     $importForm->addItem(new \Ease\TWB\SubmitButton(_('Go!')));
 
-    $oPage->columnII->addItem(new \Ease\Html\FieldSet(_('Create again database structure'), $importForm));
+    $oPage->columnII->addItem(new \Ease\Html\FieldSet(_('Create again database structure'),
+            $importForm));
 }
 
 $oPage->addItem(new UI\PageBottom());

@@ -37,8 +37,8 @@ if ($emailTo) {
         $passChanger->passwordChange($newPassword);
 
         $email = $oPage->addItem(new \Ease\Mailer($userEmail,
-            _('Icinga Editor').' - '.sprintf(_('New password for %s'),
-                $_SERVER['SERVER_NAME'])));
+                _('Icinga Editor').' - '.sprintf(_('New password for %s'),
+                    $_SERVER['SERVER_NAME'])));
         $email->setMailHeaders(['From' => constant('EMAIL_FROM')]);
         $email->addItem(_("Sign On informations was changed:\n"));
 
@@ -70,17 +70,17 @@ if (!$success) {
 
 
     $emailForm->addInput(new \Ease\Html\InputTextTag('Email', null,
-        ['type' => 'email']), _('Email'));
+            ['type' => 'email']), _('Email'));
     $emailForm->addItem(new \Ease\TWB\SubmitButton(_('Send New Password'),
-        'warning'));
+            'warning'));
 
     if (isset($_POST)) {
         $emailForm->fillUp($_POST);
     }
 } else {
     $oPage->columnII->addItem(new \Ease\TWB\Well([_('Please check your mailbox for new password')
-        , ' '._('and').' ', new \Ease\TWB\LinkButton('login.php', _('Sign In'),
-            'success')]));
+            , ' '._('and').' ', new \Ease\TWB\LinkButton('login.php',
+                _('Sign In'), 'success')]));
 }
 
 $oPage->addItem(new UI\PageBottom());

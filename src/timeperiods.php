@@ -17,7 +17,7 @@ $oPage->addItem(new UI\PageTop(_('Timeperiod overview')));
 $oPage->addPageColumns();
 
 $timeperiod = new Engine\Timeperiod();
-$periods = $timeperiod->getListing();
+$periods    = $timeperiod->getListing();
 
 if ($periods) {
 
@@ -25,7 +25,8 @@ if ($periods) {
 
     $cid = 1;
     foreach ($periods as $cId => $cInfo) {
-        $lastRow = $cntList->addRowColumns([$cid++, new \Ease\Html\ATag('timeperiod.php?timeperiod_id=' . $cInfo['timeperiod_id'], $cInfo['timeperiod_name'] . ' <i class="icon-edit"></i>')]);
+        $lastRow = $cntList->addRowColumns([$cid++, new \Ease\Html\ATag('timeperiod.php?timeperiod_id='.$cInfo['timeperiod_id'],
+                $cInfo['timeperiod_name'].' <i class="icon-edit"></i>')]);
         if ($cInfo['generate'] == 0) {
             $lastRow->setTagCss(['border-right' => '1px solid red']);
         }
@@ -42,7 +43,8 @@ if ($periods) {
     $oUser->addStatusMessage(_('No timeperiods defined'), 'warning');
 }
 
-$oPage->columnIII->addItem(new \Ease\TWB\LinkButton('timeperiod.php', _('Create timeperiod') . ' ' . \Ease\TWB\Part::GlyphIcon('edit')));
+$oPage->columnIII->addItem(new \Ease\TWB\LinkButton('timeperiod.php',
+        _('Create timeperiod').' '.\Ease\TWB\Part::GlyphIcon('edit')));
 
 $oPage->addItem(new UI\PageBottom());
 

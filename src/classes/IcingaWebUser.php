@@ -49,5 +49,4 @@ class IcingaWebUser
             $icingWebUser->updatePassword($newPassword);
         }
     }
-
 }

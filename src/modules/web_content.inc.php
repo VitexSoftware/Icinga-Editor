@@ -40,14 +40,14 @@ class web_content extends \Icinga\Editor\UI\ServiceConfigurator
         $errText = isset($this->commandParams[2]) ? $this->commandParams[2] : '';
 
         $this->form->addItem(new \Ease\TWB\FormGroup(_('Watched URL'),
-            new \Ease\Html\InputTextTag('testUrl', $testUrl), '',
-            _('Web Page Address')));
+                new \Ease\Html\InputTextTag('testUrl', $testUrl), '',
+                _('Web Page Address')));
         $this->form->addItem(new \Ease\TWB\FormGroup(_('Content needed'),
-            new \Ease\Html\InputTextTag('reqText', $reqText), '',
-            _('Text on healthy page')));
+                new \Ease\Html\InputTextTag('reqText', $reqText), '',
+                _('Text on healthy page')));
         $this->form->addItem(new \Ease\TWB\FormGroup(_('Content unneeded'),
-            new \Ease\Html\InputTextTag('errText', $errText), '',
-            _('Unwanted text, ex. "Error" ord another fragment of error message')));
+                new \Ease\Html\InputTextTag('errText', $errText), '',
+                _('Unwanted text, ex. "Error" ord another fragment of error message')));
     }
 
     /**
@@ -94,5 +94,4 @@ class web_content extends \Icinga\Editor\UI\ServiceConfigurator
 
         return $success;
     }
-
 }

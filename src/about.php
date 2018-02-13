@@ -1,4 +1,5 @@
 <?php
+
 namespace Icinga\Editor;
 
 /**
@@ -23,7 +24,7 @@ $oPage->container->addItem('<br/><br/><br/><br/>');
 $converter = new CommonMarkConverter();
 
 $oPage->container->addItem(new \Ease\Html\Div($converter->convertToHtml(file_get_contents('../README.md')),
-    ['class' => 'jumbotron']));
+        ['class' => 'jumbotron']));
 $oPage->container->addItem('<br/><br/><br/><br/>');
 
 $oPage->addItem(new UI\PageBottom());

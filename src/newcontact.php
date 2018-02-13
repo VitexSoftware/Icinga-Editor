@@ -60,7 +60,7 @@ $form->addItem(new \Ease\TWB\FormGroup(_('Name'),
 $form->setTagID($form->getTagName());
 if (!is_null($contact->getMyKey())) {
     $form->addItem(new \Ease\Html\InputHiddenTag($contact->getKeyColumn(),
-        $contact->getMyKey()));
+            $contact->getMyKey()));
 }
 $form->addItem('<br>');
 $form->addItem(new \Ease\TWB\SubmitButton(_('Save'), 'success'));

@@ -42,7 +42,7 @@ $form = new \Ease\TWB\Form('Contactgroup', 'contactgroup.php', 'POST',
 $form->setTagID($form->getTagName());
 if (!is_null($contactgroup->getMyKey())) {
     $form->addItem(new \Ease\Html\InputHiddenTag($contactgroup->getKeyColumn(),
-        $contactgroup->getMyKey()));
+            $contactgroup->getMyKey()));
 }
 $form->addItem('<br>');
 $form->addItem(new \Ease\TWB\SubmitButton(_('Save'), 'success'));
@@ -58,7 +58,7 @@ $pageRow = new \Ease\TWB\Row;
 $pageRow->addColumn(2, $infopanel);
 $pageRow->addColumn(6,
     new \Ease\TWB\Panel(_('Contactgroup').' <strong>'.$contactgroup->getName().'</strong>',
-    'default', $form));
+        'default', $form));
 $pageRow->addColumn(4, $tools);
 
 $oPage->container->addItem($pageRow);

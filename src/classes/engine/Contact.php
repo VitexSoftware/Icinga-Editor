@@ -16,7 +16,7 @@ class Contact extends Configurator
      * Key Column
      * @var string
      */
-    public $KeyColumn = 'contact_id';
+    public $keyColumn = 'contact_id';
     public $nameColumn  = 'contact_name';
     public $keyword     = 'contact';
 

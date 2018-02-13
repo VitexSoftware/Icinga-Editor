@@ -14,7 +14,8 @@ $oPage->onlyForLogged();
 
 $oPage->addItem(new UI\PageTop(_('Command overview')));
 
-$oPage->addItem(new \Ease\TWB\Container(new UI\DataGrid(_('Commands'), new Engine\Command)));
+$oPage->addItem(new \Ease\TWB\Container(new UI\DataGrid(_('Commands'),
+            new Engine\Command)));
 
 $oPage->addItem(new UI\PageBottom());
 

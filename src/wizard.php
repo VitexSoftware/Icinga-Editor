@@ -50,9 +50,9 @@ $oPage->columnIII->addItem(
 );
 
 $oPage->columnII->addItem(new \Ease\TWB\LinkButton('wizard-host.php', _('Host'),
-    'success', ['class' => 'btn-xlarge']));
+        'success', ['class' => 'btn-xlarge']));
 $oPage->columnII->addItem(new \Ease\TWB\LinkButton('wizard-service.php',
-    _('Service'), 'info', ['class' => 'btn-xlarge']));
+        _('Service'), 'info', ['class' => 'btn-xlarge']));
 
 $oPage->addItem(new UI\PageBottom());
 

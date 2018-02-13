@@ -41,14 +41,20 @@ if ($oPage->isPosted()) {
 
 $oPage->addItem(new UI\PageTop(_('Configure')));
 
-$importForm = new \Ease\TWB\Form('CfgFileUp', null, 'POST', null, ['class' => 'form-horizontal', 'enctype' => 'multipart/form-data']);
-$importForm->addInput(new \Ease\Html\TextareaTag('cfgtext', ''), _('konfigurační fragment'));
-$importForm->addInput(new \Ease\Html\InputFileTag('cfgfile'), _('configuration file'));
+$importForm = new \Ease\TWB\Form('CfgFileUp', null, 'POST', null,
+    ['class' => 'form-horizontal', 'enctype' => 'multipart/form-data']);
+$importForm->addInput(new \Ease\Html\TextareaTag('cfgtext', ''),
+    _('konfigurační fragment'));
+$importForm->addInput(new \Ease\Html\InputFileTag('cfgfile'),
+    _('configuration file'));
 $importForm->addInput(new UI\TWBSwitch('public'), _('Import data as PUBLIC'));
-$importForm->addInput(new UI\TWBSwitch('generate'), _('Generate to Configuration'));
-$importForm->addItem(new \Ease\TWB\SubmitButton(_('Import now'), 'success', ['title' => _('Perform now')]));
+$importForm->addInput(new UI\TWBSwitch('generate'),
+    _('Generate to Configuration'));
+$importForm->addItem(new \Ease\TWB\SubmitButton(_('Import now'), 'success',
+        ['title' => _('Perform now')]));
 
-$oPage->container->addItem(new \Ease\TWB\Panel(_('Configuration Import'), 'warning', $importForm));
+$oPage->container->addItem(new \Ease\TWB\Panel(_('Configuration Import'),
+        'warning', $importForm));
 
 $oPage->addItem(new UI\PageBottom());
 

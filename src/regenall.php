@@ -73,7 +73,7 @@ if ($testing) {
         if (strstr($line, 'Error:')) {
             $line      = str_replace('Error:', '', $line);
             $errorLine = $oPage->container->addItem(new \Ease\Html\Div('<span class="label label-important">'._('Error:').'</span>',
-                ['class' => 'alert alert-danger']));
+                    ['class' => 'alert alert-danger']));
 
 //            $line = preg_replace('/\config file \'([\/a-zA-Z.])\', starting on line (0|[1-9][0-9]*)\/',
 //                '/'._('config file').' <a href=\"cfgfile.php?file=${1}&line=${2}\">${1}, '._('starting on line').' ${2}</a> /',
@@ -92,12 +92,12 @@ if ($testing) {
                 case 'Service notification period':
                     $errorLine->addItem(' <a href="timeperiods.php">'._('Notification period').'</a> of services ');
                     $errorLine->addItem(new \Ease\Html\ATag('timeperiod.php?timeperiod_name='.$keywords[1],
-                        $keywords[1]));
+                            $keywords[1]));
                     break;
                 case 'Host notification period':
                     $errorLine->addItem(' <a href="timeperiods.php">'._('Notification period').'</a> of hosts');
                     $errorLine->addItem(new \Ease\Html\ATag('timeperiod.php?timeperiod_name='.$keywords[1],
-                        $keywords[1]));
+                            $keywords[1]));
                     break;
 
                 default :
@@ -111,7 +111,7 @@ if ($testing) {
                         $errorLine->addItem(' specified for contact ');
                         $contact = new Engine\Contact($keywords[3]);
                         $errorLine->addItem(new \Ease\Html\ATag('contact.php?contact_id='.$contact->getMyKey(),
-                            $keywords[3]));
+                                $keywords[3]));
                         break;
 
                     default :
@@ -132,7 +132,7 @@ if ($testing) {
             $errorLine = $oPage->container->addItem(new \Ease\Html\Div('<span class="label label-error">'._('Error in configuration file'),
                     ['class' => 'alert alert-danger']));
             $errorLine->addItem(new \Ease\Html\ATag('cfgfile.php?file='.$keywords[1].'&line='.$keywords[3],
-                $keywords[1]));
+                    $keywords[1]));
             $errorLine->addItem($keywords[4]);
             $errorCount++;
         }
@@ -154,7 +154,7 @@ if ($testing) {
 
             //Duplicate definition found for command 'check_ping' (config file '/etc/icinga/generated/command_check_ping_vitex.cfg', starting on line 1)
             $oPage->container->addItem(new \Ease\Html\Div($line,
-                ['class' => 'alert alert-warning']));
+                    ['class' => 'alert alert-warning']));
         }
 
         if (strstr($line, 'Total Warnings')) {
@@ -186,7 +186,7 @@ if ($testing) {
         $extCmd->executeAll();
 
         $oPage->container->addItem(new \Ease\TWB\LinkButton('main.php',
-            _('Done').' '.\Ease\TWB\Part::GlyphIcon('ok-sign'), 'success'));
+                _('Done').' '.\Ease\TWB\Part::GlyphIcon('ok-sign'), 'success'));
         \Ease\Shared::user()->setSettingValue('unsaved', false);
     } else {
         

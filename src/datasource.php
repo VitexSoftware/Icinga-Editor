@@ -14,8 +14,8 @@ $oPage->onlyForLogged();
 
 $class = $oPage->getRequestValue('class');
 if ($class) {
-    if (file_exists('classes/' . $class . '.php')) {
-        require_once 'classes/' . $class . '.php';
+    if (file_exists('classes/'.$class.'.php')) {
+        require_once 'classes/'.$class.'.php';
     }
     $commands = new DataSource(new $class);
     $commands->output();

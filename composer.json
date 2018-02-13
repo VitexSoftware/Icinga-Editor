@@ -34,5 +34,4 @@
         "phpunit/php-token-stream": "~1.2",
         "robmorgan/phinx": "dev-master"
     }
-
 }

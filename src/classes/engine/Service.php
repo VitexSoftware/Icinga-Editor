@@ -14,7 +14,7 @@ namespace Icinga\Editor\Engine;
 class Service extends Configurator
 {
     public $myTable     = 'service';
-    public $KeyColumn = 'service_id';
+    public $keyColumn = 'service_id';
     public $keyword     = 'service';
     public $nameColumn  = 'service_description';
 

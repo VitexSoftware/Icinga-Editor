@@ -30,13 +30,12 @@ function endRouteForm($host)
     $form->addInput(new \Ease\Html\InputTextTag('ip'), _('IP Address'), null,
         _('First pingable pubic IP address on route to monitoring server'));
     $form->addItem(new \Ease\TWB\SubmitButton(_('Watch route'), 'success',
-        ['onClick' => "$('#preload').css('visibility', 'visible');"]));
+            ['onClick' => "$('#preload').css('visibility', 'visible');"]));
     \Ease\Shared::webPage()->addItem(new \Ease\Html\Div(
-        new UI\FXPreloader(), ['class' => 'fuelux', 'id' => 'preload']));
+            new UI\FXPreloader(), ['class' => 'fuelux', 'id' => 'preload']));
     return new \Ease\TWB\Panel(_('Watch target route select').': '.$host->getName(),
         'default', $form, _('Choose host or enter an IP address'));
 }
-
 $host = new Engine\Host($hostId);
 $ip   = $host->getDataValue('address');
 if (!$ip) {
@@ -61,7 +60,7 @@ if (is_null($hostId) || !$ip) {
     $hgName    = sprintf(_('Route to %s'), $host->getName());
     $hostGroup = new Engine\Hostgroup($hgName);
     if ($hostGroup->getId()) {
-
+        
     } else {
         $hostGroup->setUpUser($oUser);
         $hostGroup->setName($hgName);
@@ -70,7 +69,7 @@ if (is_null($hostId) || !$ip) {
     $listing = new \Ease\Html\OlTag();
 
     $infopanel = $oPage->container->addItem(new \Ease\TWB\Panel($hostGroup->getName(),
-        'info', $listing));
+            'info', $listing));
 
 
     $trace = [];
@@ -144,7 +143,7 @@ if (is_null($hostId) || !$ip) {
         $hostGroup->addMember('members', $host->getId(), $host->getName());
 
         $listing->addItemSmart(new \Ease\Html\ATag('host.php?host_id='.$host->getId(),
-            $host->getName()));
+                $host->getName()));
     }
 
     if ($hostGroup->saveToSQL()) {

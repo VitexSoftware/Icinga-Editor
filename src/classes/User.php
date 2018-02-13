@@ -51,7 +51,7 @@ class User extends \Ease\User
             return $icon;
         }
     }
-    
+
     /**
      * Way how to set Admin's flag using Yes/No switch
      * 
@@ -60,9 +60,10 @@ class User extends \Ease\User
      */
     public function takeData($data)
     {
-        foreach ($data as $key=> $value) {
-            if(strstr($key, 'admin-')){
-                $this->setSettingValue('admin', ($value === 'true') ? true : false );
+        foreach ($data as $key => $value) {
+            if (strstr($key, 'admin-')) {
+                $this->setSettingValue('admin',
+                    ($value === 'true') ? true : false );
                 unset($data[$key]);
             }
         }
@@ -118,7 +119,7 @@ class User extends \Ease\User
     public function passwordChange($newPassword, $userID = null)
     {
         if (parent::passwordChange($newPassword, $userID)) {
-                
+
             system('sudo htpasswd -b /etc/icinga/htpasswd.users '.$this->getUserLogin().' '.$newPassword);
             if (defined('DB_IW_SERVER_PASSWORD')) {
                 $mysqli = new \mysqli(DB_SERVER_HOST, DB_IW_SERVER_USERNAME,
@@ -282,10 +283,10 @@ class User extends \Ease\User
     {
 
         \Ease\Shared::webPage()->addItem(new UI\ConfirmationDialog('delete'.$this->getId(),
-            '?user_id='.$this->getID().'&delete=true'.'&'.$urlAdd,
-            _('Delete').' '.$name,
-            sprintf(_('Are you sure to delete %s ?'),
-                '<strong>'.$this->getUserName().'</strong>')));
+                '?user_id='.$this->getID().'&delete=true'.'&'.$urlAdd,
+                _('Delete').' '.$name,
+                sprintf(_('Are you sure to delete %s ?'),
+                    '<strong>'.$this->getUserName().'</strong>')));
         return new \Ease\Html\ButtonTag(
             [\Ease\TWB\Part::GlyphIcon('remove'), _('Delete').' '.$this->keyword.' '.$this->getUserName()],
             ['style' => 'cursor: default', 'class' => 'btn btn-danger', 'id' => 'triggerdelete'.$this->getId(),
@@ -459,6 +460,6 @@ class User extends \Ease\User
      */
     public function isAdmin()
     {
-       return $this->getSettingValue('admin') === true;
+        return $this->getSettingValue('admin') === true;
     }
 }

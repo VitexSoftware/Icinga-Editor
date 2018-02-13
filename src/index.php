@@ -20,10 +20,10 @@ $oPage->addItem(new UI\PageTop(_('Icinga Editor')));
 $oPage->addPageColumns();
 
 $oPage->heroUnit = $oPage->container->addItem(new \Ease\Html\Div(null,
-    ['id' => 'heroUnit', 'class' => 'jumbotron']));
+        ['id' => 'heroUnit', 'class' => 'jumbotron']));
 $oPage->heroUnit->addItem(new \Ease\Html\ImgTag('img/vsmonitoring.png'));
 $oPage->heroUnit->addItem(new \Ease\Html\ATag('http://icinga.org/',
-    new \Ease\Html\ImgTag('img/icinga_logo4-300x109.png')));
+        new \Ease\Html\ImgTag('img/icinga_logo4-300x109.png')));
 $oPage->heroUnit->addItem(_('Editor'));
 $oPage->heroUnit->setTagCss(['text-align' => 'center']);
 

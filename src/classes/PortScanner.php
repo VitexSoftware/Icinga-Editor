@@ -140,5 +140,4 @@ class PortScanner extends \Ease\Sand
 
         return $fp;
     }
-
 }

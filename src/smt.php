@@ -18,15 +18,15 @@ $oPage->addItem(new UI\PageTop(_('Service Migration').' '.$service->getName()));
 $oPage->addPageColumns();
 
 $oPage->columnII->addItem(new \Ease\Html\H3Tag([new UI\PlatformIcon($service->getDataValue('platform')),
-    $service->getName()]));
+        $service->getName()]));
 
 
 $form = $oPage->columnII->addItem(new \Ease\TWB\Form('Service',
-    'importer.php?class=service', 'POST'));
+        'importer.php?class=service', 'POST'));
 $form->setTagID($form->getTagName());
 if (!is_null($service->getMyKey())) {
     $form->addItem(new \Ease\Html\InputHiddenTag($service->getMyKeyColumn(),
-        $service->getMyKey()));
+            $service->getMyKey()));
 }
 $form->addItem('<br>');
 

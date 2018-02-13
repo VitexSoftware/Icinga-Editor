@@ -48,7 +48,7 @@ class DriveLetter extends \Icinga\Editor\UI\ServiceConfigurator
                 _('Select the drive letter followed by the drive letter'));
         } else {
             $this->form->addInput(new \Ease\Html\Select('Drive', $drives,
-                str_replace(':', '', $config['Drive'])), _('Drive'), 'X:',
+                    str_replace(':', '', $config['Drive'])), _('Drive'), 'X:',
                 _('Select the drive letter followed by the drive letter'));
         }
     }
@@ -97,5 +97,4 @@ class DriveLetter extends \Icinga\Editor\UI\ServiceConfigurator
 
         return FALSE;
     }
-
 }

@@ -13,12 +13,12 @@ require_once 'includes/IEInit.php';
 
 $oPage->onlyForLogged();
 
-$hostName    = trim($oPage->getRequestValue('host_name'));
-$platform    = trim($oPage->getRequestValue('platform'));
+$hostName       = trim($oPage->getRequestValue('host_name'));
+$platform       = trim($oPage->getRequestValue('platform'));
 $host_group     = $oPage->getRequestValue('host_group', 'int');
 $host_is_server = $oPage->getRequestValue('host_is_server', 'boolean');
-$host        = new Engine\Host();
-$host->owner = &$oUser;
+$host           = new Engine\Host();
+$host->owner    = &$oUser;
 
 if ($hostName && $platform) {
 
@@ -79,7 +79,8 @@ if ($hostName && $platform) {
 
 $oPage->addItem(new UI\PageTop(_('New Passive Host wizard')));
 
-$oPage->container->addItem(new \Ease\TWB\Panel(_('New Passive Host'), 'info', new UI\PassiveCheckedHostForm('passive')));
+$oPage->container->addItem(new \Ease\TWB\Panel(_('New Passive Host'), 'info',
+        new UI\PassiveCheckedHostForm('passive')));
 
 $oPage->addItem(new UI\PageBottom());
 

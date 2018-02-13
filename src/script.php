@@ -68,9 +68,9 @@ switch ($oPage->getRequestValue('action')) {
 
         $confirmator->addItem(new \Ease\TWB\Well(nl2br($script->getDataValue('body'))));
         $confirmator->addItem(new \Ease\TWB\LinkButton('?'.$script->keyColumn.'='.$script->getID(),
-            _('No').' '.\Ease\TWB\Part::glyphIcon('ok'), 'success'));
+                _('No').' '.\Ease\TWB\Part::glyphIcon('ok'), 'success'));
         $confirmator->addItem(new \Ease\TWB\LinkButton('?delete=true&'.$script->keyColumn.'='.$script->getID(),
-            _('Yes').' '.\Ease\TWB\Part::glyphIcon('remove'), 'danger'));
+                _('Yes').' '.\Ease\TWB\Part::glyphIcon('remove'), 'danger'));
 
 
         break;
@@ -81,8 +81,7 @@ switch ($oPage->getRequestValue('action')) {
             $scriptEditor,
             ['class' => 'form-horizontal', 'enctype' => 'multipart/form-data']);
 
-        $form->addInput(new \Ease\Html\InputFileTag('upload'),
-            _('Send file'),
+        $form->addInput(new \Ease\Html\InputFileTag('upload'), _('Send file'),
             'script.sh', '('._('Textarea will overwriten').')');
 
         if (!$script->getId()) {
@@ -100,7 +99,7 @@ $tools     = new \Ease\TWB\Panel(_('Tools'), 'warning');
 if ($script->getId()) {
     $tools->addItem($script->deleteButton());
     $tools->addItem(new \Ease\TWB\Panel(_('Transfer'), 'warning',
-        $script->transferForm()));
+            $script->transferForm()));
 
     $command = new Engine\Command;
 
@@ -120,9 +119,9 @@ if ($script->getId()) {
 
             $listing->addItem(
                 new \Ease\Html\LiTag(
-                new \Ease\Html\ATag('command.php?command_id='.$usage['command_id'],
-                $usage[$command->nameColumn])
-                , ['class' => 'list-group-item'])
+                    new \Ease\Html\ATag('command.php?command_id='.$usage['command_id'],
+                        $usage[$command->nameColumn])
+                    , ['class' => 'list-group-item'])
             );
         }
 
@@ -136,7 +135,7 @@ $pageRow = new \Ease\TWB\Row();
 $pageRow->addColumn(2, $infopanel);
 $pageRow->addColumn(6,
     new \Ease\TWB\Panel(_('Script').' <strong>'.$script->getName().'</strong>',
-    'default', $form));
+        'default', $form));
 $pageRow->addColumn(4, $tools);
 $oPage->container->addItem($pageRow);
 

@@ -66,7 +66,7 @@ class CheckDriveSize extends \Icinga\Editor\UI\ServiceConfigurator
                 _('Disk'), 'X:', _('Disk drive letter select'));
         } else {
             $this->form->addInput(new \Ease\Html\Select('Drive', $drives,
-                str_replace(':', '', $config['Drive'])), _('Disk'), 'X:',
+                    str_replace(':', '', $config['Drive'])), _('Disk'), 'X:',
                 _('Disk drive letter select'));
         }
 
@@ -74,51 +74,59 @@ class CheckDriveSize extends \Icinga\Editor\UI\ServiceConfigurator
             $config['Drive'] = '';
         }
         $this->form->addItem(new \Ease\TWB\FormGroup(_('NetDrive'),
-            new \Ease\Html\InputTextTag('NetDrive', $config['Drive']),
-            '\\\\server\\path\\', _('Network drive path')));
+                new \Ease\Html\InputTextTag('NetDrive', $config['Drive']),
+                '\\\\server\\path\\', _('Network drive path')));
 
 
         $this->form->addItem(new \Ease\TWB\FormGroup(_('MaxWarn'),
-            new \Ease\Html\InputTextTag('MaxWarn', $config['MaxWarn']), '80%',
-            _('Maximum value before a warning is returned.')));
+                new \Ease\Html\InputTextTag('MaxWarn', $config['MaxWarn']),
+                '80%', _('Maximum value before a warning is returned.')));
         $this->form->addItem(new \Ease\TWB\FormGroup(_('MaxCrit'),
-            new \Ease\Html\InputTextTag('MaxCrit', $config['MaxCrit']), '95%',
-            _('Maximum value before a critical is returned.')));
+                new \Ease\Html\InputTextTag('MaxCrit', $config['MaxCrit']),
+                '95%', _('Maximum value before a critical is returned.')));
         $this->form->addItem(new \Ease\TWB\FormGroup(_('MinWarn'),
-            new \Ease\Html\InputTextTag('MinWarn', $config['MinWarn']), '10%',
-            _('Minimum value before a warning is returned.')));
+                new \Ease\Html\InputTextTag('MinWarn', $config['MinWarn']),
+                '10%', _('Minimum value before a warning is returned.')));
         $this->form->addItem(new \Ease\TWB\FormGroup(_('MinCrit'),
-            new \Ease\Html\InputTextTag('MinCrit', $config['MinCrit']), '5%',
-            _('Minimum value before a critical is returned.')));
+                new \Ease\Html\InputTextTag('MinCrit', $config['MinCrit']),
+                '5%', _('Minimum value before a critical is returned.')));
 
         $this->form->addItem(new \Ease\TWB\FormGroup(_('MaxWarnFree'),
-            new \Ease\Html\InputTextTag('MaxWarnFree', $config['MaxWarnFree']),
-            '5%', _('Maximum value before a warning is returned.')));
+                new \Ease\Html\InputTextTag('MaxWarnFree',
+                    $config['MaxWarnFree']), '5%',
+                _('Maximum value before a warning is returned.')));
         $this->form->addItem(new \Ease\TWB\FormGroup(_('MaxCritFree'),
-            new \Ease\Html\InputTextTag('MaxCritFree', $config['MaxCritFree']),
-            '5%', _('Maximum value before a critcal is returned.')));
+                new \Ease\Html\InputTextTag('MaxCritFree',
+                    $config['MaxCritFree']), '5%',
+                _('Maximum value before a critcal is returned.')));
         $this->form->addItem(new \Ease\TWB\FormGroup(_('MinWarnFree'),
-            new \Ease\Html\InputTextTag('MinWarnFree', $config['MinWarnFree']),
-            '5%', _('Minimum value before a warning is returned.')));
+                new \Ease\Html\InputTextTag('MinWarnFree',
+                    $config['MinWarnFree']), '5%',
+                _('Minimum value before a warning is returned.')));
         $this->form->addItem(new \Ease\TWB\FormGroup(_('MinCritFree'),
-            new \Ease\Html\InputTextTag('MinCritFree', $config['MinCritFree']),
-            '5%', _('Minimum value before a critcal is returned.')));
+                new \Ease\Html\InputTextTag('MinCritFree',
+                    $config['MinCritFree']), '5%',
+                _('Minimum value before a critcal is returned.')));
 
         $this->form->addItem(new \Ease\TWB\FormGroup(_('MaxWarnUsed'),
-            new \Ease\Html\InputTextTag('MaxWarnUsed', $config['MaxWarnUsed']),
-            '5%', _('Maximum value before a warning is returned.')));
+                new \Ease\Html\InputTextTag('MaxWarnUsed',
+                    $config['MaxWarnUsed']), '5%',
+                _('Maximum value before a warning is returned.')));
         $this->form->addItem(new \Ease\TWB\FormGroup(_('MaxCritUsed'),
-            new \Ease\Html\InputTextTag('MaxCritUsed', $config['MaxCritUsed']),
-            '5%', _('Maximum value before a critcal is returned.')));
+                new \Ease\Html\InputTextTag('MaxCritUsed',
+                    $config['MaxCritUsed']), '5%',
+                _('Maximum value before a critcal is returned.')));
         $this->form->addItem(new \Ease\TWB\FormGroup(_('MinWarnUsed'),
-            new \Ease\Html\InputTextTag('MinWarnUsed', $config['MinWarnUsed']),
-            '5%', _('Minimum value before a warning is returned.')));
+                new \Ease\Html\InputTextTag('MinWarnUsed',
+                    $config['MinWarnUsed']), '5%',
+                _('Minimum value before a warning is returned.')));
         $this->form->addItem(new \Ease\TWB\FormGroup(_('MinCritUsed'),
-            new \Ease\Html\InputTextTag('MinCritUsed', $config['MinCritUsed']),
-            '5%', _('Minimum value before a critcal is returned.')));
+                new \Ease\Html\InputTextTag('MinCritUsed',
+                    $config['MinCritUsed']), '5%',
+                _('Minimum value before a critcal is returned.')));
 
         $this->form->addInput(new \Icinga\Editor\UI\TWBSwitch('ShowAll',
-            $config['ShowAll']), _('Show All'), null,
+                $config['ShowAll']), _('Show All'), null,
             _('Configures display format (if set shows all items not only failures, if set to long shows all cores).'));
 
         //    $this->form->addInput(new \Ease\Html\InputTextTag('orig', $this->commandParams[0], array('disabled')));
@@ -201,5 +209,4 @@ class CheckDriveSize extends \Icinga\Editor\UI\ServiceConfigurator
 
         return FALSE;
     }
-
 }

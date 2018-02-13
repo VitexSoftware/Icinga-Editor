@@ -17,11 +17,20 @@
             <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/src/host.php</file>
             <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/src/login.php</file>
         </group>
-        <group name="Group 20171205-02:25:52">
-            <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/src/host.php</file>
-        </group>
         <group>
             <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/login.php</file>
+        </group>
+        <group name="Group 20171205-02:25:52">
+            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/classes/UI/YesNoSwitch.php</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/classes/engine/Host.php</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/host.php</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/classes/UI/TWBSwitch.php</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/classes/UI/Switcher.php</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/classes/engine/Configurator.php</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/main.php</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/classes/UI/TextInputSaver.php</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/classes/UI/CfgEditor.php</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/test/src/classes/ConfiguratorTest.php</file>
         </group>
     </open-files>
 </project-private>

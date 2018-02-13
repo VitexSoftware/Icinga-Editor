@@ -11,7 +11,7 @@ namespace Icinga\Editor\UI;
  */
 class ContactSelector extends \Ease\Container
 {
-    public $KeyColumn = 'service_name';
+    public $keyColumn = 'service_name';
 
     /**
      * Editor k přidávání členů skupiny

@@ -18,7 +18,7 @@ $oPage->addPageColumns();
 $oPage->columnI->addItem(_('Multiplatform client'));
 
 $oPage->columnI->addItem(new \Ease\Html\ATag('http://nagstamon.ifw-dresden.de/',
-    new \Ease\Html\ImgTag('img/nagstamon_header_logo.gif')));
+        new \Ease\Html\ImgTag('img/nagstamon_header_logo.gif')));
 
 $oPage->columnI->addItem(new \Ease\Html\PTag(_('<br>
 Nagstamon is a Nagios desktop monitor for desktop operating systems.
@@ -35,7 +35,7 @@ Hosts and services can be filtered by categories and regular expressions.
 $oPage->columnII->addItem(new \Ease\Html\ImgTag('img/nagstamon1.png'));
 
 $oPage->columnI->addItem(new \Ease\Html\ATag('http://nagstamon.ifw-dresden.de/',
-    _('Program homepage')));
+        _('Program homepage')));
 
 $oPage->columnI->addItem(new \Ease\Html\H2Tag(_('Setup')));
 
@@ -49,7 +49,7 @@ $oPage->columnI->addItem('<p>Username: <b>'.$oUser->getUserLogin().'</b></p>');
 $oPage->columnI->addItem('<p>Password: <b>'._('Your password').'</b></p>');
 
 $oPage->columnI->addItem(new \Ease\TWB\LinkButton('settings.php',
-    _('Password change'), 'danger'));
+        _('Password change'), 'danger'));
 
 $oPage->addItem(new UI\PageBottom());
 

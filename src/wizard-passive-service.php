@@ -112,11 +112,11 @@ $oPage->addPageColumns();
 
 $oPage->columnI->addItem(
     new \Ease\TWB\Panel(_('Passive Checks'), 'info',
-    _('Passive checks are initiated and performed external applications/processes'))
+        _('Passive checks are initiated and performed external applications/processes'))
 );
 $oPage->columnIII->addItem(
     new \Ease\TWB\Panel(_('Passive checked Service'), 'info',
-    _('Passive check service results are submitted to Icinga for processing'))
+        _('Passive check service results are submitted to Icinga for processing'))
 );
 
 $oPage->columnII->addItem(new UI\ServiceWizardForm($service));

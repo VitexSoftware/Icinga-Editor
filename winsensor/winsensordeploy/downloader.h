@@ -10,8 +10,7 @@
 #include <QFile>
 #include <QDebug>
 
-class Downloader : public QObject
-{
+class Downloader : public QObject {
     Q_OBJECT
 public:
     explicit Downloader(QObject *parent = nullptr);
@@ -20,7 +19,7 @@ public:
 signals:
 
 public slots:
-    void replyFinished (QNetworkReply *reply);
+    void replyFinished(QNetworkReply *reply);
 private:
     QNetworkAccessManager *manager;
 };

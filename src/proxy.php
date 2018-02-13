@@ -23,7 +23,7 @@ if (isset($_GET['t'])) {
 
     $page = str_replace(['href="', 'src=\'', 'src="', 'action="'],
         ['href="/cgi-bin/icinga/', 'src=\'/cgi-bin/icinga/', 'src="/cgi-bin/icinga/',
-        'action="/cgi-bin/icinga/'], $page);
+            'action="/cgi-bin/icinga/'], $page);
     $page = str_replace('/cgi-bin/icinga//icinga/', '/icinga/', $page);
     echo $page;
 }

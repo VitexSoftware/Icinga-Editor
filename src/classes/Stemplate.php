@@ -10,10 +10,10 @@ namespace Icinga\Editor;
  */
 class Stemplate extends Engine\Configurator
 {
-    public $myTable     = 'stemplate';
-    public $KeyColumn = 'stemplate_id';
-    public $nameColumn  = 'stemplate_name';
-    public $keyword     = 'stemplate';
+    public $myTable    = 'stemplate';
+    public $keyColumn  = 'stemplate_id';
+    public $nameColumn = 'stemplate_name';
+    public $keyword    = 'stemplate';
 
     /**
      * Public ?

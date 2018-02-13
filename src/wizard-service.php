@@ -51,9 +51,9 @@ $oPage->columnIII->addItem(
 );
 
 $oPage->columnII->addItem(new \Ease\TWB\LinkButton('wizard-active-service.php',
-    _('Active'), 'success', ['class' => 'btn-xlarge']));
+        _('Active'), 'success', ['class' => 'btn-xlarge']));
 $oPage->columnII->addItem(new \Ease\TWB\LinkButton('wizard-passive-service.php',
-    _('Passive'), 'info', ['class' => 'btn-xlarge']));
+        _('Passive'), 'info', ['class' => 'btn-xlarge']));
 
 $oPage->addItem(new UI\PageBottom());
 

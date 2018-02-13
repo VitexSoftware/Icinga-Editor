@@ -10,7 +10,7 @@ class UserGroup extends Configurator
     public $keyword     = 'usergroup';
     public $myTable     = 'user_group';
     public $nameColumn  = 'usergroup_name';
-    public $KeyColumn = 'usergroup_id';
+    public $keyColumn = 'usergroup_id';
     public $userColumn  = 'group_boss';
 
     /**

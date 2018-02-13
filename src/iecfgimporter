@@ -23,9 +23,9 @@ if (!isset($argv[1])) {
 
 $owner = 0;
 if (isset($argv[2])) {
-    $oUser = new \Icinga\Editor\User($argv[2]);
+    $oUser    = new \Icinga\Editor\User($argv[2]);
     $owner_id = $oUser->getUserID();
-    if($owner_id){
+    if ($owner_id) {
         $owner = $owner_id;
     }
 }
@@ -35,7 +35,7 @@ if (isset($argv[2])) {
     $public = boolval($argv[2]);
 }
 
-$params = ['public' => $public, 'generate' => true, 'owner'=>$owner];
+$params = ['public' => $public, 'generate' => true, 'owner' => $owner];
 
 $importer = new Icinga\Editor\Engine\Importer($params);
 $importer->importCfgPath($cfgFile);
