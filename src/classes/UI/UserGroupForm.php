@@ -34,7 +34,7 @@ class UserGroupForm extends \Ease\TWB\Form
         $this->addItem($this->userGroup->memberSelector());
         $usergroup_id = $this->userGroup->getMyKey();
         if ($usergroup_id) {
-            $this->addItem(new \Ease\Html\InputHiddenTag($this->userGroup->getMyKeyColumn(),
+            $this->addItem(new \Ease\Html\InputHiddenTag($this->userGroup->getKeyColumn(),
                 $usergroup_id));
         }
         if ($usergroup_id) {

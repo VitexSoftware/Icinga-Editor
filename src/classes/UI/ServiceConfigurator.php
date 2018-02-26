@@ -172,9 +172,9 @@ class ServiceConfigurator extends \Ease\Html\Div
         foreach ($this->commonFields as $cf) {
             $this->form->addItem(new CfgEditor($this->tweaker->service, $cf));
         }
-        $this->form->addItem(new \Ease\Html\InputHiddenTag($this->tweaker->service->getMyKeyColumn(),
+        $this->form->addItem(new \Ease\Html\InputHiddenTag($this->tweaker->service->getKeyColumn(),
                 $this->tweaker->service->getMyKey()));
-        $this->form->addItem(new \Ease\Html\InputHiddenTag($this->tweaker->host->getMyKeyColumn(),
+        $this->form->addItem(new \Ease\Html\InputHiddenTag($this->tweaker->host->getKeyColumn(),
                 $this->tweaker->host->getMyKey()));
         $this->form->addItem(new \Ease\Html\InputHiddenTag('action', 'tweak'));
         $this->form->addItem('<br/>');

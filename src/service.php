@@ -125,7 +125,7 @@ switch ($oPage->getRequestValue('action')) {
             $serviceEdit, ['class' => 'form-horizontal']);
         $form->setTagID($form->getTagName());
         if (!is_null($service->getMyKey())) {
-            $form->addItem(new \Ease\Html\InputHiddenTag($service->getMyKeyColumn(),
+            $form->addItem(new \Ease\Html\InputHiddenTag($service->getKeyColumn(),
                     $service->getMyKey()));
         }
         $form->addItem('<br>');

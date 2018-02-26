@@ -674,7 +674,8 @@ class Service extends Configurator
 
     /**
      * SQL Fragment pro volbu platformy sluzby
-     * @param type $platform
+     * 
+     * @param string $platform
      */
     public function platformCondition($platform)
     {

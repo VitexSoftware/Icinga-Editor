@@ -66,9 +66,9 @@ switch ($oPage->getRequestValue('action')) {
 
 
 $service       = new Engine\Service;
-$serviceUsages = $service->getColumnsFromSQL([$service->getMyKeyColumn(), $service->nameColumn],
+$serviceUsages = $service->getColumnsFromSQL([$service->getKeyColumn(), $service->nameColumn],
     ['contacts' => '%'.$contact->getName().'%'], $service->nameColumn,
-    $service->getMyKeyColumn());
+    $service->getKeyColumn());
 
 
 
@@ -99,9 +99,9 @@ if ($contact->getId()) {
     }
 
     $host       = new Engine\Host;
-    $hostUsages = $host->getColumnsFromSQL([$host->getMyKeyColumn(), $host->nameColumn],
+    $hostUsages = $host->getColumnsFromSQL([$host->getKeyColumn(), $host->nameColumn],
         ['contacts' => '%'.$contact->getName().'%'], $host->nameColumn,
-        $host->getMyKeyColumn());
+        $host->getKeyColumn());
 
     if (count($hostUsages)) {
         $usedBy  = new \Ease\TWB\Panel(_('Used by hosts'));

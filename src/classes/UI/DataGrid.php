@@ -73,7 +73,7 @@ class DataGrid extends \Ease\Html\TableTag
         $this->setTagID();
 
         $this->options['url']      = 'datasource.php?class='.urlencode(get_class($datasource));
-        $this->options['sortname'] = $datasource->getMyKeyColumn();
+        $this->options['sortname'] = $datasource->getKeyColumn();
         parent::__construct(null, $properties);
         \Ease\JQuery\Part::jQueryze($this);
         \Ease\Shared::webPage()->includeJavaScript('js/flexigrid.js');
@@ -181,14 +181,14 @@ class DataGrid extends \Ease\Html\TableTag
                 $(\'.trSelected\', grid).each(function() {
                     var id = $(this).attr(\'id\');
                     id = id.substring(id.lastIndexOf(\'row\')+3);
-                    $(location).attr(\'href\',\''.$this->dataSource->keyword.'.php?'.$this->dataSource->getMyKeyColumn().'=\' +id);
+                    $(location).attr(\'href\',\''.$this->dataSource->keyword.'.php?'.$this->dataSource->getKeyColumn().'=\' +id);
                 });
 
             } else {
                 $(\'.trSelected\', grid).each(function() {
                     var id = $(this).attr(\'id\');
                     id = id.substring(id.lastIndexOf(\'row\')+3);
-                    var url =\''.$this->dataSource->keyword.'.php?'.$this->dataSource->getMyKeyColumn().'=\' +id;
+                    var url =\''.$this->dataSource->keyword.'.php?'.$this->dataSource->getKeyColumn().'=\' +id;
                     var win = window.open(url, \'_blank\');
                     win.focus();
                 });
@@ -221,14 +221,14 @@ class DataGrid extends \Ease\Html\TableTag
                 $(\'.trSelected\', grid).each(function() {
                     var id = $(this).attr(\'id\');
                     id = id.substring(id.lastIndexOf(\'row\')+3);
-                    $(location).attr(\'href\',\''.$this->dataSource->keyword.'.php?action=delete&'.$this->dataSource->getMyKeyColumn().'=\' +id);
+                    $(location).attr(\'href\',\''.$this->dataSource->keyword.'.php?action=delete&'.$this->dataSource->getKeyColumn().'=\' +id);
                 });
 
             } else {
                 $(\'.trSelected\', grid).each(function() {
                     var id = $(this).attr(\'id\');
                     id = id.substring(id.lastIndexOf(\'row\')+3);
-                    var url =\''.$this->dataSource->keyword.'.php?action=delete&'.$this->dataSource->getMyKeyColumn().'=\' +id;
+                    var url =\''.$this->dataSource->keyword.'.php?action=delete&'.$this->dataSource->getKeyColumn().'=\' +id;
                     var win = window.open(url, \'_blank\');
                     win.focus();
                 });
@@ -356,7 +356,7 @@ class DataGrid extends \Ease\Html\TableTag
             $this->options['onDoubleClick'] = 'function(g) {
                     var id = $(g).attr(\'id\');
                     id = id.substring(id.lastIndexOf(\'row\')+3);
-                    $(location).attr(\'href\',\''.$this->dataSource->keyword.'.php?'.$this->dataSource->getMyKeyColumn().'=\' +id);
+                    $(location).attr(\'href\',\''.$this->dataSource->keyword.'.php?'.$this->dataSource->getKeyColumn().'=\' +id);
 
             }';
         }

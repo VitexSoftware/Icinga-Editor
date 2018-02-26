@@ -84,9 +84,9 @@ if ($command->getId()) {
             $command->transferForm()));
 
     $service = new Engine\Service;
-    $usages  = $service->getColumnsFromSQL([$service->getMyKeyColumn(), $service->nameColumn],
+    $usages  = $service->getColumnsFromSQL([$service->getKeyColumn(), $service->nameColumn],
         ['check_command' => $command->getName()], $service->nameColumn,
-        $service->getMyKeyColumn());
+        $service->getKeyColumn());
     if (count($usages)) {
         $usedBy  = new \Ease\TWB\Panel(_('Used by services'));
         $listing = $usedBy->addItem(new \Ease\Html\UlTag(null,
@@ -103,12 +103,12 @@ if ($command->getId()) {
     }
 
     $contact       = new Engine\Contact;
-    $hostNotify    = $contact->getColumnsFromSQL([$contact->getMyKeyColumn(), $contact->nameColumn],
+    $hostNotify    = $contact->getColumnsFromSQL([$contact->getKeyColumn(), $contact->nameColumn],
         ['host_notification_commands' => '%'.$command->getName().'%'],
-        $contact->nameColumn, $contact->getMyKeyColumn());
-    $serviceNotify = $contact->getColumnsFromSQL([$contact->getMyKeyColumn(), $contact->nameColumn],
+        $contact->nameColumn, $contact->getKeyColumn());
+    $serviceNotify = $contact->getColumnsFromSQL([$contact->getKeyColumn(), $contact->nameColumn],
         ['service_notification_commands' => '%'.$command->getName().'%'],
-        $contact->nameColumn, $contact->getMyKeyColumn());
+        $contact->nameColumn, $contact->getKeyColumn());
     $usages        = array_merge($hostNotify, $serviceNotify);
     if (count($usages)) {
         $usedBy  = new \Ease\TWB\Panel(_('Used by contacts'));

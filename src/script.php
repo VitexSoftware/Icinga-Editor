@@ -103,9 +103,9 @@ if ($script->getId()) {
 
     $command = new Engine\Command;
 
-    $usages = $command->getColumnsFromSQL([$command->getMyKeyColumn(), $command->nameColumn],
+    $usages = $command->getColumnsFromSQL([$command->getKeyColumn(), $command->nameColumn],
         ['script_id' => $command->getId()], $command->nameColumn,
-        $command->getMyKeyColumn());
+        $command->getKeyColumn());
 
     if (count($usages)) {
         $usedBy = new \Ease\TWB\Panel(_('Used by commands'));
