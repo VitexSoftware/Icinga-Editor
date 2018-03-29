@@ -33,6 +33,8 @@ class ConfigurationsOverview extends \Ease\TWB\Panel
                 ['class' => 'fuelux', 'id' => 'preload']));
 
         foreach ($hosts as $host_id => $host_info) {
+            $hostHelper->loadFromSQL($host_id);
+
             if (is_null($host_info['host_name']) || !strlen($host_info['host_name'])) {
                 unset($hosts[$host_id]);
                 continue;
@@ -72,6 +74,7 @@ class ConfigurationsOverview extends \Ease\TWB\Panel
         if (count($oldSensor)) {
             $oldHostsTable = new \Ease\Html\TableTag(null, ['class' => 'table']);
             foreach ($oldSensor as $host_id => $host_info) {
+                $hostHelper->loadFromSQL($host_id);
                 $row = $oldHostsTable->addRowColumns([$hostHelper->getIconLink(),
                     new \Ease\Html\ATag('host.php?host_id='.$host_id,
                         $host_info['host_name']), new \Ease\TWB\LinkButton('sensor.php?host_id='.$host_id,
@@ -99,6 +102,7 @@ class ConfigurationsOverview extends \Ease\TWB\Panel
         if (count($noParents)) {
             $noParentsTable = new \Ease\Html\TableTag(null, ['class' => 'table']);
             foreach ($noParents as $host_id => $host_info) {
+                $hostHelper->loadFromSQL($host_id);
                 $hostHelper->setData($host_info);
                 $row = $noParentsTable->addRowColumns(
                     [
@@ -123,6 +127,7 @@ class ConfigurationsOverview extends \Ease\TWB\Panel
         if (count($noIcon)) {
             $noIconTable = new \Ease\Html\TableTag(null, ['class' => 'table']);
             foreach ($noIcon as $host_id => $host_info) {
+                $hostHelper->loadFromSQL($host_id);
                 $hostHelper->setData($host_info);
                 $row = $noIconTable->addRowColumns([$hostHelper->getIconLink(), new \Ease\Html\ATag('host.php?host_id='.$host_id,
                         $host_info['host_name']), new \Ease\TWB\LinkButton('host.php?action=icon&host_id='.$host_id,

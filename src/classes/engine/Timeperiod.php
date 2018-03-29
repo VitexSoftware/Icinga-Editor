@@ -171,7 +171,7 @@ class Timeperiod extends Configurator
         $allData = parent::getAllData();
         foreach ($allData as $key => $dataRow) {
             $periods = $dataRow['periods'];
-            if (count($periods)) {
+            if (is_array($periods)) {
                 foreach ($periods as $timeName => $timeInterval) {
                     $this->useKeywords[$timeName] = true;
                 }
