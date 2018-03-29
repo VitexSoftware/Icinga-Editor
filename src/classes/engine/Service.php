@@ -13,10 +13,10 @@ namespace Icinga\Editor\Engine;
  */
 class Service extends Configurator
 {
-    public $myTable     = 'service';
-    public $keyColumn = 'service_id';
-    public $keyword     = 'service';
-    public $nameColumn  = 'service_description';
+    public $myTable    = 'service';
+    public $keyColumn  = 'service_id';
+    public $keyword    = 'service';
+    public $nameColumn = 'service_description';
 
     /**
      * Weblink
@@ -563,8 +563,9 @@ class Service extends Configurator
         $this->unsetDataValue('DatCreate');
         $this->setDataValue('action_url', $_SERVER['REQUEST_URI']);
         $this->setDataValue($this->userColumn, $ownerId);
-        $this->setDataValue('contacts', $host->owner->getFirstContact());
-
+        if (is_object($host->owner)) {
+            $this->setDataValue('contacts', $host->owner->getFirstContact());
+        }
         $newname = $this->getName().' '.$host->getName();
 
         $servcount = $this->dblink->queryToCount('SELECT '.$this->getKeyColumn().' FROM '.$this->myTable.' WHERE '.$this->nameColumn.' LIKE \''.$newname.'%\' ');
