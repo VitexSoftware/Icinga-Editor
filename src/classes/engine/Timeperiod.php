@@ -52,8 +52,8 @@ class Timeperiod extends Configurator
      */
     public function takeData($data, $dataPrefix = null)
     {
-        $this->$keywordsInfo['timeperiod_name']['title'] = _('Timeperiod Name');
-        $this->$keywordsInfo['alias']['title']           = _('Period Alias');
+        $this->keywordsInfo['timeperiod_name']['title'] = _('Timeperiod Name');
+        $this->keywordsInfo['alias']['title']           = _('Period Alias');
 
         $this->timeperiods = [];
         if (isset($data['NewKey']) && strlen(trim($data['NewKey'])) && isset($data['NewTimes'])
