@@ -13,9 +13,9 @@ namespace Icinga\Editor\UI;
 class PlatformSelector extends \Ease\Html\Select
 {
     public $platforms = [
-        'generic' => ['image' => 'logos/unknown.gif'],
         'windows' => ['image' => 'logos/base/win40.gif'],
         'linux' => ['image' => 'logos/base/linux40.gif'],
+        'generic' => ['image' => 'logos/unknown.gif'],
     ];
 
     function loadItems()

@@ -49,7 +49,7 @@ class SensorTool extends \Ease\Container
                     $windowsActiveTab->addItem(new \Ease\TWB\LinkButton('http://www.nsclient.org/download/',
                             ' NSC++ '.\Ease\TWB\Part::GlyphIcon('download'),
                             'success',
-                            ['style' => "background-image:url('img/nscpp.png'); width: 212px; height: 60px; ",
+                            ['target'=>'blank', 'style' => "background-image:url('img/nscpp.png'); width: 212px; height: 60px; ",
                             'title' => 'Download']));
                     $windowsActiveTab->addItem(new \Ease\TWB\LinkButton('host.php?action=populate&host_id='.$host->getID(),
                             _('Scan & Wartch services'), null,
@@ -67,7 +67,7 @@ class SensorTool extends \Ease\Container
 
                     $winNscaTabs = $windowsPassiveTab->addItem(new \Ease\TWB\Tabs('WinNSCA'));
 
-                    $ps1Tab = $winNscaTabs->addTab('PowerShell Configuration Script');
+                    $ps1Tab = $winNscaTabs->addTab('Windows 10');
 
                     $ps1Tab->addItem(new \Ease\TWB\LinkButton('nscpcfggen.php?format=ps1&host_id='.$host->getId(),
                             $host->getName().'_nscp.ps1 '.\Ease\TWB\Part::GlyphIcon('download'),
@@ -75,7 +75,7 @@ class SensorTool extends \Ease\Container
                     $ps1Tab->addItem(new \Ease\TWB\Well('<pre>'.htmlspecialchars($cfgPS1Generator->getCfg(false),
                                 ENT_QUOTES).'</pre>', ['font-face' => 'fixed']));
 
-                    $batTab = $winNscaTabs->addTab(_('Deprecated BAT Configuration Script'));
+                    $batTab = $winNscaTabs->addTab(_('Old Windows Versions'));
 
                     $batTab->addItem(new \Ease\TWB\LinkButton('nscpcfggen.php?host_id='.$host->getId(),
                             $host->getName().'_nscp.bat '.\Ease\TWB\Part::GlyphIcon('download'),

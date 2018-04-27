@@ -20,12 +20,6 @@ if ($oUser->getUserID()) {
 }
 
 $oPage->addItem(new UI\PageTop(_('Odhlášení')));
-$oPage->addPageColumns();
-
-$oPage->heroUnit = $oPage->container->addItem(new \Ease\Html\Div(
-        null, ['class' => 'jumbotron', 'id' => 'heroUnit']));
-
-$oPage->heroUnit->addItem(new \Ease\Html\Div(_('Thank you for your favor and we are looking forward to your next visit')));
 
 $oPage->addItem(new UI\PageBottom());
 

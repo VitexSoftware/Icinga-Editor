@@ -19,17 +19,27 @@ if ($oUser->getUserId()) {
 $oPage->addItem(new UI\PageTop(_('Icinga Editor')));
 $oPage->addPageColumns();
 
-$oPage->heroUnit = $oPage->container->addItem(new \Ease\Html\Div(null,
-        ['id' => 'heroUnit', 'class' => 'jumbotron']));
-$oPage->heroUnit->addItem(new \Ease\Html\ImgTag('img/vsmonitoring.png'));
-$oPage->heroUnit->addItem(new \Ease\Html\ATag('http://icinga.org/',
-        new \Ease\Html\ImgTag('img/icinga_logo4-300x109.png')));
-$oPage->heroUnit->addItem(_('Editor'));
-$oPage->heroUnit->setTagCss(['text-align' => 'center']);
+$oPage->columnI->addItem('<li>'._('Watch the hosts'));
+$oPage->columnI->addItem('<li>'._('Watch the services'));
+$oPage->columnI->addItem('<li>'._('Notifications on mail/jabber/sms/twitter'));
 
-$oPage->columnI->addItem(_('Watch the hosts'));
-$oPage->columnII->addItem(_('Watch the services'));
-$oPage->columnIII->addItem(_('Notifications on mail/jabber/sms/twitter'));
+
+$oPage->columnII->addItem(new \Ease\Html\ImgTag('img/vsmonitoring.png'));
+$oPage->columnII->addItem(new \Ease\Html\ATag('http://icinga.org/',
+        new \Ease\Html\ImgTag('img/icinga_logo4-300x109.png')));
+
+$loginForm = new \Ease\TWB\Form('Login', 'login.php');
+
+$loginForm->addItem(new \Ease\TWB\FormGroup(_('User Name'),
+        new \Ease\Html\InputTextTag('login')));
+$loginForm->addItem(new \Ease\TWB\FormGroup(_('Pasword'),
+        new \Ease\Html\InputPasswordTag('password')));
+$loginForm->addItem(new \Ease\TWB\SubmitButton(_('Sign In'), 'success'));
+
+$loginPanel = new \Ease\TWB\Panel(_('Sign in'), 'info', $loginForm);
+$loginPanel->body->setTagProperties(['style' => 'margin: 20px']);
+
+$oPage->columnIII->addItem($loginPanel);
 
 $oPage->addItem(new UI\PageBottom());
 
