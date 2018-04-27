@@ -11,8 +11,6 @@ require_once 'includes/IEInit.php';
 
 $process = false;
 
-$firstname     = $oPage->getRequestValue('firstname');
-$lastname      = $oPage->getRequestValue('lastname');
 $email_address = $oPage->getPostValue('email_address');
 $login         = $oPage->getPostValue('login');
 $password      = $oPage->getPostValue('password');
@@ -79,9 +77,7 @@ if ($oPage->isPosted()) {
                 'email' => $emailAddress,
                 'parent' => (int) $customerParent,
                 'login' => $login,
-                'password' => $newOUser->encryptPassword($password),
-                'firstname' => $firstname,
-                'lastname' => $lastname
+                'password' => $newOUser->encryptPassword($password)
             ]
         );
 
@@ -217,25 +213,22 @@ if ($oUser->getUserID()) {
             $oUser->GetUserID()));
 }
 
-$regForm->addInput(new \Ease\Html\InputTextTag('firstname', $firstname),
-    _('First Name'));
-$regForm->addInput(new \Ease\Html\InputTextTag('lastname', $lastname),
-    _('Last Name'));
-
 $regForm->addItem(new \Ease\Html\H3Tag(_('Account')));
 
 $regForm->addInput(
-    new \Ease\Html\InputTextTag('login', $login), _('Login'), null, _('Requied'));
+    new \Ease\Html\InputTextTag('login', $login), _('Login name'), null,
+    _('Requied'));
+
+$regForm->addInput(
+    new \Ease\Html\InputTextTag('email_address', $email_address,
+        ['type' => 'email']), _('Email Address'));
+
 $regForm->addInput(
     new \Ease\Html\InputPasswordTag('password', $password), _('Password'), null,
     _('Requied'));
 $regForm->addInput(
     new \Ease\Html\InputPasswordTag('confirmation', $confirmation),
     _('Password confirm'), null, _('Requied'));
-$regForm->addInput(
-    new \Ease\Html\InputTextTag('email_address', $email_address,
-        ['type' => 'email']), _('Email Address'));
-
 $regForm->addItem(new \Ease\Html\Div(
         new \Ease\Html\InputSubmitTag('Register', _('Singn On'),
             ['title' => _('Finish'), 'class' => 'btn btn-success'])));

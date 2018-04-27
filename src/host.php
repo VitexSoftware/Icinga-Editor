@@ -283,11 +283,11 @@ input.ui-button { width: 100%; }
             $status_code = $host->getSensorStatus();
             switch ($status_code) {
                 case 2:
-                    $status = _('Sendor OK');
+                    $status = _('Sensor OK');
                     $type   = 'default';
                     break;
                 case 1:
-                    $status = _('Actialize Sensor');
+                    $status = _('Actualise Sensor');
                     $type   = 'success';
                     break;
                 case 0:
