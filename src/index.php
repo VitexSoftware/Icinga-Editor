@@ -21,7 +21,7 @@ $oPage->addPageColumns();
 
 $oPage->columnI->addItem('<li>'._('Watch the hosts'));
 $oPage->columnI->addItem('<li>'._('Watch the services'));
-$oPage->columnI->addItem('<li>'._('Notifications on mail/jabber/sms/twitter'));
+$oPage->columnI->addItem('<li>'._('Notifications on mail/jabber/sms/redmine'));
 
 
 $oPage->columnII->addItem(new \Ease\Html\ImgTag('img/vsmonitoring.png'));
