@@ -31,7 +31,7 @@ class ContactTweaker extends \Ease\Html\Div
      * Subcontact types used
      * @var array
      */
-    public $subcontactTypes = ['email', 'jabber', 'sms', 'twitter'];
+    public $subcontactTypes = ['email', 'jabber', 'sms', 'redmine'];
 
     /**
      *
@@ -106,7 +106,7 @@ class ContactTweaker extends \Ease\Html\Div
                 new \Ease\TWB\FormGroup(_('Contact'),
                     new \Ease\Html\InputTextTag('cnt', $this->cnt),
                 \Ease\Shared::webPage()->getRequestValue('cnt'),
-                _('phone number, email or jabber address by contact type')
+                _('phone number, email or jabber address by contact type - for redmine please use format https://apikey@redmine.you.com/ ')
                 )
             );
             $form->addItem(new \Ease\TWB\SubmitButton(_('Save'), 'success'));

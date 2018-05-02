@@ -20,15 +20,6 @@
         <group>
             <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/login.php</file>
         </group>
-        <group name="Group 20171205-02:25:52">
-            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/config.json</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/classes/engine/Configurator.php</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/modules/mailserver.inc.php</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/classes/engine/Timeperiod.php</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/main.php</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/includes/IEInit.php</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/host.php</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/classes/UI/ConfigurationsOverview.php</file>
-        </group>
+        <group name="Group 20171205-02:25:52"/>
     </open-files>
 </project-private>
