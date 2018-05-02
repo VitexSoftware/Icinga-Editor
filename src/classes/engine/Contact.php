@@ -16,9 +16,9 @@ class Contact extends Configurator
      * Key Column
      * @var string
      */
-    public $keyColumn = 'contact_id';
-    public $nameColumn  = 'contact_name';
-    public $keyword     = 'contact';
+    public $keyColumn  = 'contact_id';
+    public $nameColumn = 'contact_name';
+    public $keyword    = 'contact';
 
     /**
      * Add register and use columns ?
@@ -157,7 +157,7 @@ class Contact extends Configurator
         ],
         'address2' => [
             'severity' => 'optional',
-            'title' => '@Twitter',
+            'title' => 'Redmine',
             'mandatory' => true
         ],
         'can_submit_commands' => [
@@ -176,11 +176,11 @@ class Contact extends Configurator
 
     public function __construct($itemID = null)
     {
-     $this->keywordsInfo['contact_name']['title'] = _('Contact Name');
+        $this->keywordsInfo['contact_name']['title'] = _('Contact Name');
 
-$this->keywordsInfo['contactgroups']['title'] = _('Contact Groups');
-$this->keywordsInfo['host_notifications_enabled']['title'] = _('Notify hosts events');
-$this->keywordsInfo['service_notifications_enabled']['title'] = _('Notify service events');
+        $this->keywordsInfo['contactgroups']['title']                 = _('Contact Groups');
+        $this->keywordsInfo['host_notifications_enabled']['title']    = _('Notify hosts events');
+        $this->keywordsInfo['service_notifications_enabled']['title'] = _('Notify service events');
         $this->keywordsInfo['host_notification_period']['title']      = _('Host notification period');
         $this->keywordsInfo['service_notification_period']['title']   = _('Service notification period');
         $this->keywordsInfo['host_notification_options']['title']     = _('Host notification options');
@@ -190,7 +190,7 @@ $this->keywordsInfo['service_notifications_enabled']['title'] = _('Notify servic
         $this->keywordsInfo['email']['title']                         = _('Email Address');
         $this->keywordsInfo['pager']['title']                         = _('SMS Number');
         $this->keywordsInfo['address1']['title']                      = _('Jabber Address');
-        $this->keywordsInfo['address2']['title']                      = _('@Twitter (Deprecated)');
+        $this->keywordsInfo['address2']['title']                      = _('Redmine');
         $this->keywordsInfo['can_submit_commands']['title']           = _('Can submit commands');
         $this->keywordsInfo['retain_status_information']['title']     = _('Retain status information');
         $this->keywordsInfo['retain_nonstatus_information']['title']  = _('Retain nostatus information');
@@ -248,7 +248,7 @@ $this->keywordsInfo['service_notifications_enabled']['title'] = _('Notify servic
         $chVal  = current($changes);
 
         switch ($chType) {
-            case 'twitter':
+            case 'redmine':
                 $change = ['address2' => $chVal];
                 break;
             case 'jabber':
@@ -447,5 +447,4 @@ $this->keywordsInfo['service_notifications_enabled']['title'] = _('Notify servic
             $this->addStatusMessage(_('Cannot rename contact'), 'warning');
         }
     }
-
 }
