@@ -80,13 +80,13 @@ class ContactTweaker extends \Ease\Html\Div
         foreach ($subcontatcts as $subcontatctID => $subcontatctInfo) {
             $this->addItem(
                 new \Ease\TWB\ButtonDropdown(
-                $subcontatctInfo['type'].' '.$subcontatctInfo['contact'],
-                'success', 'xs',
-                [
-                new \Ease\Html\ATag('contact.php?parent_id='.$this->contact->getId().'&contact_id='.$subcontatctID,
-                    \Ease\TWB\Part::GlyphIcon('wrench').' '._('Properties')),
+                    $subcontatctInfo['type'].' '.$subcontatctInfo['contact'],
+                    'success', 'xs',
+                    [
+                    new \Ease\Html\ATag('contact.php?parent_id='.$this->contact->getId().'&contact_id='.$subcontatctID,
+                        \Ease\TWB\Part::GlyphIcon('wrench').' '._('Properties')),
                     new \Ease\Html\ATag('?contact_id='.$this->contact->getId().'&delsubcont_id='.$subcontatctID,
-                    \Ease\TWB\Part::GlyphIcon('minus').' '._('Delete').' '.$subcontatctInfo['type'])
+                        \Ease\TWB\Part::GlyphIcon('minus').' '._('Delete').' '.$subcontatctInfo['type'])
                     ]
                 )
             );
@@ -99,14 +99,15 @@ class ContactTweaker extends \Ease\Html\Div
 
             $form = new \Ease\TWB\Form('ContatctTweak', 'contacttweak.php');
             $form->addItem(new \Ease\Html\Select('contact',
-                $this->subcontactTypes));
+                    $this->subcontactTypes));
             $form->addItem(new \Ease\Html\InputHiddenTag('contact_id',
-                $this->contact->getId()));
+                    $this->contact->getId()));
             $form->addItem(
                 new \Ease\TWB\FormGroup(_('Contact'),
-                    new \Ease\Html\InputTextTag('cnt', $this->cnt),
-                \Ease\Shared::webPage()->getRequestValue('cnt'),
-                _('phone number, email or jabber address by contact type - for redmine please use format https://apikey@redmine.you.com/ ')
+                    new \Ease\Html\InputTextTag('cnt', $this->cnt,
+                        ['maxlength' => 80]),
+                    \Ease\Shared::webPage()->getRequestValue('cnt'),
+                    _('phone number, email or jabber address by contact type - for redmine please use format https://apikey@redmine.you.com/?project=redmineproject ')
                 )
             );
             $form->addItem(new \Ease\TWB\SubmitButton(_('Save'), 'success'));
@@ -115,9 +116,8 @@ class ContactTweaker extends \Ease\Html\Div
                     'default', $form));
         } else {
             $this->addItem(new \Ease\Html\Div(
-                _('You can not add more data to this contact.'),
+                    _('You can not add more data to this contact.'),
                     ['class' => 'well warning', 'style' => 'margin: 10px', 'id' => 'plno']));
         }
     }
-
 }

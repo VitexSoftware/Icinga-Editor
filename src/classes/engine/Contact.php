@@ -249,7 +249,11 @@ class Contact extends Configurator
 
         switch ($chType) {
             case 'redmine':
-                $change = ['address2' => $chVal];
+                $change = [
+                    'address2' => $chVal, 
+                    'host_notification_commands' => 'host-notify-by-redmine',
+                    'service_notification_commands' => 'service-notify-by-redmine'
+                    ];
                 break;
             case 'jabber':
                 if (!filter_var($chVal, FILTER_VALIDATE_EMAIL)) {
