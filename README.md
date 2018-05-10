@@ -28,7 +28,7 @@ Features
 Instalation
 -----------
 
-### Debian 8 
+### Debian 8+
 
 (Install Icinga itself: https://debmon.org/IcingaIdoutilsIcingaWebInstallation)
 
@@ -36,8 +36,8 @@ Then Editor:
 
     wget -O - http://v.s.cz/info@vitexsoftware.cz.gpg.key|sudo apt-key add -
     echo deb http://v.s.cz/ stable main > /etc/apt/sources.list.d/ease.list
-    aptitude update
-    aptitude install icinga-editor
+    apt update
+    apt install icinga-editor
 
 ### Centos 6.8    
 

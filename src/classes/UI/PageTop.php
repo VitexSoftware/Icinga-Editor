@@ -36,7 +36,6 @@ class PageTop extends \Ease\Html\HeaderTag
      */
     public function finalize()
     {
-        $this->SetupWebPage();
         $this->addItem(new MainMenu());
     }
 
