@@ -98,7 +98,7 @@ class SensorTool extends \Ease\Container
                     $linuxActiveTab = $sensorTabs->addTab(_('Linux NRPE'));
                     $linuxActiveTab->addItem(new \Ease\Html\H1Tag('<img src="'.$pltIco.'">'._('Active NRPE for NRPE Server')));
                     $linuxActiveTab->addItem(new \Ease\Html\PTag(_('Please install sensor first by this command').':'));
-                    $linuxActiveTab->addItem(new \Ease\Html\Div('<pre>
+                    $linuxActiveTab->addItem(new \Ease\Html\DivTag('<pre>
 ssh '.$host->getName().'
 sudo apt install nagios-nrpe-server
 curl "'.Engine\Configurator::getBaseURL().'nrpecfggen.php?host_id='.$host->getId().'" | sh

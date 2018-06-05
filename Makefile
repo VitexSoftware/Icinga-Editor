@@ -19,6 +19,10 @@ clean:
 	rm -rf debian/icinga-editor
 	rm -rf debian/*.substvars debian/*.log debian/*.debhelper debian/files debian/debhelper-build-stamp
 
+changelog:
+	git dch --ignore-branch --snapshot --auto --git-author
+	git dch --ignore-branch --release --auto -N $(VERSION) --git-author
+
 deb:
 	debuild -i -us -uc -b
 

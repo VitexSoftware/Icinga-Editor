@@ -23,7 +23,7 @@ if ($pocTimeperiods) {
                 _('<i class="icon-list"></i>').' '.sprintf(_('%s timeperiods'),
                     $pocTimeperiods)), ['class' => 'alert alert-success']));
 } else {
-    $warning = $oPage->columnIII->addItem(new \Ease\Html\Div(
+    $warning = $oPage->columnIII->addItem(new \Ease\Html\DivTag(
             _('No timeperiods defined'),
             ['class' => 'alert alert-info', 'id' => 'Host']));
     $warning->addItem(new \Ease\TWB\LinkButton('timeperiod.php',
@@ -40,7 +40,7 @@ if ($pocContact) {
             ['class' => 'alert alert-success', 'id' => 'Contact']));
 } else {
     if ($pocTimeperiods) {
-        $warning = $oPage->columnII->addItem(new \Ease\Html\Div(
+        $warning = $oPage->columnII->addItem(new \Ease\Html\DivTag(
                 _('No contact defined'),
                 ['class' => 'alert alert-info', 'id' => 'Contact']));
         $warning->addItem(new \Ease\TWB\LinkButton('contact.php',
@@ -55,13 +55,13 @@ if ($pocContact) {
 $contactgroup    = new Engine\Contactgroup();
 $pocContactgroup = $contactgroup->getMyRecordsCount();
 if ($pocContactgroup) {
-    $success = $oPage->columnII->addItem(new \Ease\Html\Div(
+    $success = $oPage->columnII->addItem(new \Ease\Html\DivTag(
             new \Ease\TWB\LinkButton('contactgroups.php',
                 _('<i class="icon-list"></i>').' '.sprintf(_('%s contactgroups defined'),
                     $pocContactgroup)),
             ['class' => 'alert alert-success', 'id' => 'Contactgroup']));
 } else {
-    $warning = $oPage->columnII->addItem(new \Ease\Html\Div(
+    $warning = $oPage->columnII->addItem(new \Ease\Html\DivTag(
             _('No contactgroup defined'),
             ['class' => 'alert alert-info', 'id' => 'Contactgroup']));
     $warning->addItem(new \Ease\TWB\LinkButton('contactgroup.php',
@@ -71,20 +71,20 @@ if ($pocContactgroup) {
 $host     = new Engine\Host();
 $pocHostu = $host->getMyRecordsCount();
 if ($pocHostu) {
-    $success = $oPage->columnI->addItem(new \Ease\Html\Div(
+    $success = $oPage->columnI->addItem(new \Ease\Html\DivTag(
             new \Ease\TWB\LinkButton('hosts.php',
                 _('<i class="icon-list"></i>').' '.sprintf(_('%s hosts defined'),
                     $pocHostu)),
             ['class' => 'alert alert-success', 'id' => 'Host']));
 } else {
     if ($pocTimeperiods) {
-        $warning = $oPage->columnI->addItem(new \Ease\Html\Div(
+        $warning = $oPage->columnI->addItem(new \Ease\Html\DivTag(
                 _('No host defined'),
                 ['class' => 'alert alert-info', 'id' => 'Host']));
         $warning->addItem(new \Ease\TWB\LinkButton('host.php',
                 _('Create first host').' '.\Ease\TWB\Part::GlyphIcon('edit')));
     } else {
-        $warning = $oPage->columnI->addItem(new \Ease\Html\Div(
+        $warning = $oPage->columnI->addItem(new \Ease\Html\DivTag(
                 _('Timeperiod is required for host'),
                 ['class' => 'alert alert-danger', 'id' => 'Host']));
     }
@@ -93,7 +93,7 @@ if ($pocHostu) {
 $hostgroup     = new Engine\Hostgroup();
 $pocHostgroups = $hostgroup->getMyRecordsCount();
 if ($pocHostgroups) {
-    $success = $oPage->columnI->addItem(new \Ease\Html\Div(
+    $success = $oPage->columnI->addItem(new \Ease\Html\DivTag(
             new \Ease\TWB\LinkButton('hostgroups.php',
                 _('<i class="icon-list"></i>').' '.sprintf(_('%s hostgroup defined'),
                     $pocHostgroups)),
@@ -109,13 +109,13 @@ if ($pocHostgroups) {
 $command     = new Engine\Command();
 $pocCommands = $command->getMyRecordsCount();
 if ($pocCommands) {
-    $success = $oPage->columnIII->addItem(new \Ease\Html\Div(
+    $success = $oPage->columnIII->addItem(new \Ease\Html\DivTag(
             new \Ease\TWB\LinkButton('commands.php',
                 '<i class="icon-list"></i> '.sprintf(_('%s commands defined'),
                     $pocCommands)),
             ['class' => 'alert alert-success', 'id' => 'Command']));
 } else {
-    $warning = $oPage->columnIII->addItem(new \Ease\Html\Div(
+    $warning = $oPage->columnIII->addItem(new \Ease\Html\DivTag(
             _('No commands defined'),
             ['class' => 'alert alert-info', 'id' => 'Host']));
     $warning->addItem(new \Ease\TWB\LinkButton('importcommand.php',
@@ -125,7 +125,7 @@ if ($pocCommands) {
 $service     = new Engine\Service();
 $pocServices = $service->getMyRecordsCount();
 if ($pocServices) {
-    $success = $oPage->columnIII->addItem(new \Ease\Html\Div(
+    $success = $oPage->columnIII->addItem(new \Ease\Html\DivTag(
             new \Ease\TWB\LinkButton('services.php',
                 _('<i class="icon-list"></i>').' '.sprintf(_('%s services defined'),
                     $pocServices)),
@@ -133,18 +133,18 @@ if ($pocServices) {
 } else {
     if ($pocCommands) {
         if ($pocTimeperiods) {
-            $warning = $oPage->columnIII->addItem(new \Ease\Html\Div(
+            $warning = $oPage->columnIII->addItem(new \Ease\Html\DivTag(
                     _('No services defined'),
                     ['class' => 'alert alert-info', 'id' => 'Host']));
             $warning->addItem(new \Ease\TWB\LinkButton('service.php',
                     _('Create first service').' <i class="icon-edit"></i>'));
         } else {
-            $warning = $oPage->columnIII->addItem(new \Ease\Html\Div(
+            $warning = $oPage->columnIII->addItem(new \Ease\Html\DivTag(
                     _('Timeperiod is requied for service'),
                     ['class' => 'alert alert-danger', 'id' => 'Host']));
         }
     } else {
-        $warning = $oPage->columnIII->addItem(new \Ease\Html\Div(
+        $warning = $oPage->columnIII->addItem(new \Ease\Html\DivTag(
                 _('Commands requied for service'),
                 ['class' => 'alert alert-danger', 'id' => 'Host']));
     }
@@ -153,13 +153,13 @@ if ($pocServices) {
 $serviceGroup     = new Engine\Servicegroup();
 $pocServicegroups = $serviceGroup->getMyRecordsCount();
 if ($pocServicegroups) {
-    $success = $oPage->columnIII->addItem(new \Ease\Html\Div(
+    $success = $oPage->columnIII->addItem(new \Ease\Html\DivTag(
             new \Ease\TWB\LinkButton('servicegroups.php',
                 _('<i class="icon-list"></i>').' '.sprintf(_('%s servicegroup defined'),
                     $pocServicegroups)),
             ['class' => 'alert alert-success', 'id' => 'Servicegroup']));
 } else {
-    $warning = $oPage->columnIII->addItem(new \Ease\Html\Div(
+    $warning = $oPage->columnIII->addItem(new \Ease\Html\DivTag(
             _('No servicegroup defined'),
             ['class' => 'alert alert-info', 'id' => 'Host']));
     $warning->addItem(new \Ease\TWB\LinkButton('servicegroup.php',

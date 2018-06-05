@@ -53,7 +53,7 @@ class ContactTweaker extends \Ease\Html\Div
 
         $this->contact = $contact;
 
-        $this->addItem(new \Ease\Html\Div(_('Created').': '.$this->contact->getDataValue('DatCreate')));
+        $this->addItem(new \Ease\Html\DivTag(_('Created').': '.$this->contact->getDataValue('DatCreate')));
         $oPage = \Ease\Shared::webPage();
         if ($oPage->isPosted()) {
             $oldId       = $this->contact->getId();
@@ -115,7 +115,7 @@ class ContactTweaker extends \Ease\Html\Div
             $this->addItem(new \Ease\TWB\Panel(_('Add contact information'),
                     'default', $form));
         } else {
-            $this->addItem(new \Ease\Html\Div(
+            $this->addItem(new \Ease\Html\DivTag(
                     _('You can not add more data to this contact.'),
                     ['class' => 'well warning', 'style' => 'margin: 10px', 'id' => 'plno']));
         }

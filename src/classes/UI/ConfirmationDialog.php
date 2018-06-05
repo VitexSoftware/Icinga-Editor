@@ -30,14 +30,14 @@ class ConfirmationDialog extends \Ease\Html\Div
             ['class' => 'modal-content']));
 
 
-        $modalContent->addItem(new \Ease\Html\Div([
+        $modalContent->addItem(new \Ease\Html\DivTag([
             new \Ease\Html\ButtonTag('<span aria-hidden="true">&times;</span>',
                 ['class' => 'close', 'data-dismiss' => 'modal', 'aria-label' => _('Close')]),
             new \Ease\Html\H4Tag($title, ['class' => 'modal-title'])
             ], ['class' => 'modal-header']));
-        $modalContent->addItem(new \Ease\Html\Div($content,
+        $modalContent->addItem(new \Ease\Html\DivTag($content,
             ['class' => 'modal-body']));
-        $modalContent->addItem(new \Ease\Html\Div([
+        $modalContent->addItem(new \Ease\Html\DivTag([
             new \Ease\Html\ButtonTag(_('No'),
                 ['class' => "btn btn-default", 'data-dismiss' => "modal"]),
             new \Ease\TWB\LinkButton($url, _('Yes'), 'danger'),

@@ -136,7 +136,7 @@ class CfgEditor extends \Ease\Container
                         ['class' => 'required form-control', 'title' => $fieldName,
                         'OnChange' => $this->onChangeCode($fieldName)]), $hint,
                         $keywordInfo['title']));
-//                    $fieldBlock->addItem(new \Ease\Html\Div( new EaseLabeledTextInput($fieldName, $value, $keywordInfo['title'], array('class' => 'required form-control', 'title' => $fieldName))));
+//                    $fieldBlock->addItem(new \Ease\Html\DivTag( new EaseLabeledTextInput($fieldName, $value, $keywordInfo['title'], array('class' => 'required form-control', 'title' => $fieldName))));
                 } else {
                     $fieldBlock->addItem(new \Ease\TWB\FormGroup($fieldName,
                         new \Ease\Html\InputTextTag($fieldName, $value,
@@ -493,7 +493,7 @@ class CfgEditor extends \Ease\Container
                     if (!isset($advancedTab)) {
                         $advancedTab = $tabs->addTab(_('Advanced'));
                     }
-                    $mainFieldBlock = $advancedTab->addItem(new \Ease\Html\Div(
+                    $mainFieldBlock = $advancedTab->addItem(new \Ease\Html\DivTag(
                         null,
                         ['class' => 'fieldblock', 'id' => $fieldName.'-block']));
                     break;
@@ -505,14 +505,14 @@ class CfgEditor extends \Ease\Container
                         ['class' => 'fieldblock', 'id' => $fieldName.'-block']));
                     break;
                 default :
-                    $mainFieldBlock = $this->addItem(new \Ease\Html\Div(
+                    $mainFieldBlock = $this->addItem(new \Ease\Html\DivTag(
                         null,
                         ['class' => 'fieldblock', 'id' => $fieldName.'-block']));
                     break;
             }
 
 
-            $fieldLabel = $mainFieldBlock->addItem(new \Ease\Html\Div('<a>'.$fieldName.'</a>&nbsp;',
+            $fieldLabel = $mainFieldBlock->addItem(new \Ease\Html\DivTag('<a>'.$fieldName.'</a>&nbsp;',
                 ['class' => 'FieldLabel', 'onClick' => "$('#".$fieldName."-controls').toggle('slow');"]));
             /**
 
@@ -668,11 +668,11 @@ class CfgEditor extends \Ease\Container
                 }
             }
 
-            $mainFieldBlock = $this->addItem(new \Ease\Html\Div(
+            $mainFieldBlock = $this->addItem(new \Ease\Html\DivTag(
                 null, ['class' => 'fieldblock', 'id' => $fieldName.'-block']));
             /*
 
-              $fieldLabel = $mainFieldBlock->addItem(new \Ease\Html\Div( '<a name="' . $fieldName . '">' . $fieldName . '</a>&nbsp;', array('class' => 'FieldLabel mandatory', 'onClick' => "$('#" . $fieldName . "-controls').toggle('slow');")));
+              $fieldLabel = $mainFieldBlock->addItem(new \Ease\Html\DivTag( '<a name="' . $fieldName . '">' . $fieldName . '</a>&nbsp;', array('class' => 'FieldLabel mandatory', 'onClick' => "$('#" . $fieldName . "-controls').toggle('slow');")));
 
               if (!$required || !(int) $this->objectEdited->getDataValue('register')) {
               $fieldLabel->addItem(new \Ease\Html\ATag('#', \Ease\TWB\Part::GlyphIcon('icon-remove'), array('onClick' => '$(\'#' . $fieldName . '-block\').empty().html(\'<input type=hidden name=' . $fieldName . ' value=NULL><div class=FieldLabel>' . $fieldName . '</div>\'); return false;')));

@@ -93,7 +93,7 @@ $toolRow->addColumn(6, new \Ease\TWB\Well($resyncForm));
 
 $oPage->container->addItem(new \Ease\TWB\Panel(_('Database cleaning'), 'danger',
         $toolRow));
-\Ease\Shared::webPage()->addItem(new \Ease\Html\Div(
+\Ease\Shared::webPage()->addItem(new \Ease\Html\DivTag(
         new UI\FXPreloader(), ['class' => 'fuelux', 'id' => 'preload']));
 
 $oPage->addItem(new UI\PageBottom());

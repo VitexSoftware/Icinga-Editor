@@ -236,7 +236,7 @@ input.ui-button { width: 100%; }
 ');
 
         $tools->addItem($host->deleteButton());
-        $oPage->addItem(new \Ease\Html\Div(new UI\FXPreloader(),
+        $oPage->addItem(new \Ease\Html\DivTag(new UI\FXPreloader(),
                 ['class' => 'fuelux', 'id' => 'preload']));
 
         if ($host->getDataValue('active_checks_enabled') == '1') {
