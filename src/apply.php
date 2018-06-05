@@ -53,20 +53,20 @@ if ($testing) {
         $line_num++;
 
         if (($line === false) && ($line_num == 1)) {
-            $errorLine = $oPage->container->addItem(new \Ease\Html\Div('<span class="label label-important">'._('Error').':</span>',
+            $errorLine = $oPage->container->addItem(new \Ease\Html\DivTag('<span class="label label-important">'._('Error').':</span>',
                     ['class' => 'alert alert-danger']));
             $oUser->addStatusMessage(_('Configuration control empty result'),
                 'error');
             $errorLine->addItem(_('Please check if /etc/sudoers contains:'));
-            $errorLine->addItem(new \Ease\Html\Div('User_Alias APACHE = www-data'));
-            $errorLine->addItem(new \Ease\Html\Div('Cmnd_Alias ICINGA = /usr/sbin/icinga, /etc/init.d/icinga'));
-            $errorLine->addItem(new \Ease\Html\Div('APACHE ALL = (ALL) NOPASSWD: ICINGA'));
+            $errorLine->addItem(new \Ease\Html\DivTag('User_Alias APACHE = www-data'));
+            $errorLine->addItem(new \Ease\Html\DivTag('Cmnd_Alias ICINGA = /usr/sbin/icinga, /etc/init.d/icinga'));
+            $errorLine->addItem(new \Ease\Html\DivTag('APACHE ALL = (ALL) NOPASSWD: ICINGA'));
             break;
         }
 
         if (strstr($line, 'Error:')) {
             $line      = str_replace('Error:', '', $line);
-            $errorLine = $oPage->container->addItem(new \Ease\Html\Div('<span class="label label-important">'._('Error').':</span>',
+            $errorLine = $oPage->container->addItem(new \Ease\Html\DivTag('<span class="label label-important">'._('Error').':</span>',
                     ['class' => 'alert alert-danger']));
 
             $keywords = preg_split("/['(.*)']+/", $line);
@@ -115,7 +115,7 @@ if ($testing) {
                 '<span class="label label-error">'._('Error in configuration file').'</span>',
                 $line);
 
-            $oPage->container->addItem(new \Ease\Html\Div($line,
+            $oPage->container->addItem(new \Ease\Html\DivTag($line,
                     ['class' => 'alert alert-danger']));
             $errorCount++;
         }
@@ -136,7 +136,7 @@ if ($testing) {
             }
 
             //Duplicate definition found for command 'check_ping' (config file '/etc/icinga/generated/command_check_ping_vitex.cfg', starting on line 1)
-            $oPage->container->addItem(new \Ease\Html\Div($line,
+            $oPage->container->addItem(new \Ease\Html\DivTag($line,
                     ['class' => 'alert alert-warning']));
         }
 

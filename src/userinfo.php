@@ -59,7 +59,7 @@ $userInfoFrame->addItem(new \Ease\Html\UlTag([$user->getUserName(), new \Ease\Ht
 
 $pocTimeperiods = $contact->getMyRecordsCount($userID);
 if ($pocTimeperiods) {
-    $success = $oPage->columnIII->addItem(new \Ease\Html\Div(
+    $success = $oPage->columnIII->addItem(new \Ease\Html\DivTag(
             new \Ease\TWB\LinkButton('timeperiods.php',
                 _('<i class="icon-list"></i>').' '.sprintf(_('Defined %s time periods'),
                     $pocTimeperiods)),
@@ -68,14 +68,14 @@ if ($pocTimeperiods) {
 
 $pocHostu = $host->getMyRecordsCount($userID);
 if ($pocHostu) {
-    $success = $oPage->columnII->addItem(new \Ease\Html\Div(
+    $success = $oPage->columnII->addItem(new \Ease\Html\DivTag(
             new \Ease\TWB\LinkButton('hosts.php',
                 _('<i class="icon-list"></i>').' '.sprintf(_('%s hosts defined'),
                     $pocHostu)),
             ['class' => 'alert alert-success', 'id' => 'Host']));
 } else {
     if ($pocTimeperiods) {
-        $warning = $oPage->columnII->addItem(new \Ease\Html\Div(
+        $warning = $oPage->columnII->addItem(new \Ease\Html\DivTag(
                 _('No host defined'),
                 ['class' => 'alert alert-info', 'id' => 'Host']));
         $warning->addItem(new \Ease\TWB\LinkButton('host.php',
@@ -85,7 +85,7 @@ if ($pocHostu) {
 
 $pocHostgroups = $hostgroup->getMyRecordsCount($userID);
 if ($pocHostgroups) {
-    $success = $oPage->columnII->addItem(new \Ease\Html\Div(
+    $success = $oPage->columnII->addItem(new \Ease\Html\DivTag(
             new \Ease\TWB\LinkButton('hostgroups.php',
                 _('<i class="icon-list"></i>').' '.sprintf(_('%s hostgroups defined'),
                     $pocHostgroups)),
@@ -94,7 +94,7 @@ if ($pocHostgroups) {
 
 $pocCommands = $command->getMyRecordsCount($userID);
 if ($pocCommands) {
-    $success = $oPage->columnIII->addItem(new \Ease\Html\Div(
+    $success = $oPage->columnIII->addItem(new \Ease\Html\DivTag(
             new \Ease\TWB\LinkButton('commands.php',
                 _('<i class="icon-list"></i>').' '.sprintf(_('%s commands defined'),
                     $pocCommands)),
@@ -103,7 +103,7 @@ if ($pocCommands) {
 
 $pocServices = $service->getMyRecordsCount($userID);
 if ($pocServices) {
-    $success = $oPage->columnIII->addItem(new \Ease\Html\Div(
+    $success = $oPage->columnIII->addItem(new \Ease\Html\DivTag(
             new \Ease\TWB\LinkButton('services.php',
                 _('<i class="icon-list"></i>').' '.sprintf(_('%s services defined'),
                     $pocServices)),
@@ -111,7 +111,7 @@ if ($pocServices) {
 } else {
     if ($pocCommands) {
         if ($pocTimeperiods) {
-            $warning = $oPage->columnIII->addItem(new \Ease\Html\Div(
+            $warning = $oPage->columnIII->addItem(new \Ease\Html\DivTag(
                     _('No services defined'),
                     ['class' => 'alert alert-info', 'id' => 'Host']));
             $warning->addItem(new \Ease\TWB\LinkButton('service.php',
@@ -122,7 +122,7 @@ if ($pocServices) {
 
 $pocServicegroups = $serviceGroup->getMyRecordsCount($userID);
 if ($pocServicegroups) {
-    $success = $oPage->columnIII->addItem(new \Ease\Html\Div(
+    $success = $oPage->columnIII->addItem(new \Ease\Html\DivTag(
             new \Ease\TWB\LinkButton('servicegroups.php',
                 _('<i class="icon-list"></i>').' '.sprintf(_('%s servicegrops defined'),
                     $pocServicegroups)),

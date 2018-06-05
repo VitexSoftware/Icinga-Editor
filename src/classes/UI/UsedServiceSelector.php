@@ -5,8 +5,6 @@ namespace Icinga\Editor\UI;
 /**
  * Host services selected
  *
- * @package    IcingaEditor
- * @author     Vitex <vitex@hippy.cz>
  * @copyright  2012-2018 Vitex@hippy.cz (G)
  */
 class UsedServiceSelector extends \Ease\Container
@@ -179,10 +177,10 @@ class UsedServiceSelector extends \Ease\Container
                         $service->delMember('host_name', $request['host_id'],
                             $request['host_name']);
                         if ($service->saveToSQL()) {
-                            $service->addStatusMessage(sprintf(_('item %s was assigned'),
+                            $service->addStatusMessage(sprintf(_('item %s was unassigned'),
                                     $request['delservice']), 'success');
                         } else {
-                            $service->addStatusMessage(sprintf(_('item %s was not assigned'),
+                            $service->addStatusMessage(sprintf(_('item %s was not unassigned'),
                                     $request['delservice']), 'warning');
                         }
                     }

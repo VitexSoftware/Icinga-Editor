@@ -69,7 +69,7 @@ if (!$success) {
     $emailForm = $oPage->columnII->addItem(new \Ease\TWB\Form('PassworRecovery'));
 
 
-    $emailForm->addInput(new \Ease\Html\InputTextTag('Email', null,
+    $emailForm->addInput(new \Ease\Html\InputEmailTag('Email', null,
             ['type' => 'email']), _('Email'));
     $emailForm->addItem(new \Ease\TWB\SubmitButton(_('Send New Password'),
             'warning'));

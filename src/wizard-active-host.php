@@ -183,7 +183,7 @@ if (!$pocContact) {
 
 $pocHostu = $host->getMyRecordsCount();
 if ($pocHostu) {
-    $success = $oPage->columnIII->addItem(new \Ease\Html\Div(
+    $success = $oPage->columnIII->addItem(new \Ease\Html\DivTag(
             new \Ease\TWB\LinkButton('hosts.php',
                 _('<i class="icon-list"></i>').' '.sprintf(_('%s hosts defined'),
                     $pocHostu)),
@@ -208,7 +208,7 @@ $firstHost->addItem(new \Ease\TWB\FormGroup(_('IPv6 Address'),
 $firstHost->addItem(new \Ease\TWB\SubmitButton(\Ease\TWB\Part::GlyphIcon('plus').' '._('Add Host'),
         'success'));
 
-$oPage->columnI->addItem(new \Ease\Html\Div(
+$oPage->columnI->addItem(new \Ease\Html\DivTag(
         _('After entering at least one input data, this wizard searches others and scans for some basic services.').'<br>'.
         _('If these are found, their tests will be activated. Status information will be sent to the first contact you entered'),
         ['class' => 'well']));

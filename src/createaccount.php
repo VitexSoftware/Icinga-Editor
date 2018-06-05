@@ -104,8 +104,8 @@ if ($oPage->isPosted()) {
                     _('Sign On info')));
             $email->setMailHeaders(['From' => constant('SEND_MAILS_FROM')]);
             $email->addItem(new \Ease\Html\Div(_('Icinga Editor Account')."\n"));
-            $email->addItem(new \Ease\Html\Div(' Login: '.$newOUser->GetUserLogin()."\n"));
-            $email->addItem(new \Ease\Html\Div(' Password: '.$_POST['password']."\n"));
+            $email->addItem(new \Ease\Html\DivTag(' Login: '.$newOUser->GetUserLogin()."\n"));
+            $email->addItem(new \Ease\Html\DivTag(' Password: '.$_POST['password']."\n"));
             $email->send();
 
             $email = $oPage->addItem(new \Ease\Mailer(constant('SEND_MAILS_FROM'),
@@ -113,7 +113,7 @@ if ($oPage->isPosted()) {
                         $newOUser->GetUserLogin())));
             $email->setMailHeaders(['From' => constant('SEND_MAILS_FROM')]);
             $email->addItem(new \Ease\Html\Div(_("New User:\n")));
-            $email->addItem(new \Ease\Html\Div(
+            $email->addItem(new \Ease\Html\DivTag(
                     ' Login: '.$newOUser->GetUserLogin()."\n", ['id' => 'login']));
             $email->send();
 
@@ -204,7 +204,7 @@ $oPage->columnI->addItem(
     )
 );
 
-$regFace = $oPage->columnII->addItem(new \Ease\Html\Div());
+$regFace = $oPage->columnII->addItem(new \Ease\Html\DivTag());
 
 $regForm = $regFace->addItem(new \Ease\TWB\Form('create_account',
         'createaccount.php', 'POST', null, ['class' => 'form-horizontal']));
@@ -229,7 +229,7 @@ $regForm->addInput(
 $regForm->addInput(
     new \Ease\Html\InputPasswordTag('confirmation', $confirmation),
     _('Password confirm'), null, _('Requied'));
-$regForm->addItem(new \Ease\Html\Div(
+$regForm->addItem(new \Ease\Html\DivTag(
         new \Ease\Html\InputSubmitTag('Register', _('Singn On'),
             ['title' => _('Finish'), 'class' => 'btn btn-success'])));
 

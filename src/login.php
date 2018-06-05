@@ -17,21 +17,25 @@ if (!is_object($oUser)) {
 
 $login = $oPage->getRequestValue('login');
 if ($login) {
-    $oUser = \Ease\Shared::user(new User());
+    try {
+        $oUser = \Ease\Shared::user(new User());
 
-    if ($oUser->tryToLogin($_POST)) {
-        if ($oUser->getUserID() == 1) {
-            $oUser->setSettingValue('admin', TRUE);
-        }
-        $oUser->setSettingValue('plaintext', $_POST[$oUser->passwordColumn]);
+        if ($oUser->tryToLogin($_POST)) {
+            if ($oUser->getUserID() == 1) {
+                $oUser->setSettingValue('admin', TRUE);
+            }
+            $oUser->setSettingValue('plaintext', $_POST[$oUser->passwordColumn]);
 
-        $backurl = $oPage->getRequestValue('backurl');
-        if ($backurl) {
-            $oPage->redirect($backurl);
-        } else {
-            $oPage->redirect('main.php');
+            $backurl = $oPage->getRequestValue('backurl');
+            if ($backurl) {
+                $oPage->redirect($backurl);
+            } else {
+                $oPage->redirect('main.php');
+            }
+            exit;
         }
-        exit;
+    } catch (\PDOException $e) {
+        $oPage->addStatusMessage($e->getMessage(), 'error');
     }
 } else {
 
