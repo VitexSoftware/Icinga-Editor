@@ -17,13 +17,10 @@
             <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/src/host.php</file>
             <file>file:/home/vitex/Projects/VitexSoftware/icinga_configurator/src/login.php</file>
         </group>
-        <group>
-            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/login.php</file>
-        </group>
         <group name="Group 20171205-02:25:52">
             <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/login.php</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/classes/UI/ContactTweaker.php</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/classes/engine/Contact.php</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/includes/IEInit.php</file>
         </group>
+        <group/>
     </open-files>
 </project-private>
