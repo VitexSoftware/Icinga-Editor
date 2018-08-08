@@ -7,7 +7,6 @@ namespace Icinga\Editor;
  *
  * @author    Vitex <vitex@hippy.cz>
  * @copyright Vitex@hippy.cz (G) 2009,2011
- * @package IcingaEditor
  */
 require_once 'includes/IEInit.php';
 

@@ -12,8 +12,9 @@ fi
 
 export DEBIAN_FRONTEND="noninteractive"
 apt-get update
-apt-get install -y devscripts dpkg-dev
+apt-get install -y devscripts dpkg-dev dh-systemd
 cd /vagrant
+make celan
 make deb
 mkdir -p /vagrant/deb
 mv /*.deb /vagrant/deb

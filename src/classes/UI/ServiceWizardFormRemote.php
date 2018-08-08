@@ -8,7 +8,7 @@ namespace Icinga\Editor\UI;
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2015 Vitex@hippy.cz (G)
  */
-class ServiceWizardForm extends \Ease\TWB\Form
+class ServiceWizardFormRemote extends \Ease\TWB\Form
 {
     /**
      * Objekt služby
@@ -93,5 +93,4 @@ class ServiceWizardForm extends \Ease\TWB\Form
                 $serviceId));
         }
     }
-
 }
