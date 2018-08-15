@@ -4,9 +4,7 @@ namespace Icinga\Editor;
 
 /**
  * Icinga Editor - hlavní strana
- *
- * @package    IcingaEditor
- * @subpackage WebUI
+ * 
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2012 Vitex@hippy.cz (G)
  */

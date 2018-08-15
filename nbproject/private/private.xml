@@ -21,6 +21,12 @@
             <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/login.php</file>
             <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/includes/IEInit.php</file>
         </group>
-        <group/>
+        <group>
+            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/classes/UI/ServiceWizardFormLocal.php</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/wizard-active-service-remote.php</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/wizard-active-service-local.php</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/wizard-active-service.php</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/classes/UI/YesNoSwitch.php</file>
+        </group>
     </open-files>
 </project-private>

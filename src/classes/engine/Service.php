@@ -468,7 +468,7 @@ class Service extends Configurator
                     }
                 }
 
-                if (is_null($allData[$adKey]['host_name']) || !count($allData[$adKey]['host_name'])) {
+                if (is_null($allData[$adKey]['host_name']) || empty($allData[$adKey]['host_name'])) {
 //                    if ($ad[$this->userColumn] == $userID) {
 //                        //$service_link = 'service.php?' . $this->keyColumn . '=' . $ad[$this->keyColumn];
 //                        //$this->addStatusMessage(sprintf(_('Service <a href="%s">%s</a> is not used. Do not generate into configuration'), $service_link, $ad[$this->nameColumn]), 'info');
