@@ -102,7 +102,7 @@ replaceYML "user"       $dbuser
 replaceYML "pass"       $dbpass
 replaceYML "name"       $dbname
 
-phinx -n -c/var/lib/icinga-editor/phinx.yml migrate -e production
+phinx -n -c/var/lib/icinga-editor/phinx-adapter.php migrate -e production
 
 
 # Import configuration Question ?
