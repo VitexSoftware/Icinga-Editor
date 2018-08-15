@@ -26,5 +26,13 @@ changelog:
 deb:
 	debuild -i -us -uc -b
 
+
+phinx:
+	phinx migrate -c ./phinx-adapter.php
+
+doc:
+	apigen generate --source src --destination docs --title "Icinga Editor" --charset UTF-8 --access-levels public --access-levels protected --php --tree
+
+
 .PHONY : install test
 	

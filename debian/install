@@ -23,7 +23,7 @@ src/iecfgimporter                   usr/bin
 bin/toicmdfile.sh                   usr/bin
 
 db/migrations/*                     var/lib/icinga-editor/db/migrations/
-phinx.yml                           var/lib/icinga-editor/
+phinx-adapter.php                   var/lib/icinga-editor/
 
 locale/cs_CZ/LC_MESSAGES/*.mo       usr/share/locale/cs_CZ/LC_MESSAGES
 locale/en_US/LC_MESSAGES/*.mo       usr/share/locale/en_US/LC_MESSAGES
