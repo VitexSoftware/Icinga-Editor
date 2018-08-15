@@ -3,12 +3,6 @@
 
 set -e
 
-#Replace Key Value in PhinX Config File
-replaceYML() {
-    cfg="/var/lib/icinga-editor/phinx.yml"
-    sed -i "/${1}:/c\        ${1}: ${2}" $cfg
-}
-
 replaceJSON() {
     cfg="/etc/icinga-editor/config.json"
     sed -i "/${1}/c\        \"${1}\": \"${2}\"," $cfg
@@ -95,15 +89,7 @@ replaceJSON "DB_DATABASE" $dbname
 replaceJSON "DB_PREFIX" ""
 replaceJSON "SEND_MAILS_FROM" $SEND_MAILS_FROM
 
-replaceYML "adapter"    "mysql"
-replaceYML "host"       "localhost"
-replaceYML "port"       3306
-replaceYML "user"       $dbuser
-replaceYML "pass"       $dbpass
-replaceYML "name"       $dbname
-
 phinx -n -c/var/lib/icinga-editor/phinx-adapter.php migrate -e production
-
 
 # Import configuration Question ?
 db_input medium icinga-editor/IMPORT_CONFIG || true
