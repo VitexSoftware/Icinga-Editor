@@ -30,7 +30,10 @@ Instalation
 
 ### Debian 8+
 
-(Install Icinga itself: https://debmon.org/IcingaIdoutilsIcingaWebInstallation)
+Install Icinga itself:)
+
+    apt install icinga-cgi icinga-cgi-bin icinga-idoutils:amd64 1.13.4-2
+
 
 Then Editor:
 
