@@ -22,7 +22,8 @@
             <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/includes/IEInit.php</file>
         </group>
         <group>
-            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/.scrutinizer.yml</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/debian/control</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/README.md</file>
         </group>
     </open-files>
 </project-private>
