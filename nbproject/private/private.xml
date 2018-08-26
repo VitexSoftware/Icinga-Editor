@@ -21,9 +21,6 @@
             <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/login.php</file>
             <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/includes/IEInit.php</file>
         </group>
-        <group>
-            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/debian/control</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/README.md</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

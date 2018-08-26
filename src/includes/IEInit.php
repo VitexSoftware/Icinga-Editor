@@ -10,7 +10,7 @@ namespace Icinga\Editor;
 
 require_once '../vendor/autoload.php';
 
-\Ease\Shared::instanced()->loadConfig('../config.json');
+\Ease\Shared::instanced()->loadConfig('../config.json',true);
 \Ease\Shared::initializeGetText('icinga-editor', 'UTF-8', '../locale');
 
 session_start();
