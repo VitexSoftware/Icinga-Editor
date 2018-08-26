@@ -8,7 +8,7 @@ Homepage: https://github.com/VitexSoftware/Icinga-Editor
 
 Package: icinga-editor
 Depends: ${misc:Depends},libjs-twitter-bootstrap, ease-framework-bricks, dbconfig-common, icinga-common, monitoring-plugins-basic, mtr-tiny, php-image-graphviz, libjs-d3js, php-cli|php5-cli|php5.6-cli|php7.0-cli|php7.1-cli|php7.2-cli|php7.3-cli, php-mail, php-curl|php5-curl|php5.6-curl|php7.0-curl|php7.1-curl|php7.2-curl|php7.3-curl, php-intl|php5-intl|php5.6-intl|php7.0-intl|php7.1-intl|php7.2-intl|php7.3-intl, composer, libjs-twitter-bootstrap-switch, nsca, traceroute 
-Recommends: mysql-server, graphicsmagick-imagemagick-compat, icinga-cgi,icinga-cgi-bin
+Recommends: default-mysql-server, graphicsmagick-imagemagick-compat, icinga-cgi,icinga-cgi-bin
 Pre-Depends: php-phinx
 Architecture: all
 Section: web
