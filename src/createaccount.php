@@ -103,7 +103,7 @@ if ($oPage->isPosted()) {
             $email = $oPage->addItem(new \Ease\Mailer($newOUser->getDataValue('email'),
                     _('Sign On info')));
             $email->setMailHeaders(['From' => constant('SEND_MAILS_FROM')]);
-            $email->addItem(new \Ease\Html\Div(_('Icinga Editor Account')."\n"));
+            $email->addItem(new \Ease\Html\DivTag(_('Icinga Editor Account')."\n"));
             $email->addItem(new \Ease\Html\DivTag(' Login: '.$newOUser->GetUserLogin()."\n"));
             $email->addItem(new \Ease\Html\DivTag(' Password: '.$_POST['password']."\n"));
             $email->send();
@@ -112,7 +112,7 @@ if ($oPage->isPosted()) {
                     sprintf(_('New Icinga Editor account: %s'),
                         $newOUser->GetUserLogin())));
             $email->setMailHeaders(['From' => constant('SEND_MAILS_FROM')]);
-            $email->addItem(new \Ease\Html\Div(_("New User:\n")));
+            $email->addItem(new \Ease\Html\DivTag(_("New User:\n")));
             $email->addItem(new \Ease\Html\DivTag(
                     ' Login: '.$newOUser->GetUserLogin()."\n", ['id' => 'login']));
             $email->send();

@@ -29,7 +29,7 @@ class NavBarSearchBox extends \Ease\TWB\Form
 
         $this->setTagProperties(['class' => 'navbar-form', 'role' => 'search']);
         $group   = $this->addItem(
-            new \Ease\Html\Div(new \Ease\Html\InputTextTag(
+            new \Ease\Html\DivTag(new \Ease\Html\InputTextTag(
             'search', $term,
             [
             'class' => 'form-control pull-right typeahead',

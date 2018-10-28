@@ -7,7 +7,7 @@ namespace Icinga\Editor\UI;
  *
  * @author vitex
  */
-class ContactTweaker extends \Ease\Html\Div
+class ContactTweaker extends \Ease\Html\DivTag
 {
     /**
      * Objekt služby

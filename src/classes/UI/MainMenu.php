@@ -8,7 +8,7 @@ namespace Icinga\Editor\UI;
  * @package    VitexSoftware
  * @author     Vitex <vitex@hippy.cz>
  */
-class MainMenu extends \Ease\Html\Div
+class MainMenu extends \Ease\Html\DivTag
 {
 
     /**

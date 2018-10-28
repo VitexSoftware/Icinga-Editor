@@ -7,7 +7,7 @@ namespace Icinga\Editor\UI;
  *
  * @author vitex
  */
-class ServiceConfigurator extends \Ease\Html\Div
+class ServiceConfigurator extends \Ease\Html\DivTag
 {
     /**
      * Tweaker Object
@@ -149,9 +149,9 @@ class ServiceConfigurator extends \Ease\Html\Div
 
         $this->commandParams = explode('!',
             $this->tweaker->service->getDataValue('check_command-params'));
-        $this->addItem(new \Ease\Html\Div(_('Service').': <strong>'.$this->tweaker->service->getName().'</strong>'));
-        $this->addItem(new \Ease\Html\Div(_('Saved').': '.$this->tweaker->service->getDataValue('DatSave')));
-        $this->addItem(new \Ease\Html\Div(_('Created').': '.$this->tweaker->service->getDataValue('DatCreate')));
+        $this->addItem(new \Ease\Html\DivTag(_('Service').': <strong>'.$this->tweaker->service->getName().'</strong>'));
+        $this->addItem(new \Ease\Html\DivTag(_('Saved').': '.$this->tweaker->service->getDataValue('DatSave')));
+        $this->addItem(new \Ease\Html\DivTag(_('Created').': '.$this->tweaker->service->getDataValue('DatCreate')));
 
         $parent_id = (int) $this->tweaker->service->getDataValue('parent_id');
         if ($parent_id) {
