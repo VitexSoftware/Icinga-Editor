@@ -7,7 +7,7 @@ namespace Icinga\Editor\UI;
  *
  * @author vitex
  */
-class ConfirmationDialog extends \Ease\Html\Div
+class ConfirmationDialog extends \Ease\Html\DivTag
 {
 
     /**
@@ -24,9 +24,9 @@ class ConfirmationDialog extends \Ease\Html\Div
     {
         parent::__construct(null, null, $properties);
 
-        $modalDialog  = $this->addItem(new \Ease\Html\Div(null,
+        $modalDialog  = $this->addItem(new \Ease\Html\DivTag(null,
             ['class' => 'modal-dialog']));
-        $modalContent = $modalDialog->addItem(new \Ease\Html\Div(null,
+        $modalContent = $modalDialog->addItem(new \Ease\Html\DivTag(null,
             ['class' => 'modal-content']));
 
 

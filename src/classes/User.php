@@ -410,7 +410,7 @@ class User extends \Ease\User
             $email = new \Ease\Mailer($this->getDataValue('email'),
                 _('Account canceled'));
             $email->setMailHeaders(['From' => EMAIL_FROM]);
-            $email->addItem(new \Ease\Html\Div(_("You were removed from IcingaEditor:")."\n"));
+            $email->addItem(new \Ease\Html\DivTag(_("You were removed from IcingaEditor:")."\n"));
             $email->addItem(new \Ease\Html\DivTag(' Login: '.$this->GetUserLogin()."\n"));
 
             $email->send();

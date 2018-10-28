@@ -213,7 +213,7 @@ $oPage->columnI->addItem(new \Ease\Html\DivTag(
         _('If these are found, their tests will be activated. Status information will be sent to the first contact you entered'),
         ['class' => 'well']));
 
-$oPage->columnI->addItem(new \Ease\Html\Div(_(
+$oPage->columnI->addItem(new \Ease\Html\DivTag(_(
             'To install a new remote sensor, please first install the package on your computer')
         .'<code>wget -O - http://v.s.cz/info@vitexsoftware.cz.gpg.key | sudo apt-key add -</code>
 <code>echo deb http://v.s.cz/ stable main | sudo tee /etc/apt/sources.list.d/vitexsoftware.list</code>
@@ -221,7 +221,7 @@ $oPage->columnI->addItem(new \Ease\Html\Div(_(
 <code>aptitude install nagios-nrpe-server nagios-check-clamscan</code>',
         ['class' => 'well']));
 
-$oPage->addItem(new \Ease\Html\Div(new UI\FXPreloader(),
+$oPage->addItem(new \Ease\Html\DivTag(new UI\FXPreloader(),
         ['class' => 'fuelux', 'id' => 'preload']));
 
 $oPage->addItem(new UI\PageBottom());

@@ -7,7 +7,7 @@ namespace Icinga\Editor\UI;
  *
  * @author vitex
  */
-class ServiceTweaker extends \Ease\Html\Div
+class ServiceTweaker extends \Ease\Html\DivTag
 {
     /**
      * Objekt příkazu

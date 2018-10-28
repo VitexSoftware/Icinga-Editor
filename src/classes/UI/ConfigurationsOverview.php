@@ -29,7 +29,7 @@ class ConfigurationsOverview extends \Ease\TWB\Panel
 
         $hostHelper = new \Icinga\Editor\Engine\Host();
 
-        \Ease\Shared::webPage()->addItem(new \Ease\Html\Div(new FXPreloader(),
+        \Ease\Shared::webPage()->addItem(new \Ease\Html\DivTag(new FXPreloader(),
                 ['class' => 'fuelux', 'id' => 'preload']));
 
         foreach ($hosts as $host_id => $host_info) {

@@ -7,7 +7,7 @@ namespace Icinga\Editor\UI;
  *
  * @author vitex
  */
-class FXPreloader extends \Ease\Html\Div
+class FXPreloader extends \Ease\Html\DivTag
 {
 
     public function __construct($id = null)

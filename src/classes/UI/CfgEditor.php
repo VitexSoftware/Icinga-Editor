@@ -501,7 +501,7 @@ class CfgEditor extends \Ease\Container
                     if (!isset($optionalTab)) {
                             $optionalTab = $tabs->addTab(_('Optional'));
                     }
-                    $mainFieldBlock = $optionalTab->addItem(new \Ease\Html\Div(null,
+                    $mainFieldBlock = $optionalTab->addItem(new \Ease\Html\DivTag(null,
                         ['class' => 'fieldblock', 'id' => $fieldName.'-block']));
                     break;
                 default :
@@ -523,7 +523,7 @@ class CfgEditor extends \Ease\Container
               $mainFieldBlock->setTagClass('fieldblock req');
               }
              */
-            $fieldBlock = $mainFieldBlock->addItem(new \Ease\Html\Div(null,
+            $fieldBlock = $mainFieldBlock->addItem(new \Ease\Html\DivTag(null,
                 ['id' => $fieldName.'-controls']));
 
 
@@ -681,7 +681,7 @@ class CfgEditor extends \Ease\Container
               $mainFieldBlock->setTagClass('fieldblock req');
               }
              */
-            $fieldBlock     = $mainFieldBlock->addItem(new \Ease\Html\Div(null,
+            $fieldBlock     = $mainFieldBlock->addItem(new \Ease\Html\DivTag(null,
                 ['id' => $fieldName.'-controls']));
 
             if (!$this->objectEdited->isOwnedBy() && !\Ease\Shared::user()->getSettingValue('admin')) { //Editovat může pouze vlastník
