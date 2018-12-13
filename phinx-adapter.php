@@ -10,7 +10,7 @@ namespace Icinga\Editor;
 
 include_once './vendor/autoload.php';
 
-\Ease\Shared::instanced()->loadConfig('config.json', 'true');
+\Ease\Shared::instanced()->loadConfig('config.json', true);
 
 return array('environments' =>
     array(
