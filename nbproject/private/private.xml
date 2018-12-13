@@ -21,6 +21,8 @@
             <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/login.php</file>
             <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/includes/IEInit.php</file>
         </group>
-        <group/>
+        <group>
+            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/classes/UI/PageBottom.php</file>
+        </group>
     </open-files>
 </project-private>

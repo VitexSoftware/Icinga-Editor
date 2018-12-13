@@ -337,9 +337,12 @@ class Host extends Configurator
         foreach ($servicesAssigned as $serviceID => $serviceInfo) {
             $service->loadFromSQL($serviceID);
             $service->delHostName($this->getId(), $this->getName());
-            if (!$service->saveToSQL()) {
+            if ($service->saveToSQL()) {
+                $this->addStatusMessage(sprintf(_('Unregister %s from service %s done'),
+                        $this->getName(), $service->getName()), 'success');
+            } else {    
                 $this->addStatusMessage(sprintf(_('Unregister %s from service %s error'),
-                        $this->getName(), $service->getName()), 'Error');
+                        $this->getName(), $service->getName()), 'error');
                 $delAll = false;
             }
         }
