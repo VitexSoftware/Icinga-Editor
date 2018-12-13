@@ -24,8 +24,7 @@ changelog:
 	git dch --ignore-branch --release --auto -N $(VERSION) --git-author
 
 deb:
-	debuild -i -us -uc -b
-
+	dpkg-buildpackage -A -us -uc
 
 phinx:
 	phinx migrate -c ./phinx-adapter.php

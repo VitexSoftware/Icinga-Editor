@@ -780,7 +780,7 @@ class Configurator extends \Ease\Brick
                 }
             }
         }
-        if (!is_null($dbId) && ($dbId != $this->getMyKey($data) )) {
+        if (!empty($dbId) && ($dbId != $this->getMyKey($data) )) {
             $result = -1;
             if ($this->allowTemplating && $this->isTemplate()) {
                 $this->addStatusMessage(sprintf(_('Template %s allready defined. Please use another name'),

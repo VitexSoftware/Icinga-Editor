@@ -14,7 +14,8 @@
         "vitexsoftware/ease-framework": "dev-master",
         "league/commonmark": "^0.15.0",
         "pear/mail": ">=1.3.0",
-        "pear/mail_mime": ">=1.10.0"
+        "pear/mail_mime": ">=1.10.0",
+        "vitexsoftware/ease-bricks": "dev-master"
     },
     "autoload": {
         "psr-4": {
