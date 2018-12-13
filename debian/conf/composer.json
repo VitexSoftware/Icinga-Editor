@@ -16,6 +16,7 @@
     "require": {
         "php": ">= 5.5.9",
         "ease-framework": "*",
+        "ease-bricks": "*",
         "league/commonmark": "^0.15.0",
         "pear/mail": ">=1.3.0",
         "pear/mail_mime": ">=1.10.0"
@@ -32,6 +33,13 @@
         {
             "type": "path",
             "url": "/usr/share/php/Ease",
+            "options": {
+                "symlink": true
+            }
+        },
+        {
+            "type": "path",
+            "url": "/usr/share/php/EaseBricks",
             "options": {
                 "symlink": true
             }

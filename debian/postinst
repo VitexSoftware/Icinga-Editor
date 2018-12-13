@@ -3,6 +3,8 @@
 
 set -e
 
+WEBUSER=www-data
+
 replaceJSON() {
     cfg="/etc/icinga-editor/config.json"
     sed -i "/${1}/c\        \"${1}\": \"${2}\"," $cfg
@@ -73,11 +75,10 @@ fi
 
 cd /usr/share/icinga-editor
 
-if [ -f composer.lock ] ; then
-    rm composer.lock
-fi
+mkdir -p /var/lib/composer
+chown $WEBUSER:$WEBUSER /var/lib/composer
+su - $WEBUSER -s /bin/bash -c 'COMPOSER_HOME="/var/lib/composer" composer --no-dev -o install -d /usr/share/icinga-editor/'
 
-composer --no-dev -o update
 
     . /etc/icinga-editor/config-db.sh
 
@@ -89,7 +90,8 @@ replaceJSON "DB_DATABASE" $dbname
 replaceJSON "DB_PREFIX" ""
 replaceJSON "SEND_MAILS_FROM" $SEND_MAILS_FROM
 
-phinx -n -c/var/lib/icinga-editor/phinx-adapter.php migrate -e production
+
+phinx migrate -c /var/lib/icinga-editor/phinx-adapter.php -e production
 
 # Import configuration Question ?
 db_input medium icinga-editor/IMPORT_CONFIG || true
