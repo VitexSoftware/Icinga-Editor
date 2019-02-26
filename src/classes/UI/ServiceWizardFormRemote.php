@@ -75,6 +75,8 @@ class ServiceWizardFormRemote extends \Ease\TWB\Form
             ['class' => 'search-input', 'title' => _('remote test')]);
         $addNewItem->setDataSource('jsoncommand.php?maxRows=20&platform='.$platform);
 
+        \Ease\Shared::webPage()->includeJavaScript('js/typeahead.bundle.js');
+        
         $this->addItem(new \Ease\TWB\FormGroup(_('Remote commands'),
             $addNewItem, _('Search commands for: ').$platform,
             _('Command executed by remote NRPE/NSCP.exe')));
