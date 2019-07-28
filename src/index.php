@@ -21,7 +21,7 @@ $oPage->addPageColumns();
 
 $oPage->columnI->addItem('<li>'._('Watch the hosts'));
 $oPage->columnI->addItem('<li>'._('Watch the services'));
-$oPage->columnI->addItem('<li>'._('Notifications on mail/jabber/sms/redmine'));
+$oPage->columnI->addItem('<li>'._('Notifications via e-mail/Jabber/SMS/Redmine'));
 
 
 $oPage->columnII->addItem(new \Ease\Html\ImgTag('img/vsmonitoring.png'));
@@ -30,7 +30,7 @@ $oPage->columnII->addItem(new \Ease\Html\ATag('http://icinga.org/',
 
 $loginForm = new \Ease\TWB\Form('Login', 'login.php');
 
-$loginForm->addItem(new \Ease\TWB\FormGroup(_('User Name'),
+$loginForm->addItem(new \Ease\TWB\FormGroup(_('Username'),
         new \Ease\Html\InputTextTag('login')));
 $loginForm->addItem(new \Ease\TWB\FormGroup(_('Pasword'),
         new \Ease\Html\InputPasswordTag('password')));
