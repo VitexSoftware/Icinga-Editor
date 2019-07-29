@@ -17,7 +17,7 @@ $stemplate = new Stemplate($oPage->getRequestValue('stemplate_id', 'int'));
 switch ($oPage->getRequestValue('action')) {
     case 'new':
         $stemplate->setDataValue($stemplate->nameColumn,
-            _('New  service template'));
+            _('New service template'));
         $stemplate->insertToSQL();
         $stemplate->setDataValue($stemplate->nameColumn,
             _('New template').' #'.$stemplate->getId());
@@ -81,7 +81,7 @@ switch ($oPage->getRequestValue('action')) {
 
         $oPage->columnII->addItem(new \Ease\Html\H2Tag($stemplate->getName()));
 
-        $confirmator = $oPage->columnII->addItem(new \Ease\TWB\Panel(_('Do you really delete?')),
+        $confirmator = $oPage->columnII->addItem(new \Ease\TWB\Panel(_('Do you really want to delete this?')),
             'danger');
         $confirmator->addItem(new \Ease\TWB\LinkButton('?'.$stemplate->keyColumn.'='.$stemplate->getID(),
                 _('No').' '.\Ease\TWB\Part::glyphIcon('ok'), 'success'));
