@@ -13,7 +13,7 @@ namespace Icinga\Editor\Engine;
  *
  * @author vitex
  */
-class Configurator extends \Ease\Brick
+class Configurator extends \Ease\SQL\Engine
 {
     /**
      * Tabulka do níž objekt ukládá svá data
@@ -122,7 +122,7 @@ class Configurator extends \Ease\Brick
             $_SESSION['parentCache'] = [];
         }
         $this->parentCache = &$_SESSION['parentCache'];
-        parent::__construct();
+        parent::__construct($itemID, \Ease\Shared::singleton()->configuration);
         $this->user        = \Ease\Shared::user();
 //       foreach ($this->useKeywords as $KeyWord => $ColumnType) {
 //            switch ($ColumnType) {
@@ -776,6 +776,7 @@ class Configurator extends \Ease\Brick
                 if (isset($data[$this->getKeyColumn()]) && (int) $data[$this->getKeyColumn()]) {
                     $dbId = $this->dblink->queryToValue('SELECT `'.$this->keyColumn.'` FROM '.$this->myTable.' WHERE '.$this->nameColumn." = '".$data[$this->nameColumn]."' AND ".$this->keyColumn.' != '.$data[$this->getKeyColumn()]);
                 } else {
+                    $dbIdRaw = $oUser->listingQuery()->where($oUser->nameColumn, addslashes($data[$this->nameColumn]))->fetch();
                     $dbId = $this->dblink->queryToValue('SELECT `'.$this->keyColumn.'` FROM '.$this->myTable.' WHERE '.$this->nameColumn." = '".$data[$this->nameColumn]."'");
                 }
             }
@@ -1010,13 +1011,13 @@ class Configurator extends \Ease\Brick
                         if ($this->publicRecords && ($usInfo['public'] != true) && ($usInfo[$this->userColumn]
                             != \Ease\Shared::user()->getUserID() )) {
                             $usedFrame->addItem(new \Ease\Html\Span(
-                                $usInfo[$this->nameColumn],
-                                ['class' => 'jellybean gray']));
+                                    $usInfo[$this->nameColumn],
+                                    ['class' => 'jellybean gray']));
                         } else {
                             $usedFrame->addItem(new \Ease\Html\Span(
-                                new \Ease\Html\ATag('?'.$this->getKeyColumn().'='.$usId.'&'.$urlAdd,
-                                $usInfo[$this->nameColumn]),
-                                ['class' => 'jellybean']));
+                                    new \Ease\Html\ATag('?'.$this->getKeyColumn().'='.$usId.'&'.$urlAdd,
+                                        $usInfo[$this->nameColumn]),
+                                    ['class' => 'jellybean']));
                         }
                     }
 
@@ -1025,10 +1026,10 @@ class Configurator extends \Ease\Brick
             }
 
             \Ease\Shared::webPage()->addItem(new \Icinga\Editor\UI\ConfirmationDialog('delete'.$this->getId(),
-                '?'.$this->getKeyColumn().'='.$this->getID().'&delete=true'.'&'.$urlAdd,
-                _('Delete').' '.$name,
-                sprintf(_('Are you sure to delete %s ?'),
-                    '<strong>'.$this->getName().'</strong>')));
+                    '?'.$this->getKeyColumn().'='.$this->getID().'&delete=true'.'&'.$urlAdd,
+                    _('Delete').' '.$name,
+                    sprintf(_('Are you sure to delete %s ?'),
+                        '<strong>'.$this->getName().'</strong>')));
             return new \Ease\Html\ButtonTag(
                 [\Ease\TWB\Part::GlyphIcon('remove'), _('Delete').' '.$this->keyword.' '.$this->getName()],
                 ['style' => 'cursor: default', 'class' => 'btn btn-danger',
@@ -1832,9 +1833,9 @@ class Configurator extends \Ease\Brick
         $exportForm = new \Ease\TWB\Form('Export', $this->keyword.'.php');
         $exportForm->addItem(new \Ease\Html\InputHiddenTag('action', 'export'));
         $exportForm->addItem(new \Ease\Html\InputHiddenTag($this->keyColumn,
-            $this->getId()));
+                $this->getId()));
         $exportForm->addInput(new \Ease\Html\InputTextTag('destination',
-            \Ease\Shared::user()->getSettingValue('exporturl')),
+                \Ease\Shared::user()->getSettingValue('exporturl')),
             _('Export Target'));
 
         $exportForm->addItem(new \Ease\Html\H4Tag(_('Recursive import')));
@@ -1980,13 +1981,13 @@ class Configurator extends \Ease\Brick
 
         if (isset($this->useKeywords['generate']) && !(int) $this->getDataValue('generate')) {
             $infoBlock->addItem(new \Ease\TWB\Label('warning',
-                _('do not generate to configuration')));
+                    _('do not generate to configuration')));
         }
 
         if ($this->publicRecords) {
             if ((int) $this->getDataValue('public')) {
                 $infoBlock->addItem(new \Ease\TWB\Label('info',
-                    _('record is public')));
+                        _('record is public')));
             }
         }
 

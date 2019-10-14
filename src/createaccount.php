@@ -18,6 +18,7 @@ $confirmation  = $oPage->getPostValue('confirmation');
 
 
 if ($oPage->isPosted()) {
+
     $process = true;
 
     $emailAddress = addslashes(strtolower($_POST['email_address']));
@@ -45,8 +46,11 @@ if ($oPage->isPosted()) {
             $error = true;
             $oUser->addStatusMessage(_('invalid email address'), 'warning');
         } else {
-            $check_email = \Ease\Shared::db()->queryToValue("SELECT COUNT(*) AS total FROM user WHERE email = '".\Ease\Shared::db()->addslashes($emailAddress)."'");
-            if ($check_email > 0) {
+            $oUser       = new User();
+            $check_email = $oUser->listingQuery()->where('email',
+                    addslashes($emailAddress))->fetch();
+
+            if (!empty($check_email)) {
                 $error = true;
                 $oUser->addStatusMessage(sprintf(_('Mail address %s is allready registered'),
                         $emailAddress), 'warning');
@@ -62,8 +66,8 @@ if ($oPage->isPosted()) {
         $oUser->addStatusMessage(_('Password control does not match'), 'warning');
     }
 
-    $usedLogin = \Ease\Shared::db()->queryToValue('SELECT id FROM user WHERE login=\''.\Ease\Shared::db()->addslashes($login).'\'');
-    if ($usedLogin) {
+    $usedLogin = $oUser->listingQuery()->where($oUser->loginColumn, addslashes($login))->fetch();
+    if (!empty($usedLogin)) {
         $error = true;
         $oUser->addStatusMessage(sprintf(_('Username %s is used. Please choose another one'),
                 $login), 'warning');
@@ -71,53 +75,49 @@ if ($oPage->isPosted()) {
 
     if ($error == false) {
 
-        $newOUser = new User();
-        $newOUser->setData(
+        $oUser->setData(
             [
                 'email' => $emailAddress,
                 'parent' => (int) $customerParent,
                 'login' => $login,
-                'password' => $newOUser->encryptPassword($password)
+                'password' => \Ease\User::encryptPassword($password)
             ]
         );
 
-        $userID = $newOUser->insertToSQL();
+        $userID = $oUser->insertToSQL();
 
         if (!is_null($userID)) {
-            $newOUser->setMyKey($userID);
-            $newOUser->passwordChange($password);
+            $oUser->setMyKey($userID);
+            $oUser->passwordChange($password);
 
             if ($userID == 1) {
-                $newOUser->setSettingValue('admin', true);
+                $oUser->setSettingValue('admin', true);
                 $oUser->addStatusMessage(_('Admin prvileges assigned'),
                     'success');
-                $newOUser->saveToSQL();
+                $oUser->saveToSQL();
             } else {
                 $oUser->addStatusMessage(_('User account created'), 'success');
             }
 
-            system('sudo htpasswd -b /etc/icinga/htpasswd.users '.$newOUser->getUserLogin().' '.$password);
+            system('sudo htpasswd -b /etc/icinga/htpasswd.users '.$oUser->getUserLogin().' '.$password);
 
-            $newOUser->loginSuccess();
-
-            $email = $oPage->addItem(new \Ease\Mailer($newOUser->getDataValue('email'),
-                    _('Sign On info')));
+            $email = new \Ease\HtmlMailer($oUser->getDataValue('email'), _('Sign On info'));
             $email->setMailHeaders(['From' => constant('SEND_MAILS_FROM')]);
             $email->addItem(new \Ease\Html\DivTag(_('Icinga Editor Account')."\n"));
-            $email->addItem(new \Ease\Html\DivTag(' Login: '.$newOUser->GetUserLogin()."\n"));
+            $email->addItem(new \Ease\Html\DivTag(' Login: '.$oUser->GetUserLogin()."\n"));
             $email->addItem(new \Ease\Html\DivTag(' Password: '.$_POST['password']."\n"));
             $email->send();
 
-            $email = $oPage->addItem(new \Ease\Mailer(constant('SEND_MAILS_FROM'),
+            $email = new \Ease\HtmlMailer(constant('SEND_MAILS_FROM'),
                     sprintf(_('New Icinga Editor account: %s'),
-                        $newOUser->GetUserLogin())));
+                        $oUser->getDataValue('login')));
             $email->setMailHeaders(['From' => constant('SEND_MAILS_FROM')]);
             $email->addItem(new \Ease\Html\DivTag(_("New User:\n")));
             $email->addItem(new \Ease\Html\DivTag(
-                    ' Login: '.$newOUser->GetUserLogin()."\n", ['id' => 'login']));
+                    ' Login: '.$oUser->GetUserLogin()."\n", ['id' => 'login']));
             $email->send();
 
-            \Ease\Shared::user($newOUser)->loginSuccess();
+           $oUser->loginSuccess();
 
             $contact   = new Engine\Contact();
             $contact->setData(
@@ -170,11 +170,11 @@ if ($oPage->isPosted()) {
             }
 
             $hostGroup = new Engine\Hostgroup;
-            $hostGroup->setName($newOUser->getUserLogin());
+            $hostGroup->setName($oUser->getUserLogin());
             $hostGroup->setDataValue('alias',
-                _('Initial Group').' '.$newOUser->getUserLogin());
+                _('Initial Group').' '.$oUser->getUserLogin());
             $hostGroup->setDataValue('generate', true);
-            $hostGroup->setUpUser($newOUser);
+            $hostGroup->setUpUser($oUser);
             $hostGroup->insertToSQL();
 
             $oPage->redirect('wizard-host.php');
@@ -184,7 +184,7 @@ if ($oPage->isPosted()) {
             $email = $oPage->addItem(new EaseMail(constant('SEND_ORDERS_TO'),
                     'Sign on Failed'));
             $email->addItem(new \Ease\Html\DivTag('Sign On',
-                    $oPage->PrintPre($newOUser->getData())));
+                    $oPage->PrintPre($oUser->getData())));
             $email->send();
         }
     }
@@ -208,9 +208,9 @@ $regFace = $oPage->columnII->addItem(new \Ease\Html\DivTag());
 
 $regForm = $regFace->addItem(new \Ease\TWB\Form('create_account',
         'createaccount.php', 'POST', null, ['class' => 'form-horizontal']));
-if ($oUser->getUserID()) {
+if ($oUser->getMyKey()) {
     $regForm->addItem(new \Ease\Html\InputHiddenTag('u_parent',
-            $oUser->GetUserID()));
+            $oUser->getMyKey()));
 }
 
 $regForm->addItem(new \Ease\Html\H3Tag(_('Account')));

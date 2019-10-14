@@ -5,10 +5,8 @@ namespace Icinga\Editor;
 /**
  * Icinga Editor user
  */
-class User extends \Ease\User
+class User extends \Ease\SQL\Engine
 {
-    use \Ease\SQL\Orm;
-    
     /**
      * Tabulka uživatelů
      * @var string
@@ -34,6 +32,55 @@ class User extends \Ease\User
     public $settingsColumn = 'settings';
 
     /**
+     * ID prave nacteneho uzivatele.
+     *
+     * @var int unsigned
+     */
+    public $userID = null;
+
+    /**
+     * Přihlašovací jméno uživatele.
+     *
+     * @var string
+     */
+    public $userLogin = null;
+
+    /**
+     * Pole uživatelských nastavení.
+     *
+     * @var array
+     */
+    public $settings = [];
+
+    /**
+     * Sloupeček s loginem.
+     *
+     * @var string
+     */
+    public $loginColumn = 'login';
+
+    /**
+     * Sloupeček s heslem.
+     *
+     * @var string
+     */
+    public $passwordColumn = 'password';
+
+    /**
+     * Sloupecek pro docasne zablokovani uctu.
+     *
+     * @var string
+     */
+    public $disableColumn = null;
+
+    /**
+     * Column for user mail.
+     *
+     * @var string
+     */
+    public $mailColumn = 'email';
+
+    /**
      * Keyword
      * @var string
      */
@@ -41,18 +88,16 @@ class User extends \Ease\User
 
     public function __construct($userID = null)
     {
-        parent::__construct($userID);
-        $options = \Ease\Shared::singleton()->configuration;
-        $this->setupProperty($options, 'dbType', 'DB_TYPE');
-        $this->setupProperty($options, 'server', 'DB_HOST');
-        $this->setupProperty($options, 'username', 'DB_USERNAME');
-        $this->setupProperty($options, 'password', 'DB_PASSWORD');
-        $this->setupProperty($options, 'database', 'DB_DATABASE');
-        $this->setupProperty($options, 'port', 'DB_PORT');
-        $this->setupProperty($options, 'connectionSettings', 'DB_SETUP');
+        parent::__construct($userID, \Ease\Shared::singleton()->configuration);
+        if (!empty($userID)) {
+            $userDataRaw = $this->listingQuery()->where(is_numeric($userID) ? 'id'
+                    : $this->loginColumn, $userID);
+            foreach ($userDataRaw as $userData) {
+                $this->takeData($userData);
+            }
+        }
     }
-    
-    
+
     /**
      * Obtain link to Icon
      *
@@ -134,7 +179,10 @@ class User extends \Ease\User
      */
     public function passwordChange($newPassword, $userID = null)
     {
-        if (parent::passwordChange($newPassword, $userID)) {
+        $query = $this->getFluentPDO()->update($this->getMyTable())->set(['password' => $newPassword])->where('id',
+                $userID)->execute();
+
+        if ($query) {
 
             system('sudo htpasswd -b /etc/icinga/htpasswd.users '.$this->getUserLogin().' '.$newPassword);
             if (defined('DB_IW_SERVER_PASSWORD')) {
@@ -478,19 +526,61 @@ class User extends \Ease\User
     {
         return $this->getSettingValue('admin') === true;
     }
-    
+
     function authentize()
     {
-        /**
-         * @var \Envms\FluentPDO\Query
-         */
-        $dbUsers = $this->getFluentPDO();
+
+        $login    = $this->getDataValue($this->loginColumn);
+        $password = $this->getDataValue($this->passwordColumn);
+
+        foreach ($this->listingQuery()->where($this->loginColumn, $login) as $candidatRaw) {
+            return $this->passwordValidation($password, $candidatRaw['password']);
+        }
+    }
+
+    /**
+     * Akce provedené po úspěšném přihlášení
+     * pokud tam jeste neexistuje zaznam, vytvori se novy.
+     * 
+     * @return boolean
+     */
+    public function loginSuccess()
+    {
+        $this->userID = (int) $this->getMyKey();
+        $this->logged = true;
+        $this->addStatusMessage(sprintf(_('Sign in %s all ok'), $this->userLogin),
+            'success');
+        $this->setObjectName();
+        \Ease\Shared::user($this);
         return true;
     }
-    
-    public function getListing()
+
+    public function getUserLogin()
     {
-        return $this->getFluentPDO();
+        return $this->getDataValue($this->loginColumn);
     }
-    
+
+    /**
+     * 
+     * @return \Envms\FluentPDO
+     */
+    public function listingQuery()
+    {
+        return $this->getFluentPDO()->from($this->myTable);
+    }
+
+    /**
+     * Common instance of User class
+     * 
+     * @return \Ease\User
+     */
+    public static function singleton($user = null)
+    {
+        if (is_null($user) && !isset(self::$instance)) {
+            self::$instance = is_null($user) ? new self() : $user;
+        } else {
+            self::$instance = $user;
+        }
+        return self::$instance;
+    }
 }

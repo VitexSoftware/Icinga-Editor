@@ -27,17 +27,17 @@ $oPage->addJavascript('$("#PassworRecovery").validate({
 
 if ($emailTo) {
     $oUser = new User();
-    $userFound = $oUser->getListing()->where('email',addslashes( $userEmail))->fetch();
+    $userFound = $oUser->listingQuery()->where('email',addslashes( $emailTo))->fetch();
     
     if (count($userFound)) {
-        $userID      = intval($userFound[0]['id']);
-        $userLogin   = $userFound[0]['login'];
-        $newPassword = $oPage->randomString(8);
+        $userID      = intval($userFound['id']);
+        $userLogin   = $userFound['login'];
+        $newPassword = \Ease\Functions::randomString(8);
 
         $passChanger = new User($userID);
         $passChanger->passwordChange($newPassword);
 
-        $email = $oPage->addItem(new \Ease\Mailer($userEmail,
+        $email = $oPage->addItem(new \Ease\HtmlMailer($emailTo,
                 _('Icinga Editor').' - '.sprintf(_('New password for %s'),
                     $_SERVER['SERVER_NAME'])));
         $email->setMailHeaders(['From' => constant('EMAIL_FROM')]);

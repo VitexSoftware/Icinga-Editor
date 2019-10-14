@@ -15,5 +15,5 @@ require_once '../vendor/autoload.php';
 
 session_start();
 
-$oUser = User::singleton();
+$oUser = \Ease\Shared::User();
 $oPage = new UI\WebPage();

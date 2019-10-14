@@ -14,9 +14,7 @@
         "vendor-dir": "/var/lib/icinga-editor"
     },
     "require": {
-        "php": ">= 5.5.9",
-        "ease-framework": "*",
-        "ease-bricks": "*",
+        "deb/ease-twbootstrap": "*",
         "league/commonmark": "^0.15.0",
         "pear/mail": ">=1.3.0",
         "pear/mail_mime": ">=1.10.0"

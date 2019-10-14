@@ -14,14 +14,15 @@ require_once 'includes/IEInit.php';
 $login = $oPage->getRequestValue('login');
 if ($login) {
     try {
-        $oUser = new User();
+        $oUser = new User($login);
 
         if ($oUser->tryToLogin($_POST)) {
             if ($oUser->getUserID() == 1) {
                 $oUser->setSettingValue('admin', TRUE);
             }
             $oUser->setSettingValue('plaintext', $_POST[$oUser->passwordColumn]);
-
+            \Ease\Shared::user($oUser)->loginSuccess();
+            
             $backurl = $oPage->getRequestValue('backurl');
             if ($backurl) {
                 $oPage->redirect($backurl);
