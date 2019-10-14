@@ -8,7 +8,7 @@ namespace Icinga\Editor;
  * @package    IcingaEditor
  * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
- * @copyright  2012-14 info@vitexsoftware.cz (G)
+ * @copyright  2012-2019 info@vitexsoftware.cz (G)
  */
 require_once 'includes/IEInit.php';
 $success = false;
@@ -26,8 +26,9 @@ $oPage->addJavascript('$("#PassworRecovery").validate({
 });', null, true);
 
 if ($emailTo) {
-    $userEmail = \Ease\Shared::db()->easeAddSlashes($emailTo);
-    $userFound = \Ease\Shared::db()->queryToArray('SELECT id,login FROM user WHERE email=\''.$userEmail.'\'');
+    $oUser = new User();
+    $userFound = $oUser->getListing()->where('email',addslashes( $userEmail))->fetch();
+    
     if (count($userFound)) {
         $userID      = intval($userFound[0]['id']);
         $userLogin   = $userFound[0]['login'];

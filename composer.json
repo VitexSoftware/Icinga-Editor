@@ -2,20 +2,18 @@
     "name": "vitexsoftware/icinga-editor",
     "description": "Editor of Icinga Configuration files",
     "license": "GPL-2.0",
-    "version": "1.2.1",
+    "version": "2.0.0",
     "authors": [
         {
             "name": "vitex",
             "email": "info@vitexsoftware.cz"
         }
     ],
+    "minimum-stability":"dev",
     "require": {
-        "php": ">= 5.5.9",
-        "vitexsoftware/ease-framework": "dev-master",
-        "league/commonmark": "^0.15.0",
-        "pear/mail": ">=1.3.0",
-        "pear/mail_mime": ">=1.10.0",
-        "vitexsoftware/ease-bricks": "dev-master"
+        "vitexsoftware/ease-twbootstrap": "dev-master",
+        "league/commonmark": "^0.15",
+        "vitexsoftware/ease-fluentpdo": "dev-master"
     },
     "autoload": {
         "psr-4": {

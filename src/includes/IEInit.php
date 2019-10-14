@@ -10,23 +10,10 @@ namespace Icinga\Editor;
 
 require_once '../vendor/autoload.php';
 
-\Ease\Shared::instanced()->loadConfig('../config.json',true);
-\Ease\Shared::initializeGetText('icinga-editor', 'UTF-8', '../locale');
+\Ease\Shared::singleton()->loadConfig('../config.json',true);
+\Ease\Locale::singleton('UTF-8', '../locale','icinga-editor');
 
 session_start();
 
-try {
-    /**
-     * Objekt uživatele User nebo Anonym
-     * @global \Ease\User
-     */
-    $oUser                 = \Ease\Shared::user();
-    $oUser->settingsColumn = 'settings';
-} catch (Exception $e) {
-    echo 'Caught exception: ', $e->getMessage(), "\n";
-}
-
-if (!\Ease\Shared::isCli()) {
-    /* @var $oPage \Sys\WebPage */
-    $oPage = new UI\WebPage();
-}
+$oUser = User::singleton();
+$oPage = new UI\WebPage();

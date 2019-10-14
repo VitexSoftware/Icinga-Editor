@@ -10,14 +10,11 @@ namespace Icinga\Editor;
  */
 require_once 'includes/IEInit.php';
 
-if (!is_object($oUser)) {
-    die(_('Cookies requied'));
-}
 
 $login = $oPage->getRequestValue('login');
 if ($login) {
     try {
-        $oUser = \Ease\Shared::user(new User());
+        $oUser = new User();
 
         if ($oUser->tryToLogin($_POST)) {
             if ($oUser->getUserID() == 1) {

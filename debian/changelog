@@ -1,6 +1,9 @@
-icinga-editor (1.2.1-2) UNRELEASED; urgency=medium
+icinga-editor (1.2.1-97) UNRELEASED; urgency=medium
 
-  * Merge origin/master
+  [ vitex ]
   * Merge origin/master
 
- -- vitex <vitex@dellnik.adminit.local>  Tue, 22 Nov 2016 17:48:57 +0100
+  [ Vítězslav Dvořák ]
+  * 
+
+ -- Vítězslav Dvořák <info@vitexsoftware.cz>  Tue, 13 Nov 2018 17:30:10 +0100

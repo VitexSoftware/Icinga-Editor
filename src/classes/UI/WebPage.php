@@ -2,36 +2,39 @@
 
 namespace Icinga\Editor\UI;
 
+use Ease\Html\DivTag;
+use Ease\Shared;
+
 /**
  * Třídy pro vykreslení stránky
  *
  * @package   VitexSoftware
  * @author    Vitex <vitex@hippy.cz>
- * @copyright 2009-2018 Vitex@hippy.cz (G)
+ * @copyright 2009-2019 Vitex@hippy.cz (G)
  */
 class WebPage extends \Ease\TWB\WebPage
 {
     /**
      * Hlavní blok stránky
-     * @var \Ease\Html\DivTag
+     * @var DivTag
      */
     public $container = NULL;
 
     /**
      * První sloupec
-     * @var \Ease\Html\DivTag
+     * @var DivTag
      */
     public $columnI = NULL;
 
     /**
      * Druhý sloupec
-     * @var \Ease\Html\DivTag
+     * @var DivTag
      */
     public $columnII = NULL;
 
     /**
      * Třetí sloupec
-     * @var \Ease\Html\DivTag
+     * @var DivTag
      */
     public $columnIII = NULL;
 
@@ -40,13 +43,9 @@ class WebPage extends \Ease\TWB\WebPage
      *
      * @param VSUser $userObject
      */
-    public function __construct($pageTitle = null, &$userObject = null)
+    public function __construct($pageTitle = null)
     {
-        if (is_null($userObject)) {
-            $userObject = \Ease\Shared::user();
-        }
-        $this->jQueryUISkin = $userObject->getSettingValue('Skin');
-        parent::__construct($pageTitle, $userObject);
+        parent::__construct($pageTitle);
         $this->IncludeCss('css/default.css');
         $this->head->addItem('<meta name="viewport" content="width=device-width, initial-scale=1.0">');
         $this->addCss('body {
@@ -59,7 +58,7 @@ class WebPage extends \Ease\TWB\WebPage
         $this->head->addItem('<link rel="apple-touch-icon-precomposed" href="img/vsmonitoring.png">');
         $this->head->addItem('<link rel="shortcut icon"  type="image/png" href="img/vsmonitoring.png">');
         $this->addItem('<br>');
-        $this->container    = $this->addItem(new \Ease\Html\DivTag(null,
+        $this->container    = $this->addItem(new DivTag(null,
             ['class' => 'container']));
     }
 
@@ -68,14 +67,14 @@ class WebPage extends \Ease\TWB\WebPage
      */
     function addPageColumns()
     {
-        $row = $this->container->addItem(new \Ease\Html\DivTag(null,
+        $row = $this->container->addItem(new DivTag(null,
             ['class' => 'row']));
 
-        $this->columnI   = $row->addItem(new \Ease\Html\DivTag(null,
+        $this->columnI   = $row->addItem(new DivTag(null,
             ['class' => 'col-md-4']));
-        $this->columnII  = $row->addItem(new \Ease\Html\DivTag(null,
+        $this->columnII  = $row->addItem(new DivTag(null,
             ['class' => 'col-md-4']));
-        $this->columnIII = $row->addItem(new \Ease\Html\DivTag(null,
+        $this->columnIII = $row->addItem(new DivTag(null,
             ['class' => 'col-md-4']));
     }
 
@@ -86,8 +85,8 @@ class WebPage extends \Ease\TWB\WebPage
      */
     public function onlyForAdmin($loginPage = 'login.php')
     {
-        if (!\Ease\Shared::user()->getSettingValue('admin')) {
-            \Ease\Shared::user()->addStatusMessage(_('Nejprve se prosím přihlašte jako admin'),
+        if (!Shared::user()->getSettingValue('admin')) {
+            Shared::user()->addStatusMessage(_('Nejprve se prosím přihlašte jako admin'),
                 'warning');
             $this->redirect($loginPage);
             exit;

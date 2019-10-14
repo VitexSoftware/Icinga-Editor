@@ -300,7 +300,7 @@ class MainMenu extends \Ease\Html\DivTag
      */
     public function finalize()
     {
-        \Ease\JQuery\Part::jQueryze($this);
+        \Ease\TWB\Part::jQueryze($this);
         $this->includeJavaScript('js/slideupmessages.js');
     }
 

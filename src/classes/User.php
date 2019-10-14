@@ -7,6 +7,8 @@ namespace Icinga\Editor;
  */
 class User extends \Ease\User
 {
+    use \Ease\SQL\Orm;
+    
     /**
      * Tabulka uživatelů
      * @var string
@@ -37,6 +39,20 @@ class User extends \Ease\User
      */
     public $keyword = 'user';
 
+    public function __construct($userID = null)
+    {
+        parent::__construct($userID);
+        $options = \Ease\Shared::singleton()->configuration;
+        $this->setupProperty($options, 'dbType', 'DB_TYPE');
+        $this->setupProperty($options, 'server', 'DB_HOST');
+        $this->setupProperty($options, 'username', 'DB_USERNAME');
+        $this->setupProperty($options, 'password', 'DB_PASSWORD');
+        $this->setupProperty($options, 'database', 'DB_DATABASE');
+        $this->setupProperty($options, 'port', 'DB_PORT');
+        $this->setupProperty($options, 'connectionSettings', 'DB_SETUP');
+    }
+    
+    
     /**
      * Obtain link to Icon
      *
@@ -462,4 +478,19 @@ class User extends \Ease\User
     {
         return $this->getSettingValue('admin') === true;
     }
+    
+    function authentize()
+    {
+        /**
+         * @var \Envms\FluentPDO\Query
+         */
+        $dbUsers = $this->getFluentPDO();
+        return true;
+    }
+    
+    public function getListing()
+    {
+        return $this->getFluentPDO();
+    }
+    
 }

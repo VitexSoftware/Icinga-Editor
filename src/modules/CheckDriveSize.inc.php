@@ -62,10 +62,10 @@ class CheckDriveSize extends \Icinga\Editor\UI\ServiceConfigurator
         }
 
         if (strstr($config['Drive'], '\\\\')) {
-            $this->form->addInput(new \Ease\Html\Select('Drive', $drives, '\\\\'),
+            $this->form->addInput(new \Ease\Html\SelectTag('Drive', $drives, '\\\\'),
                 _('Disk'), 'X:', _('Disk drive letter select'));
         } else {
-            $this->form->addInput(new \Ease\Html\Select('Drive', $drives,
+            $this->form->addInput(new \Ease\Html\SelectTag('Drive', $drives,
                     str_replace(':', '', $config['Drive'])), _('Disk'), 'X:',
                 _('Disk drive letter select'));
         }
@@ -203,7 +203,7 @@ class CheckDriveSize extends \Icinga\Editor\UI\ServiceConfigurator
 
             $this->tweaker->service->setDataValue('check_command-params',
                 implode(' ', $config));
-
+            $this->addStatusMessage($this->tweaker->service->getDataValue('check_command-params'));
             return parent::reconfigureService();
         }
 

@@ -73,7 +73,7 @@ class BootstrapMenu extends \Ease\TWB\Navbar
      */
     public function draw()
     {
-        $webPage = \Ease\Shared::webPage();
+        $webPage = \Icinga\Editor\UI\WebPage::singleton();
         $statusMessages = $webPage->getStatusMessagesAsHtml();
         if ($statusMessages) {
             $this->addItem(new \Ease\Html\DivTag($statusMessages,
