@@ -2,11 +2,18 @@
 
 namespace Icinga\Editor\UI;
 
-class BootstrapMenu extends \Ease\TWB\Navbar
+use Ease\Html\DivTag;
+use Ease\Html\ImgTag;
+use Ease\Html\UlTag;
+use Ease\Shared;
+use Ease\TWB\Navbar;
+use Ease\TWB\Part;
+
+class BootstrapMenu extends Navbar
 {
     /**
      * Navigation
-     * @var \Ease\Html\UlTag
+     * @var UlTag
      */
     public $nav = NULL;
 
@@ -21,16 +28,16 @@ class BootstrapMenu extends \Ease\TWB\Navbar
                                 $properties = null)
     {
         parent::__construct("Menu",
-            new \Ease\Html\ImgTag('img/vsmonitoring.png', 'VSMonitoring',
+            new ImgTag('img/vsmonitoring.png', 'VSMonitoring',
             ['class' => 'img-rounded', 'width' => 20, 'heigt' => 20]),
             ['class' => 'navbar-fixed-top']);
 
-        $user = \Ease\Shared::user();
-        \Ease\TWB\Part::twBootstrapize();
+        $user = Shared::user();
+        Part::twBootstrapize();
         if (!$user->getUserID()) {
-            $this->addMenuItem('<a href="about.php">'.\Ease\TWB\Part::GlyphIcon('info').' '._('About').'</a>',
+            $this->addMenuItem('<a href="about.php">'.Part::GlyphIcon('info').' '._('About').'</a>',
                 'right');
-            $this->addMenuItem('<a href="createaccount.php">'.\Ease\TWB\Part::GlyphIcon('leaf').' '._('Sign Up').'</a>',
+            $this->addMenuItem('<a href="createaccount.php">'.Part::GlyphIcon('leaf').' '._('Sign Up').'</a>',
                 'right');
             $this->addMenuItem(
                 '
@@ -51,17 +58,17 @@ class BootstrapMenu extends \Ease\TWB\Navbar
 
             $userMenu = '<li class="dropdown" style="width: 120px; text-align: right; background-image: url( '.$user->getIcon().' ) ;  background-repeat: no-repeat; background-position: left center; background-size: 40px 40px;"><a href="#" class="dropdown-toggle" data-toggle="dropdown">'.$user->getUserLogin().' <b class="caret"></b></a>
 <ul class="dropdown-menu" style="text-align: left; left: -60px;">
-<li><a href="settings.php">'.\Ease\TWB\Part::GlyphIcon('wrench').'<i class="icon-cog"></i> '._('Settings').'</a></li>
+<li><a href="settings.php">'.Part::GlyphIcon('wrench').'<i class="icon-cog"></i> '._('Settings').'</a></li>
 ';
 
             if ($user->getSettingValue('admin')) {
-                $userMenu .= '<li><a href="overview.php">'.\Ease\TWB\Part::GlyphIcon('list').' '._('Configuration overview').'</a></li>';
+                $userMenu .= '<li><a href="overview.php">'.Part::GlyphIcon('list').' '._('Configuration overview').'</a></li>';
             }
 
             $this->addMenuItem($userMenu.'
-<li><a href="http://v.s.cz/kontakt.php">'.\Ease\TWB\Part::GlyphIcon('envelope').' '._('Support').'</a></li>
+<li><a href="http://v.s.cz/kontakt.php">'.Part::GlyphIcon('envelope').' '._('Support').'</a></li>
 <li class="divider"></li>
-<li><a href="logout.php">'.\Ease\TWB\Part::GlyphIcon('off').' '._('Sign off').'</a></li>
+<li><a href="logout.php">'.Part::GlyphIcon('off').' '._('Sign off').'</a></li>
 </ul>
 </li>
 ', 'right');
@@ -73,15 +80,13 @@ class BootstrapMenu extends \Ease\TWB\Navbar
      */
     public function draw()
     {
-        $webPage = \Icinga\Editor\UI\WebPage::singleton();
-        $statusMessages = $webPage->getStatusMessagesAsHtml();
-        if ($statusMessages) {
-            $this->addItem(new \Ease\Html\DivTag($statusMessages,
+        $webPage = WebPage::singleton();
+        $statusMessages = $webPage->getStatusMessagesBlock();
+            $this->addItem(new DivTag($statusMessages,
                 ['id' => 'StatusMessages', 'class' => 'well', 'title' => _('Click to hide messages'),
                 'data-state' => 'down']));
-            $this->addItem(new \Ease\Html\DivTag(null, ['id' => 'smdrag']));
+            $this->addItem(new DivTag(null, ['id' => 'smdrag']));
             $webPage->cleanMessages();
-        }
         parent::draw();
     }
 

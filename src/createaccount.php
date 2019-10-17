@@ -2,6 +2,19 @@
 
 namespace Icinga\Editor;
 
+use Ease\Html\DivTag;
+use Ease\Html\H2Tag;
+use Ease\Html\H3Tag;
+use Ease\Html\InputHiddenTag;
+use Ease\Html\InputPasswordTag;
+use Ease\Html\InputSubmitTag;
+use Ease\Html\InputTextTag;
+use Ease\Html\UlTag;
+use Ease\HtmlMailer;
+use Ease\TWB\Form;
+use Ease\User;
+use Icinga\Editor\UI\PageTop;
+
 /**
  * Založení nového accoutu
  *
@@ -66,7 +79,8 @@ if ($oPage->isPosted()) {
         $oUser->addStatusMessage(_('Password control does not match'), 'warning');
     }
 
-    $usedLogin = $oUser->listingQuery()->where($oUser->loginColumn, addslashes($login))->fetch();
+    $usedLogin = $oUser->listingQuery()->where($oUser->loginColumn,
+            addslashes($login))->fetch();
     if (!empty($usedLogin)) {
         $error = true;
         $oUser->addStatusMessage(sprintf(_('Username %s is used. Please choose another one'),
@@ -80,7 +94,7 @@ if ($oPage->isPosted()) {
                 'email' => $emailAddress,
                 'parent' => (int) $customerParent,
                 'login' => $login,
-                'password' => \Ease\User::encryptPassword($password)
+                'password' => User::encryptPassword($password)
             ]
         );
 
@@ -101,23 +115,24 @@ if ($oPage->isPosted()) {
 
             system('sudo htpasswd -b /etc/icinga/htpasswd.users '.$oUser->getUserLogin().' '.$password);
 
-            $email = new \Ease\HtmlMailer($oUser->getDataValue('email'), _('Sign On info'));
+            $email = new HtmlMailer($oUser->getDataValue('email'),
+                _('Sign On info'));
             $email->setMailHeaders(['From' => constant('SEND_MAILS_FROM')]);
-            $email->addItem(new \Ease\Html\DivTag(_('Icinga Editor Account')."\n"));
-            $email->addItem(new \Ease\Html\DivTag(' Login: '.$oUser->GetUserLogin()."\n"));
-            $email->addItem(new \Ease\Html\DivTag(' Password: '.$_POST['password']."\n"));
+            $email->addItem(new DivTag(_('Icinga Editor Account')."\n"));
+            $email->addItem(new DivTag(' Login: '.$oUser->GetUserLogin()."\n"));
+            $email->addItem(new DivTag(' Password: '.$_POST['password']."\n"));
             $email->send();
 
-            $email = new \Ease\HtmlMailer(constant('SEND_MAILS_FROM'),
-                    sprintf(_('New Icinga Editor account: %s'),
-                        $oUser->getDataValue('login')));
+            $email = new HtmlMailer(constant('SEND_MAILS_FROM'),
+                sprintf(_('New Icinga Editor account: %s'),
+                    $oUser->getDataValue('login')));
             $email->setMailHeaders(['From' => constant('SEND_MAILS_FROM')]);
-            $email->addItem(new \Ease\Html\DivTag(_("New User:\n")));
-            $email->addItem(new \Ease\Html\DivTag(
+            $email->addItem(new DivTag(_("New User:\n")));
+            $email->addItem(new DivTag(
                     ' Login: '.$oUser->GetUserLogin()."\n", ['id' => 'login']));
             $email->send();
 
-           $oUser->loginSuccess();
+            $oUser->loginSuccess();
 
             $contact   = new Engine\Contact();
             $contact->setData(
@@ -183,19 +198,19 @@ if ($oPage->isPosted()) {
             $oUser->addStatusMessage(_('Error writing to database'), 'error');
             $email = $oPage->addItem(new EaseMail(constant('SEND_ORDERS_TO'),
                     'Sign on Failed'));
-            $email->addItem(new \Ease\Html\DivTag('Sign On',
+            $email->addItem(new DivTag('Sign On',
                     $oPage->PrintPre($oUser->getData())));
             $email->send();
         }
     }
 }
 
-$oPage->addItem(new UI\PageTop(_('Sign On')));
+$oPage->addItem(new PageTop(_('Sign On')));
 $oPage->addPageColumns();
 
-$oPage->columnI->addItem(new \Ease\Html\H2Tag(_('Wellcome')));
+$oPage->columnI->addItem(new H2Tag(_('Wellcome')));
 $oPage->columnI->addItem(
-    new \Ease\Html\UlTag(
+    new UlTag(
         [
         _('After registering, you will be prompted to enter straight first host.'),
         _('All notifications target to your email'),
@@ -204,33 +219,31 @@ $oPage->columnI->addItem(
     )
 );
 
-$regFace = $oPage->columnII->addItem(new \Ease\Html\DivTag());
+$regFace = $oPage->columnII->addItem(new DivTag());
 
-$regForm = $regFace->addItem(new \Ease\TWB\Form('create_account',
-        'createaccount.php', 'POST', null, ['class' => 'form-horizontal']));
+$regForm = $regFace->addItem(new Form('create_account', 'createaccount.php',
+        'POST', null, ['class' => 'form-horizontal']));
 if ($oUser->getMyKey()) {
-    $regForm->addItem(new \Ease\Html\InputHiddenTag('u_parent',
-            $oUser->getMyKey()));
+    $regForm->addItem(new InputHiddenTag('u_parent', $oUser->getMyKey()));
 }
 
-$regForm->addItem(new \Ease\Html\H3Tag(_('Account')));
+$regForm->addItem(new H3Tag(_('Account')));
 
 $regForm->addInput(
-    new \Ease\Html\InputTextTag('login', $login), _('Login name'), null,
+    new InputTextTag('login', $login), _('Login name'), null, _('Requied'));
+
+$regForm->addInput(
+    new InputTextTag('email_address', $email_address, ['type' => 'email']),
+    _('Email Address'));
+
+$regForm->addInput(
+    new InputPasswordTag('password', $password), _('Password'), null,
     _('Requied'));
-
-$regForm->addInput(
-    new \Ease\Html\InputTextTag('email_address', $email_address,
-        ['type' => 'email']), _('Email Address'));
-
-$regForm->addInput(
-    new \Ease\Html\InputPasswordTag('password', $password), _('Password'), null,
-    _('Requied'));
-$regForm->addInput(
-    new \Ease\Html\InputPasswordTag('confirmation', $confirmation),
-    _('Password confirm'), null, _('Requied'));
-$regForm->addItem(new \Ease\Html\DivTag(
-        new \Ease\Html\InputSubmitTag('Register', _('Singn On'),
+$regForm->addInput( 
+    new InputPasswordTag('confirmation', $confirmation), _('Password confirm'),
+    null, _('Requied'));
+$regForm->addItem(new DivTag(
+        new InputSubmitTag('Register', _('Singn On'),
             ['title' => _('Finish'), 'class' => 'btn btn-success'])));
 
 if (isset($_POST)) {

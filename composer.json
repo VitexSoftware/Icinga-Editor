@@ -13,7 +13,8 @@
     "require": {
         "vitexsoftware/ease-twbootstrap": "dev-master",
         "league/commonmark": "^0.15",
-        "vitexsoftware/ease-fluentpdo": "dev-master"
+        "vitexsoftware/ease-fluentpdo": "dev-master",
+        "vitexsoftware/ease-core": "dev-master"
     },
     "autoload": {
         "psr-4": {
