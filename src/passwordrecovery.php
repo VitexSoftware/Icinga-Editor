@@ -3,7 +3,7 @@
 namespace Icinga\Editor;
 
 /**
- * Reset hesla
+ * Reset hesl
  *
  * @package    IcingaEditor
  * @subpackage WebUI
@@ -29,13 +29,12 @@ if ($emailTo) {
     $oUser = new User();
     $userFound = $oUser->listingQuery()->where('email',addslashes( $emailTo))->fetch();
     
-    if (count($userFound)) {
+    if (!empty($userFound)) {
         $userID      = intval($userFound['id']);
         $userLogin   = $userFound['login'];
         $newPassword = \Ease\Functions::randomString(8);
 
-        $passChanger = new User($userID);
-        $passChanger->passwordChange($newPassword);
+        $oUser->passwordChange($newPassword,$userID);  
 
         $email = $oPage->addItem(new \Ease\HtmlMailer($emailTo,
                 _('Icinga Editor').' - '.sprintf(_('New password for %s'),

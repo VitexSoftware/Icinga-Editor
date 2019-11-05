@@ -15,5 +15,8 @@ require_once '../vendor/autoload.php';
 
 session_start();
 
-$oUser = \Ease\Shared::User();
+
+$oUser = \Ease\Shared::user('\Icinga\Editor\User');
+User::singleton( $oUser ) ;
+
 $oPage = new UI\WebPage();

@@ -25,9 +25,9 @@ require_once 'includes/IEInit.php';
 $process = false;
 
 $email_address = $oPage->getPostValue('email_address');
-$login         = $oPage->getPostValue('login');
-$password      = $oPage->getPostValue('password');
-$confirmation  = $oPage->getPostValue('confirmation');
+$login = $oPage->getPostValue('login');
+$password = $oPage->getPostValue('password');
+$confirmation = $oPage->getPostValue('confirmation');
 
 
 if ($oPage->isPosted()) {
@@ -41,14 +41,6 @@ if ($oPage->isPosted()) {
     } else {
         $customerParent = $oUser->getUserID();
     }
-    $login = addslashes($_POST['login']);
-    if (isset($_POST['password'])) {
-        $password = addslashes($_POST['password']);
-    }
-    if (isset($_POST['confirmation'])) {
-        $confirmation = addslashes($_POST['confirmation']);
-    }
-
     $error = false;
 
     if (strlen($emailAddress) < 5) {
@@ -59,14 +51,13 @@ if ($oPage->isPosted()) {
             $error = true;
             $oUser->addStatusMessage(_('invalid email address'), 'warning');
         } else {
-            $oUser       = new User();
             $check_email = $oUser->listingQuery()->where('email',
-                    addslashes($emailAddress))->fetch();
+                            addslashes($emailAddress))->fetch();
 
             if (!empty($check_email)) {
                 $error = true;
                 $oUser->addStatusMessage(sprintf(_('Mail address %s is allready registered'),
-                        $emailAddress), 'warning');
+                                $emailAddress), 'warning');
             }
         }
     }
@@ -80,22 +71,22 @@ if ($oPage->isPosted()) {
     }
 
     $usedLogin = $oUser->listingQuery()->where($oUser->loginColumn,
-            addslashes($login))->fetch();
+                    addslashes($login))->fetch();
     if (!empty($usedLogin)) {
         $error = true;
         $oUser->addStatusMessage(sprintf(_('Username %s is used. Please choose another one'),
-                $login), 'warning');
+                        $login), 'warning');
     }
 
     if ($error == false) {
 
         $oUser->setData(
-            [
-                'email' => $emailAddress,
-                'parent' => (int) $customerParent,
-                'login' => $login,
-                'password' => User::encryptPassword($password)
-            ]
+                [
+                    'email' => $emailAddress,
+                    'parent' => (int) $customerParent,
+                    'login' => $login,
+                    'password' => User::encryptPassword($password)
+                ]
         );
 
         $userID = $oUser->insertToSQL();
@@ -107,87 +98,87 @@ if ($oPage->isPosted()) {
             if ($userID == 1) {
                 $oUser->setSettingValue('admin', true);
                 $oUser->addStatusMessage(_('Admin prvileges assigned'),
-                    'success');
+                        'success');
                 $oUser->saveToSQL();
             } else {
                 $oUser->addStatusMessage(_('User account created'), 'success');
             }
 
-            system('sudo htpasswd -b /etc/icinga/htpasswd.users '.$oUser->getUserLogin().' '.$password);
+            system('sudo htpasswd -b /etc/icinga/htpasswd.users ' . $oUser->getUserLogin() . ' ' . $password);
 
             $email = new HtmlMailer($oUser->getDataValue('email'),
-                _('Sign On info'));
+                    _('Sign On info'));
             $email->setMailHeaders(['From' => constant('SEND_MAILS_FROM')]);
-            $email->addItem(new DivTag(_('Icinga Editor Account')."\n"));
-            $email->addItem(new DivTag(' Login: '.$oUser->GetUserLogin()."\n"));
-            $email->addItem(new DivTag(' Password: '.$_POST['password']."\n"));
+            $email->addItem(new DivTag(_('Icinga Editor Account') . "\n"));
+            $email->addItem(new DivTag(' Login: ' . $oUser->GetUserLogin() . "\n"));
+            $email->addItem(new DivTag(' Password: ' . $_POST['password'] . "\n"));
             $email->send();
 
             $email = new HtmlMailer(constant('SEND_MAILS_FROM'),
-                sprintf(_('New Icinga Editor account: %s'),
-                    $oUser->getDataValue('login')));
+                    sprintf(_('New Icinga Editor account: %s'),
+                            $oUser->getDataValue('login')));
             $email->setMailHeaders(['From' => constant('SEND_MAILS_FROM')]);
             $email->addItem(new DivTag(_("New User:\n")));
             $email->addItem(new DivTag(
-                    ' Login: '.$oUser->GetUserLogin()."\n", ['id' => 'login']));
+                            ' Login: ' . $oUser->GetUserLogin() . "\n", ['id' => 'login']));
             $email->send();
 
             $oUser->loginSuccess();
 
-            $contact   = new Engine\Contact();
+            $contact = new Engine\Contact();
             $contact->setData(
-                [
-                    'contact_name' => $login,
-                    'use' => 'generic-contact',
-                    $contact->userColumn => $userID,
-                    'generate' => true,
-                    'host_notifications_enabled' => true,
-                    'service_notifications_enabled' => true,
-                    'host_notification_period' => '24x7',
-                    'service_notification_period' => '24x7',
-                    'service_notification_options' => ' w,u,c,r',
-                    'host_notification_options' => 'd,u,r',
-                    'service_notification_commands' => 'notify-service-by-email',
-                    'host_notification_commands' => 'notify-host-by-email',
-                    'register' => 1]
+                    [
+                        'contact_name' => $login,
+                        'use' => 'generic-contact',
+                        $contact->userColumn => $userID,
+                        'generate' => true,
+                        'host_notifications_enabled' => true,
+                        'service_notifications_enabled' => true,
+                        'host_notification_period' => '24x7',
+                        'service_notification_period' => '24x7',
+                        'service_notification_options' => ' w,u,c,r',
+                        'host_notification_options' => 'd,u,r',
+                        'service_notification_commands' => 'notify-service-by-email',
+                        'host_notification_commands' => 'notify-host-by-email',
+                        'register' => 1]
             );
             $contactID = $contact->saveToSQL();
             if ($contactID) {
                 $oUser->addStatusMessage(_('Initial contact was created'),
-                    'success');
+                        'success');
             } else {
                 $oUser->addStatusMessage(_('Initial contact was not created'),
-                    'warning');
+                        'warning');
             }
 
             $mailID = $contact->fork(['email' => $emailAddress]);
             if ($mailID) {
                 $oUser->addStatusMessage(_('email contact was created'),
-                    'success');
+                        'success');
             } else {
                 $oUser->addStatusMessage(_('email contact was not created'),
-                    'warning');
+                        'warning');
             }
 
             $contactGroup = new Engine\Contactgroup();
-            $contactGroup->setData(['contactgroup_name' => _('Group').'_'.$login,
-                'alias' => _('Group').'_'.$login, 'generate' => true, $contactGroup->userColumn => $userID]);
+            $contactGroup->setData(['contactgroup_name' => _('Group') . '_' . $login,
+                'alias' => _('Group') . '_' . $login, 'generate' => true, $contactGroup->userColumn => $userID]);
             $contactGroup->addMember('members', $contactID, $login);
             $contactGroup->addMember('members', $mailID, $contact->getName());
-            $cgID         = $contactGroup->saveToSQL();
+            $cgID = $contactGroup->saveToSQL();
 
             if ($cgID) {
                 $oUser->addStatusMessage(_('Initial contact group was created'),
-                    'success');
+                        'success');
             } else {
                 $oUser->addStatusMessage(_('Initial contact group was not created'),
-                    'warning');
+                        'warning');
             }
 
             $hostGroup = new Engine\Hostgroup;
             $hostGroup->setName($oUser->getUserLogin());
             $hostGroup->setDataValue('alias',
-                _('Initial Group').' '.$oUser->getUserLogin());
+                    _('Initial Group') . ' ' . $oUser->getUserLogin());
             $hostGroup->setDataValue('generate', true);
             $hostGroup->setUpUser($oUser);
             $hostGroup->insertToSQL();
@@ -197,9 +188,9 @@ if ($oPage->isPosted()) {
         } else {
             $oUser->addStatusMessage(_('Error writing to database'), 'error');
             $email = $oPage->addItem(new EaseMail(constant('SEND_ORDERS_TO'),
-                    'Sign on Failed'));
+                            'Sign on Failed'));
             $email->addItem(new DivTag('Sign On',
-                    $oPage->PrintPre($oUser->getData())));
+                            $oPage->PrintPre($oUser->getData())));
             $email->send();
         }
     }
@@ -210,19 +201,19 @@ $oPage->addPageColumns();
 
 $oPage->columnI->addItem(new H2Tag(_('Wellcome')));
 $oPage->columnI->addItem(
-    new UlTag(
-        [
-        _('After registering, you will be prompted to enter straight first host.'),
-        _('All notifications target to your email'),
-        _('For XMPP (jabber) or SMS, add this on Contact edit page.')
-        ]
-    )
+        new UlTag(
+                [
+            _('After registering, you will be prompted to enter straight first host.'),
+            _('All notifications target to your email'),
+            _('For XMPP (jabber) or SMS, add this on Contact edit page.')
+                ]
+        )
 );
 
 $regFace = $oPage->columnII->addItem(new DivTag());
 
 $regForm = $regFace->addItem(new Form('create_account', 'createaccount.php',
-        'POST', null, ['class' => 'form-horizontal']));
+                'POST', null, ['class' => 'form-horizontal']));
 if ($oUser->getMyKey()) {
     $regForm->addItem(new InputHiddenTag('u_parent', $oUser->getMyKey()));
 }
@@ -230,21 +221,21 @@ if ($oUser->getMyKey()) {
 $regForm->addItem(new H3Tag(_('Account')));
 
 $regForm->addInput(
-    new InputTextTag('login', $login), _('Login name'), null, _('Requied'));
+        new InputTextTag('login', $login), _('Login name'), null, _('Requied'));
 
 $regForm->addInput(
-    new InputTextTag('email_address', $email_address, ['type' => 'email']),
-    _('Email Address'));
+        new InputTextTag('email_address', $email_address, ['type' => 'email']),
+        _('Email Address'));
 
 $regForm->addInput(
-    new InputPasswordTag('password', $password), _('Password'), null,
-    _('Requied'));
-$regForm->addInput( 
-    new InputPasswordTag('confirmation', $confirmation), _('Password confirm'),
-    null, _('Requied'));
+        new InputPasswordTag('password', $password), _('Password'), null,
+        _('Requied'));
+$regForm->addInput(
+        new InputPasswordTag('confirmation', $confirmation), _('Password confirm'),
+        null, _('Requied'));
 $regForm->addItem(new DivTag(
-        new InputSubmitTag('Register', _('Singn On'),
-            ['title' => _('Finish'), 'class' => 'btn btn-success'])));
+                new InputSubmitTag('Register', _('Singn On'),
+                        ['title' => _('Finish'), 'class' => 'btn btn-success'])));
 
 if (isset($_POST)) {
     $regForm->fillUp($_POST);

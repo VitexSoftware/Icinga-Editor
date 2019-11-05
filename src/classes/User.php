@@ -5,8 +5,8 @@ namespace Icinga\Editor;
 /**
  * Icinga Editor user
  */
-class User extends \Ease\SQL\Engine
-{
+class User extends \Ease\SQL\Engine {
+
     /**
      * Tabulka uživatelů
      * @var string
@@ -86,16 +86,28 @@ class User extends \Ease\SQL\Engine
      */
     public $keyword = 'user';
 
-    public function __construct($userID = null)
-    {
+    /**
+     *
+     * @var self 
+     */
+    private static $instance = null;
+
+    /**
+     * 
+     * @param int $userID
+     */
+    public function __construct($userID = null) {
         parent::__construct($userID, \Ease\Shared::singleton()->configuration);
         if (!empty($userID)) {
-            $userDataRaw = $this->listingQuery()->where(is_numeric($userID) ? 'id'
-                    : $this->loginColumn, $userID);
+            $userDataRaw = $this->listingQuery()->where(is_numeric($userID) ? 'id' : $this->loginColumn, $userID);
             foreach ($userDataRaw as $userData) {
                 $this->takeData($userData);
             }
         }
+    }
+
+    public function getUserID() {
+        return $this->getMyKey();
     }
 
     /**
@@ -103,9 +115,8 @@ class User extends \Ease\SQL\Engine
      *
      * @return string
      */
-    public function getIcon()
-    {
-        $icon = $this->GetSettingValue('icon');
+    public function getIcon() {
+        $icon = $this->getSettingValue('icon');
         if (is_null($icon)) {
             return parent::getIcon();
         } else {
@@ -119,12 +130,11 @@ class User extends \Ease\SQL\Engine
      * @param array $data
      * @return array
      */
-    public function takeData($data)
-    {
+    public function takeData($data) {
         foreach ($data as $key => $value) {
             if (strstr($key, 'admin-')) {
                 $this->setSettingValue('admin',
-                    ($value === 'true') ? true : false );
+                        ($value === 'true') ? true : false );
                 unset($data[$key]);
             }
         }
@@ -134,12 +144,11 @@ class User extends \Ease\SQL\Engine
     /**
      * Obtain first contact for user
      */
-    public function getFirstContact()
-    {
+    public function getFirstContact() {
         $contact = new Engine\Contact();
-        $cn      = $contact->getColumnsFromSQL([$contact->nameColumn, $contact->keyColumn],
-            [$contact->userColumn => $this->getUserID(), 'parent_id' => 'IS NOT NULL'],
-            $contact->keyColumn, $contact->nameColumn, 1);
+        $cn = $contact->getColumnsFromSQL([$contact->nameColumn, $contact->keyColumn],
+                [$contact->userColumn => $this->getUserID(), 'parent_id' => 'IS NOT NULL'],
+                $contact->keyColumn, $contact->nameColumn, 1);
         if (count($cn)) {
             $curcnt = current($cn);
 
@@ -152,17 +161,15 @@ class User extends \Ease\SQL\Engine
     /**
      * Obtain default user contact
      */
-    public function getDefaultContact()
-    {
-        return new Engine\Contact($this->getDataValue($this->loginColumn).' email');
+    public function getDefaultContact() {
+        return new Engine\Contact($this->getDataValue($this->loginColumn) . ' email');
     }
 
     /**
      * Obtain actual record ID
      * @return int
      */
-    public function getId()
-    {
+    public function getId() {
         return (int) $this->getMyKey();
     }
 
@@ -177,33 +184,32 @@ class User extends \Ease\SQL\Engine
      *
      * @return boolean password change result
      */
-    public function passwordChange($newPassword, $userID = null)
-    {
-        $query = $this->getFluentPDO()->update($this->getMyTable())->set(['password' => $newPassword])->where('id',
-                $userID)->execute();
+    public function passwordChange($newPassword, $userID = null) {
+        $query = $this->getFluentPDO()->update($this->getMyTable())->set(['password' => $this->encryptPassword($newPassword)])->where('id',
+                        $userID ? $userID : $this->getUserID())->execute();
 
         if ($query) {
 
-            system('sudo htpasswd -b /etc/icinga/htpasswd.users '.$this->getUserLogin().' '.$newPassword);
+            system('sudo htpasswd -b /etc/icinga/htpasswd.users ' . $this->getUserLogin() . ' ' . $newPassword);
             if (defined('DB_IW_SERVER_PASSWORD')) {
                 $mysqli = new \mysqli(DB_SERVER_HOST, DB_IW_SERVER_USERNAME,
-                    DB_IW_SERVER_PASSWORD, DB_IW_DATABASE);
+                        DB_IW_SERVER_PASSWORD, DB_IW_DATABASE);
                 if ($mysqli->connect_errno) {
-                    $this->addStatusMessage("Failed to connect to MySQL: (".$mysqli->connect_errno.") ".$mysqli->connect_error,
-                        'error');
+                    $this->addStatusMessage("Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error,
+                            'error');
                 }
 
-                $salt      = hash("sha256",
-                    uniqid($this->getUserLogin().'_', mt_rand()));
-                $pwhash    = hash_hmac("sha256", $newPassword, $salt);
-                $pwchquery = "UPDATE nsm_user SET user_password='".$this->dblink->addSlashes($pwhash)."', user_salt = '".$this->dblink->addSlashes($salt)."', user_modified = NOW() WHERE user_name = '".$this->getUserLogin()."';";
+                $salt = hash("sha256",
+                        uniqid($this->getUserLogin() . '_', mt_rand()));
+                $pwhash = hash_hmac("sha256", $newPassword, $salt);
+                $pwchquery = "UPDATE nsm_user SET user_password='" . $this->dblink->addSlashes($pwhash) . "', user_salt = '" . $this->dblink->addSlashes($salt) . "', user_modified = NOW() WHERE user_name = '" . $this->getUserLogin() . "';";
 
                 if ($mysqli->query($pwchquery)) {
                     $this->addStatusMessage(_('Password for Icinga Web also changed'),
-                        'success');
+                            'success');
                 } else {
                     $this->addStatusMessage(_('Password for icinga change error'),
-                        'warning');
+                            'warning');
                 }
                 $mysqli->close();
             }
@@ -222,8 +228,7 @@ class User extends \Ease\SQL\Engine
      * @param array $data
      * @return int new user id
      */
-    function insertToSQL($data = null)
-    {
+    function insertToSQL($data = null) {
         if (is_null($data)) {
             $data = $this->getData();
         }
@@ -231,15 +236,15 @@ class User extends \Ease\SQL\Engine
 
         if (defined('DB_IW_SERVER_PASSWORD')) {
             $mysqli = new \mysqli(DB_SERVER_HOST, DB_IW_SERVER_USERNAME,
-                DB_IW_SERVER_PASSWORD, DB_IW_DATABASE);
+                    DB_IW_SERVER_PASSWORD, DB_IW_DATABASE);
             if ($mysqli->connect_errno) {
-                $this->addStatusMessage("Failed to connect to MySQL: (".$mysqli->connect_errno.") ".$mysqli->connect_error,
-                    'error');
+                $this->addStatusMessage("Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error,
+                        'error');
             }
 
             $nuquery = "INSERT INTO nsm_user "
-                ."(user_account, user_authsrc, user_disabled, user_name,  user_lastname, user_firstname, user_email,       user_password, user_salt, user_description, user_created, user_modified) VALUES "
-                ."('0',         'internal',   '0',           '".$data[$this->loginColumn]."', '".$data['firstname']."',    '".$data['lastname']."',     '".$data['email']."', '1',           '1',       '".$data[$this->loginColumn]."',       NOW(),         NOW())";
+                    . "(user_account, user_authsrc, user_disabled, user_name,  user_lastname, user_firstname, user_email,       user_password, user_salt, user_description, user_created, user_modified) VALUES "
+                    . "('0',         'internal',   '0',           '" . $data[$this->loginColumn] . "', '" . $data['firstname'] . "',    '" . $data['lastname'] . "',     '" . $data['email'] . "', '1',           '1',       '" . $data[$this->loginColumn] . "',       NOW(),         NOW())";
 
             if ($mysqli->query($nuquery)) {
                 $iewuser_id = $mysqli->insert_id;
@@ -266,24 +271,24 @@ class User extends \Ease\SQL\Engine
                   DELETE FROM nsm_principal_target WHERE pt_id = '223'
                  */
 
-                $targetHostgroup_id     = $this->_targetId('IcingaHostgroup',
-                    $mysqli);
+                $targetHostgroup_id = $this->_targetId('IcingaHostgroup',
+                        $mysqli);
                 $mysqli->query("INSERT INTO nsm_principal_target (pt_principal_id, pt_target_id) VALUES ('$pt_principal_id', '$targetHostgroup_id')");
                 $hostgroup_principal_id = $mysqli->insert_id;
-                $mysqli->query("INSERT INTO nsm_target_value (tv_key, tv_val, tv_pt_id) VALUES ('hostgroup', '".$this->getUserLogin()."', '$hostgroup_principal_id')");
-                $icingauser_id          = $this->_targetId('icinga.user',
-                    $mysqli);
+                $mysqli->query("INSERT INTO nsm_target_value (tv_key, tv_val, tv_pt_id) VALUES ('hostgroup', '" . $this->getUserLogin() . "', '$hostgroup_principal_id')");
+                $icingauser_id = $this->_targetId('icinga.user',
+                        $mysqli);
                 $mysqli->query("INSERT INTO nsm_principal_target (pt_principal_id, pt_target_id) VALUES ('$pt_principal_id', '$icingauser_id')");
-                $appkituserdummy_id     = $this->_targetId('appkit.user.dummy',
-                    $mysqli);
+                $appkituserdummy_id = $this->_targetId('appkit.user.dummy',
+                        $mysqli);
                 $mysqli->query("INSERT INTO nsm_principal_target (pt_principal_id, pt_target_id) VALUES ('$pt_principal_id', '$appkituserdummy_id')");
 
 
                 $this->addStatusMessage(_('Icinga Web user also created'),
-                    'success');
+                        'success');
             } else {
                 $this->addStatusMessage(_('Icinga Web user not created'),
-                    'warning');
+                        'warning');
             }
             $mysqli->close();
         }
@@ -298,10 +303,9 @@ class User extends \Ease\SQL\Engine
      * @param resource $mysqli
      * @return array
      */
-    private function _getPrincipals($pt_principal_id, $mysqli)
-    {
+    private function _getPrincipals($pt_principal_id, $mysqli) {
         $principals = [];
-        $result     = $mysqli->query("SELECT n.pt_id AS n__pt_id, n.pt_target_id AS n__pt_target_id FROM nsm_principal_target n WHERE (n.pt_principal_id IN ('$pt_principal_id'))");
+        $result = $mysqli->query("SELECT n.pt_id AS n__pt_id, n.pt_target_id AS n__pt_target_id FROM nsm_principal_target n WHERE (n.pt_principal_id IN ('$pt_principal_id'))");
         if ($result) {
             while ($row = $result->fetch_object()) {
                 $principals[$row['n__pt_id']] = $row['n__pt_target_id'];
@@ -310,10 +314,9 @@ class User extends \Ease\SQL\Engine
         return $principals;
     }
 
-    private function _targetId($target_name, $mysqli)
-    {
+    private function _targetId($target_name, $mysqli) {
         $target_id = null;
-        $result    = $mysqli->query("SELECT n.target_id AS n__target_id FROM nsm_target n WHERE (n.target_name = '$target_name') LIMIT 1");
+        $result = $mysqli->query("SELECT n.target_id AS n__target_id FROM nsm_target n WHERE (n.target_name = '$target_name') LIMIT 1");
         if ($result) {
             $row = $result->fetch_object();
             if ($row) {
@@ -323,10 +326,9 @@ class User extends \Ease\SQL\Engine
         return $target_id;
     }
 
-    private function _user_principalId($user_id, $mysqli)
-    {
+    private function _user_principalId($user_id, $mysqli) {
         $target_id = null;
-        $result    = $mysqli->query("SELECT n.principal_id AS n__principal_id FROM nsm_principal n WHERE (n.principal_user_id = '$user_id')");
+        $result = $mysqli->query("SELECT n.principal_id AS n__principal_id FROM nsm_principal n WHERE (n.principal_user_id = '$user_id')");
         if ($result) {
             $row = $result->fetch_object();
             if ($row) {
@@ -343,17 +345,16 @@ class User extends \Ease\SQL\Engine
      * @param  string                     $urlAdd URL part to add
      * @return \EaseJQConfirmedLinkButton
      */
-    public function deleteButton($name = null, $urlAdd = '')
-    {
+    public function deleteButton($name = null, $urlAdd = '') {
 
-        \Ease\Shared::webPage()->addItem(new UI\ConfirmationDialog('delete'.$this->getId(),
-                '?user_id='.$this->getID().'&delete=true'.'&'.$urlAdd,
-                _('Delete').' '.$name,
-                sprintf(_('Are you sure to delete %s ?'),
-                    '<strong>'.$this->getUserName().'</strong>')));
+        \Ease\Shared::webPage()->addItem(new UI\ConfirmationDialog('delete' . $this->getId(),
+                        '?user_id=' . $this->getID() . '&delete=true' . '&' . $urlAdd,
+                        _('Delete') . ' ' . $name,
+                        sprintf(_('Are you sure to delete %s ?'),
+                                '<strong>' . $this->getUserName() . '</strong>')));
         return new \Ease\Html\ButtonTag(
-            [\Ease\TWB\Part::GlyphIcon('remove'), _('Delete').' '.$this->keyword.' '.$this->getUserName()],
-            ['style' => 'cursor: default', 'class' => 'btn btn-danger', 'id' => 'triggerdelete'.$this->getId(),
+                [\Ease\TWB\Part::GlyphIcon('remove'), _('Delete') . ' ' . $this->keyword . ' ' . $this->getUserName()],
+                ['style' => 'cursor: default', 'class' => 'btn btn-danger', 'id' => 'triggerdelete' . $this->getId(),
             'data-id' => $this->getId()
         ]);
     }
@@ -364,8 +365,7 @@ class User extends \Ease\SQL\Engine
      * @param int $id
      * @return boolean
      */
-    public function delete($id = null)
-    {
+    public function delete($id = null) {
         if (is_null($id)) {
             $id = $this->getId();
         }
@@ -379,7 +379,7 @@ class User extends \Ease\SQL\Engine
         $userGroup->delUser($id);
 
 
-        $command   = new Engine\Command();
+        $command = new Engine\Command();
         $myCommand = $command->getOwned($id);
         if ($myCommand) {
             foreach ($myCommand as $command_id => $cmd) {
@@ -388,7 +388,7 @@ class User extends \Ease\SQL\Engine
             }
         }
 
-        $contact   = new Engine\Contact();
+        $contact = new Engine\Contact();
         $myContact = $contact->getOwned($id);
         if ($myContact) {
             foreach ($myContact as $contact_id => $cmd) {
@@ -399,7 +399,7 @@ class User extends \Ease\SQL\Engine
         }
 
 
-        $contactgroup   = new Engine\Contactgroup();
+        $contactgroup = new Engine\Contactgroup();
         $myContactgroup = $contactgroup->getOwned($id);
         if ($myContactgroup) {
             foreach ($myContactgroup as $contactgroup_id => $cmd) {
@@ -409,7 +409,7 @@ class User extends \Ease\SQL\Engine
         }
 
 
-        $hostgroup   = new Engine\Hostgroup();
+        $hostgroup = new Engine\Hostgroup();
         $myHostgroup = $hostgroup->getOwned($id);
         if ($myHostgroup) {
             foreach ($myHostgroup as $hostgroup_id => $cmd) {
@@ -418,7 +418,7 @@ class User extends \Ease\SQL\Engine
             }
         }
 
-        $host   = new Engine\Host();
+        $host = new Engine\Host();
         $myHost = $host->getOwned($id);
         if ($myHost) {
             foreach ($myHost as $host_id => $cmd) {
@@ -427,7 +427,7 @@ class User extends \Ease\SQL\Engine
             }
         }
 
-        $servicegroup   = new Engine\Servicegroup();
+        $servicegroup = new Engine\Servicegroup();
         $myServicegroup = $servicegroup->getOwned($id);
         if ($myServicegroup) {
             foreach ($myServicegroup as $servicegroup_id => $cmd) {
@@ -436,7 +436,7 @@ class User extends \Ease\SQL\Engine
             }
         }
 
-        $service   = new Engine\Service();
+        $service = new Engine\Service();
         $myService = $service->getOwned($id);
         if ($myService) {
             foreach ($myService as $service_id => $cmd) {
@@ -445,7 +445,7 @@ class User extends \Ease\SQL\Engine
             }
         }
 
-        $timeperiod   = new Engine\Timeperiod();
+        $timeperiod = new Engine\Timeperiod();
         $myTimeperiod = $timeperiod->getOwned($id);
         if ($myTimeperiod) {
             foreach ($myTimeperiod as $timeperiod_id => $cmd) {
@@ -455,27 +455,27 @@ class User extends \Ease\SQL\Engine
         }
 
 
-        $cfgfile = constant('CFG_GENERATED').'/'.$this->getUserLogin().'.cfg';
+        $cfgfile = constant('CFG_GENERATED') . '/' . $this->getUserLogin() . '.cfg';
         if (file_exists($cfgfile)) {
             if (unlink($cfgfile)) {
                 $this->addStatusMessage(sprintf(_('Configuration for %s was deleted'),
-                        $this->getUserLogin()), 'success');
+                                $this->getUserLogin()), 'success');
             } else {
                 $this->addStatusMessage(sprintf(_('Confinguration for %s was not deleted'),
-                        $this->getUserLogin()), 'error');
+                                $this->getUserLogin()), 'error');
             }
         }
 
         if ($this->deleteFromSQL($this->getUserID())) {
 
             $this->addStatusMessage(sprintf(_('User %s was deleted'),
-                    $this->getUserLogin()));
+                            $this->getUserLogin()));
 
             $email = new \Ease\Mailer($this->getDataValue('email'),
-                _('Account canceled'));
+                    _('Account canceled'));
             $email->setMailHeaders(['From' => EMAIL_FROM]);
-            $email->addItem(new \Ease\Html\DivTag(_("You were removed from IcingaEditor:")."\n"));
-            $email->addItem(new \Ease\Html\DivTag(' Login: '.$this->GetUserLogin()."\n"));
+            $email->addItem(new \Ease\Html\DivTag(_("You were removed from IcingaEditor:") . "\n"));
+            $email->addItem(new \Ease\Html\DivTag(' Login: ' . $this->GetUserLogin() . "\n"));
 
             $email->send();
 
@@ -491,9 +491,8 @@ class User extends \Ease\SQL\Engine
      *
      * @return string
      */
-    public function getUserName()
-    {
-        $longname = trim($this->getDataValue('firstname').' '.$this->getDataValue('lastname'));
+    public function getUserName() {
+        $longname = trim($this->getDataValue('firstname') . ' ' . $this->getDataValue('lastname'));
         if (strlen($longname)) {
             return $longname;
         } else {
@@ -501,8 +500,7 @@ class User extends \Ease\SQL\Engine
         }
     }
 
-    function getEmail()
-    {
+    function getEmail() {
         return $this->getDataValue('email');
     }
 
@@ -512,8 +510,7 @@ class User extends \Ease\SQL\Engine
      * @param  string $columnName
      * @return string
      */
-    function getColumnType($columnName)
-    {
+    function getColumnType($columnName) {
         return 'string';
     }
 
@@ -522,15 +519,13 @@ class User extends \Ease\SQL\Engine
      * 
      * @return boolean
      */
-    public function isAdmin()
-    {
+    public function isAdmin() {
         return $this->getSettingValue('admin') === true;
     }
 
-    function authentize()
-    {
+    function authentize() {
 
-        $login    = $this->getDataValue($this->loginColumn);
+        $login = $this->getDataValue($this->loginColumn);
         $password = $this->getDataValue($this->passwordColumn);
 
         foreach ($this->listingQuery()->where($this->loginColumn, $login) as $candidatRaw) {
@@ -544,19 +539,18 @@ class User extends \Ease\SQL\Engine
      * 
      * @return boolean
      */
-    public function loginSuccess()
-    {
+    public function loginSuccess() {
+        $this->setObjectName();
+        $this->setkeyColumn('id');
         $this->userID = (int) $this->getMyKey();
         $this->logged = true;
         $this->addStatusMessage(sprintf(_('Sign in %s all ok'), $this->userLogin),
-            'success');
-        $this->setObjectName();
+                'success');
         \Ease\Shared::user($this);
         return true;
     }
 
-    public function getUserLogin()
-    {
+    public function getUserLogin() {
         return $this->getDataValue($this->loginColumn);
     }
 
@@ -564,8 +558,7 @@ class User extends \Ease\SQL\Engine
      * 
      * @return \Envms\FluentPDO
      */
-    public function listingQuery()
-    {
+    public function listingQuery() {
         return $this->getFluentPDO()->from($this->myTable);
     }
 
@@ -574,13 +567,158 @@ class User extends \Ease\SQL\Engine
      * 
      * @return \Ease\User
      */
-    public static function singleton($user = null)
-    {
+    public static function singleton($user = null) {
         if (is_null($user) && !isset(self::$instance)) {
-            self::$instance = is_null($user) ? new self() : $user;
+            self::$instance = new self();
         } else {
             self::$instance = $user;
         }
         return self::$instance;
     }
+
+    /**
+     * Pokusí se o přihlášení.
+     * Try to Sign in.
+     *
+     * @param array $formData pole dat z přihlaš. formuláře např. $_REQUEST
+     *
+     * @return null|boolean
+     */
+    public function tryToLogin($formData) {
+        if (!count($formData)) {
+            return;
+        }
+        $login = addslashes($formData[$this->loginColumn]);
+        $password = addslashes($formData[$this->passwordColumn]);
+        if (!$login) {
+            $this->addStatusMessage(_('missing login'), 'error');
+
+            return;
+        }
+        if (!$password) {
+            $this->addStatusMessage(_('missing password'), 'error');
+
+            return;
+        }
+        $this->setkeyColumn($this->loginColumn);
+        if ($this->loadFromSQL($login)) {
+            if ($this->passwordValidation($password,
+                            $this->getDataValue($this->passwordColumn))) {
+                if ($this->isAccountEnabled()) {
+                    return $this->loginSuccess();
+                } else {
+                    $this->userID = null;
+
+                    return false;
+                }
+            } else {
+                $this->userID = null;
+                if (count($this->getData())) {
+                    $this->addStatusMessage(_('invalid password'), 'error');
+                }
+                $this->dataReset();
+
+                return false;
+            }
+        } else {
+            $this->addStatusMessage(sprintf(_('user %s does not exist'), $login,
+                            'error'));
+
+            return false;
+        }
+    }
+
+    /**
+     * Ověření hesla.
+     *
+     * @param string $plainPassword     heslo v nešifrované podobě
+     * @param string $encryptedPassword šifrovné heslo
+     *
+     * @return bool
+     */
+    public function passwordValidation($plainPassword, $encryptedPassword) {
+        if ($plainPassword && $encryptedPassword) {
+            $passwordStack = explode(':', $encryptedPassword);
+            if (sizeof($passwordStack) != 2) {
+                return false;
+            }
+            if (md5($passwordStack[1] . $plainPassword) == $passwordStack[0]) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Zašifruje heslo.
+     *
+     * @param string $plainTextPassword nešifrované heslo (plaintext)
+     *
+     * @return string Encrypted password
+     */
+    public function encryptPassword($plainTextPassword) {
+        $encryptedPassword = '';
+        for ($i = 0; $i < 10; ++$i) {
+            $encryptedPassword .= \Ease\Functions::randomNumber();
+        }
+        $passwordSalt = substr(md5($encryptedPassword), 0, 2);
+        $encryptedPassword = md5($passwordSalt . $plainTextPassword) . ':' . $passwordSalt;
+
+        return $encryptedPassword;
+    }
+
+    /**
+     * Je učet povolen ?
+     *
+     * @return bool
+     */
+    public function isAccountEnabled() {
+        if (is_null($this->disableColumn)) {
+            return true;
+        }
+        if ($this->getDataValue($this->disableColumn)) {
+            $this->addStatusMessage(_('Sign in denied by administrator'),
+                    'warning');
+
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Vrací hodnotu nastavení.
+     *
+     * @param string $settingName jméno nastavení
+     *
+     * @return mixed
+     */
+    public function getSettingValue($settingName = null) {
+        if (isset($this->settings[$settingName])) {
+            return $this->settings[$settingName];
+        } else {
+            return;
+        }
+    }
+
+    /**
+     * Nastavuje nastavení.
+     *
+     * @param array $settings asociativní pole nastavení
+     */
+    public function setSettings($settings) {
+        $this->settings = array_merge($this->settings, $settings);
+    }
+
+    /**
+     * Nastaví položku nastavení.
+     *
+     * @param string $settingName  klíčové slovo pro nastavení
+     * @param mixed  $settingValue hodnota nastavení
+     */
+    public function setSettingValue($settingName, $settingValue) {
+        $this->settings[$settingName] = $settingValue;
+    }
+
 }
