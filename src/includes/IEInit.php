@@ -14,9 +14,9 @@ require_once '../vendor/autoload.php';
 \Ease\Locale::singleton('UTF-8', '../locale','icinga-editor');
 
 session_start();
+ 
 
-
-$oUser = \Ease\Shared::user('\Icinga\Editor\User');
-User::singleton( $oUser ) ;
+$oUser = \Ease\Shared::user(null, '\Icinga\Editor\User');
+//User::singleton( $oUser ) ;
 
 $oPage = new UI\WebPage();

@@ -46,7 +46,7 @@ class WebPage extends \Ease\TWB\WebPage
     public function __construct($pageTitle = null)
     {
         parent::__construct($pageTitle);
-        $this->IncludeCss('css/default.css');
+        $this->includeCss('css/default.css');
         $this->head->addItem('<meta name="viewport" content="width=device-width, initial-scale=1.0">');
         $this->addCss('body {
                 padding-top: 60px;

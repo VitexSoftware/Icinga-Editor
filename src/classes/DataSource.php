@@ -67,9 +67,8 @@ class DataSource extends \Ease\Brick
     public function __construct($handledObejct, $fallBackUrl = null)
     {
         $this->handledObejct = $handledObejct;
-        parent::__construct();
         $this->setBackUrl($fallBackUrl);
-        $this->webPage       = \Ease\Shared::webPage();
+        $this->webPage       = UI\WebPage::singleton();
         $this->title         = $this->webPage->getRequestValue('title');
         if ($this->title) {
             $this->filename = preg_replace("/[^0-9^a-z^A-Z^_^.]/", "",
@@ -367,7 +366,7 @@ class DataSource extends \Ease\Brick
         if (is_null($queryRaw)) {
             $queryRaw = 'SELECT * FROM `'.$this->handledObejct->getMyTable().'`';
         }
-        switch (\Ease\Shared::webPage()->getRequestValue('export')) {
+        switch (\Ease\WebPage::getRequestValue('export')) {
             case 'csv':
                 $this->getCsv($queryRaw);
                 break;

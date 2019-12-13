@@ -2,12 +2,20 @@
 
 namespace Icinga\Editor\UI;
 
+use Ease\Html\ButtonTag;
+use Ease\Html\DivTag;
+use Ease\Html\InputTextTag;
+use Ease\Html\Span;
+use Ease\Shared;
+use Ease\TWB\Form;
+use Ease\WebPage;
+
 /**
  * Description of NavBarSearchBox
  *
  * @author vitex
  */
-class NavBarSearchBox extends \Ease\TWB\Form
+class NavBarSearchBox extends Form
 {
 
     /**
@@ -25,11 +33,11 @@ class NavBarSearchBox extends \Ease\TWB\Form
     {
         parent::__construct($formName, $formAction, $formMethod, $formContents,
             $tagProperties);
-        $term = \Ease\Shared::webPage()->getRequestValue('search', 'string');
+        $term = WebPage::getRequestValue('search', 'string');
 
         $this->setTagProperties(['class' => 'navbar-form', 'role' => 'search']);
         $group   = $this->addItem(
-            new \Ease\Html\DivTag(new \Ease\Html\InputTextTag(
+            new DivTag(new InputTextTag(
             'search', $term,
             [
             'class' => 'form-control pull-right typeahead',
@@ -37,24 +45,23 @@ class NavBarSearchBox extends \Ease\TWB\Form
             'placeholder' => _('Search'),
             ]), ['class' => 'input-group'])
         );
-        $buttons = $group->addItem(new \Ease\Html\Span( null,
+        $buttons = $group->addItem(new Span( null,
             ['class' => 'input-group-btn']));
-        $buttons->addItem(new \Ease\Html\ButtonTag(new \Ease\Html\Span(
-            new \Ease\Html\Span(_('Close'), ['class' => 'sr-only']),
+        $buttons->addItem(new ButtonTag(new Span(
+            new Span(_('Close'), ['class' => 'sr-only']),
             ['class' => 'glyphicon glyphicon-remove']),
             ['type' => 'reset', 'class' => 'btn btn-default']));
-        $buttons->addItem(new \Ease\Html\ButtonTag(new \Ease\Html\Span(
-            new \Ease\Html\Span(_('Search'), ['class' => 'sr-only']),
+        $buttons->addItem(new ButtonTag(new Span(
+            new Span(_('Search'), ['class' => 'sr-only']),
             ['class' => 'glyphicon glyphicon-search']),
             ['type' => 'submit', 'class' => 'btn btn-default']));
     }
 
     function finalize()
     {
-
-        \Ease\Shared::webPage()->includeJavaScript('js/handlebars.js');
-        \Ease\Shared::webPage()->includeJavaScript('js/typeahead.bundle.js');
-        \Ease\Shared::webPage()->addCss('
+        $this->includeJavaScript('js/handlebars.js');
+        $this->includeJavaScript('js/typeahead.bundle.js');
+        $this->addCss('
 
 .tt-hint {
 }
@@ -97,7 +104,7 @@ class NavBarSearchBox extends \Ease\TWB\Form
     margin: 0;
 }
 ');
-        \Ease\Shared::webPage()->addJavaScript('
+        $this->addJavaScript('
 
 
 var bestPictures = new Bloodhound({

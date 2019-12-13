@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <coverage xmlns="http://www.netbeans.org/ns/code-coverage/1" enabled="true"/>
+    <coverage xmlns="http://www.netbeans.org/ns/code-coverage/1" enabled="false"/>
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group name="EaseProjects">
@@ -21,27 +21,6 @@
             <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/login.php</file>
             <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/includes/IEInit.php</file>
         </group>
-        <group>
-            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/vendor/fpdo/fluentpdo/src/Queries/Base.php</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/classes/engine/Configurator.php</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/classes/engine/Contact.php</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/classes/UI/WebPage.php</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/vendor/composer/ClassLoader.php</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/main.php</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/vendor/fpdo/fluentpdo/src/Query.php</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/classes/UI/MainMenu.php</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/passwordrecovery.php</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/vendor/fpdo/fluentpdo/src/Queries/Select.php</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/login.php</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/classes/UI/PageTop.php</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/includes/IEInit.php</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/composer.json</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/debian/conf/composer.json</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/createaccount.php</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/classes/UI/BootstrapMenu.php</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/vendor/fpdo/fluentpdo/src/Queries/Common.php</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/classes/User.php</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/index.php</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

@@ -34,7 +34,7 @@ class BootstrapMenu extends Navbar
 
         $user = Shared::user();
         Part::twBootstrapize();
-        if (!$user->getUserID()) {
+        if (!$user->isLogged()) {
             $this->addMenuItem('<a href="about.php">'.Part::GlyphIcon('info').' '._('About').'</a>',
                 'right');
             $this->addMenuItem('<a href="createaccount.php">'.Part::GlyphIcon('leaf').' '._('Sign Up').'</a>',

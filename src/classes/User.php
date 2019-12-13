@@ -88,9 +88,21 @@ class User extends \Ease\SQL\Engine {
 
     /**
      *
+     * @var \DateTime
+     */
+    public $signInOutTime = null;
+
+    /**
+     *
      * @var self 
      */
     private static $instance = null;
+
+    /**
+     *
+     * @var boolean 
+     */
+    public $logged = false;
 
     /**
      * 
@@ -99,15 +111,35 @@ class User extends \Ease\SQL\Engine {
     public function __construct($userID = null) {
         parent::__construct($userID, \Ease\Shared::singleton()->configuration);
         if (!empty($userID)) {
-            $userDataRaw = $this->listingQuery()->where(is_numeric($userID) ? 'id' : $this->loginColumn, $userID);
+            $userDataRaw = $this->listingQuery()->where(is_numeric($userID) ? $this->keyColumn : $this->loginColumn, $userID);
             foreach ($userDataRaw as $userData) {
                 $this->takeData($userData);
             }
         }
     }
 
+    /**
+     * 
+     * @param string $username
+     */
+    public function setLogin($username) {
+        $this->setDataValue($this->loginColumn, $username);
+    }
+
+    /**
+     * 
+     */
+    public function getLogin() {
+        $this->getDataValue($this->loginColumn);
+    }
+    
+    
+    /**
+     * 
+     * @return int
+     */
     public function getUserID() {
-        return $this->getMyKey();
+        return $this->userID;
     }
 
     /**
@@ -118,10 +150,38 @@ class User extends \Ease\SQL\Engine {
     public function getIcon() {
         $icon = $this->getSettingValue('icon');
         if (is_null($icon)) {
-            return parent::getIcon();
-        } else {
-            return $icon;
+
+            $email = $this->getUserEmail();
+            if ($email) {
+                return self::getGravatar($email, 800, 'mm', 'g', true,
+                                ['title' => $this->getUserName(), 'class' => 'gravatar_icon']);
+            } else {
+                return $icon;
+            }
         }
+    }
+
+    /**
+     * Get either a Gravatar URL or complete image tag for a specified email
+     * address.
+     *
+     * @param string $email     The email address
+     * @param integer $size      Size in pixels, defaults to 80px [ 1 - 512 ]
+     * @param string $default   [ 404 | mm | identicon | monsterid | wavatar ]
+     * @param string $maxRating Maximum rating (inclusive) [ g | pg | r | x ]
+     *
+     * @return string containing either just a URL or a complete image tag
+     *
+     * @source http://gravatar.com/site/implement/images/php/
+     */
+    public static function getGravatar(
+            $email, $size = 80, $default = 'mm', $maxRating = 'g'
+    ) {
+        $url = 'http://www.gravatar.com/avatar/';
+        $url .= md5(strtolower(trim($email)));
+        $url .= "?s=$size&d=$default&r=$maxRating";
+
+        return $url;
     }
 
     /**
@@ -226,6 +286,7 @@ class User extends \Ease\SQL\Engine {
      * * for IcingaWeb
      *
      * @param array $data
+     * 
      * @return int new user id
      */
     function insertToSQL($data = null) {
@@ -500,10 +561,17 @@ class User extends \Ease\SQL\Engine {
         }
     }
 
-    function getEmail() {
-        return $this->getDataValue('email');
+    /**
+     * Retrun user's mail address.
+     *
+     * @return string
+     */
+    public function getUserEmail()
+    {
+        return $this->getDataValue($this->mailColumn);
     }
-
+    
+    
     /**
      * Obtain Column type helper
      *
@@ -543,13 +611,43 @@ class User extends \Ease\SQL\Engine {
         $this->setObjectName();
         $this->setkeyColumn('id');
         $this->userID = (int) $this->getMyKey();
+        $this->userLogin = $this->getDataValue($this->loginColumn);
         $this->logged = true;
         $this->addStatusMessage(sprintf(_('Sign in %s all ok'), $this->userLogin),
                 'success');
-        \Ease\Shared::user($this);
+        $this->signInOutTime = new \DateTime();
         return true;
     }
 
+    /**
+     * 
+     * @return boolean
+     */
+    public function logout() {
+        $this->userID = null;
+        $this->userLogin = null;
+        $this->logged = false;
+        $this->addStatusMessage(sprintf(_('Signed out %s'), $this->userLogin),
+                'success');
+        $this->setObjectName();
+        $this->dataReset();
+        $this->signInOutTime = new \DateTime();
+
+        return true;
+    }
+
+    /**
+     * 
+     * @return boolean
+     */
+    public function isLogged() {
+        return $this->logged;
+    }
+
+    /**
+     * 
+     * @return type
+     */
     public function getUserLogin() {
         return $this->getDataValue($this->loginColumn);
     }
@@ -719,6 +817,26 @@ class User extends \Ease\SQL\Engine {
      */
     public function setSettingValue($settingName, $settingValue) {
         $this->settings[$settingName] = $settingValue;
+    }
+
+    public function __sleep() {
+        unset($this->pdo);
+        $objectVarsRaw = get_object_vars($this);
+        $objectVars = array_combine(array_keys($objectVarsRaw),
+                array_keys($objectVarsRaw));
+        $parent = get_parent_class(__CLASS__);
+        if (method_exists($parent, '__sleep')) {
+            $parentObjectVars = parent::__sleep();
+            if (is_array($parentObjectVars)) {
+                $objectVars = array_merge($objectVars, $parentObjectVars);
+            }
+        }
+        unset($objectVars['pdo']);
+        return $objectVars;
+    }
+
+    public function __wakeup() {
+        //    $this->setUp(\Ease\Shared::singleton()->configuration);
     }
 
 }

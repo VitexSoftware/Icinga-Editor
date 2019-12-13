@@ -8,12 +8,34 @@
 
 namespace Icinga\Editor\Engine;
 
+use DateTime;
+use Ease\Html\ATag;
+use Ease\Html\ButtonTag;
+use Ease\Html\DlTag;
+use Ease\Html\H4Tag;
+use Ease\Html\ImgTag;
+use Ease\Html\InputHiddenTag;
+use Ease\Html\InputTextTag;
+use Ease\Html\Span;
+use Ease\Shared;
+use Ease\SQL\Engine;
+use Ease\TWB\Form;
+use Ease\TWB\Label;
+use Ease\TWB\LinkButton;
+use Ease\TWB\Panel;
+use Ease\TWB\Part;
+use Ease\TWB\SubmitButton;
+use Ease\User as User2;
+use Ease\WebPage;
+use Icinga\Editor\UI\TWBSwitch;
+use Icinga\Editor\User;
+
 /**
  * Konfigurator
  *
  * @author vitex
  */
-class Configurator extends \Ease\SQL\Engine
+class Configurator extends Engine
 {
     /**
      * Tabulka do níž objekt ukládá svá data
@@ -95,7 +117,7 @@ class Configurator extends \Ease\SQL\Engine
 
     /**
      * Objekt vlastníka objektu
-     * @var \Icinga\Editor\User
+     * @var User
      */
     public $owner = null;
 
@@ -122,8 +144,8 @@ class Configurator extends \Ease\SQL\Engine
             $_SESSION['parentCache'] = [];
         }
         $this->parentCache = &$_SESSION['parentCache'];
-        parent::__construct($itemID, \Ease\Shared::singleton()->configuration);
-        $this->user        = \Ease\Shared::user();
+        parent::__construct($itemID, Shared::singleton()->configuration);
+        $this->user        = Shared::user();
 //       foreach ($this->useKeywords as $KeyWord => $ColumnType) {
 //            switch ($ColumnType) {
 //                case 'IDLIST':
@@ -220,7 +242,7 @@ class Configurator extends \Ease\SQL\Engine
         $result  = parent::loadFromSQL($itemID, $dataPrefix, $multiplete);
         $ownerid = $this->getDataValue($this->userColumn);
         if ($ownerid) {
-            $this->owner = new \Icinga\Editor\User((int) $ownerid);
+            $this->owner = new User((int) $ownerid);
         }
 
         return $result;
@@ -685,7 +707,7 @@ class Configurator extends \Ease\SQL\Engine
     public function controlAllData($allData)
     {
         $allDataOK = [];
-        $userID    = \Ease\Shared::user()->getUserID();
+        $userID    = Shared::user()->getUserID();
         foreach ($allData as $adKey => $data) {
             if ($data[$this->userColumn] == $userID) {
                 $allDataOK[$adKey] = $data;
@@ -703,7 +725,7 @@ class Configurator extends \Ease\SQL\Engine
     public function getAllUserData()
     {
         return $this->controlAllData(self::unserializeArrays($this->getColumnsFromSQL('*',
-                        [$this->userColumn => \Ease\Shared::user()->getUserID()])));
+                        [$this->userColumn => Shared::user()->getUserID()])));
     }
 
     /**
@@ -804,7 +826,7 @@ class Configurator extends \Ease\SQL\Engine
             }
             $result = parent::saveToSQL($data, $searchForID);
             if (!is_null($result) && (get_class($this->user) == 'Icinga\Editor\User')) {
-                \Ease\Shared::user()->setSettingValue('unsaved', true);
+                Shared::user()->setSettingValue('unsaved', true);
             }
         }
         $this->setMyKey($result);
@@ -860,7 +882,7 @@ class Configurator extends \Ease\SQL\Engine
     public function getOwned($thisID = null, $extraColumns = null)
     {
         if (is_null($thisID)) {
-            $thisID = \Ease\Shared::user()->getUserID();
+            $thisID = Shared::user()->getUserID();
         }
         $columnsToGet = [$this->getKeyColumn(), $this->nameColumn, 'generate',
             $this->myLastModifiedColumn, $this->userColumn];
@@ -889,7 +911,7 @@ class Configurator extends \Ease\SQL\Engine
                                $extraColumns = null)
     {
         if (is_null($thisID)) {
-            $thisID = \Ease\Shared::user()->getUserID();
+            $thisID = Shared::user()->getUserID();
         }
         $columnsToGet = [$this->getKeyColumn(), $this->nameColumn, 'generate',
             $this->myLastModifiedColumn, $this->userColumn];
@@ -920,7 +942,7 @@ class Configurator extends \Ease\SQL\Engine
     public function ownershipCondition($thisID)
     {
         if (is_null($thisID)) {
-            $thisID = \Ease\Shared::user()->getUserID();
+            $thisID = Shared::user()->getUserID();
         }
 
         return $this->userColumn.'='.$thisID.' OR '.$this->userColumn.' IN (SELECT DISTINCT user_id FROM user_to_group WHERE group_id IN (SELECT group_id FROM user_to_group WHERE user_id = '.$thisID.'))';
@@ -993,7 +1015,7 @@ class Configurator extends \Ease\SQL\Engine
      */
     public function deleteButton($name = null, $urlAdd = '')
     {
-        if (($this->getOwnerID() == \Ease\Shared::user()->getUserID()) || \Ease\Shared::user()->getSettingValue('admin')) {
+        if (($this->getOwnerID() == Shared::user()->getUserID()) || Shared::user()->getSettingValue('admin')) {
 
             if ($this->allowTemplating && $this->isTemplate()) {
                 $columnsList = [$this->getKeyColumn(), $this->nameColumn,
@@ -1005,17 +1027,17 @@ class Configurator extends \Ease\SQL\Engine
                     ['use' => $this->getDataValue('name')], $this->nameColumn,
                     $this->getKeyColumn());
                 if (count($used)) {
-                    $usedFrame = new \Ease\TWB\Panel(_('is template for'),
+                    $usedFrame = new Panel(_('is template for'),
                         'info', null, _('thus can not be deleted'));
                     foreach ($used as $usId => $usInfo) {
                         if ($this->publicRecords && ($usInfo['public'] != true) && ($usInfo[$this->userColumn]
-                            != \Ease\Shared::user()->getUserID() )) {
-                            $usedFrame->addItem(new \Ease\Html\Span(
+                            != Shared::user()->getUserID() )) {
+                            $usedFrame->addItem(new Span(
                                     $usInfo[$this->nameColumn],
                                     ['class' => 'jellybean gray']));
                         } else {
-                            $usedFrame->addItem(new \Ease\Html\Span(
-                                    new \Ease\Html\ATag('?'.$this->getKeyColumn().'='.$usId.'&'.$urlAdd,
+                            $usedFrame->addItem(new Span(
+                                    new ATag('?'.$this->getKeyColumn().'='.$usId.'&'.$urlAdd,
                                         $usInfo[$this->nameColumn]),
                                     ['class' => 'jellybean']));
                         }
@@ -1025,13 +1047,13 @@ class Configurator extends \Ease\SQL\Engine
                 }
             }
 
-            \Ease\Shared::webPage()->addItem(new \Icinga\Editor\UI\ConfirmationDialog('delete'.$this->getId(),
+            Shared::webPage()->addItem(new \Icinga\Editor\UI\ConfirmationDialog('delete'.$this->getId(),
                     '?'.$this->getKeyColumn().'='.$this->getID().'&delete=true'.'&'.$urlAdd,
                     _('Delete').' '.$name,
                     sprintf(_('Are you sure to delete %s ?'),
                         '<strong>'.$this->getName().'</strong>')));
-            return new \Ease\Html\ButtonTag(
-                [\Ease\TWB\Part::GlyphIcon('remove'), _('Delete').' '.$this->keyword.' '.$this->getName()],
+            return new ButtonTag(
+                [Part::GlyphIcon('remove'), _('Delete').' '.$this->keyword.' '.$this->getName()],
                 ['style' => 'cursor: default', 'class' => 'btn btn-danger',
                 'id' => 'triggerdelete'.$this->getId(), 'data-id' => $this->getId()
             ]);
@@ -1070,11 +1092,11 @@ class Configurator extends \Ease\SQL\Engine
             $ownerID = $this->getOwnerID();
         }
         if ($ownerID) {
-            $owner     = new \Ease\User($ownerID);
-            $ownerLink = new \Ease\TWB\LinkButton('userinfo.php?user_id='.$ownerID,
-                [$owner, '&nbsp;'.$owner->getUserLogin()]);
+            $owner     = new User2($ownerID);
+            $ownerLink = new LinkButton('userinfo.php?user_id='.$ownerID,
+                [$owner->getIcon(), '&nbsp;'.$owner->getUserLogin()]);
         } else {
-            $ownerLink = new \Ease\TWB\LinkButton('overview.php',
+            $ownerLink = new LinkButton('overview.php',
                 ['<img class="avatar" src="img/vsmonitoring.png">', '&nbsp;'._('Without owner')]);
         }
         return $ownerLink;
@@ -1093,11 +1115,11 @@ class Configurator extends \Ease\SQL\Engine
             $ownerID = $this->getOwnerID();
         }
         if ($ownerID) {
-            $owner     = new \Ease\User($ownerID);
-            $ownerLink = new \Ease\Html\ATag('userinfo.php?user_id='.$ownerID,
+            $owner     = new User2($ownerID);
+            $ownerLink = new ATag('userinfo.php?user_id='.$ownerID,
                 $owner->getUserLogin());
         } else {
-            $ownerLink = new \Ease\Html\ATag('overview.php', _('Without owner'));
+            $ownerLink = new ATag('overview.php', _('Without owner'));
         }
         return $ownerLink;
     }
@@ -1127,7 +1149,7 @@ class Configurator extends \Ease\SQL\Engine
             $this->addStatusMessage(sprintf(_(' %s %s was deleted '),
                     $this->keyword, $this->getName()), 'success');
             $this->dataReset();
-            \Ease\Shared::user()->setSettingValue('unsaved', true);
+            Shared::user()->setSettingValue('unsaved', true);
 
             return true;
         } else {
@@ -1148,7 +1170,7 @@ class Configurator extends \Ease\SQL\Engine
     public function isOwnedBy($thisID = null)
     {
         if (is_null($thisID)) {
-            $thisID = \Ease\Shared::user()->getUserID();
+            $thisID = Shared::user()->getUserID();
         }
 
         return ($this->getOwnerID() == $thisID);
@@ -1246,8 +1268,8 @@ class Configurator extends \Ease\SQL\Engine
                                     $this->updateToSQL(
                                         [$this->getKeyColumn() => $this->getMyKey(),
                                             $this->webLinkColumn =>
-                                            (str_replace(basename(\Ease\WebPage::getUri()),
-                                                '', \Ease\WebPage::phpSelf(true))).
+                                            (str_replace(basename(WebPage::getUri()),
+                                                '', WebPage::phpSelf(true))).
                                             $this->keyword.'.php?'.
                                             $this->getKeyColumn().'='.
                                             $this->getMyKey()]);
@@ -1279,7 +1301,7 @@ class Configurator extends \Ease\SQL\Engine
     {
         $cfg = [];
         if (!is_file($cfgFile)) {
-            \Ease\Shared::user()->addStatusMessage(_('I need filename'),
+            Shared::user()->addStatusMessage(_('I need filename'),
                 'warning');
 
             return null;
@@ -1442,12 +1464,11 @@ class Configurator extends \Ease\SQL\Engine
      */
     public function saveMembers()
     {
-        $webPage   = \Ease\Shared::webPage();
-        $addColumn = $webPage->getGetValue('add');
-        $name      = $webPage->getGetValue('name');
+        $addColumn = WebPage::getGetValue('add');
+        $name      = WebPage::getGetValue('name');
         if ($addColumn) {
             $this->addMember($addColumn,
-                $webPage->getRequestValue('member', 'int'), $name);
+                WebPage::getRequestValue('member', 'int'), $name);
             $thisID = $this->saveToSQL();
             if (is_null($thisID)) {
                 $this->addStatusMessage(sprintf(_('item %s was not added to %s/%s/%s'),
@@ -1459,12 +1480,12 @@ class Configurator extends \Ease\SQL\Engine
                     'success');
             }
         }
-        $delColumn = $webPage->getGetValue('del');
+        $delColumn = WebPage::getGetValue('del');
         if (!is_null($delColumn)) {
             $thisID = null;
             $del    = $this->delMember($delColumn,
-                $webPage->getRequestValue('member', 'int'),
-                $webPage->getGetValue('name'));
+                WebPage::getRequestValue('member', 'int'),
+                WebPage::getGetValue('name'));
             if ($del) {
                 $thisID = $this->saveToSQL();
             }
@@ -1496,7 +1517,7 @@ class Configurator extends \Ease\SQL\Engine
                     if (self::isSerialized($keyData)) {
                         $allData[$keyWord] = unserialize(stripslashes($keyData));
                     } else {
-                        \Ease\Shared::webPage()->addStatusMessage(_('Deserialization error').':'.$keyData,
+                        Shared::webPage()->addStatusMessage(_('Deserialization error').':'.$keyData,
                             'error');
                     }
                 }
@@ -1521,7 +1542,7 @@ class Configurator extends \Ease\SQL\Engine
         if ($testing) {
             while (!feof($testing)) {
                 $line = fgets($testing);
-                \Ease\Shared::user()->addStatusMessage('Reload: '.$line);
+                Shared::user()->addStatusMessage('Reload: '.$line);
             }
             fclose($testing);
         }
@@ -1531,7 +1552,7 @@ class Configurator extends \Ease\SQL\Engine
 
     public function cloneButton()
     {
-        return new \Ease\TWB\LinkButton('?action=clone&'.$this->getKeyColumn().'='.$this->getId(),
+        return new LinkButton('?action=clone&'.$this->getKeyColumn().'='.$this->getId(),
             _('Klonovat'));
     }
 
@@ -1558,7 +1579,7 @@ class Configurator extends \Ease\SQL\Engine
             }
         }
 
-        $res = \Ease\Shared::db()->queryToArray("SELECT ".implode(',', $columns).",".$this->nameColumn." FROM ".$this->myTable." WHERE ".implode(' OR ',
+        $res = Shared::db()->queryToArray("SELECT ".implode(',', $columns).",".$this->nameColumn." FROM ".$this->myTable." WHERE ".implode(' OR ',
                 $conds).' ORDER BY '.$this->nameColumn, $this->keyColumn);
         foreach ($res as $result) {
             $occurences = '';
@@ -1586,7 +1607,7 @@ class Configurator extends \Ease\SQL\Engine
      */
     public function output($queryRaw)
     {
-        switch (\Ease\Shared::webPage()->getRequestValue('export')) {
+        switch (Shared::webPage()->getRequestValue('export')) {
             case 'csv':
                 $this->getCsv($queryRaw);
                 break;
@@ -1722,10 +1743,10 @@ class Configurator extends \Ease\SQL\Engine
                             $row[$key] = '<em>NULL</em>';
                         } else {
                             if ($value === '0') {
-                                $row[$key] = \Ease\TWB\Part::glyphIcon('unchecked')->__toString();
+                                $row[$key] = Part::glyphIcon('unchecked')->__toString();
                             } else {
                                 if ($value === '1') {
-                                    $row[$key] = \Ease\TWB\Part::glyphIcon('check')->__toString();
+                                    $row[$key] = Part::glyphIcon('check')->__toString();
                                 }
                             }
                         }
@@ -1751,7 +1772,7 @@ class Configurator extends \Ease\SQL\Engine
                                     if ($id) {
                                         $values[$id] = '<a title="'.$table.'" href="'.$target.'?'.$idcolumn.'='.$id.'">'.$name.'</a>';
                                     } else {
-                                        $values[$id] = '<a title="'.$table.'" href="search.php?search='.$name.'&table='.$table.'&column='.$searchColumn.'">'.$name.'</a> '.\Ease\TWB\Part::glyphIcon('search');
+                                        $values[$id] = '<a title="'.$table.'" href="search.php?search='.$name.'&table='.$table.'&column='.$searchColumn.'">'.$name.'</a> '.Part::glyphIcon('search');
                                     }
                                 }
                             }
@@ -1766,7 +1787,7 @@ class Configurator extends \Ease\SQL\Engine
                         if (isset($this->keywordsInfo[$key]['refdata']) && strlen(trim($value))) {
                             $table        = $this->keywordsInfo[$key]['refdata']['table'];
                             $searchColumn = $this->keywordsInfo[$key]['refdata']['captioncolumn'];
-                            $row[$key]    = '<a title="'.$table.'" href="search.php?search='.$value.'&table='.$table.'&column='.$searchColumn.'">'.$value.'</a> '.\Ease\TWB\Part::glyphIcon('search');
+                            $row[$key]    = '<a title="'.$table.'" href="search.php?search='.$value.'&table='.$table.'&column='.$searchColumn.'">'.$value.'</a> '.Part::glyphIcon('search');
                         }
                         if (strstr($key, 'image') && strlen(trim($value))) {
                             $row[$key] = '<img title="'.$value.'" src="logos/'.$value.'" class="gridimg">';
@@ -1790,9 +1811,9 @@ class Configurator extends \Ease\SQL\Engine
         if (is_null($target) || !strlen(trim($target))) {
             $this->addStatusMessage(_('Export target URL missing'), 'warning');
         } else {
-            if (\Ease\Shared::user()->getSettingValue('exporturl') != $target) {
-                \Ease\Shared::user()->setSettingValue('exporturl', $target);
-                \Ease\Shared::user()->saveToSQL();
+            if (Shared::user()->getSettingValue('exporturl') != $target) {
+                Shared::user()->setSettingValue('exporturl', $target);
+                Shared::user()->saveToSQL();
             }
 
             $data = $this->getData();
@@ -1830,24 +1851,24 @@ class Configurator extends \Ease\SQL\Engine
      */
     public function &transferForm()
     {
-        $exportForm = new \Ease\TWB\Form('Export', $this->keyword.'.php');
-        $exportForm->addItem(new \Ease\Html\InputHiddenTag('action', 'export'));
-        $exportForm->addItem(new \Ease\Html\InputHiddenTag($this->keyColumn,
+        $exportForm = new Form('Export', $this->keyword.'.php');
+        $exportForm->addItem(new InputHiddenTag('action', 'export'));
+        $exportForm->addItem(new InputHiddenTag($this->keyColumn,
                 $this->getId()));
-        $exportForm->addInput(new \Ease\Html\InputTextTag('destination',
-                \Ease\Shared::user()->getSettingValue('exporturl')),
+        $exportForm->addInput(new InputTextTag('destination',
+                Shared::user()->getSettingValue('exporturl')),
             _('Export Target'));
 
-        $exportForm->addItem(new \Ease\Html\H4Tag(_('Recursive import')));
+        $exportForm->addItem(new H4Tag(_('Recursive import')));
 
         foreach ($this->keywordsInfo as $columnName => $columnInfo) {
             if (isset($columnInfo['refdata']['table'])) {
-                $exportForm->addInput(new \Icinga\Editor\UI\TWBSwitch('rels['.$columnName.']'),
+                $exportForm->addInput(new TWBSwitch('rels['.$columnName.']'),
                     $columnInfo['title']);
             }
         }
 
-        $exportForm->addInput(new \Ease\TWB\SubmitButton(_('Export'), 'warning'));
+        $exportForm->addInput(new SubmitButton(_('Export'), 'warning'));
         return $exportForm;
     }
 
@@ -1950,11 +1971,11 @@ class Configurator extends \Ease\SQL\Engine
     /**
      * Object info frame
      *
-     * @return \Ease\Html\DlTag Vrací seznam vlastností a jejich hodnot z objektu
+     * @return DlTag Vrací seznam vlastností a jejich hodnot z objektu
      */
     public function getInfoBlock()
     {
-        $infoBlock = new \Ease\Html\DlTag;
+        $infoBlock = new DlTag;
 
         if (isset($this->nameColumn)) {
             $infoBlock->addDef(_('Name'), $this->getName());
@@ -1980,13 +2001,13 @@ class Configurator extends \Ease\SQL\Engine
         }
 
         if (isset($this->useKeywords['generate']) && !(int) $this->getDataValue('generate')) {
-            $infoBlock->addItem(new \Ease\TWB\Label('warning',
+            $infoBlock->addItem(new Label('warning',
                     _('do not generate to configuration')));
         }
 
         if ($this->publicRecords) {
             if ((int) $this->getDataValue('public')) {
-                $infoBlock->addItem(new \Ease\TWB\Label('info',
+                $infoBlock->addItem(new Label('info',
                         _('record is public')));
             }
         }
@@ -2021,7 +2042,7 @@ class Configurator extends \Ease\SQL\Engine
                                                 $format = 'm/d/Y h:i:s')
     {
         if ($sqldate) {
-            return \DateTime::createFromFormat('Y-m-d H:i:s', $sqldate)->format($format);
+            return DateTime::createFromFormat('Y-m-d H:i:s', $sqldate)->format($format);
         }
     }
 
@@ -2044,7 +2065,7 @@ class Configurator extends \Ease\SQL\Engine
     /**
      * Přiřadí objektu odkaz na objekt uživatele
      *
-     * @param object|\Ease\User $user         pointer to user object
+     * @param object|User2 $user         pointer to user object
      * @param object          $targetObject objekt kterému je uživatel
      *                                      přiřazován.
      *
@@ -2131,11 +2152,11 @@ class Configurator extends \Ease\SQL\Engine
     /**
      * Get bject Icon 
      * 
-     * @return \Ease\Html\ImgTag
+     * @return ImgTag
      */
     function getObjectIcon()
     {
-        return new \Ease\Html\ImgTag($this->getObjectIconUrl(),
+        return new ImgTag($this->getObjectIconUrl(),
             $this->keyword.' #'.$this->getMyKey(),
             ['title' => $this->getObjectName()]);
     }
@@ -2179,11 +2200,11 @@ class Configurator extends \Ease\SQL\Engine
     /**
      * Object Icon Image that link to object
      * 
-     * @return \Ease\Html\ATag
+     * @return ATag
      */
     public function getIconLink()
     {
-        return new \Ease\Html\ATag($this->getObjectLink(),
+        return new ATag($this->getObjectLink(),
             $this->getObjectIcon());
     }
 }

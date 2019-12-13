@@ -65,8 +65,8 @@ class MainMenu extends \Ease\Html\DivTag
     private function groupsHostsMenu($nav)
     {
 
-        \Ease\Shared::webPage()->addCss('.dropdown-menu { overflow-y: auto } ');
-        \Ease\Shared::webPage()->addJavaScript("$('.dropdown-menu').css('max-height',$(window).height()-100);",
+        $this->addCss('.dropdown-menu { overflow-y: auto } ');
+        $this->addJavaScript("$('.dropdown-menu').css('max-height',$(window).height()-100);",
             null, true);
 
         $user            = \Ease\Shared::user();

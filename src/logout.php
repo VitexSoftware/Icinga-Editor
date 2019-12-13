@@ -15,7 +15,6 @@ unset($_SESSION['access_token']); //Twitter OAuth
 if ($oUser->getUserID()) {
     $oUser->logout();
     $messagesBackup = $oUser->getStatusMessages(TRUE);
-    \Ease\Shared::user(new \Ease\Anonym());
     $oUser->addStatusMessages($messagesBackup);
 }
 

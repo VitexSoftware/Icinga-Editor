@@ -75,9 +75,9 @@ class DataGrid extends \Ease\Html\TableTag
         $this->options['url']      = 'datasource.php?class='.urlencode(get_class($datasource));
         $this->options['sortname'] = $datasource->getKeyColumn();
         parent::__construct(null, $properties);
-        \Ease\JQuery\Part::jQueryze($this);
-        \Ease\Shared::webPage()->includeJavaScript('js/flexigrid.js');
-        \Ease\Shared::webPage()->includeCSS('css/flexigrid.css');
+//        \Ease\JQuery\Part::jQueryze($this);
+        $this->includeJavaScript('js/flexigrid.js');
+        $this->includeCSS('css/flexigrid.css');
         $this->setUpButtons();
         $this->setUpColumns();
     }
@@ -361,8 +361,8 @@ class DataGrid extends \Ease\Html\TableTag
             }';
         }
         $this->options['getGridClass'] = 'function(g) { this.g=g; return g; }';
-        \Ease\Shared::webPage()->addJavaScript("\n"
-            .'$(\'#'.$grid_id.'\').flexigrid({ '.\Ease\JQuery\Part::partPropertiesToString($this->options).' }); '.$grid_js,
+        $this->addJavaScript("\n"
+            .'$(\'#'.$grid_id.'\').flexigrid({ '.\Ease\Part::partPropertiesToString($this->options).' }); '.$grid_js,
             null, true);
     }
 

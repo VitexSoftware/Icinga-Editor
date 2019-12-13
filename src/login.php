@@ -6,22 +6,23 @@ namespace Icinga\Editor;
  * Sign in page
  *
  * @author    Vitex <vitex@hippy.cz>
- * @copyright Vitex@hippy.cz (G) 2009,2011
+ * @copyright Vitex@hippy.cz (G) 2009-2019
  */
 require_once 'includes/IEInit.php';
-
 
 $login = $oPage->getRequestValue('login');
 if ($login) {
     try {
-        $oUser = new User($login);
+        $oUser->setLogin($login);
 
         if ($oUser->tryToLogin($_POST)) {
             if ($oUser->getUserID() == 1) {
                 $oUser->setSettingValue('admin', TRUE);
             }
             $oUser->setSettingValue('plaintext', $_POST[$oUser->passwordColumn]);
-            \Ease\Shared::user($oUser)->loginSuccess();
+            \Ease\Shared::user($oUser);
+            $_SESSION['test'] = $oUser;
+
             
             $backurl = $oPage->getRequestValue('backurl');
             if ($backurl) {
