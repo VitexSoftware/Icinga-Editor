@@ -59,7 +59,7 @@ $loginFace = new \Ease\Html\DivTag();
 
 $oPage->columnI->addItem(new \Ease\Html\DivTag(_('Please enter your login details:')));
 
-$loginForm = $loginFace->addItem(new \Ease\TWB\Form('Login'));
+$loginForm = $loginFace->addItem(new \Ease\TWB\Form(['name'=>'Login']));
 
 $loginForm->addItem(new \Ease\TWB\FormGroup(_('User Name'),
         new \Ease\Html\InputTextTag('login', $login)));

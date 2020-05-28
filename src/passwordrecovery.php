@@ -66,7 +66,7 @@ if (!$success) {
 
     $oPage->columnIII->addItem(_('Forgot your password? Enter your e-mail address you entered during the registration and we will send you a new one.'));
 
-    $emailForm = $oPage->columnII->addItem(new \Ease\TWB\Form('PassworRecovery'));
+    $emailForm = $oPage->columnII->addItem(new \Ease\TWB\Form(['name'=>'PassworRecovery']));
 
 
     $emailForm->addInput(new \Ease\Html\InputEmailTag('Email', null,

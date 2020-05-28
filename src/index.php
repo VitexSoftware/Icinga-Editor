@@ -28,7 +28,7 @@ $oPage->columnII->addItem(new \Ease\Html\ImgTag('img/vsmonitoring.png'));
 $oPage->columnII->addItem(new \Ease\Html\ATag('http://icinga.org/',
         new \Ease\Html\ImgTag('img/icinga_logo4-300x109.png')));
 
-$loginForm = new \Ease\TWB\Form('Login', 'login.php');
+$loginForm = new \Ease\TWB\Form(['name'=>'Login', 'action'=> 'login.php']);
 
 $loginForm->addItem(new \Ease\TWB\FormGroup(_('Username'),
         new \Ease\Html\InputTextTag('login')));
