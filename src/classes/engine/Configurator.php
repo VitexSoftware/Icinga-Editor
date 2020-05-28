@@ -513,14 +513,14 @@ class Configurator extends \Ease\Brick
     {
         if ($this->dblink->tableExist($this->myTable)) {
             $this->dblink->exeQuery('DROP TABLE '.$this->myTable);
-            $this->addStatusMessage(sprintf(_('Tabulka %s byla smazána'),
+            $this->addStatusMessage(sprintf(_('Table %s was removed'),
                     $this->myTable), 'info');
         }
         if ($this->createSqlStructure()) {
-            $this->addStatusMessage(sprintf(_('Tabulka %s byla vytvořena'),
+            $this->addStatusMessage(sprintf(_('Table %s was created'),
                     $this->myTable), 'success');
         } else {
-            $this->addStatusMessage(sprintf(_('Tabulka %s nebyla vytvořena'),
+            $this->addStatusMessage(sprintf(_('Table %s was not created'),
                     $this->myTable), 'error');
         }
     }

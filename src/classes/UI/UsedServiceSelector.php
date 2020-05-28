@@ -93,7 +93,7 @@ class UsedServiceSelector extends \Ease\Container
                             \Ease\TWB\Part::GlyphIcon('wrench').' '._('Editor'));
                     }
                     $unchMenu [] = new \Ease\Html\ATag('?addservice='.$serviceInfo[$service->nameColumn].'&amp;service_id='.$serviceID.'&amp;'.$host->getKeyColumn().'='.$host->getMyKey().'&amp;'.$host->nameColumn.'='.$host->getName(),
-                        \Ease\TWB\Part::GlyphIcon('plus').' '._('Začít sledovat'));
+                        \Ease\TWB\Part::GlyphIcon('plus').' '._('Start Watching'));
 
 
                     if (strlen($serviceInfo['display_name'])) {
@@ -191,7 +191,7 @@ class UsedServiceSelector extends \Ease\Container
 
     public function useSameServicesTo()
     {
-// return new \Ease\TWB\Form('', '', 'post', array(new IEHostSelect(), new \Ease\TWB\SubmitButton(_('Přiřadit'), 'success')));
+// return new \Ease\TWB\Form('', '', 'post', array(new IEHostSelect(), new \Ease\TWB\SubmitButton(_('Assign'), 'success')));
         return null;
     }
 

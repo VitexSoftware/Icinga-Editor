@@ -23,11 +23,20 @@
         </group>
         <group>
             <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/classes/engine/Configurator.php</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/debian/control</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/host.php</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/classes/UI/NavBarSearchBox.php</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/classes/UI/ServiceWizardFormRemote.php</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/classes/UI/UsedServiceSelector.php</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/js/typeahead.bundle.js</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/classes/engine/Service.php</file>
             <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/classes/engine/Host.php</file>
-            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/classes/engine/Hostgroup.php</file>
             <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/debian/postinst</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/host.php</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/classes/UI/WebPage.php</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/classes/engine/Hostgroup.php</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/service.php</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/classes/UI/CfgEditor.php</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/classes/UI/ServiceWizardFormLocal.php</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/debian/control</file>
         </group>
     </open-files>
 </project-private>

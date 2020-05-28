@@ -2,19 +2,19 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Icinga Editor\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-26 10:53+0100\n"
-"PO-Revision-Date: 2019-02-26 10:54+0100\n"
+"POT-Creation-Date: 2019-07-29 14:33+0200\n"
+"PO-Revision-Date: 2019-07-29 14:34+0200\n"
 "Last-Translator: Vítězslav Dvořák <info@vitexsoftware.cz>\n"
 "Language-Team: Vitex Software <info@vitexsoftware.cz>\n"
 "MIME-Version: 1.0\n"
-"Language: zh_Hant\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-KeywordsList: _;gettext;gettext_noop\n"
 "X-Poedit-Basepath: ../../../src\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Generator: Poedit 1.8.11\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Language: zh_HA\n"
 "X-Poedit-SearchPath-0: .\n"
 
 #: about.php:16
@@ -400,7 +400,7 @@ msgstr ""
 msgid "Sign In"
 msgstr ""
 
-#: classes/UI/BootstrapMenu.php:42 passwordrecovery.php:45
+#: classes/UI/BootstrapMenu.php:42 index.php:33 passwordrecovery.php:45
 msgid "Username"
 msgstr ""
 
@@ -2543,11 +2543,7 @@ msgid "Watch the services"
 msgstr ""
 
 #: index.php:24
-msgid "Notifications on mail/jabber/sms/redmine"
-msgstr ""
-
-#: index.php:33 login.php:65
-msgid "User Name"
+msgid "Notifications via e-mail/Jabber/SMS/Redmine"
 msgstr ""
 
 #: index.php:35 login.php:67
@@ -2592,6 +2588,10 @@ msgstr ""
 
 #: login.php:61
 msgid "Please enter your login details:"
+msgstr ""
+
+#: login.php:65
+msgid "User Name"
 msgstr ""
 
 #: login.php:77
@@ -3349,7 +3349,7 @@ msgstr ""
 msgid "Service Editor"
 msgstr ""
 
-#: service.php:107 stemplate.php:84
+#: service.php:107
 msgid "Do you really delete?"
 msgstr ""
 
@@ -3426,7 +3426,7 @@ msgid "Service Migration"
 msgstr ""
 
 #: stemplate.php:20
-msgid "New  service template"
+msgid "New service template"
 msgstr ""
 
 #: stemplate.php:23
@@ -3457,6 +3457,10 @@ msgstr ""
 
 #: stemplate.php:72
 msgid "Service template editor"
+msgstr ""
+
+#: stemplate.php:84
+msgid "Do you really want to delete this?"
 msgstr ""
 
 #: stemplates.php:15

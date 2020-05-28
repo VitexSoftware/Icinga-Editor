@@ -87,7 +87,7 @@ class WebPage extends \Ease\TWB\WebPage
     public function onlyForAdmin($loginPage = 'login.php')
     {
         if (!\Ease\Shared::user()->getSettingValue('admin')) {
-            \Ease\Shared::user()->addStatusMessage(_('Nejprve se prosím přihlašte jako admin'),
+            \Ease\Shared::user()->addStatusMessage(_('Please sign in as Admin user first'),
                 'warning');
             $this->redirect($loginPage);
             exit;
