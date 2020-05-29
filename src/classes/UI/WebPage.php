@@ -12,8 +12,8 @@ use Ease\Shared;
  * @author    Vitex <vitex@hippy.cz>
  * @copyright 2009-2019 Vitex@hippy.cz (G)
  */
-class WebPage extends \Ease\TWB\WebPage
-{
+class WebPage extends \Ease\TWB\WebPage {
+
     /**
      * Hlavní blok stránky
      * @var DivTag
@@ -43,8 +43,7 @@ class WebPage extends \Ease\TWB\WebPage
      *
      * @param VSUser $userObject
      */
-    public function __construct($pageTitle = null)
-    {
+    public function __construct($pageTitle = null) {
         parent::__construct($pageTitle);
         $this->includeCss('css/default.css');
         $this->head->addItem('<meta name="viewport" content="width=device-width, initial-scale=1.0">');
@@ -58,24 +57,23 @@ class WebPage extends \Ease\TWB\WebPage
         $this->head->addItem('<link rel="apple-touch-icon-precomposed" href="img/vsmonitoring.png">');
         $this->head->addItem('<link rel="shortcut icon"  type="image/png" href="img/vsmonitoring.png">');
         $this->addItem('<br>');
-        $this->container    = $this->addItem(new DivTag(null,
-            ['class' => 'container']));
+        $this->container = $this->addItem(new DivTag(null,
+                        ['class' => 'container']));
     }
 
     /**
      * Rozdělí stránku do třísloupcového layoutu
      */
-    function addPageColumns()
-    {
+    function addPageColumns() {
         $row = $this->container->addItem(new DivTag(null,
-            ['class' => 'row']));
+                        ['class' => 'row']));
 
-        $this->columnI   = $row->addItem(new DivTag(null,
-            ['class' => 'col-md-4']));
-        $this->columnII  = $row->addItem(new DivTag(null,
-            ['class' => 'col-md-4']));
+        $this->columnI = $row->addItem(new DivTag(null,
+                        ['class' => 'col-md-4']));
+        $this->columnII = $row->addItem(new DivTag(null,
+                        ['class' => 'col-md-4']));
         $this->columnIII = $row->addItem(new DivTag(null,
-            ['class' => 'col-md-4']));
+                        ['class' => 'col-md-4']));
     }
 
     /**
@@ -83,11 +81,10 @@ class WebPage extends \Ease\TWB\WebPage
      *
      * @param string $loginPage
      */
-    public function onlyForAdmin($loginPage = 'login.php')
-    {
+    public function onlyForAdmin($loginPage = 'login.php') {
         if (!Shared::user()->getSettingValue('admin')) {
             Shared::user()->addStatusMessage(_('Nejprve se prosím přihlašte jako admin'),
-                'warning');
+                    'warning');
             $this->redirect($loginPage);
             exit;
         }
@@ -98,9 +95,9 @@ class WebPage extends \Ease\TWB\WebPage
      *
      * @param string $loginPage adresa přihlašovací stránky
      */
-    function onlyForLogged($loginPage = 'login.php', $message = null)
-    {
-        return parent::onlyForLogged($loginPage.'?backurl='.urlencode($_SERVER['REQUEST_URI']),
-                $message);
+    function onlyForLogged($loginPage = 'login.php', $message = null) {
+        return parent::onlyForLogged($loginPage . '?backurl=' . urlencode($_SERVER['REQUEST_URI']),
+                        $message);
     }
+
 }

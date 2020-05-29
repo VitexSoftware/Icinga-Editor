@@ -7,19 +7,18 @@ namespace Icinga\Editor\UI;
  *
  * @author vitex
  */
-class ServiceSelect extends \Ease\Html\Select
-{
-    public $services  = ['' => ['image' => 'logos/icinga.gif']];
+class ServiceSelect extends \Ease\Html\Select {
+
+    public $services = ['' => ['image' => 'logos/icinga.gif']];
     public $platforms = [
         'generic' => ['image' => 'logos/unknown.gif'],
         'windows' => ['image' => 'logos/base/win40.gif'],
         'linux' => ['image' => 'logos/base/linux40.gif'],
     ];
 
-    function loadItems()
-    {
+    function loadItems() {
         $membersFound = ['' => '---'];
-        $query        = 'SELECT  `service_id`, `icon_image`,`platform`,`service_description` FROM `'.'service` WHERE (user_id='.\Ease\Shared::user()->getUserID().' OR public=1) AND register=1 ORDER BY  service_description ';
+        $query = 'SELECT  `service_id`, `icon_image`,`platform`,`service_description` FROM `' . 'service` WHERE (user_id=' . \Ease\Shared::user()->getUserID() . ' OR public=1) AND register=1 ORDER BY  service_description ';
 
         $membersFoundArray = \Ease\Shared::db()->queryToArray($query);
         if (count($membersFoundArray)) {
@@ -40,8 +39,7 @@ class ServiceSelect extends \Ease\Html\Select
         return $membersFound;
     }
 
-    public function finalize()
-    {
+    public function finalize() {
         parent::finalize();
         reset($this->services);
         foreach ($this->pageParts as $optionName => $option) {
@@ -51,10 +49,10 @@ class ServiceSelect extends \Ease\Html\Select
             }
             next($this->services);
         }
-        \Ease\Shared::webPage()->addJavaScript('$("#'.$this->getTagID().'").msDropDown();',
-            null, true);
-        \Ease\Shared::webPage()->includeJavaScript('js/msdropdown/jquery.dd.min.js');
-        \Ease\Shared::webPage()->includeCss('css/msdropdown/dd.css');
+        \Ease\WebPage::singleton()->addJavaScript('$("#' . $this->getTagID() . '").msDropDown();',
+                null, true);
+        \Ease\WebPage::singleton()->includeJavaScript('js/msdropdown/jquery.dd.min.js');
+        \Ease\WebPage::singleton()->includeCss('css/msdropdown/dd.css');
     }
 
 }

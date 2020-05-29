@@ -12,7 +12,7 @@ namespace Icinga\Editor;
 require_once 'includes/IEInit.php';
 
 $hostId = $oPage->getRequestValue('host_id', 'int');
-$host   = new Engine\Host($hostId);
+$host = new Engine\Host($hostId);
 
 $forceUsername = $oPage->getRequestValue('user');
 if (!is_null($forceUsername)) {

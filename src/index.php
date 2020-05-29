@@ -19,21 +19,21 @@ if ($oUser->getUserId()) {
 $oPage->addItem(new UI\PageTop(_('Icinga Editor')));
 $oPage->addPageColumns();
 
-$oPage->columnI->addItem('<li>'._('Watch the hosts'));
-$oPage->columnI->addItem('<li>'._('Watch the services'));
-$oPage->columnI->addItem('<li>'._('Notifications via e-mail/Jabber/SMS/Redmine'));
+$oPage->columnI->addItem('<li>' . _('Watch the hosts'));
+$oPage->columnI->addItem('<li>' . _('Watch the services'));
+$oPage->columnI->addItem('<li>' . _('Notifications via e-mail/Jabber/SMS/Redmine'));
 
 
 $oPage->columnII->addItem(new \Ease\Html\ImgTag('img/vsmonitoring.png'));
 $oPage->columnII->addItem(new \Ease\Html\ATag('http://icinga.org/',
-        new \Ease\Html\ImgTag('img/icinga_logo4-300x109.png')));
+                new \Ease\Html\ImgTag('img/icinga_logo4-300x109.png')));
 
-$loginForm = new \Ease\TWB\Form(['name'=>'Login', 'action'=> 'login.php']);
+$loginForm = new \Ease\TWB\Form(['name' => 'Login', 'action' => 'login.php']);
 
 $loginForm->addItem(new \Ease\TWB\FormGroup(_('Username'),
-        new \Ease\Html\InputTextTag('login')));
+                new \Ease\Html\InputTextTag('login')));
 $loginForm->addItem(new \Ease\TWB\FormGroup(_('Pasword'),
-        new \Ease\Html\InputPasswordTag('password')));
+                new \Ease\Html\InputPasswordTag('password')));
 $loginForm->addItem(new \Ease\TWB\SubmitButton(_('Sign In'), 'success'));
 
 $loginPanel = new \Ease\TWB\Panel(_('Sign in'), 'info', $loginForm);

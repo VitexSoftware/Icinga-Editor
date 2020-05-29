@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Disk drive select Form
  *
@@ -13,14 +14,12 @@ namespace Icinga\Editor\modules;
  *
  * @author vitex
  */
-class DriveLetter extends \Icinga\Editor\UI\ServiceConfigurator
-{
+class DriveLetter extends \Icinga\Editor\UI\ServiceConfigurator {
 
     /**
      *
      */
-    public function form()
-    {
+    public function form() {
         $config = [
             'Drive' => null
         ];
@@ -37,19 +36,19 @@ class DriveLetter extends \Icinga\Editor\UI\ServiceConfigurator
 
         unset($drives[1]);
         foreach ($drives as $did => $dname) {
-            $drives[$did] = $drives[$did].':';
+            $drives[$did] = $drives[$did] . ':';
         }
 
 
 
         if (!strlen($config['Drive'])) {
             $this->form->addInput(new \Ease\Html\Select('Drive', $drives, '\\\\'),
-                _('Disk'), 'X:',
-                _('Select the drive letter followed by the drive letter'));
+                    _('Disk'), 'X:',
+                    _('Select the drive letter followed by the drive letter'));
         } else {
             $this->form->addInput(new \Ease\Html\Select('Drive', $drives,
-                    str_replace(':', '', $config['Drive'])), _('Drive'), 'X:',
-                _('Select the drive letter followed by the drive letter'));
+                            str_replace(':', '', $config['Drive'])), _('Drive'), 'X:',
+                    _('Select the drive letter followed by the drive letter'));
         }
     }
 
@@ -58,24 +57,23 @@ class DriveLetter extends \Icinga\Editor\UI\ServiceConfigurator
      *
      * @return boolean
      */
-    public function reconfigureService()
-    {
+    public function reconfigureService() {
         $config = [];
-        $page   = \Ease\Shared::webPage();
+        $page = \Ease\Shared::webPage();
 
         foreach ($page->getRequestValues() as $key => $value) {
             switch ($key) {
                 case 'Drive':
 
                     if (strlen(trim($value)) && ($value != '')) {
-                        $config['Drive'] = $value.':';
-                        $nameColumn      = $this->tweaker->service->nameColumn;
-                        $newName         = $this->tweaker->service->getDataValue($nameColumn).' '._('Disc Drive').' '.strtoupper($value).':';
+                        $config['Drive'] = $value . ':';
+                        $nameColumn = $this->tweaker->service->nameColumn;
+                        $newName = $this->tweaker->service->getDataValue($nameColumn) . ' ' . _('Disc Drive') . ' ' . strtoupper($value) . ':';
 
                         $this->tweaker->service->setDataValue($nameColumn,
-                            $newName);
+                                $newName);
                         $this->tweaker->service->setDataValue('display_name',
-                            sprintf(_('Disc Drive %s: '), strtoupper($value)));
+                                sprintf(_('Disc Drive %s: '), strtoupper($value)));
                     }
 
                     break;
@@ -90,11 +88,12 @@ class DriveLetter extends \Icinga\Editor\UI\ServiceConfigurator
         if (count($config)) {
 
             $this->tweaker->service->setDataValue('check_command-params',
-                implode(' ', $config));
+                    implode(' ', $config));
 
             return parent::reconfigureService();
         }
 
         return FALSE;
     }
+
 }

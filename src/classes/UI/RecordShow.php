@@ -11,16 +11,14 @@ namespace Icinga\Editor\UI;
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2015 Vitex@hippy.cz (G)
  */
-class RecordShow extends \Ease\TWB\Well
-{
+class RecordShow extends \Ease\TWB\Well {
 
     /**
      * Zobrazí přehled záznamu.
      *
      * @param ABBase $recordObject
      */
-    public function __construct($recordObject)
-    {
+    public function __construct($recordObject) {
         parent::__construct();
 
         $row = new \Ease\TWB\Row();
@@ -36,7 +34,7 @@ class RecordShow extends \Ease\TWB\Well
             if (isset($kinfo['title'])) {
                 $def = new \Ease\Html\DlTag();
                 $def->addDef($kinfo['title'],
-                    $recordObject->getDataValue($keyword));
+                        $recordObject->getDataValue($keyword));
                 $row->addItem(new \Ease\TWB\Col(4, $def));
             }
         }

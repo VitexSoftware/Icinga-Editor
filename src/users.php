@@ -20,34 +20,34 @@ $oPage->addPageColumns();
 $user = new User();
 
 $users = $user->getColumnsFromSQL(['id', 'login'], null, 'login',
-    $oUser->getKeyColumn());
+        $oUser->getKeyColumn());
 
 if ($users) {
     $oPage->columnII->addItem(new \Ease\Html\H4Tag(_('Users')));
     $cntList = new \Ease\Html\TableTag(null, ['class' => 'table']);
-    $cid     = 1;
+    $cid = 1;
     foreach ($users as $cId => $cInfo) {
         if (!$cId) {
             continue;
         }
         $userInRow = new User((int) $cId);
 
-        $adminSwitch = new UI\YesNoSwitch('admin-'.$cId,
-            $userInRow->getSettingValue('admin'), 'true');
+        $adminSwitch = new UI\YesNoSwitch('admin-' . $cId,
+                $userInRow->getSettingValue('admin'), 'true');
         if ($oUser->getSettingValue('admin')) {
             $adminSwitch->setProperties(['onText' => _('Administrator'), 'offText' => _('User')]);
         } else {
             $adminSwitch->setProperties(['onText' => _('Administrator'), 'offText' => _('User'),
                 'disabled' => 'true']);
         }
-        $adminSwitch->keyCode = 'var key = '.$cId.';';
-        $lastRow              = $cntList->addRowColumns([$cid++, $userInRow,
-            new \Ease\Html\ATag('userinfo.php?user_id='.$cId,
-                $cInfo['login'].' <i class="icon-edit"></i>'),
-            new \Ease\Html\ATag('apply.php?force_user_id='.$cId,
-                _('Regenerate configuration').' <i class="icon-repeat"></i>'),
-            new \Ease\TWB\Form('ad'.$cId, null, null,
-                ['<input type="hidden" name="class" value="Icinga-Editor-User">',
+        $adminSwitch->keyCode = 'var key = ' . $cId . ';';
+        $lastRow = $cntList->addRowColumns([$cid++, $userInRow,
+        new \Ease\Html\ATag('userinfo.php?user_id='.$cId,
+        $cInfo['login'].' <i class="icon-edit"></i>'),
+        new \Ease\Html\ATag('apply.php?force_user_id='.$cId,
+        _('Regenerate configuration').' <i class="icon-repeat"></i>'),
+        new \Ease\TWB\Form(['name'=>'ad'.$cId],
+                ['<input type = "hidden" name = "class" value = "Icinga-Editor-User">',
                 $adminSwitch])
             ]
         );

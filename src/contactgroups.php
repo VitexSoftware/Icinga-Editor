@@ -15,7 +15,7 @@ $oPage->onlyForLogged();
 $oPage->addItem(new UI\PageTop(_('Contactgroups')));
 
 $oPage->container->addItem(new UI\DataGrid(_('Contactgroups'),
-        new Engine\Contactgroup));
+                new Engine\Contactgroup));
 
 $oPage->addItem(new UI\PageBottom());
 

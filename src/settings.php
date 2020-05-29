@@ -17,7 +17,7 @@ if ($oPage->getRequestValue('user') == 'normal') {
     $oUser->addStatusMessage(_('Admin privileges was supressed'));
 }
 
-$oPage->addItem(new UI\PageTop(_('User settings').' '.$oUser->GetUserLogin()));
+$oPage->addItem(new UI\PageTop(_('User settings') . ' ' . $oUser->GetUserLogin()));
 $oPage->addPageColumns();
 
 
@@ -39,16 +39,16 @@ $(\'#UserMail\').change( function () {
 
 $settingsFrame = new \Ease\TWB\Panel(_('Settings'));
 $settingsFrame->addItem(new \Ease\Html\ATag('https://secure.gravatar.com/',
-        $oUser, ['title' => _('Click to change icon')]));
+                $oUser, ['title' => _('Click to change icon')]));
 
 $settingsFrame->addItem(new \Ease\TWB\FormGroup(_('Login name'),
-        new UI\TextInputSaver('login', $oUser->getUserLogin(), $oUser)));
+                new UI\TextInputSaver('login', $oUser->getUserLogin(), $oUser)));
 $settingsFrame->addItem(new \Ease\TWB\LinkButton('changepassword.php',
-        _('Password change')));
+                _('Password change')));
 
 $settingsFrame->addItem(new \Ease\TWB\FormGroup(_('Email address'),
-        new UI\TextInputSaver('email', $oUser->getUserEmail(), $oUser,
-            ['id' => 'UserMail'])));
+                new UI\TextInputSaver('email', $oUser->getUserEmail(), $oUser,
+                        ['id' => 'UserMail'])));
 
 $settingsFrame->addItem('<br>');
 
@@ -56,7 +56,7 @@ $oPage->columnII->addItem($settingsFrame);
 
 if ((bool) $oUser->getSettingValue('admin')) {
     $oPage->columnIII->addItem(new \Ease\TWB\LinkButton('?user=normal',
-            _('Supress admin privileges'), 'danger'));
+                    _('Supress admin privileges'), 'danger'));
 }
 
 $oPage->addItem(new UI\PageBottom());

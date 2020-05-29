@@ -32,8 +32,7 @@ if (!isset($_POST['passwordConfirm']) || !strlen($_POST['passwordConfirm'])) {
     $oUser->addStatusMessage('Please enter password confirmation');
     $formOK = false;
 }
-if ((isset($_POST['passwordConfirm']) && isset($_POST['password'])) && ($_POST['passwordConfirm']
-    != $_POST['password'])) {
+if ((isset($_POST['passwordConfirm']) && isset($_POST['password'])) && ($_POST['passwordConfirm'] != $_POST['password'])) {
     $oUser->addStatusMessage('Password control do not match', 'waring');
     $formOK = false;
 }
@@ -43,7 +42,7 @@ if (!isset($_POST['CurrentPassword'])) {
     $formOK = false;
 } else {
     if (!$oUser->PasswordValidation($_POST['CurrentPassword'],
-            $oUser->GetDataValue($oUser->passwordColumn))) {
+                    $oUser->GetDataValue($oUser->passwordColumn))) {
         $oUser->AddStatusMessage('Current password invalid', 'warning');
         $formOK = false;
     }
@@ -60,10 +59,10 @@ if ($formOK && $oPage->isPosted()) {
         $oUser->addStatusMessage(_('Password was changed'), 'success');
 
         $email = $oPage->addItem(new \Ease\Mailer($oUser->getDataValue($oUser->mailColumn),
-                _('Changed monitoring password')));
+                        _('Changed monitoring password')));
         $email->addItem(sprintf(_('Dear user %s, your monitoring password was changed to'),
-                $oUser->getUserLogin()).":\n");
-        $email->addItem(_('Password').': '.$plainPass."\n");
+                        $oUser->getUserLogin()) . ":\n");
+        $email->addItem(_('Password') . ': ' . $plainPass . "\n");
 
         $email->send();
     }
@@ -71,15 +70,15 @@ if ($formOK && $oPage->isPosted()) {
     $loginForm = new \Ease\Html\Form(NULL);
 
     $loginForm->addItem(new \Ease\TWB\FormGroup(_('Current password'),
-            new \Ease\Html\InputPasswordTag('CurrentPassword'), NULL
+                    new \Ease\Html\InputPasswordTag('CurrentPassword'), NULL
     ));
 
     $loginForm->addItem(new \Ease\TWB\FormGroup(_('New Password'),
-            new \Ease\Html\InputPasswordTag('password'), NULL
+                    new \Ease\Html\InputPasswordTag('password'), NULL
     ));
 
     $loginForm->addItem(new \Ease\TWB\FormGroup(_('Password confirm'),
-            new \Ease\Html\InputPasswordTag('passwordConfirm'), NULL
+                    new \Ease\Html\InputPasswordTag('passwordConfirm'), NULL
     ));
 
     $loginForm->addItem(new \Ease\TWB\SubmitButton(_('Change password')));
@@ -87,7 +86,7 @@ if ($formOK && $oPage->isPosted()) {
     $loginForm->fillUp($_POST);
 
     $oPage->columnII->addItem(new \Ease\TWB\Panel(_('Password change'),
-            'default', $loginForm));
+                    'default', $loginForm));
 }
 
 $oPage->addItem(new UI\PageBottom());

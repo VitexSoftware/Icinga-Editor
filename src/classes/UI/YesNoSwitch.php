@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Yes/No switch
  *
@@ -15,27 +16,25 @@ namespace Icinga\Editor\UI;
  *
  * @author vitex
  */
-class YesNoSwitch extends TWBSwitch
-{
+class YesNoSwitch extends TWBSwitch {
+
     public $keyCode = 'var key = $(".keyId").val();';
 
     function __construct($name, $checked = false, $value = null,
-                         $properties = null)
-    {
+            $properties = null) {
         parent::__construct($name, $checked, 'on', $properties);
     }
 
-    function finalize()
-    {
+    function finalize() {
         parent::finalize();
-        $this->addJavascript('$("[name=\''.$this->getTagName().'\']").on(\'switchChange.bootstrapSwitch\', function(event, state) {
+        $this->addJavascript('$("[name=\'' . $this->getTagName() . '\']").on(\'switchChange.bootstrapSwitch\', function(event, state) {
 
         var saverClass = $("[name=\'class\']").val();
-        '.$this->keyCode.'
+        ' . $this->keyCode . '
 
         if(key) {
             var field = $(this).attr("name");
-            var input = $("[name=\''.$this->getTagName().'\']");
+            var input = $("[name=\'' . $this->getTagName() . '\']");
 
             $.post(\'datasaver.php\', {
                 SaverClass: saverClass,
@@ -56,4 +55,5 @@ class YesNoSwitch extends TWBSwitch
         });
             ', null, true);
     }
+
 }

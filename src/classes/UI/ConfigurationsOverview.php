@@ -7,30 +7,28 @@ namespace Icinga\Editor\UI;
  *
  * @package    IcingaEditor
  * @author     Vitex <vitex@hippy.cz>
- * @copyright  2012-2018 Vitex@hippy.cz (G)
+ * @copyright  2012-2020 Vitex@hippy.cz (G)
  */
-class ConfigurationsOverview extends \Ease\TWB\Panel
-{
+class ConfigurationsOverview extends \Ease\TWB\Panel {
 
     /**
      * Hosts without confirmerd configuration or sensor deployed overview
      *
      * @param array $hosts
      */
-    public function __construct($hosts)
-    {
+    public function __construct($hosts) {
         $ok = 0;
 
-        $noSensor   = [];
-        $oldSensor  = [];
-        $noParents  = [];
-        $noIcon     = [];
+        $noSensor = [];
+        $oldSensor = [];
+        $noParents = [];
+        $noIcon = [];
         $noContacts = [];
 
         $hostHelper = new \Icinga\Editor\Engine\Host();
 
         WebPage::singleton()->addItem(new \Ease\Html\DivTag(new FXPreloader(),
-                ['class' => 'fuelux', 'id' => 'preload']));
+                        ['class' => 'fuelux', 'id' => 'preload']));
 
         foreach ($hosts as $host_id => $host_info) {
             $hostHelper->loadFromSQL($host_id);
@@ -41,7 +39,7 @@ class ConfigurationsOverview extends \Ease\TWB\Panel
             }
 
             if (isset($host_info['config_hash'])) {
-                $hostHelper->loadFromSQL((int) $host_id);
+                $hostHelper->loadFromSQL($host_id);
                 if ($hostHelper->getConfigHash() == $host_info['config_hash']) {
                     unset($hosts[$host_id]);
                     $ok++;
@@ -76,13 +74,13 @@ class ConfigurationsOverview extends \Ease\TWB\Panel
             foreach ($oldSensor as $host_id => $host_info) {
                 $hostHelper->loadFromSQL($host_id);
                 $row = $oldHostsTable->addRowColumns([$hostHelper->getIconLink(),
-                    new \Ease\Html\ATag('host.php?host_id='.$host_id,
-                        $host_info['host_name']), new \Ease\TWB\LinkButton('sensor.php?host_id='.$host_id,
-                        _('Actualise Sensor'))]);
+                    new \Ease\Html\ATag('host.php?host_id=' . $host_id,
+                            $host_info['host_name']), new \Ease\TWB\LinkButton('sensor.php?host_id=' . $host_id,
+                            _('Actualise Sensor'))]);
                 $row->setTagClass('warning');
             }
             $hostsTabs->addTab(sprintf(_('Outdated Sensor <span class="badge">%s</span>'),
-                    count($oldSensor)), $oldHostsTable);
+                            count($oldSensor)), $oldHostsTable);
         }
 
         if (count($noSensor)) {
@@ -90,13 +88,13 @@ class ConfigurationsOverview extends \Ease\TWB\Panel
             foreach ($noSensor as $host_id => $host_info) {
                 $hostHelper->setData($host_info);
                 $row = $noSensorTable->addRowColumns([$hostHelper->getIconLink(),
-                    new \Ease\Html\ATag('host.php?host_id='.$host_id,
-                        $host_info['host_name']), new \Ease\TWB\LinkButton('sensor.php?host_id='.$host_id,
-                        _('Sensor Deploy'))]);
+                    new \Ease\Html\ATag('host.php?host_id=' . $host_id,
+                            $host_info['host_name']), new \Ease\TWB\LinkButton('sensor.php?host_id=' . $host_id,
+                            _('Sensor Deploy'))]);
                 $row->setTagClass('danger');
             }
             $hostsTabs->addTab(sprintf(_('Without sensor <span class="badge">%s</span>'),
-                    count($noSensor)), $noSensorTable);
+                            count($noSensor)), $noSensorTable);
         }
 
         if (count($noParents)) {
@@ -105,23 +103,23 @@ class ConfigurationsOverview extends \Ease\TWB\Panel
                 $hostHelper->loadFromSQL($host_id);
                 $hostHelper->setData($host_info);
                 $row = $noParentsTable->addRowColumns(
-                    [
-                        $hostHelper->getIconLink(),
-                        new \Ease\Html\ATag('host.php?host_id='.$host_id,
-                            $host_info['host_name']),
-                        new \Ease\TWB\LinkButton('host.php?action=parent&host_id='.$host_id,
-                            _('Assign parents')),
-                        new \Ease\TWB\LinkButton('watchroute.php?action=parent&host_id='.$host_id,
-                            _('Watch hosts on route'), 'warning',
-                            ['onClick' => "$('#preload').css('visibility', 'visible');"])
-                    ]
+                        [
+                            $hostHelper->getIconLink(),
+                            new \Ease\Html\ATag('host.php?host_id=' . $host_id,
+                                    $host_info['host_name']),
+                            new \Ease\TWB\LinkButton('host.php?action=parent&host_id=' . $host_id,
+                                    _('Assign parents')),
+                            new \Ease\TWB\LinkButton('watchroute.php?action=parent&host_id=' . $host_id,
+                                    _('Watch hosts on route'), 'warning',
+                                    ['onClick' => "$('#preload').css('visibility', 'visible');"])
+                        ]
                 );
 
 
                 $row->setTagClass('info');
             }
             $hostsTabs->addTab(sprintf(_('Without parents <span class="badge">%s</span>'),
-                    count($noParents)), $noParentsTable);
+                            count($noParents)), $noParentsTable);
         }
 
         if (count($noIcon)) {
@@ -129,33 +127,34 @@ class ConfigurationsOverview extends \Ease\TWB\Panel
             foreach ($noIcon as $host_id => $host_info) {
                 $hostHelper->loadFromSQL($host_id);
                 $hostHelper->setData($host_info);
-                $row = $noIconTable->addRowColumns([$hostHelper->getIconLink(), new \Ease\Html\ATag('host.php?host_id='.$host_id,
-                        $host_info['host_name']), new \Ease\TWB\LinkButton('host.php?action=icon&host_id='.$host_id,
-                        _('Assign icon'))]);
+                $row = $noIconTable->addRowColumns([$hostHelper->getIconLink(), new \Ease\Html\ATag('host.php?host_id=' . $host_id,
+                            $host_info['host_name']), new \Ease\TWB\LinkButton('host.php?action=icon&host_id=' . $host_id,
+                            _('Assign icon'))]);
                 $row->setTagClass('default');
             }
             $hostsTabs->addTab(sprintf(_('Without icon <span class="badge">%s</span>'),
-                    count($noIcon)), $noIconTable);
+                            count($noIcon)), $noIconTable);
         }
 
         if (count($noContacts)) {
             $noContactsTable = new \Ease\Html\TableTag(null,
-                ['class' => 'table']);
+                    ['class' => 'table']);
             foreach ($noContacts as $host_id => $host_info) {
                 $hostHelper->setData($host_info);
                 $row = $noContactsTable->addRowColumns([$hostHelper->getIconLink(),
-                    new \Ease\Html\ATag('host.php?host_id='.$host_id,
-                        $host_info['host_name']), new \Ease\TWB\LinkButton('host.php?host_id='.$host_id,
-                        _('Assign Contact'))]);
+                    new \Ease\Html\ATag('host.php?host_id=' . $host_id,
+                            $host_info['host_name']), new \Ease\TWB\LinkButton('host.php?host_id=' . $host_id,
+                            _('Assign Contact'))]);
                 $row->setTagClass('default');
             }
             $hostsTabs->addTab(sprintf(_('Without contacts <span class="badge">%s</span>'),
-                    count($noContacts)), $noContactsTable);
+                            count($noContacts)), $noContactsTable);
         }
 
         parent::__construct(_('Hosts by configuration state'), 'info',
-            $hostsTabs,
-            sprintf(_('Overall %s hosts without actual configuration. (%s actual)'),
-                count($hosts), $ok));
+                $hostsTabs,
+                sprintf(_('Overall %s hosts without actual configuration. (%s actual)'),
+                        count($hosts), $ok));
     }
+
 }

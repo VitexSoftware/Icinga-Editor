@@ -7,8 +7,8 @@ namespace Icinga\Editor;
  *
  * @author vitex
  */
-class NRPEConfigGenerator extends \Ease\Atom
-{
+class NRPEConfigGenerator extends \Ease\Atom {
+
     /**
      * Host object
      * @var Engine\Host
@@ -44,8 +44,7 @@ class NRPEConfigGenerator extends \Ease\Atom
      *
      * @param Engine\Host $host
      */
-    public function __construct($host)
-    {
+    public function __construct($host) {
         $this->host = $host;
 
         $preferences = new Preferences();
@@ -60,40 +59,37 @@ class NRPEConfigGenerator extends \Ease\Atom
     /**
      * Připraví nouvou konfiguraci
      */
-    function cfgInit()
-    {
+    function cfgInit() {
         $this->nscCfgArray = [
             '#!/bin/sh',
             'sudo -s -- <<EOF',
             'service nagios-nrpe-server stop',
-            'mv '.$this->cfgFile.' '.$this->cfgFile.'.old'];
+            'mv ' . $this->cfgFile . ' ' . $this->cfgFile . '.old'];
         $this->addCfg('dont_blame_nrpe', 1);
     }
 
     /**
      * Nakonfiguruje režim pasivních testů odesílaných přez NSCA
      */
-    function cfgGeneralSet()
-    {
+    function cfgGeneralSet() {
         $this->addCfg('allowed_hosts', $this->prefs['serverip']);
     }
 
     /**
      * Konfigurace sluzeb
      */
-    function cfgServices()
-    {
+    function cfgServices() {
         $service = new Engine\Service();
 
-        $servicesAssigned = $service->dblink->queryToArray('SELECT '.$service->keyColumn.','.$service->nameColumn.',`use` FROM '.$service->myTable.' WHERE host_name LIKE \'%"'.$this->host->getName().'"%\'',
-            $service->keyColumn);
+        $servicesAssigned = $service->dblink->queryToArray('SELECT ' . $service->keyColumn . ',' . $service->nameColumn . ',`use` FROM ' . $service->myTable . ' WHERE host_name LIKE \'%"' . $this->host->getName() . '"%\'',
+                $service->keyColumn);
 
         $allServices = $service->getListing(
-            null, true,
-            [
-                'platform', 'check_command-remote', 'check_command-params', 'passive_checks_enabled',
-                'active_checks_enabled', 'use', 'check_interval', 'check_command-remote'
-            ]
+                null, true,
+                [
+                    'platform', 'check_command-remote', 'check_command-params', 'passive_checks_enabled',
+                    'active_checks_enabled', 'use', 'check_interval', 'check_command-remote'
+                ]
         );
 
         foreach ($allServices as $serviceID => $serviceInfo) {
@@ -105,13 +101,13 @@ class NRPEConfigGenerator extends \Ease\Atom
 
 
         /* use presets values */
-        $usedCache     = [];
+        $usedCache = [];
         $commandsCache = [];
         foreach ($allServices as $rowId => $service) {
             if (isset($service['use'])) {
                 $remote = $service['check_command-remote'];
                 if (!isset($commandsCache[$remote])) {
-                    $command                = new Engine\Command($remote);
+                    $command = new Engine\Command($remote);
                     $commandsCache[$remote] = $command->getData();
                 }
             }
@@ -120,7 +116,7 @@ class NRPEConfigGenerator extends \Ease\Atom
                 $use = $service['use'];
 
                 if (!isset($usedCache[$use])) {
-                    $used             = new Engine\Service;
+                    $used = new Engine\Service;
                     $used->nameColumn = 'name';
 
                     if ($used->loadFromSQL($use)) {
@@ -144,12 +140,12 @@ class NRPEConfigGenerator extends \Ease\Atom
         foreach ($allServices as $serviceId => $service) {
 
             $serviceName = $service['service_description'];
-            $serviceCmd  = $service['check_command-remote'];
+            $serviceCmd = $service['check_command-remote'];
             if (is_null($serviceCmd)) {
                 continue;
             }
-            $serviceParams       = $service['check_command-params'];
-            $this->nscCfgArray[] = "\n# #".$service['service_id'].' '.$serviceName;
+            $serviceParams = $service['check_command-params'];
+            $this->nscCfgArray[] = "\n# #" . $service['service_id'] . ' ' . $serviceName;
 
             if (isset($commandsCache[$serviceCmd])) {
                 if (isset($commandsCache[$serviceCmd]['deploy'])) {
@@ -160,17 +156,16 @@ class NRPEConfigGenerator extends \Ease\Atom
                 $cmdline = $serviceCmd;
             }
 
-            $this->addCfg('command['.str_replace(' ', '_', $serviceName).']',
-                $cmdline.' '.$serviceParams);
+            $this->addCfg('command[' . str_replace(' ', '_', $serviceName) . ']',
+                    $cmdline . ' ' . $serviceParams);
         }
     }
 
     /**
      * Test service and run it
      */
-    public function cfgEnding()
-    {
-        $this->nscCfgArray[] = "\n".'curl "'.$this->getCfgConfirmUrl().'"';
+    public function cfgEnding() {
+        $this->nscCfgArray[] = "\n" . 'curl "' . $this->getCfgConfirmUrl() . '"';
         $this->nscCfgArray[] = 'service nagios-nrpe-server start';
         $this->nscCfgArray[] = 'EOF';
         $this->nscCfgArray[] = '';
@@ -179,8 +174,7 @@ class NRPEConfigGenerator extends \Ease\Atom
     /**
      * vrací vyrendrovaný konfigurační skript
      */
-    public function getCfg($send = TRUE)
-    {
+    public function getCfg($send = TRUE) {
         $nrpesh = implode("\n", $this->nscCfgArray);
         if ($send) {
             header('Content-Description: File Transfer');
@@ -189,8 +183,8 @@ class NRPEConfigGenerator extends \Ease\Atom
             header('Expires: 0');
             header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
             header('Pragma: public');
-            header('Content-Disposition: attachment; filename='.$this->host->getName().'_nrpe.sh');
-            header('Content-Length: '.strlen($nrpesh));
+            header('Content-Disposition: attachment; filename=' . $this->host->getName() . '_nrpe.sh');
+            header('Content-Length: ' . strlen($nrpesh));
             echo $nrpesh;
         } else {
             return $nrpesh;
@@ -202,27 +196,25 @@ class NRPEConfigGenerator extends \Ease\Atom
      *
      * @return string
      */
-    function getBaseURL()
-    {
+    function getBaseURL() {
         if (isset($_SERVER['REQUEST_SCHEME'])) {
             $scheme = $_SERVER['REQUEST_SCHEME'];
         } else {
             $scheme = 'http';
         }
 
-        $enterPoint = $scheme.'://'.$_SERVER['SERVER_NAME'].dirname($_SERVER['REQUEST_URI']).'/';
+        $enterPoint = $scheme . '://' . $_SERVER['SERVER_NAME'] . dirname($_SERVER['REQUEST_URI']) . '/';
 
 //        $enterPoint = str_replace('\\', '', $enterPoint); //Win Hack
         return $enterPoint;
     }
 
-    function getCfgConfirmUrl()
-    {
-        return $this->getBaseURL().'cfgconfirm.php?hash='.$this->host->getConfigHash().'&host_id='.$this->host->getId();
+    function getCfgConfirmUrl() {
+        return $this->getBaseURL() . 'cfgconfirm.php?hash=' . $this->host->getConfigHash() . '&host_id=' . $this->host->getId();
     }
 
-    public function addCfg($key, $value)
-    {
-        $this->nscCfgArray[] = "echo \"$key=$value\" >> ".$this->cfgFile;
+    public function addCfg($key, $value) {
+        $this->nscCfgArray[] = "echo \"$key=$value\" >> " . $this->cfgFile;
     }
+
 }

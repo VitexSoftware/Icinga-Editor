@@ -16,7 +16,7 @@ $oPage->onlyForLogged();
 $oPage->addItem(new UI\PageTop(_('Hosts Overview')));
 
 $oPage->addItem(new \Ease\TWB\Container(new UI\DataGrid(_('Hosts'),
-            new Engine\Host)));
+                        new Engine\Host)));
 
 $oPage->addItem(new UI\PageBottom());
 

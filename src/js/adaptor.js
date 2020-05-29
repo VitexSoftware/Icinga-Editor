@@ -546,8 +546,8 @@ var cola;
             //}
             var vg2 = new cola.geom.TangentVisibilityGraph(visibilityGraph.P, {V: visibilityGraph.V, E: visibilityGraph.E}),
                     port1 = {x: d.source.x, y: d.source.y},
-            port2 = {x: d.target.x, y: d.target.y},
-            start = vg2.addPoint(port1, d.source.id),
+                    port2 = {x: d.target.x, y: d.target.y},
+                    start = vg2.addPoint(port1, d.source.id),
                     end = vg2.addPoint(port2, d.target.id);
             vg2.addEdgeIfVisible(port1, port2, d.source.id, d.target.id);
             if (typeof draw !== 'undefined') {
@@ -632,3 +632,4 @@ var cola;
     }
     return cola;
 })(cola || (cola = {}));
+

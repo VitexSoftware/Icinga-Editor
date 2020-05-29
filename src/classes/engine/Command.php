@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Command configurator
  *
@@ -11,12 +12,12 @@ namespace Icinga\Editor\Engine;
 /**
  * Command Object
  */
-class Command extends Configurator
-{
-    public $myTable     = 'command';
+class Command extends Configurator {
+
+    public $myTable = 'command';
     public $keyColumn = 'command_id';
-    public $nameColumn  = 'command_name';
-    public $keyword     = 'command';
+    public $nameColumn = 'command_name';
+    public $keyword = 'command';
 
     /**
      * Add register and use columns ?
@@ -48,8 +49,7 @@ class Command extends Configurator
      * Command class
      * @param int $itemID
      */
-    public function __construct($itemID = null)
-    {
+    public function __construct($itemID = null) {
         $this->keywordsInfo = [
             'command_name' => [
                 'severity' => 'mandatory',
@@ -83,6 +83,7 @@ class Command extends Configurator
 
         parent::__construct($itemID);
     }
+
     /**
      * Object documentation URL
      * @var string
@@ -100,8 +101,7 @@ class Command extends Configurator
      *
      * @return array
      */
-    public function getAllUserData()
-    {
+    public function getAllUserData() {
         $AllData = parent::getAllUserData();
         foreach ($AllData as $ADkey => $AD) {
             unset($AllData[$ADkey]['deploy']);
@@ -118,8 +118,7 @@ class Command extends Configurator
      *
      * @return array
      */
-    public function getAllData()
-    {
+    public function getAllData() {
         $AllData = parent::getAllData();
         foreach ($AllData as $ADkey => $AD) {
             unset($AllData[$ADkey]['deploy']);
@@ -139,8 +138,7 @@ class Command extends Configurator
      * @param  string                     $urlAdd Předávaná část URL
      * @return \EaseJQConfirmedLinkButton
      */
-    public function deleteButton($name = null, $addUrl = '')
-    {
+    public function deleteButton($name = null, $addUrl = '') {
         return parent::deleteButton(_('Command'), $addUrl);
     }
 
@@ -151,8 +149,7 @@ class Command extends Configurator
      * @param  string $dataPrefix
      * @return int    taken items count
      */
-    public function takeData($data, $dataPrefix = null)
-    {
+    public function takeData($data, $dataPrefix = null) {
         if (!isset($data['command_type'])) {
             if (strstr($data[$this->nameColumn], 'notify')) {
                 $data['command_type'] = 'notify';
@@ -162,4 +159,5 @@ class Command extends Configurator
         }
         return parent::takeData($data, $dataPrefix);
     }
+
 }

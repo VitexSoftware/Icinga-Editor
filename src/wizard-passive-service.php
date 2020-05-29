@@ -13,14 +13,14 @@ require_once 'includes/IEInit.php';
 
 $oPage->onlyForLogged();
 
-$serviceId      = $oPage->getRequestValue('service_id', 'int');
-$owner_id       = $oPage->getRequestValue('user_id', 'int');
-$name           = trim($oPage->getRequestValue('name'));
-$use            = trim($oPage->getRequestValue('use'));
-$remoteCmd      = trim($oPage->getRequestValue('check_command-remote'));
+$serviceId = $oPage->getRequestValue('service_id', 'int');
+$owner_id = $oPage->getRequestValue('user_id', 'int');
+$name = trim($oPage->getRequestValue('name'));
+$use = trim($oPage->getRequestValue('use'));
+$remoteCmd = trim($oPage->getRequestValue('check_command-remote'));
 $remoteCmdParam = trim($oPage->getRequestValue('check_command-params'));
-$platform       = trim($oPage->getRequestValue('platform'));
-$service        = new Engine\Service($serviceId);
+$platform = trim($oPage->getRequestValue('platform'));
+$service = new Engine\Service($serviceId);
 $service->owner = &$oUser;
 
 if (isset($platform)) {
@@ -56,10 +56,10 @@ if (strlen($name)) {
 
     if ($oPage->getRequestValue('register', 'int')) {
         $data['service_description'] = $name;
-        $data['display_name']        = $name;
-        $data['register']            = true;
+        $data['display_name'] = $name;
+        $data['register'] = true;
     } else {
-        $data['name']     = $name;
+        $data['name'] = $name;
         $data['register'] = false;
     }
 
@@ -91,11 +91,11 @@ if (strlen($name)) {
          */
         $oPage->addStatusMessage(_('Service created'), 'success');
         if (strlen(trim($service->getDataValue('check_command-remote'))) && $data['register']) {
-            $oPage->redirect('service.php?service_id='.$service->getId());
+            $oPage->redirect('service.php?service_id=' . $service->getId());
             exit();
         } else {
             $oPage->addStatusMessage(_('Není zvolen vzdálený příkaz testu'),
-                'warning');
+                    'warning');
         }
     }
 } else {
@@ -111,12 +111,12 @@ $oPage->addItem(new UI\PageTop(_('New passive service wizzard')));
 $oPage->addPageColumns();
 
 $oPage->columnI->addItem(
-    new \Ease\TWB\Panel(_('Passive Checks'), 'info',
-        _('Passive checks are initiated and performed external applications/processes'))
+        new \Ease\TWB\Panel(_('Passive Checks'), 'info',
+                _('Passive checks are initiated and performed external applications/processes'))
 );
 $oPage->columnIII->addItem(
-    new \Ease\TWB\Panel(_('Passive checked Service'), 'info',
-        _('Passive check service results are submitted to Icinga for processing'))
+        new \Ease\TWB\Panel(_('Passive checked Service'), 'info',
+                _('Passive check service results are submitted to Icinga for processing'))
 );
 
 $oPage->columnII->addItem(new UI\ServiceWizardForm($service));

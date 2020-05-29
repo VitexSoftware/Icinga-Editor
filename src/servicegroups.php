@@ -15,7 +15,7 @@ $oPage->onlyForLogged();
 $oPage->addItem(new UI\PageTop(_('Service group overview')));
 
 $oPage->container->addItem(new UI\DataGrid(_('Servicegroups'),
-        new Engine\Servicegroup));
+                new Engine\Servicegroup));
 
 $oPage->addItem(new UI\PageBottom());
 

@@ -7,11 +7,9 @@ namespace Icinga\Editor\UI;
  *
  * @author vitex
  */
-class Slider extends \Ease\Html\InputTextTag
-{
+class Slider extends \Ease\Html\InputTextTag {
 
-    function __construct($name, $value = null, $properties = null)
-    {
+    function __construct($name, $value = null, $properties = null) {
         if (!isset($properties['data-slider-min'])) {
             $properties['data-slider-min'] = '-20';
         }
@@ -35,20 +33,19 @@ class Slider extends \Ease\Html\InputTextTag
         parent::__construct($name, $value, $properties);
     }
 
-    function finalize()
-    {
-        \Ease\Shared::webPage()->includeCss('css/slider.css');
-        \Ease\Shared::webPage()->includeJavaScript('js/bootstrap-slider.js');
+    function finalize() {
+        \Ease\WebPage::singleton()->includeCss('css/slider.css');
+        \Ease\WebPage::singleton()->includeJavaScript('js/bootstrap-slider.js');
 
         $id = $this->getTagID();
         if ($id) {
-            $me = '#'.$id;
+            $me = '#' . $id;
         } else {
-            $me = "input[name='".$this->getTagName()."']";
+            $me = "input[name='" . $this->getTagName() . "']";
         }
 
         $this->addJavaScript(
-            '$("'.$me.'").slider();', null, true
+                '$("' . $me . '").slider();', null, true
         );
     }
 

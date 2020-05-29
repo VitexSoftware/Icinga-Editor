@@ -10,16 +10,14 @@ namespace Icinga\Editor\UI;
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2015 Vitex@hippy.cz (G)
  */
-class HostIcon extends \Ease\Html\ImgTag
-{
+class HostIcon extends \Ease\Html\ImgTag {
 
     /**
      * Zobrazí obrázek hosta
      *
      * @param \Icinga\Editor\Engine\Host $host
      */
-    public function __construct($host)
-    {
+    public function __construct($host) {
         $title = '';
         $image = null;
         if (is_array($host)) {
@@ -36,8 +34,8 @@ class HostIcon extends \Ease\Html\ImgTag
             $image = 'unknown.gif';
         }
 
-        parent::__construct('logos/'.$image, $title, null, null,
-            ['class' => 'host_icon']);
+        parent::__construct('logos/' . $image, $title, null, null,
+                ['class' => 'host_icon']);
     }
 
 }

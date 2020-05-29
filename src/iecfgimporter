@@ -23,7 +23,7 @@ if (!isset($argv[1])) {
 
 $owner = 0;
 if (isset($argv[2])) {
-    $oUser    = new \Icinga\Editor\User($argv[2]);
+    $oUser = new \Icinga\Editor\User($argv[2]);
     $owner_id = $oUser->getUserID();
     if ($owner_id) {
         $owner = $owner_id;
@@ -44,10 +44,10 @@ if (count($importer->files)) {
         if ($cfgFile == '/etc/icinga/icinga.cfg') {
             continue;
         }
-        if (is_writable($cfgFile) && rename($cfgFile, $cfgFile.'.disabled')) {
-            $importer->addStatusMessage($cfgFile." disabled", 'success');
+        if (is_writable($cfgFile) && rename($cfgFile, $cfgFile . '.disabled')) {
+            $importer->addStatusMessage($cfgFile . " disabled", 'success');
         } else {
-            $importer->addStatusMessage($cfgFile." not disabled", 'warning');
+            $importer->addStatusMessage($cfgFile . " not disabled", 'warning');
         }
     }
 }

@@ -8,12 +8,12 @@ namespace Icinga\Editor;
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2012 Vitex@hippy.cz (G)
  */
-class Stemplate extends Engine\Configurator
-{
-    public $myTable    = 'stemplate';
-    public $keyColumn  = 'stemplate_id';
+class Stemplate extends Engine\Configurator {
+
+    public $myTable = 'stemplate';
+    public $keyColumn = 'stemplate_id';
     public $nameColumn = 'stemplate_name';
-    public $keyword    = 'stemplate';
+    public $keyword = 'stemplate';
 
     /**
      * Public ?
@@ -43,8 +43,7 @@ class Stemplate extends Engine\Configurator
      *
      * @param int|string $itemID
      */
-    public function __construct($itemID = null)
-    {
+    public function __construct($itemID = null) {
 
         $this->keywordsInfo = [
             'stemplate_name' => [
@@ -86,8 +85,8 @@ class Stemplate extends Engine\Configurator
      * @param  array $allData všechna vstupní data
      * @return array
      */
-    public function controlAllData($allData)
-    {
+    public function controlAllData($allData) {
         return $allData;
     }
+
 }

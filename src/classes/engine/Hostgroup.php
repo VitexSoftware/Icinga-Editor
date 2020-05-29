@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Hostgroup
  *
@@ -8,19 +9,19 @@
 
 namespace Icinga\Editor\Engine;
 
-class Hostgroup extends Configurator
-{
-    public $myTable     = 'hostgroup';
+class Hostgroup extends Configurator {
+
+    public $myTable = 'hostgroup';
     public $keyColumn = 'hostgroup_id';
-    public $keyword     = 'hostgroup';
-    public $nameColumn  = 'hostgroup_name';
+    public $keyword = 'hostgroup';
+    public $nameColumn = 'hostgroup_name';
 
     /**
      * Dát tyto položky k dispozici i ostatním ?
      * @var boolean
      */
     public $publicRecords = false;
-    public $useKeywords   = [
+    public $useKeywords = [
         'hostgroup_name' => 'VARCHAR(64)',
         'alias' => 'VARCHAR(64)',
         'members' => 'IDLIST',
@@ -29,7 +30,7 @@ class Hostgroup extends Configurator
         'notes_url' => 'VARCHAR(255)',
         'action_url' => 'VARCHAR(255)',
     ];
-    public $keywordsInfo  = [
+    public $keywordsInfo = [
         'hostgroup_name' => [
             'severity' => 'requied',
             'title' => 'název skupiny', 'required' => true],
@@ -65,11 +66,11 @@ class Hostgroup extends Configurator
             'title' => 'adresa doplnujících akcí'],
     ];
 
-    public function __construct($itemID = null)
-    {
+    public function __construct($itemID = null) {
 
         parent::__construct($itemID);
     }
+
     /**
      * URL dokumentace objektu
      * @var string
@@ -80,10 +81,9 @@ class Hostgroup extends Configurator
      * Smaže hosta ze všech skupin, již je členem.
      * @param string $hostname
      */
-    public function deleteHost($hostname)
-    {
-        $memberOf = \Ease\Shared::db()->queryToArray('SELECT '.$this->getKeyColumn().','.$this->nameColumn.' FROM '.$this->myTable.' WHERE members LIKE \'%"'.$hostname.'"%\' ',
-            $this->getKeyColumn());
+    public function deleteHost($hostname) {
+        $memberOf = \Ease\Shared::db()->queryToArray('SELECT ' . $this->getKeyColumn() . ',' . $this->nameColumn . ' FROM ' . $this->myTable . ' WHERE members LIKE \'%"' . $hostname . '"%\' ',
+                $this->getKeyColumn());
         foreach ($memberOf as $groupID => $group) {
             $found = false;
             $this->loadFromSQL($groupID);
@@ -92,7 +92,7 @@ class Hostgroup extends Configurator
                     $found = true;
                     unset($this->data['members'][$ID]);
                     $this->addStatusMessage(sprintf(_('%s was removed from group %s'),
-                            $hostname, $group[$this->nameColumn]));
+                                    $hostname, $group[$this->nameColumn]));
                 }
             }
             if ($found) {
@@ -109,14 +109,12 @@ class Hostgroup extends Configurator
      *
      * @return \EaseJQConfirmedLinkButton
      */
-    public function deleteButton($name = null, $addUrl = '')
-    {
+    public function deleteButton($name = null, $addUrl = '') {
         return parent::deleteButton(_('skupinu hostů'), $addUrl);
     }
 
-    public function loadDefault()
-    {
-        $groupID = \Ease\Shared::db()->queryToValue('SELECT '.$this->getKeyColumn().' FROM '.$this->myTable.' WHERE '.$this->userColumn.'= '.\Ease\Shared::user()->getUserID().' ORDER BY '.$this->getKeyColumn().' DESC LIMIT 1');
+    public function loadDefault() {
+        $groupID = \Ease\Shared::db()->queryToValue('SELECT ' . $this->getKeyColumn() . ' FROM ' . $this->myTable . ' WHERE ' . $this->userColumn . '= ' . \Ease\Shared::user()->getUserID() . ' ORDER BY ' . $this->getKeyColumn() . ' DESC LIMIT 1');
         if ($groupID) {
             $this->loadFromSQL((int) $groupID);
 
@@ -132,19 +130,18 @@ class Hostgroup extends Configurator
      * @param string $oldname
      * @param string $newname
      */
-    public function renameHost($oldname, $newname)
-    {
-        $memberOf = \Ease\Shared::db()->queryToArray('SELECT '.$this->getKeyColumn().','.$this->nameColumn.' FROM '.$this->myTable.' WHERE members LIKE \'%"'.$oldname.'"%\' ',
-            $this->getKeyColumn());
+    public function renameHost($oldname, $newname) {
+        $memberOf = \Ease\Shared::db()->queryToArray('SELECT ' . $this->getKeyColumn() . ',' . $this->nameColumn . ' FROM ' . $this->myTable . ' WHERE members LIKE \'%"' . $oldname . '"%\' ',
+                $this->getKeyColumn());
         foreach ($memberOf as $groupID => $group) {
             $found = false;
             $this->loadFromSQL($groupID);
             foreach ($this->data['members'] as $id => $member) {
                 if ($member == $oldname) {
-                    $found                      = true;
+                    $found = true;
                     $this->data['members'][$id] = $newname;
                     $this->addStatusMessage(sprintf(_(' %s was renamed to %s in group %s '),
-                            $oldname, $newname, $group[$this->nameColumn]));
+                                    $oldname, $newname, $group[$this->nameColumn]));
                 }
             }
             if ($found) {
@@ -158,8 +155,7 @@ class Hostgroup extends Configurator
      *
      * @return array
      */
-    public function getMembers()
-    {
+    public function getMembers() {
         return $this->getDataValue('members');
     }
 
@@ -170,34 +166,33 @@ class Hostgroup extends Configurator
      * 
      * @return boolean
      */
-    function delete($id = null)
-    {
+    function delete($id = null) {
         if (isset($id) && ($this->getId() != $id )) {
             $this->loadFromSQL($id);
         } else {
             $id = $this->getId();
         }
-        $host  = new Host;
+        $host = new Host;
         $hosts = $host->getColumnsFromSQL(
-            [$host->keyColumn],
-            [
-            'hostgroups' => '%'.$this->getName().'%'
-            ]
+                [$host->keyColumn],
+                [
+                    'hostgroups' => '%' . $this->getName() . '%'
+                ]
         );
         foreach ($hosts as $hostInfo) {
-            $hostId         = intval(current($hostInfo));
+            $hostId = intval(current($hostInfo));
             $host->loadFromSQL($hostId);
             $hostgroupNames = $host->getDataValue('hostgroups');
             if ($hostgroupNames) {
                 foreach ($hostgroupNames as $hostgroupId => $hostgroupName) {
                     if ($hostgroupId == $this->getId()) {
                         if ($host->delMember('hostgroups', $hostgroupId,
-                                $hostgroupName)) {
+                                        $hostgroupName)) {
                             $this->addStatusMessage(sprintf(_('host %s was removed from group %s'),
-                                    $host->getName(), $hostgroupName), 'success');
+                                            $host->getName(), $hostgroupName), 'success');
                         } else {
                             $this->addStatusMessage(sprintf(_('host %s was not removed from group %s'),
-                                    $host->getName(), $hostgroupName), 'error');
+                                            $host->getName(), $hostgroupName), 'error');
                         }
                     }
                 }
@@ -205,29 +200,29 @@ class Hostgroup extends Configurator
         }
 
 
-        $subgroup  = new Hostgroup;
+        $subgroup = new Hostgroup;
         $subgroups = $subgroup->getColumnsFromSQL(
-            [$subgroup->keyColumn],
-            [
-            'hostgroup_members' => '%'.$this->getName().'%'
-            ]
+                [$subgroup->keyColumn],
+                [
+                    'hostgroup_members' => '%' . $this->getName() . '%'
+                ]
         );
         foreach ($subgroups as $subgroupInfo) {
-            $subgroupId         = intval(current($subgroupInfo));
+            $subgroupId = intval(current($subgroupInfo));
             $subgroup->loadFromSQL($subgroupId);
             $subgroupgroupNames = $subgroup->getDataValue('hostgroup_members');
             if ($subgroupgroupNames) {
                 foreach ($subgroupgroupNames as $subgroupgroupId => $subgroupgroupName) {
                     if ($subgroupgroupId == $this->getId()) {
                         if ($subgroup->delMember('hostgroup_members',
-                                $subgroupgroupId, $subgroupgroupName)) {
+                                        $subgroupgroupId, $subgroupgroupName)) {
                             $this->addStatusMessage(sprintf(_('subgroup %s was removed from group %s'),
-                                    $subgroup->getName(), $subgroupgroupName),
-                                'success');
+                                            $subgroup->getName(), $subgroupgroupName),
+                                    'success');
                         } else {
                             $this->addStatusMessage(sprintf(_('subgroup %s was not removed from group %s'),
-                                    $subgroup->getName(), $subgroupgroupName),
-                                'error');
+                                            $subgroup->getName(), $subgroupgroupName),
+                                    'error');
                         }
                     }
                 }

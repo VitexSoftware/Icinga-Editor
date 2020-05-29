@@ -7,8 +7,8 @@ namespace Icinga\Editor\UI;
  *
  * @author vitex
  */
-class HostgroupMap extends HostMap
-{
+class HostgroupMap extends HostMap {
+
     /**
      * Skupina hostů
      * @var IEHostgroup
@@ -26,9 +26,8 @@ class HostgroupMap extends HostMap
      * @param type $returnError
      */
     public function __construct($hostgroup_id, $directed = false,
-                                $attributes = [], $name = 'G', $strict = true,
-                                $returnError = false)
-    {
+            $attributes = [], $name = 'G', $strict = true,
+            $returnError = false) {
         $this->hostgroup = new Engine\IEHostgroup($hostgroup_id);
 
         $attributes['rankdir'] = 'LR';
@@ -39,15 +38,14 @@ class HostgroupMap extends HostMap
     /**
      * Naplní diagram
      */
-    function fillUp()
-    {
+    function fillUp() {
         $members = $this->hostgroup->getDataValue('members');
-        $host    = new Engine\IEHost();
-        $hosts   = $host->getColumnsFromSQL(
-            ['alias', 'address', 'parents', 'notifications_enabled', 'active_checks_enabled',
-            'passive_checks_enabled', '3d_coords', $host->myCreateColumn, $host->myLastModifiedColumn,
-            $host->nameColumn, $host->keyColumn],
-            'host_id IN ( '.implode(',', array_keys($members)).' )'
+        $host = new Engine\IEHost();
+        $hosts = $host->getColumnsFromSQL(
+                ['alias', 'address', 'parents', 'notifications_enabled', 'active_checks_enabled',
+                    'passive_checks_enabled', '3d_coords', $host->myCreateColumn, $host->myLastModifiedColumn,
+                    $host->nameColumn, $host->keyColumn],
+                'host_id IN ( ' . implode(',', array_keys($members)) . ' )'
         );
 
 
@@ -78,17 +76,17 @@ class HostgroupMap extends HostMap
 
 
             $this->addNode($name,
-                [
-                'id' => 'host_'.$host_info[$host->keyColumn],
-                'node_id' => $host_info[$host->keyColumn],
-                'color' => $color,
-                'x' => $x,
-                'y' => $y,
-                'fixed' => boolval($x + $y),
-                'shape' => 'point',
-                'style' => 'filled',
-                'tooltip' => $alias,
-                'label' => $name]
+                    [
+                        'id' => 'host_' . $host_info[$host->keyColumn],
+                        'node_id' => $host_info[$host->keyColumn],
+                        'color' => $color,
+                        'x' => $x,
+                        'y' => $y,
+                        'fixed' => boolval($x + $y),
+                        'shape' => 'point',
+                        'style' => 'filled',
+                        'tooltip' => $alias,
+                        'label' => $name]
             );
 
             if (isset($host_info[$host->nameColumn])) {

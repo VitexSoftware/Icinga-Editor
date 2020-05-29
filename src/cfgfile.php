@@ -19,18 +19,18 @@ if ($oPage->isPosted()) {
     $cfg = $oPage->getRequestValue('cfg');
     if (strlen(trim($cfg))) {
         if (file_put_contents($file, $cfg) === false) {
-            $oPage->addStatusMessage(_('Error saving file').': '.$file, 'error');
+            $oPage->addStatusMessage(_('Error saving file') . ': ' . $file, 'error');
         } else {
             $oPage->addStatusMessage(sprintf(_('File %s was saved'), $file),
-                'success');
+                    'success');
         }
     }
 }
 
 $oPage->addItem(new UI\PageTop($file));
 
-$oPage->container->addItem(new \Ease\TWB\Panel($file.':'.$line, 'success',
-        new UI\FileEditor($file, $line)));
+$oPage->container->addItem(new \Ease\TWB\Panel($file . ':' . $line, 'success',
+                new UI\FileEditor($file, $line)));
 
 $oPage->addItem(new UI\PageBottom());
 

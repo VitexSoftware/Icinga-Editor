@@ -7,13 +7,11 @@ namespace Icinga\Editor\UI;
  *
  * @author vitex
  */
-class HostgroupSelect extends \Ease\Html\Select
-{
+class HostgroupSelect extends \Ease\Html\Select {
 
-    function loadItems()
-    {
+    function loadItems() {
         $membersFound = ['' => '---'];
-        $query        = 'SELECT  `hostgroup_id`, `hostgroup_name` FROM `'.'hostgroup` WHERE (user_id='.\Ease\Shared::user()->getUserID().')  ORDER BY  hostgroup_name ';
+        $query = 'SELECT  `hostgroup_id`, `hostgroup_name` FROM `' . 'hostgroup` WHERE (user_id=' . \Ease\Shared::user()->getUserID() . ')  ORDER BY  hostgroup_name ';
 
         $membersFoundArray = \Ease\Shared::db()->queryToArray($query);
         if (count($membersFoundArray)) {
@@ -24,13 +22,12 @@ class HostgroupSelect extends \Ease\Html\Select
         return $membersFound;
     }
 
-    public function finalize()
-    {
+    public function finalize() {
         parent::finalize();
-        \Ease\Shared::webPage()->addJavaScript('$("#'.$this->getTagID().'").msDropDown();',
-            null, true);
-        \Ease\Shared::webPage()->includeJavaScript('js/msdropdown/jquery.dd.min.js');
-        \Ease\Shared::webPage()->includeCss('css/msdropdown/dd.css');
+        \Ease\WebPage::singleton()->addJavaScript('$("#' . $this->getTagID() . '").msDropDown();',
+                null, true);
+        \Ease\WebPage::singleton()->includeJavaScript('js/msdropdown/jquery.dd.min.js');
+        \Ease\WebPage::singleton()->includeCss('css/msdropdown/dd.css');
     }
 
 }

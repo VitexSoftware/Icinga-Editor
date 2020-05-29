@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Konfigurace Skupin contactů
  *
@@ -10,25 +11,25 @@
 
 namespace Icinga\Editor\Engine;
 
-class Contactgroup extends Configurator
-{
-    public $myTable     = 'contactgroup';
+class Contactgroup extends Configurator {
+
+    public $myTable = 'contactgroup';
     public $keyColumn = 'contactgroup_id';
-    public $nameColumn  = 'contactgroup_name';
-    public $keyword     = 'contactgroup';
+    public $nameColumn = 'contactgroup_name';
+    public $keyword = 'contactgroup';
 
     /**
      * Dát tyto položky k dispozici i ostatním ?
      * @var boolean
      */
     public $publicRecords = false;
-    public $useKeywords   = [
+    public $useKeywords = [
         'contactgroup_name' => 'VARCHAR(64)',
         'alias' => 'VARCHAR(64)',
         'members' => 'IDLIST',
         'contactgroup_members' => 'IDLIST'
     ];
-    public $keywordsInfo  = [
+    public $keywordsInfo = [
         'contactgroup_name' => [
             'severity' => 'mandatory',
             'title' => 'název skupiny kontaktů',

@@ -14,21 +14,20 @@ require_once 'includes/IEInit.php';
 $service = new Engine\Service($oPage->getRequestValue('service_id', 'int'));
 
 
-$oPage->addItem(new UI\PageTop(_('Service Migration').' '.$service->getName()));
+$oPage->addItem(new UI\PageTop(_('Service Migration') . ' ' . $service->getName()));
 $oPage->addPageColumns();
 
 $oPage->columnII->addItem(new \Ease\Html\H3Tag([new UI\PlatformIcon($service->getDataValue('platform')),
-        $service->getName()]));
+            $service->getName()]));
 
 
-$form = $oPage->columnII->addItem(new \Ease\TWB\Form('Service',
-        'importer.php?class=service', 'POST'));
+$form = $oPage->columnII->addItem(new \Ease\TWB\Form(['name' => 'Service', 'action' => 'importer.php?class = service']));
 $form->setTagID($form->getTagName());
 if (!is_null($service->getMyKey())) {
     $form->addItem(new \Ease\Html\InputHiddenTag($service->getKeyColumn(),
-            $service->getMyKey()));
+                    $service->getMyKey()));
 }
-$form->addItem('<br>');
+$form->addItem('< br>');
 
 foreach ($service->data as $key => $value) {
     if (is_null($value)) {
@@ -41,9 +40,10 @@ foreach ($service->data as $key => $value) {
     }
 }
 
-$form->addItem(new \Ease\TWB\SubmitButton(_('Save'), 'success'));
+$form->addItem(new \Ease\TWB\SubmitButton(_('Save '), ' success  '));
 $oPage->AddCss('
-input.ui-button { width: 100%; }
+        input.ui-button { width: 100%;
+        }
 ');
 
 

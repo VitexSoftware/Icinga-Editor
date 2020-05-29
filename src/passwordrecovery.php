@@ -27,32 +27,32 @@ $oPage->addJavascript('$("#PassworRecovery").validate({
 
 if ($emailTo) {
     $oUser = new User();
-    $userFound = $oUser->listingQuery()->where('email',addslashes( $emailTo))->fetch();
-    
+    $userFound = $oUser->listingQuery()->where('email', addslashes($emailTo))->fetch();
+
     if (!empty($userFound)) {
-        $userID      = intval($userFound['id']);
-        $userLogin   = $userFound['login'];
+        $userID = intval($userFound['id']);
+        $userLogin = $userFound['login'];
         $newPassword = \Ease\Functions::randomString(8);
 
-        $oUser->passwordChange($newPassword,$userID);  
+        $oUser->passwordChange($newPassword, $userID);
 
         $email = $oPage->addItem(new \Ease\HtmlMailer($emailTo,
-                _('Icinga Editor').' - '.sprintf(_('New password for %s'),
-                    $_SERVER['SERVER_NAME'])));
+                        _('Icinga Editor') . ' - ' . sprintf(_('New password for %s'),
+                                $_SERVER['SERVER_NAME'])));
         $email->setMailHeaders(['From' => constant('EMAIL_FROM')]);
         $email->addItem(_("Sign On informations was changed:\n"));
 
-        $email->addItem(_('Username').': '.$userLogin."\n");
-        $email->addItem(_('Password').': '.$newPassword."\n");
+        $email->addItem(_('Username') . ': ' . $userLogin . "\n");
+        $email->addItem(_('Password') . ': ' . $newPassword . "\n");
 
         $email->send();
 
         $oUser->addStatusMessage(sprintf(_('Your new password was sent to %s'),
-                '<strong>'.$_REQUEST['Email'].'</strong>'));
+                        '<strong>' . $_REQUEST['Email'] . '</strong>'));
         $success = true;
     } else {
         $oUser->addStatusMessage(sprintf(_('unknown email address %s'),
-                '<strong>'.$_REQUEST['Email'].'</strong>'), 'warning');
+                        '<strong>' . $_REQUEST['Email'] . '</strong>'), 'warning');
     }
 } else {
     $oUser->addStatusMessage(_('Please enter your email.'));
@@ -66,21 +66,21 @@ if (!$success) {
 
     $oPage->columnIII->addItem(_('Forgot your password? Enter your e-mail address you entered during the registration and we will send you a new one.'));
 
-    $emailForm = $oPage->columnII->addItem(new \Ease\TWB\Form(['name'=>'PassworRecovery']));
+    $emailForm = $oPage->columnII->addItem(new \Ease\TWB\Form(['name' => 'PassworRecovery']));
 
 
     $emailForm->addInput(new \Ease\Html\InputEmailTag('Email', null,
-            ['type' => 'email']), _('Email'));
+                    ['type' => 'email']), _('Email'));
     $emailForm->addItem(new \Ease\TWB\SubmitButton(_('Send New Password'),
-            'warning'));
+                    'warning'));
 
     if (isset($_POST)) {
         $emailForm->fillUp($_POST);
     }
 } else {
     $oPage->columnII->addItem(new \Ease\TWB\Well([_('Please check your mailbox for new password')
-            , ' '._('and').' ', new \Ease\TWB\LinkButton('login.php',
-                _('Sign In'), 'success')]));
+                , ' ' . _('and') . ' ', new \Ease\TWB\LinkButton('login.php',
+                        _('Sign In'), 'success')]));
 }
 
 $oPage->addItem(new UI\PageBottom());

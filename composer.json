@@ -12,7 +12,7 @@
     "minimum-stability":"dev",
     "require": {
         "vitexsoftware/ease-twbootstrap": "dev-master",
-        "league/commonmark": "^0.15",
+        "league/commonmark": "< 0.18.3",
         "vitexsoftware/ease-fluentpdo": "dev-master",
         "vitexsoftware/ease-core": "dev-master"
     },

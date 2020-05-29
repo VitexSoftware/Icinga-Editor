@@ -34,17 +34,17 @@ if ($oPage->isPosted()) {
 
 $oPage->addItem(new UI\PageBottom());
 
-$importForm = new \Ease\Html\Form('ImportForm');
+$importForm = new \Ease\Html\Form(['name' => 'ImportForm']);
 $importForm->addItem(new EaseLabeledTextInput('maincfg',
-        constant('CFG_DIRECTORY').'icinga.cfg', _('hlavní soubor konfigurace')));
+                constant('CFG_DIRECTORY') . 'icinga.cfg', _('hlavní soubor konfigurace')));
 
 $importForm->addItem(new EaseLabeledCheckbox('dbinit', null,
-        _('Znovu vytvořit strukturu databáze')));
-$importForm->addItem('<br clear="all">');
+                _('Znovu vytvořit strukturu databáze')));
+$importForm->addItem('<br clear = "all">');
 $importForm->addItem(new \Ease\JQuery\SubmitButton('submit', _('importovat'),
-        _('Spustí proces importu')));
+                _('Spustí proces importu')));
 
 $oPage->columnII->addItem(new \Ease\Html\FieldSet(_('parametry inicializace'),
-        $importForm));
+                $importForm));
 
 $oPage->draw();

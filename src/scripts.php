@@ -15,7 +15,7 @@ $oPage->onlyForLogged();
 $oPage->addItem(new UI\PageTop(_('Scripts Overview')));
 
 $oPage->addItem(new \Ease\TWB\Container(new UI\DataGrid(_('Scripts'),
-            new Script())));
+                        new Script())));
 
 $oPage->addItem(new UI\PageBottom());
 

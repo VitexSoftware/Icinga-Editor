@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Konfigurace Scriptů
  *
@@ -11,13 +12,13 @@ namespace Icinga\Editor;
 /**
  * Scripts manager
  */
-class Script extends engine\Configurator
-{
-    public $myTable              = 'script';
-    public $keyColumn            = 'script_id';
-    public $nameColumn           = 'filename';
-    public $keyword              = 'script';
-    public $myCreateColumn       = 'DatCreate';
+class Script extends engine\Configurator {
+
+    public $myTable = 'script';
+    public $keyColumn = 'script_id';
+    public $nameColumn = 'filename';
+    public $keyword = 'script';
+    public $myCreateColumn = 'DatCreate';
     public $myLastModifiedColumn = 'DatSave';
 
     /**
@@ -55,8 +56,7 @@ class Script extends engine\Configurator
      *
      * @param type $itemID
      */
-    public function __construct($itemID = null)
-    {
+    public function __construct($itemID = null) {
         $this->keywordsInfo = [
             'filename' => [
                 'severity' => 'mandatory',
@@ -84,8 +84,7 @@ class Script extends engine\Configurator
      *
      * @return array
      */
-    public function getAllUserData()
-    {
+    public function getAllUserData() {
         $allData = parent::getAllUserData();
         foreach ($allData as $adkey => $ad) {
             unset($allData[$adkey]['deploy']);
@@ -102,8 +101,7 @@ class Script extends engine\Configurator
      *
      * @return array
      */
-    public function getAllData()
-    {
+    public function getAllData() {
         $AllData = parent::getAllData();
         foreach ($AllData as $ADkey => $AD) {
             unset($AllData[$ADkey]['deploy']);
@@ -122,8 +120,7 @@ class Script extends engine\Configurator
      * @param  string                     $urlAdd Předávaná část URL
      * @return \EaseJQConfirmedLinkButton
      */
-    public function deleteButton($name = null, $addUrl = '')
-    {
+    public function deleteButton($name = null, $addUrl = '') {
         return parent::deleteButton(_('Script'), $addUrl);
     }
 
@@ -134,8 +131,7 @@ class Script extends engine\Configurator
      * @param  string $dataPrefix
      * @return int    počet převzatých řádek
      */
-    public function takeData($data, $dataPrefix = null)
-    {
+    public function takeData($data, $dataPrefix = null) {
         if (array_key_exists('public', $data)) {
             $data['public'] = 1;
         } else {
@@ -147,8 +143,7 @@ class Script extends engine\Configurator
     /**
      * vrací skript
      */
-    public function getCfg($send = TRUE, $templateValue = false)
-    {
+    public function getCfg($send = TRUE, $templateValue = false) {
         $script = $this->getDataValue('body');
         if ($send) {
             header('Content-Description: File Transfer');
@@ -161,23 +156,24 @@ class Script extends engine\Configurator
         switch ($this->getDataValue('platform')) {
             case 'windows':
                 if ($send) {
-                    header('Content-Disposition: attachment; filename='.$this->getName());
+                    header('Content-Disposition: attachment; filename=' . $this->getName());
                 }
                 $script = str_replace("\n", "\r\n", $script);
                 break;
             case 'linux':
                 if ($send) {
-                    header('Content-Disposition: attachment; filename='.$this->getName());
+                    header('Content-Disposition: attachment; filename=' . $this->getName());
                 }
                 break;
             default :
                 break;
         }
         if ($send) {
-            header('Content-Length: '.strlen($script));
+            header('Content-Length: ' . strlen($script));
             echo $script;
         } else {
             return $script;
         }
     }
+
 }

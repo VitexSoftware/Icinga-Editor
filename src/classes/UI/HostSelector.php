@@ -8,8 +8,8 @@ namespace Icinga\Editor\UI;
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2012-2018 Vitex@hippy.cz (G)
  */
-class HostSelector extends \Ease\Container
-{
+class HostSelector extends \Ease\Container {
+
     public $keyColumn = 'service_name';
 
     /**
@@ -17,28 +17,27 @@ class HostSelector extends \Ease\Container
      *
      * @param IEServices $service
      */
-    public function __construct($service)
-    {
-        $hostsAssigned  = [];
+    public function __construct($service) {
+        $hostsAssigned = [];
         parent::__construct();
-        $fieldName      = $this->keyColumn;
+        $fieldName = $this->keyColumn;
         $initialContent = new \Ease\TWB\Panel(_('Hosts checked for service'),
-            'default');
+                'default');
         $initialContent->setTagCss(['width' => '100%']);
 
         if (is_null($service->getMyKey())) {
             $initialContent->addItem(_('Please save record first'));
         } else {
             $serviceName = $service->getName();
-            $host        = new \Icinga\Editor\Engine\Host();
+            $host = new \Icinga\Editor\Engine\Host();
 
             if (\Ease\Shared::user()->getSettingValue('admin')) {
                 $allHosts = $host->getAllFromSQL(NULL,
-                    [$host->keyColumn, $host->nameColumn, 'platform', 'register'],
-                    null, $host->nameColumn, $host->keyColumn);
+                        [$host->keyColumn, $host->nameColumn, 'platform', 'register'],
+                        null, $host->nameColumn, $host->keyColumn);
             } else {
                 $allHosts = $host->getListing(null, true,
-                    ['platform', 'register']);
+                        ['platform', 'register']);
             }
             if ($service->getDataValue('host_name')) {
                 foreach ($service->getDataValue('host_name') as $hostId => $hostName) {
@@ -52,8 +51,7 @@ class HostSelector extends \Ease\Container
                     unset($allHosts[$hostID]);
                 }
 
-                if (($hostInfo['platform'] != 'generic') && $hostInfo['platform']
-                    != $service->getDataValue('platform')) {
+                if (($hostInfo['platform'] != 'generic') && $hostInfo['platform'] != $service->getDataValue('platform')) {
                     unset($allHosts[$hostID]);
                 }
             }
@@ -66,13 +64,13 @@ class HostSelector extends \Ease\Container
 
                 foreach ($allHosts as $hostID => $hostInfo) {
                     $initialContent->addItem(
-                        new \Ease\TWB\ButtonDropdown(
-                        $hostInfo[$host->nameColumn], 'inverse', 'xs',
-                        [
-                        new \Ease\Html\ATag('host.php?host_id='.$hostID.'&amp;service_id='.$service->getId(),
-                            \Ease\TWB\Part::GlyphIcon('wrench').' '._('Edit')),
-                        new \Ease\Html\ATag('?addhost='.$hostInfo[$host->nameColumn].'&amp;host_id='.$hostID.'&amp;'.$service->getKeyColumn().'='.$service->getMyKey().'&amp;'.$service->nameColumn.'='.$service->getName(),
-                            \Ease\TWB\Part::GlyphIcon('plus').' '._('Start checking'))
+                            new \Ease\TWB\ButtonDropdown(
+                                    $hostInfo[$host->nameColumn], 'inverse', 'xs',
+                                    [
+                                new \Ease\Html\ATag('host.php?host_id=' . $hostID . '&amp;service_id=' . $service->getId(),
+                                        \Ease\TWB\Part::GlyphIcon('wrench') . ' ' . _('Edit')),
+                                new \Ease\Html\ATag('?addhost=' . $hostInfo[$host->nameColumn] . '&amp;host_id=' . $hostID . '&amp;' . $service->getKeyColumn() . '=' . $service->getMyKey() . '&amp;' . $service->nameColumn . '=' . $service->getName(),
+                                        \Ease\TWB\Part::GlyphIcon('plus') . ' ' . _('Start checking'))
                     ]));
                 }
             }
@@ -82,16 +80,16 @@ class HostSelector extends \Ease\Container
                 foreach ($hostsAssigned as $hostID => $hostInfo) {
 
                     $initialContent->addItem(
-                        new \Ease\TWB\ButtonDropdown(
-                        $hostInfo[$host->nameColumn], 'success', 'xs',
-                        [
-                        new \Ease\Html\ATag(
-                            '?delhost='.$hostInfo[$host->nameColumn].'&amp;host_id='.$hostID.'&amp;'.$service->getKeyColumn().'='.$service->getMyKey().'&amp;'.$service->nameColumn.'='.$service->getName(),
-                            \Ease\TWB\Part::GlyphIcon('remove').' '._('Stop watching'))
-                            , new \Ease\Html\ATag('host.php?host_id='.$hostID.'&amp;service_id='.$service->getId(),
-                            \Ease\TWB\Part::GlyphIcon('wrench').' '._('Editor'))
-                        ]
-                        )
+                            new \Ease\TWB\ButtonDropdown(
+                                    $hostInfo[$host->nameColumn], 'success', 'xs',
+                                    [
+                                new \Ease\Html\ATag(
+                                        '?delhost=' . $hostInfo[$host->nameColumn] . '&amp;host_id=' . $hostID . '&amp;' . $service->getKeyColumn() . '=' . $service->getMyKey() . '&amp;' . $service->nameColumn . '=' . $service->getName(),
+                                        \Ease\TWB\Part::GlyphIcon('remove') . ' ' . _('Stop watching'))
+                                , new \Ease\Html\ATag('host.php?host_id=' . $hostID . '&amp;service_id=' . $service->getId(),
+                                        \Ease\TWB\Part::GlyphIcon('wrench') . ' ' . _('Editor'))
+                                    ]
+                            )
                     );
                 }
             }
@@ -104,32 +102,31 @@ class HostSelector extends \Ease\Container
      *
      * @param array $request
      */
-    public static function saveMembers($request)
-    {
+    public static function saveMembers($request) {
         $host = new \Icinga\Editor\Engine\Host();
         if (isset($request[$host->keyColumn])) {
             if ($host->loadFromSQL($request[$host->keyColumn])) {
                 if (isset($request['addhost']) || isset($request['delhost'])) {
                     if (isset($request['addhost'])) {
                         $host->addMember('service_name', $request['service_id'],
-                            $request['service_name']);
+                                $request['service_name']);
                         if ($host->saveToSQL()) {
                             $host->addStatusMessage(sprintf(_('Item %s was added'),
-                                    $request['addhost']), 'success');
+                                            $request['addhost']), 'success');
                         } else {
                             $host->addStatusMessage(sprintf(_('item %s was not added'),
-                                    $request['addhost']), 'warning');
+                                            $request['addhost']), 'warning');
                         }
                     }
                     if (isset($request['delhost'])) {
                         $host->delMember('service_name', $request['service_id'],
-                            $request['service_name']);
+                                $request['service_name']);
                         if ($host->saveToSQL()) {
                             $host->addStatusMessage(sprintf(_('item %s was removed'),
-                                    $request['delhost']), 'success');
+                                            $request['delhost']), 'success');
                         } else {
                             $host->addStatusMessage(sprintf(_('item %s was not removed'),
-                                    $request['delhost']), 'warning');
+                                            $request['delhost']), 'warning');
                         }
                     }
                 }

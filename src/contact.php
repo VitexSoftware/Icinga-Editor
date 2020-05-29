@@ -33,26 +33,25 @@ if ($delete == 'true') {
     exit();
 }
 
-$oPage->addItem(new UI\PageTop(_('Contact Editor').' '.$contact->getName()));
+$oPage->addItem(new UI\PageTop(_('Contact Editor') . ' ' . $contact->getName()));
 
 switch ($oPage->getRequestValue('action')) {
     case 'delete':
-        $form        = new \Ease\Container;
-        $form->addItem(new \Ease\Html\H2Tag($contact->getName()));
-        $confirmator = $form->addItem(new \Ease\TWB\Panel(_('Are you sure ?')),
-            'danger');
-        $confirmator->addItem(new \Ease\TWB\LinkButton('?'.$contact->keyColumn.'='.$contact->getID(),
-                _('No').' '.\Ease\TWB\Part::glyphIcon('ok'), 'success'));
-        $confirmator->addItem(new \Ease\TWB\LinkButton('?delete=true&'.$contact->keyColumn.'='.$contact->getID(),
-                _('Yes').' '.\Ease\TWB\Part::glyphIcon('remove'), 'danger'));
-        break;
+    $form = new \Ease\Container;
+    $form->addItem(new \Ease\Html\H2Tag($contact->getName()));
+    $confirmator = $form->addItem(new \Ease\TWB\Panel(_('Are you sure ?')),
+    'danger');
+    $confirmator->addItem(new \Ease\TWB\LinkButton('?'.$contact->keyColumn.'='.$contact->getID(),
+    _('No').' '.\Ease\TWB\Part::glyphIcon('ok'), 'success'));
+    $confirmator->addItem(new \Ease\TWB\LinkButton('?delete=true&'.$contact->keyColumn.'='.$contact->getID(),
+    _('Yes').' '.\Ease\TWB\Part::glyphIcon('remove'), 'danger'));
+    break;
     default :
 
 
-        $contactEdit = new UI\CfgEditor($contact);
+    $contactEdit = new UI\CfgEditor($contact);
 
-        $form = new \Ease\Html\Form('Contact', 'contact.php', 'POST',
-            $contactEdit, ['class' => 'form-horizontal']);
+    $form = new \Ease\Html\Form(['name'=>'Contact', 'action'=> 'contact.php', 'class' => 'form-horizontal'],$contactEdit);
         $form->setTagID($form->getTagName());
         if (!is_null($contact->getMyKey())) {
             $form->addItem(new \Ease\Html\InputHiddenTag($contact->getKeyColumn(),
@@ -90,7 +89,7 @@ if ($contact->getId()) {
         foreach ($serviceUsages as $usage) {
             $listing->addItem(
                 new \Ease\Html\LiTag(
-                    new \Ease\Html\ATag('service.php?service_id='.$usage['service_id'],
+                    new \Ease\Html\ATag('service.php?service_id = '.$usage['service_id'],
                         $usage[$service->nameColumn])
                     , ['class' => 'list-group-item'])
             );
@@ -110,7 +109,7 @@ if ($contact->getId()) {
         foreach ($hostUsages as $usage) {
             $listing->addItem(
                 new \Ease\Html\LiTag(
-                    new \Ease\Html\ATag('host.php?host_id='.$usage['host_id'],
+                    new \Ease\Html\ATag('host.php?host_id = '.$usage['host_id'],
                         $usage[$host->nameColumn])
                     , ['class' => 'list-group-item'])
             );

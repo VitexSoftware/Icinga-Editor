@@ -10,21 +10,19 @@ namespace Icinga\Editor\UI;
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2012 Vitex@hippy.cz (G)
  */
-class PlatformSelector extends \Ease\Html\Select
-{
+class PlatformSelector extends \Ease\Html\Select {
+
     public $platforms = [
         'windows' => ['image' => 'logos/base/win40.gif'],
         'linux' => ['image' => 'logos/base/linux40.gif'],
         'generic' => ['image' => 'logos/unknown.gif'],
     ];
 
-    function loadItems()
-    {
+    function loadItems() {
         return ['generic' => 'generic', 'windows' => 'windows', 'linux' => 'linux'];
     }
 
-    public function finalize()
-    {
+    public function finalize() {
         parent::finalize();
         reset($this->platforms);
         foreach ($this->pageParts as $optionName => $option) {
@@ -34,10 +32,10 @@ class PlatformSelector extends \Ease\Html\Select
             }
             next($this->platforms);
         }
-        \Ease\Shared::webPage()->addJavaScript('$("#'.$this->getTagID().'").msDropDown();',
-            null, true);
-        \Ease\Shared::webPage()->addJavaScript('$("#'.$this->getTagID().'").change(function() {
-            var oDropdown = $("#'.$this->getTagID().'").msDropdown().data("dd");
+        \Ease\WebPage::singleton()->addJavaScript('$("#' . $this->getTagID() . '").msDropDown();',
+                null, true);
+        \Ease\WebPage::singleton()->addJavaScript('$("#' . $this->getTagID() . '").change(function() {
+            var oDropdown = $("#' . $this->getTagID() . '").msDropdown().data("dd");
             var value = oDropdown.get("selectedText");
 
         var saverClass = $("[name=\'class\']").val();
@@ -46,7 +44,7 @@ class PlatformSelector extends \Ease\Html\Select
 
         if(key) {
             var field = $(this).attr("name");
-            var input = $("[name=\''.$this->getTagName().'\']");
+            var input = $("[name=\'' . $this->getTagName() . '\']");
 
             $.post(\'datasaver.php\', {
                 SaverClass: saverClass,
@@ -68,8 +66,8 @@ class PlatformSelector extends \Ease\Html\Select
 
 
         });', null, true);
-        \Ease\Shared::webPage()->includeJavaScript('js/msdropdown/jquery.dd.min.js');
-        \Ease\Shared::webPage()->includeCss('css/msdropdown/dd.css');
+        \Ease\WebPage::singleton()->includeJavaScript('js/msdropdown/jquery.dd.min.js');
+        \Ease\WebPage::singleton()->includeCss('css/msdropdown/dd.css');
     }
 
 }

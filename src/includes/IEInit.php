@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Init aplikace
  *
@@ -10,13 +11,12 @@ namespace Icinga\Editor;
 
 require_once '../vendor/autoload.php';
 
-\Ease\Shared::singleton()->loadConfig('../config.json',true);
-\Ease\Locale::singleton('UTF-8', '../locale','icinga-editor');
+\Ease\Shared::singleton()->loadConfig('../config.json', true);
+\Ease\Locale::singleton('UTF-8', '../locale', 'icinga-editor');
 
 session_start();
- 
 
-$oUser = \Ease\Shared::user(null, '\Icinga\Editor\User');
-//User::singleton( $oUser ) ;
+
+$oUser = \Ease\Shared::user(null, 'Icinga\Editor\User');
 
 $oPage = new UI\WebPage();

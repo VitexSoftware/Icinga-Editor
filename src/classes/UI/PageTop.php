@@ -7,8 +7,8 @@ namespace Icinga\Editor\UI;
  *
  * @author     Vitex <vitex@hippy.cz>
  */
-class PageTop extends \Ease\Html\HeaderTag
-{
+class PageTop extends \Ease\Html\HeaderTag {
+
     /**
      * Titulek stránky
      * @var string
@@ -20,8 +20,7 @@ class PageTop extends \Ease\Html\HeaderTag
      *
      * @param string $pageTitle
      */
-    public function __construct($pageTitle = null)
-    {
+    public function __construct($pageTitle = null) {
         parent::__construct();
         if (!is_null($pageTitle)) {
             WebPage::singleton()->setPageTitle($pageTitle);
@@ -32,8 +31,7 @@ class PageTop extends \Ease\Html\HeaderTag
     /**
      * Vloží vršek stránky a hlavní menu
      */
-    public function finalize()
-    {
+    public function finalize() {
         $this->addItem(new MainMenu());
     }
 

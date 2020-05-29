@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Icinga Editor - Service Group
  *
@@ -8,12 +9,12 @@
 
 namespace Icinga\Editor\Engine;
 
-class Servicegroup extends Configurator
-{
-    public $myTable     = 'servicegroup';
+class Servicegroup extends Configurator {
+
+    public $myTable = 'servicegroup';
     public $keyColumn = 'servicegroup_id';
-    public $nameColumn  = 'servicegroup_name';
-    public $keyword     = 'servicegroup';
+    public $nameColumn = 'servicegroup_name';
+    public $keyword = 'servicegroup';
 
     /**
      * Přidat položky register a use ?
@@ -26,7 +27,7 @@ class Servicegroup extends Configurator
      * @var boolean
      */
     public $publicRecords = false;
-    public $useKeywords   = [
+    public $useKeywords = [
         'servicegroup_name' => 'VARCHAR(64)',
         'alias' => 'VARCHAR(64)',
         'members' => 'IDLIST',
@@ -35,7 +36,7 @@ class Servicegroup extends Configurator
         'notes_url' => 'VARCHAR(128)',
         'action_url' => 'VARCHAR(128)'
     ];
-    public $keywordsInfo  = [
+    public $keywordsInfo = [
         'servicegroup_name' => [
             'severity' => 'mandatory',
             'title' => 'název skupiny služeb',
@@ -89,8 +90,7 @@ class Servicegroup extends Configurator
      *
      * @param string $name
      */
-    public function loadDefault($name)
-    {
+    public function loadDefault($name) {
         
     }
 

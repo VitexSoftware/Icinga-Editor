@@ -10,12 +10,10 @@ namespace Icinga\Editor\UI;
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2015 Vitex@hippy.cz (G)
  */
-class StemplateSelect extends \Ease\Html\Select
-{
+class StemplateSelect extends \Ease\Html\Select {
 
-    function loadItems()
-    {
-        $tpls      = ['' => _('choose preset …')];
+    function loadItems() {
+        $tpls = ['' => _('choose preset …')];
         $stemplate = new \Icinga\Editor\Stemplate();
         $templates = $stemplate->getColumnsFromSQL([$stemplate->getKeyColumn(),
             $stemplate->nameColumn]);

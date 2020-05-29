@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Icinga editor - Timeperiod
  *
@@ -8,13 +9,13 @@
 
 namespace Icinga\Editor\Engine;
 
-class Timeperiod extends Configurator
-{
-    public $myTable      = 'timeperiod';
-    public $keyColumn  = 'timeperiod_id';
-    public $keyword      = 'timeperiod';
-    public $nameColumn   = 'timeperiod_name';
-    public $useKeywords  = [
+class Timeperiod extends Configurator {
+
+    public $myTable = 'timeperiod';
+    public $keyColumn = 'timeperiod_id';
+    public $keyword = 'timeperiod';
+    public $nameColumn = 'timeperiod_name';
+    public $useKeywords = [
         'timeperiod_name' => 'VARCHAR(64)',
         'alias' => 'VARCHAR(64)',
         'periods' => 'SERIAL'
@@ -50,14 +51,12 @@ class Timeperiod extends Configurator
      * @param  type $dataPrefix
      * @return type
      */
-    public function takeData($data, $dataPrefix = null)
-    {
+    public function takeData($data, $dataPrefix = null) {
         $this->keywordsInfo['timeperiod_name']['title'] = _('Timeperiod Name');
-        $this->keywordsInfo['alias']['title']           = _('Period Alias');
+        $this->keywordsInfo['alias']['title'] = _('Period Alias');
 
         $this->timeperiods = [];
-        if (isset($data['NewKey']) && strlen(trim($data['NewKey'])) && isset($data['NewTimes'])
-            && strlen(trim($data['NewTimes']))) {
+        if (isset($data['NewKey']) && strlen(trim($data['NewKey'])) && isset($data['NewTimes']) && strlen(trim($data['NewTimes']))) {
             $this->addTime($data['NewKey'], $data['NewTimes']);
         }
         unset($data['NewKey']);
@@ -65,7 +64,7 @@ class Timeperiod extends Configurator
         unset($data['del']);
         foreach ($data as $key => $value) {
             if (($key == $this->keyColumn) || array_key_exists($key,
-                    $this->useKeywords) || $key == $this->userColumn) {
+                            $this->useKeywords) || $key == $this->userColumn) {
                 $this->setDataValue($key, $value);
             } else {
                 $this->addTime($key, $value);
@@ -84,8 +83,7 @@ class Timeperiod extends Configurator
      * @return array
      */
     public function loadFromSQL($itemID = null, $dataPrefix = null,
-                                $multiplete = false)
-    {
+            $multiplete = false) {
         $restult = parent::loadFromSQL($itemID, $dataPrefix, $multiplete);
         $members = $this->getDataValue('periods');
         if (strlen($members)) {
@@ -102,8 +100,7 @@ class Timeperiod extends Configurator
      * @param  bool  $searchForID
      * @return int
      */
-    public function saveToSQL($data = null, $searchForID = false)
-    {
+    public function saveToSQL($data = null, $searchForID = false) {
         if (is_null($data)) {
             $data = $this->getData();
         }
@@ -121,8 +118,7 @@ class Timeperiod extends Configurator
      * @param string $MemberID
      * @param string $MemberName
      */
-    public function addTime($timeName, $timeInterval)
-    {
+    public function addTime($timeName, $timeInterval) {
         if (strlen($timeName) && strlen($timeInterval)) {
             $this->timeperiods[trim($timeName)] = trim($timeInterval);
 
@@ -138,8 +134,7 @@ class Timeperiod extends Configurator
      * @param  string  $MemberName
      * @return boolean
      */
-    public function delTime($memberID)
-    {
+    public function delTime($memberID) {
         if (isset($this->timeperiods[$memberID])) {
             unset($this->timeperiods[$memberID]);
 
@@ -147,8 +142,7 @@ class Timeperiod extends Configurator
         }
     }
 
-    public function getAllUserData()
-    {
+    public function getAllUserData() {
         $allData = parent::getAllUserData();
         foreach ($allData as $key => $dataRow) {
             $periods = $dataRow['periods'];
@@ -166,8 +160,7 @@ class Timeperiod extends Configurator
         return $allData;
     }
 
-    public function getAllData()
-    {
+    public function getAllData() {
         $allData = parent::getAllData();
         foreach ($allData as $key => $dataRow) {
             $periods = $dataRow['periods'];
@@ -191,8 +184,7 @@ class Timeperiod extends Configurator
      * 
      * @return \EaseJQConfirmedLinkButton
      */
-    public function deleteButton($name = null, $addUrl = '')
-    {
+    public function deleteButton($name = null, $addUrl = '') {
         return parent::deleteButton(_('Timeperiod'), $addUrl);
     }
 

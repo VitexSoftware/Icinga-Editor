@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Správce konfigurace
  *
@@ -35,8 +36,8 @@ use Icinga\Editor\User;
  *
  * @author vitex
  */
-class Configurator extends Engine
-{
+class Configurator extends Engine {
+
     /**
      * Tabulka do níž objekt ukládá svá data
      * @var string
@@ -138,14 +139,13 @@ class Configurator extends Engine
      *
      * @param int|null $itemID
      */
-    public function __construct($itemID = null)
-    {
+    public function __construct($itemID = null) {
         if (!isset($_SESSION['parentCache'])) { //Todo: Zaktualizovat po editaci šablon
             $_SESSION['parentCache'] = [];
         }
         $this->parentCache = &$_SESSION['parentCache'];
         parent::__construct($itemID, Shared::singleton()->configuration);
-        $this->user        = Shared::user();
+        $this->user = Shared::user();
 //       foreach ($this->useKeywords as $KeyWord => $ColumnType) {
 //            switch ($ColumnType) {
 //                case 'IDLIST':
@@ -156,31 +156,19 @@ class Configurator extends Engine
 //            }
 //        }
 
-        if (!is_null($itemID)) {
-            if (is_string($itemID) && $this->nameColumn) {
-                $this->setKeyColumn($this->nameColumn);
-                $this->loadFromSQL($itemID);
-                $this->resetObjectIdentity();
-            } else {
-                $this->loadFromSQL($itemID);
-            }
-        } else {
-// $this->setDataValue($this->userColumn, \Ease\Shared::user()->getID());
-        }
-
         if ($this->allowTemplating) {
-            $this->useKeywords['name']      = 'VARCHAR(64)';
-            $this->keywordsInfo['name']     = [
+            $this->useKeywords['name'] = 'VARCHAR(64)';
+            $this->keywordsInfo['name'] = [
                 'severity' => 'advanced',
                 'title' => _('Save as template')
             ];
-            $this->useKeywords['register']  = 'BOOL';
-            $this->useKeywords['use']       = 'SELECT';
+            $this->useKeywords['register'] = 'BOOL';
+            $this->useKeywords['use'] = 'SELECT';
             $this->keywordsInfo['register'] = [
                 'severity' => 'advanced',
                 'title' => _('Not an template')
             ];
-            $this->keywordsInfo['use']      = [
+            $this->keywordsInfo['use'] = [
                 'severity' => 'advanced',
                 'title' => 'use template',
                 'mandatory' => true,
@@ -194,8 +182,8 @@ class Configurator extends Engine
         }
 
         if ($this->publicRecords) {
-            $this->useKeywords['public']                    = 'BOOL';
-            $this->keywordsInfo['public']                   = [
+            $this->useKeywords['public'] = 'BOOL';
+            $this->keywordsInfo['public'] = [
                 'severity' => 'advanced',
                 'title' => 'Publicaly to use by other users',
                 'mandatory' => true
@@ -207,7 +195,7 @@ class Configurator extends Engine
             'title' => _('Owner')
         ];
 
-        $this->useKeywords['generate']  = 'BOOL';
+        $this->useKeywords['generate'] = 'BOOL';
         $this->keywordsInfo['generate'] = [
             'title' => 'Generate to Configuration',
             'severity' => 'advanced',
@@ -215,7 +203,7 @@ class Configurator extends Engine
         ];
 
         if (isset($this->userColumn)) {
-            $this->useKeywords[$this->userColumn]  = 'USER';
+            $this->useKeywords[$this->userColumn] = 'USER';
             $this->keywordsInfo[$this->userColumn] = [
                 'severity' => 'advanced',
                 'title' => _('owner'),
@@ -237,9 +225,8 @@ class Configurator extends Engine
      * @return array Results
      */
     public function loadFromSQL($itemID = null, $dataPrefix = null,
-                                $multiplete = false)
-    {
-        $result  = parent::loadFromSQL($itemID, $dataPrefix, $multiplete);
+            $multiplete = false) {
+        $result = parent::loadFromSQL($itemID, $dataPrefix, $multiplete);
         $ownerid = $this->getDataValue($this->userColumn);
         if ($ownerid) {
             $this->owner = new User((int) $ownerid);
@@ -253,8 +240,7 @@ class Configurator extends Engine
      *
      * @param int|string $template identifikátor záznamu k načtení
      */
-    public function loadTemplate($template)
-    {
+    public function loadTemplate($template) {
         if (is_numeric($template)) {
             $TemplateData = $this->getDataFromSQL((int) $template);
         } else {
@@ -264,14 +250,14 @@ class Configurator extends Engine
                 $TemplateData = $TemplateData[0];
             } else {
                 $this->addStatusMessage(sprintf(_('template %s was not loaded'),
-                        $TemplateData[$this->nameColumn]), 'error');
+                                $TemplateData[$this->nameColumn]), 'error');
 
                 return false;
             }
             $this->restoreObjectIdentity();
         }
         $this->addStatusMessage(sprintf(_('template %s was loaded'),
-                $TemplateData[$this->nameColumn]));
+                        $TemplateData[$this->nameColumn]));
         unset($TemplateData[$this->keyColumn]);
         unset($TemplateData[$this->nameColumn]);
         $this->setData($TemplateData);
@@ -285,9 +271,8 @@ class Configurator extends Engine
      * @param string $filename
      * @param array  $columns
      */
-    public function writeConf($filename, $columns)
-    {
-        $cfg = fopen(constant('CFG_GENERATED').'/'.$filename, 'a+');
+    public function writeConf($filename, $columns) {
+        $cfg = fopen(constant('CFG_GENERATED') . '/' . $filename, 'a+');
         if ($cfg) {
             $cmdlen = 0;
             unset($columns['public']);
@@ -302,7 +287,7 @@ class Configurator extends Engine
             }
             ksort($columns);
             fputs($cfg,
-                "define ".$this->keyword." { #".$columns[$this->keyColumn]."@".$this->myTable." \n");
+                    "define " . $this->keyword . " { #" . $columns[$this->keyColumn] . "@" . $this->myTable . " \n");
             foreach ($columns as $columnName => $columnValue) {
 
                 if (is_array($columnValue) && (current($columnValue) == 'vitex')) {
@@ -320,7 +305,7 @@ class Configurator extends Engine
 
                     if (strstr($this->useKeywords[$columnName], 'FLAGS')) {
                         $columnValue = join(',',
-                            str_split(str_replace(',', '', $columnValue)));
+                                str_split(str_replace(',', '', $columnValue)));
                     }
 
                     if (is_array($columnValue) || !strlen(trim($columnValue))) {
@@ -333,9 +318,9 @@ class Configurator extends Engine
 
 
                     fputs($cfg,
-                        "\t$columnName".str_repeat(' ',
-                            ($cmdlen - strlen($columnName) + 1)).str_replace("\n",
-                            '\n', $columnValue)."\n");
+                            "\t$columnName" . str_repeat(' ',
+                                    ($cmdlen - strlen($columnName) + 1)) . str_replace("\n",
+                                    '\n', $columnValue) . "\n");
                 }
             }
             fputs($cfg, "}\n\n");
@@ -348,11 +333,10 @@ class Configurator extends Engine
      *
      * @return type
      */
-    public function createSqlStructure()
-    {
+    public function createSqlStructure() {
         if ($this->getKeyColumn()) {
             $myStruct = array_merge([$this->getKeyColumn() => 'INT'],
-                $this->useKeywords);
+                    $this->useKeywords);
         } else {
             $myStruct = $this->useKeywords;
         }
@@ -363,31 +347,31 @@ class Configurator extends Engine
 
         if (!is_null($this->myCreateColumn)) {
             $myStruct = array_merge($myStruct,
-                [$this->myCreateColumn => 'DATETIME']);
+                    [$this->myCreateColumn => 'DATETIME']);
         }
 
         if (!is_null($this->myLastModifiedColumn)) {
             $myStruct = array_merge($myStruct,
-                [$this->myLastModifiedColumn => 'DATETIME']);
+                    [$this->myLastModifiedColumn => 'DATETIME']);
         }
 
         $sqlStruct = [];
         foreach ($myStruct as $columnName => $columnType) {
 
             if (strstr($columnType, 'FLAGS')) {
-                $columnType = 'VARCHAR('.count(explode(',', $columnType)).')';
+                $columnType = 'VARCHAR(' . count(explode(',', $columnType)) . ')';
             }
 
             if (strstr($columnType, 'RADIO')) {
                 $options = explode(',', $columnType);
-                $maxlen  = 0;
+                $maxlen = 0;
                 foreach ($options as $option) {
                     $len = strlen($option);
                     if ($len > $maxlen) {
                         $maxlen = $len;
                     }
                 }
-                $columnType = 'VARCHAR('.$maxlen.')';
+                $columnType = 'VARCHAR(' . $maxlen . ')';
             }
 
             if ($columnType == 'VARCHAR()') {
@@ -416,12 +400,12 @@ class Configurator extends Engine
 
             $sqlStruct[$columnName]['type'] = $columnType;
             if ($columnName == $this->getKeyColumn()) {
-                $sqlStruct[$columnName]['key']      = 'primary';
-                $sqlStruct[$columnName]['ai']       = true;
+                $sqlStruct[$columnName]['key'] = 'primary';
+                $sqlStruct[$columnName]['ai'] = true;
                 $sqlStruct[$columnName]['unsigned'] = true;
             }
             if ($columnName == $this->userColumn) {
-                $sqlStruct[$columnName]['key']      = true;
+                $sqlStruct[$columnName]['key'] = true;
                 $sqlStruct[$columnName]['unsigned'] = true;
             }
         }
@@ -436,8 +420,7 @@ class Configurator extends Engine
      * @param  int $thisID
      * @return int
      */
-    public function getMyRecordsCount($thisID = null, $withShared = false)
-    {
+    public function getMyRecordsCount($thisID = null, $withShared = false) {
         return count($this->getListing($thisID, $withShared));
     }
 
@@ -449,8 +432,7 @@ class Configurator extends Engine
      *
      * @return int
      */
-    public function takeData($data, $dataPrefix = null)
-    {
+    public function takeData($data, $dataPrefix = null) {
         unset($data['add']);
         unset($data['del']);
         unset($data['Save']);
@@ -511,7 +493,7 @@ class Configurator extends Engine
                     if (isset($data[$fieldName]) && !is_array($data[$fieldName])) {
                         if (substr($data[$fieldName], 0, 2) != 'a:') {
                             $data[$fieldName] = serialize(explode(',',
-                                    $data[$fieldName]));
+                                            $data[$fieldName]));
                         }
                     }
                     break;
@@ -531,19 +513,18 @@ class Configurator extends Engine
      * Smaže a znovu vytvoří SQL tabulku objektu
      * @deprecated since version 1.2.1 - use phinx
      */
-    public function dbInit()
-    {
+    public function dbInit() {
         if ($this->dblink->tableExist($this->myTable)) {
-            $this->dblink->exeQuery('DROP TABLE '.$this->myTable);
+            $this->dblink->exeQuery('DROP TABLE ' . $this->myTable);
             $this->addStatusMessage(sprintf(_('Tabulka %s byla smazána'),
-                    $this->myTable), 'info');
+                            $this->myTable), 'info');
         }
         if ($this->createSqlStructure()) {
             $this->addStatusMessage(sprintf(_('Tabulka %s byla vytvořena'),
-                    $this->myTable), 'success');
+                            $this->myTable), 'success');
         } else {
             $this->addStatusMessage(sprintf(_('Tabulka %s nebyla vytvořena'),
-                    $this->myTable), 'error');
+                            $this->myTable), 'error');
         }
     }
 
@@ -553,8 +534,7 @@ class Configurator extends Engine
      * @param  string  $fileName Soubor do kterého se bude generovat konfigirace
      * @return boolean
      */
-    public function writeConfig($fileName)
-    {
+    public function writeConfig($fileName) {
         $allData = $this->getAllData();
         foreach ($allData as $cfgID => $columns) {
             if (intval($columns['generate'])) {
@@ -577,8 +557,7 @@ class Configurator extends Engine
      *
      * @param array $data
      */
-    public function controlRequied($data)
-    {
+    public function controlRequied($data) {
         $errors = 0;
         foreach ($this->keywordsInfo as $keyword => $kwInfo) {
             if (isset($kwInfo['required']) && ($kwInfo['required'] == true)) {
@@ -586,16 +565,15 @@ class Configurator extends Engine
                 if ($this->allowTemplating) {
                     if ($this->isTemplate($data)) {
                         if (!strlen($data['name'])) {
-                            $this->addStatusMessage($this->keyword.': '.sprintf(_('Teplate %s need name'),
-                                    $data[$this->nameColumn]), 'error');
+                            $this->addStatusMessage($this->keyword . ': ' . sprintf(_('Teplate %s need name'),
+                                            $data[$this->nameColumn]), 'error');
                             $errors++;
                         }
                     }
                 }
-                if (!isset($data[$keyword]) || !$data[$keyword] || ($data[$keyword]
-                    == 'a:0:{}')) {
-                    $this->addStatusMessage($this->keyword.': '.sprintf(_('Required value missing %s for %s'),
-                            $keyword, $this->getName($data)), 'warning');
+                if (!isset($data[$keyword]) || !$data[$keyword] || ($data[$keyword] == 'a:0:{}')) {
+                    $this->addStatusMessage($this->keyword . ': ' . sprintf(_('Required value missing %s for %s'),
+                                    $keyword, $this->getName($data)), 'warning');
                     $errors++;
                 }
             }
@@ -611,8 +589,7 @@ class Configurator extends Engine
      * @param boolean $templateValue Vracet hodnotu předlohy i když není použta
      * @return  array array( 'nastavujici rodic' => hodnota )
      */
-    public function getCfg($keyword, $templateValue = false)
-    {
+    public function getCfg($keyword, $templateValue = false) {
         $parent_used = 0;
         if ($templateValue) {
             $value = null;
@@ -635,15 +612,15 @@ class Configurator extends Engine
                             if (isset($this->parentCache[$parent_name][$keyword])) {
                                 $parentValue = $this->parentCache[$parent_name][$keyword];
                             } else {
-                                $parentValue                               = $parent->getColumnsFromSQL([
+                                $parentValue = $parent->getColumnsFromSQL([
                                     $keyword, 'use'], ['name' => $parent_name]);
                                 $this->parentCache[$parent_name][$keyword] = $parentValue;
                             }
                             if (is_null($parent->getDataValue($keyword))) {
                                 $parent->setDataValue($keyword,
-                                    $parentValue[0][$keyword]);
+                                        $parentValue[0][$keyword]);
                                 $parent->setDataValue('use',
-                                    $parentValue[0]['use']);
+                                        $parentValue[0]['use']);
                                 $parent_used = $parent_name;
                             }
                         }
@@ -651,19 +628,19 @@ class Configurator extends Engine
                         if (isset($this->parentCache[$parent_name][$keyword])) {
                             $parentValue = $this->parentCache[$parent_name][$keyword];
                         } else {
-                            $parentValue                               = $parent->getColumnsFromSQL([
+                            $parentValue = $parent->getColumnsFromSQL([
                                 $keyword, 'use'], ['name' => $parent_name]);
                             $this->parentCache[$parent_name][$keyword] = $parentValue;
                         }
                         if (isset($parentValue[0])) {
                             $parent->setDataValue($keyword,
-                                $parentValue[0][$keyword]);
+                                    $parentValue[0][$keyword]);
                             $parent->setDataValue('use', $parentValue[0]['use']);
                         }
                         $parent_used = $parent_name;
                     }
                     $parent_name = $parent->getDataValue('use');
-                    $value       = $parent->getDataValue($keyword);
+                    $value = $parent->getDataValue($keyword);
                 }
             }
         }
@@ -675,8 +652,7 @@ class Configurator extends Engine
      *
      * @param string $keyword
      */
-    public function getCfgValue($keyword)
-    {
+    public function getCfgValue($keyword) {
         $cfg = $this->getCfg($keyword);
         if (!is_null($cfg) && is_array($cfg) && count($cfg)) {
             $cfg = current($cfg);
@@ -689,8 +665,7 @@ class Configurator extends Engine
      *
      * @return array
      */
-    function getEffectiveCfg()
-    {
+    function getEffectiveCfg() {
         $cfg = [];
         foreach (array_keys($this->getData()) as $column) {
             $cfg[$column] = $this->getCfgValue($column);
@@ -704,10 +679,9 @@ class Configurator extends Engine
      * @param  array $allData všechna vstupní data
      * @return array
      */
-    public function controlAllData($allData)
-    {
+    public function controlAllData($allData) {
         $allDataOK = [];
-        $userID    = Shared::user()->getUserID();
+        $userID = Shared::user()->getUserID();
         foreach ($allData as $adKey => $data) {
             if ($data[$this->userColumn] == $userID) {
                 $allDataOK[$adKey] = $data;
@@ -722,10 +696,9 @@ class Configurator extends Engine
      *
      * @return array
      */
-    public function getAllUserData()
-    {
+    public function getAllUserData() {
         return $this->controlAllData(self::unserializeArrays($this->getColumnsFromSQL('*',
-                        [$this->userColumn => Shared::user()->getUserID()])));
+                                        [$this->userColumn => Shared::user()->getUserID()])));
     }
 
     /**
@@ -733,8 +706,7 @@ class Configurator extends Engine
      *
      * @return array
      */
-    public function getAllData()
-    {
+    public function getAllData() {
         return $this->controlAllData(self::unserializeArrays($this->getColumnsFromSQL('*')));
     }
 
@@ -746,8 +718,7 @@ class Configurator extends Engine
      *
      * @return int ID záznamu nebo null v případě neůspěchu
      */
-    public function saveToSQL($data = null, $searchForID = false)
-    {
+    public function saveToSQL($data = null, $searchForID = false) {
         if (is_null($data)) {
             $data = $this->getData();
         }
@@ -789,17 +760,19 @@ class Configurator extends Engine
         $dbId = null;
         if ($this->allowTemplating && $this->isTemplate() && isset($data['name'])) {
             if (isset($data[$this->getKeyColumn()]) && (int) $data[$this->getKeyColumn()]) {
-                $dbId = $this->dblink->queryToValue('SELECT `'.$this->keyColumn.'` FROM '.$this->myTable.' WHERE `name`'." = '".$data['name']."' AND ".$this->keyColumn.' != '.$data[$this->getKeyColumn()]);
+                $dbId = $this->dblink->queryToValue('SELECT `' . $this->keyColumn . '` FROM ' . $this->myTable . ' WHERE `name`' . " = '" . $data['name'] . "' AND " . $this->keyColumn . ' != ' . $data[$this->getKeyColumn()]);
             } else {
-                $dbId = $this->dblink->queryToValue('SELECT `'.$this->keyColumn.'` FROM '.$this->myTable.' WHERE `name`'." = '".$data['name']."'");
+                $dbId = $this->dblink->queryToValue('SELECT `' . $this->keyColumn . '` FROM ' . $this->myTable . ' WHERE `name`' . " = '" . $data['name'] . "'");
             }
         } else {
             if (isset($data[$this->nameColumn])) {
                 if (isset($data[$this->getKeyColumn()]) && (int) $data[$this->getKeyColumn()]) {
-                    $dbId = $this->dblink->queryToValue('SELECT `'.$this->keyColumn.'` FROM '.$this->myTable.' WHERE '.$this->nameColumn." = '".$data[$this->nameColumn]."' AND ".$this->keyColumn.' != '.$data[$this->getKeyColumn()]);
+                    $dbId = $this->listingQuery()
+                                    ->where($this->nameColumn, $data[$this->nameColumn])
+                                    ->where($this->keyColumn . ' != ' . $data[$this->getKeyColumn()])->fetchColumn(0);
                 } else {
                     $dbIdRaw = $oUser->listingQuery()->where($oUser->nameColumn, addslashes($data[$this->nameColumn]))->fetch();
-                    $dbId = $this->dblink->queryToValue('SELECT `'.$this->keyColumn.'` FROM '.$this->myTable.' WHERE '.$this->nameColumn." = '".$data[$this->nameColumn]."'");
+                    $dbId = $this->dblink->queryToValue('SELECT `' . $this->keyColumn . '` FROM ' . $this->myTable . ' WHERE ' . $this->nameColumn . " = '" . $data[$this->nameColumn] . "'");
                 }
             }
         }
@@ -807,16 +780,16 @@ class Configurator extends Engine
             $result = -1;
             if ($this->allowTemplating && $this->isTemplate()) {
                 $this->addStatusMessage(sprintf(_('Template %s allready defined. Please use another name'),
-                        $data['name']), 'warning');
+                                $data['name']), 'warning');
             } else {
                 $this->addStatusMessage(sprintf(_('%s %s allready defined. Please use another name.'),
-                        $this->nameColumn, $data[$this->nameColumn]), 'warning');
+                                $this->nameColumn, $data[$this->nameColumn]), 'warning');
             }
         } else {
             foreach ($data as $fieldName => $value) {
                 if (!is_null($value)) {
                     if (is_string($value)) {
-                        $data[$fieldName] = $this->dblink->addSlashes($value);
+                        $data[$fieldName] = addslashes($value);
                     } else {
                         if (is_bool($value)) {
                             $data[$fieldName] = intval($value);
@@ -841,8 +814,7 @@ class Configurator extends Engine
      *
      * @return array Results
      */
-    public function getDataFromSQL($itemID = null)
-    {
+    public function getDataFromSQL($itemID = null) {
         if (is_string($itemID)) {
             $this->setKeyColumn($this->nameColumn);
             $data = parent::getDataFromSQL($itemID);
@@ -856,7 +828,7 @@ class Configurator extends Engine
                     case 'ARRAY':
                     case 'IDLIST':
                         if (isset($data[$recordID][$keyWord]) && (substr($data[$recordID][$keyWord],
-                                0, 2) == 'a:')) {
+                                        0, 2) == 'a:')) {
                             $data[$recordID][$keyWord] = unserialize(stripslashes($data[$recordID][$keyWord]));
                         } else {
                             $data[$recordID][$keyWord] = [];
@@ -879,8 +851,7 @@ class Configurator extends Engine
      *
      * @return array
      */
-    public function getOwned($thisID = null, $extraColumns = null)
-    {
+    public function getOwned($thisID = null, $extraColumns = null) {
         if (is_null($thisID)) {
             $thisID = Shared::user()->getUserID();
         }
@@ -892,8 +863,8 @@ class Configurator extends Engine
         }
 
         $data = $this->getColumnsFromSQL($columnsToGet,
-            $this->userColumn.'='.$thisID, $this->nameColumn,
-            $this->getKeyColumn());
+                $this->userColumn . '=' . $thisID, $this->nameColumn,
+                $this->getKeyColumn());
 
         return $this->unserializeArrays($data);
     }
@@ -908,8 +879,7 @@ class Configurator extends Engine
      * @return array
      */
     public function getListing($thisID = null, $withShared = true,
-                               $extraColumns = null)
-    {
+            $extraColumns = null) {
         if (is_null($thisID)) {
             $thisID = Shared::user()->getUserID();
         }
@@ -928,24 +898,23 @@ class Configurator extends Engine
             $columnsToGet[] = 'public';
 
             $data = $this->getColumnsFromSQL($columnsToGet,
-                $this->userColumn.'='.$thisID.' OR '.$this->userColumn.' IS NULL OR public=1 ',
-                $this->nameColumn, $this->getKeyColumn());
+                    $this->userColumn . '=' . $thisID . ' OR ' . $this->userColumn . ' IS NULL OR public=1 ',
+                    $this->nameColumn, $this->getKeyColumn());
         } else {
             $data = $this->getColumnsFromSQL($columnsToGet,
-                $this->ownershipCondition($thisID), $this->nameColumn,
-                $this->getKeyColumn());
+                    $this->ownershipCondition($thisID), $this->nameColumn,
+                    $this->getKeyColumn());
         }
 
         return empty($data) ? [] : $this->unserializeArrays($data);
     }
 
-    public function ownershipCondition($thisID)
-    {
+    public function ownershipCondition($thisID) {
         if (is_null($thisID)) {
             $thisID = Shared::user()->getUserID();
         }
 
-        return $this->userColumn.'='.$thisID.' OR '.$this->userColumn.' IN (SELECT DISTINCT user_id FROM user_to_group WHERE group_id IN (SELECT group_id FROM user_to_group WHERE user_id = '.$thisID.'))';
+        return $this->userColumn . '=' . $thisID . ' OR ' . $this->userColumn . ' IN (SELECT DISTINCT user_id FROM user_to_group WHERE group_id IN (SELECT group_id FROM user_to_group WHERE user_id = ' . $thisID . '))';
     }
 
     /**
@@ -953,8 +922,7 @@ class Configurator extends Engine
      *
      * @return string
      */
-    public function getName($data = null)
-    {
+    public function getName($data = null) {
         if (is_null($data)) {
             if ($this->allowTemplating) {
                 if ($this->isTemplate()) {
@@ -980,8 +948,7 @@ class Configurator extends Engine
      * @param string $name
      * @return boolean
      */
-    function setName($name)
-    {
+    function setName($name) {
         if (isset($this->nameColumn)) {
             return $this->setDataValue($this->nameColumn, $name);
         }
@@ -992,8 +959,7 @@ class Configurator extends Engine
      * Vrací ID aktuálního záznamu
      * @return int
      */
-    public function getId()
-    {
+    public function getId() {
         return (int) $this->getMyKey();
     }
 
@@ -1001,8 +967,7 @@ class Configurator extends Engine
      * Vrací ID vlastníka
      * @return type
      */
-    public function getOwnerID()
-    {
+    public function getOwnerID() {
         return (int) $this->getDataValue($this->userColumn);
     }
 
@@ -1013,8 +978,7 @@ class Configurator extends Engine
      * @param  string                     $urlAdd Předávaná část URL
      * @return \EaseJQConfirmedLinkButton
      */
-    public function deleteButton($name = null, $urlAdd = '')
-    {
+    public function deleteButton($name = null, $urlAdd = '') {
         if (($this->getOwnerID() == Shared::user()->getUserID()) || Shared::user()->getSettingValue('admin')) {
 
             if ($this->allowTemplating && $this->isTemplate()) {
@@ -1024,22 +988,21 @@ class Configurator extends Engine
                     $columnsList[] = 'public';
                 }
                 $used = $this->getColumnsFromSQL($columnsList,
-                    ['use' => $this->getDataValue('name')], $this->nameColumn,
-                    $this->getKeyColumn());
+                        ['use' => $this->getDataValue('name')], $this->nameColumn,
+                        $this->getKeyColumn());
                 if (count($used)) {
                     $usedFrame = new Panel(_('is template for'),
-                        'info', null, _('thus can not be deleted'));
+                            'info', null, _('thus can not be deleted'));
                     foreach ($used as $usId => $usInfo) {
-                        if ($this->publicRecords && ($usInfo['public'] != true) && ($usInfo[$this->userColumn]
-                            != Shared::user()->getUserID() )) {
+                        if ($this->publicRecords && ($usInfo['public'] != true) && ($usInfo[$this->userColumn] != Shared::user()->getUserID() )) {
                             $usedFrame->addItem(new Span(
-                                    $usInfo[$this->nameColumn],
-                                    ['class' => 'jellybean gray']));
+                                            $usInfo[$this->nameColumn],
+                                            ['class' => 'jellybean gray']));
                         } else {
                             $usedFrame->addItem(new Span(
-                                    new ATag('?'.$this->getKeyColumn().'='.$usId.'&'.$urlAdd,
-                                        $usInfo[$this->nameColumn]),
-                                    ['class' => 'jellybean']));
+                                            new ATag('?' . $this->getKeyColumn() . '=' . $usId . '&' . $urlAdd,
+                                                    $usInfo[$this->nameColumn]),
+                                            ['class' => 'jellybean']));
                         }
                     }
 
@@ -1047,15 +1010,15 @@ class Configurator extends Engine
                 }
             }
 
-            Shared::webPage()->addItem(new \Icinga\Editor\UI\ConfirmationDialog('delete'.$this->getId(),
-                    '?'.$this->getKeyColumn().'='.$this->getID().'&delete=true'.'&'.$urlAdd,
-                    _('Delete').' '.$name,
-                    sprintf(_('Are you sure to delete %s ?'),
-                        '<strong>'.$this->getName().'</strong>')));
+            Shared::webPage()->addItem(new \Icinga\Editor\UI\ConfirmationDialog('delete' . $this->getId(),
+                            '?' . $this->getKeyColumn() . '=' . $this->getID() . '&delete=true' . '&' . $urlAdd,
+                            _('Delete') . ' ' . $name,
+                            sprintf(_('Are you sure to delete %s ?'),
+                                    '<strong>' . $this->getName() . '</strong>')));
             return new ButtonTag(
-                [Part::GlyphIcon('remove'), _('Delete').' '.$this->keyword.' '.$this->getName()],
-                ['style' => 'cursor: default', 'class' => 'btn btn-danger',
-                'id' => 'triggerdelete'.$this->getId(), 'data-id' => $this->getId()
+                    [Part::GlyphIcon('remove'), _('Delete') . ' ' . $this->keyword . ' ' . $this->getName()],
+                    ['style' => 'cursor: default', 'class' => 'btn btn-danger',
+                'id' => 'triggerdelete' . $this->getId(), 'data-id' => $this->getId()
             ]);
         } else {
             return '';
@@ -1069,8 +1032,7 @@ class Configurator extends Engine
      * 
      * @return boolean
      */
-    public function isTemplate($data = null)
-    {
+    public function isTemplate($data = null) {
         if (is_null($data)) {
             return (!(int) $this->getDataValue('register') && strlen($this->getDataValue('name')));
         } else {
@@ -1085,19 +1047,18 @@ class Configurator extends Engine
      * 
      * @return \\Ease\TWB\LinkButton
      */
-    public function ownerLinkButton($ownerID = null)
-    {
+    public function ownerLinkButton($ownerID = null) {
         $ownerLink = null;
         if (is_null($ownerID)) {
             $ownerID = $this->getOwnerID();
         }
         if ($ownerID) {
-            $owner     = new User2($ownerID);
-            $ownerLink = new LinkButton('userinfo.php?user_id='.$ownerID,
-                [$owner->getIcon(), '&nbsp;'.$owner->getUserLogin()]);
+            $owner = new User2($ownerID);
+            $ownerLink = new LinkButton('userinfo.php?user_id=' . $ownerID,
+                    [$owner->getIcon(), '&nbsp;' . $owner->getUserLogin()]);
         } else {
             $ownerLink = new LinkButton('overview.php',
-                ['<img class="avatar" src="img/vsmonitoring.png">', '&nbsp;'._('Without owner')]);
+                    ['<img class="avatar" src="img/vsmonitoring.png">', '&nbsp;' . _('Without owner')]);
         }
         return $ownerLink;
     }
@@ -1108,16 +1069,15 @@ class Configurator extends Engine
      * @param int $ownerID alternativní ID uživatele
      * @return \\Ease\TWB\LinkButton
      */
-    public function ownerLink($ownerID = null)
-    {
+    public function ownerLink($ownerID = null) {
         $ownerLink = null;
         if (is_null($ownerID)) {
             $ownerID = $this->getOwnerID();
         }
         if ($ownerID) {
-            $owner     = new User2($ownerID);
-            $ownerLink = new ATag('userinfo.php?user_id='.$ownerID,
-                $owner->getUserLogin());
+            $owner = new User2($ownerID);
+            $ownerLink = new ATag('userinfo.php?user_id=' . $ownerID,
+                    $owner->getUserLogin());
         } else {
             $ownerLink = new ATag('overview.php', _('Without owner'));
         }
@@ -1131,8 +1091,7 @@ class Configurator extends Engine
      *
      * @return boolean operation result
      */
-    public function delete($id = null)
-    {
+    public function delete($id = null) {
 
         if (is_null($id)) {
             $id = $this->getId();
@@ -1147,14 +1106,14 @@ class Configurator extends Engine
         }
         if ($this->deleteFromSQL($id)) {
             $this->addStatusMessage(sprintf(_(' %s %s was deleted '),
-                    $this->keyword, $this->getName()), 'success');
+                            $this->keyword, $this->getName()), 'success');
             $this->dataReset();
             Shared::user()->setSettingValue('unsaved', true);
 
             return true;
         } else {
             $this->addStatusMessage(sprintf(_(' %s %s was not deleted '),
-                    $this->keyword, $this->getName()), 'warning');
+                            $this->keyword, $this->getName()), 'warning');
 
             return false;
         }
@@ -1167,8 +1126,7 @@ class Configurator extends Engine
      *
      * @return boolean
      */
-    public function isOwnedBy($thisID = null)
-    {
+    public function isOwnedBy($thisID = null) {
         if (is_null($thisID)) {
             $thisID = Shared::user()->getUserID();
         }
@@ -1184,10 +1142,9 @@ class Configurator extends Engine
      * 
      * @return int
      */
-    public function importFile($fileName, $commonValues)
-    {
+    public function importFile($fileName, $commonValues) {
         return $this->importArray($this->readRawConfigFile($fileName),
-                $commonValues);
+                        $commonValues);
     }
 
     /**
@@ -1198,10 +1155,9 @@ class Configurator extends Engine
      *
      * @return boolean
      */
-    public function importText($cfgText, $commonValues)
-    {
+    public function importText($cfgText, $commonValues) {
         return $this->importArray(array_map('trim',
-                    preg_split('/\r\n|\n|\r/', $cfgText)), $commonValues);
+                                preg_split('/\r\n|\n|\r/', $cfgText)), $commonValues);
     }
 
     /**
@@ -1212,22 +1168,21 @@ class Configurator extends Engine
      *
      * @return boolean operation restult status
      */
-    public function importArray($cfgArray, $commonValues = null)
-    {
+    public function importArray($cfgArray, $commonValues = null) {
         $success = 0;
-        $buffer  = null;
+        $buffer = null;
         if (count($cfgArray)) {
             foreach ($cfgArray as $cfgLine) {
                 if (strstr($cfgLine, '#')) {
                     $cfgLine = strstr($cfgLine, '#', true);
                 }
-                if (str_replace(' ', '', $cfgLine) == 'define'.$this->keyword.'{') {
+                if (str_replace(' ', '', $cfgLine) == 'define' . $this->keyword . '{') {
                     $buffer = [];
                     continue;
                 }
                 if (is_array($buffer)) {
                     if (preg_match("/^([a-zA-Z_]*)[\s|\t]*(.*)$/", $cfgLine,
-                            $matches)) {
+                                    $matches)) {
                         if ($matches[2] != '}') {
                             $buffer[$matches[1]] = $matches[2];
                         }
@@ -1252,30 +1207,30 @@ class Configurator extends Engine
 
                     if (is_null($import)) {
                         if ($this->isTemplate()) {
-                            $this->addStatusMessage($this->keyword.' <strong>'.$buffer['name'].'</strong> '._('was not imported'),
-                                'error');
+                            $this->addStatusMessage($this->keyword . ' <strong>' . $buffer['name'] . '</strong> ' . _('was not imported'),
+                                    'error');
                         } else {
-                            $this->addStatusMessage($this->keyword.' <strong>'.$buffer[$this->nameColumn].'</strong> '._('was not imported'),
-                                'error');
+                            $this->addStatusMessage($this->keyword . ' <strong>' . $buffer[$this->nameColumn] . '</strong> ' . _('was not imported'),
+                                    'error');
                         }
                     } else {
                         if ($import != -1) {
                             if ($this->isTemplate()) {
-                                $this->addStatusMessage(_('Preset').' '.$this->keyword.' <strong>'.$buffer['name'].'</strong> '._('was imported'),
-                                    'success');
+                                $this->addStatusMessage(_('Preset') . ' ' . $this->keyword . ' <strong>' . $buffer['name'] . '</strong> ' . _('was imported'),
+                                        'success');
                             } else {
                                 if (!is_null($this->webLinkColumn) && !isset($buffer[$this->webLinkColumn])) {
                                     $this->updateToSQL(
-                                        [$this->getKeyColumn() => $this->getMyKey(),
-                                            $this->webLinkColumn =>
-                                            (str_replace(basename(WebPage::getUri()),
-                                                '', WebPage::phpSelf(true))).
-                                            $this->keyword.'.php?'.
-                                            $this->getKeyColumn().'='.
-                                            $this->getMyKey()]);
+                                            [$this->getKeyColumn() => $this->getMyKey(),
+                                                $this->webLinkColumn =>
+                                                (str_replace(basename(WebPage::getUri()),
+                                                        '', WebPage::phpSelf(true))) .
+                                                $this->keyword . '.php?' .
+                                                $this->getKeyColumn() . '=' .
+                                                $this->getMyKey()]);
                                 }
-                                $this->addStatusMessage($this->keyword.' <strong>'.$buffer[$this->nameColumn].'</strong> '._('was imported'),
-                                    'success');
+                                $this->addStatusMessage($this->keyword . ' <strong>' . $buffer[$this->nameColumn] . '</strong> ' . _('was imported'),
+                                        'success');
                             }
                             $success++;
                         }
@@ -1297,12 +1252,11 @@ class Configurator extends Engine
      * @param Importer $importer Importer object
      * @return array
      */
-    public static function readRawConfigFile($cfgFile, $importer = null)
-    {
+    public static function readRawConfigFile($cfgFile, $importer = null) {
         $cfg = [];
         if (!is_file($cfgFile)) {
             Shared::user()->addStatusMessage(_('I need filename'),
-                'warning');
+                    'warning');
 
             return null;
         }
@@ -1345,23 +1299,22 @@ class Configurator extends Engine
      *
      * @return array  rows of configuration
      */
-    public static function readRawConfigDir($dirName, $importer = null)
-    {
+    public static function readRawConfigDir($dirName, $importer = null) {
         $cfg = [];
         if (is_dir($dirName)) {
-            $d     = dir($dirName);
+            $d = dir($dirName);
             while (false !== ($entry = $d->read())) {
                 if ($entry[0] == '.') {
                     continue;
                 }
                 if (substr($entry, -4) == '.cfg') {
-                    foreach (self::readRawConfigFile($dirName.'/'.$entry,
-                        $importer) as $line) {
+                    foreach (self::readRawConfigFile($dirName . '/' . $entry,
+                            $importer) as $line) {
                         $cfg[] = $line;
                     }
-                } elseif (is_dir($dirName.'/'.$entry)) {
-                    foreach (self::readRawConfigDir($dirName.'/'.$entry,
-                        $importer) as $line) {
+                } elseif (is_dir($dirName . '/' . $entry)) {
+                    foreach (self::readRawConfigDir($dirName . '/' . $entry,
+                            $importer) as $line) {
                         $cfg[] = $line;
                     }
                 }
@@ -1379,8 +1332,7 @@ class Configurator extends Engine
      *
      * @return array
      */
-    public function rawToData($rawData)
-    {
+    public function rawToData($rawData) {
         $data = $rawData;
 
         return $data;
@@ -1395,11 +1347,10 @@ class Configurator extends Engine
      *
      * @return boolean Member adding status
      */
-    public function addMember($column, $memberID, $memberName)
-    {
+    public function addMember($column, $memberID, $memberName) {
         if (isset($this->data[$column]) && is_string($this->data[$column])) {
-            $field               = unserialize(stripslashes($this->data[$column]));
-            $field[$memberID]    = $memberName;
+            $field = unserialize(stripslashes($this->data[$column]));
+            $field[$memberID] = $memberName;
             $this->data[$column] = addslashes(serialize($field));
         } else {
             $this->data[$column][$memberID] = $memberName;
@@ -1416,8 +1367,7 @@ class Configurator extends Engine
      * 
      * @return boolean
      */
-    public function delMember($column, $memberID = null, $memberName = null)
-    {
+    public function delMember($column, $memberID = null, $memberName = null) {
         if (is_null($memberID)) {
             $found = array_search($memberName, $this->data[$column]);
             if ($found !== false) {
@@ -1452,8 +1402,7 @@ class Configurator extends Engine
      *
      * @return boolean
      */
-    public function renameMember($column, $memberID, $memberNewName)
-    {
+    public function renameMember($column, $memberID, $memberNewName) {
         $this->data[$column][$memberID] = $memberNewName;
 
         return true;
@@ -1462,41 +1411,40 @@ class Configurator extends Engine
     /**
      * Save members
      */
-    public function saveMembers()
-    {
+    public function saveMembers() {
         $addColumn = WebPage::getGetValue('add');
-        $name      = WebPage::getGetValue('name');
+        $name = WebPage::getGetValue('name');
         if ($addColumn) {
             $this->addMember($addColumn,
-                WebPage::getRequestValue('member', 'int'), $name);
+                    WebPage::getRequestValue('member', 'int'), $name);
             $thisID = $this->saveToSQL();
             if (is_null($thisID)) {
                 $this->addStatusMessage(sprintf(_('item %s was not added to %s/%s/%s'),
-                        $name, $this->keyword, $this->getName(), $addColumn),
-                    'warning');
+                                $name, $this->keyword, $this->getName(), $addColumn),
+                        'warning');
             } else {
                 $this->addStatusMessage(sprintf(_('item %s added to %s/%s/%s'),
-                        $name, $this->keyword, $this->getName(), $addColumn),
-                    'success');
+                                $name, $this->keyword, $this->getName(), $addColumn),
+                        'success');
             }
         }
         $delColumn = WebPage::getGetValue('del');
         if (!is_null($delColumn)) {
             $thisID = null;
-            $del    = $this->delMember($delColumn,
-                WebPage::getRequestValue('member', 'int'),
-                WebPage::getGetValue('name'));
+            $del = $this->delMember($delColumn,
+                    WebPage::getRequestValue('member', 'int'),
+                    WebPage::getGetValue('name'));
             if ($del) {
                 $thisID = $this->saveToSQL();
             }
             if (is_null($thisID) && !$del) {
                 $this->addStatusMessage(sprintf(_('item %s was not removed from %s/%s/%s'),
-                        $name, $this->keyword, $this->getName(), $delColumn),
-                    'warning');
+                                $name, $this->keyword, $this->getName(), $delColumn),
+                        'warning');
             } else {
                 $this->addStatusMessage(sprintf(_('item %s was removed from %s/%s/%s'),
-                        $name, $this->keyword, $this->getName(), $delColumn),
-                    'success');
+                                $name, $this->keyword, $this->getName(), $delColumn),
+                        'success');
             }
         }
     }
@@ -1507,8 +1455,7 @@ class Configurator extends Engine
      * @param  array $allData
      * @return array
      */
-    public static function unserializeArrays($allData)
-    {
+    public static function unserializeArrays($allData) {
         foreach ($allData as $keyWord => $keyData) {
             if (is_array($keyData)) {
                 $allData[$keyWord] = self::unserializeArrays($keyData);
@@ -1517,8 +1464,8 @@ class Configurator extends Engine
                     if (self::isSerialized($keyData)) {
                         $allData[$keyWord] = unserialize(stripslashes($keyData));
                     } else {
-                        Shared::webPage()->addStatusMessage(_('Deserialization error').':'.$keyData,
-                            'error');
+                        Shared::webPage()->addStatusMessage(_('Deserialization error') . ':' . $keyData,
+                                'error');
                     }
                 }
             }
@@ -1527,8 +1474,7 @@ class Configurator extends Engine
         return $allData;
     }
 
-    static function isSerialized($str)
-    {
+    static function isSerialized($str) {
         $str = stripslashes($str);
         return ($str == serialize(false) || @unserialize($str) !== false);
     }
@@ -1536,13 +1482,12 @@ class Configurator extends Engine
     /**
      * Reloadne icingu
      */
-    public static function reloadIcinga()
-    {
+    public static function reloadIcinga() {
         $testing = popen("sudo /etc/init.d/icinga reload", 'r');
         if ($testing) {
             while (!feof($testing)) {
                 $line = fgets($testing);
-                Shared::user()->addStatusMessage('Reload: '.$line);
+                Shared::user()->addStatusMessage('Reload: ' . $line);
             }
             fclose($testing);
         }
@@ -1550,14 +1495,12 @@ class Configurator extends Engine
         return TRUE;
     }
 
-    public function cloneButton()
-    {
-        return new LinkButton('?action=clone&'.$this->getKeyColumn().'='.$this->getId(),
-            _('Klonovat'));
+    public function cloneButton() {
+        return new LinkButton('?action=clone&' . $this->getKeyColumn() . '=' . $this->getId(),
+                _('Klonovat'));
     }
 
-    public function draw()
-    {
+    public function draw() {
         echo $this->getName();
     }
 
@@ -1567,25 +1510,24 @@ class Configurator extends Engine
      * @param string $what hledaný výraz
      * @return array pole výsledků
      */
-    public function searchString($what)
-    {
-        $results   = [];
-        $conds     = [];
+    public function searchString($what) {
+        $results = [];
+        $conds = [];
         $columns[] = $this->keyColumn;
         foreach ($this->useKeywords as $keyword => $keywordInfo) {
             if (strstr($keywordInfo, 'VARCHAR')) {
-                $conds[]   = " `$keyword` LIKE '%".$what."%'";
+                $conds[] = " `$keyword` LIKE '%" . $what . "%'";
                 $columns[] = "`$keyword`";
             }
         }
 
-        $res = Shared::db()->queryToArray("SELECT ".implode(',', $columns).",".$this->nameColumn." FROM ".$this->myTable." WHERE ".implode(' OR ',
-                $conds).' ORDER BY '.$this->nameColumn, $this->keyColumn);
+        $res = Shared::db()->queryToArray("SELECT " . implode(',', $columns) . "," . $this->nameColumn . " FROM " . $this->myTable . " WHERE " . implode(' OR ',
+                        $conds) . ' ORDER BY ' . $this->nameColumn, $this->keyColumn);
         foreach ($res as $result) {
             $occurences = '';
             foreach ($result as $key => $value) {
                 if (strstr($value, $what)) {
-                    $occurences .= '('.$key.': '.$value.') ';
+                    $occurences .= '(' . $key . ': ' . $value . ') ';
                 }
             }
             $results[$result[$this->keyColumn]] = [$this->nameColumn => $result[$this->nameColumn],
@@ -1594,8 +1536,7 @@ class Configurator extends Engine
         return $results;
     }
 
-    public function getCsv($queryRaw)
-    {
+    public function getCsv($queryRaw) {
         $transactions = self::getListing($queryRaw);
         $this->getCSVFile($transactions);
     }
@@ -1605,8 +1546,7 @@ class Configurator extends Engine
      *
      * @param type $queryRaw
      */
-    public function output($queryRaw)
-    {
+    public function output($queryRaw) {
         switch (Shared::webPage()->getRequestValue('export')) {
             case 'csv':
                 $this->getCsv($queryRaw);
@@ -1630,8 +1570,7 @@ class Configurator extends Engine
      * 
      * @return array
      */
-    public function csvizeData($data)
-    {
+    public function csvizeData($data) {
         if (is_array($data) && count($data)) {
             foreach ($data as $rowId => $row) {
                 foreach ($row as $column => $value) {
@@ -1654,8 +1593,7 @@ class Configurator extends Engine
      *
      * @return array
      */
-    public function htmlizeData($data)
-    {
+    public function htmlizeData($data) {
         if (is_array($data) && count($data)) {
             $usedCache = [];
             foreach ($data as $rowId => $row) {
@@ -1663,7 +1601,7 @@ class Configurator extends Engine
                 if ($this->allowTemplating && isset($row['use']) && $row['use']) {
                     $use = $row['use'];
                     if (!isset($usedCache[$use])) {
-                        $used             = clone $this;
+                        $used = clone $this;
                         $used->nameColumn = 'name';
                         if ($used->loadFromSQL($use)) {
                             $used->resetObjectIdentity();
@@ -1677,7 +1615,7 @@ class Configurator extends Engine
                                 if (is_array($templateValue)) {
                                     $templateValue = implode(',', $templateValue);
                                 }
-                                $data[$rowId][$templateKey] = '<span class="inherited" title="'._('Template').': '.$usedCache[$use]['name'].'">'.$templateValue.'</span>';
+                                $data[$rowId][$templateKey] = '<span class="inherited" title="' . _('Template') . ': ' . $usedCache[$use]['name'] . '">' . $templateValue . '</span>';
                             }
                         }
                     }
@@ -1711,8 +1649,7 @@ class Configurator extends Engine
      *
      * @return array
      */
-    public function htmlizeRow($row)
-    {
+    public function htmlizeRow($row) {
         if (is_array($row) && count($row)) {
             foreach ($row as $key => $value) {
                 if ($key == $this->keyColumn) {
@@ -1722,7 +1659,7 @@ class Configurator extends Engine
                     continue;
                 }
                 $fieldType = $this->useKeywords[$key];
-                $fType     = preg_replace('/\(.*\)/', '', $fieldType);
+                $fType = preg_replace('/\(.*\)/', '', $fieldType);
                 switch ($fType) {
                     case 'PLATFORM':
                         switch ($value) {
@@ -1736,7 +1673,7 @@ class Configurator extends Engine
                                 $icon = 'logos/unknown.gif';
                                 break;
                         }
-                        $row[$key] = '<img class="gridimg" src="'.$icon.'"> '.$value;
+                        $row[$key] = '<img class="gridimg" src="' . $icon . '"> ' . $value;
                         break;
                     case 'BOOL':
                         if (is_null($value) || !strlen($value)) {
@@ -1760,23 +1697,23 @@ class Configurator extends Engine
                             }
                             if (!is_array($values)) {
                                 $this->addStatusMessage(sprintf(_('Unserialization error %s #%s '),
-                                        $value, $key));
+                                                $value, $key));
                             }
                             if (isset($this->keywordsInfo[$key]['refdata'])) {
-                                $idcolumn     = $this->keywordsInfo[$key]['refdata']['idcolumn'];
-                                $table        = $this->keywordsInfo[$key]['refdata']['table'];
+                                $idcolumn = $this->keywordsInfo[$key]['refdata']['idcolumn'];
+                                $table = $this->keywordsInfo[$key]['refdata']['table'];
                                 $searchColumn = $this->keywordsInfo[$key]['refdata']['captioncolumn'];
-                                $target       = str_replace('_id', '.php',
-                                    $idcolumn);
+                                $target = str_replace('_id', '.php',
+                                        $idcolumn);
                                 foreach ($values as $id => $name) {
                                     if ($id) {
-                                        $values[$id] = '<a title="'.$table.'" href="'.$target.'?'.$idcolumn.'='.$id.'">'.$name.'</a>';
+                                        $values[$id] = '<a title="' . $table . '" href="' . $target . '?' . $idcolumn . '=' . $id . '">' . $name . '</a>';
                                     } else {
-                                        $values[$id] = '<a title="'.$table.'" href="search.php?search='.$name.'&table='.$table.'&column='.$searchColumn.'">'.$name.'</a> '.Part::glyphIcon('search');
+                                        $values[$id] = '<a title="' . $table . '" href="search.php?search=' . $name . '&table=' . $table . '&column=' . $searchColumn . '">' . $name . '</a> ' . Part::glyphIcon('search');
                                     }
                                 }
                             }
-                            $value     = implode(',', $values);
+                            $value = implode(',', $values);
                             $row[$key] = $value;
                         }
                         break;
@@ -1785,15 +1722,15 @@ class Configurator extends Engine
                         break;
                     default :
                         if (isset($this->keywordsInfo[$key]['refdata']) && strlen(trim($value))) {
-                            $table        = $this->keywordsInfo[$key]['refdata']['table'];
+                            $table = $this->keywordsInfo[$key]['refdata']['table'];
                             $searchColumn = $this->keywordsInfo[$key]['refdata']['captioncolumn'];
-                            $row[$key]    = '<a title="'.$table.'" href="search.php?search='.$value.'&table='.$table.'&column='.$searchColumn.'">'.$value.'</a> '.Part::glyphIcon('search');
+                            $row[$key] = '<a title="' . $table . '" href="search.php?search=' . $value . '&table=' . $table . '&column=' . $searchColumn . '">' . $value . '</a> ' . Part::glyphIcon('search');
                         }
                         if (strstr($key, 'image') && strlen(trim($value))) {
-                            $row[$key] = '<img title="'.$value.'" src="logos/'.$value.'" class="gridimg">';
+                            $row[$key] = '<img title="' . $value . '" src="logos/' . $value . '" class="gridimg">';
                         }
                         if (strstr($key, 'url')) {
-                            $row[$key] = '<a href="'.$value.'">'.$value.'</a>';
+                            $row[$key] = '<a href="' . $value . '">' . $value . '</a>';
                         }
 
                         break;
@@ -1806,8 +1743,7 @@ class Configurator extends Engine
     /**
      * Transfer object data to another Icinga Editor instance
      */
-    public function transfer($target)
-    {
+    public function transfer($target) {
         if (is_null($target) || !strlen(trim($target))) {
             $this->addStatusMessage(_('Export target URL missing'), 'warning');
         } else {
@@ -1819,7 +1755,7 @@ class Configurator extends Engine
             $data = $this->getData();
             if (!count($data)) {
                 $this->addStatusMessage(sprintf(_('Transfer %s / %s se failed'),
-                        get_class($this), $this->getName()), 'error');
+                                get_class($this), $this->getName()), 'error');
                 return false;
             }
 
@@ -1831,8 +1767,8 @@ class Configurator extends Engine
                 ],
             ];
             $context = stream_context_create($options);
-            $result  = file_get_contents($target.'/importer.php?class='.$this->keyword,
-                false, $context);
+            $result = file_get_contents($target . '/importer.php?class=' . $this->keyword,
+                    false, $context);
 
             if (!$result || trim($result) == 'false') {
                 $this->addStatusMessage(_('Transfer failed'), 'warning');
@@ -1849,22 +1785,21 @@ class Configurator extends Engine
      *
      * @return \\Ease\TWB\Form
      */
-    public function &transferForm()
-    {
-        $exportForm = new Form('Export', $this->keyword.'.php');
+    public function &transferForm() {
+        $exportForm = new Form('Export', $this->keyword . '.php');
         $exportForm->addItem(new InputHiddenTag('action', 'export'));
         $exportForm->addItem(new InputHiddenTag($this->keyColumn,
-                $this->getId()));
+                        $this->getId()));
         $exportForm->addInput(new InputTextTag('destination',
-                Shared::user()->getSettingValue('exporturl')),
-            _('Export Target'));
+                        Shared::user()->getSettingValue('exporturl')),
+                _('Export Target'));
 
         $exportForm->addItem(new H4Tag(_('Recursive import')));
 
         foreach ($this->keywordsInfo as $columnName => $columnInfo) {
             if (isset($columnInfo['refdata']['table'])) {
-                $exportForm->addInput(new TWBSwitch('rels['.$columnName.']'),
-                    $columnInfo['title']);
+                $exportForm->addInput(new TWBSwitch('rels[' . $columnName . ']'),
+                        $columnInfo['title']);
             }
         }
 
@@ -1877,8 +1812,7 @@ class Configurator extends Engine
      *
      * @param array $data
      */
-    public function importData($data)
-    {
+    public function importData($data) {
         foreach ($data as $rowId => $dataRow) {
             $this->importDataRow($dataRow);
         }
@@ -1891,8 +1825,7 @@ class Configurator extends Engine
      * 
      * @return int počet přijatých řádek
      */
-    public function importDataRow($dataRow)
-    {
+    public function importDataRow($dataRow) {
         foreach ($dataRow as $column => $value) {
             $columnType = 'unknown';
             if (isset($this->useKeywords[$column])) {
@@ -1908,12 +1841,12 @@ class Configurator extends Engine
                     if (is_array($value)) {
                         $fixedValue = [];
                         foreach ($value as $item) {
-                            $localId = $this->dblink->queryToValue('SELECT '.$columnInfo['refdata']['idcolumn'].' FROM '.$columnInfo['refdata']['table'].' WHERE '.$columnInfo['refdata']['captioncolumn']." = '$item'");
+                            $localId = $this->dblink->queryToValue('SELECT ' . $columnInfo['refdata']['idcolumn'] . ' FROM ' . $columnInfo['refdata']['table'] . ' WHERE ' . $columnInfo['refdata']['captioncolumn'] . " = '$item'");
                             if ($localId) {
                                 $fixedValue[$localId] = $item;
                             } else {
                                 $this->addStatusMessage(sprintf(_('Unknown item %s column %s within import'),
-                                        $item, $column));
+                                                $item, $column));
                             }
                         }
                         $dataRow[$column] = $fixedValue;
@@ -1924,7 +1857,7 @@ class Configurator extends Engine
                 case 'unknown':
                     unset($dataRow[$column]);
                     $this->addStatusMessage(sprintf(_('Unknown imported column  %s'),
-                            $column));
+                                    $column));
                     break;
                 default :
             }
@@ -1939,13 +1872,12 @@ class Configurator extends Engine
      *
      * @return bool
      */
-    public function transferDeps($target, $rels = null)
-    {
+    public function transferDeps($target, $rels = null) {
         foreach ($this->keywordsInfo as $columnName => $columnInfo) {
             if (isset($columnInfo['refdata']['table'])) {
                 if (is_array($rels) && isset($rels[$columnName])) {
-                    $className = '\\Icinga\\Editor\\Engine\\'.ucfirst($columnInfo['refdata']['table']);
-                    $transfer  = new $className($this->getDataValue($columnName));
+                    $className = '\\Icinga\\Editor\\Engine\\' . ucfirst($columnInfo['refdata']['table']);
+                    $transfer = new $className($this->getDataValue($columnName));
                     $transfer->transfer($target);
                 }
             }
@@ -1959,8 +1891,7 @@ class Configurator extends Engine
      * @param  string $columnName
      * @return string
      */
-    function getColumnType($columnName)
-    {
+    function getColumnType($columnName) {
         $columType = null;
         if (isset($this->useKeywords[$columnName])) {
             $columnType = $this->useKeywords[$columnName];
@@ -1973,8 +1904,7 @@ class Configurator extends Engine
      *
      * @return DlTag Vrací seznam vlastností a jejich hodnot z objektu
      */
-    public function getInfoBlock()
-    {
+    public function getInfoBlock() {
         $infoBlock = new DlTag;
 
         if (isset($this->nameColumn)) {
@@ -1993,7 +1923,7 @@ class Configurator extends Engine
 
         if (isset($this->myCreateColumn)) {
             $infoBlock->addDef(_('Created'),
-                self::sqlDateTimeToLocaleDateTime($this->getDataValue($this->myCreateColumn)));
+                    self::sqlDateTimeToLocaleDateTime($this->getDataValue($this->myCreateColumn)));
         }
 
         if (isset($this->userColumn)) {
@@ -2002,13 +1932,13 @@ class Configurator extends Engine
 
         if (isset($this->useKeywords['generate']) && !(int) $this->getDataValue('generate')) {
             $infoBlock->addItem(new Label('warning',
-                    _('do not generate to configuration')));
+                            _('do not generate to configuration')));
         }
 
         if ($this->publicRecords) {
             if ((int) $this->getDataValue('public')) {
                 $infoBlock->addItem(new Label('info',
-                        _('record is public')));
+                                _('record is public')));
             }
         }
 
@@ -2023,8 +1953,7 @@ class Configurator extends Engine
      *
      * @return string         date converted
      */
-    static function sqlDateToLocaleDate($sqldate, $format = 'm/d/Y')
-    {
+    static function sqlDateToLocaleDate($sqldate, $format = 'm/d/Y') {
         if ($sqldate) {
             return DateTime::createFromFormat('Y-m-d', $sqldate)->format($format);
         }
@@ -2039,8 +1968,7 @@ class Configurator extends Engine
      * @return string         převedené datum a čas
      */
     static function sqlDateTimeToLocaleDateTime($sqldate,
-                                                $format = 'm/d/Y h:i:s')
-    {
+            $format = 'm/d/Y h:i:s') {
         if ($sqldate) {
             return DateTime::createFromFormat('Y-m-d H:i:s', $sqldate)->format($format);
         }
@@ -2052,10 +1980,9 @@ class Configurator extends Engine
      * @param string $name
      * @return int
      */
-    function getIdByName($name)
-    {
+    function getIdByName($name) {
 
-        $id = $this->dblink->queryToValue('SELECT '.$this->getKeyColumn().' FROM '.$this->getMyTable().' WHERE '.$this->nameColumn.' LIKE \''.$this->dblink->addSlashes($name).' \'');
+        $id = $this->dblink->queryToValue('SELECT ' . $this->getKeyColumn() . ' FROM ' . $this->getMyTable() . ' WHERE ' . $this->nameColumn . ' LIKE \'' . $this->dblink->addSlashes($name) . ' \'');
         if (is_numeric($id)) {
             $id = intval($id);
         }
@@ -2071,8 +1998,7 @@ class Configurator extends Engine
      *
      * @return boolean
      */
-    function setUpUser(&$user, &$targetObject = null)
-    {
+    function setUpUser(&$user, &$targetObject = null) {
         if (isset($this->userColumn)) {
             $this->setDataValue($this->userColumn, $user->getMyKey());
         }
@@ -2085,9 +2011,8 @@ class Configurator extends Engine
      * @param int $currentID ID stávajícího vlastníka
      * @param int $newID     ID nového vlastníka
      */
-    function switchOwners($currentID, $newID)
-    {
-        $this->dblink->exeQuery('UPDATE '.$this->myTable." SET ".$this->userColumn." = '$newID' WHERE  ".$this->userColumn." = $currentID");
+    function switchOwners($currentID, $newID) {
+        $this->dblink->exeQuery('UPDATE ' . $this->myTable . " SET " . $this->userColumn . " = '$newID' WHERE  " . $this->userColumn . " = $currentID");
     }
 
     /**
@@ -2095,57 +2020,48 @@ class Configurator extends Engine
      *
      * @return string
      */
-    static function getBaseURL()
-    {
+    static function getBaseURL() {
         if (isset($_SERVER['REQUEST_SCHEME'])) {
             $scheme = $_SERVER['REQUEST_SCHEME'];
         } else {
             $scheme = 'http';
         }
 
-        $enterPoint = $scheme.'://'.$_SERVER['SERVER_NAME'].dirname($_SERVER['REQUEST_URI']).'/';
+        $enterPoint = $scheme . '://' . $_SERVER['SERVER_NAME'] . dirname($_SERVER['REQUEST_URI']) . '/';
 
 //        $enterPoint = str_replace('\\', '', $enterPoint); //Win Hack
         return $enterPoint;
     }
 
-    function csvizeRow()
-    {
+    function csvizeRow() {
         
     }
 
-    function getListingQuerySelect()
-    {
+    function getListingQuerySelect() {
         
     }
 
-    function getListingQueryWhere()
-    {
+    function getListingQueryWhere() {
         
     }
 
-    function operationsMenu()
-    {
+    function operationsMenu() {
         
     }
 
-    function handleUpload()
-    {
+    function handleUpload() {
         
     }
 
-    function unsetUnknownColumns()
-    {
+    function unsetUnknownColumns() {
         
     }
 
-    function sqlColumnsToSelect()
-    {
+    function sqlColumnsToSelect() {
         
     }
 
-    function getWhere()
-    {
+    function getWhere() {
         
     }
 
@@ -2154,23 +2070,21 @@ class Configurator extends Engine
      * 
      * @return ImgTag
      */
-    function getObjectIcon()
-    {
+    function getObjectIcon() {
         return new ImgTag($this->getObjectIconUrl(),
-            $this->keyword.' #'.$this->getMyKey(),
-            ['title' => $this->getObjectName()]);
+                $this->keyword . ' #' . $this->getMyKey(),
+                ['title' => $this->getObjectName()]);
     }
 
     /**
      * Icon Of Image that represents current object
      * @return string
      */
-    public function getObjectIconUrl()
-    {
+    public function getObjectIconUrl() {
         if (isset($this->iconImageColumn)) {
             $iconImage = $this->getDataValue($this->iconImageColumn);
             if (strlen($iconImage)) {
-                $iconImage = 'logos/'.$iconImage;
+                $iconImage = 'logos/' . $iconImage;
             }
         }
 
@@ -2185,13 +2099,12 @@ class Configurator extends Engine
      * Get URL Link To Current Object
      * @return string
      */
-    function getObjectLink()
-    {
-        $link = $this->keyword.'.php';
+    function getObjectLink() {
+        $link = $this->keyword . '.php';
 
         $id = $this->getMyKey();
         if (!is_null($id)) {
-            $link .= '?'.$this->getKeyColumn().'='.$this->getMyKey();
+            $link .= '?' . $this->getKeyColumn() . '=' . $this->getMyKey();
         }
 
         return $link;
@@ -2202,9 +2115,9 @@ class Configurator extends Engine
      * 
      * @return ATag
      */
-    public function getIconLink()
-    {
+    public function getIconLink() {
         return new ATag($this->getObjectLink(),
-            $this->getObjectIcon());
+                $this->getObjectIcon());
     }
+
 }

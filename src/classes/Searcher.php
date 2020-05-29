@@ -8,8 +8,8 @@ namespace Icinga\Editor;
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2012-2018 Vitex@hippy.cz (G)
  */
-class Searcher extends engine\Configurator
-{
+class Searcher extends engine\Configurator {
+
     /**
      * Prohledávaná tabulka
      * @var string
@@ -33,9 +33,8 @@ class Searcher extends engine\Configurator
      *
      * @param null $ItemID
      */
-    public function __construct($table = null, $column = null)
-    {
-        $this->table  = $table;
+    public function __construct($table = null, $column = null) {
+        $this->table = $table;
         $this->column = $column;
         parent::__construct();
 
@@ -49,14 +48,12 @@ class Searcher extends engine\Configurator
         $this->registerClass('Icinga\Editor\Engine\Timeperiod');
     }
 
-    public function registerClass($className)
-    {
-        $newClass                            = new $className;
+    public function registerClass($className) {
+        $newClass = new $className;
         $this->ieClasses[$newClass->keyword] = new $className;
     }
 
-    public function searchAll($term)
-    {
+    public function searchAll($term) {
         $results = [];
         foreach ($this->ieClasses as $ieClass) {
             if (!is_null($this->table) && ($ieClass->getMyTable() != $this->table)) {
@@ -74,4 +71,5 @@ class Searcher extends engine\Configurator
         }
         return $results;
     }
+
 }

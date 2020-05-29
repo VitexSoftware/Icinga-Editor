@@ -15,8 +15,7 @@ use Ease\WebPage;
  *
  * @author vitex
  */
-class NavBarSearchBox extends Form
-{
+class NavBarSearchBox extends Form {
 
     /**
      * Formulář Bootstrapu
@@ -29,36 +28,34 @@ class NavBarSearchBox extends Form
      *                              array('enctype' => 'multipart/form-data')
      */
     function __construct($formName, $formAction = null, $formMethod = 'post',
-                         $formContents = null, $tagProperties = null)
-    {
-        parent::__construct($formName, $formAction, $formMethod, $formContents,
-            $tagProperties);
+            $formContents = null, $tagProperties = null) {
+        parent::__construct(['name' => $formName, 'action' => $formAction, 'method' => $formMethod], $formContents,
+                $tagProperties);
         $term = WebPage::getRequestValue('search', 'string');
 
         $this->setTagProperties(['class' => 'navbar-form', 'role' => 'search']);
-        $group   = $this->addItem(
-            new DivTag(new InputTextTag(
-            'search', $term,
-            [
-            'class' => 'form-control pull-right typeahead',
-            'style' => 'width: 150px; margin-right: 35px, border: 1px solid black; background-color: #e5e5e5;',
-            'placeholder' => _('Search'),
-            ]), ['class' => 'input-group'])
+        $group = $this->addItem(
+                new DivTag(new InputTextTag(
+                                'search', $term,
+                                [
+                            'class' => 'form-control pull-right typeahead',
+                            'style' => 'width: 150px; margin-right: 35px, border: 1px solid black; background-color: #e5e5e5;',
+                            'placeholder' => _('Search'),
+                                ]), ['class' => 'input-group'])
         );
-        $buttons = $group->addItem(new Span( null,
-            ['class' => 'input-group-btn']));
+        $buttons = $group->addItem(new Span(null,
+                        ['class' => 'input-group-btn']));
         $buttons->addItem(new ButtonTag(new Span(
-            new Span(_('Close'), ['class' => 'sr-only']),
-            ['class' => 'glyphicon glyphicon-remove']),
-            ['type' => 'reset', 'class' => 'btn btn-default']));
+                                new Span(_('Close'), ['class' => 'sr-only']),
+                                ['class' => 'glyphicon glyphicon-remove']),
+                        ['type' => 'reset', 'class' => 'btn btn-default']));
         $buttons->addItem(new ButtonTag(new Span(
-            new Span(_('Search'), ['class' => 'sr-only']),
-            ['class' => 'glyphicon glyphicon-search']),
-            ['type' => 'submit', 'class' => 'btn btn-default']));
+                                new Span(_('Search'), ['class' => 'sr-only']),
+                                ['class' => 'glyphicon glyphicon-search']),
+                        ['type' => 'submit', 'class' => 'btn btn-default']));
     }
 
-    function finalize()
-    {
+    function finalize() {
         $this->includeJavaScript('js/handlebars.js');
         $this->includeJavaScript('js/typeahead.bundle.js');
         $this->addCss('

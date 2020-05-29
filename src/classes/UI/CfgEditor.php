@@ -7,8 +7,8 @@ namespace Icinga\Editor\UI;
  *
  * @author vitex
  */
-class CfgEditor extends \Ease\Container
-{
+class CfgEditor extends \Ease\Container {
+
     /**
      * Current edited object
      * @var \Icinga\Editor\Engine\Configurator Objekt konfigurace
@@ -27,14 +27,13 @@ class CfgEditor extends \Ease\Container
      * @param \Icinga\Editor\Engine\Configurator  $this->ObjectEdited
      * @param string $onlyColumn         Vrací editační pole jen pro sloupec daného jména
      */
-    public function __construct($cfgObject, $onlyColumn = null)
-    {
+    public function __construct($cfgObject, $onlyColumn = null) {
         parent::__construct();
         $this->objectEdited = &$cfgObject;
 
         if ($onlyColumn) {
             $this->insertWidget($this, $onlyColumn,
-                $this->objectEdited->getDataValue($onlyColumn));
+                    $this->objectEdited->getDataValue($onlyColumn));
         } else {
 
             if (\Ease\Shared::user()->getSettingValue('admin')) {
@@ -45,13 +44,13 @@ class CfgEditor extends \Ease\Container
 
             if ($cfgObject->getId()) {
                 $this->addItem(new \Ease\Html\InputHiddenTag($cfgObject->getKeyColumn(),
-                        $cfgObject->getMyKey(), ['class' => 'keyId']));
+                                $cfgObject->getMyKey(), ['class' => 'keyId']));
             }
 
             $this->addItem(new \Ease\Html\InputHiddenTag('class',
-                    get_class($cfgObject)));
+                            get_class($cfgObject)));
         }
-        \Ease\Shared::webPage()->includeJavaScript('js/datasaver.js');
+        \Ease\WebPage::singleton()->includeJavaScript('js/datasaver.js');
     }
 
     /**
@@ -61,23 +60,21 @@ class CfgEditor extends \Ease\Container
      * @param string         $fieldName
      * @param mixed          $value
      */
-    public function insertWidget($fieldBlock, $fieldName, $value)
-    {
-        $disabled    = false;
-        $hint        = '';
+    public function insertWidget($fieldBlock, $fieldName, $value) {
+        $disabled = false;
+        $hint = '';
         $keywordInfo = $this->objectEdited->keywordsInfo[$fieldName];
-        $fieldType   = $this->objectEdited->useKeywords[$fieldName];
-        $fType       = preg_replace('/\(.*\)/', '', $fieldType);
-        $required    = (isset($keywordInfo['requeired']) && ($keywordInfo['requeired']
-            === true));
+        $fieldType = $this->objectEdited->useKeywords[$fieldName];
+        $fType = preg_replace('/\(.*\)/', '', $fieldType);
+        $required = (isset($keywordInfo['requeired']) && ($keywordInfo['requeired'] === true));
 
         if ($this->objectEdited->allowTemplating) {
-            $effective     = $this->objectEdited->getCfg($fieldName, true);
-            $templateName  = key($effective);
+            $effective = $this->objectEdited->getCfg($fieldName, true);
+            $templateName = key($effective);
             $templateValue = current($effective);
 
             if ($fType == 'BOOL') {
-                \Ease\Shared::webPage()->addJavaScript("$(\"#useTpl$fieldName\").change(function(){
+                \Ease\WebPage::singleton()->addJavaScript("$(\"#useTpl$fieldName\").change(function(){
     if( this.checked ){
         $(\"[name='$fieldName']\").prop('disabled', true);
         $(\"input[name='$fieldName']\").bootstrapSwitch('toggleDisabled', true);
@@ -90,7 +87,7 @@ class CfgEditor extends \Ease\Container
 });", null, true);
             } else {
 
-                \Ease\Shared::webPage()->addJavaScript("$(\"#useTpl$fieldName\").change(function(){
+                \Ease\WebPage::singleton()->addJavaScript("$(\"#useTpl$fieldName\").change(function(){
     if( this.checked ){
         $(\"[name='$fieldName']\").prop('disabled', true);
     } else {
@@ -104,23 +101,23 @@ class CfgEditor extends \Ease\Container
 
             if ($templateName && !is_null($templateValue)) {
                 $fieldBlock->addItem(new \Ease\Html\CheckboxTag($templateCheckBoxName,
-                        true, 1, ['id' => 'useTpl'.$fieldName]));
-                $hint     = current($effective);
+                                true, 1, ['id' => 'useTpl' . $fieldName]));
+                $hint = current($effective);
                 $disabled = true;
             } else {
                 $fieldBlock->addItem(new \Ease\Html\CheckboxTag($templateCheckBoxName,
-                        false, 1, ['id' => 'useTpl'.$fieldName]));
+                                false, 1, ['id' => 'useTpl' . $fieldName]));
                 $hint = $value;
             }
-            $fieldBlock->addItem(' '._('Value from template').':');
-            $fieldBlock->addItem(new \Ease\Html\ATag('search.php?search='.key($effective),
-                    key($effective)));
-            $fieldBlock->addItem(': '.current($effective));
+            $fieldBlock->addItem(' ' . _('Value from template') . ':');
+            $fieldBlock->addItem(new \Ease\Html\ATag('search.php?search=' . key($effective),
+                            key($effective)));
+            $fieldBlock->addItem(': ' . current($effective));
         }
 
         if ($disabled) {
-            \Ease\Shared::webPage()->addJavaScript("$(\"[name='$fieldName']\").prop('disabled', true);",
-                null, true);
+            \Ease\WebPage::singleton()->addJavaScript("$(\"[name='$fieldName']\").prop('disabled', true);",
+                    null, true);
         }
 
         switch ($fType) {
@@ -132,43 +129,43 @@ class CfgEditor extends \Ease\Container
 
                 if ($required) {
                     $fieldBlock->addItem(new \Ease\TWB\FormGroup($fieldName,
-                            new \Ease\Html\InputTextTag($fieldName, $value,
-                                ['class' => 'required form-control', 'title' => $fieldName,
-                                'OnChange' => $this->onChangeCode($fieldName)]),
-                            $hint, $keywordInfo['title']));
+                                    new \Ease\Html\InputTextTag($fieldName, $value,
+                                            ['class' => 'required form-control', 'title' => $fieldName,
+                                        'OnChange' => $this->onChangeCode($fieldName)]),
+                                    $hint, $keywordInfo['title']));
 //                    $fieldBlock->addItem(new \Ease\Html\DivTag( new EaseLabeledTextInput($fieldName, $value, $keywordInfo['title'], array('class' => 'required form-control', 'title' => $fieldName))));
                 } else {
                     $fieldBlock->addItem(new \Ease\TWB\FormGroup($fieldName,
-                            new \Ease\Html\InputTextTag($fieldName, $value,
-                                ['title' => $fieldName, 'class' => 'form-control',
-                                'OnChange' => $this->onChangeCode($fieldName)]),
-                            $hint, $keywordInfo['title']));
+                                    new \Ease\Html\InputTextTag($fieldName, $value,
+                                            ['title' => $fieldName, 'class' => 'form-control',
+                                        'OnChange' => $this->onChangeCode($fieldName)]),
+                                    $hint, $keywordInfo['title']));
 //                    $fieldBlock->addItem(new EaseLabeledTextInput($fieldName, $value, $keywordInfo['title'], array('title' => $fieldName, 'class' => 'form-control')));
                 }
                 break;
             case 'TINYINT':
             case 'BOOL':
                 $fieldBlock->addItem(new \Ease\TWB\FormGroup($keywordInfo['title'],
-                        new YesNoSwitch($fieldName, $value, 'on',
-                            ['id' => $keywordInfo['title'].'sw'])));
+                                new YesNoSwitch($fieldName, $value, 'on',
+                                        ['id' => $keywordInfo['title'] . 'sw'])));
 
                 break;
             case 'FLAGS':
-                $values     = [];
+                $values = [];
                 $checkboxes = [];
-                $flags      = explode(',',
-                    str_replace([$fType, "'", '(', ')'], '', $fieldType));
+                $flags = explode(',',
+                        str_replace([$fType, "'", '(', ')'], '', $fieldType));
 
                 foreach ($flags as $flag) {
                     if (isset($keywordInfo[$flag])) {
                         $checkboxes[$flag] = $keywordInfo[$flag];
                     } else {
-                        $this->addStatusMessage(_('Missing definiton').' '.$fieldName.' '.$flag,
-                            'error');
+                        $this->addStatusMessage(_('Missing definiton') . ' ' . $fieldName . ' ' . $flag,
+                                'error');
                     }
                 }
                 foreach ($checkboxes as $chKey => $chTopic) {
-                    $checkboxes[$chKey] = '&nbsp;'.$chTopic.'</br>';
+                    $checkboxes[$chKey] = '&nbsp;' . $chTopic . '</br>';
                     if (strchr($value, $chKey)) {
                         $values[$chKey] = true;
                     } else {
@@ -176,9 +173,9 @@ class CfgEditor extends \Ease\Container
                     }
                 }
                 $sliderField = $fieldBlock->addItem(new \Ease\TWB\Panel($keywordInfo['title'],
-                        'default',
-                        new \Ease\Html\CheckboxGroup($fieldName, $checkboxes,
-                            $values)));
+                                'default',
+                                new \Ease\Html\CheckboxGroup($fieldName, $checkboxes,
+                                        $values)));
                 $sliderField->setTagCss(['width' => '100%']);
                 break;
             case 'IDLIST':
@@ -186,110 +183,110 @@ class CfgEditor extends \Ease\Container
                     $values = [];
                 }
                 $fieldBlock->addItem(new GroupMembersEditor($fieldName,
-                        $keywordInfo['title'], $this->objectEdited, $value));
+                                $keywordInfo['title'], $this->objectEdited, $value));
                 break;
             case 'SLIDER':
                 $sliderField = $fieldBlock->addItem(new \Ease\TWB\Panel($keywordInfo['title'],
-                        'default',
-                        new Slider($fieldName, (int) $value,
-                            ['data-slider-min' => 0])));
+                                'default',
+                                new Slider($fieldName, (int) $value,
+                                        ['data-slider-min' => 0])));
                 $sliderField->setTagCss(['width' => '100%']);
                 break;
             case 'TEXT':
                 $fieldBlock->addItem(new \Ease\TWB\FormGroup($keywordInfo['title'],
-                        new \Ease\TWB\Textarea($fieldName, $value,
-                            ['style' => 'width:100%', 'OnChange' => $this->onChangeCode($fieldName)])));
+                                new \Ease\TWB\Textarea($fieldName, $value,
+                                        ['style' => 'width:100%', 'OnChange' => $this->onChangeCode($fieldName)])));
                 break;
             case 'ENUM':
-                $flags       = explode(',',
-                    str_replace([$fType, "'", '(', ')'], '', $fieldType));
-                $selector    = $fieldBlock->addItem(
-                    new \Ease\TWB\FormGroup($keywordInfo['title'],
-                        new \Ease\Html\Select($fieldName,
-                            array_combine($flags, $flags), null, null,
-                            ['OnChange' => $this->onChangeCode($fieldName)]))
+                $flags = explode(',',
+                        str_replace([$fType, "'", '(', ')'], '', $fieldType));
+                $selector = $fieldBlock->addItem(
+                        new \Ease\TWB\FormGroup($keywordInfo['title'],
+                                new \Ease\Html\Select($fieldName,
+                                        array_combine($flags, $flags), null, null,
+                                        ['OnChange' => $this->onChangeCode($fieldName)]))
                 );
                 break;
             case 'PLATFORM':
                 $fieldBlock->addItem(new \Ease\TWB\FormGroup($keywordInfo['title'],
-                        new PlatformSelector($fieldName, null, $value)));
+                                new PlatformSelector($fieldName, null, $value)));
                 break;
             case 'RADIO':
-                $flags       = explode(',',
-                    str_replace([$fType, "'", '(', ')'], '', $fieldType));
+                $flags = explode(',',
+                        str_replace([$fType, "'", '(', ')'], '', $fieldType));
                 if (is_array($flags)) {
                     foreach (array_values($flags) as $flag) {
-                        $infoFlags[$flag] = '&nbsp;'.$keywordInfo[$flag];
+                        $infoFlags[$flag] = '&nbsp;' . $keywordInfo[$flag];
                     }
                     $buttons = new \Ease\Html\RadiobuttonGroup($fieldName,
-                        $infoFlags);
+                            $infoFlags);
                     $buttons->setValue($value);
-                    $FB      = $fieldBlock->addItem(new \Ease\TWB\Panel($keywordInfo['title'],
-                            'default',
-                            new \Ease\TWB\RadioButtonGroup($fieldName,
-                                $infoFlags, $value)));
+                    $FB = $fieldBlock->addItem(new \Ease\TWB\Panel($keywordInfo['title'],
+                                    'default',
+                                    new \Ease\TWB\RadioButtonGroup($fieldName,
+                                            $infoFlags, $value)));
                     $FB->setTagCss(['width' => '100%']);
                 }
                 break;
 
             case 'SELECT':
-                $IDColumn   = $keywordInfo['refdata']['idcolumn'];
+                $IDColumn = $keywordInfo['refdata']['idcolumn'];
                 $nameColumn = $keywordInfo['refdata']['captioncolumn'];
-                $sTable     = $keywordInfo['refdata']['table'];
+                $sTable = $keywordInfo['refdata']['table'];
                 if (isset($keywordInfo['refdata']['condition'])) {
                     $conditions = $keywordInfo['refdata']['condition'];
                 } else {
                     $conditions = [];
                 }
 
-                $sqlConds = " ( ".$this->objectEdited->dblink->prepSelect(array_merge($conditions,
-                            [$this->objectEdited->userColumn => \Ease\Shared::user()->getUserID()]))." ) OR ( ".$this->objectEdited->dblink->prepSelect(array_merge($conditions,
-                            ['public' => 1])).")  ";
+                $sqlConds = " ( " . $this->objectEdited->dblink->prepSelect(array_merge($conditions,
+                                        [$this->objectEdited->userColumn => \Ease\Shared::user()->getUserID()])) . " ) OR ( " . $this->objectEdited->dblink->prepSelect(array_merge($conditions,
+                                        ['public' => 1])) . ")  ";
 
                 $membersAviableArray = \Ease\Shared::db()->queryTo2DArray(
-                    'SELECT '.$nameColumn.' '.
-                    'FROM `'.$sTable.'` '.
-                    'WHERE '.$sqlConds.' '.
-                    'ORDER BY '.$nameColumn, $IDColumn);
+                        'SELECT ' . $nameColumn . ' ' .
+                        'FROM `' . $sTable . '` ' .
+                        'WHERE ' . $sqlConds . ' ' .
+                        'ORDER BY ' . $nameColumn, $IDColumn);
 
                 $selector = $fieldBlock->addItem(new \Ease\Html\Select($fieldName,
-                        $value, $keywordInfo['title'],
-                        ['OnChange' => $this->onChangeCode($fieldName)]));
+                                $value, $keywordInfo['title'],
+                                ['OnChange' => $this->onChangeCode($fieldName)]));
 
                 if (!$required) {
                     $selector->addItems(['NULL' => _('Default')]);
                 }
                 if (count($membersAviableArray)) {
                     $selector->addItems(array_combine($membersAviableArray,
-                            $membersAviableArray));
+                                    $membersAviableArray));
                 }
                 break;
 
             case 'SELECTID':
-                $IDColumn   = $keywordInfo['refdata']['idcolumn'];
+                $IDColumn = $keywordInfo['refdata']['idcolumn'];
                 $nameColumn = $keywordInfo['refdata']['captioncolumn'];
-                $sTable     = $keywordInfo['refdata']['table'];
+                $sTable = $keywordInfo['refdata']['table'];
                 if (isset($keywordInfo['refdata']['condition'])) {
                     $conditions = $keywordInfo['refdata']['condition'];
                 } else {
                     $conditions = [];
                 }
 
-                $sqlConds = " ( ".$this->objectEdited->dblink->prepSelect(array_merge($conditions,
-                            [$this->objectEdited->userColumn => \Ease\Shared::user()->getUserID()]))." ) OR ( ".$this->objectEdited->dblink->prepSelect(array_merge($conditions,
-                            ['public' => 1])).")  ";
+                $sqlConds = " ( " . $this->objectEdited->dblink->prepSelect(array_merge($conditions,
+                                        [$this->objectEdited->userColumn => \Ease\Shared::user()->getUserID()])) . " ) OR ( " . $this->objectEdited->dblink->prepSelect(array_merge($conditions,
+                                        ['public' => 1])) . ")  ";
 
                 $membersAviableArray = \Ease\Shared::db()->queryToArray(
-                    'SELECT '.$nameColumn.','.$IDColumn.' '.
-                    'FROM `'.$sTable.'` '.
-                    'WHERE '.$sqlConds.' '.
-                    'ORDER BY '.$nameColumn, $IDColumn);
+                        'SELECT ' . $nameColumn . ',' . $IDColumn . ' ' .
+                        'FROM `' . $sTable . '` ' .
+                        'WHERE ' . $sqlConds . ' ' .
+                        'ORDER BY ' . $nameColumn, $IDColumn);
 
                 $select = new \Ease\Html\Select($fieldName, null, $value, null,
-                    ['OnChange' => $this->onChangeCode($fieldName)]);
+                        ['OnChange' => $this->onChangeCode($fieldName)]);
 
                 $selector = $fieldBlock->addItem(
-                    new \Ease\TWB\FormGroup($keywordInfo['title'], $select)
+                        new \Ease\TWB\FormGroup($keywordInfo['title'], $select)
                 );
 
 
@@ -306,9 +303,9 @@ class CfgEditor extends \Ease\Container
 
 
             case 'SELECT+PARAMS':
-                $IDColumn   = $keywordInfo['refdata']['idcolumn'];
+                $IDColumn = $keywordInfo['refdata']['idcolumn'];
                 $nameColumn = $keywordInfo['refdata']['captioncolumn'];
-                $sTable     = $keywordInfo['refdata']['table'];
+                $sTable = $keywordInfo['refdata']['table'];
                 if (isset($keywordInfo['refdata']['condition'])) {
                     $conditions = $keywordInfo['refdata']['condition'];
                 } else {
@@ -317,73 +314,72 @@ class CfgEditor extends \Ease\Container
 
                 $conditions['command_type'] = 'check';
 
-                $sqlConds = " ( ".$this->objectEdited->dblink->prepSelect(array_merge($conditions,
-                            ['command_local' => true, $this->objectEdited->userColumn => \Ease\Shared::user()->getUserID()]))." ) OR ( ".$this->objectEdited->dblink->prepSelect($conditions)." AND public=1 )  ";
+                $sqlConds = " ( " . $this->objectEdited->dblink->prepSelect(array_merge($conditions,
+                                        ['command_local' => true, $this->objectEdited->userColumn => \Ease\Shared::user()->getUserID()])) . " ) OR ( " . $this->objectEdited->dblink->prepSelect($conditions) . " AND public=1 )  ";
 //                    $SqlConds = $this->ObjectEdited->dblink->prepSelect(array_merge($Conditions, array($this->ObjectEdited->userColumn => \Ease\Shared::user()->getUserID())));
 
                 if (isset($this->objectEdited->keywordsInfo['platform'])) {
                     $platform = $this->objectEdited->getDataValue('platform');
-                    $sqlConds .= " AND ((`platform` =  '".$platform."') OR (`platform` = 'generic') OR (`platform` IS NULL) OR (`platform`='') ) ";
+                    $sqlConds .= " AND ((`platform` =  '" . $platform . "') OR (`platform` = 'generic') OR (`platform` IS NULL) OR (`platform`='') ) ";
                 }
 
                 $membersAviableArray = \Ease\Shared::db()->queryTo2DArray(
-                    'SELECT '.$nameColumn.' '.
-                    'FROM `'.$sTable.'` '.
-                    'WHERE '.$sqlConds.' '.
-                    'ORDER BY '.$nameColumn, $IDColumn);
+                        'SELECT ' . $nameColumn . ' ' .
+                        'FROM `' . $sTable . '` ' .
+                        'WHERE ' . $sqlConds . ' ' .
+                        'ORDER BY ' . $nameColumn, $IDColumn);
 
                 $select = new \Ease\Html\Select($fieldName, $value);
                 $fieldBlock->addItem(new \Ease\TWB\FormGroup($keywordInfo['title'],
-                        $select));
+                                $select));
 
                 if (!$required) {
                     $select->addItems(['' => '']);
                 }
                 if (count($membersAviableArray)) {
                     $select->addItems(array_combine($membersAviableArray,
-                            $membersAviableArray));
+                                    $membersAviableArray));
                 }
 
-                $sqlConds = " ( ".$this->objectEdited->dblink->prepSelect(array_merge($conditions,
-                            ['command_remote' => true, $this->objectEdited->userColumn => \Ease\Shared::user()->getUserID()]))." ) OR ( ".$this->objectEdited->dblink->prepSelect($conditions)." AND public=1 )  ";
+                $sqlConds = " ( " . $this->objectEdited->dblink->prepSelect(array_merge($conditions,
+                                        ['command_remote' => true, $this->objectEdited->userColumn => \Ease\Shared::user()->getUserID()])) . " ) OR ( " . $this->objectEdited->dblink->prepSelect($conditions) . " AND public=1 )  ";
 //                    $SqlConds = $this->ObjectEdited->dblink->prepSelect(array_merge($Conditions, array($this->ObjectEdited->userColumn => \Ease\Shared::user()->getUserID())));
 
                 $membersAviableArray = \Ease\Shared::db()->queryTo2DArray(
-                    'SELECT '.$nameColumn.' '.
-                    'FROM `'.$sTable.'` '.
-                    'WHERE '.$sqlConds.' '.
-                    'ORDER BY '.$nameColumn, $IDColumn);
+                        'SELECT ' . $nameColumn . ' ' .
+                        'FROM `' . $sTable . '` ' .
+                        'WHERE ' . $sqlConds . ' ' .
+                        'ORDER BY ' . $nameColumn, $IDColumn);
 
-                $addNewItem = $fieldBlock->addItem(new \Ease\Html\InputSearchTag($fieldName.'-remote',
-                        $this->objectEdited->getDataValue($fieldName.'-remote'),
-                        ['class' => 'search-input', 'title' => _('Remote Test')]));
+                $addNewItem = $fieldBlock->addItem(new \Ease\Html\InputSearchTag($fieldName . '-remote',
+                                $this->objectEdited->getDataValue($fieldName . '-remote'),
+                                ['class' => 'search-input', 'title' => _('Remote Test')]));
                 $addNewItem->setDataSource('jsoncommand.php?maxRows=10');
 
-                \Ease\Shared::webPage()->includeJavaScript('js/typeahead.bundle.js');
+                \Ease\WebPage::singleton()->includeJavaScript('js/typeahead.bundle.js');
 
 
                 $fieldBlock->addItem(new \Ease\TWB\FormGroup(_('Parameters'),
-                        new \Ease\Html\InputTextTag($fieldName.'-params',
-                            $this->objectEdited->getDataValue($fieldName.'-params')
-                            , ['style' => 'width: 100%'])));
+                                new \Ease\Html\InputTextTag($fieldName . '-params',
+                                        $this->objectEdited->getDataValue($fieldName . '-params')
+                                        , ['style' => 'width: 100%'])));
 
                 break;
             case 'USER':
                 $fieldBlock->addItem(new UserSelect($fieldName, null,
-                        $this->objectEdited->getDataValue($fieldName), null,
-                        ['style' => 'width: 100%', 'OnChange' => $this->onChangeCode($fieldName)]));
+                                $this->objectEdited->getDataValue($fieldName), null,
+                                ['style' => 'width: 100%', 'OnChange' => $this->onChangeCode($fieldName)]));
                 break;
             default :
                 $fieldBlock->addItem(new EaseLabeledTextInput($fieldName,
-                        $value, $keywordInfo['title'], ['title' => $fieldName]));
+                                $value, $keywordInfo['title'], ['title' => $fieldName]));
                 $this->addStatusMessage(sprintf(_('Unknown type of %s for column %s'),
-                        $fType, $fieldName), 'warning');
+                                $fType, $fieldName), 'warning');
                 break;
         }
     }
 
-    public function fullEditor()
-    {
+    public function fullEditor() {
         $tabs = new \Ease\TWB\Tabs('editorTabs');
         $tabs->addTab(_('More Options:'));
 
@@ -391,7 +387,7 @@ class CfgEditor extends \Ease\Container
             $this->objectEdited->keywordsInfo[$this->objectEdited->userColumn] = [
                 'severity' => 'advanced',
                 'title' => 'vlastník'];
-            $this->objectEdited->useKeywords[$this->objectEdited->userColumn]  = 'USER';
+            $this->objectEdited->useKeywords[$this->objectEdited->userColumn] = 'USER';
         }
 
         if ($this->objectEdited->allowTemplating) {
@@ -400,16 +396,16 @@ class CfgEditor extends \Ease\Container
                 foreach ($this->objectEdited->keywordsInfo as $Kw => $Props) {
                     unset($this->objectEdited->keywordsInfo[$Kw]['required']);
                 }
-                $this->objectEdited->keywordsInfo['name']['required']     = true;
+                $this->objectEdited->keywordsInfo['name']['required'] = true;
                 $this->objectEdited->keywordsInfo['register']['required'] = true;
             } else {
-                $this->objectEdited->keywordsInfo['name']['required']     = false;
+                $this->objectEdited->keywordsInfo['name']['required'] = false;
                 $this->objectEdited->keywordsInfo['register']['required'] = false;
             }
         }
         if (isset($this->objectEdited->useKeywords['generate']) && !(int) $this->objectEdited->getDataValue('generate')) {
             $this->addStatusMessage(_('this record is not generated to icinga config file'),
-                'warning');
+                    'warning');
         }
         if ($this->objectEdited->publicRecords) {
             if ((int) $this->objectEdited->getDataValue('public')) {
@@ -429,7 +425,7 @@ class CfgEditor extends \Ease\Container
             $keywordInfo = $this->objectEdited->keywordsInfo[$fieldName];
             if (!isset($keywordInfo['severity'])) {
                 $this->addStatusMessage(sprintf(_('Column %s/%s without known severity'),
-                        $fieldName, get_class($this->objectEdited)), 'warning');
+                                $fieldName, get_class($this->objectEdited)), 'warning');
                 $keywordInfo['severity'] = null;
             }
 
@@ -442,14 +438,14 @@ class CfgEditor extends \Ease\Container
             }
 
             if (!isset($keywordInfo)) {
-                $this->addStatusMessage(_('Info missing').'   '.$fieldType.' '.$fieldName,
-                    'warning');
+                $this->addStatusMessage(_('Info missing') . '   ' . $fieldType . ' ' . $fieldName,
+                        'warning');
                 continue;
             }
 
             if (!isset($keywordInfo['title'])) {
-                $this->addStatusMessage(_('column without caption').' '.$fieldName,
-                    'warning');
+                $this->addStatusMessage(_('column without caption') . ' ' . $fieldName,
+                        'warning');
             }
 
             if (!strlen($keywordInfo['title'])) {
@@ -458,7 +454,7 @@ class CfgEditor extends \Ease\Container
 
             if (isset($keywordInfo['required']) && $keywordInfo['required']) {
                 $this->reqFields[$fieldName] = $fieldType;
-                $required                    = true;
+                $required = true;
             } else {
                 $required = false;
             }
@@ -466,7 +462,7 @@ class CfgEditor extends \Ease\Container
             $value = $this->objectEdited->getDataValue($fieldName);
 
 //            if (is_null($value)) {
-//                if (!\Ease\Shared::webPage()->isPosted()) {
+//                if (! \Ease\WebPage::singleton()->isPosted()) {
 //                    $value = '';
 //                } else {
 //                    continue;
@@ -478,15 +474,15 @@ class CfgEditor extends \Ease\Container
 
             if ($this->objectEdited->allowTemplating) {
                 if ($this->objectEdited->isTemplate()) {
-                    if (\Ease\Shared::webPage()->isPosted() && is_null($value) && $required) {
-                        $this->addStatusMessage(_('Requied value is not set').' '.$keywordInfo['title'],
-                            'warning');
+                    if (\Ease\WebPage::singleton()->isPosted() && is_null($value) && $required) {
+                        $this->addStatusMessage(_('Requied value is not set') . ' ' . $keywordInfo['title'],
+                                'warning');
                     }
                 }
             } else {
-                if (\Ease\Shared::webPage()->isPosted() && is_null($value) && $required) {
-                    $this->addStatusMessage(_('Requied value is not set').' '.$keywordInfo['title'],
-                        'warning');
+                if (\Ease\WebPage::singleton()->isPosted() && is_null($value) && $required) {
+                    $this->addStatusMessage(_('Requied value is not set') . ' ' . $keywordInfo['title'],
+                            'warning');
                 }
             }
 
@@ -498,26 +494,26 @@ class CfgEditor extends \Ease\Container
                         $advancedTab = $tabs->addTab(_('Advanced'));
                     }
                     $mainFieldBlock = $advancedTab->addItem(new \Ease\Html\DivTag(
-                            null,
-                            ['class' => 'fieldblock', 'id' => $fieldName.'-block']));
+                                    null,
+                                    ['class' => 'fieldblock', 'id' => $fieldName . '-block']));
                     break;
                 case 'optional':
                     if (!isset($optionalTab)) {
                         $optionalTab = $tabs->addTab(_('Optional'));
                     }
                     $mainFieldBlock = $optionalTab->addItem(new \Ease\Html\DivTag(null,
-                            ['class' => 'fieldblock', 'id' => $fieldName.'-block']));
+                                    ['class' => 'fieldblock', 'id' => $fieldName . '-block']));
                     break;
                 default :
                     $mainFieldBlock = $this->addItem(new \Ease\Html\DivTag(
-                            null,
-                            ['class' => 'fieldblock', 'id' => $fieldName.'-block']));
+                                    null,
+                                    ['class' => 'fieldblock', 'id' => $fieldName . '-block']));
                     break;
             }
 
 
-            $fieldLabel = $mainFieldBlock->addItem(new \Ease\Html\DivTag('<a>'.$fieldName.'</a>&nbsp;',
-                    ['class' => 'FieldLabel', 'onClick' => "$('#".$fieldName."-controls').toggle('slow');"]));
+            $fieldLabel = $mainFieldBlock->addItem(new \Ease\Html\DivTag('<a>' . $fieldName . '</a>&nbsp;',
+                            ['class' => 'FieldLabel', 'onClick' => "$('#" . $fieldName . "-controls').toggle('slow');"]));
             /**
 
               if (!$required || !(int) $this->objectEdited->getDataValue('register')) {
@@ -528,7 +524,7 @@ class CfgEditor extends \Ease\Container
               }
              */
             $fieldBlock = $mainFieldBlock->addItem(new \Ease\Html\DivTag(null,
-                    ['id' => $fieldName.'-controls']));
+                            ['id' => $fieldName . '-controls']));
 
 
             if (!$this->objectEdited->isOwnedBy() && !\Ease\Shared::user()->getSettingValue('admin')) { //Editovat může pouze vlastník
@@ -546,9 +542,8 @@ class CfgEditor extends \Ease\Container
 
             if (isset($template)) {
                 $tempValue = $template->getDataValue($fieldName);
-                if (!is_null($tempValue) && ($fieldName != $this->objectEdited->nameColumn)
-                    && !$required) { //Skrýt nedůležité položky
-// \Ease\Shared::webPage()->addJavaScript("$('#" . $fieldName . "-controls').hide();", null, true);
+                if (!is_null($tempValue) && ($fieldName != $this->objectEdited->nameColumn) && !$required) { //Skrýt nedůležité položky
+//  \Ease\WebPage::singleton()->addJavaScript("$('#" . $fieldName . "-controls').hide();", null, true);
                 }
             }
 
@@ -561,18 +556,17 @@ class CfgEditor extends \Ease\Container
     /**
      * jQuery pro vyžadované políčka
      */
-    public function finalize()
-    {
-        \Ease\Shared::webPage()->includeJavaScript('js/jquery.validate.js');
+    public function finalize() {
+        \Ease\WebPage::singleton()->includeJavaScript('js/jquery.validate.js');
         if (isset($this->reqFields) && count($this->reqFields)) {
 
-            $Rules = ' $("#'.$this->parentObject->getTagProperty('name').'").validate({
+            $Rules = ' $("#' . $this->parentObject->getTagProperty('name') . '").validate({
         invalidHandler: function (e, validator) {
             var errors = validator.numberOfInvalids();
             if (errors) {
                 var message = errors == 1
-                    ? \''._('One mandatory field left blank').'\'
-                    : \''._('Requied ').' + errors + '._(' fields').'\';
+                    ? \'' . _('One mandatory field left blank') . '\'
+                    : \'' . _('Requied ') . ' + errors + ' . _(' fields') . '\';
                 $("div.error span").html(message);
                 $("div.error").show();
             } else {
@@ -583,19 +577,18 @@ class CfgEditor extends \Ease\Container
             foreach ($this->reqFields as $fieldName => $fieldType) {
                 $fRules[] = "\n\"$fieldName\": \"required\"";
             }
-            $Rules .= implode(',', $fRules)."\n}});\n";
+            $Rules .= implode(',', $fRules) . "\n}});\n";
 
 //$Rules = ' $("#' . $this->parentObject->getTagProperty('name') . '").validate();';
 
-            \Ease\Shared::webPage()->addJavaScript($Rules, NULL, true);
+            \Ease\WebPage::singleton()->addJavaScript($Rules, NULL, true);
         }
     }
 
     /**
      * Editor běžného uživatele
      */
-    public function lightEditor()
-    {
+    public function lightEditor() {
 
         if (!(int) $this->objectEdited->getDataValue('generate')) {
             $this->addStatusMessage(_('this record is not generated to icinga config file'));
@@ -637,7 +630,7 @@ class CfgEditor extends \Ease\Container
 
             if (isset($keywordInfo['required']) && $keywordInfo['required']) {
                 $this->reqFields[$fieldName] = $fieldType;
-                $required                    = true;
+                $required = true;
             } else {
                 if (!isset($keywordInfo['mandatory']) || !$keywordInfo['mandatory']) {
                     $required = false;
@@ -648,7 +641,7 @@ class CfgEditor extends \Ease\Container
             $value = $this->objectEdited->getDataValue($fieldName);
 
             if (is_null($value)) {
-                if (!\Ease\Shared::webPage()->isPosted()) {
+                if (!\Ease\WebPage::singleton()->isPosted()) {
                     $value = '';
                 } else {
                     continue;
@@ -660,20 +653,20 @@ class CfgEditor extends \Ease\Container
 
             if ($this->objectEdited->allowTemplating) {
                 if ($this->objectEdited->isTemplate()) {
-                    if (\Ease\Shared::webPage()->isPosted() && is_null($value) && $required) {
-                        $this->addStatusMessage(_('Requied value is not set').' '.$keywordInfo['title'],
-                            'warning');
+                    if (\Ease\WebPage::singleton()->isPosted() && is_null($value) && $required) {
+                        $this->addStatusMessage(_('Requied value is not set') . ' ' . $keywordInfo['title'],
+                                'warning');
                     }
                 }
             } else {
-                if (\Ease\Shared::webPage()->isPosted() && is_null($value) && $required) {
-                    $this->addStatusMessage(_('Requied value is not set').' '.$keywordInfo['title'],
-                        'warning');
+                if (\Ease\WebPage::singleton()->isPosted() && is_null($value) && $required) {
+                    $this->addStatusMessage(_('Requied value is not set') . ' ' . $keywordInfo['title'],
+                            'warning');
                 }
             }
 
             $mainFieldBlock = $this->addItem(new \Ease\Html\DivTag(
-                    null, ['class' => 'fieldblock', 'id' => $fieldName.'-block']));
+                            null, ['class' => 'fieldblock', 'id' => $fieldName . '-block']));
             /*
 
               $fieldLabel = $mainFieldBlock->addItem(new \Ease\Html\DivTag( '<a name="' . $fieldName . '">' . $fieldName . '</a>&nbsp;', array('class' => 'FieldLabel mandatory', 'onClick' => "$('#" . $fieldName . "-controls').toggle('slow');")));
@@ -685,8 +678,8 @@ class CfgEditor extends \Ease\Container
               $mainFieldBlock->setTagClass('fieldblock req');
               }
              */
-            $fieldBlock     = $mainFieldBlock->addItem(new \Ease\Html\DivTag(null,
-                    ['id' => $fieldName.'-controls']));
+            $fieldBlock = $mainFieldBlock->addItem(new \Ease\Html\DivTag(null,
+                            ['id' => $fieldName . '-controls']));
 
             if (!$this->objectEdited->isOwnedBy() && !\Ease\Shared::user()->getSettingValue('admin')) { //Editovat může pouze vlastník
                 if ($this->objectEdited->getId()) {
@@ -700,10 +693,9 @@ class CfgEditor extends \Ease\Container
 
             if (isset($template)) {
                 $tempValue = $template->getDataValue($fieldName);
-                if (!is_null($tempValue) && ($fieldName != $this->objectEdited->nameColumn)
-                    && !$required) { //Skrýt nedůležité položky
-                    \Ease\Shared::webPage()->addJavaScript("$('#".$fieldName."-controls').hide();",
-                        null, true);
+                if (!is_null($tempValue) && ($fieldName != $this->objectEdited->nameColumn) && !$required) { //Skrýt nedůležité položky
+                    \Ease\WebPage::singleton()->addJavaScript("$('#" . $fieldName . "-controls').hide();",
+                            null, true);
                 }
             }
             $this->insertWidget($fieldBlock, $fieldName, $value);
@@ -716,10 +708,9 @@ class CfgEditor extends \Ease\Container
      * @param string $name
      * @return \\Ease\Html\CheckboxTag
      */
-    public function optionEnabler($name)
-    {
+    public function optionEnabler($name) {
         return new \Ease\Html\CheckboxTag(null, false, 1,
-            ['id' => 'useTpl'.$name]);
+                ['id' => 'useTpl' . $name]);
     }
 
     /**
@@ -728,14 +719,14 @@ class CfgEditor extends \Ease\Container
      * @param string $fieldName
      * @return string javascript
      */
-    public function onChangeCode($fieldName)
-    {
+    public function onChangeCode($fieldName) {
         $chCode = '';
-        $id     = $this->objectEdited->getMyKey();
+        $id = $this->objectEdited->getMyKey();
         if (!is_null($id)) {
-            $chCode = 'saveColumnData(\''.str_replace('\\', '-',
-                    get_class($this->objectEdited)).'\', \''.$id.'\', \''.$fieldName.'\')';
+            $chCode = 'saveColumnData(\'' . str_replace('\\', '-',
+                            get_class($this->objectEdited)) . '\', \'' . $id . '\', \'' . $fieldName . '\')';
         }
         return $chCode;
     }
+
 }

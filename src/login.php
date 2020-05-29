@@ -1,80 +1,67 @@
 <?php
 
+/**
+ * Icinga Editor - Login page.
+ *
+ * @author Vítězslav Dvořák <info@vitexsoftware.cz>
+ * @copyright  2012-2020 Vitex Software
+ */
+
 namespace Icinga\Editor;
 
-/**
- * Sign in page
- *
- * @author    Vitex <vitex@hippy.cz>
- * @copyright Vitex@hippy.cz (G) 2009-2019
- */
+use Ease\Html\DivTag;
+use Ease\Html\InputPasswordTag;
+use Ease\Html\InputTextTag;
+use Ease\Shared;
+use Ease\TWB\Form;
+use Ease\TWB\FormGroup;
+use Ease\TWB\LinkButton;
+use Ease\TWB\Panel;
+use Ease\TWB\SubmitButton;
+use Icinga\Editor\UI\PageBottom;
+use Icinga\Editor\UI\PageTop;
+use PDOException;
+
 require_once 'includes/IEInit.php';
+
+$shared = Shared::singleton();
 
 $login = $oPage->getRequestValue('login');
 if ($login) {
     try {
-        $oUser->setLogin($login);
-
-        if ($oUser->tryToLogin($_POST)) {
-            if ($oUser->getUserID() == 1) {
-                $oUser->setSettingValue('admin', TRUE);
-            }
-            $oUser->setSettingValue('plaintext', $_POST[$oUser->passwordColumn]);
-            \Ease\Shared::user($oUser);
-            $_SESSION['test'] = $oUser;
-
-            
-            $backurl = $oPage->getRequestValue('backurl');
-            if ($backurl) {
-                $oPage->redirect($backurl);
-            } else {
-                $oPage->redirect('main.php');
-            }
-            exit;
-        }
-    } catch (\PDOException $e) {
-        $oPage->addStatusMessage($e->getMessage(), 'error');
+        $oUser = Shared::user(new User());
+    } catch (PDOException $e) {
+        echo 'Caught exception: ', $e->getMessage(), "\n";
     }
-} else {
-
-    $forceID = $oPage->getRequestValue('force_id', 'int');
-    if (!is_null($forceID)) {
-        \Ease\Shared::user(new User($forceID));
-        \Ease\Shared::user()->SettingsColumn = 'settings';
-        $oUser->setSettingValue('admin', TRUE);
-        $oUser->addStatusMessage(_('Signed in as: ').$oUser->getUserLogin(),
-            'success');
-        \Ease\Shared::user()->loginSuccess();
+    if ($oUser->tryToLogin($_POST)) {
         $oPage->redirect('main.php');
         exit;
-    } else {
-        $oPage->addStatusMessage(_('Please enter your login name'));
     }
 }
 
-$oPage->addItem(new UI\PageTop(_('Sign in')));
+$oPage->addItem(new PageTop(_('Sign in')));
 $oPage->addPageColumns();
 
-$loginFace = new \Ease\Html\DivTag();
+$loginFace = new DivTag();
 
-$oPage->columnI->addItem(new \Ease\Html\DivTag(_('Please enter your login details:')));
+$oPage->columnI->addItem(new DivTag(_('Please enter your login details:')));
 
-$loginForm = $loginFace->addItem(new \Ease\TWB\Form(['name'=>'Login']));
+$loginForm = $loginFace->addItem(new Form(['name' => 'Login']));
 
-$loginForm->addItem(new \Ease\TWB\FormGroup(_('User Name'),
-        new \Ease\Html\InputTextTag('login', $login)));
-$loginForm->addItem(new \Ease\TWB\FormGroup(_('Pasword'),
-        new \Ease\Html\InputPasswordTag('password')));
-$loginForm->addItem(new \Ease\TWB\SubmitButton(_('Sign In'), 'success'));
+$loginForm->addItem(new FormGroup(_('User Name'),
+                new InputTextTag('login', $login)));
+$loginForm->addItem(new FormGroup(_('Pasword'),
+                new InputPasswordTag('password')));
+$loginForm->addItem(new SubmitButton(_('Sign In'), 'success'));
 
-$loginPanel = new \Ease\TWB\Panel(_('Sign in'), 'info', $loginFace);
+$loginPanel = new Panel(_('Sign in'), 'info', $loginFace);
 $loginPanel->body->setTagProperties(['style' => 'margin: 20px']);
 
 $oPage->columnII->addItem($loginPanel);
 
-$oPage->columnI->addItem(new \Ease\TWB\LinkButton('passwordrecovery.php',
-        _('Password recovery')));
+$oPage->columnI->addItem(new LinkButton('passwordrecovery.php',
+                _('Password recovery')));
 
-$oPage->addItem(new UI\PageBottom());
+$oPage->addItem(new PageBottom());
 
 $oPage->draw();

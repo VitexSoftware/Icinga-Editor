@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Configuration importer
  *
@@ -8,8 +9,8 @@
 
 namespace Icinga\Editor\Engine;
 
-class Importer extends Configurator
-{
+class Importer extends Configurator {
+
     /**
      * Files to process
      * @var array
@@ -27,8 +28,7 @@ class Importer extends Configurator
      *
      * @param null $ItemID
      */
-    public function __construct($params = null)
-    {
+    public function __construct($params = null) {
         parent::__construct();
         $this->registerClass('\Icinga\Editor\Engine\Timeperiod');
         $this->registerClass('\Icinga\Editor\Engine\Command');
@@ -48,9 +48,8 @@ class Importer extends Configurator
      *
      * @param strung $className
      */
-    public function registerClass($className)
-    {
-        $newClass                          = new $className;
+    public function registerClass($className) {
+        $newClass = new $className;
         $this->parseClasses[$newClass->keyword] = new $className;
     }
 
@@ -58,8 +57,7 @@ class Importer extends Configurator
      * Create table structure again
      * @deprecated since version 1.2.1
      */
-    public function dbInit()
-    {
+    public function dbInit() {
         foreach ($this->parseClasses as $ieClass) {
             $ieClass->dbInit();
         }
@@ -71,24 +69,23 @@ class Importer extends Configurator
      * @param string $path import target
      * @return array import results
      */
-    function importCfgPath($path){
+    function importCfgPath($path) {
         $imported = [];
-        if(is_dir($path)){
+        if (is_dir($path)) {
             $imported = $this->importCfg(Configurator::readRawConfigDir($path, $this));
         } else {
             $imported = $this->importCfgFile($path);
         }
         return $imported;
     }
-    
+
     /**
      * Naimportuje konfiguraci ze souboru
      *
      * @param  string $cfgFile
      * @return int    počet uložených konfigurací
      */
-    public function importCfgFile($cfgFile)
-    {
+    public function importCfgFile($cfgFile) {
         return $this->importCfg(Configurator::readRawConfigFile($cfgFile, $this));
     }
 
@@ -99,10 +96,9 @@ class Importer extends Configurator
      * @param  array  $commonValues globálně uplatněné hodnoty
      * @return int    počet vloženýh konfigurací
      */
-    public function importCfgText($cfgText, $commonValues)
-    {
+    public function importCfgText($cfgText, $commonValues) {
         return $this->importCfg(array_map('trim',
-                    preg_split('/\r\n|\n|\r/', $cfgText)), $commonValues);
+                                preg_split('/\r\n|\n|\r/', $cfgText)), $commonValues);
     }
 
     /**
@@ -111,21 +107,20 @@ class Importer extends Configurator
      * @param  string $cfg
      * @return int    počet uložených konfigurací
      */
-    public function importCfg($cfg)
-    {
+    public function importCfg($cfg) {
         $doneCount = 0;
         if (count($cfg)) {
             $this->addStatusMessage(sprintf(_('%s lines of configuration read'),
-                    count($cfg)), 'success');
+                            count($cfg)), 'success');
         } else {
             $this->addStatusMessage(sprintf(_('configuration parsing failed'),
-                    count($cfg)), 'warning');
+                            count($cfg)), 'warning');
             return 0;
         }
 
         if ($this->userColumn) {
             $this->setDataValue($this->userColumn,
-                \Ease\Shared::user()->getUserID());
+                    \Ease\Shared::user()->getUserID());
         }
 
         if (is_null($this->getDataValue('register'))) {
@@ -137,7 +132,7 @@ class Importer extends Configurator
         }
         if ($doneCount) {
             $this->addStatusMessage(sprintf(_('%s configurations imported'),
-                    $doneCount), 'success');
+                            $doneCount), 'success');
         } else {
             $this->addStatusMessage(_('None imported'), 'warning');
         }
@@ -150,15 +145,14 @@ class Importer extends Configurator
      *
      * @param string $fileName soubor
      */
-    public function writeConfigs($fileName)
-    {
+    public function writeConfigs($fileName) {
         foreach ($this->parseClasses as $ieClass) {
             if ($ieClass->writeConfig($fileName)) {
-                $this->addStatusMessage($ieClass->keyword.': '._('Configuration was generated'),
-                    'success');
+                $this->addStatusMessage($ieClass->keyword . ': ' . _('Configuration was generated'),
+                        'success');
             } else {
-                $this->addStatusMessage($ieClass->keyword.': '._('Configuration was not generated'),
-                    'warning');
+                $this->addStatusMessage($ieClass->keyword . ': ' . _('Configuration was not generated'),
+                        'warning');
             }
         }
     }

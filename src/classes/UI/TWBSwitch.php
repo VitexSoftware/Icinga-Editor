@@ -7,6 +7,6 @@ namespace Icinga\Editor\UI;
  *
  * @author vitex
  */
-class TWBSwitch extends \Ease\ui\TWBSwitch
-{
+class TWBSwitch extends \Ease\ui\TWBSwitch {
+    
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Windows Drive test form
  *
@@ -13,14 +14,12 @@ namespace Icinga\Editor\modules;
  *
  * @author vitex
  */
-class check_smart extends \Icinga\Editor\UI\ServiceConfigurator
-{
+class check_smart extends \Icinga\Editor\UI\ServiceConfigurator {
 
     /**
      *
      */
-    public function form()
-    {
+    public function form() {
         $config = [
             '--device' => '/dev/sda',
             '--interface' => 'scsi'
@@ -34,12 +33,12 @@ class check_smart extends \Icinga\Editor\UI\ServiceConfigurator
 
 
         $this->form->addInput(new \Ease\Html\Select('Disk', $drives,
-                str_replace(':', '', $config['--device'])), _('Disk'),
-            '/dev/sdX:', _('Choose drive Letter'));
+                        str_replace(':', '', $config['--device'])), _('Disk'),
+                '/dev/sdX:', _('Choose drive Letter'));
 
         $this->form->addItem(new \Ease\TWB\FormGroup(_('Warning treshold'),
-                new \Ease\Html\InputTextTag('MaxWarn', $config['MaxWarn']),
-                '80%', _('Maximum value before a warning is returned.')));
+                        new \Ease\Html\InputTextTag('MaxWarn', $config['MaxWarn']),
+                        '80%', _('Maximum value before a warning is returned.')));
     }
 
     /**
@@ -47,23 +46,22 @@ class check_smart extends \Icinga\Editor\UI\ServiceConfigurator
      *
      * @return boolean
      */
-    public function reconfigureService()
-    {
+    public function reconfigureService() {
         $configResult = false;
-        $config       = [];
-        $page         = \Ease\Shared::webPage();
+        $config = [];
+        $page = \Ease\Shared::webPage();
 
         foreach ($page->getRequestValues() as $key => $value) {
             switch ($key) {
                 case '--device':
-                    $config['--device']    = '--device '.$value;
+                    $config['--device'] = '--device ' . $value;
                     $this->tweaker->service->setDataValue($this->tweaker->service->nameColumn,
-                        _('Disk').' '.$value.':');
+                            _('Disk') . ' ' . $value . ':');
                     $this->tweaker->service->setDataValue('display_name',
-                        sprintf(_('SMART disk status %s: '), $value));
+                            sprintf(_('SMART disk status %s: '), $value));
                     break;
                 case '--interface':
-                    $config['--interface'] = '--interface '.$value;
+                    $config['--interface'] = '--interface ' . $value;
                     break;
                 default :
                     break;
@@ -74,11 +72,12 @@ class check_smart extends \Icinga\Editor\UI\ServiceConfigurator
 
         if (count($config)) {
             $this->tweaker->service->setDataValue('check_command-params',
-                implode(' ', $config));
+                    implode(' ', $config));
 
             $configResult = parent::reconfigureService();
         }
 
         return $configResult;
     }
+
 }

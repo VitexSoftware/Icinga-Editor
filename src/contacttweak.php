@@ -44,7 +44,7 @@ if ($delsubcont) {
     $delcnt->delete($delsubcont);
 }
 
-$oPage->addItem(new UI\PageTop(_('Contact editor').' '.$contact->getName()));
+$oPage->addItem(new UI\PageTop(_('Contact editor') . ' ' . $contact->getName()));
 $oPage->addPageColumns();
 
 $oPage->columnII->addItem(new \Ease\Html\H3Tag($contact->getName()));
@@ -53,16 +53,15 @@ $oPage->columnII->addItem(new UI\ContactTweaker($contact));
 
 if ($contact->getName() != $oUser->getUserLogin()) {
     $oPage->columnIII->addItem($contact->deleteButton($contact->getName(),
-            'contact_id='.$contact->getId()));
+                    'contact_id=' . $contact->getId()));
 }
-$renameForm = new \Ease\TWB\Form('Rename',
-    '?action=rename&amp;contact_id='.$contact->getID().'&contact_id='.$contact->getId());
+$renameForm = new \Ease\TWB\Form(['name' => 'Rename', 'action' => '?action=rename&amp;contact_id=' . $contact->getID() . '&contact_id=' . $contact->getId()]);
 $renameForm->addItem(new \Ease\Html\InputTextTag('newname'),
-    $contact->getName(), ['class' => 'form-control']);
+        $contact->getName(), ['class' => 'form-control']);
 $renameForm->addItem(new \Ease\TWB\SubmitButton(_('Rename'), 'success'));
 
 $oPage->columnIII->addItem(new \Ease\TWB\Panel(_('Renaming'), 'default',
-        $renameForm));
+                $renameForm));
 
 $oPage->addItem(new UI\PageBottom());
 

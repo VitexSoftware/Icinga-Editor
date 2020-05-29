@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Icinga external Commands injector
  *
@@ -14,8 +15,8 @@ namespace Icinga\Editor;
  *
  * @author vitex
  */
-class ExternalCommand extends \Ease\Atom
-{
+class ExternalCommand extends \Ease\Atom {
+
     /**
      * Command list
      * @var array
@@ -26,16 +27,14 @@ class ExternalCommand extends \Ease\Atom
      * Add command to execution Quee
      * @param type $command
      */
-    public function addCommand($command)
-    {
+    public function addCommand($command) {
         $this->commands[] = $command;
     }
 
     /**
      * Send all commands in queue to icinga
      */
-    public function executeAll()
-    {
+    public function executeAll() {
         $results = [];
         foreach ($this->commands as $id => $command) {
             $result = $this->execute($command);
@@ -53,11 +52,10 @@ class ExternalCommand extends \Ease\Atom
      * @param string $command
      * @return string|false execution result
      */
-    public function execute($command)
-    {
-        $this->addStatusMessage('External command: '.$command);
+    public function execute($command) {
+        $this->addStatusMessage('External command: ' . $command);
         ob_start();
-        $result = system('sudo /usr/bin/toicmdfile.sh "['.time().'] '.$command.'"');
+        $result = system('sudo /usr/bin/toicmdfile.sh "[' . time() . '] ' . $command . '"');
         ob_end_clean();
         return $result;
     }
@@ -65,10 +63,10 @@ class ExternalCommand extends \Ease\Atom
     /**
      * Execute All commands in stack
      */
-    public function __destruct()
-    {
+    public function __destruct() {
         if (count($this->commands)) {
             $this->executeAll();
         }
     }
+
 }

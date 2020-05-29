@@ -9,17 +9,15 @@ namespace Icinga\Editor\UI;
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2012 Vitex@hippy.cz (G)
  */
-class ChildrenSelector extends \Ease\Container
-{
+class ChildrenSelector extends \Ease\Container {
 
     /**
      * Editor k přidávání členů skupiny
      *
      * @param IEHosts $Host
      */
-    public function __construct($Host)
-    {
-        $FieldName      = 'parents';
+    public function __construct($Host) {
+        $FieldName = 'parents';
         $InitialContent = new \Ease\TWB\Panel(_('Children'));
         $InitialContent->setTagCss(['width' => '100%']);
 
@@ -29,8 +27,8 @@ class ChildrenSelector extends \Ease\Container
 
             $Service = new \Icinga\Editor\Engine\Service();
 
-            $servicesAssigned = $Service->dblink->queryToArray('SELECT '.$Service->keyColumn.','.$Service->nameColumn.' FROM '.$Service->myTable.' WHERE '.$FieldName.' LIKE \'%"'.$Host->getName().'"%\'',
-                $Service->keyColumn);
+            $servicesAssigned = $Service->dblink->queryToArray('SELECT ' . $Service->keyColumn . ',' . $Service->nameColumn . ' FROM ' . $Service->myTable . ' WHERE ' . $FieldName . ' LIKE \'%"' . $Host->getName() . '"%\'',
+                    $Service->keyColumn);
 
             $allServices = $Service->getListing();
             foreach ($allServices as $ServiceID => $serviceInfo) {
@@ -47,10 +45,10 @@ class ChildrenSelector extends \Ease\Container
 
                 foreach ($allServices as $ServiceID => $serviceInfo) {
                     $Jellybean = new \Ease\Html\Span(
-                        null,
-                        ['class' => 'jellybean gray', 'id' => $serviceInfo[$Service->nameColumn]]);
-                    $Jellybean->addItem(new \Ease\Html\ATag('?addservice='.$serviceInfo[$Service->nameColumn].'&amp;service_id='.$ServiceID.'&amp;'.$Host->getKeyColumn().'='.$Host->getMyKey().'&amp;'.$Host->nameColumn.'='.$Host->getName(),
-                        $serviceInfo[$Service->nameColumn]));
+                            null,
+                            ['class' => 'jellybean gray', 'id' => $serviceInfo[$Service->nameColumn]]);
+                    $Jellybean->addItem(new \Ease\Html\ATag('?addservice=' . $serviceInfo[$Service->nameColumn] . '&amp;service_id=' . $ServiceID . '&amp;' . $Host->getKeyColumn() . '=' . $Host->getMyKey() . '&amp;' . $Host->nameColumn . '=' . $Host->getName(),
+                                    $serviceInfo[$Service->nameColumn]));
                     $InitialContent->addItem($Jellybean);
                 }
             }
@@ -59,11 +57,11 @@ class ChildrenSelector extends \Ease\Container
                 $InitialContent->addItem('</br>');
                 foreach ($servicesAssigned as $ServiceID => $serviceInfo) {
                     $Jellybean = new \Ease\Html\Span(
-                        null,
-                        ['class' => 'jellybean', 'id' => $serviceInfo[$Service->nameColumn]]);
+                            null,
+                            ['class' => 'jellybean', 'id' => $serviceInfo[$Service->nameColumn]]);
                     $Jellybean->addItem($serviceInfo[$Service->nameColumn]);
-                    $Jellybean->addItem(new \Ease\Html\ATag('?delservice='.$serviceInfo[$Service->nameColumn].'&amp;service_id='.$ServiceID.'&amp;'.$Host->getKeyColumn().'='.$Host->getMyKey().'&amp;'.$Host->nameColumn.'='.$Host->getName(),
-                        \Ease\TWB\Part::GlyphIcon('remove')));
+                    $Jellybean->addItem(new \Ease\Html\ATag('?delservice=' . $serviceInfo[$Service->nameColumn] . '&amp;service_id=' . $ServiceID . '&amp;' . $Host->getKeyColumn() . '=' . $Host->getMyKey() . '&amp;' . $Host->nameColumn . '=' . $Host->getName(),
+                                    \Ease\TWB\Part::GlyphIcon('remove')));
                     $InitialContent->addItem($Jellybean);
                 }
             }
@@ -76,32 +74,31 @@ class ChildrenSelector extends \Ease\Container
      *
      * @param array $request
      */
-    public static function saveMembers($request)
-    {
+    public static function saveMembers($request) {
         $service = new \Icinga\Editor\Engine\Service();
         if (isset($request[$service->keyColumn])) {
             if ($service->loadFromSQL($request[$service->keyColumn])) {
                 if (isset($request['addservice']) || isset($request['delservice'])) {
                     if (isset($request['addservice'])) {
                         $service->addHostName($request['host_id'],
-                            $request['host_name']);
+                                $request['host_name']);
                         if ($service->saveToSQL()) {
                             $service->addStatusMessage(sprintf(_('The item %s was added'),
-                                    $request['addservice']), 'success');
+                                            $request['addservice']), 'success');
                         } else {
                             $service->addStatusMessage(sprintf(_('The item %s was not added'),
-                                    $request['addservice']), 'warning');
+                                            $request['addservice']), 'warning');
                         }
                     }
                     if (isset($request['delservice'])) {
                         $service->delHostName($request['host_id'],
-                            $request['host_name']);
+                                $request['host_name']);
                         if ($service->saveToSQL()) {
                             $service->addStatusMessage(sprintf(_('The item %s has been removed'),
-                                    $request['delservice']), 'success');
+                                            $request['delservice']), 'success');
                         } else {
                             $service->addStatusMessage(sprintf(_('The item %s not removed'),
-                                    $request['delservice']), 'warning');
+                                            $request['delservice']), 'warning');
                         }
                     }
                 }

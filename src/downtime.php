@@ -14,31 +14,30 @@ require_once 'includes/IEInit.php';
 //downtime.php?host_id=22&state=stop
 
 $host_id = $oPage->getRequestValue('host_id', 'int');
-$state   = $oPage->getRequestValue('state');
+$state = $oPage->getRequestValue('state');
 
 if ($host_id && $state) {
-    $host             = new Engine\Host($host_id);
+    $host = new Engine\Host($host_id);
     $servicesAssigned = $host->getServices();
-    $now              = time();
-    $extCmd           = new ExternalCommand();
+    $now = time();
+    $extCmd = new ExternalCommand();
     switch ($state) {
         case 'start':
-            $owner   = new User($host->getOwnerID());
+            $owner = new User($host->getOwnerID());
             $oneYear = 31556926; //In seconds
-            $extCmd->addCommand('SCHEDULE_HOST_DOWNTIME;'.$host->getName().';'.$now.';'.($now
-                + $oneYear).';0;0;'.$oneYear.';'.$owner->getUserLogin().';remote downtime invoke');
-            $extCmd->addCommand('DISABLE_HOST_NOTIFICATIONS;'.$host->getName());
+            $extCmd->addCommand('SCHEDULE_HOST_DOWNTIME;' . $host->getName() . ';' . $now . ';' . ($now + $oneYear) . ';0;0;' . $oneYear . ';' . $owner->getUserLogin() . ';remote downtime invoke');
+            $extCmd->addCommand('DISABLE_HOST_NOTIFICATIONS;' . $host->getName());
             foreach ($servicesAssigned as $serviceDescription) {
-                $extCmd->addCommand('DISABLE_SVC_NOTIFICATIONS;'.$host->getName().';'.$serviceDescription);
+                $extCmd->addCommand('DISABLE_SVC_NOTIFICATIONS;' . $host->getName() . ';' . $serviceDescription);
             }
-            $extCmd->addCommand('PROCESS_HOST_CHECK_RESULT;'.$host->getName().';1;Host go Down');
+            $extCmd->addCommand('PROCESS_HOST_CHECK_RESULT;' . $host->getName() . ';1;Host go Down');
             break;
         case 'stop':
-            $extCmd->addCommand('PROCESS_HOST_CHECK_RESULT;'.$host->getName().';0;Host go Up');
-            $extCmd->addCommand('DEL_DOWNTIME_BY_HOST_NAME;'.$host->getName());
-            $extCmd->addCommand('ENABLE_HOST_NOTIFICATIONS;'.$host->getName());
+            $extCmd->addCommand('PROCESS_HOST_CHECK_RESULT;' . $host->getName() . ';0;Host go Up');
+            $extCmd->addCommand('DEL_DOWNTIME_BY_HOST_NAME;' . $host->getName());
+            $extCmd->addCommand('ENABLE_HOST_NOTIFICATIONS;' . $host->getName());
             foreach ($servicesAssigned as $serviceDescription) {
-                $extCmd->addCommand('ENABLE_SVC_NOTIFICATIONS;'.$host->getName().';'.$serviceDescription);
+                $extCmd->addCommand('ENABLE_SVC_NOTIFICATIONS;' . $host->getName() . ';' . $serviceDescription);
             }
             break;
         default :

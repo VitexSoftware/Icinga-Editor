@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Icinga Editor - Service configuration
  *
@@ -11,11 +12,11 @@ namespace Icinga\Editor\Engine;
 /**
  * Služby
  */
-class Service extends Configurator
-{
-    public $myTable    = 'service';
-    public $keyColumn  = 'service_id';
-    public $keyword    = 'service';
+class Service extends Configurator {
+
+    public $myTable = 'service';
+    public $keyColumn = 'service_id';
+    public $keyword = 'service';
     public $nameColumn = 'service_description';
 
     /**
@@ -96,8 +97,7 @@ class Service extends Configurator
      */
     public $keywordsInfo = [];
 
-    public function __construct($itemID = null)
-    {
+    public function __construct($itemID = null) {
         $this->keywordsInfo = [
             'host_name' => [
                 'severity' => 'mandatory',
@@ -317,6 +317,7 @@ class Service extends Configurator
         ];
         parent::__construct($itemID);
     }
+
     /**
      * Object documentation URL
      * @var string
@@ -328,17 +329,16 @@ class Service extends Configurator
      *
      * @return array
      */
-    public function getAllUserData()
-    {
-        $user    = \Ease\Shared::user();
-        $userID  = $user->getUserID();
+    public function getAllUserData() {
+        $user = \Ease\Shared::user();
+        $userID = $user->getUserID();
         $allData = parent::getAllUserData();
         foreach ($allData as $adKey => $ad) {
             if ($allData[$adKey]['check_command-remote']) {
-                $params = ' '.$allData[$adKey]['check_command-remote'].'!'.
-                    $allData[$adKey]['check_command-params'];
+                $params = ' ' . $allData[$adKey]['check_command-remote'] . '!' .
+                        $allData[$adKey]['check_command-params'];
             } else {
-                $params = ' '.$allData[$adKey]['check_command-params'];
+                $params = ' ' . $allData[$adKey]['check_command-params'];
             }
             unset($allData[$adKey]['check_command-remote']);
             unset($allData[$adKey]['check_command-params']);
@@ -347,7 +347,7 @@ class Service extends Configurator
 
             if (is_array($ad['contacts']) && count($ad['contacts'])) { //Projít kontakty, vyhodit nevlastněné uživatelem
                 foreach ($ad['contacts'] as $ContactID => $ContactName) {
-                    $contactUserID = $this->dblink->QueryToValue('SELECT `user_id` FROM '.'contact WHERE contact_id='.$ContactID);
+                    $contactUserID = $this->dblink->QueryToValue('SELECT `user_id` FROM ' . 'contact WHERE contact_id=' . $ContactID);
                     if ($userID != $contactUserID) {
                         unset($allData[$adKey]['contacts'][$ContactID]);
                     }
@@ -356,7 +356,7 @@ class Service extends Configurator
 
             if (is_array($ad['host_name']) && count($ad['host_name'])) { //Projít kontakty, vyhodit nevlastněné uživatelem
                 foreach ($ad['host_name'] as $hostID => $HostName) {
-                    $hostUserID = $this->dblink->QueryToValue('SELECT `user_id` FROM host WHERE host_id='.$hostID);
+                    $hostUserID = $this->dblink->QueryToValue('SELECT `user_id` FROM host WHERE host_id=' . $hostID);
                     if ($userID != $hostUserID) {
                         unset($allData[$adKey]['host_name'][$hostID]);
                     }
@@ -367,8 +367,8 @@ class Service extends Configurator
                 if (!strlen($allData[$adKey]['display_name'])) {
                     $allData[$adKey]['display_name'] = $allData[$adKey][$this->nameColumn];
                 }
-                $allData[$adKey][$this->nameColumn] = $allData[$adKey][$this->nameColumn].'-'.
-                    \Ease\Shared::user()->getUserLogin(); //Přejmenovat službu podle uživatele
+                $allData[$adKey][$this->nameColumn] = $allData[$adKey][$this->nameColumn] . '-' .
+                        \Ease\Shared::user()->getUserLogin(); //Přejmenovat službu podle uživatele
                 if (!count($allData[$adKey]['host_name'])) { //Negenerovat nepoužité služby
                     unset($allData[$adKey]);
                 }
@@ -383,21 +383,20 @@ class Service extends Configurator
      *
      * @return array
      */
-    public function getAllData()
-    {
+    public function getAllData() {
         $allData = parent::getAllData();
         foreach ($allData as $adKey => $AD) {
             $params = $allData[$adKey]['check_command-params'];
 
             if (strlen($allData[$adKey]['check_command-remote'])) {
                 if (!is_null($params)) {
-                    $allData[$adKey]['check_command'] .= '!'.$allData[$adKey]['check_command-remote'].'!'.$params;
+                    $allData[$adKey]['check_command'] .= '!' . $allData[$adKey]['check_command-remote'] . '!' . $params;
                 } else {
-                    $allData[$adKey]['check_command'] .= '!'.$allData[$adKey]['check_command-remote'];
+                    $allData[$adKey]['check_command'] .= '!' . $allData[$adKey]['check_command-remote'];
                 }
             } else {
                 if (strlen($params)) {
-                    $allData[$adKey]['check_command'] .= '!'.$params;
+                    $allData[$adKey]['check_command'] .= '!' . $params;
                 }
             }
             unset($allData[$adKey]['check_command-remote']);
@@ -417,9 +416,8 @@ class Service extends Configurator
      * @param  array $allData
      * @return array
      */
-    public function controlAllData($allData)
-    {
-        $user   = \Ease\Shared::user();
+    public function controlAllData($allData) {
+        $user = \Ease\Shared::user();
         $userID = $user->getUserID();
         foreach ($allData as $adKey => $ad) {
 
@@ -434,13 +432,13 @@ class Service extends Configurator
                     continue;
                 }
                 if (!(int) $this->dblink->QueryToValue(
-                        'SELECT COUNT(*) FROM '.$this->myTable.
-                        ' WHERE '
-                        .'`use` LIKE \''.$ad['name'].',%\' OR '
-                        .'`use` LIKE \'%,'.$ad['name'].'\' OR '
-                        .'`use` LIKE \'%,'.$ad['name'].',%\' OR '
-                        .'`use` LIKE \''.$ad['name'].'\''
-                    )
+                                'SELECT COUNT(*) FROM ' . $this->myTable .
+                                ' WHERE '
+                                . '`use` LIKE \'' . $ad['name'] . ',%\' OR '
+                                . '`use` LIKE \'%,' . $ad['name'] . '\' OR '
+                                . '`use` LIKE \'%,' . $ad['name'] . ',%\' OR '
+                                . '`use` LIKE \'' . $ad['name'] . '\''
+                        )
                 ) {
                     //$this->addStatusMessage(sprintf(_('Předloha služby %s není použita. Negeneruji do konfigurace'), $ad['name']), 'info');
                     unset($allData[$adKey]);
@@ -448,11 +446,11 @@ class Service extends Configurator
                 }
             } else { //záznam
                 $allData[$adKey][$this->nameColumn] = str_replace(' ', '_',
-                        $allData[$adKey][$this->nameColumn]).'-'.$user->getUserLogin();
+                                $allData[$adKey][$this->nameColumn]) . '-' . $user->getUserLogin();
 
                 if (is_array($ad['contacts']) && count($ad['contacts'])) { //Projít kontakty, vyhodit nevlastněné uživatelem
                     foreach ($ad['contacts'] as $ContactID => $ContactName) {
-                        $ContactUserID = $this->dblink->QueryToValue('SELECT `user_id` FROM `contact` WHERE contact_id='.$ContactID);
+                        $ContactUserID = $this->dblink->QueryToValue('SELECT `user_id` FROM `contact` WHERE contact_id=' . $ContactID);
                         if ($userID != $ContactUserID) {
                             unset($allData[$adKey]['contacts'][$ContactID]);
                         }
@@ -461,7 +459,7 @@ class Service extends Configurator
 
                 if (is_array($ad['host_name']) && count($ad['host_name'])) { //Projít kontakty, vyhodit nevlastněné uživatelem
                     foreach ($ad['host_name'] as $HostID => $HostName) {
-                        $hostUserID = (int) $this->dblink->QueryToValue('SELECT `user_id` FROM `host` WHERE host_id='.$HostID);
+                        $hostUserID = (int) $this->dblink->QueryToValue('SELECT `user_id` FROM `host` WHERE host_id=' . $HostID);
                         if ($userID != $hostUserID) {
                             unset($allData[$adKey]['host_name'][$HostID]);
                         }
@@ -503,8 +501,7 @@ class Service extends Configurator
      *
      * @return bool success
      */
-    public function delHostName($hostID, $hostName)
-    {
+    public function delHostName($hostID, $hostName) {
         return $this->delMember('host_name', $hostID, $hostName);
     }
 
@@ -515,8 +512,7 @@ class Service extends Configurator
      * @param  string $newname
      * @return type
      */
-    public function renameHostName($hostid, $newname)
-    {
+    public function renameHostName($hostid, $newname) {
         return $this->renameMember('host_name', $hostid, $newname);
     }
 
@@ -526,8 +522,7 @@ class Service extends Configurator
      * @param string $newname
      * @return boolean
      */
-    public function rename($newname)
-    {
+    public function rename($newname) {
         $oldname = $this->getName();
         $this->setDataValue($this->nameColumn, $newname);
 
@@ -547,8 +542,7 @@ class Service extends Configurator
      * @param  int    $ownerId
      * @return int    ID nově vytvořené služby
      */
-    public function fork($host, $ownerId = null)
-    {
+    public function fork($host, $ownerId = null) {
         if (is_null($ownerId)) {
             $ownerId = \Ease\Shared::user()->getUserID();
         }
@@ -566,12 +560,12 @@ class Service extends Configurator
         if (is_object($host->owner)) {
             $this->setDataValue('contacts', $host->owner->getFirstContact());
         }
-        $newname = $this->getName().' '.$host->getName();
+        $newname = $this->getName() . ' ' . $host->getName();
 
-        $servcount = $this->dblink->queryToCount('SELECT '.$this->getKeyColumn().' FROM '.$this->myTable.' WHERE '.$this->nameColumn.' LIKE \''.$newname.'%\' ');
+        $servcount = $this->dblink->queryToCount('SELECT ' . $this->getKeyColumn() . ' FROM ' . $this->myTable . ' WHERE ' . $this->nameColumn . ' LIKE \'' . $newname . '%\' ');
 
         if ($servcount) {
-            $newname .= ' '.($servcount + 1);
+            $newname .= ' ' . ($servcount + 1);
         }
 
         $this->setDataValue($this->nameColumn, $newname);
@@ -586,19 +580,18 @@ class Service extends Configurator
      * @param type $swapToID
      * @return boolean
      */
-    public function swapTo($swapToID)
-    {
-        $newService    = new Service($swapToID);
-        $thisName      = $this->getName();
-        $hostsOK       = [];
-        $hostsErr      = [];
+    public function swapTo($swapToID) {
+        $newService = new Service($swapToID);
+        $thisName = $this->getName();
+        $hostsOK = [];
+        $hostsErr = [];
         $hostsAssigned = [];
-        $host          = new Host();
+        $host = new Host();
 
         if (\Ease\Shared::user()->getSettingValue('admin')) {
             $allHosts = $host->getAllFromSQL(NULL,
-                [$host->keyColumn, $host->nameColumn, 'platform', 'register'],
-                null, $host->nameColumn, $host->keyColumn);
+                    [$host->keyColumn, $host->nameColumn, 'platform', 'register'],
+                    null, $host->nameColumn, $host->keyColumn);
         } else {
             $allHosts = $host->getListing(null, true, ['platform', 'register']);
         }
@@ -611,8 +604,8 @@ class Service extends Configurator
 
         foreach ($hostsAssigned as $host_id => $hostAssigned) {
             if ($this->delMember('host_name', $host_id,
-                    $hostAssigned['host_name']) && $newService->addMember('host_name',
-                    $host_id, $hostAssigned['host_name'])) {
+                            $hostAssigned['host_name']) && $newService->addMember('host_name',
+                            $host_id, $hostAssigned['host_name'])) {
                 $hostsOK[] = $hostAssigned['host_name'];
             } else {
                 $hostsErr[] = $hostAssigned['host_name'];
@@ -620,13 +613,13 @@ class Service extends Configurator
         }
         if ($this->saveToSQL() && $newService->saveToSQL() && count($hostsOK)) {
             $this->addStatusMessage(sprintf(_('%s was moved from %s/%s to %s'),
-                    implode(',', $hostsOK), $this->keyword, $this->getName(),
-                    $newService->getName()), 'success');
+                            implode(',', $hostsOK), $this->keyword, $this->getName(),
+                            $newService->getName()), 'success');
             return true;
         } else {
             $this->addStatusMessage(sprintf(_(' %s was not moved from %s/%s to %s'),
-                    implode(',', $hostsErr), $this->keyword, $this->getName(),
-                    $newService->getName()), 'warning');
+                            implode(',', $hostsErr), $this->keyword, $this->getName(),
+                            $newService->getName()), 'warning');
             return false;
         }
     }
@@ -642,8 +635,7 @@ class Service extends Configurator
      * @return array
      */
     public function getPlatformListing($thisID = null, $platform = 'generic',
-                                       $withShared = true, $extraColumns = null)
-    {
+            $withShared = true, $extraColumns = null) {
         if (is_null($thisID)) {
             $thisID = \Ease\Shared::user()->getUserID();
         }
@@ -662,12 +654,12 @@ class Service extends Configurator
             $columnsToGet[] = 'public';
 
             $data = $this->getColumnsFromSQL($columnsToGet,
-                $this->userColumn.'='.$thisID.' OR '.$this->userColumn.' IS NULL OR public=1 '.$this->platformCondition($platform),
-                $this->nameColumn, $this->getKeyColumn());
+                    $this->userColumn . '=' . $thisID . ' OR ' . $this->userColumn . ' IS NULL OR public=1 ' . $this->platformCondition($platform),
+                    $this->nameColumn, $this->getKeyColumn());
         } else {
             $data = $this->getColumnsFromSQL($columnsToGet,
-                $this->ownershipCondition($thisID).$this->platformCondition($platform),
-                $this->nameColumn, $this->getKeyColumn());
+                    $this->ownershipCondition($thisID) . $this->platformCondition($platform),
+                    $this->nameColumn, $this->getKeyColumn());
         }
 
         return $this->unserializeArrays($data);
@@ -678,12 +670,12 @@ class Service extends Configurator
      * 
      * @param string $platform
      */
-    public function platformCondition($platform)
-    {
+    public function platformCondition($platform) {
         $sql = '';
         if (!is_null($platform)) {
-            $sql = " AND ((`platform` =  '".$platform."') OR (`platform` = 'generic') OR (`platform` IS NULL) OR (`platform`='') ) ";
+            $sql = " AND ((`platform` =  '" . $platform . "') OR (`platform` = 'generic') OR (`platform` IS NULL) OR (`platform`='') ) ";
         }
         return $sql;
     }
+
 }

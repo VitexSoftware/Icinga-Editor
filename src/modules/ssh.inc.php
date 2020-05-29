@@ -1,4 +1,5 @@
 <?php
+
 /**
  * SSH test form
  *
@@ -13,17 +14,15 @@ namespace Icinga\Editor\modules;
  *
  * @author vitex
  */
-class ssh extends \Icinga\Editor\UI\ServiceConfigurator
-{
+class ssh extends \Icinga\Editor\UI\ServiceConfigurator {
 
     /**
      *
      */
-    public function form()
-    {
+    public function form() {
         $port = isset($this->commandParams[0]) ? $this->commandParams[0] : 22;
         $this->form->addItem(new \Ease\TWB\FormGroup(_('SSH Port'),
-            new \Ease\Html\InputTextTag('port', $port), '22', _('Default SSH port is 22')));
+                        new \Ease\Html\InputTextTag('port', $port), '22', _('Default SSH port is 22')));
     }
 
     /**
@@ -31,8 +30,7 @@ class ssh extends \Icinga\Editor\UI\ServiceConfigurator
      * 
      * @return boolean
      */
-    public function reconfigureService()
-    {
+    public function reconfigureService() {
         $page = \Ease\Shared::webPage();
         $port = $page->getRequestValue('port', 'int');
 
@@ -44,4 +42,5 @@ class ssh extends \Icinga\Editor\UI\ServiceConfigurator
 
         return FALSE;
     }
+
 }

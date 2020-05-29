@@ -12,8 +12,7 @@ require_once 'Image/GraphViz.php';
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2015 Vitex@hippy.cz (G)
  */
-class HostMap extends \Image_GraphViz
-{
+class HostMap extends \Image_GraphViz {
 
     /**
      * Constructor.
@@ -36,9 +35,8 @@ class HostMap extends \Image_GraphViz
      * @access public
      */
     public function __construct($directed = false, $attributes = [],
-                                $name = 'G', $strict = true,
-                                $returnError = false)
-    {
+            $name = 'G', $strict = true,
+            $returnError = false) {
         $attributes['overlap'] = 'prism';
         parent::__construct($directed, $attributes, $name, $strict, $returnError);
         $this->fillUp();
@@ -47,12 +45,11 @@ class HostMap extends \Image_GraphViz
     /**
      * Naplní diagram
      */
-    function fillUp()
-    {
-        $host  = new \Icinga\Editor\Engine\Host();
+    function fillUp() {
+        $host = new \Icinga\Editor\Engine\Host();
         $hosts = $host->getListing(null, false,
-            ['alias', 'address', 'parents', 'notifications_enabled', 'active_checks_enabled',
-            'passive_checks_enabled', 'icon_image', $host->myCreateColumn, $host->myLastModifiedColumn]);
+                ['alias', 'address', 'parents', 'notifications_enabled', 'active_checks_enabled',
+                    'passive_checks_enabled', 'icon_image', $host->myCreateColumn, $host->myLastModifiedColumn]);
 
         foreach ($hosts as $host => $host_info) {
             $name = $host_info['host_name'];
@@ -76,18 +73,18 @@ class HostMap extends \Image_GraphViz
 
 
             $this->addNode($name,
-                [
-                'id' => $host_info['host_id'],
-                'URL' => 'host.php?host_id='.$host_info['host_id'],
-                'fontsize' => '10',
-                'color' => $color,
-                'height' => '0.2',
-                'width' => '2.1',
-                'image' => $host_info['icon_image'],
-                'fixedsize' => false,
-                'style' => 'filled',
-                'tooltip' => $host_info['address'],
-                'label' => $alias]);
+                    [
+                        'id' => $host_info['host_id'],
+                        'URL' => 'host.php?host_id=' . $host_info['host_id'],
+                        'fontsize' => '10',
+                        'color' => $color,
+                        'height' => '0.2',
+                        'width' => '2.1',
+                        'image' => $host_info['icon_image'],
+                        'fixedsize' => false,
+                        'style' => 'filled',
+                        'tooltip' => $host_info['address'],
+                        'label' => $alias]);
 
 
             if (isset($host_info['host_name'])) {
@@ -100,8 +97,7 @@ class HostMap extends \Image_GraphViz
         }
     }
 
-    function draw()
-    {
+    function draw() {
         error_reporting(E_ALL ^ E_STRICT);
 
         $tmpfile = $this->saveParsedGraph();
@@ -109,7 +105,7 @@ class HostMap extends \Image_GraphViz
             return $tmpfile;
         }
 
-        $outputfile = $tmpfile.'.'.'svg';
+        $outputfile = $tmpfile . '.' . 'svg';
 
         $rendered = $this->renderDotFile($tmpfile, $outputfile, 'svg', 'twopi');
         if ($rendered !== true) {
@@ -126,8 +122,7 @@ class HostMap extends \Image_GraphViz
         return $return;
     }
 
-    public function getObjectName()
-    {
+    public function getObjectName() {
         return 'svg';
     }
 

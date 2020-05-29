@@ -12,14 +12,14 @@ require_once 'includes/IEInit.php';
 
 $oPage->onlyForLogged();
 
-$serviceId      = $oPage->getRequestValue('service_id', 'int');
-$owner_id       = $oPage->getRequestValue('user_id', 'int');
-$name           = trim($oPage->getRequestValue('name'));
-$use            = trim($oPage->getRequestValue('use'));
-$remoteCmd      = trim($oPage->getRequestValue('check_command-remote'));
+$serviceId = $oPage->getRequestValue('service_id', 'int');
+$owner_id = $oPage->getRequestValue('user_id', 'int');
+$name = trim($oPage->getRequestValue('name'));
+$use = trim($oPage->getRequestValue('use'));
+$remoteCmd = trim($oPage->getRequestValue('check_command-remote'));
 $remoteCmdParam = trim($oPage->getRequestValue('check_command-params'));
-$platform       = trim($oPage->getRequestValue('platform'));
-$service        = new Engine\Service($serviceId);
+$platform = trim($oPage->getRequestValue('platform'));
+$service = new Engine\Service($serviceId);
 $service->owner = &$oUser;
 
 if (isset($platform)) {
@@ -56,10 +56,10 @@ if ($name) {
 
     if ($oPage->getRequestValue('register', 'int')) {
         $data['service_description'] = $name;
-        $data['display_name']        = $name;
-        $data['register']            = true;
+        $data['display_name'] = $name;
+        $data['register'] = true;
     } else {
-        $data['name']     = $name;
+        $data['name'] = $name;
         $data['register'] = false;
     }
 
@@ -90,11 +90,11 @@ if ($name) {
          */
         if (strlen(trim($service->getDataValue('check_command-remote'))) && $data['register']) {
             $oPage->addStatusMessage(_('Service was created'), 'success');
-            $oPage->redirect('service.php?service_id='.$service->getId());
+            $oPage->redirect('service.php?service_id=' . $service->getId());
             exit();
         } else {
             $oPage->addStatusMessage(_('Remote command not specified'),
-                'warning');
+                    'warning');
         }
     }
 } else {
@@ -110,12 +110,12 @@ $oPage->addItem(new UI\PageTop(_('Passive service Wizard')));
 $oPage->addPageColumns();
 
 $oPage->columnI->addItem(
-    new \Ease\TWB\Panel(_('Active check'), 'info',
-    _('the sensor (nrpe / nscp.exe) runs on a remote host, and the results of the defined tests are sent by the NRPE protocol to the monitoring server.'))
+        new \Ease\TWB\Panel(_('Active check'), 'info',
+                _('the sensor (nrpe / nscp.exe) runs on a remote host, and the results of the defined tests are sent by the NRPE protocol to the monitoring server.'))
 );
 $oPage->columnIII->addItem(
-    new \Ease\TWB\Panel(_('Active watched service'), 'info',
-    _('The commands offered are defined as remote and corresponding to the selected platform. Parameters depend on the particular test command you choose.'))
+        new \Ease\TWB\Panel(_('Active watched service'), 'info',
+                _('The commands offered are defined as remote and corresponding to the selected platform. Parameters depend on the particular test command you choose.'))
 );
 
 

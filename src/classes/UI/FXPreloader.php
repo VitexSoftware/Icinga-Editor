@@ -7,23 +7,20 @@ namespace Icinga\Editor\UI;
  *
  * @author vitex
  */
-class FXPreloader extends \Ease\Html\DivTag
-{
+class FXPreloader extends \Ease\Html\DivTag {
 
-    public function __construct($id = null)
-    {
+    public function __construct($id = null) {
         parent::__construct($id, null,
-            ['class' => 'loader', 'data-initialize' => 'loader']);
+                ['class' => 'loader', 'data-initialize' => 'loader']);
     }
 
-    public function finalize()
-    {
-        \Ease\Shared::webPage()->includeCss('twitter-bootstrap/css/fuelux.css',
-            true);
-        \Ease\Shared::webPage()->includeJavascript("/javascript/twitter-bootstrap/fuelux.js");
-        \Ease\Shared::webPage()->addJavascript("$('#".$this->getTagID()."').loader();");
-        \Ease\Shared::webPage()->addCSS('
-#'.$this->getTagID().'{
+    public function finalize() {
+        $this->includeCss('twitter-bootstrap/css/fuelux.css',
+                true);
+        $this->includeJavascript("/javascript/twitter-bootstrap/fuelux.js");
+        $this->addJavascript("$('#" . $this->getTagID() . "').loader();");
+        $this->addCSS('
+#' . $this->getTagID() . '{
     position: absolute;
     top: 50%;
     left: 50%;

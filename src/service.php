@@ -28,7 +28,7 @@ switch ($oPage->getRequestValue('action')) {
     case 'clone':
         $service->unsetDataValue($service->getKeyColumn());
         $service->setDataValue($service->nameColumn,
-            $service->getName().' '._('Cloned'));
+                $service->getName() . ' ' . _('Cloned'));
         if ($service->saveToSQL()) {
             $oUser->addStatusMessage(_('Service was cloned'), 'success');
         } else {
@@ -39,16 +39,16 @@ switch ($oPage->getRequestValue('action')) {
     case 'system':
         $hosts = $service->getDataValue('host_name');
         foreach ($hosts as $host_id => $host_name) {
-            $host       = new Engine\Host($host_id);
+            $host = new Engine\Host($host_id);
             $newService = new Engine\Service($service->getId());
             $newService->setDataValue($service->userColumn, 0);
             $newService->setDataValue('public', 0);
             if ($newService->fork($host, $host->getDataValue($host->userColumn))) {
                 $oUser->addStatusMessage(sprintf(_('The service %s was derived'),
-                        $newService->getName()), 'success');
+                                $newService->getName()), 'success');
             } else {
                 $oUser->addStatusMessage(_('The service was not derived'),
-                    'error');
+                        'error');
             }
         }
         $service->loadFromSQL($service->getId());
@@ -58,7 +58,7 @@ switch ($oPage->getRequestValue('action')) {
         break;
     case 'export':
         $service->transferDeps($oPage->getRequestValue('destination'),
-            $oPage->getRequestValue('rels'));
+                $oPage->getRequestValue('rels'));
         break;
     default :
         if ($oPage->isPosted()) {
@@ -72,7 +72,7 @@ switch ($oPage->getRequestValue('action')) {
                 $serviceID = $service->saveToSQL();
                 if (is_null($serviceID)) {
                     $oUser->addStatusMessage(_('Service was not saved'),
-                        'warning');
+                            'warning');
                 } else {
                     $oUser->addStatusMessage(_('Service was saved'), 'success');
                 }
@@ -92,11 +92,11 @@ if ($delete === 'true') {
     $service->delete();
 }
 
-$oPage->addItem(new UI\PageTop(_('Service Editor').' '.$service->getName()));
+$oPage->addItem(new UI\PageTop(_('Service Editor') . ' ' . $service->getName()));
 
 $infopanel = new UI\InfoBox($service);
-$tools     = new \Ease\TWB\Panel(_('Tools'), 'warning');
-$pageRow   = new \Ease\TWB\Row;
+$tools = new \Ease\TWB\Panel(_('Tools'), 'warning');
+$pageRow = new \Ease\TWB\Row;
 $pageRow->addColumn(2, $infopanel);
 $mainPanel = $pageRow->addColumn(6);
 $pageRow->addColumn(4, $tools);
@@ -105,14 +105,14 @@ $oPage->container->addItem($pageRow);
 switch ($oPage->getRequestValue('action')) {
     case 'delete':
         $confirmator = $mainPanel->addItem(new \Ease\TWB\Panel(_('Do you really delete?')),
-            'danger');
+                'danger');
         $confirmator->addItem(new UI\RecordShow($service));
-        $confirmator->addItem(new \Ease\TWB\LinkButton('?'.$service->keyColumn.'='.$service->getID(),
-                _('No').' '.\Ease\TWB\Part::glyphIcon('ok'), 'success'));
-        $confirmator->addItem(new \Ease\TWB\LinkButton('?delete=true&'.$service->keyColumn.'='.$service->getID(),
-                _('Yes').' '.\Ease\TWB\Part::glyphIcon('remove'), 'danger'));
+        $confirmator->addItem(new \Ease\TWB\LinkButton('?' . $service->keyColumn . '=' . $service->getID(),
+                        _('No') . ' ' . \Ease\TWB\Part::glyphIcon('ok'), 'success'));
+        $confirmator->addItem(new \Ease\TWB\LinkButton('?delete=true&' . $service->keyColumn . '=' . $service->getID(),
+                        _('Yes') . ' ' . \Ease\TWB\Part::glyphIcon('remove'), 'danger'));
         $tools->addItem(new \Ease\TWB\Panel(_('Service swap'), 'info',
-                new UI\ServiceSwapForm($service)));
+                        new UI\ServiceSwapForm($service)));
         $infopanel->addItem($service->ownerLinkButton());
         $tools->addItem(new UI\HostSelector($service));
 
@@ -121,48 +121,47 @@ switch ($oPage->getRequestValue('action')) {
 
         $serviceEdit = new UI\CfgEditor($service);
 
-        $form = new \Ease\TWB\Form('Service', 'service.php', 'POST',
-            $serviceEdit, ['class' => 'form-horizontal']);
+        $form = new \Ease\TWB\Form(['name' => 'Service', 'action' => 'service.php', 'class' => 'form-horizontal'], $serviceEdit);
         $form->setTagID($form->getTagName());
         if (!is_null($service->getMyKey())) {
             $form->addItem(new \Ease\Html\InputHiddenTag($service->getKeyColumn(),
-                    $service->getMyKey()));
+                            $service->getMyKey()));
         }
         $form->addItem('<br>');
         $form->addItem(new \Ease\TWB\SubmitButton(_('Save'), 'success'));
         $oPage->AddCss('
-input.ui-button { width: 100%; }
+input.ui-button { width: 100%;
+}
 ');
 
         if ($service->getID()) {
             $tools->addItem($service->deleteButton());
             $tools->addItem(new \Ease\TWB\Panel(_('Transfer'), 'warning',
-                    $service->transferForm()));
+                            $service->transferForm()));
             $tools->addItem($service->cloneButton());
 
 
-            $renameForm = new \Ease\TWB\Form('Rename',
-                '?action=rename&service_id='.$service->getId());
+            $renameForm = new \Ease\TWB\Form(['name' => 'Rename', 'action' => '?action=rename&service_id=' . $service->getId()]);
             $renameForm->addItem(new \Ease\Html\InputTextTag('newname'),
-                $service->getName(), ['class' => 'form-control']);
+                    $service->getName(), ['class' => 'form-control']);
             $renameForm->addItem(new \Ease\TWB\SubmitButton(_('Rename'),
-                    'success'));
+                            'success'));
 
             $tools->addItem(new \Ease\TWB\Panel(_('Renaming'), 'info',
-                    $renameForm));
+                            $renameForm));
             $tools->addItem(new UI\HostSelector($service));
 
             if ($oUser->getSettingValue('admin')) {
-                $tools->addItem(new \Ease\TWB\LinkButton('?action=system&service_id='.$service->getId(),
-                        _('Systémová služba')));
+                $tools->addItem(new \Ease\TWB\LinkButton('?action=system&service_id=' . $service->getId(),
+                                _('Systémová služba')));
             }
 
             $tools->addItem(new \Ease\TWB\Panel(_('Service swap'), 'info',
-                    new UI\ServiceSwapForm($service)));
+                            new UI\ServiceSwapForm($service)));
         }
 
         $mainPanel->addItem(new \Ease\TWB\Panel(new \Ease\Html\H3Tag([new UI\PlatformIcon($service->getDataValue('platform')),
-                    $service->getName()]), 'default', $form));
+                            $service->getName()]), 'default', $form));
 
         break;
 }

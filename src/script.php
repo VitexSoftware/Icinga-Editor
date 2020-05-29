@@ -26,12 +26,12 @@ switch ($oPage->getRequestValue('action')) {
             if (isset($_FILES['upload'])) {
                 if (!$script->getDataValue('filename')) {
                     $script->setDataValue('filename',
-                        basename($_FILES['upload']['name']));
+                            basename($_FILES['upload']['name']));
                 }
                 $script->setDataValue('body',
-                    file_get_contents($_FILES['upload']['tmp_name']));
+                        file_get_contents($_FILES['upload']['tmp_name']));
                 $script->addStatusMessage(_('Script was uploaded to server'),
-                    'success');
+                        'success');
             }
 
 
@@ -55,7 +55,7 @@ if ($delete == 'true') {
     $oPage->redirect('scripts.php');
 }
 
-$oPage->addItem(new UI\PageTop(_('Script Editor').' '.$script->getName()));
+$oPage->addItem(new UI\PageTop(_('Script Editor') . ' ' . $script->getName()));
 
 
 switch ($oPage->getRequestValue('action')) {
@@ -64,25 +64,23 @@ switch ($oPage->getRequestValue('action')) {
         $form->addItem(new \Ease\Html\H2Tag($script->getName()));
 
         $confirmator = $form->addItem(new \Ease\TWB\Panel(_('Script removal: Are you sure ?')),
-            'danger');
+                'danger');
 
         $confirmator->addItem(new \Ease\TWB\Well(nl2br($script->getDataValue('body'))));
-        $confirmator->addItem(new \Ease\TWB\LinkButton('?'.$script->keyColumn.'='.$script->getID(),
-                _('No').' '.\Ease\TWB\Part::glyphIcon('ok'), 'success'));
-        $confirmator->addItem(new \Ease\TWB\LinkButton('?delete=true&'.$script->keyColumn.'='.$script->getID(),
-                _('Yes').' '.\Ease\TWB\Part::glyphIcon('remove'), 'danger'));
+        $confirmator->addItem(new \Ease\TWB\LinkButton('?' . $script->keyColumn . '=' . $script->getID(),
+                        _('No') . ' ' . \Ease\TWB\Part::glyphIcon('ok'), 'success'));
+        $confirmator->addItem(new \Ease\TWB\LinkButton('?delete=true&' . $script->keyColumn . '=' . $script->getID(),
+                        _('Yes') . ' ' . \Ease\TWB\Part::glyphIcon('remove'), 'danger'));
 
 
         break;
     default :
         $scriptEditor = new UI\CfgEditor($script);
 
-        $form = new \Ease\TWB\Form('Script', 'script.php', 'POST',
-            $scriptEditor,
-            ['class' => 'form-horizontal', 'enctype' => 'multipart/form-data']);
+        $form = new \Ease\TWB\Form(['name' => 'Script', 'action' => 'script.php', 'class' => 'form-horizontal', 'enctype' => 'multipart/form-data'], $scriptEditor);
 
         $form->addInput(new \Ease\Html\InputFileTag('upload'), _('Send file'),
-            'script.sh', '('._('Textarea will overwriten').')');
+                'script.sh', '(' . _('Textarea will overwriten') . ')');
 
         if (!$script->getId()) {
             $form->addItem(new \Ease\TWB\SubmitButton(_('Create'), 'success'));
@@ -95,17 +93,17 @@ $oPage->addItem(new UI\PageBottom());
 
 
 $infopanel = new UI\InfoBox($script);
-$tools     = new \Ease\TWB\Panel(_('Tools'), 'warning');
+$tools = new \Ease\TWB\Panel(_('Tools'), 'warning');
 if ($script->getId()) {
     $tools->addItem($script->deleteButton());
     $tools->addItem(new \Ease\TWB\Panel(_('Transfer'), 'warning',
-            $script->transferForm()));
+                    $script->transferForm()));
 
     $command = new Engine\Command;
 
     $usages = $command->getColumnsFromSQL([$command->getKeyColumn(), $command->nameColumn],
-        ['script_id' => $command->getId()], $command->nameColumn,
-        $command->getKeyColumn());
+            ['script_id' => $command->getId()], $command->nameColumn,
+            $command->getKeyColumn());
 
     if (count($usages)) {
         $usedBy = new \Ease\TWB\Panel(_('Used by commands'));
@@ -118,10 +116,10 @@ if ($script->getId()) {
             }
 
             $listing->addItem(
-                new \Ease\Html\LiTag(
-                    new \Ease\Html\ATag('command.php?command_id='.$usage['command_id'],
-                        $usage[$command->nameColumn])
-                    , ['class' => 'list-group-item'])
+                    new \Ease\Html\LiTag(
+                            new \Ease\Html\ATag('command.php?command_id = ' . $usage['command_id'],
+                                    $usage[$command->nameColumn])
+                            , ['class' => 'list-group-item'])
             );
         }
 
@@ -134,8 +132,8 @@ if ($script->getId()) {
 $pageRow = new \Ease\TWB\Row();
 $pageRow->addColumn(2, $infopanel);
 $pageRow->addColumn(6,
-    new \Ease\TWB\Panel(_('Script').' <strong>'.$script->getName().'</strong>',
-        'default', $form));
+        new \Ease\TWB\Panel(_('Script') . ' <strong>' . $script->getName() . '</strong>',
+                'default', $form));
 $pageRow->addColumn(4, $tools);
 $oPage->container->addItem($pageRow);
 

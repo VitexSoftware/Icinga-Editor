@@ -7,8 +7,8 @@ namespace Icinga\Editor;
  *
  * @author vitex
  */
-class PortScanner extends \Ease\Sand
-{
+class PortScanner extends \Ease\Sand {
+
     /**
      * Ports to scan
      * @var array
@@ -38,8 +38,7 @@ class PortScanner extends \Ease\Sand
      *
      * @param Engine\Host $hostToScan
      */
-    public function __construct($hostToScan = null)
-    {
+    public function __construct($hostToScan = null) {
         parent::__construct();
         $this->service = new Engine\Service();
         if (is_object($hostToScan)) {
@@ -51,8 +50,7 @@ class PortScanner extends \Ease\Sand
     /**
      * Assign scan results to services
      */
-    public function assignServices()
-    {
+    public function assignServices() {
         $success = 0;
         $hostmod = false;
         foreach ($this->results as $port) {
@@ -78,14 +76,14 @@ class PortScanner extends \Ease\Sand
             $this->service->loadFromSQL($port);
             $this->service->setKeyColumn('service_id');
             $this->service->addMember('host_name', $this->host->getId(),
-                $this->host->getName());
+                    $this->host->getName());
             if ($this->service->saveToSQL()) {
                 $this->addStatusMessage(sprintf(_('Added watched services: %s'),
-                        $this->service->getName()), 'success');
+                                $this->service->getName()), 'success');
                 $success++;
             } else {
                 $this->addStatusMessage(sprintf(_('Adding watched service: %s failed'),
-                        $this->service->getName()), 'error');
+                                $this->service->getName()), 'error');
             }
         }
         if ($hostmod) {
@@ -98,10 +96,9 @@ class PortScanner extends \Ease\Sand
     /**
      * Obtain known ports
      */
-    public function getServicePorts()
-    {
+    public function getServicePorts() {
         $ports = $this->service->getColumnsFromSQL('tcp_port',
-            'tcp_port IS NOT NULL AND public = 1', 'tcp_port', 'tcp_port');
+                'tcp_port IS NOT NULL AND public = 1', 'tcp_port', 'tcp_port');
 
         return array_keys($ports);
     }
@@ -111,8 +108,7 @@ class PortScanner extends \Ease\Sand
      *
      * @return int scanned ports count
      */
-    public function performScan()
-    {
+    public function performScan() {
         $this->results = [];
         if (!count($this->ports)) {
             $this->ports = $this->getServicePorts();
@@ -132,12 +128,12 @@ class PortScanner extends \Ease\Sand
      *
      * @param int $port
      */
-    public function scan($port)
-    {
+    public function scan($port) {
         $fp = @fsockopen($this->host->getDataValue('address'), $port, $errno,
-                $errstr, 2);
+                        $errstr, 2);
         @fclose($fp);
 
         return $fp;
     }
+
 }

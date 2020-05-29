@@ -42,18 +42,18 @@ $oPage->addCss('
     ');
 
 $oPage->columnI->addItem(
-    new \Ease\TWB\Panel(_('Local'), 'success',
-        _('Local - only for admin'))
+        new \Ease\TWB\Panel(_('Local'), 'success',
+                _('Local - only for admin'))
 );
 $oPage->columnIII->addItem(
-    new \Ease\TWB\Panel(_('Remote'), 'info',
-        _('Remote'))
+        new \Ease\TWB\Panel(_('Remote'), 'info',
+                _('Remote'))
 );
 
 $oPage->columnII->addItem(new \Ease\TWB\LinkButton('wizard-active-service-local.php',
-        _('Local'), 'success', ['class' => 'btn-xlarge']));
+                _('Local'), 'success', ['class' => 'btn-xlarge']));
 $oPage->columnII->addItem(new \Ease\TWB\LinkButton('wizard-passive-service-remote.php',
-        _('Remote'), 'info', ['class' => 'btn-xlarge']));
+                _('Remote'), 'info', ['class' => 'btn-xlarge']));
 
 $oPage->addItem(new UI\PageBottom());
 

@@ -10,16 +10,14 @@ namespace Icinga\Editor\UI;
  * @author     Vitex <vitex@hippy.cz>
  * @copyright  2015 Vitex@hippy.cz (G)
  */
-class PlatformIcon extends \Ease\Html\ImgTag
-{
+class PlatformIcon extends \Ease\Html\ImgTag {
 
     /**
      * Zobrazí obrázek platformy
      *
      * @param string $platform windows|linux
      */
-    public function __construct($platform)
-    {
+    public function __construct($platform) {
 
         switch ($platform) {
             case 'windows':
@@ -32,7 +30,7 @@ class PlatformIcon extends \Ease\Html\ImgTag
                 $image = 'unknown.gif';
                 break;
         }
-        parent::__construct('logos/'.$image, $platform);
+        parent::__construct('logos/' . $image, $platform);
     }
 
 }

@@ -15,7 +15,7 @@ $oPage->onlyForLogged();
 $oPage->addItem(new UI\PageTop(_('Watched service templates overview')));
 
 $oPage->addItem(new \Ease\TWB\Container(new UI\DataGrid(_('Watched service overview'),
-            new Stemplate)));
+                        new Stemplate)));
 
 $oPage->addItem(new UI\PageBottom());
 

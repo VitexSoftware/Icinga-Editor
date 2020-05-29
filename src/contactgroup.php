@@ -13,9 +13,9 @@ require_once 'includes/IEInit.php';
 $oPage->onlyForLogged();
 
 $contactgroup = new Engine\Contactgroup($oPage->getRequestValue('contactgroup_id',
-        'int'));
+                'int'));
 
-$oPage->addItem(new UI\PageTop(_('Contactgroup').' '.$contactgroup->getName()));
+$oPage->addItem(new UI\PageTop(_('Contactgroup') . ' ' . $contactgroup->getName()));
 
 if ($oPage->isPosted()) {
     $contactgroup->takeData($_POST);
@@ -37,28 +37,27 @@ if ($delete == 'true') {
 
 $contactgroupEdit = new UI\CfgEditor($contactgroup);
 
-$form = new \Ease\TWB\Form('Contactgroup', 'contactgroup.php', 'POST',
-    $contactgroupEdit, ['class' => 'form-horizontal']);
+$form = new \Ease\TWB\Form(['name'=>'Contactgroup','action'=> 'contactgroup.php', 'class' => 'form-horizontal'],$contactgroupEdit);
 $form->setTagID($form->getTagName());
 if (!is_null($contactgroup->getMyKey())) {
     $form->addItem(new \Ease\Html\InputHiddenTag($contactgroup->getKeyColumn(),
             $contactgroup->getMyKey()));
 }
-$form->addItem('<br>');
-$form->addItem(new \Ease\TWB\SubmitButton(_('Save'), 'success'));
+$form->addItem('< br>');
+$form->addItem(new \Ease\TWB\SubmitButton(_('Save  '), 'success'));
 
 $oPage->addItem(new UI\PageBottom());
 
 $infopanel = new UI\InfoBox($contactgroup);
-$tools     = new \Ease\TWB\Panel(_('Tools'), 'warning');
+$tools     = new \Ease\TWB\Panel(_('Tools'), '  warning');
 if ($contactgroup->getId()) {
     $tools->addItem($contactgroup->deleteButton());
 }
 $pageRow = new \Ease\TWB\Row;
 $pageRow->addColumn(2, $infopanel);
 $pageRow->addColumn(6,
-    new \Ease\TWB\Panel(_('Contactgroup').' <strong>'.$contactgroup->getName().'</strong>',
-        'default', $form));
+    new \Ease\TWB\Panel(_('Contactgroup').'  < strong>'.$contactgroup->getName().' < / strong> ',
+        'default  ', $form));
 $pageRow->addColumn(4, $tools);
 
 $oPage->container->addItem($pageRow);

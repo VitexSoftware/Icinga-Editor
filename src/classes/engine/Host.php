@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Icinga Host Class
  *
@@ -13,12 +14,12 @@ namespace Icinga\Editor\Engine;
  *
  * @author vitex
  */
-class Host extends Configurator
-{
-    public $myTable    = 'host';
-    public $keyword    = 'host';
+class Host extends Configurator {
+
+    public $myTable = 'host';
+    public $keyword = 'host';
     public $nameColumn = 'host_name';
-    public $keyColumn  = 'host_id';
+    public $keyColumn = 'host_id';
 
     /**
      * Weblink
@@ -42,7 +43,7 @@ class Host extends Configurator
      * Record columns
      * @var array
      */
-    public $useKeywords  = [
+    public $useKeywords = [
         'host_name' => 'VARCHAR(255)',
         'alias' => 'VARCHAR(64)',
         'display_name' => 'VARCHAR(64)',
@@ -313,16 +314,14 @@ class Host extends Configurator
      * @param  string                     $urlAdd Předávaná část URL
      * @return \EaseJQConfirmedLinkButton
      */
-    public function deleteButton($name = null, $addUrl = '')
-    {
+    public function deleteButton($name = null, $addUrl = '') {
         return parent::deleteButton(_('Host'), $addUrl);
     }
 
     /**
      * Smaže záznam
      */
-    public function delete($id = null)
-    {
+    public function delete($id = null) {
         if (!is_null($id)) {
             $this->loadFromSQL($id);
         }
@@ -330,35 +329,35 @@ class Host extends Configurator
         $hostGroup = new Hostgroup();
         $hostGroup->deleteHost($this->getName());
 
-        $delAll           = true;
-        $service          = new Service();
-        $servicesAssigned = $service->dblink->queryToArray('SELECT '.$service->keyColumn.','.$service->nameColumn.' FROM '.$service->myTable.' WHERE '.'host_name'.' LIKE \'%"'.$this->getName().'"%\'',
-            $service->keyColumn);
+        $delAll = true;
+        $service = new Service();
+        $servicesAssigned = $service->dblink->queryToArray('SELECT ' . $service->keyColumn . ',' . $service->nameColumn . ' FROM ' . $service->myTable . ' WHERE ' . 'host_name' . ' LIKE \'%"' . $this->getName() . '"%\'',
+                $service->keyColumn);
         foreach ($servicesAssigned as $serviceID => $serviceInfo) {
             $service->loadFromSQL($serviceID);
             $service->delHostName($this->getId(), $this->getName());
             if ($service->saveToSQL()) {
                 $this->addStatusMessage(sprintf(_('Unregister %s from service %s done'),
-                        $this->getName(), $service->getName()), 'success');
-            } else {    
+                                $this->getName(), $service->getName()), 'success');
+            } else {
                 $this->addStatusMessage(sprintf(_('Unregister %s from service %s error'),
-                        $this->getName(), $service->getName()), 'error');
+                                $this->getName(), $service->getName()), 'error');
                 $delAll = false;
             }
         }
 
-        $childsOfMe = $this->dblink->queryToArray('SELECT '.$this->keyColumn.','.$this->nameColumn.' FROM '.$this->myTable.' WHERE parents '.
-            ' LIKE \'%'.$this->getName().'%\'', $this->keyColumn);
+        $childsOfMe = $this->dblink->queryToArray('SELECT ' . $this->keyColumn . ',' . $this->nameColumn . ' FROM ' . $this->myTable . ' WHERE parents ' .
+                ' LIKE \'%' . $this->getName() . '%\'', $this->keyColumn);
 
         foreach ($childsOfMe as $chid_id => $child_info) {
             $child = new Host($chid_id);
 
             if ($child->delMember('parents', $this->getId(), $this->getName()) && $child->saveToSQL()) {
                 $this->addStatusMessage(sprintf(_('%s not an parent of %s'),
-                        $this->getName(), $child->getName()), 'success');
+                                $this->getName(), $child->getName()), 'success');
             } else {
                 $this->addStatusMessage(sprintf(_('%s is still parent of %s'),
-                        $this->getName(), $child->getName()), 'warning');
+                                $this->getName(), $child->getName()), 'warning');
             }
         }
 
@@ -376,8 +375,7 @@ class Host extends Configurator
      * @param  array $allData
      * @return array
      */
-    public function controlAllData($allData)
-    {
+    public function controlAllData($allData) {
         foreach ($allData as $aDkey => $aD) {
             if ($allData[$aDkey]['max_check_attempts'] == 0) {
                 unset($allData[$aDkey]['max_check_attempts']);
@@ -392,8 +390,7 @@ class Host extends Configurator
      *
      * @return array Data hostu k uložení do konfiguráků
      */
-    public function getAllData()
-    {
+    public function getAllData() {
         $allData = parent::getAllData();
         foreach ($allData as $hostID => $hostInfo) {
             unset($allData[$hostID]['host_is_server']);
@@ -419,8 +416,8 @@ class Host extends Configurator
                     $allData[$hostID]['contacts'] = [$hostOwnerLogin];
                 }
             } else {
-                $this->addStatusMessage(_('Host without owner').': #'.$hostInfo[$this->keyColumn].': '.$hostInfo[$this->nameColumn],
-                    'warning');
+                $this->addStatusMessage(_('Host without owner') . ': #' . $hostInfo[$this->keyColumn] . ': ' . $hostInfo[$this->nameColumn],
+                        'warning');
             }
         }
 
@@ -431,8 +428,7 @@ class Host extends Configurator
      * Scan & assifgn TCP services
      * @return int počet sledovaných
      */
-    public function autoPopulateServices()
-    {
+    public function autoPopulateServices() {
         $scanner = new \Icinga\Editor\PortScanner($this);
 
         return $scanner->assignServices();
@@ -442,30 +438,29 @@ class Host extends Configurator
      * Rename host and dependencies
      * @param string $newname
      */
-    public function rename($newname)
-    {
+    public function rename($newname) {
         $oldname = $this->getName();
         $this->setDataValue($this->nameColumn, $newname);
 
         $hostGroup = new Hostgroup();
         $hostGroup->renameHost($oldname, $newname);
 
-        $renameAll        = true;
-        $service          = new Service();
-        $servicesAssigned = $service->dblink->queryToArray('SELECT '.$service->keyColumn.','.$service->nameColumn.' FROM '.$service->myTable.' WHERE '.'host_name'.' LIKE \'%"'.$oldname.'"%\'',
-            $service->keyColumn);
+        $renameAll = true;
+        $service = new Service();
+        $servicesAssigned = $service->dblink->queryToArray('SELECT ' . $service->keyColumn . ',' . $service->nameColumn . ' FROM ' . $service->myTable . ' WHERE ' . 'host_name' . ' LIKE \'%"' . $oldname . '"%\'',
+                $service->keyColumn);
         foreach ($servicesAssigned as $serviceID => $serviceInfo) {
             $service->loadFromSQL($serviceID);
             $service->renameHostName($this->getId(), $newname);
             if (!$service->saveToSQL()) {
                 $this->addStatusMessage(sprintf(_('Error renaming %s within service %s'),
-                        $this->getName(), $service->getName()), $Type);
+                                $this->getName(), $service->getName()), $Type);
                 $renameAll = false;
             }
         }
 
-        $childsAssigned = $this->dblink->queryToArray('SELECT '.$this->keyColumn.','.$this->nameColumn.' FROM '.$this->myTable.' WHERE '.'parents'.' LIKE \'%"'.$oldname.'"%\'',
-            $this->keyColumn);
+        $childsAssigned = $this->dblink->queryToArray('SELECT ' . $this->keyColumn . ',' . $this->nameColumn . ' FROM ' . $this->myTable . ' WHERE ' . 'parents' . ' LIKE \'%"' . $oldname . '"%\'',
+                $this->keyColumn);
         foreach ($childsAssigned as $chid_id => $child_info) {
             $child = new Host($chid_id);
             $child->delMember('parents', $this->getId(), $oldname);
@@ -483,14 +478,13 @@ class Host extends Configurator
     /**
      * Check icon, download, convert an use as host icon
      */
-    public function favToIcon()
-    {
-        $icoUrl    = false;
-        $baseUrl   = 'http://'.$this->getDataValue('host_name').'/';
+    public function favToIcon() {
+        $icoUrl = false;
+        $baseUrl = 'http://' . $this->getDataValue('host_name') . '/';
         $indexpage = @file_get_contents($baseUrl);
-        $icoUrls   = [];
+        $icoUrls = [];
         if (strlen($indexpage)) {
-            $dom   = new \DOMDocument();
+            $dom = new \DOMDocument();
             @$dom->loadHTML($indexpage);
             $links = $dom->getElementsByTagName('link');
             foreach ($links as $link) {
@@ -499,9 +493,9 @@ class Host extends Configurator
                     foreach ($link->attributes as $atribut) {
                         if (isset($atribut->name)) {
                             if (($atribut->name == 'rel') && stristr($atribut->value,
-                                    'icon')) {
+                                            'icon')) {
                                 $urlLink = true;
-                                $rel     = $atribut->value;
+                                $rel = $atribut->value;
                             }
                             if (($atribut->name == 'href')) {
                                 $url = $atribut->value;
@@ -512,7 +506,7 @@ class Host extends Configurator
                         if (strstr($url, '://')) {
                             $icoUrls[$rel] = $url;
                         } else {
-                            $icoUrls[$rel] = $baseUrl.$url;
+                            $icoUrls[$rel] = $baseUrl . $url;
                         }
                     }
                 }
@@ -520,7 +514,7 @@ class Host extends Configurator
         }
 
         if (!count($icoUrls)) {
-            $icoUrls[] = $baseUrl.'/favicon.ico';
+            $icoUrls[] = $baseUrl . '/favicon.ico';
         } else {
             if (count($icoUrls) == 1) {
                 $icoUrl = current($icoUrls);
@@ -555,10 +549,10 @@ class Host extends Configurator
 
 
 
-        $tmpfilename = sys_get_temp_dir().'/'.\Ease\Sand::randomString();
+        $tmpfilename = sys_get_temp_dir() . '/' . \Ease\Sand::randomString();
 
 
-        $ch         = curl_init();
+        $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $icoUrl);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
@@ -572,11 +566,11 @@ class Host extends Configurator
 
         if (\Icinga\Editor\UI\IconSelector::imageTypeOK($tmpfilename)) {
 
-            \Ease\Shared::webPage()->addStatusMessage(sprintf(_('Nalezena ikona %s'),
-                    $icoUrl), 'success');
+            \Ease\WebPage::singleton()->addStatusMessage(sprintf(_('Nalezena ikona %s'),
+                            $icoUrl), 'success');
 
             $newicon = \Icinga\Editor\UI\IconSelector::saveIcon($tmpfilename,
-                    $this);
+                            $this);
 
             if ($newicon) {
                 $this->setDataValue('icon_image', $newicon);
@@ -593,8 +587,7 @@ class Host extends Configurator
     /**
      * Draw host html representation
      */
-    function draw()
-    {
+    function draw() {
         echo new \Icinga\Editor\UI\HostIcon($this);
     }
 
@@ -603,13 +596,12 @@ class Host extends Configurator
      *
      * @return array Service name listing
      */
-    public function getServices()
-    {
+    public function getServices() {
         $services = [];
 
-        $service          = new Service();
-        $servicesAssigned = $service->dblink->queryToArray('SELECT '.$service->keyColumn.','.$service->nameColumn.' FROM '.$service->myTable.' WHERE host_name LIKE \'%"'.$this->getName().'"%\'',
-            $service->keyColumn);
+        $service = new Service();
+        $servicesAssigned = $service->dblink->queryToArray('SELECT ' . $service->keyColumn . ',' . $service->nameColumn . ' FROM ' . $service->myTable . ' WHERE host_name LIKE \'%"' . $this->getName() . '"%\'',
+                $service->keyColumn);
         if ($servicesAssigned) {
             foreach ($servicesAssigned as $service_id => $service_info) {
                 $services[$service_id] = $service_info[$service->nameColumn];
@@ -623,18 +615,17 @@ class Host extends Configurator
      * 
      * @return \Ease\Html\Div
      */
-    public function getInfoBlock()
-    {
+    public function getInfoBlock() {
         $block = parent::getInfoBlock();
         $block->addDef(_('Alias'),
-            [new \Icinga\Editor\UI\HostIcon($this), $this->getDataValue('alias')]);
+                [new \Icinga\Editor\UI\HostIcon($this), $this->getDataValue('alias')]);
         $block->addDef(_('Platform'),
-            new \Icinga\Editor\UI\PlatformIcon($this->getDataValue('platform')));
+                new \Icinga\Editor\UI\PlatformIcon($this->getDataValue('platform')));
 
         $parents = $this->getDataValue('parents');
         if ($parents) {
             foreach ($parents as $pId => $pName) {
-                $parents[$pId] = '<a href="host.php?host_id='.$pId.'">'.$pName.'</a>';
+                $parents[$pId] = '<a href="host.php?host_id=' . $pId . '">' . $pName . '</a>';
             }
             $block->addDef(_('Parent'), implode(',', $parents));
         }
@@ -650,8 +641,7 @@ class Host extends Configurator
      * @param int $status_code Kód nasazení senzoru 2: aktuální 1: zastaralý 0:nenasazeno
      * @return \\Ease\TWB\Label
      */
-    function sensorStatusLabel($status_code = null)
-    {
+    function sensorStatusLabel($status_code = null) {
 
         $status = null;
         if (is_null($status_code)) {
@@ -678,10 +668,9 @@ class Host extends Configurator
      *
      * @return int 2: Actual 1: Obsolete 0: Not installed
      */
-    function getSensorStatus()
-    {
+    function getSensorStatus() {
         $status = null;
-        $hash   = $this->getDataValue('config_hash');
+        $hash = $this->getDataValue('config_hash');
         if ($hash) {
             if ($this->getConfigHash() == $hash) {
                 $status = 2; //All OK
@@ -697,12 +686,12 @@ class Host extends Configurator
     /**
      * Obtain actual host/services configuration hash
      */
-    function getConfigHash()
-    {
-        $configuration    = [];
-        $service          = new Service;
-        $servicesAssigned = $service->dblink->queryToArray('SELECT `'.$service->getKeyColumn().'` FROM '.$service->myTable.' WHERE host_name LIKE \'%"'.$this->getName().'"%\'',
-            $service->keyColumn);
+    function getConfigHash() {
+        $configuration = [];
+        $service = new Service;
+        $cond = [':hn' => '%' . $this->getName() . '%'];
+        $servicesAssigned = $service->listingQuery()->where('host_name LIKE :hn', $cond)->orderBy($service->nameColumn)->fetchAll();
+
         foreach ($servicesAssigned as $serviceAssigned) {
             $service->loadFromSQL((int) $serviceAssigned[$service->keyColumn]);
             $service->unsetDataValue('display_name'); //Položky které se mohou měnit bez nutnosti aktualizovat senzor
@@ -719,7 +708,7 @@ class Host extends Configurator
             $service->unsetDataValue($service->myLastModifiedColumn);
             $configuration[] = $service->getEffectiveCfg();
         }
-        return hash('md5', $this->getName().serialize($configuration));
+        return hash('md5', $this->getName() . serialize($configuration));
     }
 
     /**
@@ -729,12 +718,11 @@ class Host extends Configurator
      * @param int    $memberID   host ID
      * @param string $memberName host Name
      */
-    function addMember($column, $memberID, $memberName)
-    {
+    function addMember($column, $memberID, $memberName) {
         if ($column == 'parents') {
             if ($memberName == $this->getName()) {
                 $this->addStatusMessage(_('Host can not by its own parent'),
-                    'warning');
+                        'warning');
                 return null;
             }
         }
@@ -748,17 +736,16 @@ class Host extends Configurator
      *
      * @return int|null ID of new record or null in case of error
      */
-    public function insertToSQL($data = null)
-    {
+    public function insertToSQL($data = null) {
         if (!is_null($data)) {
             $this->takeData($data);
         }
         $hostgroup = new Hostgroup(\Ease\Shared::user()->getUserLogin());
         $this->addMember('hostgroups', $hostgroup->getId(),
-            $hostgroup->getName());
+                $hostgroup->getName());
 
         $this->setDataValue('hostgroups',
-            serialize($this->getDataValue('hostgroups')));
+                serialize($this->getDataValue('hostgroups')));
         return parent::insertToSQL();
     }
 
@@ -771,11 +758,11 @@ class Host extends Configurator
      *
      * @return int
      */
-    function takeData($data, $dataPrefix = null)
-    {
+    function takeData($data, $dataPrefix = null) {
         if (!isset($data['platform'])) {
             $data['platform'] = 'generic';
         }
         return parent::takeData($data, $dataPrefix);
     }
+
 }

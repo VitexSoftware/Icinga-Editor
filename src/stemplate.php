@@ -17,10 +17,10 @@ $stemplate = new Stemplate($oPage->getRequestValue('stemplate_id', 'int'));
 switch ($oPage->getRequestValue('action')) {
     case 'new':
         $stemplate->setDataValue($stemplate->nameColumn,
-            _('New service template'));
+                _('New service template'));
         $stemplate->insertToSQL();
         $stemplate->setDataValue($stemplate->nameColumn,
-            _('New template').' #'.$stemplate->getId());
+                _('New template') . ' #' . $stemplate->getId());
         if ($oPage->isPosted()) {
             $stemplate->updateToSQL();
         }
@@ -33,10 +33,10 @@ switch ($oPage->getRequestValue('action')) {
         $stemplate->setDataValue('services', $host->getServices());
         if ($stemplate->saveToSQL()) {
             $stemplate->addStatusMessage(sprintf(_('New watched services template: %s was created '),
-                    $stemplate->getName()), 'success');
+                            $stemplate->getName()), 'success');
         } else {
             $stemplate->addStatusMessage(sprintf(_('New template was not created')),
-                'warning');
+                    'warning');
         }
 
         break;
@@ -53,10 +53,10 @@ switch ($oPage->getRequestValue('action')) {
 
             if (is_null($stemplateID)) {
                 $oUser->addStatusMessage(_('Services template was not saved'),
-                    'warning');
+                        'warning');
             } else {
                 $oUser->addStatusMessage(_('Services template was saved'),
-                    'success');
+                        'success');
             }
         }
 }
@@ -69,7 +69,7 @@ if ($delete == 'true') {
     $oPage->redirect('stemplates.php');
 }
 
-$oPage->addItem(new UI\PageTop(_('Service template editor').' '.$stemplate->getName()));
+$oPage->addItem(new UI\PageTop(_('Service template editor') . ' ' . $stemplate->getName()));
 $oPage->addPageColumns();
 
 if ($stemplate->getId()) {
@@ -82,28 +82,24 @@ switch ($oPage->getRequestValue('action')) {
         $oPage->columnII->addItem(new \Ease\Html\H2Tag($stemplate->getName()));
 
         $confirmator = $oPage->columnII->addItem(new \Ease\TWB\Panel(_('Do you really want to delete this?')),
-            'danger');
-        $confirmator->addItem(new \Ease\TWB\LinkButton('?'.$stemplate->keyColumn.'='.$stemplate->getID(),
-                _('No').' '.\Ease\TWB\Part::glyphIcon('ok'), 'success'));
-        $confirmator->addItem(new \Ease\TWB\LinkButton('?delete=true&'.$stemplate->keyColumn.'='.$stemplate->getID(),
-                _('Yes').' '.\Ease\TWB\Part::glyphIcon('remove'), 'danger'));
+                'danger');
+        $confirmator->addItem(new \Ease\TWB\LinkButton('?' . $stemplate->keyColumn . '=' . $stemplate->getID(),
+                        _('No') . ' ' . \Ease\TWB\Part::glyphIcon('ok'), 'success'));
+        $confirmator->addItem(new \Ease\TWB\LinkButton('?delete=true&' . $stemplate->keyColumn . '=' . $stemplate->getID(),
+                        _('Yes') . ' ' . \Ease\TWB\Part::glyphIcon('remove'), 'danger'));
 
 
         break;
     default :
         $stemplateEditor = new UI\CfgEditor($stemplate);
-
-        $form = $oPage->columnII->addItem(new \Ease\Html\Form('Stemplate',
-                'stemplate.php', 'POST', $stemplateEditor,
-                ['class' => 'form-horizontal']));
-
+        $form = $oPage->columnII->addItem(new \Ease\Html\Form(['action' => 'Stemplate', 'action' => 'stemplate.php', 'class' => 'form-horizontal'], $stemplateEditor));
         if (!$stemplate->getId()) {
             $form->addItem(new \Ease\TWB\SubmitButton(_('Create'), 'success'));
         } else {
             $form->addItem(new \Ease\TWB\SubmitButton(_('Save'), 'success'));
         }
         $oPage->columnIII->addItem(new \Ease\TWB\Panel(_('Transfer'), 'warning',
-                $stemplate->transferForm()));
+                        $stemplate->transferForm()));
         break;
 }
 

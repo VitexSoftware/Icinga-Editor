@@ -75,7 +75,7 @@ d3.text("mapsource.php", function (f) {
             .enter().append("rect")
             .attr("class", "node")
             .attr("rx", 5).attr("ry", 5);
-    
+
 //            .attr("fill", function (d) {
 //                defs.append("pattern")
 //                        .attr("id", d.value.id)

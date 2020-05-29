@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ConfigFile textarea
  *
@@ -14,10 +15,9 @@ namespace Icinga\Editor\UI;
  *
  * @author vitex
  */
-class CfgTextarea extends \Ease\TWB\Textarea
-{
-    public function finalize()
-    {
+class CfgTextarea extends \Ease\TWB\Textarea {
+
+    public function finalize() {
         $this->addCSS('div.numberedtextarea-wrapper { position: relative; }
 
 div.numberedtextarea-wrapper textarea {
@@ -70,7 +70,7 @@ function setCaretToPos(input, pos) {
 }
 
 $("textarea").click(function() {
-  setCaretToPos($("textarea")[0], '.intval($this->getTagProperty('data-lineno')).')
+  setCaretToPos($("textarea")[0], ' . intval($this->getTagProperty('data-lineno')) . ')
 });
 ');
 
@@ -79,4 +79,5 @@ $("textarea").click(function() {
         $this->setTagProperties(['onkeyup' => 'auto_grow(this)']);
         parent::finalize();
     }
+
 }

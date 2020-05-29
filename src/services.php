@@ -15,7 +15,7 @@ $oPage->onlyForLogged();
 $oPage->addItem(new UI\PageTop(_('Services overview')));
 
 $oPage->addItem(new \Ease\TWB\Container(new UI\DataGrid(_('Service'),
-            new Engine\Service())));
+                        new Engine\Service())));
 
 $oPage->addItem(new UI\PageBottom());
 

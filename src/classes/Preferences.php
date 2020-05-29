@@ -7,9 +7,9 @@ namespace Icinga\Editor;
  *
  * @author vitex
  */
-class Preferences extends \Ease\Brick
-{
-    public $myTable   = 'preferences';
+class Preferences extends \Ease\Brick {
+
+    public $myTable = 'preferences';
     public $keyColumn = 'key';
 
     /**
@@ -21,8 +21,7 @@ class Preferences extends \Ease\Brick
     /**
      * Preferences class
      */
-    function __construct()
-    {
+    function __construct() {
         parent::__construct();
         $this->loadPrefs();
     }
@@ -30,8 +29,7 @@ class Preferences extends \Ease\Brick
     /**
      * How to print object as string
      */
-    public function __toString()
-    {
+    public function __toString() {
         echo $this->getDataValue('value');
     }
 
@@ -43,8 +41,7 @@ class Preferences extends \Ease\Brick
      *
      * @return int|null record id or null
      */
-    function saveOnePreference($key, $value)
-    {
+    function saveOnePreference($key, $value) {
         $this->preferences[$key] = $value;
         $this->setMyKey($key);
         $this->setDataValue('value', $value);
@@ -58,8 +55,7 @@ class Preferences extends \Ease\Brick
      *
      * @return int
      */
-    public function savePrefs($data)
-    {
+    public function savePrefs($data) {
         $ok = 0;
         foreach ($data as $key => $value) {
             if ($this->saveOnePreference($key, $value)) {
@@ -72,8 +68,7 @@ class Preferences extends \Ease\Brick
     /**
      * Read Presets
      */
-    public function loadPrefs()
-    {
+    public function loadPrefs() {
         $prefs = $this->getAllFromSQL();
         foreach ($prefs as $pref) {
             $this->preferences[$pref['key']] = $pref['value'];
@@ -86,8 +81,8 @@ class Preferences extends \Ease\Brick
      *
      * @return array of preferences
      */
-    function getPrefs()
-    {
+    function getPrefs() {
         return $this->preferences;
     }
+
 }

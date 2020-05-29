@@ -26,7 +26,7 @@ if (strlen($query) > 1) {
 
     foreach ($results as $rectype => $records) {
         foreach ($records as $recid => $record) {
-            $found[] = ['url' => $rectype.'.php?'.$rectype.'_id='.$recid, 'name' => current($record),
+            $found[] = ['url' => $rectype . '.php?' . $rectype . '_id=' . $recid, 'name' => current($record),
                 'type' => $rectype, 'what' => $record['what']];
         }
     }
