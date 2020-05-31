@@ -14,7 +14,8 @@
         "vitexsoftware/ease-twbootstrap": "dev-master",
         "league/commonmark": "< 0.18.3",
         "vitexsoftware/ease-fluentpdo": "dev-master",
-        "vitexsoftware/ease-core": "dev-master"
+        "vitexsoftware/ease-core": "dev-master",
+        "vitexsoftware/ease-twbootstrap-widgets": "dev-master"
     },
     "autoload": {
         "psr-4": {

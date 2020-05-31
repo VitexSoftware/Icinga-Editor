@@ -21,7 +21,7 @@ class SensorConfirmForm extends \Ease\TWB\Form {
                         $host->getId()));
         $this->addItem(new \Ease\TWB\SubmitButton(_('Sensor deployed')));
         $status = $host->getSensorStatus();
-        $this->addItem(new Switcher('confirm', ($status == 2)));
+        $this->addItem(new YesNoSwitch('confirm', ($status == 2)));
     }
 
 }

@@ -36,7 +36,7 @@ use Icinga\Editor\User;
  *
  * @author vitex
  */
-class Configurator extends Engine {
+class Configurator extends Engine implements \Ease\Embedable {
 
     /**
      * Tabulka do níž objekt ukládá svá data
@@ -1010,7 +1010,7 @@ class Configurator extends Engine {
                 }
             }
 
-            Shared::webPage()->addItem(new \Icinga\Editor\UI\ConfirmationDialog('delete' . $this->getId(),
+            \Icinga\Editor\UI\WebPage::singleton()->addItem(new \Icinga\Editor\UI\ConfirmationDialog('delete' . $this->getId(),
                             '?' . $this->getKeyColumn() . '=' . $this->getID() . '&delete=true' . '&' . $urlAdd,
                             _('Delete') . ' ' . $name,
                             sprintf(_('Are you sure to delete %s ?'),
@@ -1786,7 +1786,7 @@ class Configurator extends Engine {
      * @return \\Ease\TWB\Form
      */
     public function &transferForm() {
-        $exportForm = new Form('Export', $this->keyword . '.php');
+        $exportForm = new Form(['name' => 'Export', 'target' => $this->keyword . '.php']);
         $exportForm->addItem(new InputHiddenTag('action', 'export'));
         $exportForm->addItem(new InputHiddenTag($this->keyColumn,
                         $this->getId()));
@@ -1798,7 +1798,7 @@ class Configurator extends Engine {
 
         foreach ($this->keywordsInfo as $columnName => $columnInfo) {
             if (isset($columnInfo['refdata']['table'])) {
-                $exportForm->addInput(new TWBSwitch('rels[' . $columnName . ']'),
+                $exportForm->addInput(new \Ease\TWB\Widgets\TWBSwitch('rels[' . $columnName . ']'),
                         $columnInfo['title']);
             }
         }
@@ -2118,6 +2118,40 @@ class Configurator extends Engine {
     public function getIconLink() {
         return new ATag($this->getObjectLink(),
                 $this->getObjectIcon());
+    }
+
+    /**
+     * Notify component about its embed name
+     * 
+     * @param string  $embedName parent::$pageParts[$embedName] == self
+     *
+     * @return boolean success
+     */
+    public function setEmbedName($embedName) {
+        $this->embedName = $embedName;
+        return true;
+    }
+
+    /**
+     * Method executed after adding object into new one
+     */
+    public function afterAdd() {
+        
+    }
+
+    public function finalize() {
+        
+    }
+
+    /**
+     * Include next element into current object.
+     *
+     * @param Embedable|string  $pageItem     value or EaseClass with draw() method
+     *
+     * @return mixed Pointer to included object
+     */
+    public function addItem($pageItem) {
+        return null;
     }
 
 }

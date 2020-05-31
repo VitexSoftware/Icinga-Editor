@@ -239,15 +239,14 @@ class CfgEditor extends \Ease\Container {
                     $conditions = [];
                 }
 
-                $sqlConds = " ( " . $this->objectEdited->dblink->prepSelect(array_merge($conditions,
-                                        [$this->objectEdited->userColumn => \Ease\Shared::user()->getUserID()])) . " ) OR ( " . $this->objectEdited->dblink->prepSelect(array_merge($conditions,
-                                        ['public' => 1])) . ")  ";
+                //Get My or Public records
 
-                $membersAviableArray = \Ease\Shared::db()->queryTo2DArray(
-                        'SELECT ' . $nameColumn . ' ' .
-                        'FROM `' . $sTable . '` ' .
-                        'WHERE ' . $sqlConds . ' ' .
-                        'ORDER BY ' . $nameColumn, $IDColumn);
+
+                $membersAviable = $this->objectEdited->getFluentPDO()->from($sTable)->orderBy($nameColumn)
+                        ->whereOr(array_merge($conditions, ['public' => 1]))
+                        ->whereOr(array_merge($conditions, [$this->objectEdited->userColumn => \Icinga\Editor\User::singleton()->getUserID()]));
+
+                $membersAviableArray = $membersAviable->fetchAll();
 
                 $selector = $fieldBlock->addItem(new \Ease\Html\Select($fieldName,
                                 $value, $keywordInfo['title'],

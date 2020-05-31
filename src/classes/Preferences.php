@@ -7,7 +7,7 @@ namespace Icinga\Editor;
  *
  * @author vitex
  */
-class Preferences extends \Ease\Brick {
+class Preferences extends \Ease\SQL\Engine {
 
     public $myTable = 'preferences';
     public $keyColumn = 'key';
@@ -22,7 +22,6 @@ class Preferences extends \Ease\Brick {
      * Preferences class
      */
     function __construct() {
-        parent::__construct();
         $this->loadPrefs();
     }
 
