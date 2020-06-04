@@ -1,19 +1,22 @@
 FROM debian:latest
-MAINTAINER Vítězslav Dvořák <info@vitexsoftware.cz>
+
+ENV APACHE_DOCUMENT_ROOT /usr/share/icinga-editor/
+env DEBIAN_FRONTEND=noninteractive
+
+RUN apt update ; apt install -y wget libapache2-mod-php; echo "deb http://repo.vitexsoftware.cz buster main" | tee /etc/apt/sources.list.d/vitexsoftware.list ; wget -O /etc/apt/trusted.gpg.d/vitexsoftware.gpg http://repo.vitexsoftware.cz/keyring.gpg
+RUN apt-get update && apt-get install -y locales php7.3-sqlite apache2 aptitude  cron locales-all && rm -rf /var/lib/apt/lists/* \
+    && localedef -i cs_CZ -c -f UTF-8 -A /usr/share/locale/locale.alias cs_CZ.UTF-8
+ENV LANG cs_CZ.utf8
+
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
+RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
 RUN apt update
-RUN apt-get update && apt-get install -my wget gnupg
 
-RUN wget -O - http://v.s.cz/info@vitexsoftware.cz.gpg.key | apt-key add -
-RUN echo deb http://v.s.cz/ stable main | tee /etc/apt/sources.list.d/vitexsoftware.list
-RUN apt update
+RUN aptitude -y install icinga-editor-sqlite flexibee-matcher flexibee-reminder flexibee-contract-invoices flexibee-digest
 
-
-RUN apt-get update
-RUN apt-get -y upgrade
-
-RUN DEBIAN_FRONTEND=noninteractive apt-get -y install apache2 libapache2-mod-php php-mysql php-gd php-pear php-curl php-mbstring curl lynx-cur composer php-intl locales-all
-
+RUN phinx seed:run -c /usr/lib/icinga-editor/phinx-adapter.php
+RUN a2ensite icinga-editor
 
 RUN rm -f /var/www/html/index.html
 COPY src/ /var/www/html/

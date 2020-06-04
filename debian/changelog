@@ -1,4 +1,4 @@
-icinga-editor (1.3.1) UNRELEASED; urgency=medium
+icinga-editor (1.3.2) UNRELEASED; urgency=medium
 
   [ vitex ]
   * Merge origin/master
@@ -8,5 +8,6 @@ icinga-editor (1.3.1) UNRELEASED; urgency=medium
 
   [ CyberVitexus ]
   * Debian Buster
+  * Regenerate All fixed
 
- -- CyberVitexus <vitex@exiv.jinonice.czf>  Sun, 31 May 2020 20:31:31 +0200
+ -- CyberVitexus <vitex@exiv.jinonice.czf>  Thu, 04 Jun 2020 23:37:59 +0200
