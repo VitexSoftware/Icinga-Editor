@@ -450,8 +450,8 @@ class Service extends Configurator {
 
                 if (is_array($ad['contacts']) && count($ad['contacts'])) { //Projít kontakty, vyhodit nevlastněné uživatelem
                     foreach ($ad['contacts'] as $ContactID => $ContactName) {
-                        $ContactUserID = $this->dblink->QueryToValue('SELECT `user_id` FROM `contact` WHERE contact_id=' . $ContactID);
-                        if ($userID != $ContactUserID) {
+                        $contactUserID = $this->getFluentPDO()->from('contact')->where('contact_id', $ContactID)->fetchColumn( 24  /*user_id*/);
+                        if ($userID != $contactUserID) {
                             unset($allData[$adKey]['contacts'][$ContactID]);
                         }
                     }
@@ -459,7 +459,7 @@ class Service extends Configurator {
 
                 if (is_array($ad['host_name']) && count($ad['host_name'])) { //Projít kontakty, vyhodit nevlastněné uživatelem
                     foreach ($ad['host_name'] as $HostID => $HostName) {
-                        $hostUserID = (int) $this->dblink->QueryToValue('SELECT `user_id` FROM `host` WHERE host_id=' . $HostID);
+                        $hostUserID =  $this->getFluentPDO()->from('host')->where('host_id', $HostID)->fetchColumn( 49  /*user_id*/);  
                         if ($userID != $hostUserID) {
                             unset($allData[$adKey]['host_name'][$HostID]);
                         }

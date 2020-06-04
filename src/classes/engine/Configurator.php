@@ -697,8 +697,8 @@ class Configurator extends Engine implements \Ease\Embedable {
      * @return array
      */
     public function getAllUserData() {
-        return $this->controlAllData(self::unserializeArrays($this->getColumnsFromSQL('*',
-                                        [$this->userColumn => Shared::user()->getUserID()])));
+        return $this->controlAllData(self::unserializeArrays(
+                                $this->listingQuery()->where($this->userColumn, Shared::user()->getUserID())->fetchAll()));
     }
 
     /**
@@ -707,7 +707,7 @@ class Configurator extends Engine implements \Ease\Embedable {
      * @return array
      */
     public function getAllData() {
-        return $this->controlAllData(self::unserializeArrays($this->getColumnsFromSQL('*')));
+        return $this->controlAllData(self::unserializeArrays($this->listingQuery()->fetchAll()));
     }
 
     /**
