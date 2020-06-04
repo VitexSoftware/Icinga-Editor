@@ -26,10 +26,8 @@ $oPage->addJavascript('$("#PassworRecovery").validate({
 });', null, true);
 
 if ($emailTo) {
-    $oUser = new User();
-    $userFound = $oUser->listingQuery()->where('email', addslashes($emailTo))->fetch();
-
-    if (!empty($userFound)) {
+    $oUser = new User(['email'=>addslashes($emailTo)]);
+    if ($oUser->getMyKey()) {
         $userID = intval($userFound['id']);
         $userLogin = $userFound['login'];
         $newPassword = \Ease\Functions::randomString(8);

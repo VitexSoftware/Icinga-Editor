@@ -1,4 +1,4 @@
-icinga-editor (1.2.1-97) UNRELEASED; urgency=medium
+icinga-editor (1.3.1) UNRELEASED; urgency=medium
 
   [ vitex ]
   * Merge origin/master
@@ -6,4 +6,7 @@ icinga-editor (1.2.1-97) UNRELEASED; urgency=medium
   [ Vítězslav Dvořák ]
   * 
 
- -- Vítězslav Dvořák <info@vitexsoftware.cz>  Tue, 13 Nov 2018 17:30:10 +0100
+  [ CyberVitexus ]
+  * Debian Buster
+
+ -- CyberVitexus <vitex@exiv.jinonice.czf>  Sun, 31 May 2020 20:31:31 +0200

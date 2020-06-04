@@ -80,13 +80,13 @@ class User extends \Ease\User {
      * @param int $userID
      */
     public function __construct($userID = null) {
-        parent::__construct($userID, \Ease\Shared::singleton()->configuration);
         if (!empty($userID)) {
-            $userDataRaw = $this->listingQuery()->where(is_numeric($userID) ? $this->keyColumn : $this->loginColumn, $userID);
+            $userDataRaw = $this->listingQuery()->where(is_array($userID) ? $userID : (is_numeric($userID) ? $this->keyColumn : $this->loginColumn), $userID);
             foreach ($userDataRaw as $userData) {
                 $this->takeData($userData);
             }
         }
+        parent::__construct($userID, \Ease\Shared::singleton()->configuration);
     }
 
     /**
