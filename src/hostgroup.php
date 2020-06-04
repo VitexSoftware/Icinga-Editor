@@ -150,7 +150,7 @@ $presetSelForm = new UI\ServicePresetSelectForm();
 $presetSelForm->addItem(new \Ease\Html\InputHiddenTag($hostgroup->getKeyColumn(),
         $hostgroup->getId()));
 
-$presetSelForm->addInput(new UI\TWBSwitch('groupHosts', false, true,
+$presetSelForm->addInput(new UI\YesNoSwitch('groupHosts', false, true,
         [' onText   ' => _('hostgroup'), 'offText' => _('hosts')]), _('Apply to'),
     null, _('Apply preset to several Hosts or hostgroup itself'));
 

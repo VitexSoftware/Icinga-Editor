@@ -10,7 +10,7 @@ namespace Icinga\Editor;
  */
 require_once 'includes/IEInit.php';
 
-$oPage->onlyForAdmin();
+//$oPage->onlyForAdmin();
 
 $oPage->container->addItem(new UI\PageTop(_('Regenerate all configuration files')));
 
@@ -18,7 +18,7 @@ system('rm ' . constant('CFG_GENERATED') . '/*');
 
 $originalUserID = $oUser->getUserID();
 
-$users = \Ease\Shared::user()->getAllFromSQL();
+$users = \Ease\Shared::user()->listingQuery()->fetchAll();
 $users[] = ['id' => null, 'user_id' => null, 'login' => '_icinga'];
 foreach ($users as $userData) {
     \Ease\Shared::user(new User(intval($userData['id'])));

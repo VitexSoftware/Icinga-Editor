@@ -16,7 +16,7 @@ class ContactAsignForm extends \Ease\TWB\Form {
      * @param string $columnName
      */
     public function __construct($columnName = 'contact_id') {
-        parent::__construct('ContactAsign', null, 'POST');
+        parent::__construct(['name' => 'ContactAsign']);
         $this->addItem(new ContactSelect($columnName));
         $this->addItem(new \Ease\Html\InputHiddenTag('action', 'contactAsign'));
     }

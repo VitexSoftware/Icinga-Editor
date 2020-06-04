@@ -431,15 +431,15 @@ class Service extends Configurator {
                     unset($allData[$adKey]);
                     continue;
                 }
-                if (!(int) $this->dblink->QueryToValue(
-                                'SELECT COUNT(*) FROM ' . $this->myTable .
-                                ' WHERE '
-                                . '`use` LIKE \'' . $ad['name'] . ',%\' OR '
-                                . '`use` LIKE \'%,' . $ad['name'] . '\' OR '
-                                . '`use` LIKE \'%,' . $ad['name'] . ',%\' OR '
-                                . '`use` LIKE \'' . $ad['name'] . '\''
-                        )
-                ) {
+
+                $cond = [
+                    ':a' => $ad['name'] . ',%',
+                    ':b' => '%,' . $ad['name'],
+                    ':c' => '%,' . $ad['name'] . ',%',
+                    ':d' => $ad['name']
+                ];
+
+                if (empty($this->listingQuery()->where('`use` IN ( :a , :b , :c , :d)'))) {
                     //$this->addStatusMessage(sprintf(_('Předloha služby %s není použita. Negeneruji do konfigurace'), $ad['name']), 'info');
                     unset($allData[$adKey]);
                     continue;
@@ -450,7 +450,7 @@ class Service extends Configurator {
 
                 if (is_array($ad['contacts']) && count($ad['contacts'])) { //Projít kontakty, vyhodit nevlastněné uživatelem
                     foreach ($ad['contacts'] as $ContactID => $ContactName) {
-                        $contactUserID = $this->getFluentPDO()->from('contact')->where('contact_id', $ContactID)->fetchColumn( 24  /*user_id*/);
+                        $contactUserID = $this->getFluentPDO()->from('contact')->where('contact_id', $ContactID)->fetchColumn(24 /* user_id */);
                         if ($userID != $contactUserID) {
                             unset($allData[$adKey]['contacts'][$ContactID]);
                         }
@@ -459,7 +459,7 @@ class Service extends Configurator {
 
                 if (is_array($ad['host_name']) && count($ad['host_name'])) { //Projít kontakty, vyhodit nevlastněné uživatelem
                     foreach ($ad['host_name'] as $HostID => $HostName) {
-                        $hostUserID =  $this->getFluentPDO()->from('host')->where('host_id', $HostID)->fetchColumn( 49  /*user_id*/);  
+                        $hostUserID = $this->getFluentPDO()->from('host')->where('host_id', $HostID)->fetchColumn(49 /* user_id */);
                         if ($userID != $hostUserID) {
                             unset($allData[$adKey]['host_name'][$HostID]);
                         }
