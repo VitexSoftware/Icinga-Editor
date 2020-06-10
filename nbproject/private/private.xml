@@ -22,5 +22,10 @@
             <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/includes/IEInit.php</file>
         </group>
         <group/>
+        <group name="EASE">
+            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/debian/control</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/db/migrations/20161208102517_id_lists_use_text.php</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/bootstrap.sh</file>
+        </group>
     </open-files>
 </project-private>

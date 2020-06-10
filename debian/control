@@ -1,13 +1,14 @@
 Source: icinga-editor
-Build-Depends: debhelper (>= 7.0.50~)
-Standards-Version: 3.8.4
+Build-Depends: debhelper (>= 13~)
+Standards-Version: 4.3.0
 Maintainer: Vítězslav Dvořák <info@vitexsoftware.cz>
 Uploaders: Vitex <vitex@hippy.cz>
 Priority: optional
+Section: monitoring
 Homepage: https://github.com/VitexSoftware/Icinga-Editor
 
 Package: icinga-editor
-Depends: ${misc:Depends},libjs-twitter-bootstrap, ease-framework-bricks, dbconfig-common, icinga-common, monitoring-plugins-basic, mtr-tiny, php-image-graphviz, libjs-d3js, php-cli, php-mail, php-curl, php-intl, composer, libjs-twitter-bootstrap-switch, nsca, traceroute , php-cli
+Depends: ${misc:Depends},php-ease-bootstrap-widgets, dbconfig-common, icinga-common, php-ease-fluentpdo,  monitoring-plugins-basic, mtr-tiny, php-image-graphviz, libjs-d3js, php-cli, php-mail, php-curl, php-intl, composer, nsca, traceroute , php-cli
 Recommends: default-mysql-server, graphicsmagick-imagemagick-compat, icinga-cgi,icinga-cgi-bin
 Pre-Depends: php-robmorgan-phinx
 Architecture: all

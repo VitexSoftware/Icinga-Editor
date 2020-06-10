@@ -11,11 +11,11 @@
     ],
     "minimum-stability":"dev",
     "require": {
-        "vitexsoftware/ease-twbootstrap": "dev-master",
+        "vitexsoftware/ease-bootstrap": "dev-master",
         "league/commonmark": "< 0.18.3",
         "vitexsoftware/ease-fluentpdo": "dev-master",
         "vitexsoftware/ease-core": "dev-master",
-        "vitexsoftware/ease-twbootstrap-widgets": "dev-master"
+        "vitexsoftware/ease-bootstrap-widgets": "dev-master"
     },
     "autoload": {
         "psr-4": {
