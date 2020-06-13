@@ -9,11 +9,14 @@ namespace Icinga\Editor\UI;
  */
 class HostgroupSelect extends \Ease\Html\Select {
 
+    use \Ease\SQL\Orm;
+    
     function loadItems() {
+        $this->myTable = 'hostgroup';
+        
         $membersFound = ['' => '---'];
-        $query = 'SELECT  `hostgroup_id`, `hostgroup_name` FROM `' . 'hostgroup` WHERE (user_id=' . \Ease\Shared::user()->getUserID() . ')  ORDER BY  hostgroup_name ';
 
-        $membersFoundArray = \Ease\Shared::db()->queryToArray($query);
+        $membersFoundArray = $this->listingQuery()->where('user_id', \Ease\Shared::user()->getUserID())->orderBy('hostgroup_name')->fetchAll() ;
         if (count($membersFoundArray)) {
             foreach ($membersFoundArray as $request) {
                 $membersFound[$request['hostgroup_id']] = $request['hostgroup_name'];

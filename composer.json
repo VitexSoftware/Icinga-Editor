@@ -9,13 +9,13 @@
             "email": "info@vitexsoftware.cz"
         }
     ],
-    "minimum-stability":"dev",
+    "minimum-stability": "dev",
     "require": {
-        "vitexsoftware/ease-bootstrap": "dev-master",
+        "vitexsoftware/ease-twbootstrap": "dev-master",
         "league/commonmark": "< 0.18.3",
         "vitexsoftware/ease-fluentpdo": "dev-master",
         "vitexsoftware/ease-core": "dev-master",
-        "vitexsoftware/ease-bootstrap-widgets": "dev-master"
+        "vitexsoftware/ease-twbootstrap-widgets": "dev-master"
     },
     "autoload": {
         "psr-4": {
@@ -33,6 +33,15 @@
     },
     "require-dev": {
         "phpunit/php-token-stream": "~1.2",
-        "robmorgan/phinx": "dev-master"
+        "robmorgan/phinx": "dev-master",
+        "datatables/datatables": "dev-master"
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "php -r \"copy('vendor/datatables/datatables/media/js/dataTables.bootstrap.js', 'src/js/dataTables.bootstrap.js');copy('vendor/datatables/datatables/media/js/jquery.dataTables.js', 'src/js/jquery.dataTables.js');\""
+        ],
+        "post-update-cmd": [
+            "php -r \"copy('vendor/datatables/datatables/media/js/dataTables.bootstrap.js', 'src/js/dataTables.bootstrap.js');copy('vendor/datatables/datatables/media/js/jquery.dataTables.js', 'src/js/jquery.dataTables.js');\""
+        ]
     }
 }

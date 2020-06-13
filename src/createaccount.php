@@ -212,8 +212,7 @@ $oPage->columnI->addItem(
 
 $regFace = $oPage->columnII->addItem(new DivTag());
 
-$regForm = $regFace->addItem(new Form('create_account', 'createaccount.php',
-                'POST', null, ['class' => 'form-horizontal']));
+$regForm = $regFace->addItem(new Form(['name' => 'create_account', 'action' => 'createaccount.php', 'class' => 'form-horizontal']));
 if ($oUser->getMyKey()) {
     $regForm->addItem(new InputHiddenTag('u_parent', $oUser->getMyKey()));
 }

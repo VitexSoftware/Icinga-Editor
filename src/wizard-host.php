@@ -43,7 +43,7 @@ $oPage->addItem(new UI\PageTop(_('New Host Wizard')));
 $newHostForm = new UI\ColumnsForm(['name'=>'newhost']);
 $newHostForm->addInput(new \Ease\Html\InputTextTag('host_name', $host_name),
         _('Name'), _('Host Name'), _('Unique identificator'));
-$newHostForm->addInput(new UI\TWBSwitch('check_method', $check_method, true,
+$newHostForm->addInput(new \Ease\TWB\Widgets\TWBSwitch('check_method', true, $check_method, 
                 ['handleWidth' => '200px', 'onText' => _('Active'), 'offText' => _('Passive')]),
         _('Watch method'), _('Host watch method'),
         _('<strong>Active</strong> tracked guests require Icinga to be able to reach tested machine. <br>Hosts checked <strong>Passive</strong> sends its tests results to Icinga server '));
@@ -53,7 +53,7 @@ $newHostForm->addItem(new \Ease\TWB\FormGroup(_('Platform'),
 $newHostForm->addInput(new UI\HostgroupSelect('host_group', null, $host_group),
         _('Hostgroup'), _('Initial hostgroup for Host'), _('Optional'));
 
-$newHostForm->addInput(new UI\TWBSwitch('host_is_server', $check_method, true,
+$newHostForm->addInput(new \Ease\TWB\Widgets\TWBSwitch('host_is_server', true, $check_method,
                 ['handleWidth' => '200px', 'onText' => _('Yes'), 'offText' => _('No')]),
         _('Still running'), _('Still running ?'),
         _('<strong>Yes</strong> host is still Up. <br><strong>No</strong> device every night down (notebook or PC etc.)'));

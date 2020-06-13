@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Icinga Editor - Phinx Adapter
  *
@@ -12,21 +13,29 @@ include_once './vendor/autoload.php';
 
 \Ease\Shared::instanced()->loadConfig('config.json', true);
 
-return array('environments' =>
-    array(
-        'default_database' => 'development',
-        'development' => array(
-            'name' => \Ease\Shared::db()->database,
-            'connection' => \Ease\Shared::db()->sqlLink
-        ),
-        'default_database' => 'production',
-        'production' => array(
-            'name' => \Ease\Shared::db()->database,
-            'connection' => \Ease\Shared::db()->sqlLink
-        ),
-    ),
+
+$engine = new \Ease\SQL\Engine(null);
+
+$cfg = [
     'paths' => [
-        'migrations' => 'db/migrations',
-        'seeds' => 'db/seeds'
+        'migrations' => ['db/migrations'],
+        'seeds' => ['db/seeds']
+    ],
+    'environments' =>
+    [
+        'default_database' => 'development',
+        'development' => [
+            'adapter' => \Ease\Shared::instanced()->getConfigValue('DB_CONNECTION'),
+            'name' => $engine->database,
+            'connection' => $engine->getPdo()
+        ],
+        'default_database' => 'production',
+        'production' => [
+            'adapter' => \Ease\Shared::instanced()->getConfigValue('DB_CONNECTION'),
+            'name' => $engine->database,
+            'connection' => $engine->getPdo()
+        ],
     ]
-);
+];
+
+return $cfg;
