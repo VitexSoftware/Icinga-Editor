@@ -722,6 +722,7 @@ class Configurator extends Engine implements \Ease\Embedable {
         if (is_null($data)) {
             $data = $this->getData();
         }
+        $keyColumn = $this->getKeyColumn();
         foreach ($this->useKeywords as $keyWord => $columnType) {
             if (!array_key_exists($keyWord, $data)) {
                 continue;
@@ -759,20 +760,20 @@ class Configurator extends Engine implements \Ease\Embedable {
         }
         $dbId = null;
         if ($this->allowTemplating && $this->isTemplate() && isset($data['name'])) {
-            if (isset($data[$this->getKeyColumn()]) && (int) $data[$this->getKeyColumn()]) {
-                $dbId = $this->dblink->queryToValue('SELECT `' . $this->keyColumn . '` FROM ' . $this->myTable . ' WHERE `name`' . " = '" . $data['name'] . "' AND " . $this->keyColumn . ' != ' . $data[$this->getKeyColumn()]);
+            if (array_key_exists($keyColumn, $data) && (int) $data[$keyColumn]) {
+                $dbId = $this->listingQuery()->where('name', $data['name'])->where($keyColumn . ' != ' . $data[$keyColumn])->fetchColumn();
             } else {
-                $dbId = $this->dblink->queryToValue('SELECT `' . $this->keyColumn . '` FROM ' . $this->myTable . ' WHERE `name`' . " = '" . $data['name'] . "'");
+                $dbId = $this->listingQuery()->where('name', $data['name'])->fetchColumn();
             }
         } else {
             if (isset($data[$this->nameColumn])) {
-                if (isset($data[$this->getKeyColumn()]) && (int) $data[$this->getKeyColumn()]) {
+                if (array_key_exists($keyColumn, $data) && (int) $data[$keyColumn]) {
                     $dbId = $this->listingQuery()
                                     ->where($this->nameColumn, $data[$this->nameColumn])
-                                    ->where($this->keyColumn . ' != ' . $data[$this->getKeyColumn()])->fetchColumn(0);
+                                    ->where($this->keyColumn . ' != ' . $data[$keyColumn])->fetchColumn(0);
                 } else {
-                    $dbIdRaw = $oUser->listingQuery()->where($oUser->nameColumn, addslashes($data[$this->nameColumn]))->fetch();
-                    $dbId = $this->dblink->queryToValue('SELECT `' . $this->keyColumn . '` FROM ' . $this->myTable . ' WHERE ' . $this->nameColumn . " = '" . $data[$this->nameColumn] . "'");
+                    $dbIdRaw = User::singleton()->listingQuery()->where(User::singleton()->nameColumn, addslashes($data[$this->nameColumn]))->fetch();
+                    $dbId = $this->listingQuery()->where($this->nameColumn, $data[$this->nameColumn])->fetchColumn(0);
                 }
             }
         }
@@ -797,6 +798,13 @@ class Configurator extends Engine implements \Ease\Embedable {
                     }
                 }
             }
+
+            if (array_key_exists('use', $data) && ($this->getPdo()->getAttribute(\PDO::ATTR_DRIVER_NAME) == 'mysql')) {
+                $use = $data['use'];
+                unset($data['use']);
+                $data['`use`'] = $use;
+            }
+
             $result = parent::saveToSQL($data, $searchForID);
             if (!is_null($result) && (get_class($this->user) == 'Icinga\Editor\User')) {
                 Shared::user()->setSettingValue('unsaved', true);

@@ -35,6 +35,9 @@ newmigration:
 newseed:
 	read -p "Enter CamelCase seed name : " migname ; ./vendor/bin/phinx seed:create $$migname -c ./phinx-adapter.php
 
+migrate:
+	./vendor/bin/phinx migrate -c ./phinx-adapter.php
+
 doc:
 	apigen generate --source src --destination docs --title "Icinga Editor" --charset UTF-8 --access-levels public --access-levels protected --php --tree
 

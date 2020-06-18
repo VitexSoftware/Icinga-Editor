@@ -1,9 +1,17 @@
 #!/bin/sh
 # postinst script for icinga-editor
-
 set -e
 
-WEBUSER=www-data
+. /usr/share/debconf/confmodule
+
+db_get composer/WEB_USER
+WEBUSER=$RET
+mkdir -p /usr/lib/icinga-editor
+chown $WEBUSER /var/lib/icinga-editor /var/lib/composer -R
+echo '{}' > /usr/lib/icinga-editor/composer.lock
+chown $WEBUSER /usr/lib/icinga-editor/composer.lock
+su - $WEBUSER -s /bin/bash -c 'COMPOSER_HOME="/var/lib/composer" composer -o install -d /usr/lib/icinga-editor/'
+
 
 replaceJSON() {
     cfg="/etc/icinga-editor/config.json"
@@ -11,7 +19,6 @@ replaceJSON() {
 }
 
 
-. /usr/share/debconf/confmodule
 
 db_input critical icinga-editor/SEND_MAILS_FROM || true
 db_go || true
@@ -75,12 +82,7 @@ fi
 
 cd /usr/share/icinga-editor
 
-mkdir -p /var/lib/composer
-chown $WEBUSER:$WEBUSER /var/lib/composer
-su - $WEBUSER -s /bin/bash -c 'COMPOSER_HOME="/var/lib/composer" composer --no-dev -o install -d /usr/share/icinga-editor/'
-
-
-    . /etc/icinga-editor/config-db.sh
+. /etc/icinga-editor/config-db.sh
 
 replaceJSON "DB_TYPE" "mysql"
 replaceJSON "DB_HOST" "localhost"

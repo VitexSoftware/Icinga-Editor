@@ -4,7 +4,7 @@
  * Configuration importer
  *
  * @author     Vitex <vitex@hippy.cz>
- * @copyright  2012-2015 Vitex@hippy.cz (G)
+ * @copyright  2012-2020 Vitex@hippy.cz (G)
  */
 
 namespace Icinga\Editor\Engine;
@@ -67,6 +67,7 @@ class Importer extends Configurator {
      * Import Configuration from path File or directory contents
      * 
      * @param string $path import target
+     * 
      * @return array import results
      */
     function importCfgPath($path) {
@@ -83,6 +84,7 @@ class Importer extends Configurator {
      * Naimportuje konfiguraci ze souboru
      *
      * @param  string $cfgFile
+     * 
      * @return int    počet uložených konfigurací
      */
     public function importCfgFile($cfgFile) {
@@ -94,6 +96,7 @@ class Importer extends Configurator {
      *
      * @param  string $cfgText      text
      * @param  array  $commonValues globálně uplatněné hodnoty
+     * 
      * @return int    počet vloženýh konfigurací
      */
     public function importCfgText($cfgText, $commonValues) {

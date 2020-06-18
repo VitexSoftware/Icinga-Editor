@@ -1,4 +1,4 @@
-icinga-editor (1.3.4) UNRELEASED; urgency=medium
+icinga-editor (1.3.5) UNRELEASED; urgency=medium
 
   [ vitex ]
   * Merge origin/master
@@ -11,5 +11,6 @@ icinga-editor (1.3.4) UNRELEASED; urgency=medium
   * Regenerate All fixed
   * Release v1.3.2
   * HostgroupSelect updated
+  * Release v1.3.4
 
- -- CyberVitexus <vitex@exiv.jinonice.czf>  Sat, 13 Jun 2020 14:17:19 +0200
+ -- CyberVitexus <vitex@exiv.jinonice.czf>  Thu, 18 Jun 2020 15:34:24 +0200

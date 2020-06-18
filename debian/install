@@ -13,7 +13,7 @@ src/classes/UI/*.php                usr/share/icinga-editor/classes/UI
 src/classes/engine/*.php            usr/share/icinga-editor/classes/engine
 src/modules/*.php                   usr/share/icinga-editor/modules
 debian/sql/install/*                usr/share/dbconfig-common/data/icinga-editor/install
-debian/conf/composer.json           usr/share/icinga-editor/
+debian/conf/composer.json           usr/lib/icinga-editor/
 debian/conf/icinga-editor.conf      etc/apache2/conf-available
 debian/conf/icinga-editor.service   etc/avahi/services
 debian/conf/icinga-editor           etc/sudoers.d
