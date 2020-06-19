@@ -36,7 +36,7 @@ if (isset($argv[2])) {
     $public = boolval($argv[2]);
 }
 
-$params = ['public' => $public, 'generate' => true, 'user_id' => $owner,'platform'=>'generic','autocfg'=>false];
+$params = ['public' => $public, 'generate' => true, 'user_id' => $owner];
 
 $importer = new Engine\Importer($params);
 $importer->importCfgPath($cfgFile);

@@ -4,7 +4,7 @@
  * Správce konfigurace
  *
  * @author     Vitex <vitex@hippy.cz>
- * @copyright  2012 Vitex@hippy.cz (G)
+ * @copyright  2012-2020 Vitex@hippy.cz (G)
  */
 
 namespace Icinga\Editor\Engine;
@@ -799,12 +799,6 @@ class Configurator extends Engine implements \Ease\Embedable {
                 }
             }
 
-            if (array_key_exists('use', $data) && ($this->getPdo()->getAttribute(\PDO::ATTR_DRIVER_NAME) == 'mysql')) {
-                $use = $data['use'];
-                unset($data['use']);
-                $data['`use`'] = $use;
-            }
-
             $result = parent::saveToSQL($data, $searchForID);
             if (!is_null($result) && (get_class($this->user) == 'Icinga\Editor\User')) {
                 Shared::user()->setSettingValue('unsaved', true);
@@ -813,6 +807,26 @@ class Configurator extends Engine implements \Ease\Embedable {
         $this->setMyKey($result);
 
         return $result;
+    }
+
+    /**
+     * Insert record to SQL database.
+     *
+     * @param array $data
+     *
+     * @return int|null id of new row in database
+     */
+    public function insertToSQL($data = null) {
+        if (is_null($data)) {
+            $data = $this->getData();
+        }
+        if (array_key_exists('use', $data) && ($this->getPdo()->getAttribute(\PDO::ATTR_DRIVER_NAME) == 'mysql')) {
+            $use = $data['use'];
+            unset($data['use']);
+            $data['`use`'] = $use;
+        }
+
+        return parent::insertToSQL($data);
     }
 
     /**
