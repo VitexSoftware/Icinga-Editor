@@ -5,10 +5,8 @@ namespace Icinga\Editor;
 /**
  * Search page
  *
- * @package    IcingaEditor
- * @subpackage WebUI
  * @author     Vitex <vitex@hippy.cz>
- * @copyright  2012 Vitex@hippy.cz (G)
+ * @copyright  2012-2020 Vitex@hippy.cz (G)
  */
 require_once 'includes/IEInit.php';
 
@@ -25,7 +23,7 @@ if (strlen($query) < 2) {
     $oPage->addStatusMessage(_('Search term is too short'), 'warning');
 } else {
 
-    $results = $searcher->searchAll(\Ease\Shared::db()->EaseAddslashes($query));
+    $results = $searcher->searchAll(addslashes($query));
 
     foreach ($results as $rectype => $records) {
         foreach ($records as $recid => $record) {

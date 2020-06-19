@@ -1543,8 +1543,7 @@ class Configurator extends Engine implements \Ease\Embedable {
             }
         }
 
-        $res = Shared::db()->queryToArray("SELECT " . implode(',', $columns) . "," . $this->nameColumn . " FROM " . $this->myTable . " WHERE " . implode(' OR ',
-                        $conds) . ' ORDER BY ' . $this->nameColumn, $this->keyColumn);
+        $res = $this->listingQuery()->where(implode(' OR ', $conds))->orderBy($this->nameColumn);
         foreach ($res as $result) {
             $occurences = '';
             foreach ($result as $key => $value) {

@@ -49,7 +49,7 @@ if ($emailTo) {
                         '<strong>' . $_REQUEST['Email'] . '</strong>'));
         $success = true;
     } else {
-        $oUser->addStatusMessage(sprintf(_('unknown email address %s'),
+        $oPage->addStatusMessage(sprintf(_('unknown email address %s'),
                         '<strong>' . $_REQUEST['Email'] . '</strong>'), 'warning');
     }
 } else {
