@@ -23,7 +23,21 @@
         </group>
         <group/>
         <group name="EASE">
-            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/debian/postinst</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/db/migrations/20200619103503_hostgroup_bgimage_def.php</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/db/migrations/20200618110839_normal_check_interval.php</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/classes/engine/Contact.php</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/classes/User.php</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/db/migrations/20160812161152_host_is_server.php</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/passwordrecovery.php</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/classes/engine/Host.php</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/iecfgimporter</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/vendor/fpdo/fluentpdo/src/Query.php</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/debian/icinga-editor/usr/share/icinga-editor/classes/engine/Configurator.php</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/db/migrations/20200619100602_default_public.php</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/search.php</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/db/migrations/20200618124615_bigger_notif_opts.php</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/classes/engine/Importer.php</file>
+            <file>file:/home/vitex/Projects/VitexSoftware/IcingaEditor/src/classes/engine/Configurator.php</file>
         </group>
     </open-files>
 </project-private>

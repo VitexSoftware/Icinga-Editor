@@ -12,5 +12,6 @@ icinga-editor (1.3.5) UNRELEASED; urgency=medium
   * Release v1.3.2
   * HostgroupSelect updated
   * Release v1.3.4
+  * Search Fixed
 
- -- CyberVitexus <vitex@exiv.jinonice.czf>  Thu, 18 Jun 2020 15:34:24 +0200
+ -- CyberVitexus <vitex@exiv.jinonice.czf>  Fri, 19 Jun 2020 13:58:40 +0200
