@@ -13,6 +13,7 @@ class DbFixer extends \Ease\Html\UlTag {
     public function __construct() {
         parent::__construct();
         $this->fixContactIDs();
+//        $this->fixServiceIDs();
         $this->fixHostNameIDs();
         $this->fixHostHostgroupID();
         $this->cleanUnusedServices();

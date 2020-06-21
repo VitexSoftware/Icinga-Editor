@@ -144,6 +144,7 @@ class Configurator extends Engine implements \Ease\Embedable {
             $_SESSION['parentCache'] = [];
         }
         $this->parentCache = &$_SESSION['parentCache'];
+        $this->getFluentPDO(true, true);
         parent::__construct($itemID, Shared::singleton()->configuration);
         $this->user = Shared::user();
 //       foreach ($this->useKeywords as $KeyWord => $ColumnType) {
@@ -231,7 +232,7 @@ class Configurator extends Engine implements \Ease\Embedable {
         if ($ownerid) {
             $this->owner = new User((int) $ownerid);
         }
-
+        $this->data = self::unserializeArrays($this->getData());
         return $result;
     }
 
@@ -1478,21 +1479,22 @@ class Configurator extends Engine implements \Ease\Embedable {
      * @return array
      */
     public static function unserializeArrays($allData) {
-        foreach ($allData as $keyWord => $keyData) {
-            if (is_array($keyData)) {
-                $allData[$keyWord] = self::unserializeArrays($keyData);
-            } else {
-                if (strlen($keyData) && (substr($keyData, 0, 2) == 'a:')) {
-                    if (self::isSerialized($keyData)) {
-                        $allData[$keyWord] = unserialize(stripslashes($keyData));
-                    } else {
-                        Shared::webPage()->addStatusMessage(_('Deserialization error') . ':' . $keyData,
-                                'error');
+        if (is_array($allData)) {
+            foreach ($allData as $keyWord => $keyData) {
+                if (is_array($keyData)) {
+                    $allData[$keyWord] = self::unserializeArrays($keyData);
+                } else {
+                    if (strlen($keyData) && (substr($keyData, 0, 2) == 'a:')) {
+                        if (self::isSerialized($keyData)) {
+                            $allData[$keyWord] = unserialize(stripslashes($keyData));
+                        } else {
+                            Shared::webPage()->addStatusMessage(_('Deserialization error') . ':' . $keyData,
+                                    'error');
+                        }
                     }
                 }
             }
         }
-
         return $allData;
     }
 

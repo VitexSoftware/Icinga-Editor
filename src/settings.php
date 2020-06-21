@@ -39,7 +39,7 @@ $(\'#UserMail\').change( function () {
 
 $settingsFrame = new \Ease\TWB\Panel(_('Settings'));
 $settingsFrame->addItem(new \Ease\Html\ATag('https://secure.gravatar.com/',
-                $oUser, ['title' => _('Click to change icon')]));
+                new \Ease\Html\ImgTag($oUser->getIcon()) , ['title' => _('Click to change icon')]));
 
 $settingsFrame->addItem(new \Ease\TWB\FormGroup(_('Login name'),
                 new UI\TextInputSaver('login', $oUser->getUserLogin(), $oUser)));

@@ -251,6 +251,25 @@ class User extends \Ease\User {
     }
 
     /**
+     * Unpack settings
+     * 
+     * @return boolean
+     */
+    public function loginSuccess() {
+        $this->restoreSettings();
+        return parent::loginSuccess();
+    }
+
+    public function restoreSettings() {
+        $this->settings = empty($this->getDataValue($this->settingsColumn)) ? [] : unserialize($this->getDataValue($this->settingsColumn));
+    }
+
+    public function __wakeup() {
+        parent::__wakeup();
+        $this->restoreSettings();
+    }
+
+    /**
      * Common instance of User class
      * 
      * @return User
