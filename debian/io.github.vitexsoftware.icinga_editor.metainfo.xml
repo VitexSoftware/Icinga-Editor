@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.github.vitexsoftware.icinga_editor</id>
+  <metadata_license>MIT</metadata_license>
+  <project_license>GPL-2.0-or-later</project_license>
+  <name>icinga-editor</name>
+  <summary>Icinga Configuration Web Interface</summary>
+  <description>
+    <p>
+      Tool for generation icinga 1.x configuration for multiplete users.
+    </p>
+  </description>
+  <categories>
+    <category>Utility</category>
+  </categories>
+  <url type="homepage">https://github.com/VitexSoftware/Icinga-Editor</url>
+  <url type="bugtracker">https://github.com/VitexSoftware/Icinga-Editor/issues</url>
+  <developer id="cz.vitexsoftware">
+    <name>VitexSoftware</name>
+  </developer>
+  <content_rating type="oars-1.1"/>
+</component>
