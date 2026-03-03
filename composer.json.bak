@@ -1,0 +1,52 @@
+{
+    "name": "vitexsoftware/icinga-editor",
+    "description": "Editor of Icinga Configuration files",
+    "license": "GPL-2.0-or-later",
+    "version": "2.0.0",
+    "authors": [
+        {
+            "name": "vitex",
+            "email": "info@vitexsoftware.cz"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=8.0",
+        "ext-json": "*",
+        "ext-mbstring": "*",
+        "ext-pdo": "*",
+        "ext-curl": "*",
+        "vitexsoftware/ease-twbootstrap": "^1.0",
+        "league/commonmark": "^2.7.0",
+        "vitexsoftware/ease-fluentpdo": "^1.4",
+        "vitexsoftware/ease-core": "^1.49",
+        "vitexsoftware/ease-twbootstrap-widgets": "^1.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Icinga\\Editor\\": "src/classes/",
+            "Icinga\\Editor\\Engine\\": "src/classes/engine/",
+            "Icinga\\Editor\\UI\\": "src/classes/UI",
+            "Icinga\\Editor\\modules\\": "src/modules"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Test\\Ease\\": "vendor/vitexsoftware/ease-framework/tests/src/Ease",
+            "Test\\": "testing/"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.0|^10.0|^11.0",
+        "robmorgan/phinx": "^0.16.0",
+        "datatables/datatables": "^1.10"
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "php -r \"copy('vendor/datatables/datatables/media/js/dataTables.bootstrap.js', 'src/js/dataTables.bootstrap.js');copy('vendor/datatables/datatables/media/js/jquery.dataTables.js', 'src/js/jquery.dataTables.js');\""
+        ],
+        "post-update-cmd": [
+            "php -r \"copy('vendor/datatables/datatables/media/js/dataTables.bootstrap.js', 'src/js/dataTables.bootstrap.js');copy('vendor/datatables/datatables/media/js/jquery.dataTables.js', 'src/js/jquery.dataTables.js');\""
+        ]
+    }
+}
