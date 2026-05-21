@@ -10,7 +10,7 @@ Homepage: https://github.com/VitexSoftware/Icinga-Editor
 Package: icinga-editor
 Depends: ${misc:Depends},php-ease-bootstrap-widgets, dbconfig-common, icinga-common, php-ease-fluentpdo,  monitoring-plugins-basic, mtr-tiny, php-image-graphviz, libjs-d3js, php-cli, php-mail, php-curl, php-intl, composer, nsca, traceroute , php-cli
 Recommends: default-mysql-server, graphicsmagick-imagemagick-compat, icinga-cgi,icinga-cgi-bin
-Pre-Depends: php-robmorgan-phinx
+Pre-Depends: php-cakephp-phinx
 Architecture: all
 Section: web
 Priority: optional
